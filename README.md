@@ -1,5 +1,5 @@
 ~~~~
-Lace
+Lace - a Work in Progress*
 ~~~~
 
    - Provides a set of general Ada components intended to ease the development of game, sim and GUI Ada applications.
@@ -16,13 +16,18 @@ Lace
    - Requires an implementation of the Ada POSIX API (i.e. FLORIST).
 
 
+* 
+  - Most components mentioned are in a prototype repository (some are more up to date than others). 
+  - Main idea is to tidy/add each repo, in turn, beginning with the base tier.
+  
+
+
 ~~~~~~~
 Content
 ~~~~~~~
 
    - Components are organised into dependendy tiers (ie layers).
-   - Each component in a tier can *only* depend on components in lower tiers.
-   - The result is that components are naturally organised into Base, Low, Mid, High And Top tiers.
+   - Each component in a tier can only depend on components in lower tiers.
 
    - Diagram: 'lace/document/components/lace-components.png'.
 
@@ -34,7 +39,7 @@ Content
    ~~~~~~~~~~~~~
    Tier 4 ~ High
    ~~~~~~~~~~~~~
-      'mmi'               ~ Man Machine Interface with OpenGL based rendering.
+      'mmi'               ~ Man Machine Interface (with OpenGL based rendering).
 
   ~~~~~~~~~~~~~
    Tier 3 ~ Mid
@@ -48,12 +53,12 @@ Content
    ~~~~~~~~~~~~
       'graphics/opengl'   : - OpenGL rendering support (2d/3d).
       
-      'physics/impact'    : - Physics space and dynamics support (2d/3d).
+      'physics/impact'    : - Physics space/dynamics support (2d/3d).
 
    ~~~~~~~~~~~~~
    Tier 1 ~ Base
    ~~~~~~~~~~~~~
-      'lace'              : - Provides low level events and other core types/operations.
+      'lace'              : - Provides core types and a namespace fot the Lace package family.
     
       'lace/events'       : - Provides an event mechansism for event-driven architectures.
                             - Contains Subject, Observer, Event and Response abstractions.
@@ -70,7 +75,7 @@ Installation
 ~~~~~~~~~~~~
 
    ~~~~~~~~
-   Building
+   Building - the configure file is ToReDo.
    ~~~~~~~~
 
       In the top-level lace-stable folder:
@@ -89,4 +94,4 @@ Installation
             LACE=/path/to/lace
             source $LACE/lace-gpr_paths.sh
 
-      This allows any Lace component to be 'with'ed in a user applications gnat project file.
+      This should allow any Lace component to be 'with'ed in a user applications 'gnat project' file.
