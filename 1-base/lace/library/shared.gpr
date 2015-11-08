@@ -1,0 +1,72 @@
+abstract project Shared is
+
+   for Source_Files use ();
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+   type Platform is
+      ("egl", "glx");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   type Profile is
+      ("safe", "lean", "desk");
+   Opengl_Profile : Profile := external ("opengl_profile");
+
+   package Compiler is
+
+      case Os is
+
+         when "Windows_NT" =>
+            for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhiklnOpx", "-gnat12", "-Wall", "-g");
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+
+                        --                  for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhklnOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+                        for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                              --                  for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhklnOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+                              for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+
+                           when "lean" =>
+
+                              --                  for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhklnOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+                              for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+
+                           when "desk" =>
+
+                              --                  for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhklnOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
+                              for Default_Switches ("ada") use ("-gnatVn", "-gnatf", "-gnatwa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnat12", "-gnato", "-fstack-check", "-gnata");
+                        end case;
+                  end case;
+
+               when "ravenscar" =>
+                  for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbCdefhiklOpx", "-gnat12", "-Wall", "-g");
+            end case;
+
+         when "MacOSX" =>
+            for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbCdefhiklOpx", "-gnat12", "-Wall", "-g");
+      end case;
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+end Shared;
+

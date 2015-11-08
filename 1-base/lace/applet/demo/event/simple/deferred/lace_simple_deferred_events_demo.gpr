@@ -1,0 +1,35 @@
+with "lace";
+
+project Lace_Simple_Deferred_Events_Demo is
+
+   type Restrictions is
+      ("xgc", "ravenscar");
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_simple_deferred_events_demo.adb");
+   Restrictions : Restrictions := external ("restrictions");
+
+   package Ide is
+      for Documentation_Dir use ".";
+   end Ide;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+   for Source_Dirs use (".", "../../simple");
+
+end Lace_Simple_Deferred_Events_Demo;
+

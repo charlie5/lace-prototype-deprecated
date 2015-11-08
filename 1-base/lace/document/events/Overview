@@ -1,0 +1,15 @@
+'Lace ~ Events' Overview
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Provides an event mechansism for event-driven architectures.
+- Contains Subject, Observer, Event and Response abstractions.
+- Supports DSA.
+- See  http://en.wikipedia.org/wiki/Event-driven_architecture
+-      http://en.wikipedia.org/wiki/Event-driven_programming
+
+
+- Requirements: 'lace/document/events/requirements'
+- Diagram:      'lace/document/events/events.png'
+- Code:         'lace/source/events'
+- Demo:         'lace/applet/demo/simple'
+

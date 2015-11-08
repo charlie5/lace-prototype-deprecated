@@ -1,0 +1,42 @@
+with 
+   "florist",
+   "shared";
+
+project Lace is
+
+   type Restrictions is ("xgc", "ravenscar");
+   the_Restrictions : Restrictions := external ("restrictions", "xgc");
+
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Library_Dir use "lib";
+   for Library_Ali_Dir use "objects";
+
+   for Source_Dirs use (".",
+                        "../source",
+                        "../source/containers",
+                        "../source/events",
+                        "../source/events/remote",
+                        "../source/events/remote/concrete",
+                        "../source/events/remote/interface",
+                        "../source/events/remote/mixin",
+                        "../source/events/remote/mixin/" & external ("restrictions", "xgc"),
+                        "../source/events/remote/utility",
+                        "../source/events/local",
+                        "../source/events/local/concrete",
+                        "../source/events/local/interface",
+                        "../source/events/local/mixin",
+                        "../source/events/local/mixin/" & external ("restrictions", "xgc"),
+                        "../source/events/local/utility",
+                        "../source/events/private",
+                        "../source/strings");
+
+   package Compiler renames Shared.Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+end Lace;
+

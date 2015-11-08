@@ -17,7 +17,7 @@ Lace - a Work in Progress*
 
 
 * 
-  - Most components mentioned are in a prototype repository (some are more up to date than others). 
+  - Most components mentioned are in a private prototype repository (some are more up to date than others). 
   - Main idea is to tidy/add each repo, in turn, beginning with the base tier.
   
 

@@ -1,0 +1,70 @@
+configuration simple_Chat is
+
+
+   pragma Starter (none);
+   --
+   --  Tell 'po_gnatdist' to not create any startup script or launcher.
+   --  We will launch our Server and Client partitions manually from a console.
+
+
+
+   --  Server
+   --
+
+   registrar_Partition : partition := (chat.Registrar);
+   --
+   --  Declare the Registrar partition and assign the Registrars 'remote call interface' package to this partition.
+
+   for registrar_Partition'Termination use Local_Termination;
+
+
+   procedure launch_simple_chat_Registrar is in registrar_Partition;
+   --
+   --  Tell po_gnatdist that the 'launch_simple_chat_Registrar' procedure is the the Servers 'main' subprogram or launcher.
+
+
+
+
+   --  Client
+   --
+
+   client_Partition : partition;
+   --
+   --  Declare the Client partition (which has no remote call interface package associated with it, so no 'initialisation' is required).
+
+
+   procedure launch_simple_chat_Client;
+   --
+   --  Declare the Clients 'main' subprogram or launcher.
+
+
+   for client_Partition'Main use launch_simple_chat_Client;
+   --
+   --  Tell po_gnatdist to assign the above declared 'launch_simple_chat_Client' procedure as the Clients 'main' subprogram or launcher.
+
+
+   for client_Partition'Termination use Local_Termination;
+   --
+   --  Tell po_Gnatdist that Clients may terminate locally (more on this later).
+
+
+
+
+   -- Channels
+   --
+
+   --   The zip filter works only on 32 bits machines, don't try it on Digital Unix/Alpha.
+   --
+   -- Channel_1 : Channel := (server_Partition, client_Partition);
+   -- for Channel_1'Filter use "zip";
+
+
+
+   --  Misc
+   --
+
+   for Partition'Directory use "bin";
+   --
+   --  Ask po_gnatdist to place the built Client and Server partition executables in the './bin' sub-folder.
+
+end simple_Chat;

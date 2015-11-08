@@ -1,0 +1,79 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Event Responses and Tasking
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Default:
+
+   - Responses occur immediately after an event is emitted.
+   - Responses are performed by the task which asks a Subject to emit an event.
+
+
+Deferred:
+
+   - In some cases, it may be desirable to be able to defer responses so as to free the emitting task from 
+     the burden of performing lengthy responses. 
+   - Such deferred responses would then be performed by another (possibly dedicated) task.
+
+
+
+
+
+~~~~~~~~~~~~~
+Typical Cases
+~~~~~~~~~~~~~
+
+   - Note: '...' below signifies continued processing.
+
+
+   Single Task
+   ~~~~~~~~~~~
+
+   Immediate Response
+
+      - Task asks Subject to emit an event.
+      - Task performs the Observer response immediately.
+      - ...
+
+
+   Deferred Response
+
+      - Task asks the Subject to emit an event.
+      - Task adds the event to the Observer queue.
+      - ...
+      - Task asks the Observer to perform the response.
+      - ...
+
+
+   - For a single task application, the default 'immediate response' method should be sufficent for most cases.
+   - The 'deferred response' method may be of use should control over the order in which responses occur be required.
+   - No concurrency protection is required when performing responses.
+
+
+
+
+   Multi Task
+   ~~~~~~~~~~
+
+   Immediate Response
+
+      - Task 1 asks Subject to emit an event.
+      - Task 1 performs the Observer response immediately.
+      - ...
+
+
+   Deferred Response
+
+      - Task 1 asks the Subject to emit an event.
+      - Task 1 adds the event to the Observer queue.
+      - ...
+
+      - Task 2 asks the Observer to perform response for each queued event.
+      - ...
+
+
+   - For a multi task application, care must be taken to ensure that response actions are task safe.
+   - Using the 'deferred' method may simplify (or eliminate) concurrency protection issues.   (tbd: add examples)
+
+
+
+

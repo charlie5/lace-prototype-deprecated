@@ -1,0 +1,14 @@
+Lace ~ Overview
+~~~~~~~~~~~~~~~
+
+General:
+
+   - Contains a set of low level re-usable Ada components.
+   
+   
+Contains:
+
+   - lace.Events   : provides a 'subject/oberver' 'event/response' facility.
+   - lace.Any      : provides an interface to allow heterogenous containers.
+   - lace.fast_Pool: provides a generic which allows fast allocation/deallocation.
+   
