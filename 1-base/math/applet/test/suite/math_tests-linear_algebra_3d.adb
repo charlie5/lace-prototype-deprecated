@@ -1,0 +1,212 @@
+with
+     Ahven,
+     float_Math.Algebra.linear.d3;
+
+with Ada.Text_IO; use Ada.Text_IO;
+
+
+package body math_Tests.linear_Algebra_3d
+is
+
+   use Ahven,
+       float_Math;
+
+
+   function almost_Equal (Left, Right : in Real) return Boolean
+   is
+      Tolerance : constant := 0.00_000_1;
+   begin
+      return abs (Left - Right) <= Tolerance;
+   end almost_Equal;
+
+
+
+   function almost_Equal (Left, Right : in Quaternion) return Boolean
+   is
+      Tolerance : constant := 0.000_000_1;
+   begin
+      return almost_Equal (Left.R,     Right.R)
+        and  almost_Equal (Left.V (1), Right.V (1))
+        and  almost_Equal (Left.V (2), Right.V (2))
+        and  almost_Equal (Left.V (3), Right.V (3));
+   end almost_Equal;
+
+
+
+
+   procedure translation_Matrix_Test
+   is
+      use float_Math,
+          float_Math.Algebra.linear.d3;
+
+      From : Vector_3 := (0.0, 0.0, 0.0);
+      To   : Vector_3;
+
+   begin
+      To := From * to_translation_Matrix ((1.0, 0.0, 0.0));
+
+      assert (To (1) = 1.0,  Image (To) & "  translation (a) failed !");
+      assert (To (2) = 0.0,  Image (To) & "  translation (b) failed !");
+      assert (To (3) = 0.0,  Image (To) & "  translation (c) failed !");
+
+      To := From * to_translation_Matrix ((0.0, 1.0, 0.0));
+
+      assert (To (1) = 0.0,  Image (To) & "  translation (d) failed !");
+      assert (To (2) = 1.0,  Image (To) & "  translation (e) failed !");
+      assert (To (3) = 0.0,  Image (To) & "  translation (f) failed !");
+
+
+      To := From * to_translation_Matrix ((-1.0, 0.0, 0.0));
+
+      assert (To (1) = -1.0,  Image (To) & "  translation (g) failed !");
+      assert (To (2) =  0.0,  Image (To) & "  translation (h) failed !");
+      assert (To (3) =  0.0,  Image (To) & "  translation (i) failed !");
+
+      To := From * to_translation_Matrix ((0.0, -1.0, 0.0));
+
+      assert (To (1) =  0.0,  Image (To) & "  translation (j) failed !");
+      assert (To (2) = -1.0,  Image (To) & "  translation (k) failed !");
+      assert (To (3) =  0.0,  Image (To) & "  translation (l) failed !");
+
+
+      To := From * to_translation_Matrix ((1.0, 1.0, 0.0));
+
+      assert (To (1) =  1.0,  Image (To) & "  translation (m) failed !");
+      assert (To (2) =  1.0,  Image (To) & "  translation (n) failed !");
+      assert (To (3) =  0.0,  Image (To) & "  translation (o) failed !");
+
+      To := From * to_translation_Matrix ((-1.0, -1.0, 0.0));
+
+      assert (To (1) = -1.0,  Image (To) & "  translation (p) failed !");
+      assert (To (2) = -1.0,  Image (To) & "  translation (q) failed !");
+      assert (To (3) =  0.0,  Image (To) & "  translation (r) failed !");
+   end translation_Matrix_Test;
+
+
+
+   procedure rotation_Matrix_Test
+   is
+      use float_Math,
+          float_Math.Algebra.linear.d3;
+
+      From : Vector_3 := (1.0, 0.0, 0.0);
+      To   : Vector_3;
+
+   begin
+      To := From * z_Rotation_from (to_Radians (90.0));
+
+      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (90) failed !");
+      assert (almost_Equal (To (2), -1.0),   Image (To, 16) & "  rotation (90) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (90) failed !");
+
+      To := From * z_Rotation_from (to_Radians (-90.0));
+
+      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (-90) failed !");
+      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  rotation (-90) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-90) failed !");
+
+
+      To := From * z_Rotation_from (to_Radians (180.0));
+
+      assert (almost_Equal (To (1), -1.0),   Image (To, 16) & "  rotation (180) failed !");
+      assert (almost_Equal (To (2),  0.0),   Image (To, 16) & "  rotation (180) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (180) failed !");
+
+      To := From * z_Rotation_from (to_Radians (-180.0));
+
+      assert (almost_Equal (To (1), -1.0),   Image (To, 16) & "  rotation (-180) failed !");
+      assert (almost_Equal (To (2),  0.0),   Image (To, 16) & "  rotation (-180) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-180) failed !");
+
+
+      To := From * z_Rotation_from (to_Radians (270.0));
+
+      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (270) failed !");
+      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  rotation (270) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (270) failed !");
+
+      To := From * z_Rotation_from (to_Radians (-270.0));
+
+      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (-270) failed !");
+      assert (almost_Equal (To (2), -1.0),   Image (To, 16) & "  rotation (-270) failed !");
+      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-270) failed !");
+   end rotation_Matrix_Test;
+
+
+
+   procedure transform_Test
+   is
+      use float_Math,
+          float_Math.Algebra.linear.d3;
+
+      From : Vector_3 := (1.0, 0.0, 0.0);
+      To   : Vector_3;
+
+      Transform : Transform_3d := (rotation    => z_Rotation_from (to_Radians (90.0)),
+                                   translation => (0.0, 0.0, 0.0));
+
+   begin
+      To := From * Transform;
+
+      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (3),  0.0),   Image (To, 16) & "  transform () failed !");
+
+
+      Transform.Translation := (1.0, 0.0, 0.0);
+      To := From * Transform;
+
+      assert (almost_Equal (To (1),  1.0),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (3),  0.0),   Image (To, 16) & "  transform () failed !");
+   end transform_Test;
+
+
+
+   procedure slerp_Test
+   is
+      use float_Math,
+          float_Math.Algebra.linear.d3;
+
+      Initial : Quaternion := to_Quaternion (z_Rotation_from (to_Radians ( 90.0)));
+      Desired : Quaternion := to_Quaternion (z_Rotation_from (to_Radians (180.0)));
+
+   begin
+--        put_Line (Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.0)))));
+--        put_Line (Degrees'Image (to_Degrees (Angle (Initial))));
+
+      assert (almost_Equal (slerp (Initial, Desired, 0.0), Initial),   "almost_Equal (slerp (Initial, Desired, 0.0), Initial) ... failed !");
+      assert (almost_Equal (slerp (Initial, Desired, 1.0), Desired),   "almost_Equal (slerp (Initial, Desired, 1.0), Desired) ... failed !");
+
+--        new_Line;
+--        put_Line ("0.01   " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.01)))));
+--        put_Line ("0.1    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.1)))));
+--        put_Line ("0.2    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.2)))));
+--        put_Line ("0.3    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.3)))));
+--        put_Line ("0.4    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.4)))));
+--        put_Line ("0.5    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.5)))));
+--        put_Line ("0.6    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.6)))));
+--        put_Line ("0.7    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.7)))));
+--        put_Line ("0.8    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.8)))));
+--        put_Line ("0.9    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.9)))));
+--        put_Line ("0.99   " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.99)))));
+
+--        put_Line (Degrees'Image (to_Degrees (to_Radians (90.0))));
+
+      assert (almost_Equal (Angle (slerp (Initial, Desired, 0.5)),  to_Radians (135.0)),   "Angle (slerp (Initial, Desired, 0.5)) = to_Radians (135.0) ... failed !");
+   end slerp_Test;
+
+
+
+   procedure Initialize (T : in out Test) is
+   begin
+      T.set_Name ("Linear Algebra (3D) Tests");
+
+      Framework.add_test_Routine (T, translation_Matrix_Test'Access, "translation_Matrix_Test");
+      Framework.add_test_Routine (T,    rotation_Matrix_Test'Access,    "rotation_Matrix_Test");
+      Framework.add_test_Routine (T,          transform_Test'Access,          "transform_Test");
+      Framework.add_test_Routine (T,              slerp_Test'Access,              "slerp_Test");
+   end Initialize;
+
+
+end math_Tests.linear_Algebra_3d;

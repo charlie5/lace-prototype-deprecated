@@ -1,0 +1,21 @@
+~~~~~~~~~~~~~~~
+Math ~ Overview
+~~~~~~~~~~~~~~~
+
+General:
+
+   - Provides an Ada package family covering pure and applied mathematics.
+   
+   
+Contains:
+
+   - Pure
+      - Arithmetic (covers quantity)
+      - Algebra    (covers structure)
+      - Geometry   (covers space)
+      - Analysis   (covers change)
+         
+   - Applied
+      - Statistics
+      - Computational
+  
