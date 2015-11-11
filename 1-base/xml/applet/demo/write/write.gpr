@@ -1,0 +1,72 @@
+with "xml";
+
+project Write is
+
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   type Platform is
+      ("egl", "glx");
+   type Profile is
+      ("safe", "lean", "desk");
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_write.adb");
+   Opengl_Profile : Profile := external ("opengl_profile");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   Restrictions : Restrictions := external ("restrictions");
+   OS : Os_Type := external ("OS");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+
+      case Opengl_Profile is
+
+         when "safe" =>
+
+         when "lean" =>
+
+         when "desk" =>
+
+            case Opengl_Platform is
+
+               when "egl" =>
+
+               when "glx" =>
+
+                  case Restrictions is
+
+                     when "xgc" =>
+
+                        case OS is
+
+                           when "Windows_NT" =>
+                              for Default_Switches ("ada") use ("-g", "-lexpat");
+
+                           when "Linux" =>
+
+                           when "MacOSX" =>
+
+                        end case;
+
+                     when "ravenscar" =>
+
+                  end case;
+            end case;
+      end case;
+   end Linker;
+
+end Write;
+
