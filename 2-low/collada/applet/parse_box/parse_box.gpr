@@ -1,0 +1,81 @@
+with "collada";
+
+project Parse_Box is
+
+   type Platform is
+      ("egl", "glx");
+   type Profile is
+      ("safe", "lean", "desk");
+   type Build_Kind is
+      ("default");
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_parse_box.adb");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+   FLORIST_BUILD : Build_Kind := external ("FLORIST_BUILD");
+   Opengl_Profile : Profile := external ("opengl_profile");
+   Opengl_Platform : Platform := external ("opengl_platform");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+
+      case Restrictions is
+
+         when "xgc" =>
+
+            case Os is
+
+               when "Windows_NT" =>
+
+                  case FLORIST_BUILD is
+
+                     when "default" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                           when "lean" =>
+
+                           when "desk" =>
+
+                              case Opengl_Platform is
+
+                                 when "egl" =>
+
+                                 when "glx" =>
+                                    for Default_Switches ("ada") use ("-g", "-lexpat");
+                              end case;
+                        end case;
+                  end case;
+
+               when "Linux" =>
+                  for Default_Switches ("ada") use ("-lexpat");
+
+               when "MacOSX" =>
+
+            end case;
+
+         when "ravenscar" =>
+
+      end case;
+   end Linker;
+
+end Parse_Box;
+
