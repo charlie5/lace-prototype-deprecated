@@ -1,0 +1,27 @@
+with 
+     "../../../library/freetype";
+
+project freetype_linkage_Test is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_freetype_linkage_test.adb");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-j13", "-k");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-gnatVn", "-fstack-check", "-g", "-gnata", "-gnat12");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end freetype_linkage_Test;
+

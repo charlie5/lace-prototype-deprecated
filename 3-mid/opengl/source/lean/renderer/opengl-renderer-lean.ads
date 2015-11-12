@@ -1,0 +1,279 @@
+with
+     openGL.Context,
+     openGL.Surface,
+     openGL.Geometry,
+     openGL.Model,
+     openGL.Visual,
+     openGL.Impostor,
+     openGL.Texture,
+     openGL.Font,
+
+     ada.Containers.Hashed_Maps;
+
+limited
+with
+     openGL.Camera;
+
+private
+with
+     ada.unchecked_Conversion;
+
+
+package openGL.Renderer.lean
+--
+-- Provides a renderer for the 'lean' profile.
+--
+is
+
+   type Item is limited new Renderer.item with private;
+   type View is access all Item'Class;
+
+
+   ---------
+   --- Forge
+   --
+
+   procedure define  (Self : access Item);
+   procedure destroy (Self : in out Item);
+
+   procedure free    (Self : in out View);
+
+
+   --------------
+   --- Attributes
+   --
+
+   type context_Setter is access procedure;
+   type Swapper        is access procedure;
+
+   procedure Context_is        (Self : in out Item;   Now : in Context.view);
+   procedure Context_Setter_is (Self : in out Item;   Now : in context_Setter);
+   procedure Swapper_is        (Self : in out Item;   Now : in Swapper);
+
+
+   --------------
+   --  Operations
+   --
+
+   type impostor_Update
+   is
+      record
+         Impostor              : openGL.Impostor.view;
+
+         Width_size            : openGL.texture.Size;
+         Height_size           : openGL.texture.Size;
+         current_Width_pixels  : gl.GLsizei;
+         current_Height_pixels : gl.GLsizei;
+
+         current_copy_x_Offset : gl.GLsizei;
+         current_copy_y_Offset : gl.GLsizei;
+         current_copy_X        : gl.GLsizei;
+         current_copy_Y        : gl.GLsizei;
+         current_copy_Width    : gl.GLsizei;
+         current_copy_Height   : gl.GLsizei;
+
+         current_Camera_look_at_Rotation : Matrix_3x3;
+      end record;
+
+   type impostor_Updates is array (Positive range <>) of impostor_Update;
+
+
+
+   procedure queue_Impostor_updates (Self : in out Item;    the_Updates   : in     impostor_Updates;
+                                                            the_Camera    : access openGL.Camera.item'Class);
+
+   procedure queue_Visuals          (Self : in out Item;    the_Visuals   : in     Visual.views;
+                                                            the_Camera    : access openGL.Camera.item'Class);
+
+   procedure start_Engine (Self : in out Item);
+   procedure  stop_Engine (Self : in out Item);
+
+   procedure render       (Self : in out Item;   to_Surface : in openGL.Surface.view := null);
+   procedure add_Font     (Self : in out Item;   font_Id    : in openGL.Font.font_Id);
+   procedure Screenshot   (Self : in out Item;   Filename   : in String);
+
+   function  is_Busy      (Self : in Item) return Boolean;
+
+   procedure draw         (Self : in out Item;   the_Sprites            : in Visual.views;
+                                                 camera_world_Transform : in math.Matrix_4x4;
+                                                 view_Transform         : in math.Matrix_4x4;
+                                                 perspective_Transform  : in math.Matrix_4x4;
+                                                 clear_Frame            : in Boolean;
+                                                 to_Surface             : in openGL.Surface.view := null);
+   --
+   --  Raises buffer_Overflow if the renderer is unable to cope with the new 'draw'.
+
+
+   procedure free (Self : in out Item;   the_Model    : in openGL.Model.view);
+   procedure free (Self : in out Item;   the_Impostor : in openGL.Impostor.view);
+
+
+   buffer_Overflow   : exception;
+   Texture_not_found : exception;
+
+
+
+
+private
+
+   type Camera_view is access all openGL.Camera.item'Class;
+
+
+   ----------
+   -- Updates
+   --
+
+   type updates_for_Camera is
+      record
+         Impostor_updates      : lean.impostor_Updates (1 .. 10_000);
+         impostor_updates_Last : Natural                            := 0;
+
+         Visuals               : openGL.Visual.views   (1 .. 20_000);
+         visuals_Last          : Natural                            := 0;
+      end record;
+
+   type updates_for_Camera_view is access updates_for_Camera;
+
+   use type openGL.Visual.views;
+   function Hash                   is new ada.unchecked_Conversion   (Camera_view, ada.Containers.Hash_Type);
+   package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,  updates_for_Camera_view,
+                                                                      Hash,         "=");
+
+   type camera_updates_Couple is
+      record
+         Camera  : Camera_view;
+         Updates : updates_for_Camera_view;
+      end record;
+
+   type camera_updates_Couples is array (Positive range <>) of camera_updates_Couple;
+
+
+   protected
+   type safe_camera_Map_of_updates
+   is
+      procedure define;
+      procedure destruct;
+
+      procedure add (the_Updates : in impostor_Updates;
+                     the_Camera  : in Camera_view);
+
+      procedure add (the_Visuals : in Visual.views;
+                     the_Camera  : in Camera_view);
+
+      procedure fetch_all_Updates (the_Updates : out camera_updates_Couples;
+                                   Length      : out Natural);
+
+   private
+      Map_1       : aliased camera_Maps_of_updates.Map;
+      Map_2       : aliased camera_Maps_of_updates.Map;
+      current_Map : access  camera_Maps_of_updates.Map;
+   end safe_camera_Map_of_updates;
+
+
+
+   -- sprite_geometry_Couple
+   --
+
+   type sprite_geometry_Couple is
+      record
+         Sprite   : openGL.Visual.view;
+         Geometry : openGL.Geometry.view;
+      end record;
+
+   type sprite_geometry_Couples      is array (math.Index range <>) of sprite_geometry_Couple;
+   type sprite_geometry_Couples_view is access all sprite_geometry_Couples;
+
+
+
+   -- graphics_Models
+   --
+
+   type graphics_Models is  array (1 .. 20_000) of openGL.Model.view;
+
+   protected
+   type safe_Models
+   is
+      procedure add   (the_Model  : in     openGL.Model.view);
+      procedure fetch (the_Models :    out graphics_Models;
+                       Count      :    out Natural);
+   private
+      my_Models : graphics_Models;
+      my_Count  : Natural        := 0;
+   end safe_Models;
+
+
+
+   -- Impostors
+   --
+
+   type Impostor_Set is array (1 .. 10_000) of openGL.Impostor.view;
+
+   protected
+   type safe_Impostors
+   is
+      procedure add   (the_Impostor  : in     openGL.Impostor.view);
+      procedure fetch (the_Impostors :    out Impostor_Set;
+                       Count         :    out Natural);
+   private
+      my_Impostors : Impostor_Set;
+      my_Count     : Natural     := 0;
+   end safe_Impostors;
+
+
+
+   -- Engine
+   --
+
+   task type Engine (Self : access Item'Class)
+   is
+      entry start      (Context  : in openGL.Context.view);
+      entry Stop;
+      entry render;
+      entry add_Font   (font_Id  : in openGL.Font.font_Id);
+      entry Screenshot (Filename : in String);
+
+      pragma Storage_Size (40_000_000);
+   end Engine;
+
+
+
+   -- Renderer
+   --
+
+   type Item is limited new Renderer.item with
+      record
+         Textures                : aliased openGL.Texture.name_Map_of_texture;
+         Fonts                   :         Font.font_id_Maps_of_font.Map;
+
+         all_opaque_Couples      :         sprite_geometry_Couples_view := new sprite_geometry_Couples (1 .. 6 * 100_000);
+         all_lucid_Couples       :         sprite_geometry_Couples_view := new sprite_geometry_Couples (1 .. 6 * 100_000);
+
+         obsolete_Models         :         lean.safe_Models;
+         obsolete_Impostors      :         lean.safe_Impostors;
+
+         texture_Pool            : aliased openGL.texture.Pool;
+
+         safe_camera_updates_Map : aliased safe_camera_Map_of_updates;
+
+         Engine                  :         lean.Engine (Self => Item'Access);
+
+         Context                 :         openGL.Context.view;
+         context_Setter          :         lean.context_Setter;
+         Swapper                 :         lean.Swapper;
+         swap_Required           :         Boolean;
+         is_Busy                 :         Boolean     := False;
+      end record;
+
+
+   procedure update_Impostors_and_draw_Visuals
+                                (Self : in out Item;   all_Updates : in camera_updates_Couples);
+
+   procedure update_Impostors   (Self : in out Item;   the_Updates            : in impostor_Updates;
+                                                       camera_world_Transform : in math.Matrix_4x4;
+                                                       view_Transform         : in math.Matrix_4x4;
+                                                       perspective_Transform  : in math.Matrix_4x4);
+   procedure free_old_Models    (Self : in out Item);
+   procedure free_old_Impostors (Self : in out Item);
+
+
+end openGL.Renderer.lean;

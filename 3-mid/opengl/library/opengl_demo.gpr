@@ -1,0 +1,11 @@
+with "opengl",
+     "lumen";
+
+
+project openGL_Demo
+is
+
+   for Source_Dirs use ("../source/demo");
+
+
+end openGL_Demo;
