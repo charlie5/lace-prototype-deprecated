@@ -1,0 +1,22 @@
+with "box2d_thin_c";
+
+project Box2d_Thin_Cxx is
+
+   for Languages use ("C++");
+   for Source_Dirs use ("../source/thin");
+   for Object_Dir use "build";
+   for Library_Name use "box2d_thin_cxx";
+   for Library_Dir use "lib";
+   for Library_Ali_Dir use "objects";
+
+   package Naming is
+      for Spec_Suffix ("c++") use ".h";
+      for Body_Suffix ("c++") use ".cxx";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("c++") use ("-g");
+   end Compiler;
+
+end Box2d_Thin_Cxx;
+

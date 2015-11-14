@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+rm   ../source/thin/*.ads
+rm   ../source/thin/*.cxx
+
+mv   ./*.ads    ../source/thin
+mv   ./*.cxx    ../source/thin
+
+ 

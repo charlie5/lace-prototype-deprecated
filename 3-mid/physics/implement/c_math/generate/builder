@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+echo
+echo Removing prior build.
+echo
+
+rm *.ads
+rm *.adb
+rm *.cxx
+rm *.pp
+
+
+set -e
+
+
+
+echo
+echo Generating the binding.
+echo
+
+swig_gnat  -gnat -c++  -cpperraswarn    c_math_c.i 
+rm portable_new_line_Token.tmp
+
+
+
+echo
+echo Pretty printing.
+echo
+
+gnatpp  -rnb  -I/usr/local/include  *.ads  -cargs -gnat05
+indent  -sob  -di16                 *.cxx
+

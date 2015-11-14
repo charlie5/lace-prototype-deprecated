@@ -6,3 +6,6 @@
 
 *-loc.xml
 assets
+gnatinspect.db
+*~
+auto.cgpr

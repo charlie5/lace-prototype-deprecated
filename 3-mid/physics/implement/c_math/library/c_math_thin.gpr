@@ -1,0 +1,27 @@
+with "c_math_thin_cxx";
+with "swig";
+with "math";
+
+project c_Math_thin is
+
+   for Languages use ("Ada");
+   for Source_Dirs use ("../source", "../source/thin");
+   for Object_Dir use "build";
+--   for Exec_Dir use ".";
+   for Library_Dir use "lib";
+   for Library_Ali_Dir use "objects";
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-lpthread");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+end c_Math_thin;
+
