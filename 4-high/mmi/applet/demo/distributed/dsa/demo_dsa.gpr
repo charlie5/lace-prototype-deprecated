@@ -1,0 +1,26 @@
+with "lumen_mmi";
+
+project Demo_dsa is
+
+   for Source_Dirs use (".", "../../distributed");
+--   for Object_Dir use "build";
+--   for Exec_Dir use ".";
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lGLU", "-lX11", "-lm");
+   end Linker;
+   
+end Demo_dsa;
+

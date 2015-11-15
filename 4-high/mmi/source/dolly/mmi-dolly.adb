@@ -1,0 +1,87 @@
+with
+     ada.unchecked_Deallocation;
+
+
+package body mmi.Dolly
+is
+
+   use Math;
+   use type math.Real;
+
+
+
+   procedure free (Self : in out View)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
+   begin
+      if Self = null
+      then
+         return;
+      end if;
+
+      Self.destroy;
+      deallocate (Self);
+   end free;
+
+
+
+
+   --  Attributes
+   --
+
+   procedure Camera_is (Self : in out Item'Class;   Now : in Camera.view)
+   is
+   begin
+      self.Camera := Now;
+   end Camera_is;
+
+
+
+   procedure is_moving (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True)
+   is
+   begin
+      Self.Motion (Direction) := Now;
+   end is_moving;
+
+
+
+   procedure is_spinning (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True)
+   is
+   begin
+      Self.Spin (Direction) := Now;
+   end is_spinning;
+
+
+   procedure is_orbiting (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True)
+   is
+   begin
+      Self.Orbit (Direction) := Now;
+   end is_orbiting;
+
+
+
+   procedure Speed_is (Self : in out Item;  Now : in Real)
+   is
+   begin
+      Self.Speed := Now;
+   end Speed_is;
+
+
+
+   function  Speed (Self : in     Item) return math.Real
+   is
+   begin
+      return Self.Speed;
+   end Speed;
+
+
+
+   procedure speed_Multiplier_is (Self : in out Item;  Now : in math.Real)
+   is
+   begin
+      Self.speed_Multiplier := Now;
+   end speed_Multiplier_is;
+
+
+end mmi.Dolly;
+

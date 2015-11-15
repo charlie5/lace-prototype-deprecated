@@ -1,0 +1,113 @@
+with
+     mmi.Joint,
+     mmi.Sprite,
+
+     physics.Joint.DoF6,
+     physics.Joint.Ball,
+     physics.Space;
+
+
+package mmi.ball_Joint
+--
+--  Allows sprites to be connected via 'ball and socket' joint.
+--
+is
+
+   type Item is new MMI.Joint.Item with private;
+   type View is access all Item'Class;
+   type Views is array (Math.Index range <>) of View;
+
+
+
+   Sway  : constant Joint.Degree_of_freedom := 1;
+   Heave : constant Joint.Degree_of_freedom := 2;
+   Surge : constant Joint.Degree_of_freedom := 3;
+
+   Pitch : constant Joint.Degree_of_freedom := 4;
+   Yaw   : constant Joint.Degree_of_freedom := 5;
+   Roll  : constant Joint.Degree_of_freedom := 6;
+
+
+
+   ----------
+   ---  Forge
+   --
+
+   procedure define  (Self : access Item;   in_Space                : in     Standard.physics.Space.view;
+                                            Sprite_A,    Sprite_B   : access mmi.Sprite.Item'Class;
+                                            Pivot_in_A,  Pivot_in_B : in     Math.Vector_3);
+
+   overriding
+   procedure destroy (Self : in out Item);
+
+
+
+   --------------
+   --  Attributes
+   --
+
+   overriding
+   function Physics            (Self : in     Item) return mmi.Joint.Physics_view;
+
+   overriding
+   function Frame_A            (Self : in     Item) return Math.Matrix_4x4;
+   overriding
+   function Frame_B            (Self : in     Item) return Math.Matrix_4x4;
+
+   overriding
+   procedure Frame_A_is        (Self : in out Item; Now : in Math.Matrix_4x4);
+   overriding
+   procedure Frame_B_is        (Self : in out Item; Now : in Math.Matrix_4x4);
+
+   overriding
+   function Degrees_of_freedom (Self : in     Item) return Joint.Degree_of_freedom;
+
+
+
+   --  Bounds - limits the range of motion for a Degree of freedom.
+   --
+
+   overriding
+   function  is_Bound       (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Boolean;
+
+   overriding
+   function  low_Bound      (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   overriding
+   procedure low_Bound_is   (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
+                                                   Now        : in Math.Real);
+
+   overriding
+   function  high_Bound     (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   overriding
+   procedure high_Bound_is  (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
+                                                   Now        : in Math.Real);
+
+   overriding
+   function  Extent         (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+
+   overriding
+   procedure Velocity_is    (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom;
+                                                   Now        : in Math.Real);
+
+
+   --------------
+   --  Operations
+   --
+
+   -- Nil.
+
+
+
+
+private
+
+   type physics_DoF6_Joint_view is access all Standard.Physics.Joint.DoF6.Item'Class;
+
+
+   type Item is new MMI.Joint.item with
+      record
+         Physics : access standard.physics.Joint.ball.item'Class;
+   end record;
+
+
+end mmi.ball_Joint;

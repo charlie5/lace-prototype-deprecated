@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+
+HERE=`pwd`
+
+which po_gnatdist
+
+
+
+### Clean 
+##
+#
+
+rm -fr ./dsa
+
+
+cd ../fused
+gprclean -r -P mmi_fused.gpr -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean
+
+#gprclean -r -P demo_dsa.gpr -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean
+
+
+
+
+
+### Hand build c/c++ libraries (gnatdist/gprbuild doesn't seem to handle them).
+##
+#
+
+#cd /eden/forge/component/lace-stable/2-low/physics/bullet/contrib/bullet-2.79/library
+#gprbuild -P bullet_c.gpr
+
+#cd /eden/forge/component/lace-stable/2-low/physics/bullet/library
+#gprbuild -P bullet_thin_c.gpr
+
+cd /eden/forge/component/lace-new/2-low/physics/c_math/library
+gprbuild -P c_math_thin_cxx.gpr
+
+
+cd /eden/forge/component/lace-new/2-low/physics/bullet/library
+gprbuild -P bullet_thin_c.gpr
+gprbuild -P bullet_thin_cxx.gpr
+
+cd /eden/forge/component/lace-new/2-low/physics/box2d/library
+gprbuild -P box2d_thin_c.gpr
+gprbuild -P box2d_thin_cxx.gpr
+
+
+#cd /eden/forge/component/lace-stable/2-low/graphics/opengl/private/thin/egl/library
+#gprbuild -Xopengl_platform=egl -Xopengl_profile=lean  -P egl_c.gpr
+
+#cd /eden/forge/component/lace-stable/2-low/graphics/opengl/private/thin/gl/library
+#gprbuild -Xopengl_platform=egl -Xopengl_profile=lean  -P gl_c.gpr
+
+#cd /eden/forge/component/lace-stable/2-low/graphics/opengl/private/thin/glu/library
+#gprbuild -Xopengl_platform=egl -Xopengl_profile=lean  -P glu_binding.gpr
+#gprbuild -Xopengl_platform=egl -Xopengl_profile=lean  -P glu_c.gpr
+
+
+cd /eden/forge/component/lace-new/2-low/graphics/opengl/private/freetype/library
+gprbuild -Xopengl_platform=glx -Xopengl_profile=lean  -P freetype_c.gpr
+#gnatmake -Xopengl_platform=glx -Xopengl_profile=lean  -P freetype_c.gpr
+#gprbuild -Xopengl_platform=glx -Xopengl_profile=lean  -P freetype_thin.gpr
+
+
+#cd /eden/forge/component/lace-stable/4-high/mmi/source/private/xcb/library
+#gprbuild -P xcb_c.gpr
+
+
+
+
+### Build
+##
+#
+
+cd $HERE
+po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
+
+

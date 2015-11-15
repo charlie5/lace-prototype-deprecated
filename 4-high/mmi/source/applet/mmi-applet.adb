@@ -1,0 +1,964 @@
+with
+     mmi.Dolly.simple,
+     mmi.Dolly.following,
+     mmi.Joint,
+     mmi.Events,
+
+     openGL.Palette,
+     openGL.Renderer.lean.forge,
+
+     lace.Any,
+     lace.Observer,
+     lace.remote.Response,
+     lace.Subject,
+     lace.event.Utility.local,
+
+     ada.Unchecked_Conversion,
+     ada.Unchecked_Deallocation,
+     ada.Text_IO;
+
+
+package body mmi.Applet
+is
+   use      Math,
+            lace.event.Utility,
+            ada.Text_IO;
+
+   use type math.Real,
+            math.Index;
+
+
+
+   procedure my_context_Setter
+   is
+   begin
+      global_Window.enable_GL;
+   end my_context_Setter;
+
+
+   procedure my_Swapper
+   is
+   begin
+      global_Window.swap_GL;
+   end my_Swapper;
+
+
+
+
+   overriding
+   procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.Item'Class)
+   is
+      the_Event  : constant mmi.events.new_sprite_added_to_world_Event
+        := mmi.events.new_sprite_added_to_world_Event (to_Event);
+
+      the_Sprite :          mmi.Sprite.view;
+
+   begin
+      the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
+
+      the_Sprite.is_Visible (True);
+      Self.Applet.add (the_Sprite);
+
+   exception
+      when Constraint_Error =>
+         put_Line ("mmi.applet ~ Exception in  'respond (Self : in out add_new_Sprite ...)'");
+   end respond;
+
+
+
+   overriding
+   function  Name    (Self : in     add_new_Sprite) return String
+   is
+      pragma Unreferenced (Self);
+   begin
+      return "add_new_Sprite";
+   end Name;
+
+
+   procedure define (Self : in View;   use_Window : in mmi.Window.view)
+   is
+      Success : Boolean;
+   begin
+      Self.Window := use_Window;
+
+      -- Add window resize event repsonse.
+      --
+      Self.local_Subject_and_Observer.add (Self.resize_Response'Unchecked_Access,
+                                           to_Kind (mmi.events.window_resize_Request'Tag),
+                                           use_Window.Name);
+
+      Self.Window.register (lace.Observer.view (Self.local_Subject_and_Observer),
+                            to_Kind (mmi.events.window_resize_Request'Tag));
+
+      Self.resize_Response.Applet := Self;
+
+      -- Setup the renderer.
+      --
+      Self.Renderer := openGL.Renderer.lean.forge.new_Renderer;
+
+      Self.Renderer.Background_is (openGL.Palette.Grey);
+      Self.Renderer.Swapper_is    (my_Swapper'unrestricted_Access);
+
+      Self.Window.disable_GL;
+
+      Self.Renderer.Context_Setter_is (my_context_Setter'unrestricted_Access);
+      Self.Renderer.start_Engine;
+
+      Self.Renderer.add_Font (Self.       Font);
+      Self.Renderer.add_Font (Self.titles_Font);
+
+
+      -- Set up the keyboard events.
+      --
+      Self.Keyboard                    := Self.Window.Keyboard;
+      Self.key_press_Response  .Applet := Self;
+      Self.key_release_Response.Applet := Self;
+
+
+      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                        lace.Subject .view (Self.Keyboard),
+                                        Self.key_press_Response  'Unchecked_Access,
+                                        to_Kind (mmi.Keyboard.key_press_Event'Tag));
+
+      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                        lace.Subject .view (Self.Keyboard),
+                                        Self.key_release_Response'Unchecked_Access,
+                                        to_Kind (mmi.Keyboard.key_release_Event'Tag));
+
+      Self.Mouse                          := Self.Window.Mouse;
+      Self.button_press_Response  .Applet := Self;
+      Self.button_release_Response.Applet := Self;
+      Self.mouse_motion_Response  .Applet := Self;
+
+
+      -- Add the new sprite event response.
+      --
+      the_add_new_sprite_Response.Applet := Self.all'Access;
+
+   end define;
+
+
+
+   overriding
+   procedure destroy (Self : in out Item)
+   is
+      use world_Vectors,
+          mmi.Dolly,
+          openGL.Renderer.lean,
+          mmi.Window,
+          mmi.World;
+
+      procedure free is new ada.unchecked_Deallocation (world_Info, world_Info_view);
+
+      Cursor     : world_Vectors.Cursor := Self.Worlds.First;
+
+      world_Info : world_Info_view;
+      the_World  : mmi.World.view;
+
+   begin
+      while has_Element (Cursor)
+      loop
+         world_Info := Element (Cursor);
+
+         -- Free the world.
+         --
+         the_World := world_Info.World;
+         the_World.destroy;
+         free (the_World);
+
+         -- Free the cameras
+         --
+         declare
+            use mmi.Camera;
+
+            the_Cameras : camera_Vector renames world_Info.Cameras;
+            the_Camera  : mmi.Camera.view;
+         begin
+            for i in 1 .. Integer (the_Cameras.Length)
+            loop
+               the_Camera := the_Cameras.Element (i);
+               free (the_Camera);
+            end loop;
+         end;
+
+         free (world_Info);
+         next (Cursor);
+      end loop;
+
+      free (Self.Dolly);
+      free (Self.Renderer);
+      free (Self.Window);
+
+      Self. local_Subject_and_Observer         .destroy;
+      lace.remote.Subject_and_deferred_Observer.destroy (lace.remote.Subject_and_deferred_Observer.Item (Self));   -- Destroy base class.
+   end destroy;
+
+
+
+   procedure free (Self : in out View)
+   is
+      procedure deallocate is new ada.Unchecked_Deallocation (Applet.item'Class, Applet.view);
+   begin
+      Self.destroy;
+      deallocate (Self);
+   end free;
+
+
+
+
+   ---------
+   --- Forge
+   --
+
+   package body Forge
+   is
+
+      function  to_Applet (Name       : in String;
+                           use_Window : in mmi.Window.view) return Item
+      is
+      begin
+         mmi.Applet.global_Window := use_Window;
+
+         return Self : Item := (lace.remote.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
+                                local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
+                                others                     => <>)
+         do
+            define (Self'Unchecked_Access,  use_Window);
+         end return;
+      end to_Applet;
+
+
+
+      function new_Applet (Name       : in String;
+                           use_Window : in mmi.Window.view) return View
+      is
+         Self : constant View := new Item' (lace.remote.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
+                                            local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
+                                            others                     => <>);
+      begin
+         mmi.Applet.global_Window := use_Window;
+
+         define (Self,  use_Window);
+         return Self;
+      end new_Applet;
+
+   end Forge;
+
+
+
+
+   --------------
+   --- Attributes
+   --
+
+   procedure add (Self : in out Item;   the_World : in world_Info_view)
+   is
+   begin
+      Self.Worlds.append (the_World);
+   end add;
+
+
+
+   function is_Open (Self : in Item) return Boolean
+   is
+   begin
+      return    Self.Window.is_Open
+        and not Self.quit_Requested;
+   end is_Open;
+
+
+
+   function Window (Self : in Item) return mmi.Window.view
+   is
+   begin
+      return Self.Window;
+   end Window;
+
+
+
+   function world_Count (Self : in Item) return Natural
+   is
+   begin
+      return Natural (Self.Worlds.Length);
+   end world_Count;
+
+
+
+   function Worlds (Self : in Item) return mmi.World.views
+   is
+      the_Worlds : mmi.World.views (1 .. Natural (Self.Worlds.Length));
+   begin
+      for i in the_Worlds'Range
+      loop
+         the_Worlds (i) := Self.Worlds.Element (i).World;
+      end loop;
+
+      return the_Worlds;
+   end Worlds;
+
+
+
+   function World (Self : in Item;   Id : in world_Id) return mmi.World.view
+   is
+   begin
+      return Self.Worlds.Element (Integer (Id)).World;
+   end World;
+
+
+
+   function World_as_iFace (Self : in Item;   Id : in world_Id) return mmi.remote.World.view
+   is
+   begin
+      return remote.World.view (Self.Worlds.Element (Integer (Id)).World);
+   end World_as_iFace;
+
+
+
+
+   function Camera (Self : in Item;   world_Id  : in mmi.world_Id;
+                                      camera_Id : in mmi.camera_Id) return mmi.Camera.view
+   is
+   begin
+      return Self.Worlds.Element (Integer (world_Id)) .Cameras.Element (Integer (camera_Id));
+   end Camera;
+
+
+
+
+
+   function Font (Self : in Item) return opengl.Font.font_Id
+   is
+   begin
+      return Self.Font;
+   end Font;
+
+
+   function titles_Font (Self : in Item) return opengl.Font.font_Id
+   is
+   begin
+      return Self.titles_Font;
+   end titles_Font;
+
+
+
+   function Renderer (Self : in     Item) return openGL.Renderer.lean.view
+   is
+   begin
+      return Self.Renderer;
+   end Renderer;
+
+
+
+   function Keyboard (Self : in     Item) return access mmi.Keyboard.item'class
+   is
+   begin
+      return Self.Keyboard;
+   end Keyboard;
+
+
+
+   function Mouse    (Self : in     Item) return access mmi.Mouse.item'class
+   is
+   begin
+      return Self.Mouse;
+   end Mouse;
+
+
+
+   function Dolly   (Self : access Item) return mmi.Dolly.view
+   is
+   begin
+      return Self.Dolly;
+   end Dolly;
+
+
+
+   function last_Keypress (Self : access Item) return mmi.Keyboard.Key
+   is
+      the_last_Keypress : constant mmi.Keyboard.Key := Self.last_pressed_Key;
+   begin
+      Self.last_pressed_Key := mmi.keyboard.Nil;
+      return the_last_Keypress;
+   end last_Keypress;
+
+
+
+
+   --------------
+   --- Operations
+   --
+
+   procedure freshen (Self : in out Item)
+   is
+      use type mmi.Dolly.view;
+
+      Window_is_active : Boolean;
+
+   begin
+      Self.Window.emit_Events;
+
+      Self                           .respond;
+      Self.local_Subject_and_Observer.respond;
+      Self.Window                    .respond;
+
+      if Self.Dolly /= null then
+         Self.Dolly.freshen;
+      end if;
+
+      Window_is_active :=              Self.Window.is_Open
+                          and then     Self.Window.is_Exposed
+                          and then not Self.Window.is_being_Resized;
+
+      declare
+         use world_Vectors;
+         world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
+         all_Cameras      : mmi.Camera.views (1 .. 1000);
+         all_cameras_Last : Natural                     := 0;
+
+      begin
+         while has_Element (world_Cursor)
+         loop
+            declare
+               use camera_Vectors;
+               the_world_Info : world_Info            renames Element (world_Cursor).all;
+               camera_Cursor  : camera_Vectors.Cursor :=      the_world_Info.Cameras.First;
+            begin
+               the_world_Info.World.wait_on_evolve;
+
+               if Window_is_active
+               then
+                  while has_Element (camera_Cursor)
+                  loop
+                     all_cameras_Last               := all_cameras_Last + 1;
+                     all_Cameras (all_cameras_Last) := Element (camera_Cursor);
+
+                     Element (camera_Cursor).render (the_world_Info.World,
+                                                     to => Self.Window.Surface);
+                     next (camera_Cursor);
+                  end loop;
+               end if;
+
+            end;
+
+            next (world_Cursor);
+         end loop;
+
+         loop
+            declare
+               culls_Completed : Boolean := True;
+            begin
+               for i in 1 .. all_cameras_Last
+               loop
+                  culls_Completed := culls_Completed and all_Cameras (i).cull_Completed;
+               end loop;
+
+               exit when culls_Completed;
+               delay Duration'Small;
+            end;
+         end loop;
+      end;
+
+      Self.Renderer.render;
+   end freshen;
+
+
+
+   procedure add (Self : in out Item;   the_Sprite : in mmi.Sprite.view)
+   is
+   begin
+      --  Add children and their joints.
+      --
+      declare
+         child_Joints : constant mmi.Joint.views := the_Sprite.child_Joints;
+      begin
+         for Each in child_Joints'Range
+         loop
+            Self          .add (the_Sprite.child_Joints (Each).Sprite_B.all'Access);
+            Self.World (1).add (the_Sprite.child_Joints (Each));
+         end loop;
+      end;
+   end add;
+
+
+
+   procedure add (Self : in out Item;   the_Sprite : in mmi.Sprite.view;
+                                        at_site    : in math.Vector_3)
+   is
+   begin
+      the_Sprite.Site_is (at_site);
+      Self      .add     (the_Sprite);
+   end add;
+
+
+
+   procedure take_Screenshot (Self : in out Item;   Filename : in String)
+   is
+   begin
+      Self.Renderer.Screenshot (Filename);
+   end take_Screenshot;
+
+
+
+   procedure request_Quit    (Self : in out Item)
+   is
+   begin
+      Self.quit_Requested := True;
+   end request_Quit;
+
+
+
+   procedure toggle_video_Capture (Self : in out Item'Class)
+   is
+   begin
+      raise Program_Error with "to be implemented";
+   end toggle_video_Capture;
+
+
+
+
+   ----------------------
+   --  Keyboard Responses
+   --
+
+   overriding
+   procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      use mmi.Keyboard, mmi.Dolly;
+
+      the_Event     :          mmi.Keyboard.key_press_Event renames mmi.Keyboard.key_press_Event (to_Event);
+      the_Dolly     : constant mmi.Dolly.view               :=      Self.Applet.Dolly;
+
+      the_Key       : constant mmi.keyboard.Key             :=      the_Event.modified_Key.Key;
+      the_Modifiers : constant mmi.Keyboard.modifier_Set    :=      the_Event.modified_Key.modifier_Set;
+
+   begin
+      Self.Applet.last_pressed_Key := the_Event.modified_Key.Key;
+
+      if the_Key = ESCAPE
+      then
+         Self.Applet.quit_Requested := True;
+      end if;
+
+      if the_Dolly /= null
+      then
+         if the_Modifiers (lShift)
+         then   the_Dolly.speed_Multiplier_is (6.0);
+         else   the_Dolly.speed_Multiplier_is (1.0);
+         end if;
+
+
+         if the_Modifiers (lCtrl)
+         then
+            if    the_Key = up       then   the_Dolly.is_spinning (Forward);
+            elsif the_Key = down     then   the_Dolly.is_spinning (Backward);
+            elsif the_Key = left     then   the_Dolly.is_spinning (Left);
+            elsif the_Key = right    then   the_Dolly.is_spinning (Right);
+            elsif the_Key = pageUp   then   the_Dolly.is_spinning (Up);
+            elsif the_Key = pageDown then   the_Dolly.is_spinning (Down);
+            end if;
+
+         elsif the_Modifiers (lAlt)
+         then
+            if    the_Key = up       then   the_Dolly.is_orbiting (Forward);
+            elsif the_Key = down     then   the_Dolly.is_orbiting (Backward);
+            elsif the_Key = left     then   the_Dolly.is_orbiting (Left);
+            elsif the_Key = right    then   the_Dolly.is_orbiting (Right);
+            elsif the_Key = pageUp   then   the_Dolly.is_orbiting (Up);
+            elsif the_Key = pageDown then   the_Dolly.is_orbiting (Down);
+            end if;
+
+         else
+            if    the_Key = up       then   the_Dolly.is_moving (Forward);
+            elsif the_Key = down     then   the_Dolly.is_moving (Backward);
+            elsif the_Key = left     then   the_Dolly.is_moving (Left);
+            elsif the_Key = right    then   the_Dolly.is_moving (Right);
+            elsif the_Key = pageUp   then   the_Dolly.is_moving (Up);
+            elsif the_Key = pageDown then   the_Dolly.is_moving (Down);
+            elsif the_Key = F11      then   Self.Applet.take_Screenshot ("./screenshot.bmp");
+            elsif the_Key = F12      then   Self.Applet.toggle_video_Capture;
+            end if;
+         end if;
+      end if;
+
+
+      if    the_Modifiers (lCtrl)
+      then
+         null;
+
+      elsif the_Modifiers (lAlt)
+      then
+         null;
+
+      else
+         if    the_Key = F11      then   Self.Applet.take_Screenshot  ("./screenshot.bmp");
+         elsif the_Key = F12      then   Self.Applet.toggle_video_Capture;
+         end if;
+      end if;
+
+   end respond;
+
+
+
+
+
+   overriding
+   procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      use mmi.Keyboard, mmi.Dolly;
+
+      the_Event     :          mmi.Keyboard.key_release_Event renames mmi.Keyboard.key_release_Event (to_Event);
+      the_Dolly     :          mmi.Dolly.view                 renames Self.Applet.Dolly;
+
+      the_Key       : constant mmi.keyboard.Key               :=      the_Event.modified_Key.Key;
+      the_Modifiers : constant mmi.Keyboard.modifier_Set      :=      the_Event.modified_Key.modifier_Set;
+   begin
+      if the_Dolly = null
+      then
+         return;
+      end if;
+
+
+      if the_Key = up
+      then
+         the_Dolly.is_moving   (Forward,  False);
+         the_Dolly.is_spinning (Forward,  False);
+         the_Dolly.is_orbiting (Forward,  False);
+
+      elsif the_Key = down
+      then
+         the_Dolly.is_moving   (Backward,  False);
+         the_Dolly.is_spinning (Backward,  False);
+         the_Dolly.is_orbiting (Backward,  False);
+
+      elsif the_Key = left
+      then
+         the_Dolly.is_moving   (Left,  False);
+         the_Dolly.is_spinning (Left,  False);
+         the_Dolly.is_orbiting (Left,  False);
+
+      elsif the_Key = right
+      then
+         the_Dolly.is_moving   (Right,  False);
+         the_Dolly.is_spinning (Right,  False);
+         the_Dolly.is_orbiting (Right,  False);
+
+      elsif the_Key = pageUp
+      then
+         the_Dolly.is_moving   (Up,  False);
+         the_Dolly.is_spinning (Up,  False);
+         the_Dolly.is_orbiting (Up,  False);
+
+      elsif the_Key = pageDown
+      then
+         the_Dolly.is_moving   (Down,  False);
+         the_Dolly.is_spinning (Down,  False);
+         the_Dolly.is_orbiting (Down,  False);
+      end if;
+
+   end respond;
+
+
+
+   procedure enable_simple_Dolly (Self : access Item;   in_World : in world_Id)
+   is
+   begin
+      Self.Dolly := new mmi.Dolly.simple.item;
+      Self.Dolly.Camera_is (Self.Camera (in_World, 1));
+   end enable_simple_Dolly;
+
+
+
+
+
+   procedure enable_following_Dolly (Self : access Item;   Follow : in mmi.Sprite.view)
+   is
+      the_Dolly : constant mmi.Dolly.following.view := new mmi.Dolly.following.item;
+   begin
+      the_Dolly.follow (the_sprite => Follow);
+
+      Self.Dolly := the_Dolly.all'Access;
+
+      Self.Dolly.Camera_is (Self.Camera (1, 1));
+   end enable_following_Dolly;
+
+
+
+
+
+   --------------------------
+   --- Mouse Button Responses
+   --
+
+   type button_press_raycast_Context is new lace.Any.limited_Item with
+      record
+         is_Motion : Boolean;
+         is_Press  : Boolean;
+         button_Id : mmi.mouse.Button_Id;
+      end record;
+
+   type button_press_raycast_Context_view is access all button_press_raycast_Context'Class;
+
+
+
+   overriding
+   procedure respond (Self : in out mouse_click_raycast_Response;   to_Event : in lace.Event.item'Class)
+   is
+      use      mmi.World;
+      use type mmi.sprite_Id;
+
+      the_Event   :          raycast_collision_Event           := raycast_collision_Event (to_Event);
+      the_Context : constant button_press_raycast_Context_view := button_press_raycast_Context_view (the_Event.Context);
+   begin
+      if the_Context.is_Motion
+      then
+         null;
+
+      else
+         if the_Context.is_Press
+         then
+            declare
+               collide_Event : constant mmi.events.sprite_click_down_Event := (mouse_button => the_Context.Button_Id,
+                                                                               world_site   => the_Event.Site_world);
+            begin
+               the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
+            end;
+
+         else   -- Is a button release.
+            declare
+               collide_Event : constant mmi.events.sprite_click_up_Event := (mouse_button => the_Context.Button_Id,
+                                                                             world_site   => the_Event.Site_world);
+            begin
+               the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
+            end;
+         end if;
+      end if;
+
+      the_Event.destruct;
+   end respond;
+
+
+
+   type mouse_button_collision_Event is new mmi.World.raycast_collision_Event with null record;
+
+
+
+   overriding
+   procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      use      world_Vectors,
+               mmi.Sprite, mmi.Mouse, mmi.Dolly;
+
+      use type Real;
+
+      the_Event       : mmi.mouse.button_press_Event renames mmi.mouse.button_press_Event (to_Event);
+      Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
+      the_world_Info  : world_Info_view;
+
+   begin
+      while has_Element (Cursor)
+      loop
+         the_world_Info := Element (Cursor);
+
+         declare
+            use       mmi.World;
+            use type lace.remote.Response.view;
+
+            the_Camera        : constant        mmi.Camera.view              := the_world_Info.Cameras.first_Element;
+
+            Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
+                                                                                 Real (the_Event.Site (2)),
+                                                                                 1.0);
+            Site_world_space  : constant        Vector_3                     := the_Camera.to_world_Site (Site_window_space);
+            the_Context       : constant access button_press_raycast_Context := new button_press_raycast_Context;
+            event_Kind        :                 mouse_button_collision_Event;
+
+         begin
+            the_Context.is_Motion := False;
+            the_Context.is_Press  := True;
+            the_Context.button_Id := the_Event.Button;
+
+            the_world_Info.World.cast_Ray (from     => the_Camera.Site,
+                                           to       => Site_world_space,
+                                           observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
+                                           context  => the_Context,
+                                           Event_Kind => event_Kind);
+         end;
+
+         next (Cursor);
+      end loop;
+   end respond;
+
+
+
+   overriding
+   procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      use world_Vectors,
+          mmi.Sprite, mmi.Mouse, mmi.Dolly;
+
+      the_Event      : mmi.mouse.button_release_Event renames mmi.mouse.button_release_Event (to_Event);
+      Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
+      the_world_Info : world_Info_view;
+
+   begin
+      while has_Element (Cursor)
+      loop
+         the_world_Info := Element (Cursor);
+
+         declare
+            the_Camera        : constant        mmi.Camera.view               := the_world_Info.Cameras.first_Element;
+            Site_window_space : constant        Vector_3                      := (Real (the_Event.Site (1)),
+                                                                                  Real (the_Event.Site (2)),
+                                                                                  1.0);
+            Site_world_space  : constant        Vector_3                      := the_Camera.to_world_Site (Site_window_space);
+            the_Context       : constant access button_press_raycast_Context  := new button_press_raycast_Context;
+            event_Kind        :                 mouse_button_collision_Event;
+
+         begin
+            the_Context.is_Motion := False;
+            the_Context.is_Press  := False;
+            the_Context.button_Id := the_Event.Button;
+
+            the_world_Info.World.cast_Ray (from     => the_Camera.Site,
+                                           to       => Site_world_space,
+                                           observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
+                                           context  => the_Context,
+                                           Event_Kind => event_Kind);
+         end;
+
+         next (Cursor);
+      end loop;
+   end respond;
+
+
+
+   overriding
+   procedure respond (Self : in out mouse_motion_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      use world_Vectors,
+          mmi.Mouse, mmi.Dolly;
+
+      the_Event      : mmi.mouse.motion_Event renames mmi.mouse.motion_Event (to_Event);
+      Cursor         : world_Vectors.Cursor   :=      Self.Applet.Worlds.First;
+      the_world_Info : world_Info_view;
+
+   begin
+      while has_Element (Cursor)
+      loop
+         the_world_Info := Element (Cursor);
+
+         declare
+            the_Camera        : constant        mmi.Camera.view              := the_world_Info.Cameras.first_Element;
+            Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
+                                                                                 Real (the_Event.Site (2)),
+                                                                                 1.0);
+            Site_world_space  : constant        Vector_3                     := the_Camera.to_world_Site (Site_window_space);
+            the_Context       : constant access button_press_raycast_Context := new button_press_raycast_Context;
+
+         begin
+            the_Context.is_Motion := True;
+         end;
+
+         next (Cursor);
+      end loop;
+
+   end respond;
+
+
+
+   --------------------------
+   --- Window Resize Response
+   --
+
+   overriding
+   procedure respond (Self : in out resize_event_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      pragma Unreferenced (to_Event);
+      use world_Vectors;
+
+      Cursor         : world_Vectors.Cursor := Self.Applet.Worlds.First;
+      the_world_Info : world_Info_view;
+
+   begin
+      while has_Element (Cursor)
+      loop
+         the_world_Info := Element (Cursor);
+
+         declare
+            the_Camera : constant mmi.Camera.view := the_world_Info.Cameras.first_Element;
+         begin
+            the_Camera.set_viewport_Size (Self.Applet.Window.Width,
+                                          Self.Applet.Window.Height);
+         end;
+
+         next (Cursor);
+      end loop;
+   end respond;
+
+
+
+
+   ---------
+   --- Mouse
+   --
+
+   procedure enable_Mouse (Self : access Item;   detect_Motion : in Boolean)
+   is
+   begin
+      Self.local_Subject_and_Observer.add (Self.button_press_Response'unchecked_Access,
+                                           to_Kind (mmi.Mouse.button_press_Event'Tag),
+                                           Self.Mouse.Name);
+
+      Self.local_Subject_and_Observer.add (Self.button_release_Response'unchecked_Access,
+                                           to_Kind (mmi.Mouse.button_release_Event'Tag),
+                                           Self.Mouse.Name);
+
+      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (mmi.Mouse.button_press_Event  'Tag));
+      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (mmi.Mouse.button_release_Event'Tag));
+
+
+      if detect_Motion
+      then
+         lace.Event.Utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                           lace.Subject.view  (Self.Mouse),
+                                           Self.mouse_motion_Response'unchecked_Access,
+                                           to_Kind (mmi.Mouse.motion_Event'Tag));
+      end if;
+
+      Self.mouse_click_raycast_Response.Applet := Self.all'unchecked_Access;
+
+      declare
+         use world_Vectors;
+
+         Cursor         : world_Vectors.Cursor := Self.Worlds.First;
+         the_world_Info : world_Info_view;
+
+      begin
+         while has_Element (Cursor)
+         loop
+            the_world_Info := Element (Cursor);
+
+            Self.local_Subject_and_Observer.add (the_response => Self.mouse_click_raycast_Response'unchecked_Access,
+                                                 to_kind      => lace.event.Utility.to_Kind (mouse_button_collision_Event'Tag),
+                                                 from_subject => the_world_Info.World.Name);
+            next (Cursor);
+         end loop;
+      end;
+
+   end enable_Mouse;
+
+
+
+
+   ----------------
+   --- Local Events
+   --
+
+   function local_Subject_and_Observer (Self : access Item) return lace.Subject_and_deferred_Observer.view
+   is
+   begin
+      return Self.local_Subject_and_Observer;
+   end local_Subject_and_Observer;
+
+
+end mmi.Applet;

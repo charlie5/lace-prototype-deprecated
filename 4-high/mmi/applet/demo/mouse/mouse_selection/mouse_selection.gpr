@@ -1,0 +1,240 @@
+--with "lumen_mmi";
+with "sdl_mmi";
+
+project Mouse_Selection is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_mouse_selection.adb");
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+   type Platform is
+      ("egl", "glx", "sdl");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   type Profile is
+      ("safe", "lean", "desk");
+   Opengl_Profile : Profile := external ("opengl_profile");
+   type Build_Kind is
+      ("release.static");
+   Sdlada_Build : Build_Kind := external ("SDLADA_BUILD");
+   type Build_Kind1 is
+      ("default");
+   Florist_Build : Build_Kind1 := external ("FLORIST_BUILD");
+   type Gtkada_Kind_Type is
+      ("static", "relocatable");
+   Library_Type : Gtkada_Kind_Type := external ("LIBRARY_TYPE");
+   type Os_Kind is
+      ("linux-gnu", "linux-x86_64-pc-linux-gnu", "solaris2.11");
+   Ostype : Os_Kind := external ("OSTYPE");
+   type Build_Kind2 is
+      ("release", "develop");
+   Build_Kind : Build_Kind2 := external ("BUILD_KIND");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-j13");
+   end Builder;
+
+   package Compiler is
+
+      case Sdlada_Build is
+
+         when "release.static" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+                        for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+
+                     when "glx" =>
+
+                        case Os is
+
+                           when "Windows_NT" =>
+
+                              case Opengl_Profile is
+
+                                 when "safe" =>
+                                    for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+
+                                 when "lean" =>
+                                    for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+
+                                 when "desk" =>
+
+                                    case Florist_Build is
+
+                                       when "default" =>
+
+                                          case Library_Type is
+
+                                             when "static" =>
+
+                                                case Ostype is
+
+                                                   when "linux-gnu" =>
+
+                                                      case Build_Kind is
+
+                                                         when "release" =>
+                                                            for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-g", "-gnat12");
+
+                                                         when "develop" =>
+                                                            for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+                                                      end case;
+
+                                                   when "linux-x86_64-pc-linux-gnu" =>
+                                                      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+
+                                                   when "solaris2.11" =>
+                                                      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+                                                end case;
+
+                                             when "relocatable" =>
+                                                for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+                                          end case;
+                                    end case;
+                              end case;
+
+                           when "Linux" =>
+                              for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+
+                           when "MacOSX" =>
+                              for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+                        end case;
+
+                     when "sdl" =>
+                        for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+                  end case;
+
+               when "ravenscar" =>
+                  for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata", "-gnat05", "-g");
+            end case;
+      end case;
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+
+      case Os is
+
+         when "Windows_NT" =>
+
+            case Sdlada_Build is
+
+               when "release.static" =>
+
+                  case Restrictions is
+
+                     when "xgc" =>
+
+                        case Opengl_Platform is
+
+                           when "egl" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                           when "glx" =>
+
+                              case Opengl_Profile is
+
+                                 when "safe" =>
+                                    for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                                 when "lean" =>
+                                    for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                                 when "desk" =>
+
+                                    case Florist_Build is
+
+                                       when "default" =>
+
+                                          case Library_Type is
+
+                                             when "static" =>
+
+                                                case Ostype is
+
+                                                   when "linux-gnu" =>
+
+                                                      case Build_Kind is
+
+                                                         when "release" =>
+                                                            for Default_Switches ("ada") use ("-lGL", "-lexpat", "-lSDL2");
+
+                                                         when "develop" =>
+                                                            for Default_Switches ("ada") use ("-lGL", "-lexpat");
+                                                      end case;
+
+                                                   when "linux-x86_64-pc-linux-gnu" =>
+                                                      for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                                                   when "solaris2.11" =>
+                                                      for Default_Switches ("ada") use ("-lGL", "-lexpat");
+                                                end case;
+
+                                             when "relocatable" =>
+                                                for Default_Switches ("ada") use ("-lGL", "-lexpat");
+                                          end case;
+                                    end case;
+                              end case;
+
+                           when "sdl" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lexpat");
+                        end case;
+
+                     when "ravenscar" =>
+                        for Default_Switches ("ada") use ("-lGL", "-lexpat");
+                  end case;
+            end case;
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+                        for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                           when "lean" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lexpat");
+
+                           when "desk" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lexpat", "-lX11");
+                        end case;
+
+                     when "sdl" =>
+
+                  end case;
+
+               when "ravenscar" =>
+                  for Default_Switches ("ada") use ("-lGL", "-lexpat");
+            end case;
+
+         when "MacOSX" =>
+            for Default_Switches ("ada") use ("-lGL", "-lexpat");
+      end case;
+   end Linker;
+
+end Mouse_Selection;
+

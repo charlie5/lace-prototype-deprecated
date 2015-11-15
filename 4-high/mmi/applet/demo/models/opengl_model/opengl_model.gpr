@@ -1,0 +1,105 @@
+with "lumen_mmi";
+
+project Opengl_Model is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_opengl_model.adb");
+   for Languages use ("Ada");
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+   type Platform is
+      ("egl", "glx");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   type Profile is
+      ("safe", "lean", "desk");
+   Opengl_Profile : Profile := external ("opengl_profile");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Linker is
+
+      case Os is
+
+         when "Windows_NT" =>
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                           when "lean" =>
+                              for Default_Switches ("ada") use ("-g", "-lGL", "-lX11", "-lm", "-lexpat");
+
+                           when "desk" =>
+                              for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lX11", "-lm");
+                        end case;
+                  end case;
+
+               when "ravenscar" =>
+
+            end case;
+
+         when "MacOSX" =>
+
+      end case;
+   end Linker;
+
+   package Builder is
+
+      case Os is
+
+         when "Windows_NT" =>
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                           when "lean" =>
+                              for Default_Switches ("ada") use ("-j13");
+
+                           when "desk" =>
+
+                        end case;
+                  end case;
+
+               when "ravenscar" =>
+
+            end case;
+
+         when "MacOSX" =>
+
+      end case;
+   end Builder;
+
+end Opengl_Model;
+

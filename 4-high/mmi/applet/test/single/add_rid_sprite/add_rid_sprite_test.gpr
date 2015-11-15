@@ -1,0 +1,75 @@
+with "lumen_mmi";
+--with "sdl_mmi";
+with "sim";
+
+project Add_Rid_Sprite_Test is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_add_rid_sprite_test.adb");
+   for Languages use ("Ada");
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+   type Platform is
+      ("egl", "glx");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   type Profile is
+      ("safe", "lean", "desk");
+   Opengl_Profile : Profile := external ("opengl_profile");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Linker is
+
+      case Os is
+
+         when "Windows_NT" =>
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                           when "lean" =>
+
+                           when "desk" =>
+                              for Default_Switches ("ada") use ("-lGL", "-lX11", "-lexpat", "-g");
+                        end case;
+                  end case;
+
+               when "ravenscar" =>
+
+            end case;
+
+         when "MacOSX" =>
+
+      end case;
+   end Linker;
+
+end Add_Rid_Sprite_Test;
+
