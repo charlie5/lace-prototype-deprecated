@@ -252,8 +252,8 @@ private
 
          Renderer                     :         openGL.Renderer.lean.view;
 
-         Font                         :         opengl.Font.font_Id := (openGL.to_Asset ("assets/mmi/fonts/LiberationMono-Regular.ttf"),  30);
-         titles_Font                  :         opengl.Font.font_Id := (openGL.to_Asset ("assets/mmi/fonts/LiberationMono-Regular.ttf"),  40);
+         Font                         :         opengl.Font.font_Id := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),  30);
+         titles_Font                  :         opengl.Font.font_Id := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),  40);
 
          is_capturing_Video           :         Boolean             := False;
 
