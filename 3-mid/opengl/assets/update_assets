@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+mkdir -p shader
+
+
+cp -f  ../source/lean/geometry/colored/*.vert               shader/
+cp -f  ../source/lean/geometry/colored/*.frag               shader/
+
+cp -f  ../source/lean/geometry/colored_textured/*.vert      shader/
+cp -f  ../source/lean/geometry/colored_textured/*.frag      shader/
+
+cp -f  ../source/lean/geometry/lit_colored/*.vert           shader/
+cp -f  ../source/lean/geometry/lit_colored/*.frag           shader/
+
+cp -f  ../source/lean/geometry/lit_colored_textured/*.vert  shader/
+cp -f  ../source/lean/geometry/lit_colored_textured/*.frag  shader/
+
+cp -f  ../source/lean/geometry/lit_textured/*.vert          shader/
+cp -f  ../source/lean/geometry/lit_textured/*.frag          shader/
+
+cp -f  ../source/lean/geometry/lit_textured_skinned/*.vert  shader/
+cp -f  ../source/lean/geometry/lit_textured_skinned/*.frag  shader/
+
+cp -f  ../source/lean/geometry/textured/*.vert              shader/
+cp -f  ../source/lean/geometry/textured/*.frag              shader/
+
+
+echo Done.
