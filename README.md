@@ -74,10 +74,15 @@ Content
 Installation
 ~~~~~~~~~~~~
 
-   The following development packages need to be installed on your OS.
+   The development packages for the following projects need to be installed on your OS.
 
    - box2d
    - bullet3d
+
+
+   The Lumen project is also required:
+
+   - $ git clone https://github.com/laravel/lumen.git
 
 
    The cBound ada bindings project is also required:
@@ -94,6 +99,9 @@ Installation
             export FLORIST_BUILD=default
 
             ADA_PROJECT_PATH=/path/to/lumen:$ADA_PROJECT_PATH
+
+            export LUMEN=/path/to/lumen
+            ADA_PROJECT_PATH=$LUMEN:$ADA_PROJECT_PATH
 
             export CBOUND=/path/to/cBound
             source $CBOUND/cbound-gpr_paths.sh
