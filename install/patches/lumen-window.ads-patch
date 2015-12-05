@@ -1,0 +1,21 @@
+--- lumen-pristine/src/lumen-window.ads	2015-12-05 20:30:37.850276160 +1100
++++ lumen/src/lumen-window.ads	2015-06-14 21:22:12.000000000 +1000
+@@ -120,6 +120,7 @@
+          Key_Release : Event_Key_Release := null;
+          Character   : Event_Character  := null;
+          Exposed     : Event_Exposed    := null;
++         Unexposed   : Event_Exposed    := null;
+          Resize      : Event_Resize     := null;
+       end record;
+ 
+@@ -213,7 +214,8 @@
+                         Instance_Name : in String           := "");
+ 
+    -- Select a window to use for subsequent OpenGL calls
+-   procedure Make_Current (Win : in Window_Handle);
++   procedure Make_Current     (Win : in Window_Handle);
++   procedure Make_Non_Current (Win : in Window_Handle);
+ 
+    -- Promotes the back buffer to front; only valid if the window is double
+    -- buffered, meaning Animated was true when the window was created.  Useful
+

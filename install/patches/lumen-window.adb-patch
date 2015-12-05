@@ -1,0 +1,94 @@
+--- lumen-pristine/src/x11/lumen-window.adb	2015-12-05 20:30:37.850276160 +1100
++++ lumen/src/x11/lumen-window.adb	2015-06-14 21:46:54.000000000 +1000
+@@ -43,6 +43,8 @@
+ -- This is really "part of" this package, just packaged separately so it can
+ -- be used in Events
+ with X11; use X11;
++with Interfaces.C;
++with Ada.Text_IO; use Ada.Text_IO;
+ 
+ package body Lumen.Window is
+ 
+@@ -205,6 +207,17 @@
+       ------------------------------------------------------------------------
+ 
+    begin  -- Create
++      declare
++         Status : Integer := X_Init_Threads;
++      begin
++         if Status = 0 then
++            raise program_Error with "Cannot initialise X11 thread management.";
++         else
++            put_Line ("X11 thread management initialised.");
++         end if;
++      end;
++
++
+ 
+       -- Connect to the X server
+       Display := X_Open_Display;
+@@ -354,10 +367,17 @@
+       procedure X_Destroy_Window (Display : in Display_Pointer;   Window : in Window_ID);
+       pragma Import (C, X_Destroy_Window, "XDestroyWindow");
+ 
++      function X_Close_Display   (Display : in Display_Pointer) return interfaces.C.int;
++      pragma Import (C, X_Close_Display, "XCloseDisplay");
++
+       procedure Free is new Ada.Unchecked_Deallocation (Window_Type'Class, Window_Handle);
++      procedure Free is new Ada.Unchecked_Deallocation (X_Visual_Info, X_Visual_Info_Pointer);
+ 
++      Status : interfaces.C.int;
+    begin  -- Destroy
+       X_Destroy_Window (XWin.Display, XWin.Window);
++      Status := X_Close_Display  (XWin.Display);
++      Free (XWin.Visual);
+       Free (Win);
+    end Destroy;
+ 
+@@ -415,6 +435,17 @@
+ 
+    ---------------------------------------------------------------------------
+ 
++   -- Select a window to use for subsequent OpenGL calls
++   procedure Make_Non_Current (Win : in Window_Handle) is
++      XWin : X11Window_Handle:=X11Window_Handle(Win);
++   begin  -- Make_Current
++      if GLX_Make_Current (XWin.Display, 0, GLX_Context (System.null_Address)) /= GL_TRUE then
++         raise Context_Failed with "Cannot make given OpenGL context non current";
++      end if;
++   end Make_Non_Current;
++
++   ---------------------------------------------------------------------------
++
+    -- Promotes the back buffer to front; only valid if the window is double
+    -- buffered, meaning Animated was true when the window was created.  Useful
+    -- for smooth animation.
+@@ -631,7 +662,13 @@
+          end if;
+ 
+       when X_Unmap_Notify =>
+-         null;
++         if Win.Unexposed/=null then
++            Win.Unexposed
++              (Top    => 0,
++               Left   => 0,
++               Height => Win.Height,
++               Width  => Win.Width);
++         end if;
+          --         return (Which       => Hidden);
+ 
+       when X_Map_Notify =>
+@@ -673,9 +710,11 @@
+ 
+       when others =>
+          null;
+-
++--           put_Line ("Warning ~ Unhandled X11 event.");
++--           put_Line ("X Event code:" & X_Event_Code'Image (X_Event.X_Event_Type));
+       end case;
+ 
++
+       return True;
+ 
+    end Next_Event;
+

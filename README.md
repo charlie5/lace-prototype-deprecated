@@ -74,24 +74,48 @@ Content
 Installation
 ~~~~~~~~~~~~
 
-   ~~~~~~~~
-   Building - the configure file is ToReDo.
-   ~~~~~~~~
+   The following development packages need to be installed on your OS.
 
-      In the top-level lace-stable folder:
-   
-      $ ./configure
-      $ make
-   
-      This will build the library and applets (demos/tests) for every component.
-   
-   ~~~~~
-   Using 
-   ~~~~~
+   - box2d
+   - bullet3d
 
-      Adding the following lines to ~/.bashrc (or equivalent) will set the ADA_PROJECT_PATH for all lace gnat project files:
+
+   The cBound ada bindings project is also required:
+
+   - $ git clone https://github.com/charlie5/cBound.git
+
+
+   Adding the following lines to ~/.bashrc (or equivalent) will set the ADA_PROJECT_PATH for all gnat project files:
+
+            export opengl_profile=desk
+            export opengl_platform=glx
+            export restrictions=xgc
+            export OS=Linux
+            export FLORIST_BUILD=default
+
+            ADA_PROJECT_PATH=/path/to/lumen:$ADA_PROJECT_PATH
+
+            export CBOUND=/path/to/cBound
+            source $CBOUND/cbound-gpr_paths.sh
 
             LACE=/path/to/lace
             source $LACE/lace-gpr_paths.sh
 
-      This should allow any Lace component to be 'with'ed in a user applications 'gnat project' file.
+   Of course, substitute  /path/to  with the actual paths you use.
+
+   This should allow any Lace component to be 'with'ed in a user applications 'gnat project' file.
+
+
+
+~~~~~~~
+Testing
+~~~~~~~
+
+   $ cd $LACE/4-high/mmi/applet/demo/skinning/rig
+   $ gprbuild -P rig_demo.gpr
+   $ ./launch_rig_demo
+
+
+
+
+

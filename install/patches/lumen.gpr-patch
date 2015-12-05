@@ -1,0 +1,13 @@
+--- lumen-pristine/lumen.gpr	2015-12-05 20:30:37.850276160 +1100
++++ lumen/lumen.gpr	2014-05-06 11:48:46.000000000 +1000
+@@ -11,8 +11,8 @@
+    end case;
+ 
+    for Object_Dir use "obj";
+-   for Library_Name use "lumen";
+-   for Library_Dir use "lib";
++--   for Library_Name use "lumen";
++--   for Library_Dir use "lib";
+ 
+    for Languages use ("Ada");
+
