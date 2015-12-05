@@ -82,7 +82,7 @@ Installation
 
    The Lumen project is also required:
 
-   - $ git clone https://github.com/laravel/lumen.git
+   - $ git clone https://github.com/karakalo/lumen.git
 
 
    The cBound ada bindings project is also required:
@@ -112,6 +112,13 @@ Installation
    Of course, substitute  /path/to  with the actual paths you use.
 
    This should allow any Lace component to be 'with'ed in a user applications 'gnat project' file.
+
+
+   Lumen requires the application of a few patches.
+
+   - $ cd $LACE/install
+   - $ ./apply_patches.sh
+
 
 
 
