@@ -120,6 +120,16 @@ Installation
    - $ ./apply_patches.sh
 
 
+   Lace/opengl contains a set of assets (fonts, shaders, etc). These need to be available in each openGL demo folder.
+
+   - $ cd $LACE/3-mid/opengl/applet
+   - $ sudo cp create_opengl_assets.sh /usr/local/bin
+
+   Lace/mmi contains a set of assets (fonts, etc). These need to be available in each mmi demo folder.
+
+   - $ cd $LACE/4-high/mmi/applet
+   - $ sudo cp create_mmi_assets.sh /usr/local/bin
+
 
 
 ~~~~~~~
@@ -127,6 +137,8 @@ Testing
 ~~~~~~~
 
    $ cd $LACE/4-high/mmi/applet/demo/skinning/rig
+   $ create_opengl_assets.sh
+   $ create_mmi_assets.sh
    $ gprbuild -P rig_demo.gpr
    $ ./launch_rig_demo
 
