@@ -105,7 +105,7 @@ Installation
             export CBOUND=/path/to/cBound
             source $CBOUND/cbound-gpr_paths.sh
 
-            LACE=/path/to/lace
+            export LACE=/path/to/lace
             source $LACE/lace-gpr_paths.sh
 
    Of course, substitute  /path/to  with the actual paths you use.
@@ -123,6 +123,7 @@ Installation
 
    - $ cd $LACE/3-mid/opengl/applet
    - $ sudo cp create_opengl_assets.sh /usr/local/bin
+
 
    Lace/mmi contains a set of assets (fonts, etc). These need to be available in each mmi demo folder.
 
