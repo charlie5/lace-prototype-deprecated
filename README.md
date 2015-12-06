@@ -17,8 +17,8 @@ Lace - a Work in Progress*
 
 
 * 
-  - Most components mentioned are in a private prototype repository (some are more up to date than others). 
-  - Main idea is to tidy/add each repo, in turn, beginning with the base tier.
+  - Several additional components are in a private prototype repository (some are more up to date than others). 
+  - Main idea is to tidy/add each component, in turn, beginning with the base tier.
   
 
 
@@ -34,26 +34,24 @@ Content
    ~~~~~~~~~~~~
    Tier 5 ~ Top
    ~~~~~~~~~~~~
-      'User Applet'       ~ The user application.
+      'User Applet'       : The user application.
 
    ~~~~~~~~~~~~~
    Tier 4 ~ High
    ~~~~~~~~~~~~~
-      'mmi'               ~ Man Machine Interface (with OpenGL based rendering).
+      'mmi'               : Man Machine Interface (with OpenGL based rendering).
 
   ~~~~~~~~~~~~~
    Tier 3 ~ Mid
    ~~~~~~~~~~~~
-      'media'             ~ Audio and video support.
-      
-      'speech'            ~ Synthesis and recognition support.
+      'opengl'            : - OpenGL rendering support (2d/3d).
+
+      'physics'           : - Physics space/dynamics support (2d/3d).
 
    ~~~~~~~~~~~~
    Tier 2 ~ Low
    ~~~~~~~~~~~~
-      'graphics/opengl'   : - OpenGL rendering support (2d/3d).
-      
-      'physics/impact'    : - Physics space/dynamics support (2d/3d).
+      'collada'           : Provides a Collada parser.
 
    ~~~~~~~~~~~~~
    Tier 1 ~ Base
@@ -68,7 +66,8 @@ Content
     
       'lace/math'         : - Provides core math functionality.
     
-    
+      'xml'               : - Provides a simple XML parser.    
+
    
 ~~~~~~~~~~~~
 Installation
