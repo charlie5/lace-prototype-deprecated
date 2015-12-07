@@ -60,7 +60,7 @@ Content
     
       'lace/events'       : - Provides an event mechansism for event-driven architectures.
 
-                            - Contains Subject, Observer, Event and Response abstractions.
+                            - Provides Subject, Observer, Event and Response abstractions.
                             - Supports DSA.
                             - See  http://en.wikipedia.org/wiki/Event-driven_architecture
                             -      http://en.wikipedia.org/wiki/Event-driven_programming
