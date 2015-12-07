@@ -59,7 +59,6 @@ Content
       'lace'              : - Provides core types and a namespace fot the Lace package family.
     
       'lace/events'       : - Provides an event mechansism for event-driven architectures.
-
                             - Contains Subject, Observer, Event and Response abstractions.
                             - Supports DSA.
                             - See  http://en.wikipedia.org/wiki/Event-driven_architecture
