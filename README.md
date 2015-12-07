@@ -137,9 +137,13 @@ Testing
 ~~~~~~~
 
    $ cd $LACE/4-high/mmi/applet/demo/skinning/rig
+
    $ create_opengl_assets.sh
+
    $ create_mmi_assets.sh
+
    $ gprbuild -P rig_demo.gpr
+
    $ ./launch_rig_demo
 
 
