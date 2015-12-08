@@ -15,7 +15,7 @@ Lace - a Work in Progress
 Content
 =======
 
-   - Components are organised into dependendy tiers (ie layers).
+   - Components are organised into dependency tiers (ie layers).
    - Each component in a tier can only depend on components in lower tiers.
 
    - Diagram: 'lace/document/components/lace-components.png'.
