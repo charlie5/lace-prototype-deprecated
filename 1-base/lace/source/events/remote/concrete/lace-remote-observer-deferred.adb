@@ -9,8 +9,8 @@ is
       function to_Observer (Name : in String) return Item
       is
       begin
-         return Self : Item := (my_Deferred.item
-                                with name => new String' (Name))
+         return Self : constant Item := (my_Deferred.item
+                                         with name => new String' (Name))
          do
             null;
          end return;

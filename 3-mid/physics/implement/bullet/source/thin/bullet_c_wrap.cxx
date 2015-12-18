@@ -167,54 +167,6 @@ template < typename T > T SwigValueInit ()
 #include <new>
 #endif
 
-/* Support for throwing Ada exceptions from C/C++ */
-
-typedef enum
-{
-  SWIG_AdaException,
-  SWIG_AdaOutOfMemoryException,
-  SWIG_AdaIndexOutOfRangeException,
-  SWIG_AdaDivideByZeroException,
-  SWIG_AdaArgumentOutOfRangeException,
-  SWIG_AdaNullReferenceException
-} SWIG_AdaExceptionCodes;
-
-typedef void    (SWIGSTDCALL * SWIG_AdaExceptionCallback_t) (const char *);
-
-typedef struct
-{
-  SWIG_AdaExceptionCodes code;
-  SWIG_AdaExceptionCallback_t callback;
-}
-SWIG_AdaExceptions_t;
-
-static          SWIG_AdaExceptions_t SWIG_ada_exceptions[] = {
-  {SWIG_AdaException, NULL},
-  {SWIG_AdaOutOfMemoryException, NULL},
-  {SWIG_AdaIndexOutOfRangeException, NULL},
-  {SWIG_AdaDivideByZeroException, NULL},
-  {SWIG_AdaArgumentOutOfRangeException, NULL},
-  {SWIG_AdaNullReferenceException, NULL}
-};
-
-static void
-SWIG_AdaThrowException (SWIG_AdaExceptionCodes code, const char *msg)
-{
-  SWIG_AdaExceptionCallback_t callback =
-    SWIG_ada_exceptions[SWIG_AdaException].callback;
-  if (code >= 0
-      && (size_t) code <
-      sizeof (SWIG_ada_exceptions) / sizeof (SWIG_AdaExceptions_t))
-    {
-      callback = SWIG_ada_exceptions[code].callback;
-    }
-  callback (msg);
-}
-
-#ifdef __cplusplus
-extern          "C"
-#endif
-
 /* Callback for returning strings to Ada without leaking memory */
 
 typedef char   *(SWIGSTDCALL * SWIG_AdaStringHelperCallback) (const char *);
@@ -230,8 +182,9 @@ DllExport void SWIGSTDCALL SWIGRegisterStringCallback_CORE_MODULE(SWIG_AdaString
 */
 
 /* Contract support */
-
+/*
 #define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) {SWIG_AdaThrowException(SWIG_AdaArgumentOutOfRangeException, msg); return nullreturn; } else
+*/
 
 #define protected public
 #define private   public
@@ -313,6 +266,32 @@ extern          "C"
     arg2 = (int) jarg2;
 
     result = (Shape *) b3d_new_convex_Hull (arg1, arg2);
+    jresult = (void *) result;
+
+    return jresult;
+
+  }
+
+  DllExport void *SWIGSTDCALL Ada_b3d_new_Mesh (void *jarg1,
+						int jarg2,
+						void *jarg3, int jarg4)
+  {
+    void           *jresult;
+    Vector_3       *arg1;
+    int             arg2;
+    Triangle       *arg3;
+    int             arg4;
+    Shape          *result = 0;
+
+    arg1 = (Vector_3 *) jarg1;
+
+    arg2 = (int) jarg2;
+
+    arg3 = (Triangle *) jarg3;
+
+    arg4 = (int) jarg4;
+
+    result = (Shape *) b3d_new_Mesh (arg1, arg2, arg3, arg4);
     jresult = (void *) result;
 
     return jresult;

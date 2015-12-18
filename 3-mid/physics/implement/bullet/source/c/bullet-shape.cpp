@@ -90,6 +90,44 @@ b3d_new_convex_Hull (Vector_3     Points[],
 
 
 
+  Shape*
+  b3d_new_Mesh (Vector_3     Points[],
+                int          point_Count,
+		Triangle     Triangles[],
+		int          triangle_Count)
+  {
+    btTriangleMesh* mesh = new btTriangleMesh();
+
+    for (int i = 0;  i < triangle_Count;  i++)
+      {
+	btVector3                 bV1, bV2, bV3;
+
+	bV1 [0] = Points [Triangles [i].a - 1].x;
+	bV1 [1] = Points [Triangles [i].a - 1].y;
+	bV1 [2] = Points [Triangles [i].a - 1].z;
+
+	bV2 [0] = Points [Triangles [i].b - 1].x;
+	bV2 [1] = Points [Triangles [i].b - 1].y;
+	bV2 [2] = Points [Triangles [i].b - 1].z;
+
+	bV3 [0] = Points [Triangles [i].c - 1].x;
+	bV3 [1] = Points [Triangles [i].c - 1].y;
+	bV3 [2] = Points [Triangles [i].c - 1].z;
+
+
+	mesh->addTriangle (bV1, bV2, bV3);
+      }
+
+
+    btBvhTriangleMeshShape*   bt_Mesh = new btBvhTriangleMeshShape (mesh, true, true);
+
+    Shape*   Self = (Shape*)(btCollisionShape*) bt_Mesh;
+    return   Self;
+  }
+
+
+
+
 Shape*
 b3d_new_Cylinder (Vector_3*   half_Extents)
 {

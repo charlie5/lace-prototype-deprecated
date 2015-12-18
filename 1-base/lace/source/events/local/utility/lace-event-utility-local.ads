@@ -1,10 +1,8 @@
-with lace.Observer,
+with
+     lace.Observer,
      lace.Subject,
      lace.Response,
-     lace.Event.Logger,
-     ada.Tags;
-
-
+     lace.Event.Logger;
 
 
 package lace.event.Utility.local

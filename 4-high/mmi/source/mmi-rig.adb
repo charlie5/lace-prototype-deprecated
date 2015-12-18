@@ -405,10 +405,12 @@ is
             declare
                use mmi.physics_Model;
 
+               Size : constant math.Vector_3 := (0.1, 0.1, 0.1);
+
                physics_Model : constant mmi.physics_Model.View
                  := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (kind         => cube,
-                                                                               half_extents => (0.05, 0.05, 0.05)),
-                                                               mass        => 0.0);
+                                                                               half_extents => Size / 2.0),
+                                                               mass        => 1.0);
             begin
                new_Sprite := mmi.Sprite.forge.new_Sprite ("Skin Sprite",
                                                           in_World,
@@ -909,6 +911,15 @@ is
 
 
 
+
+   function  Joints (Self : in     Item) return mmi_joint_id_Map_of_mmi_Joint
+   is
+   begin
+      return Self.Joints;
+   end Joints;
+
+
+
    function  joint_inv_bind_Matrices (Self : in     Item'Class)     return inverse_bind_matrix_Vector
    is
    begin
@@ -975,6 +986,15 @@ is
    begin
       return Self.skin_Sprite;
    end skin_Sprite;
+
+
+
+   function  bone_Sprites                (Self : in     Item)                                 return bone_id_Map_of_sprite
+   is
+   begin
+      return Self.bone_Sprites;
+   end;
+
 
 
 
@@ -1083,7 +1103,6 @@ is
                                                      * joint_Transform_for (the_Bone)
                                                      * inv_root_Transform);
       end set_Transform_for;
-
 
 
       procedure set_proxy_Transform_for (the_Bone : in controller_joint_Id;   the_Proxy : in controller_joint_Id)

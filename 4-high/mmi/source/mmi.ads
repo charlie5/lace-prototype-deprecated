@@ -15,12 +15,13 @@ is
    Error : exception;
 
 
-   package Math        renames float_Math;
-   package Geometry    renames math.Geometry;
-   package Geometry_2d renames math.Geometry.d2;
-   package Geometry_3d renames math.Geometry.d3;
-   package Algebra     renames math.Algebra;
-   package Algebra_3d  renames math.Algebra.linear.d3;
+   package Math           renames float_Math;
+   package Geometry       renames math.Geometry;
+   package Geometry_2d    renames math.Geometry.d2;
+   package Geometry_3d    renames math.Geometry.d3;
+   package Algebra        renames math.Algebra;
+   package linear_Algebra renames math.Algebra.linear;
+   package Algebra_3d     renames math.Algebra.linear.d3;
 
 
    --  Constraints

@@ -1,5 +1,6 @@
-with lace.make_Subject,
-     lace.make_Observer.deferred,
+with
+     lace.make_Subject,
+     lace.make_Observer,
      lace.Any,
      lace.Subject,
      lace.Observer;

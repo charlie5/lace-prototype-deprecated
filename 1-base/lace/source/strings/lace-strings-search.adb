@@ -1,5 +1,4 @@
 with
-     ada.Strings.Maps,
      System;
 
 

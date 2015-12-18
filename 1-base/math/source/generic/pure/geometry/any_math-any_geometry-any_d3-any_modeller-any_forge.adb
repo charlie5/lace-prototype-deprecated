@@ -230,9 +230,9 @@ is
                begin
                   for Each in 1 .. sides_Count
                   loop
-                     the_arch_Edges (each_Hoop)(Each) (1) :=  ny2 * Radius;
-                     the_arch_Edges (each_Hoop)(Each) (2) :=  nz2 * Radius;
-                     the_arch_Edges (each_Hoop)(Each) (3) := -L   + Radius * nx2;
+                     the_arch_Edges (each_Hoop)(Each) (1) := ny2 * Radius;
+                     the_arch_Edges (each_Hoop)(Each) (2) := nz2 * Radius;
+                     the_arch_Edges (each_Hoop)(Each) (3) := nx2 * Radius - L;
 
                      --  Rotate n,n2
                      --
@@ -308,6 +308,207 @@ is
 
       return the_Factory.Model;
    end to_capsule_Model;
+
+
+
+
+   -- Polar to euclidian shape models.
+   --
+
+   package Float_Functions is new Ada.Numerics.Generic_Elementary_Functions (Real);
+   use Float_Functions;
+
+   use type Real;
+
+
+   function to_Radians (from : in Latitude) return Real
+   is
+   begin
+      return real (from) * Pi / 180.0;
+   end to_Radians;
+
+
+   function to_Radians (from : in Longitude) return Real
+   is
+   begin
+      return real (from) * Pi / 180.0;
+   end to_Radians;
+
+
+
+   function polar_Model_from (Model_Filename : in String) return polar_model
+   is
+   begin
+      declare
+         use lace.Text, lace.Text.Cursor;
+
+         the_Text      : aliased lace.Text.item        := lace.Text.Forge.to_Text (Filename => lace.Text.Forge.Filename (Model_Filename));
+         Cursor        : aliased lace.Text.Cursor.item := lace.Text.Cursor.First (the_Text'unchecked_Access);
+
+         the_Latitude  :         latitude;
+         the_Longitude :         longitude;
+         the_Value     :         Integer;
+         the_Distance  :         Real;
+
+         the_Model     :         polar_Model;
+
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Value := get_Integer (Cursor'Access);
+            exit when the_Value = 360;
+
+            the_Longitude := longitude (the_Value);
+            the_Latitude  := latitude  (get_Integer (Cursor'access));
+
+            the_Distance  := Real  (get_Real (Cursor'Access)); -- * 0.1; --1.0;
+
+            skip_White (Cursor);
+
+            the_Model (the_Longitude) (the_Latitude).Site (1) := 10.0 * cos (to_Radians (the_Latitude)) * sin (to_Radians (the_Longitude)) * the_Distance;
+            the_Model (the_Longitude) (the_Latitude).Site (2) := 10.0 * sin (to_Radians (the_Latitude)) * the_Distance;
+            the_Model (the_Longitude) (the_Latitude).Site (3) := 10.0 * cos (to_Radians (the_Latitude)) * cos (to_Radians (the_Longitude)) * the_Distance;
+         end loop;
+
+         return the_Model;
+      end;
+   end polar_Model_from;
+
+
+
+
+   function mesh_Model_from (the_Model : in polar_Model) return a_Model
+   is
+      the_raw_model  : polar_Model := the_Model;
+
+      the_mesh_Model : a_Model (site_Count => 2522,
+                                tri_Count  => 73 * (16 * 4 + 6));
+
+      the_longitude  : longitude := 0;
+      the_latitude   : latitude ;
+
+      the_Vertex     : Positive := 1;
+      the_Triangle   : Positive := 1;
+
+      the_North_Pole : Positive;
+      the_South_Pole : Positive;
+
+      function Sum (the_Longitude : in longitude;   Increment : in Integer) return longitude
+      is
+         Result : Integer := Integer (the_Longitude) + Increment;
+      begin
+         if Result >= 360
+         then
+            Result := Result - 360;
+         end if;
+
+         return longitude (Result);
+      end Sum;
+
+
+   begin
+      the_mesh_Model.Sites (the_Vertex) := (the_raw_model (0) (-90).Site);
+      the_North_Pole                    := the_Vertex;
+      the_raw_Model (0) (-90).Id        := the_Vertex;
+      the_Vertex                        := the_Vertex + 1;
+
+      the_mesh_Model.Sites (the_Vertex) := (the_raw_model (0) (90).Site);
+      the_south_Pole                    := the_Vertex;
+      the_raw_Model (0) (90).Id         := the_Vertex;
+      the_Vertex                        := the_Vertex + 1;
+
+      loop
+         the_latitude := -90;
+         loop
+            if the_Latitude = -90
+            then
+               the_raw_Model (the_Longitude) (the_Latitude).Id := the_North_Pole;
+
+            elsif the_Latitude = 90
+            then
+               the_raw_Model (the_Longitude) (the_Latitude).Id := the_South_Pole;
+
+            else
+               the_mesh_Model.Sites (the_Vertex)               := the_raw_model (the_Longitude) (the_Latitude).Site;
+               the_raw_Model (the_Longitude) (the_Latitude).Id := the_Vertex;
+               the_Vertex                                      := the_Vertex + 1;
+            end if;
+
+            exit when the_Latitude = 90;
+
+            the_Latitude := the_Latitude + 5;
+         end loop;
+
+         exit when the_Longitude = 355;
+
+         the_Longitude := the_Longitude + 5;
+      end loop;
+
+
+      the_Longitude := 0;
+      loop
+         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_North_Pole,
+                                                      2 => the_raw_Model (Sum (the_Longitude, 5)) (-85).Id,
+                                                      3 => the_raw_Model (     the_Longitude    ) (-85).Id);
+         the_Triangle := the_Triangle + 1;
+
+         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_South_Pole,
+                                                      2 => the_raw_Model      (the_Longitude)     (85).Id,
+                                                      3 => the_raw_Model (Sum (the_Longitude, 5)) (85).Id);
+         the_Triangle := the_Triangle + 1;
+
+         the_latitude := -85;
+         loop
+            the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (     the_Longitude)     (the_Latitude    ).Id,
+                                                         2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
+                                                         3 => the_raw_Model (     the_Longitude)     (the_Latitude + 5).Id);
+            the_Triangle := the_Triangle + 1;
+
+
+            the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (the_Longitude)          (the_Latitude + 5).Id,
+                                                         2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
+                                                         3 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude + 5).Id);
+            the_Triangle := the_Triangle + 1;
+
+
+            the_Latitude := the_Latitude + 5;
+            exit when       the_Latitude = 85;
+         end loop;
+
+         exit when        the_Longitude = 355;
+         the_Longitude := the_Longitude + 5;
+      end loop;
+
+      the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_North_Pole,
+                                                   2 => the_raw_Model (5) (-85).Id,
+                                                   3 => the_raw_Model (0) (-85).Id);
+      the_Triangle := the_Triangle + 1;
+
+      the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_South_Pole,
+                                                   2 => the_raw_Model (0) (85).Id,
+                                                   3 => the_raw_Model (5) (85).Id);
+      the_Triangle := the_Triangle + 1;
+
+
+      the_latitude := -85;
+      loop
+         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (0) (the_Latitude    ).Id,
+                                                      2 => the_raw_Model (5) (the_Latitude    ).Id,
+                                                      3 => the_raw_Model (0) (the_Latitude + 5).Id);
+         the_Triangle := the_Triangle + 1;
+
+         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (0) (the_Latitude + 5).Id,
+                                                      2 => the_raw_Model (5) (the_Latitude    ).Id,
+                                                      3 => the_raw_Model (5) (the_Latitude + 5).Id);
+         the_Triangle := the_Triangle + 1;
+
+
+         the_Latitude := the_Latitude + 5;
+         exit when       the_Latitude = 85;
+      end loop;
+
+      return the_mesh_Model;
+   end mesh_Model_from;
 
 
 end any_math.any_geometry.any_d3.any_Modeller.any_Forge;

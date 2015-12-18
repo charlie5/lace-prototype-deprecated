@@ -66,6 +66,9 @@ is
          when mmi.physics_Model.Hull =>
             Self.Shape := physics_Shape_view (Self.World.Physics.new_convex_hull_Shape (Self.physics_Model.shape_Info.Points.all));
 
+         when mmi.physics_Model.Mesh =>
+            Self.Shape := physics_Shape_view (Self.World.Physics       .new_mesh_Shape (Self.physics_Model.shape_Info.Model));
+
          when mmi.physics_Model.Plane =>
             Self.Shape := physics_Shape_view (Self.World.Physics.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
                                                                                         Self.physics_Model.Shape_Info.plane_Offset));

@@ -446,6 +446,22 @@ is
 
 
 
+
+
+   procedure save (the_Text      : in String;
+                   to_Filename   : in String)
+   is
+      use ada.Text_IO;
+
+      the_File : File_Type;
+   begin
+      create (the_File, Out_File, to_Filename);
+      put    (the_File, the_Text);
+      close  (the_File);
+   end save;
+
+
+
    procedure decompress (the_Filename  : in String)
    is
       use ada.Strings.fixed,  gnat.Expect;
@@ -660,49 +676,7 @@ is
    procedure remove_Folder (Named        : in String)
    is
    begin
-      if exists (Named)
-      then
-         declare
-            use gnat.Expect;
-
-            chmod_Option_1 : constant system.strings.String_access := new String'("-R");
-            chmod_Option_2 : constant system.strings.String_access := new String'("a+w");
-            chmod_Filename : constant system.strings.String_access := new String'(Named);
-            the_Status     : aliased  Integer;
-            command_Output : constant String                       := get_Command_Output (command    => "chmod",
-                                                                                          arguments  => (1 => chmod_Option_1,
-                                                                                                         2 => chmod_Option_2,
-                                                                                                         3 => chmod_Filename),
-                                                                                          input      => "",
-                                                                                          status     => the_Status'Access,
-                                                                                          err_to_out => True);
-         begin
-            if command_Output /= ""
-            then
-               put_Line ("   ERROR chmod -R a+x " & Named & ": " & command_Output);
-            end if;
-         end;
-
-         declare
-            use gnat.Expect;
-
-            rm_Options     : constant system.strings.String_access := new String'("-rf");
-            rm_Filename    : constant system.strings.String_access := new String'(Named);
-            the_Status     : aliased  Integer;
-            command_Output : constant String                       := get_Command_Output (command    => "rm",
-                                                                                          arguments  => (1 => rm_Options,
-                                                                                                         2 => rm_Filename),
-                                                                                          input      => "",
-                                                                                          status     => the_Status'Access,
-                                                                                          err_to_out => True);
-         begin
-            if command_Output /= ""
-            then
-               put_Line ("   ERROR rm -rf " & Named & ": " & command_Output);
-            end if;
-         end;
-      end if;
-
+      ada.Directories.Delete_Tree (Named);
    end remove_Folder;
 
 

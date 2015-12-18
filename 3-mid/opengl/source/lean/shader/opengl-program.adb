@@ -330,10 +330,11 @@ is
 
 
 
-   procedure directional_Light_is (Self : in out Item'Class;   Now : in openGL.Light.directional.item)
+   procedure directional_Light_is (Self : in out Item'Class;   light_Id : in Positive;
+                                                               Now      : in openGL.Light.directional.item)
    is
    begin
-      Self.directional_Light := Now;
+      Self.directional_Light (light_Id) := Now;
    end directional_Light_is;
 
 

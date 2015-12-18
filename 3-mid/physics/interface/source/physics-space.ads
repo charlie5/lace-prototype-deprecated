@@ -123,6 +123,7 @@ is
    function        new_plane_Shape (Self : access Item;   Normal       : in Vector_3 := (0.0, 1.0, 0.0);
                                                           Offset       : in Real     :=  0.0)            return Shape .view   is abstract;
    function  new_convex_hull_Shape (Self : access Item;   Points       : in physics.vector_3_array)      return Shape .view   is abstract;
+   function         new_mesh_Shape (Self : access Item;   Points       : access math.Geometry.d3.a_Model)    return Shape .view   is abstract;
 
 
    --  Joints

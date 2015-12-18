@@ -1,5 +1,5 @@
 with
-     float_Math;
+     float_Math.Geometry.d3;
 
 
 package bullet_Physics
@@ -9,7 +9,7 @@ package bullet_Physics
 is
    pragma Pure;
 
-   package Math
-      renames float_Math;
+   package Math        renames float_Math;
+   package Geometry_3D renames Math.Geometry.d3;
 
 end bullet_Physics;

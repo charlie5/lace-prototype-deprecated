@@ -1,7 +1,6 @@
 with
      lace.event.Logger.text,
-     lace.event_Conversions;
-with ada.Unchecked_Deallocation;
+     ada.Unchecked_Deallocation;
 
 
 package body lace.event.Utility.local

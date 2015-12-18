@@ -24,8 +24,10 @@ package mmi.Rig
 --
 is
 
-   type Item is tagged limited private;
-   type View is access all Item'Class;
+   type Item  is tagged limited private;
+   type View  is access all Item'Class;
+
+   type Views is array (Positive range <>) of View;
 
 
    --------------
@@ -163,11 +165,16 @@ is
    function  skin_Sprite                 (Self : in     Item'Class)                           return mmi.Sprite.view;
    function  base_Sprite                 (Self : in     Item'Class)                           return mmi.Sprite.view;
    function  Sprite                      (Self : in     Item'Class;   for_Bone  : in bone_Id) return mmi.Sprite.view;
+   function  bone_Sprites                (Self : in     Item)                                 return bone_id_Map_of_sprite;
+
+
+   function  Joints                      (Self : in     Item) return mmi_joint_id_Map_of_mmi_Joint;
 
    procedure joint_inv_bind_Matrices_are (Self : in out Item'Class;   Now       : in inverse_bind_matrix_Vector);
    function  joint_inv_bind_Matrices     (Self : in     Item'Class)           return inverse_bind_matrix_Vector;
 
    function  joint_site_Offets           (Self : in     Item'Class)           return joint_Id_Map_of_bone_site_offset;
+
 
    procedure enable_Graphics             (Self : in out Item);
    procedure evolve                      (Self : in out Item'Class;   world_Age : in Duration);

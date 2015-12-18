@@ -14,7 +14,8 @@ is
 
    type Item is new openGL.Model.item with
       record
-         Model             : asset_Name   := null_Asset;   -- A wavefront '.obj' or collada '.dae' file.
+         Model             :        asset_Name         := null_Asset;   -- A wavefront '.obj' or collada '.dae' file.
+         math_Model        : access Geometry_3d.a_Model;
 
          Texture           : asset_Name   := null_Asset;   -- The models texture image.
          has_lucid_Texture : Boolean      := False;
@@ -34,11 +35,13 @@ is
    package Forge is
       function  to_Model (Scale            : in math.Vector_3;
                           Model            : in asset_Name;
+                          math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
                           Texture_is_lucid : in Boolean) return openGL.Model.open_gl.item;
 
       function new_Model (Scale            : in math.Vector_3;
                           Model            : in asset_Name;
+                          math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
                           Texture_is_lucid : in Boolean) return openGL.Model.open_gl.view;
    end Forge;

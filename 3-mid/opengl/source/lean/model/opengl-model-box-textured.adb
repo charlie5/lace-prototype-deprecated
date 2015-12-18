@@ -17,12 +17,15 @@ is
 
    package body Forge
    is
-      function new_Box (Scale : in math.Vector_3;
-                        Faces : in textured.Faces) return View
+      function new_Box (Scale     : in math.Vector_3;
+                        Faces     : in textured.Faces;
+                        is_Skybox : in Boolean       := False) return View
       is
          Self : constant View := new Item;
       begin
-         Self.Faces := Faces;
+         Self.Faces     := Faces;
+         Self.is_Skybox := is_Skybox;
+
          Self.define (Scale);
          Self.set_Bounds;
 
@@ -66,8 +69,8 @@ is
       rear_Offset  : constant Real := -0.5 * Real (self.Scale (3));
 
 
-      the_Sites    :         constant box.Sites := Self.vertex_Sites;
-      the_Indices  : aliased constant Indices   := (1, 2, 3, 4);
+      the_Sites    :          box.Sites := Self.vertex_Sites;
+      the_Indices  : aliased  Indices   := (1, 2, 3, 4);
 
 
       function new_Face (Vertices : access openGL.geometry.textured.Vertex_array;
@@ -95,6 +98,21 @@ is
       right_Face : Geometry_view;
 
    begin
+      if Self.is_Skybox
+      then
+         the_Indices := (4, 3, 2, 1);
+      end if;
+
+
+
+      --  Scale sites.
+      --
+      for i in the_Sites'Range
+      loop
+         the_Sites (i) := Scaled (the_Sites (i), Self.Scale);
+      end loop;
+
+
       --  Front
       --
       declare
@@ -117,10 +135,6 @@ is
          then
             front_Face.Texture_is (Textures.fetch (to_String (Self.Faces (Front).texture_Name)));
             front_Face.is_Transparent (now => front_Face.Texture.is_Transparent);
-
-         elsif Self.Faces (Front).texture_Object /= null_Object
-         then
-            front_Face.Texture_is (Self.Faces (Front).texture_Object);
          end if;
       end;
 

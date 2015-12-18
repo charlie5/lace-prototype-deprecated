@@ -2,8 +2,7 @@ with
      lace.remote.Observer,
      lace.remote.Subject,
      lace.remote.Response,
-     lace.Event.remote.Logger,
-     ada.Tags;
+     lace.Event.remote.Logger;
 
 
 package lace.event.remote.Utility

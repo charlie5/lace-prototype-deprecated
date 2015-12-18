@@ -31,6 +31,19 @@
   };
 
 
+  typedef int   Index;
+
+  struct Triangle
+  {
+    Triangle () {};
+    Triangle (Real a, Real b, Real c) : a (a),  b (b),  c (c)   {};
+
+
+    Index   a, b, c;
+  };
+
+
+
 
   struct Matrix_3x3
   {

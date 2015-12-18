@@ -60,6 +60,9 @@ is
 
    --- Files
    --
+   procedure save          (the_Text      : in String;
+                            to_Filename   : in String);
+
    procedure touch         (fileName      : in String);
    function  to_octal_Mode (Self          : in posix.Permissions.Permission_Set) return String;
    function  Expand        (the_File_GLOB : in String) return String;

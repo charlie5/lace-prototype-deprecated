@@ -5,7 +5,7 @@ is
    procedure enable_float_Exceptions
    is
       function feenableexcept (Val : Integer) return Integer;
-      pragma import (C, feenableexcept);
+      pragma Import (C, feenableexcept);
 
       Status : Integer;
 

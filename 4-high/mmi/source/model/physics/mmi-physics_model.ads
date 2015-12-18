@@ -10,9 +10,9 @@ package mmi.physics_Model
 is
    use Math;
 
+   type shape_Kind is (Cylinder,  Cone,    Cube,  a_Sphere,  a_Capsule,  Heightfield,  Hull,  Mesh,  multi_Sphere, Plane,     -- 3D
+                       Circle,    Polygon);                                                                                   -- 2D
 
-   type shape_Kind is (Cylinder,  Cone,    Cube,  a_Sphere,  a_Capsule,  Heightfield,  Hull,  multi_Sphere, Plane,     -- 3D
-                       Circle,    Polygon);                                                                            -- 2D
 
    type a_Shape (Kind : shape_Kind := Cube) is
       record
@@ -38,6 +38,9 @@ is
 
             when Hull =>
                Points        : access physics.Vector_3_array;
+
+            when Mesh =>
+               Model         : access math.Geometry.d3.a_Model;
 
             when multi_Sphere =>
                Sites         : access physics.Vector_3_array;

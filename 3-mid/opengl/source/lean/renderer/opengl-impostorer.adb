@@ -34,7 +34,7 @@ is
          use Impostor;
 
          the_Impostor : Impostor.view;
-         Cursor       : sprite_Maps_of_impostor.Cursor := Self.sprite_Map_of_imposter.First;
+         Cursor       : visual_Maps_of_impostor.Cursor := Self.visual_Map_of_imposter.First;
       begin
          while has_Element (Cursor)
          loop
@@ -55,7 +55,7 @@ is
    function  impostor_Count (Self : in     Item) return Natural
    is
    begin
-      return Natural (Self.sprite_Map_of_imposter.Length);
+      return Natural (Self.visual_Map_of_imposter.Length);
    end impostor_Count;
 
 
@@ -165,7 +165,7 @@ is
                   -- Find or create the impostor for the visual.
                   --
                   begin
-                     the_Impostor := Element (Self.sprite_Map_of_imposter, the_Visual);
+                     the_Impostor := Element (Self.visual_Map_of_imposter, the_Visual);
                   exception
                      when Constraint_Error =>   -- No impostor exists for this visual yet, so create one.
                         if the_Visual.is_Terrain
@@ -179,7 +179,7 @@ is
                         end if;
 
                         the_Impostor.set_Target (the_Visual);
-                        Self.sprite_Map_of_imposter.insert (the_Visual, the_Impostor);
+                        Self.visual_Map_of_imposter.insert (the_Visual, the_Impostor);
                   end;
 
                   declare
@@ -230,10 +230,10 @@ is
                            end if;
                         end if;
 
-                        the_Impostor.Sprite.Site_is (Site_of (the_Visual.all));
-                        the_Impostor.Sprite.Spin_is (transposed_camera_Attitude);
+                        the_Impostor.Visual.Site_is (Site_of (the_Visual.all));
+                        the_Impostor.Visual.Spin_is (transposed_camera_Attitude);
 
-                        the_Visuals (Each) := the_Impostor.Sprite;   -- Replace the visual with the impostor.
+                        the_Visuals (Each) := the_Impostor.Visual;   -- Replace the visual with the impostor.
 
                      end if;
                   end;

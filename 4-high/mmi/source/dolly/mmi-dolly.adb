@@ -29,11 +29,11 @@ is
    --  Attributes
    --
 
-   procedure Camera_is (Self : in out Item'Class;   Now : in Camera.view)
+   procedure add_Camera (Self : in out Item'Class;   the_Camera : in Camera.view)
    is
    begin
-      self.Camera := Now;
-   end Camera_is;
+      Self.Cameras.append (the_Camera);
+   end add_Camera;
 
 
 

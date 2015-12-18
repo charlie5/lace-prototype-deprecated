@@ -167,54 +167,6 @@ template < typename T > T SwigValueInit ()
 #include <new>
 #endif
 
-/* Support for throwing Ada exceptions from C/C++ */
-
-typedef enum
-{
-  SWIG_AdaException,
-  SWIG_AdaOutOfMemoryException,
-  SWIG_AdaIndexOutOfRangeException,
-  SWIG_AdaDivideByZeroException,
-  SWIG_AdaArgumentOutOfRangeException,
-  SWIG_AdaNullReferenceException
-} SWIG_AdaExceptionCodes;
-
-typedef void    (SWIGSTDCALL * SWIG_AdaExceptionCallback_t) (const char *);
-
-typedef struct
-{
-  SWIG_AdaExceptionCodes code;
-  SWIG_AdaExceptionCallback_t callback;
-}
-SWIG_AdaExceptions_t;
-
-static          SWIG_AdaExceptions_t SWIG_ada_exceptions[] = {
-  {SWIG_AdaException, NULL},
-  {SWIG_AdaOutOfMemoryException, NULL},
-  {SWIG_AdaIndexOutOfRangeException, NULL},
-  {SWIG_AdaDivideByZeroException, NULL},
-  {SWIG_AdaArgumentOutOfRangeException, NULL},
-  {SWIG_AdaNullReferenceException, NULL}
-};
-
-static void
-SWIG_AdaThrowException (SWIG_AdaExceptionCodes code, const char *msg)
-{
-  SWIG_AdaExceptionCallback_t callback =
-    SWIG_ada_exceptions[SWIG_AdaException].callback;
-  if (code >= 0
-      && (size_t) code <
-      sizeof (SWIG_ada_exceptions) / sizeof (SWIG_AdaExceptions_t))
-    {
-      callback = SWIG_ada_exceptions[code].callback;
-    }
-  callback (msg);
-}
-
-#ifdef __cplusplus
-extern          "C"
-#endif
-
 /* Callback for returning strings to Ada without leaking memory */
 
 typedef char   *(SWIGSTDCALL * SWIG_AdaStringHelperCallback) (const char *);
@@ -230,8 +182,9 @@ DllExport void SWIGSTDCALL SWIGRegisterStringCallback_CORE_MODULE(SWIG_AdaString
 */
 
 /* Contract support */
-
+/*
 #define SWIG_contract_assert(nullreturn, expr, msg) if (!(expr)) {SWIG_AdaThrowException(SWIG_AdaArgumentOutOfRangeException, msg); return nullreturn; } else
+*/
 
 #define protected public
 #define private   public
@@ -328,6 +281,51 @@ extern          "C"
     Vector_3       *arg1 = (Vector_3 *) 0;
 
     arg1 = (Vector_3 *) jarg1;
+
+    delete          arg1;
+
+  }
+
+  DllExport void *SWIGSTDCALL Ada_new_Triangle__SWIG_0 ()
+  {
+    void           *jresult;
+    Triangle       *result = 0;
+
+    result = (Triangle *) new Triangle ();
+    jresult = (void *) result;
+
+    return jresult;
+
+  }
+
+  DllExport void *SWIGSTDCALL Ada_new_Triangle__SWIG_1 (float jarg1,
+							float jarg2,
+							float jarg3)
+  {
+    void           *jresult;
+    Real            arg1;
+    Real            arg2;
+    Real            arg3;
+    Triangle       *result = 0;
+
+    arg1 = (Real) jarg1;
+
+    arg2 = (Real) jarg2;
+
+    arg3 = (Real) jarg3;
+
+    result = (Triangle *) new Triangle (arg1, arg2, arg3);
+    jresult = (void *) result;
+
+    return jresult;
+
+  }
+
+  DllExport void SWIGSTDCALL Ada_delete_Triangle (void *jarg1)
+  {
+    Triangle       *arg1 = (Triangle *) 0;
+
+    arg1 = (Triangle *) jarg1;
 
     delete          arg1;
 
@@ -481,6 +479,16 @@ extern          "C"
   extern Vector_3 gnat_new_Vector_3__SWIG_1 (Real x, Real y, Real z)
   {
     return Vector_3 (x, y, z);
+  }
+
+  extern Triangle gnat_new_Triangle__SWIG_0 ()
+  {
+    return Triangle ();
+  }
+
+  extern Triangle gnat_new_Triangle__SWIG_1 (Real a, Real b, Real c)
+  {
+    return Triangle (a, b, c);
   }
 
   extern Matrix_3x3 gnat_new_Matrix_3x3__SWIG_0 ()

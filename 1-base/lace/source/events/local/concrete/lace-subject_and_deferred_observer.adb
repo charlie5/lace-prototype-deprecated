@@ -1,6 +1,5 @@
 with
      ada.unchecked_Deallocation;
-with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body lace.Subject_and_deferred_Observer
@@ -38,13 +37,10 @@ is
 
       the_Name : String_view := Self.Name;
    begin
---        put_Line ("Destroying " & the_Name.all);
       Deferred.destroy (Deferred.item (Self));
       Subject .destroy (Subject .item (Self));
 
---        put_Line ("Deallocating " & the_Name.all);
       deallocate (the_Name);
---        Self.Name := null;
    end destroy;
 
 

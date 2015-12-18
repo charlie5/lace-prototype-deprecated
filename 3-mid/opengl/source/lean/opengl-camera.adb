@@ -381,12 +381,12 @@ is
 
 
 
-   procedure render (Self : in out Item;   the_Sprites : in     Visual.views;
+   procedure render (Self : in out Item;   the_Visuals : in     Visual.views;
                                            To          : in     Surface.view := null)
    is
       pragma Unreferenced (To);
    begin
-      Self.cull_Engine.cull (the_Sprites, do_cull => Self.is_Culling);
+      Self.cull_Engine.cull (the_Visuals, do_cull => Self.is_Culling);
    end render;
 
 

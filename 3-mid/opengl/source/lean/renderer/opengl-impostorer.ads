@@ -63,7 +63,7 @@ is
 
 private
 
-   -- sprite_Maps_of_impostor
+   -- visual_Maps_of_impostor
    --
 
    use type Visual  .view,
@@ -71,11 +71,11 @@ private
 
    function Hash is new ada.unchecked_Conversion (Visual.view, ada.containers.Hash_type);
 
-   package sprite_Maps_of_impostor is new ada.containers.hashed_Maps (Visual.view,
+   package visual_Maps_of_impostor is new ada.containers.hashed_Maps (Visual.view,
                                                                       openGL.Impostor.view,
                                                                       hash            => Hash,
                                                                       equivalent_keys => "=");
-   use sprite_Maps_of_impostor;
+   use visual_Maps_of_impostor;
 
 
 
@@ -110,7 +110,7 @@ private
       record
          impostor_size_Min      :         safe_Real;
 
-         sprite_Map_of_imposter :         sprite_Maps_of_impostor.Map;
+         visual_Map_of_imposter :         visual_Maps_of_impostor.Map;
          impostor_load_Slots    :         impostor_load_Balancer.Slots_view := new impostor_load_Balancer.Slots' (default_Slots);
 
          Camera                 : access  openGL.Camera.item'Class;

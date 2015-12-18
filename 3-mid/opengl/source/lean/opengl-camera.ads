@@ -88,7 +88,7 @@ is
    --  Operations
    --
 
-   procedure render                (Self : in out Item;         the_Sprites        : in     Visual.views;
+   procedure render                (Self : in out Item;         the_Visuals        : in     Visual.views;
                                                                 To                 : in     Surface.view := null);
 
    function current_Planes         (Self : in     Item) return openGL.Frustum.plane_Array;
@@ -127,7 +127,7 @@ private
          FOVy                 :         math.Degrees               := default_field_of_view_Angle; -- Field of view angle (deg) in the y direction.
          Aspect               :         math.Real                  := 1.0;                         -- x/y Aspect ratio.
 
-         near_plane_Distance  :         math.Real                  := 1.0;                         -- Distance to the near clipping plane.
+         near_plane_Distance  :         math.Real                  := 0.1;                         -- Distance to the near clipping plane.
          near_plane_Width     :         math.Real;
          near_plane_Height    :         math.Real;
 

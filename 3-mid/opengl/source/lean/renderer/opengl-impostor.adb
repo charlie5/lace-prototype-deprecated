@@ -18,12 +18,12 @@ is
           openGL.Model,
           openGL.Texture;
 
-      the_Model   : Model.view     := Self.Sprite.Model;
+      the_Model   : Model.view     := Self.Visual.Model;
       the_Texture : Texture.Object := Model.billboard.textured.view (the_Model).Texture;
    begin
       free (the_Texture);
       free (the_Model);
-      free (Self.Sprite);
+      free (Self.Visual);
    end destroy;
 
 
@@ -44,18 +44,18 @@ is
    --- Attributes
    --
 
-   procedure Sprite_is (Self : in out Item;   Now : in openGL.Visual.view)
+   procedure Visual_is (Self : in out Item;   Now : in openGL.Visual.view)
    is
    begin
-      Self.Sprite := Now;
-   end Sprite_is;
+      Self.Visual := Now;
+   end Visual_is;
 
 
-   function  Sprite (Self : access Item) return openGL.Visual.view
+   function  Visual (Self : access Item) return openGL.Visual.view
    is
    begin
-      return Self.Sprite;
-   end Sprite;
+      return Self.Visual;
+   end Visual;
 
 
 
@@ -73,18 +73,18 @@ is
       Width : constant Real := Target.Model.Bounds.Ball * 2.00;
 
    begin
-      if Self.Sprite = null
+      if Self.Visual = null
       then
-         Self.Sprite := new openGL.Visual.item;
+         Self.Visual := new openGL.Visual.item;
       end if;
 
       Self.Target     := Target;
       Self.is_Terrain := Target.is_Terrain;
 
-      Self.Sprite.Model_is (openGL.Model.billboard.textured.Forge.new_Billboard (Scale   => (Width, Width, 0.01),
+      Self.Visual.Model_is (openGL.Model.billboard.textured.Forge.new_Billboard (Scale   => (Width, Width, 0.01),
                                                                                  Plane   => Model.billboard.xy,
                                                                                  Texture => null_Asset).all'Access);
-      Self.Sprite.Transform_is (Target.Transform);
+      Self.Visual.Transform_is (Target.Transform);
    end set_Target;
 
 
@@ -324,12 +324,12 @@ is
       texture_Width  : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Width_pixels ));
       texture_Height : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Height_pixels));
 
-      the_Model      : constant openGL.Model.billboard.textured.view := openGL.Model.billboard.textured.view (Self.Sprite.Model);
+      the_Model      : constant openGL.Model.billboard.textured.view := openGL.Model.billboard.textured.view (Self.Visual.Model);
       GL_Error       :          Boolean;
 
    begin
-      Self.Sprite.all := Self.Target.all;
-      Self.Sprite.Model_is (the_Model.all'Access);
+      Self.Visual.all := Self.Target.all;
+      Self.Visual.Model_is (the_Model.all'Access);
    end update;
 
 

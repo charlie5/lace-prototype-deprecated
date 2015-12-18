@@ -133,7 +133,8 @@ is
 
       use openGL.Geometry.colored,
           openGL.Primitive,
-          openGL.Primitive.indexed;
+          openGL.Primitive.indexed,
+          ada.Containers;
 
       vertex_Count  : constant openGL.Index_t      := openGL.Index_t (Self.Points.Length);
       indices_Count : constant openGL.long_Index_t := openGL.long_Index_t (vertex_Count);
@@ -141,6 +142,11 @@ is
       the_Indices   : aliased  Indices             := (1 .. indices_Count => <>);
 
    begin
+      if Self.Points.Length <= 2
+      then
+         return (1..0 => <>);
+      end if;
+
       for Each in the_Indices'Range
       loop
          the_Indices (Each) := openGL.Index_t (Each);

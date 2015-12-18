@@ -259,6 +259,50 @@ is
 
 
 
+   function  new_World     (Self : access Item;   Name       : in String;
+                                                  space_Kind : in physics.Forge.space_Kind) return mmi.World.view
+   is
+   begin
+      Self.add_new_World (Name, space_Kind);
+      return Self.Worlds.last_Element.World;
+   end;
+
+
+   procedure add_new_World (Self : in out Item;   Name       : in String;
+                                                  space_Kind : in physics.Forge.space_Kind)
+   is
+      use lace.event.Utility;
+      use type ada.Containers.Count_Type;
+
+      the_world_Info : constant world_Info_view  := new world_Info;
+      the_Camera     : constant mmi.Camera.View  := mmi.Camera.forge.new_Camera;
+   begin
+      the_world_Info.World := mmi.World.forge.new_World (Name,
+                                                         world_Id (Self.Worlds.Length + 1),
+                                                         space_Kind,
+                                                         Self.Renderer);
+
+      the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
+      the_Camera.Renderer_is       (Self.Renderer);
+      the_Camera.Site_is           ((0.0, 5.0, 50.0));
+
+      the_world_Info.Cameras.append (the_Camera);
+
+      Self.Worlds.append (the_world_Info);
+
+      Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+                                           to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag),
+                                           the_world_Info.World.Name);
+      the_world_Info.World.start;
+
+      Self.add (the_world_Info);
+   end add_new_World;
+
+
+
+
+
+
    function is_Open (Self : in Item) return Boolean
    is
    begin
@@ -388,6 +432,28 @@ is
    --- Operations
    --
 
+
+   procedure evolve_all_Worlds      (Self : in out Item;   By : in Duration)
+   is
+      use world_Vectors;
+      world_Cursor : world_Vectors.Cursor := Self.Worlds.First;
+
+   begin
+      while has_Element (world_Cursor)
+      loop
+         declare
+            the_world_Info : world_Info renames Element (world_Cursor).all;
+         begin
+            the_world_Info.World.evolve (By);
+         end;
+
+         next (world_Cursor);
+      end loop;
+   end;
+
+
+
+
    procedure freshen (Self : in out Item)
    is
       use type mmi.Dolly.view;
@@ -409,54 +475,55 @@ is
                           and then     Self.Window.is_Exposed
                           and then not Self.Window.is_being_Resized;
 
-      declare
-         use world_Vectors;
-         world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
-         all_Cameras      : mmi.Camera.views (1 .. 1000);
-         all_cameras_Last : Natural                     := 0;
 
-      begin
-         while has_Element (world_Cursor)
-         loop
-            declare
-               use camera_Vectors;
-               the_world_Info : world_Info            renames Element (world_Cursor).all;
-               camera_Cursor  : camera_Vectors.Cursor :=      the_world_Info.Cameras.First;
-            begin
-               the_world_Info.World.wait_on_evolve;
+         declare
+            use world_Vectors;
+            world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
+            all_Cameras      : mmi.Camera.views (1 .. 1000);
+            all_cameras_Last : Natural                     := 0;
 
-               if Window_is_active
-               then
-                  while has_Element (camera_Cursor)
+         begin
+            while has_Element (world_Cursor)
+            loop
+               declare
+                  use camera_Vectors;
+                  the_world_Info : world_Info            renames Element (world_Cursor).all;
+                  camera_Cursor  : camera_Vectors.Cursor :=      the_world_Info.Cameras.First;
+               begin
+                  the_world_Info.World.wait_on_evolve;
+
+                  if Window_is_active
+                  then
+                     while has_Element (camera_Cursor)
+                     loop
+                        all_cameras_Last               := all_cameras_Last + 1;
+                        all_Cameras (all_cameras_Last) := Element (camera_Cursor);
+
+                        Element (camera_Cursor).render (the_world_Info.World,
+                                                        to => Self.Window.Surface);
+                        next (camera_Cursor);
+                     end loop;
+                  end if;
+
+               end;
+
+               next (world_Cursor);
+            end loop;
+
+            loop
+               declare
+                  culls_Completed : Boolean := True;
+               begin
+                  for i in 1 .. all_cameras_Last
                   loop
-                     all_cameras_Last               := all_cameras_Last + 1;
-                     all_Cameras (all_cameras_Last) := Element (camera_Cursor);
-
-                     Element (camera_Cursor).render (the_world_Info.World,
-                                                     to => Self.Window.Surface);
-                     next (camera_Cursor);
+                     culls_Completed := culls_Completed and all_Cameras (i).cull_Completed;
                   end loop;
-               end if;
 
-            end;
-
-            next (world_Cursor);
-         end loop;
-
-         loop
-            declare
-               culls_Completed : Boolean := True;
-            begin
-               for i in 1 .. all_cameras_Last
-               loop
-                  culls_Completed := culls_Completed and all_Cameras (i).cull_Completed;
-               end loop;
-
-               exit when culls_Completed;
-               delay Duration'Small;
-            end;
-         end loop;
-      end;
+                  exit when culls_Completed;
+                  delay Duration'Small;
+               end;
+            end loop;
+         end;
 
       Self.Renderer.render;
    end freshen;
@@ -659,11 +726,21 @@ is
 
 
 
+
+   procedure Dolly_is (Self : access Item;   Now : in mmi.Dolly.view)
+   is
+   begin
+      Self.Dolly := Now;
+   end;
+
+
+
+
    procedure enable_simple_Dolly (Self : access Item;   in_World : in world_Id)
    is
    begin
       Self.Dolly := new mmi.Dolly.simple.item;
-      Self.Dolly.Camera_is (Self.Camera (in_World, 1));
+      Self.Dolly.add_Camera (Self.Camera (in_World, 1));
    end enable_simple_Dolly;
 
 
@@ -677,8 +754,7 @@ is
       the_Dolly.follow (the_sprite => Follow);
 
       Self.Dolly := the_Dolly.all'Access;
-
-      Self.Dolly.Camera_is (Self.Camera (1, 1));
+      Self.Dolly.add_Camera (Self.Camera (1, 1));
    end enable_following_Dolly;
 
 

@@ -39,10 +39,10 @@ is
    --  Program Parameters
    --
 
-   --  These are used by individual sprites which require program Uniforms to vary from sprite to sprite.
+   --  These are used by individual visuals which require program Uniforms to vary from visual to visual.
    --  The Parmaters type is extended to contain the required varying data and 'enable' is overridden to
    --  apply the varying data to the programs Uniforms. 'enable' is called as part of the rendering process
-   --  just prior to the sprites geometry being rendered.
+   --  just prior to the visuals geometry being rendered.
    --
    --  (See 'mmi.Human' for an example of usage.)
 
@@ -93,7 +93,8 @@ is
    procedure mvp_Matrix_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
-   procedure directional_Light_is        (Self : in out Item'Class;   Now : in openGL.Light.directional.item);
+   procedure directional_Light_is (Self : in out Item'Class;   light_Id : in Positive;
+                                   Now      : in openGL.Light.directional.item);
    procedure Scale_is                    (Self : in out Item'Class;   Now : in Vector_3);
 
    procedure set_Uniforms                (Self : in     Item)   is abstract;
@@ -125,7 +126,8 @@ private
          mvp_Matrix               : Matrix_4x4;
          inverse_modelview_Matrix : Matrix_3x3;
 
-         directional_Light        : openGL.Light.directional.item;
+         directional_Light        : openGL.Light.directional.items (1 .. 2);
+
          Scale                    : Vector_3  := (1.0, 1.0, 1.0);
       end record;
 

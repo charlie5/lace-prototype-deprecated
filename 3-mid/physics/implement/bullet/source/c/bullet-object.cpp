@@ -93,7 +93,8 @@ b3d_new_Object (Real     Mass,
       body->setActivationState (DISABLE_DEACTIVATION);    
     }
   
-  body->setActivationState (DISABLE_DEACTIVATION);    
+  if (isDynamic)
+    body->setActivationState (DISABLE_DEACTIVATION);    
 
   return (Object*) body;
 }

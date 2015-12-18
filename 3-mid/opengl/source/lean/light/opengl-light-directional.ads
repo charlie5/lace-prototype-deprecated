@@ -14,6 +14,8 @@ is
          specular_Color   : Vector_4;
       end record;
 
+   type Items is array (Positive range <>) of Item;
+
 
    procedure Site_is (Self : in out Item;   Now                    : in Vector_3;
                                             inverse_view_Transform : in Matrix_3x3);

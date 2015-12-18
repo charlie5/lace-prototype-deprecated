@@ -39,6 +39,8 @@ is
                                       Height       : in     Real)        return physics.Shape.view;
    function new_convex_hull_Shape    (Points       : in     physics.Vector_3_array)
                                                                          return physics.Shape.view;
+   function new_mesh_Shape           (Model        : access math.Geometry.d3.a_Model)
+                                                                         return physics.Shape.view;
    function new_cylinder_Shape       (half_Extents : in     Vector_3)    return physics.Shape.view;
    function new_heightfield_Shape    (Width,
                                       Depth        : in     Positive;
@@ -67,5 +69,6 @@ private
    type Plane       is new Item with null record;
    type Sphere      is new Item with null record;
    type convex_Hull is new Item with null record;
+   type Mesh        is new Item with null record;
 
 end bullet_Physics.Shape;

@@ -6,7 +6,8 @@ with
      ada.characters.latin_1,
      ada.Strings.unbounded,
      ada.Text_IO,
-
+     ada.IO_Exceptions,
+     
      interfaces.c.Strings;
 
 
@@ -164,6 +165,10 @@ is
 
          return the_Data;
       end;
+
+   exception
+      when ada.IO_Exceptions.Name_Error =>
+         raise openGL.Error with "Unable to locate shader asset named '" & FileName & "'. Please check file exists.";
    end textFileRead;
 
 

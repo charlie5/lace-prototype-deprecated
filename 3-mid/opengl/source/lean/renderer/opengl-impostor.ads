@@ -26,7 +26,7 @@ is
    type Item is abstract tagged
       record
          Target                           :         openGL.Visual.view;
-         Sprite                           : aliased openGL.Visual.view;
+         Visual                           : aliased openGL.Visual.view;
 
          freshen_Count                    :         Counter    := 0;
          freshen_count_update_trigger_Mod :         Counter    := 150;
@@ -88,8 +88,8 @@ is
    procedure set_Target                     (Self : in out Item;   Target : in openGL.Visual.view);
    function  get_Target                     (Self : in     Item)        return openGL.Visual.view;
 
-   procedure Sprite_is                      (Self : in out Item;   Now    : in openGL.Visual.view);
-   function  Sprite                         (Self : access Item)        return openGL.Visual.view;
+   procedure Visual_is                      (Self : in out Item;   Now    : in openGL.Visual.view);
+   function  Visual                         (Self : access Item)        return openGL.Visual.view;
 
 
    function current_Camera_look_at_Rotation (Self : in     Item) return MAtrix_3x3

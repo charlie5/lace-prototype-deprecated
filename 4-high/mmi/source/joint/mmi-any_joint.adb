@@ -27,10 +27,10 @@ is
       use      math.Algebra.linear.d3;
       use type Real;
 
-      type joint_Cast is access all MMI.Joint.Item;
+      the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
+      the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
 
-      the_Frame_A    : aliased constant Matrix_4x4 := Frame_A;
-      the_Frame_B    : aliased constant Matrix_4x4 := Frame_B;
+      type joint_Cast is access all MMI.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : std_Physics.Object.view;

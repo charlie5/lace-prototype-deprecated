@@ -10,7 +10,8 @@ struct directional_light
 
 uniform   mat4                  mvp_Matrix;
 uniform   mat3                  inv_modelview_Matrix;
-uniform   directional_light     uLight;
+uniform   directional_light     uLight_1;
+uniform   directional_light     uLight_2;
 //uniform   vec3                  uScale;
 
 
@@ -29,21 +30,41 @@ const float   c_shininess = 200.0;
 
 
 
-vec4                                      // Returns the computed color.
-directional_light_color (vec3   normal)   // 'normal' has been transformed into eye space and normalized.
+vec4                                           // Returns the computed color.
+directional_light_1_color (vec3   normal)      // 'normal' has been transformed into eye space and normalized.
 {
    vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
-   float   NdotL;                         // Dot product of normal and light direction.
-   float   NdotH;                         // Dot product of normal and half-plane vector.
+   float   NdotL;                              // Dot product of normal and light direction.
+   float   NdotH;                              // Dot product of normal and half-plane vector.
 
-   NdotL = max (c_zero,  dot (normal, uLight.direction));
-   NdotH = max (c_zero,  dot (normal, uLight.halfplane));
+   NdotL = max (c_zero,  dot (normal, uLight_1.direction));
+   NdotH = max (c_zero,  dot (normal, uLight_1.halfplane));
 
-   computed_color += (        uLight.ambient_color * aColor);
-   computed_color += (NdotL * uLight.diffuse_color * aColor);
+   computed_color += (        uLight_1.ambient_color * aColor);
+   computed_color += (NdotL * uLight_1.diffuse_color * aColor);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * aColor * uLight.specular_color);
+      computed_color += (pow (NdotH, c_shininess) * aColor * uLight_1.specular_color);
+
+   return computed_color;
+}
+
+
+vec4                                           // Returns the computed color.
+directional_light_2_color (vec3   normal)      // 'normal' has been transformed into eye space and normalized.
+{
+   vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
+   float   NdotL;                              // Dot product of normal and light direction.
+   float   NdotH;                              // Dot product of normal and half-plane vector.
+
+   NdotL = max (c_zero,  dot (normal, uLight_2.direction));
+   NdotH = max (c_zero,  dot (normal, uLight_2.halfplane));
+
+   computed_color += (        uLight_2.ambient_color * aColor);
+   computed_color += (NdotL * uLight_2.diffuse_color * aColor);
+   
+   if (NdotH > c_zero)
+      computed_color += (pow (NdotH, c_shininess) * aColor * uLight_2.specular_color);
 
    return computed_color;
 }
@@ -53,16 +74,8 @@ directional_light_color (vec3   normal)   // 'normal' has been transformed into 
 
 void main()
 { 
-//   vec3    a = aSite;     
-   
-//   a.x = a.x * uScale.x;     
-//   a.y = a.y * uScale.y;     
-//   a.z = a.z * uScale.z;     
-   
-//   gl_Position = mvp_Matrix * vec4 (a, 1.0); 
    gl_Position = mvp_Matrix * vec4 (aSite, 1.0); 
-   
-  
-//   vColor  = directional_light_color (inv_modelview_Matrix * normalize (aNormal * uScale));
-   vColor  = directional_light_color (inv_modelview_Matrix * normalize (aNormal));
+
+   vColor  = directional_light_1_color (inv_modelview_Matrix * normalize (aNormal));
+   vColor += directional_light_2_color (inv_modelview_Matrix * normalize (aNormal));
 }

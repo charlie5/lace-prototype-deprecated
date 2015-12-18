@@ -509,7 +509,7 @@ is
             command_Count : array (command_Kind) of Natural := (others => 0);
 
          begin
-            the_World.Commands.Fetch (the_Commands, Count);
+            the_World.Commands.fetch (the_Commands, Count);
 
             for Each in 1 .. Count
             loop

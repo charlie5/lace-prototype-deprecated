@@ -263,6 +263,15 @@ is
    end to_Rotation;
 
 
+   function to_Rotation     (Axis           : in     Vector_3;
+                             Angle          : in     Real) return Matrix_3x3
+   is
+   begin
+      return to_Rotation (Axis (1), Axis (2), Axis (3),
+                          Angle);
+   end to_Rotation;
+
+
 
 
    ---------

@@ -55,6 +55,8 @@ is
 
    function xyz_Rotation    (Angles    : in Vector_3)   return Matrix_3x3;
 
+   function to_Rotation     (Axis           : in     Vector_3;
+                             Angle          : in     Real) return Matrix_3x3;
    function to_Rotation     (Axis_x,
                              Axis_y,
                              Axis_z         : in     Real;

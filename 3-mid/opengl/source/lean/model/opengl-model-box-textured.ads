@@ -19,8 +19,7 @@ is
 
    type Face is
       record
-         texture_Name   : asset_Name            := null_Asset;
-         texture_Object : openGL.Texture.Object := openGL.Texture.null_Object;   -- The texture applied to the face.
+         texture_Name : asset_Name := null_Asset;
       end record;
 
    type Faces is array (Side) of Face;
@@ -32,7 +31,8 @@ is
 
    type Item is new openGL.Model.box.item with
       record
-         Faces : textured.Faces;
+         Faces     : textured.Faces;
+         is_Skybox : Boolean       := False;
       end record;
 
    type View is access all Item'Class;
@@ -44,8 +44,9 @@ is
 
    package Forge
    is
-      function new_Box (Scale : in math.Vector_3;
-                        Faces : in textured.Faces) return View;
+      function new_Box (Scale     : in math.Vector_3;
+                        Faces     : in textured.Faces;
+                        is_Skybox : in Boolean       := False) return View;
    end Forge;
 
 

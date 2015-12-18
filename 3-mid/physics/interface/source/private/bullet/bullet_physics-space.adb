@@ -191,6 +191,17 @@ is
 
 
 
+   overriding
+   function new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view
+   is
+      pragma Unreferenced (Self);
+      the_Mesh : constant physics.Shape.view := bullet_physics.Shape.new_mesh_Shape (Points);
+   begin
+      return the_Mesh;
+   end new_mesh_Shape;
+
+
+
    --  2d
    --
 

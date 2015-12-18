@@ -10,7 +10,9 @@ struct directional_light
 
 uniform   mat4                  mvp_Matrix;
 uniform   mat3                  inv_modelview_Matrix;
-uniform   directional_light     uLight;
+
+uniform   directional_light     uLight_1;
+uniform   directional_light     uLight_2;
 
 uniform   mat4                  bone_Matrices[120];
 
@@ -35,26 +37,44 @@ const float   c_one       = 1.0;
 const float   c_shininess = 200.0;
 
 
-
-vec4                                      // Returns the computed color.
-directional_light_color (vec3   normal)   // 'normal' has been transformed into eye space and normalized.
+vec4                                           // Returns the computed color.
+directional_light_1_color (vec3   normal)      // 'normal' has been transformed into eye space and normalized.
 {
    vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
-   float   NdotL;                         // Dot product of normal and light direction.
-   float   NdotH;                         // Dot product of normal and half-plane vector.
+   float   NdotL;                              // Dot product of normal and light direction.
+   float   NdotH;                              // Dot product of normal and half-plane vector.
 
-   NdotL = max (c_zero,  dot (normal, uLight.direction));
-   NdotH = max (c_zero,  dot (normal, uLight.halfplane));
+   NdotL = max (c_zero,  dot (normal, uLight_1.direction));
+   NdotH = max (c_zero,  dot (normal, uLight_1.halfplane));
 
-   computed_color += (        uLight.ambient_color * aColor);
-   computed_color += (NdotL * uLight.diffuse_color * aColor);
+   computed_color += (        uLight_1.ambient_color * aColor);
+   computed_color += (NdotL * uLight_1.diffuse_color * aColor);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * aColor * uLight.specular_color);
+      computed_color += (pow (NdotH, c_shininess) * aColor * uLight_1.specular_color);
 
    return computed_color;
 }
 
+
+vec4                                           // Returns the computed color.
+directional_light_2_color (vec3   normal)      // 'normal' has been transformed into eye space and normalized.
+{
+   vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
+   float   NdotL;                              // Dot product of normal and light direction.
+   float   NdotH;                              // Dot product of normal and half-plane vector.
+
+   NdotL = max (c_zero,  dot (normal, uLight_2.direction));
+   NdotH = max (c_zero,  dot (normal, uLight_2.halfplane));
+
+   computed_color += (        uLight_2.ambient_color * aColor);
+   computed_color += (NdotL * uLight_2.diffuse_color * aColor);
+   
+   if (NdotH > c_zero)
+      computed_color += (pow (NdotH, c_shininess) * aColor * uLight_2.specular_color);
+
+   return computed_color;
+}
 
 
 
@@ -75,7 +95,7 @@ void main()
                           m44[2].xyz);
 
         // transform normal by bone 1
-        transformedNormal += m33 * aNormal * bone_Weights.x;
+        transformedNormal += aNormal * m33 * bone_Weights.x;
 
 
     // bone 2
@@ -90,7 +110,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 2
-        transformedNormal += m33 * aNormal * bone_Weights.y;
+        transformedNormal += aNormal * m33 * bone_Weights.y;
 
 
     // bone 3
@@ -105,7 +125,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 3
-        transformedNormal += m33 * aNormal * bone_Weights.z;
+        transformedNormal += aNormal * m33 * bone_Weights.z;
 
 
     // bone 4
@@ -120,7 +140,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 4
-        transformedNormal += m33 * aNormal * bone_Weights.w;
+        transformedNormal += aNormal * m33 * bone_Weights.w;
 
 
 
@@ -128,7 +148,9 @@ void main()
     gl_Position       = mvp_Matrix * transformedPosition;
     
     transformedNormal = normalize (transformedNormal);
-    vColor            = directional_light_color (inv_modelview_Matrix * transformedNormal);
-    
+
+    vColor            = directional_light_1_color (inv_modelview_Matrix * transformedNormal);
+    vColor           += directional_light_2_color (inv_modelview_Matrix * transformedNormal);
+
     vCoords           = aCoords;
 }

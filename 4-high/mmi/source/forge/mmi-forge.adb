@@ -158,7 +158,7 @@ is
         := openGL.Model.sphere.lit_colored.Forge.new_Sphere (Radius, (Color, openGL.Opaque));
 
       the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.a_Sphere, Radius),
+        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.a_Sphere, Radius / 2.0),
                                                       mass       => Mass);
    begin
       return mmi.Sprite.Forge.new_Sprite ("ball_Sprite",

@@ -1,5 +1,4 @@
 with
-     ada .Strings.Maps,
      lace.Strings.search;
 
 
@@ -124,6 +123,7 @@ is
    -- Equal --
    -----------
 
+   overriding
    function "="
      (Left  : Super_String;
       Right : Super_String) return Boolean

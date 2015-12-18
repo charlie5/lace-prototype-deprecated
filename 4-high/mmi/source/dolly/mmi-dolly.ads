@@ -1,5 +1,6 @@
 with
-     mmi.Camera;
+     mmi.Camera,
+     ada.Containers.Vectors;
 
 
 package mmi.Dolly
@@ -27,7 +28,7 @@ is
    --  Attributes
    --
 
-   procedure Camera_is            (Self : in out Item'Class;   Now       : in Camera.view);
+   procedure add_Camera           (Self : in out Item'Class;   the_Camera : in Camera.view);
 
 
    type Direction is (Left, Right, Up, Down, Forward, Backward);
@@ -56,12 +57,17 @@ is
 
 private
 
+
+   use type mmi.Camera.view;
+   package camera_Vectors is new ada.Containers.Vectors (Positive, mmi.Camera.view);
+   subtype camera_Vector  is     camera_Vectors.Vector;
+
    type Direction_Flags is array (Direction) of Boolean;
 
 
    type Item is abstract tagged
       record
-         Camera           : mmi.Camera.view;
+         Cameras          : camera_Vector;  -- mmi.Camera.view;
 
          Motion           : Direction_Flags := (others => False);
          Spin             : Direction_Flags := (others => False);

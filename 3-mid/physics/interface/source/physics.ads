@@ -1,5 +1,5 @@
 with
-     float_Math;
+     float_Math.Geometry.d3;
 
 
 package Physics
@@ -10,8 +10,11 @@ is
    pragma Pure;
 
 
-   package Math
-     renames float_Math;
+   package Math        renames float_Math;
+   package Geometry_3D renames Math.Geometry.d3;
+
+
+
 
    type Vector_2_array is array (Positive range <>) of math.Vector_2;
    type Vector_3_array is array (Positive range <>) of math.Vector_3;

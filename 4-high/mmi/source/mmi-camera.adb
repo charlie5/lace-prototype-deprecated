@@ -200,14 +200,6 @@ is
    end near_plane_Distance;
 
 
-   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
-   is
-   begin
-      Self.near_plane_Distance := Now;
-      Self.GL.near_plane_Distance_is (Now);
-   end near_plane_Distance_is;
-
-
 
    function far_plane_Distance (Self : in Item'Class) return math.Real
    is
@@ -221,6 +213,17 @@ is
    begin
       Self.far_plane_Distance := Now;
    end far_plane_Distance_is;
+
+
+   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
+   is
+   begin
+      Self.near_plane_Distance := Now;
+      Self.GL.near_plane_Distance_is (Now);
+   end near_plane_Distance_is;
+
+
+
 
 
 

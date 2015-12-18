@@ -5,8 +5,6 @@
 #include "bullet-object.h"
 
 
-
-
 extern "C"
 {
   struct Joint;

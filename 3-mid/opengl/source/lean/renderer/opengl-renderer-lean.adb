@@ -56,7 +56,7 @@ is
       Self.safe_camera_updates_Map.destruct;
 
       declare
-         procedure free is new ada.Unchecked_Deallocation (sprite_geometry_Couples, sprite_geometry_Couples_view);
+         procedure free is new ada.Unchecked_Deallocation (visual_geometry_Couples, visual_geometry_Couples_view);
       begin
          free (Self.all_opaque_Couples);
          free (Self.all_lucid_Couples);
@@ -162,7 +162,7 @@ is
                                         the_Camera.Viewport.Max (2)));
 
 
-            Self.draw (the_Sprites            => the_Updates.Visuals (1 .. the_Updates.visuals_Last),
+            Self.draw (the_Visuals            => the_Updates.Visuals (1 .. the_Updates.visuals_Last),
                        camera_world_Transform => the_Camera.world_Transform,
                        view_Transform         => the_Camera.view_Transform,
                        perspective_Transform  => the_Camera.projection_Transform,
@@ -405,15 +405,15 @@ is
             texture_Height           : constant gl.glSizei           := power_of_2_Ceiling (Natural (the_Update.current_Height_pixels));
 
             the_Model                : constant openGL.Model.billboard.textured.view
-                                                                     := openGL.Model.billboard.textured.view (the_Impostor.Sprite.Model);
+                                                                     := openGL.Model.billboard.textured.view (the_Impostor.Visual.Model);
             GL_Error : Boolean;
 
          begin
-            the_Impostor.Sprite.Scale_is         (the_Impostor.Target.Scale);
-            the_Impostor.Sprite.is_Terrain       (the_Impostor.Target.is_Terrain);
-            the_Impostor.Sprite.face_Count_is    (the_Impostor.Target.face_Count);
+            the_Impostor.Visual.Scale_is         (the_Impostor.Target.Scale);
+            the_Impostor.Visual.is_Terrain       (the_Impostor.Target.is_Terrain);
+            the_Impostor.Visual.face_Count_is    (the_Impostor.Target.face_Count);
 
-            the_Impostor.Sprite.apparent_Size_is (the_Impostor.Target.apparent_Size);
+            the_Impostor.Visual.apparent_Size_is (the_Impostor.Target.apparent_Size);
 
             -- Render the target after clearing openGL buffers.
             --
@@ -430,7 +430,7 @@ is
 
                -- Render the target for subsequent copy to impostor texture.
                --
-               Self.draw (the_Sprites            => (1 => the_Impostor.Target),
+               Self.draw (the_Visuals            => (1 => the_Impostor.Target),
                           camera_world_Transform => camera_world_Transform,
                           view_Transform         => new_view_Transform,
                           perspective_Transform  => perspective_Transform,
@@ -477,7 +477,7 @@ is
 
 
 
-   procedure draw (Self : in out Item;   the_Sprites            : in Visual.views;
+   procedure draw (Self : in out Item;   the_Visuals            : in Visual.views;
                                          camera_world_Transform : in math.Matrix_4x4;
                                          view_Transform         : in math.Matrix_4x4;
                                          perspective_Transform  : in math.Matrix_4x4;
@@ -497,61 +497,69 @@ is
       view_and_perspective_Transform
                                : constant openGL.Matrix_4x4 := view_Transform * perspective_Transform;
 
-      light_Site               : constant openGL.Vector_3   := (10_000.0, 10_000.0, 10_000.0);
-      the_Light                :          openGL.Light.directional.item;
+      light_Sites              : constant openGL.Vector_3_array := (1 => (0.0,  10_000.0,  0.0),
+                                                                    2 => (0.0, -10_000.0,  0.0));
+      the_Lights               :          openGL.Light.directional.items (1 .. 2);
 
    begin
-      the_Light.Site_is  (light_Site, inverse_view_Transform);
-      the_Light.Color_is (ambient  => (0.7, 0.7, 0.7, 1.0),
-                          diffuse  => (1.0, 1.0, 1.0, 1.0),
-                          specular => (1.0, 1.0, 1.0, 1.0));
+      the_Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
+      the_Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
+
+      the_Lights (1).Color_is (ambient  => (0.02, 0.02, 0.02, 0.0),
+                               diffuse  => (0.3, 0.3, 0.3, 0.0),
+                               specular => (0.01, 0.01, 0.01, 0.0));
+
+      the_Lights (2).Color_is (ambient  => (0.02, 0.02, 0.02, 0.0),
+                               diffuse  => (0.6, 0.1, 0.1, 0.0),
+                               specular => (0.01, 0.01, 0.01, 0.0));
+
       if clear_Frame then
          Self.clear_Frame;
       end if;
 
 
       ---------------------
-      --- Draw the sprites.
+      --- Draw the visuals.
       --
 
       --  Collect opaque geometry (for state sorting) and collect lucid geometry (for depth sorting).
       --
-      for Each in the_Sprites'Range
+      for Each in the_Visuals'Range
       loop
          declare
             use type Model.view,
                      Model.access_Geometry_views;
 
-            the_Sprite : Visual.view renames the_Sprites (Each);
+            the_Visual : Visual.view renames the_Visuals (Each);
 
          begin
-            if         the_Sprite.Model /= null
-              and then (   Boolean (the_Sprite.Model.needs_Rebuild)
-                        or (    the_Sprite.Model.opaque_Geometries = null
-                            and the_Sprite.Model. lucid_Geometries = null))
+            if         the_Visual.Model /= null
+              and then (   Boolean (the_Visual.Model.needs_Rebuild)
+                        or (    the_Visual.Model.opaque_Geometries = null
+                            and the_Visual.Model. lucid_Geometries = null))
             then
-               the_Sprite.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
+               the_Visual.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
             end if;
 
-            if the_Sprite.Model.is_Modified
+            if the_Visual.Model.is_Modified
             then
-               the_Sprite.Model.modify;
+               the_Visual.Model.modify;
             end if;
 
 
             declare
-               opaque_Geometries : Model.access_Geometry_views renames the_Sprite.Model.opaque_Geometries;
-               lucid_Geometries  : Model.access_Geometry_views renames the_Sprite.Model. lucid_Geometries;
+               opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
+               lucid_Geometries  : Model.access_Geometry_views renames the_Visual.Model. lucid_Geometries;
             begin
-               the_Sprite.mvp_Transform_is            (the_Sprite.Transform * view_and_perspective_Transform);
-               the_Sprite.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Sprite.Transform * view_Transform)));
+               the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
+               the_Visual.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Visual.Transform * view_Transform)));
 
                if opaque_Geometries /= null
                then
                   for i in opaque_Geometries'Range
                   loop
                      opaque_Count                           := opaque_Count + 1;
-                     Self.all_opaque_Couples (opaque_Count) := (sprite   => the_Sprite,
+                     Self.all_opaque_Couples (opaque_Count) := (visual   => the_Visual,
                                                                 Geometry => opaque_Geometries (i));
                   end loop;
                end if;
@@ -561,7 +569,7 @@ is
                   for i in lucid_Geometries'Range
                   loop
                      lucid_Count                          := lucid_Count + 1;
-                     Self.all_lucid_Couples (lucid_Count) := (sprite   => the_Sprite,
+                     Self.all_lucid_Couples (lucid_Count) := (visual   => the_Visual,
                                                               Geometry => lucid_Geometries (i));
                   end loop;
                end if;
@@ -579,7 +587,7 @@ is
 
          procedure heap_swap (L, R : in Natural)
          is
-            Pad : constant sprite_geometry_Couple := Self.all_opaque_Couples (L);
+            Pad : constant visual_geometry_Couple := Self.all_opaque_Couples (L);
          begin
             Self.all_opaque_Couples (L) := Self.all_opaque_Couples (R);
             Self.all_opaque_Couples (R) := Pad;
@@ -601,7 +609,7 @@ is
          end heap_LT;
 
 
-         the_Couple      : sprite_geometry_Couple;
+         the_Couple      : visual_geometry_Couple;
          current_Program : openGL.Program.view;
 
       begin
@@ -627,14 +635,15 @@ is
 
             current_Program.enable;
 
-            current_Program.mvp_Matrix_is               (the_Couple.Sprite.mvp_Transform);
-            current_Program.inverse_modelview_Matrix_is (the_Couple.Sprite.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (the_Light);
-            current_Program.Scale_is                    (the_Couple.Sprite.Scale);
+            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+            current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
+            current_Program.directional_Light_is        (1, the_Lights (1));
+            current_Program.directional_Light_is        (2, the_Lights (2));
+            current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
 
-            if the_Couple.Sprite.program_Parameters /= null then
-               the_Couple.Sprite.program_Parameters.enable;
+            if the_Couple.Visual.program_Parameters /= null then
+               the_Couple.Visual.program_Parameters.enable;
             end if;
 
             the_Couple.Geometry.render;
@@ -649,7 +658,7 @@ is
       declare
          procedure heap_swap (L, R : in Natural)
          is
-            Pad : constant sprite_geometry_Couple := Self.all_lucid_Couples (L);
+            Pad : constant visual_geometry_Couple := Self.all_lucid_Couples (L);
          begin
             Self.all_lucid_Couples (L) := Self.all_lucid_Couples (R);
             Self.all_lucid_Couples (R) := Pad;
@@ -659,12 +668,12 @@ is
          function heap_LT (L, R : in Natural) return Boolean
          is
          begin
-            return   Self.all_lucid_Couples (L).Sprite.Transform (4, 3)   -- Depth_in_camera_space   -- nb: In camera space, negative Z is
-                   < Self.all_lucid_Couples (R).Sprite.Transform (4, 3);  --                                forward, so use '<'.
+            return   Self.all_lucid_Couples (L).Visual.Transform (4, 3)   -- Depth_in_camera_space   -- nb: In camera space, negative Z is
+                   < Self.all_lucid_Couples (R).Visual.Transform (4, 3);  --                                forward, so use '<'.
          end heap_LT;
 
 
-         the_Couple      : sprite_geometry_Couple;
+         the_Couple      : visual_geometry_Couple;
          current_Program : openGL.Program.view;
 
       begin
@@ -690,13 +699,14 @@ is
             current_Program := the_Couple.Geometry.Program;
             current_Program.enable;
 
-            current_Program.mvp_Matrix_is               (the_Couple.Sprite.mvp_Transform);
-            current_Program.inverse_modelview_Matrix_is (the_Couple.Sprite.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (the_Light);
-            current_Program.Scale_is                    (the_Couple.Sprite.Scale);
+            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+            current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
+            current_Program.directional_Light_is        (1, the_Lights (1));
+            current_Program.directional_Light_is        (2, the_Lights (2));
+            current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
-            if the_Couple.Sprite.program_Parameters /= null then
-               the_Couple.Sprite.program_Parameters.enable;
+            if the_Couple.Visual.program_Parameters /= null then
+               the_Couple.Visual.program_Parameters.enable;
             end if;
 
             the_Couple.Geometry.render;

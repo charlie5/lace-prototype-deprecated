@@ -2,9 +2,8 @@
 --
 with c_math_c;
 with c_math_c.Vector_3;
-with Interfaces.C.Pointers;
-with Interfaces.C.Strings;
-with System;
+with Interfaces.C;
+
 package bullet_c.ray_Collision is
 
    -- Item

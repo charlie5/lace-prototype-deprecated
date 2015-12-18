@@ -1,7 +1,8 @@
 with
      lace.event.remote.Logger.text,
-     lace.event_Conversions;
-with ada.Unchecked_Deallocation;
+     lace.event_Conversions,
+     ada.Tags,
+     ada.unchecked_Deallocation;
 
 
 package body lace.event.remote.Utility

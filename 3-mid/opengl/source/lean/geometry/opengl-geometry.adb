@@ -207,39 +207,55 @@ is
    --  Normals
    --
 
-   function vertex_Id_in (face_Kind : in primitive.facet_Kind;
-                          Indices   : in openGL.Indices;
-                          for_Facet : in long_Index_t;
-                          for_Point : in long_Index_t) return Index_t
+   generic
+      type any_Index_t is range <>;
+      type any_Indices is array (long_Index_t range <>) of any_Index_t;
+
+   function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
+                              Indices   : in any_Indices;
+                              for_Facet : in any_Index_t;
+                              for_Point : in openGL.long_Index_t) return any_Index_t;
+
+   function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
+                              Indices   : in any_Indices;
+                              for_Facet : in any_Index_t;
+                              for_Point : in openGL.long_Index_t) return any_Index_t
    is
       use openGL.Primitive;
    begin
       case face_Kind
       is
          when Triangles =>
-            return Indices (3 * (for_Facet - 1) + for_Point);
+            return Indices (3 * (long_Index_t (for_Facet) - 1) + for_Point);
 
          when triangle_Strip =>
-            return Indices (for_Facet - 1 + for_Point);
+            return Indices (long_Index_t (for_Facet) - 1 + for_Point);
 
          when Triangle_Fan =>
             if for_Point = 1
             then   return 1;
-            else   return Indices (for_Facet - 1 + for_Point);
+            else   return Indices (long_Index_t (for_Facet) - 1 + for_Point);
             end if;
 
          when others =>
             raise Program_Error with "openGL primitive " & facet_Kind'Image (face_Kind) & " not yet supportted.";
-            return Index_t'Last;
+            return any_Index_t'Last;
       end case;
-   end vertex_Id_in;
+   end any_vertex_Id_in;
 
 
 
    --  'facet_Count_in' return the maximum possible facet count, which includes redundant facets.
    --
-   function facet_Count_in (face_Kind : in primitive.facet_Kind;
-                            Indices   : in openGL.Indices) return long_Index_t
+   generic
+      type any_Index_t is range <>;
+      type any_Indices is array (long_Index_t range <>) of any_Index_t;
+
+   function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
+                                Indices   : in any_Indices) return long_Index_t;
+
+   function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
+                                Indices   : in any_Indices) return long_Index_t
    is
       use openGL.Primitive;
    begin
@@ -256,9 +272,10 @@ is
             raise Program_Error with "openGL primitive " & facet_Kind'Image (face_Kind) & " not yet supportted.";
             return 0;
       end case;
-   end facet_Count_in;
+   end any_facet_Count_in;
 
-
+   function facet_Count_in is new any_facet_Count_in (any_Index_t => openGL.Index_t,
+                                                      any_Indices => openGL.Indices);
 
 
    ----------
@@ -273,20 +290,39 @@ is
 
    --  'Facets_of' returns all non-redundant facets.
    --
-   function Facets_of  (face_Kind : in primitive.facet_Kind;
-                        Indices   : in openGL.Indices) return access Facets
+   generic
+      type any_Index_t is range <>;
+      type any_Indices is array (long_Index_t range <>) of any_Index_t;
+
+   function any_Facets_of  (face_Kind : in primitive.facet_Kind;
+                            Indices   : in any_Indices) return access Facets;
+
+--     generic
+--        type any_Index_t is range <>;
+--        type any_Indices is array (long_Index_t range <>) of any_Index_t;
+
+   function any_Facets_of  (face_Kind : in primitive.facet_Kind;
+                            Indices   : in any_Indices) return access Facets
    is
       use openGL.Primitive;
+
+      function facet_Count_in is new any_facet_Count_in (any_Index_t => any_Index_t,
+                                                         any_Indices => any_Indices);
+
+      function vertex_Id_in is new any_vertex_Id_in (any_Index_t => any_Index_t,
+                                                     any_Indices => any_Indices);
 
       the_Facets : Facets_view  := new Facets (1 .. facet_Count_in (face_Kind, Indices));
       Count      : long_Index_t := 0;
    begin
+--        put_Line ("Indices'Length: " & Integer'image (self.Indices'Length));
+
       for Each in the_Facets'Range
       loop
          declare
-            P1 : constant Index_t := vertex_Id_in (face_Kind, Indices,  Each, 1);
-            P2 : constant Index_t := vertex_Id_in (face_Kind, Indices,  Each, 2);
-            P3 : constant Index_t := vertex_Id_in (face_Kind, Indices,  Each, 3);
+            P1 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 1));
+            P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 2));
+            P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 3));
          begin
             if not (P1 = P2 or P1 = P3 or P2 = P3)
             then
@@ -319,31 +355,46 @@ is
          free (the_Facets);
          return Result;
       end;
-   end Facets_of;
+   end any_Facets_of;
 
+
+   function Facets_of is new any_Facets_of (openGL.Index_t,
+                                            openGL.Indices);
 
 
    -----------
    --  Normals
    --
 
-   function Normals_of (face_Kind : in primitive.facet_Kind;
-                        Indices   : in openGL.Indices;
-                        Sites     : in openGL.Sites) return access Normals
+   generic
+      type any_Index_t is range <>;
+      type any_Indices is array (long_Index_t range <>) of any_Index_t;
+
+   function any_Normals_of (face_Kind : in primitive.facet_Kind;
+                            Indices   : in any_Indices;
+                            Sites     : in openGL.Sites) return access Normals;
+
+   function any_Normals_of (face_Kind : in primitive.facet_Kind;
+                            Indices   : in any_Indices;
+                            Sites     : in openGL.Sites) return access Normals
    is
       use      linear_Algebra;
       use type Real;
 
+      function Facets_of is new any_Facets_of (any_Index_t,
+                                               any_Indices);
+
+
       the_Normals : constant access Normals     := new Normals (Sites'Range);
       the_Facets  :                 Facets_view :=     Facets_of (face_Kind,
-                                                                  Indices  ).all'Access;
+                                                                  Indices  ).all'unchecked_Access;
 
       type facet_Normals      is array (long_Index_t range 1 .. the_Facets'Length) of Normal;
       type facet_Normals_view is access all facet_Normals;
 
       procedure free is new ada.unchecked_Deallocation (facet_Normals, facet_Normals_view);
 
-      the_facet_Normals : facet_Normals_view := new facet_Normals;
+      the_facet_Normals : facet_Normals_view := new facet_Normals; -- (1 .. Index_t (the_Facets'Length));
       N                 : openGL.Vector_3;
       length_N          : Real;
 
@@ -384,7 +435,8 @@ is
             end loop;
          end loop;
 
-         for p in Sites'Range
+
+         for p in the_Normals'Range
          loop
             length := abs (the_Normals (p));
 
@@ -399,7 +451,40 @@ is
       free (the_facet_Normals);
 
       return the_Normals.all'Unchecked_Access;
+   end any_Normals_of;
+
+
+
+
+   function Normals_of (face_Kind : in primitive.facet_Kind;
+                        Indices   : in openGL.Indices;
+                        Sites     : in openGL.Sites) return access Normals
+   is
+      function my_Normals_of is new any_Normals_of (any_Index_t => Index_t,
+                                                    any_Indices => openGL.Indices);
+   begin
+      return my_Normals_of (face_Kind, Indices, Sites).all'unchecked_Access;
    end Normals_of;
+
+
+
+   function Normals_of (face_Kind : in primitive.facet_Kind;
+                        Indices   : in openGL.long_Indices;
+                        Sites     : in openGL.Sites) return access Normals
+   is
+      function my_Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
+                                                    any_Indices => openGL.long_Indices);
+   begin
+      return my_Normals_of (face_Kind, Indices, Sites).all'unchecked_Access;
+   end Normals_of;
+
+
+
+
+
+--     function Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
+--                                                any_Indices => long_Indices);
+
 
 
 end openGL.Geometry;

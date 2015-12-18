@@ -2,7 +2,6 @@ with
      lace.event.Logger,
      lace.event_Conversions,
      ada.unchecked_Deallocation;
-with Ada.Text_IO; use Ada.Text_IO;
 
 
 

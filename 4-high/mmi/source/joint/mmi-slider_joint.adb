@@ -152,7 +152,7 @@ is
       case for_Degree
       is
          when Sway .. Surge =>
-            raise Program_Error with "unhandled Degree of freedom: " &
+            raise Program_Error with "slider Joint ~ unhandled Degree of freedom: " &
                                      Joint.Degree_of_freedom'Image
                                         (for_Degree);
          when Pitch .. Roll =>
@@ -181,7 +181,7 @@ is
       case for_Degree
       is
          when Sway .. Surge =>
-            raise Program_Error with "unhandled Degree of freedom: " &
+            raise Program_Error with "slider Joint ~ unhandled Degree of freedom: " &
                                      Joint.Degree_of_freedom'Image
                                         (for_Degree);
          when Pitch .. Roll =>
@@ -213,7 +213,7 @@ is
    begin
       if for_Degree in Sway .. Surge
       then
-         raise Program_Error with "unhandled Degree of freedom: " &
+         raise Program_Error with "slider Joint ~ unhandled Degree of freedom: " &
                                   Joint.Degree_of_freedom'Image (for_Degree);
       end if;
 

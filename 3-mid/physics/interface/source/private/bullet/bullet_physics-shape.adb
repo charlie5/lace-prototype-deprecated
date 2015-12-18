@@ -5,11 +5,14 @@ with
      c_math_c.Vector_3,
      c_math_c.Conversion,
      c_math_c.Pointers,
+     c_math_c.Triangle,
 
      physics.Forge,
 
      ada.unchecked_Deallocation,
-     ada.Unchecked_Conversion;
+     ada.Unchecked_Conversion,
+
+     interfaces.C;
 
 
 package body bullet_Physics.Shape
@@ -96,6 +99,43 @@ is
                                      c_Points'Length);
       return Self;
    end new_convex_hull_Shape;
+
+
+
+   --- Mesh
+   --
+   function new_mesh_Shape (Model : access math.Geometry.d3.a_Model) return physics.Shape.view
+   is
+      use Interfaces;
+
+      Self        : constant access Mesh := new Mesh;
+      c_Points    : array (1 .. Model.site_Count) of aliased c_math_c.Vector_3.item;
+
+      type Triangles is array (1 .. Model. tri_Count) of aliased c_math_c.Triangle.item;
+      pragma Pack (Triangles);
+
+      c_Triangles : Triangles;
+
+   begin
+      for i in c_Points'Range
+      loop
+         c_Points (i) := +Model.Sites (i);
+      end loop;
+
+      for i in c_Triangles'Range
+      loop
+         c_Triangles (i) := (a => C.int (Model.Triangles (i)(1)),
+                             b => C.int (Model.Triangles (i)(2)),
+                             c => C.int (Model.Triangles (i)(3)));
+      end loop;
+
+      Self.C := b3d_new_Mesh (Points         => c_Points (c_Points'First)'unchecked_Access,
+                              point_Count    => 0,
+                              Triangles      => c_Triangles (c_Triangles'First)'unchecked_Access,
+                              triangle_Count => Interfaces.C.int (Model.tri_Count));
+      return Self;
+   end new_mesh_Shape;
+
 
 
 

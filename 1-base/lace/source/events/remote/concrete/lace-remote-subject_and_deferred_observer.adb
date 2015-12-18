@@ -1,6 +1,5 @@
 with
      ada.unchecked_Deallocation;
-with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body lace.remote.Subject_and_deferred_Observer

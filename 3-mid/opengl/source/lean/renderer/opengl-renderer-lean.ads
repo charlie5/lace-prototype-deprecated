@@ -94,7 +94,7 @@ is
 
    function  is_Busy      (Self : in Item) return Boolean;
 
-   procedure draw         (Self : in out Item;   the_Sprites            : in Visual.views;
+   procedure draw         (Self : in out Item;   the_Visuals            : in Visual.views;
                                                  camera_world_Transform : in math.Matrix_4x4;
                                                  view_Transform         : in math.Matrix_4x4;
                                                  perspective_Transform  : in math.Matrix_4x4;
@@ -171,17 +171,17 @@ private
 
 
 
-   -- sprite_geometry_Couple
+   -- visual_geometry_Couple
    --
 
-   type sprite_geometry_Couple is
+   type visual_geometry_Couple is
       record
-         Sprite   : openGL.Visual.view;
+         Visual   : openGL.Visual.view;
          Geometry : openGL.Geometry.view;
       end record;
 
-   type sprite_geometry_Couples      is array (math.Index range <>) of sprite_geometry_Couple;
-   type sprite_geometry_Couples_view is access all sprite_geometry_Couples;
+   type visual_geometry_Couples      is array (math.Index range <>) of visual_geometry_Couple;
+   type visual_geometry_Couples_view is access all visual_geometry_Couples;
 
 
 
@@ -245,8 +245,8 @@ private
          Textures                : aliased openGL.Texture.name_Map_of_texture;
          Fonts                   :         Font.font_id_Maps_of_font.Map;
 
-         all_opaque_Couples      :         sprite_geometry_Couples_view := new sprite_geometry_Couples (1 .. 6 * 100_000);
-         all_lucid_Couples       :         sprite_geometry_Couples_view := new sprite_geometry_Couples (1 .. 6 * 100_000);
+         all_opaque_Couples      :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. 6 * 100_000);
+         all_lucid_Couples       :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. 6 * 100_000);
 
          obsolete_Models         :         lean.safe_Models;
          obsolete_Impostors      :         lean.safe_Impostors;

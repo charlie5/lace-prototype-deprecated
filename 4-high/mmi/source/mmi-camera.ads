@@ -69,23 +69,23 @@ is
 
    procedure view_Transform_is      (Self : in out Item'Class;   Now  : in math.Matrix_4x4);
 
-   procedure rotation_Speed_is      (Self : in out Item'Class;   Now  : math.Vector_3);
+   procedure rotation_Speed_is      (Self : in out Item'Class;   Now  : in math.Vector_3);
    function  rotation_Speed         (Self : in     Item'Class)   return math.Vector_3;
 
-   function  Speed                  (Self : in     Item'Class)     return math.Vector_3;         -- Linear speed.
+   function  Speed                  (Self : in     Item'Class)     return math.Vector_3;     -- Linear speed
    procedure Speed_is               (Self : in out Item'Class;   Now : in math.Vector_3);
 
-   function  FOVy                   (Self : in     Item'Class) return math.Real;                 -- Field of view angle (deg) in the y direction.
+   function  FOVy                   (Self : in Item'Class) return math.Real;                 -- Field of view angle (deg) in the y direction.
 
    procedure set_viewport_Size      (Self : in out Item'Class;   Width,
                                                                  Height : in Integer);
 
-   function  Aspect                 (Self : in     Item'Class)     return math.Real;             -- X/Y aspect ratio.
+   function  Aspect                 (Self : in     Item'Class)     return math.Real;         -- X/Y aspect ratio.
    procedure Aspect_is              (Self : in out Item'Class;   Now : in math.Real);
 
 
-   function  near_plane_Distance    (Self : in     Item'Class) return math.Real;                 -- Distance to the near clipping plane.
-   function  far_plane_Distance     (Self : in     Item'Class) return math.Real;                 -- Distance to the far  clipping plane.
+   function  near_plane_Distance    (Self : in Item'Class) return math.Real;                 -- Distance to the near clipping plane.
+   function  far_plane_Distance     (Self : in Item'Class) return math.Real;                 -- Distance to the far  clipping plane.
 
    procedure far_plane_Distance_is  (Self : in out Item'Class;   Now : in math.Real);
    procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in math.Real);

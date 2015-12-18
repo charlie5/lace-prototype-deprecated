@@ -63,7 +63,7 @@ is
       the_heightmap_Grid : height_map_Grid (1  ..  Grid_last (the_Pixels'Length (1), tile_Depth),
                                             1  ..  Grid_last (the_Pixels'Length (2), tile_Width));
 
-      the_Sprite_Grid    : openGL.Visual.Grid (the_heightmap_Grid'Range (1),
+      the_Visual_Grid    : openGL.Visual.Grid (the_heightmap_Grid'Range (1),
                                                the_heightmap_Grid'Range (2));
 
       procedure free is new ada.unchecked_Deallocation (openGL.height_Map, openGL.IO.height_Map_view);
@@ -98,13 +98,13 @@ is
          row_First, row_Last,
          col_First, col_Last  : math.Index;   -- Row and col ranges for each sub-matrix.
       begin
-         for Row in the_sprite_Grid'Range (1)
+         for Row in the_visual_Grid'Range (1)
          loop
             row_First := math.Index (tile_Depth - 1) * (Row - 1) + 1;
             row_Last  := math.Index'Min (row_First + math.Index (tile_Depth - 1),
                                          math.Index (the_Pixels'Last (1)));
 
-            for Col in the_sprite_Grid'Range (2)
+            for Col in the_visual_Grid'Range (2)
             loop
                col_First := math.Index (tile_Width - 1) * (Col - 1) + 1;
                col_Last  := math.Index'Min (col_First + math.Index (tile_Width - 1),
@@ -117,7 +117,7 @@ is
          end loop;
       end;
 
-      --  Create the Sprite for each grid element.
+      --  Create the Visual for each grid element.
       --
       declare
          site_X_offset : Real;
@@ -131,14 +131,14 @@ is
          tile_Z_Scale  : Real;
 
       begin
-         for Row in the_sprite_Grid'Range (1)
+         for Row in the_visual_Grid'Range (1)
          loop
             site_X_offset := Real (tile_Width) / 2.0 * Scale (1);
 
             tile_X_Offset := 0.0;
             tile_Z_Offset := tile_Z_Offset - Depth (the_heightmap_Grid (Row, 1).all) * Scale (3);
 
-            for Col in the_sprite_Grid'Range (2)
+            for Col in the_visual_Grid'Range (2)
             loop
                tile_Z_Scale := Depth (the_heightmap_Grid (Row,   1).all) / total_Depth;
                tile_X_Scale := Width (the_heightmap_Grid (Row, Col).all) / total_Width;
@@ -162,14 +162,14 @@ is
                                                             tiling        => Tiling);
 
                   the_height_Extents : openGL.Vector_2    :=      openGL.height_Extent (the_Region.all);
-                  the_Sprite         : openGL.Visual.view renames the_sprite_Grid      (Row, Col);
+                  the_Visual         : openGL.Visual.view renames the_visual_Grid      (Row, Col);
                   the_Site           : vector_3;
                begin
                   the_ground_Model.Scale := (Scale (1),
                                              Scale (2),
                                              Scale (3));
 
-                  the_Sprite := openGL.Visual.Forge.new_Visual (the_ground_Model.all'Access,
+                  the_Visual := openGL.Visual.Forge.new_Visual (the_ground_Model.all'Access,
                                                                 (1.0, 1.0, 1.0),
                                                                 is_Terrain => True);
 
@@ -181,11 +181,11 @@ is
                                site_Z_offset - (total_Depth / 2.0) * 1.0);
 
 
-                  the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
+                  the_visual_Grid (Row, Col).Site_is (the_Site + base_Centre);
 
                   tile_X_Offset := tile_X_Offset + Width (the_heightmap_Grid (Row, Col).all) * Scale (1);
 
-                  if Col /= the_sprite_Grid'Last (2)
+                  if Col /= the_visual_Grid'Last (2)
                   then
                      site_X_offset := site_X_offset
                                     + Width (the_heightmap_Grid (Row, Col    ).all) * Scale (1) / 2.0
@@ -194,7 +194,7 @@ is
                end;
             end loop;
 
-            if Row /= the_sprite_Grid'Last (1)
+            if Row /= the_visual_Grid'Last (1)
             then
                site_Z_offset := site_Z_offset + Depth (the_heightmap_Grid (Row,     1).all) * Scale (3) / 2.0
                                               + Depth (the_heightmap_Grid (Row + 1, 1).all) * Scale (3) / 2.0;
@@ -204,7 +204,7 @@ is
 
       free (the_Pixels);
 
-      return the_Sprite_Grid;
+      return the_Visual_Grid;
    end new_Terrain;
 
 
