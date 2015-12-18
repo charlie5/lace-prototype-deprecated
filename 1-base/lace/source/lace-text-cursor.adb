@@ -1,5 +1,5 @@
 with 
-     ada.Characters.latin_1;
+     ada.Characters.latin_1,
      ada.Strings.fixed,
      ada.Strings.Maps,
      ada.Text_IO;
