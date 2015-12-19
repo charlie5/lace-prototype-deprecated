@@ -63,6 +63,7 @@ is
 
    the_box_Model    : aliased  openGL.Model.open_gl.item := openGL.Model.open_gl.Forge.to_Model (Scale            => (1.0, 1.0, 1.0),
                                                                                                  Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
+                                                                                                 math_Model       => null,
                                                                                                  Texture          => openGL.null_Asset,
                                                                                                  Texture_is_lucid => False);
    the_Rig          : aliased  mmi.Rig.item;
