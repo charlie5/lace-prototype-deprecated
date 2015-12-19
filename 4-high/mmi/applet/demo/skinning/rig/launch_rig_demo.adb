@@ -61,7 +61,7 @@ is
                                                                                       mass => 0.0,
                                                                                       size => (50.0, 1.0, 50.0));
 
-   the_box_Model    : aliased  openGL.Model.open_gl.item := openGL.Model.open_gl.Forge.to_Model (Scale            => (1.0, 1.0, 1.0),
+   the_rig_Model    : aliased  openGL.Model.open_gl.item := openGL.Model.open_gl.Forge.to_Model (Scale            => (1.0, 1.0, 1.0),
                                                                                                  Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
                                                                                                  math_Model       => null,
                                                                                                  Texture          => openGL.null_Asset,
@@ -115,7 +115,7 @@ begin
                                                                            to_Radians ( 40.0))));
 
       the_Rig.define (the_Applet.gui_World,
-                      the_box_Model'unchecked_Access,
+                      the_rig_Model'unchecked_Access,
                       mass         => 1.0,
                       bone_Details => leaf_bone_Lengths,
                       is_Kinematic => False);
