@@ -1,3 +1,8 @@
+with
+     lace.Text.Cursor,
+     lace.Text.Forge;
+
+
 package body any_math.any_geometry.any_d3.any_Modeller.any_Forge
 is
 

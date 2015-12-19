@@ -1,6 +1,7 @@
 with
      mmi.Dolly.simple,
      mmi.Dolly.following,
+     mmi.Camera.forge,
      mmi.Joint,
      mmi.Events,
 
