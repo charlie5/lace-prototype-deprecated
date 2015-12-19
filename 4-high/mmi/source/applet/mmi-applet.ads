@@ -8,6 +8,8 @@ with
      mmi.Dolly,
      mmi.Window,
 
+     physics.Forge,
+
      openGL.Renderer.lean,
      opengl.Font, -- .texture,
 
@@ -98,6 +100,11 @@ is
 
    procedure add (Self : in out Item;   the_World : in world_Info_view);
 
+   procedure add_new_World (Self : in out Item;   Name       : in String;
+                                                  space_Kind : in physics.Forge.space_Kind);
+
+   function  new_World (Self : access Item;   Name       : in String;
+                        space_Kind : in physics.Forge.space_Kind) return mmi.World.view;
 
 
 
@@ -105,13 +112,18 @@ is
    --- Operations
    --
 
+   procedure evolve_all_Worlds      (Self : in out Item;   By : in Duration);
+
    procedure add                    (Self : in out Item;   the_Sprite    : in mmi.Sprite.view);
    procedure add                    (Self : in out Item;   the_Sprite    : in mmi.Sprite.view;
                                                            at_site       : in math.Vector_3);
 
 
+   procedure Dolly_is               (Self : access Item;   Now           : in mmi.Dolly.view);
    procedure enable_simple_Dolly    (Self : access Item;   in_World      : in world_Id);
    procedure enable_following_Dolly (Self : access Item;   Follow        : in mmi.Sprite.view);
+
+
 
    procedure enable_Mouse           (Self : access Item;   detect_Motion : in Boolean);
 

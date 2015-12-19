@@ -391,9 +391,6 @@ is
                      procedure free is new ada.Unchecked_Deallocation (openGL.Normals, Normals_view);
 
                   begin
-                     put_Line ("normals last: " & Integer'Image (Integer (the_Normals'Last)));
-                     put_Line ("verts   last: " & Integer'Image (Integer (my_Vertices'Last)));
-
                      for Each in my_Vertices'Range
                      loop
                         my_Vertices (Each).Normal := the_Normals (Index_t (Each));
