@@ -110,6 +110,10 @@ private
    overriding
    function  new_convex_hull_Shape (Self : access Item;   Points       : in physics.vector_3_array)      return physics.Shape .view;
 
+   overriding
+   function         new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view;
+
+
    --  2D
 
    overriding

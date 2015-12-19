@@ -169,6 +169,18 @@ is
 
 
 
+   function new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view
+   is
+      pragma Unreferenced (Self);
+      the_Sphere :  physics.Shape .view; -- := vox_2d_physics.Shape.new_sphere_Shape (Radius);
+   begin
+      return the_Sphere;
+   end new_mesh_Shape;
+
+
+
+
+
 
    --  2d
    --
