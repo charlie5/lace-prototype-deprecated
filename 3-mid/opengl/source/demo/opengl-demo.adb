@@ -23,14 +23,16 @@ is
 
 
 
-   procedure define (Name : in String)
+   procedure define (Name   : in String;
+                     Width  : in Positive := 1000;
+                     Height : in Positive := 1000)
    is
       use openGL.Palette,
           linear_Algebra_3d;
    begin
       Lumen.Window.Create (Window,
-                           width    => 1000,
-                           height   => 1000,
+                           width    => Width,
+                           height   => Height,
                            name     => Name,
                            animated => True);
 
@@ -51,10 +53,10 @@ is
       Camera.Renderer_is (Renderer'unchecked_Access);
 
       Camera.Position_is ((0.0, 0.0, 5.0),
-                              y_Rotation_from (to_Radians (0.0)));
+                          y_Rotation_from (to_Radians (0.0)));
 
-      Camera.Viewport_is (width  => 1000,
-                              height => 1000);
+      Camera.Viewport_is (width  => Width,
+                          height => Height);
 
    end define;
 

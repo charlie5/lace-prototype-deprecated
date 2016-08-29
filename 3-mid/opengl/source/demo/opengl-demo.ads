@@ -18,7 +18,9 @@ is
    FPS_Counter  :         openGL.frame_Counter.item;
    Done         :         Boolean := False;
 
-   procedure define (Name : in String);
+   procedure define (Name   : in String;
+                     Width  : in Positive := 1000;
+                     Height : in Positive := 1000);
    procedure destroy;
 
 end openGL.Demo;
