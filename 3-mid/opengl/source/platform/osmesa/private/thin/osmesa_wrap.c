@@ -248,25 +248,6 @@ extern          "C"
 
   }
 
-  DllExport void *SWIGSTDCALL Ada_OSMesaCreateContextAttribs (int *jarg1,
-							      void *jarg2)
-  {
-    void           *jresult;
-    int            *arg1 = (int *) 0;
-    OSMesaContext   arg2 = (OSMesaContext) 0;
-    OSMesaContext   result;
-
-    arg1 = (int *) jarg1;
-
-    arg2 = (OSMesaContext) jarg2;
-
-    result =
-      (OSMesaContext) OSMesaCreateContextAttribs ((int const *) arg1, arg2);
-    jresult = (void *) result;
-
-    return jresult;
-
-  }
 
   DllExport void SWIGSTDCALL Ada_OSMesaDestroyContext (void *jarg1)
   {

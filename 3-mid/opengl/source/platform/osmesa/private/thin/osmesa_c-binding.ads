@@ -20,10 +20,6 @@ package osmesa_c.Binding is
       accumBits   : in osmesa_c.GLint;
       sharelist   : in osmesa_c.OSMesaContext) return osmesa_c.OSMesaContext;
 
-   function OSMesaCreateContextAttribs
-     (attribList : in Swig.Pointers.int_Pointer;
-      sharelist  : in osmesa_c.OSMesaContext) return osmesa_c.OSMesaContext;
-
    procedure OSMesaDestroyContext (ctx : in osmesa_c.OSMesaContext);
 
    function OSMesaMakeCurrent
@@ -71,10 +67,6 @@ private
 
    pragma Import (C, OSMesaCreateContext, "Ada_OSMesaCreateContext");
    pragma Import (C, OSMesaCreateContextExt, "Ada_OSMesaCreateContextExt");
-   pragma Import
-     (C,
-      OSMesaCreateContextAttribs,
-      "Ada_OSMesaCreateContextAttribs");
    pragma Import (C, OSMesaDestroyContext, "Ada_OSMesaDestroyContext");
    pragma Import (C, OSMesaMakeCurrent, "Ada_OSMesaMakeCurrent");
    pragma Import (C, OSMesaGetCurrentContext, "Ada_OSMesaGetCurrentContext");
