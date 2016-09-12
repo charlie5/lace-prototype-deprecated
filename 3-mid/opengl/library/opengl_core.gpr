@@ -9,12 +9,13 @@ project Opengl_Core is
    for Object_Dir use "build";
    for Library_Name use "opengl_core";
 
-   type Platform is ("egl", "glx", "sdl");
+   type Platform is ("egl", "glx", "osmesa");
    The_Platform : Platform := external ("opengl_platform", "egl");
 
    case The_Platform is 
       when "egl" =>   for Languages    use ("Ada");
       when "glx" =>   for Languages    use ("Ada", "C");
+      when "osmesa" =>   for Languages    use ("Ada", "C");
    end case; 
 
    

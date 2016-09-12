@@ -14,7 +14,7 @@ project Opengl is
       ("Windows_NT", "Linux", "MacOSX");
    Os : Os_Type := external ("OS");
    type Platform is
-      ("egl", "glx");
+      ("egl", "glx", "osmesa");
    The_Platform : Platform := external ("opengl_platform", "egl");
    FLORIST_BUILD : Build_Kind := external ("FLORIST_BUILD");
 
@@ -47,6 +47,9 @@ project Opengl is
             case The_Platform is
 
                when "egl" =>
+                  for Default_Switches ("ada") use ("-g", "-lpthread", "-j13");
+
+               when "osmesa" =>
                   for Default_Switches ("ada") use ("-g", "-lpthread", "-j13");
 
                when "glx" =>

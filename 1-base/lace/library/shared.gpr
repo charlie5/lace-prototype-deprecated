@@ -8,7 +8,7 @@ abstract project Shared is
       ("xgc", "ravenscar");
    Restrictions : Restrictions := external ("restrictions");
    type Platform is
-      ("egl", "glx");
+      ("egl", "glx", "osmesa");
    Opengl_Platform : Platform := external ("opengl_platform");
    type Profile is
       ("safe", "lean", "desk");
