@@ -298,7 +298,8 @@ is
 
                Self.is_Busy := False;
 
-               if Self.swap_Required
+               if    Self.Swapper /= null
+                 and Self.swap_Required
                then
                   Self.Swapper.all;
                end if;
