@@ -8,15 +8,9 @@ abstract project Shared is
       ("xgc", "ravenscar");
    Restrictions : Restrictions := external ("restrictions");
 
-   type Profile is
-      ("safe", "lean", "desk");
-   Opengl_Profile : Profile := external ("opengl_profile");
-
 
    package Compiler is
-
       case Os is
-
          when "Windows_NT" =>
             for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3aAbCdefhiklnOpx", "-gnat12", "-Wall", "-g");
 
