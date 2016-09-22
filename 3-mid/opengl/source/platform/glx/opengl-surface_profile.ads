@@ -1,5 +1,4 @@
 with
-     openGL.Display,
      openGL.Screen,
      Glx;
 
@@ -57,11 +56,10 @@ is
 
    desired_Qualitites_unavailable : exception;
 
-   procedure define    (Self : in out Item;   the_Display : access openGL.Display.item'Class;
-                                              Screen      : access openGL.Screen .item'Class;
+   procedure define    (Self : in out Item;   Screen      : access openGL.Screen .item'Class;
                                               Desired     : in     Qualities                := default_Qualities);
 
-   function  fetch_All (the_Display : access openGL.Display.item'class) return surface_Profile.items;
+   function  fetch_All return surface_Profile.items;
 
 
 
@@ -81,7 +79,6 @@ private
    type Item is tagged
       record
          glx_Config :        GLX.GLXFBConfig;
-         Display    : access openGL.Display.item'Class;
          Visual     : access GLX.XVisualInfo;
       end record;
 

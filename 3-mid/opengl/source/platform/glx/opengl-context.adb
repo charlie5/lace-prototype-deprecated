@@ -6,8 +6,7 @@ with
 package body openGL.Context
 is
 
-   procedure define (Self : in out Item;   the_Display         : access openGL.Display.item'Class;
-                                           the_surface_Profile : in     openGL.surface_Profile.item'Class)
+   procedure define (Self : in out Item;   the_surface_Profile : in     openGL.surface_Profile.item'Class)
 
    is
       pragma Unreferenced (the_surface_Profile);
@@ -19,8 +18,6 @@ is
       then
          raise Program_Error with "no openGL context";
       end if;
-
-      Self.Display := the_Display;
    end define;
 
 

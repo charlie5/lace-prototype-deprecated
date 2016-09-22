@@ -1,6 +1,5 @@
 with
-     openGL.surface_Profile,
-     openGL.Display;
+     openGL.surface_Profile;
 
 private
 with
@@ -25,7 +24,6 @@ is
 
 
    procedure define (Self : in out Item;   surface_Profile : in openGL.surface_Profile.item'Class;
-                                           Display         : in openGL.Display.Item;
                                            Window_Id       : in Natural);
 
 
@@ -41,7 +39,6 @@ private
       record
          glx_Surface :        glx.GLXDrawable;
          Context     : access openGL.Context.item'Class;
-         Display     :        openGL.Display.item;
       end record;
 
 end openGL.Surface;

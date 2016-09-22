@@ -24,14 +24,13 @@ is
 
 
    procedure define (Self : in out Item;   surface_Profile : in openGL.surface_Profile.item'Class;
-                                           Display         : in openGL.Display.Item;
                                            Window_Id       : in Natural)
    is
       pragma Unreferenced (Window_Id);
 
       the_surface_Profile : constant openGL.surface_Profile.item'Class := surface_Profile;
    begin
-      Self.Display := Display;
+      null;
    end define;
 
 

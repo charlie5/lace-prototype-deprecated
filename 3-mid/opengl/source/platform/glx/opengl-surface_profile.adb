@@ -26,22 +26,20 @@ is
                                                                   );
 
 
-   procedure define (Self : in out Item;   the_Display : access openGL.Display.item'Class;
-                                           Screen      : access openGL.Screen .item'Class;
+   procedure define (Self : in out Item;   Screen      : access openGL.Screen .item'Class;
                                            Desired     : in     Qualities                := default_Qualities)
    is
       pragma Unreferenced (Desired);
 
       use openGL.Screen;
 
-      default_screen : constant C.int := the_Display.screen_Id;
       num_fb_configs : aliased  C.int := 0;
 
       visual_Id      : aliased C.int;
       unused         :         C.int;     pragma Unreferenced (unused);
 
    begin
-      Self.Display := the_Display;
+      null;
    end define;
 
 
@@ -54,7 +52,7 @@ is
 
 
 
-   function fetch_All (the_Display : access openGL.Display.item'class) return surface_Profile.items
+   function fetch_All return surface_Profile.items
    is
    begin
       raise Program_Error with "TBD";
