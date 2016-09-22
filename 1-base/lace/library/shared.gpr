@@ -8,10 +8,6 @@ abstract project Shared is
       ("xgc", "ravenscar");
    Restrictions : Restrictions := external ("restrictions");
 
-   type Platform is
-      ("egl", "glx", "osmesa");
-   Opengl_Platform : Platform := external ("opengl_platform");
-
    type Profile is
       ("safe", "lean", "desk");
    Opengl_Profile : Profile := external ("opengl_profile");
@@ -29,30 +25,7 @@ abstract project Shared is
             case Restrictions is
 
                when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                        for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                              for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
-
-                           when "lean" =>
-
-                              for Default_Switches ("ada") use ("-fstack-check", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnatn", "-gnat12", "-gnato", "-gnata");
-
-                           when "desk" =>
-
-                              for Default_Switches ("ada") use ("-gnatVn", "-gnatf", "-gnatwa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnat12", "-gnato", "-fstack-check", "-gnata");
-                        end case;
-                  end case;
+                  for Default_Switches ("ada") use ("-gnatVn", "-gnatf", "-gnatwa", "-gnaty3AbdefhklOx", "-Wall", "-g", "-gnat12", "-gnato", "-fstack-check", "-gnata");
 
                when "ravenscar" =>
                   for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato", "-gnatf", "-gnatwa", "-gnatVa", "-gnaty3AbCdefhiklOpx", "-gnat12", "-Wall", "-g");
