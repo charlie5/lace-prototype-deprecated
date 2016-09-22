@@ -4,7 +4,14 @@
 # Ada Library Information
 *.ali
 
+# Gnat build artifacts
 *-loc.xml
 gnatinspect.db
 *~
 auto.cgpr
+
+# Build folders
+build
+
+# Library files
+*.a
