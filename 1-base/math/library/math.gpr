@@ -5,9 +5,9 @@ project Math is
 
    for Object_Dir use "build";
    for Exec_Dir use ".";
-   --   for Library_Name use "math";
    for Library_Dir use "lib";
    for Library_Ali_Dir use "objects";
+
    for Source_Dirs use ("../source/generic",
                         "../source/generic/pure/algebra",
                         "../source/generic/pure/analysis",
@@ -19,10 +19,8 @@ project Math is
                         "../source/precision/short/**",
                         "../source/precision/float/**",
                         "../source/precision/long/**");
+
    package Compiler renames Shared.Compiler;
---   package Compiler is
---      for Default_Switches ("ada") use ("-gnat12", "-gnato", "-lpthread", "-fstack-check", "-g", "-gnata");
---   end Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");
@@ -33,4 +31,3 @@ project Math is
    end Builder;
 
 end Math;
-
