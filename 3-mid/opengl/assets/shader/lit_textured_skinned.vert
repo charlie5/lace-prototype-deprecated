@@ -95,7 +95,7 @@ void main()
                           m44[2].xyz);
 
         // transform normal by bone 1
-        transformedNormal += aNormal * m33 * bone_Weights.x;
+        transformedNormal += m33 * aNormal * bone_Weights.x;
 
 
     // bone 2
@@ -110,7 +110,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 2
-        transformedNormal += aNormal * m33 * bone_Weights.y;
+        transformedNormal += m33 * aNormal * bone_Weights.y;
 
 
     // bone 3
@@ -125,7 +125,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 3
-        transformedNormal += aNormal * m33 * bone_Weights.z;
+        transformedNormal += m33 * aNormal * bone_Weights.z;
 
 
     // bone 4
@@ -140,7 +140,7 @@ void main()
                    m44[2].xyz);
 
         // transform normal by bone 4
-        transformedNormal += aNormal * m33 * bone_Weights.w;
+        transformedNormal += m33 * aNormal * bone_Weights.w;
 
 
 
@@ -149,8 +149,8 @@ void main()
     
     transformedNormal = normalize (transformedNormal);
 
-    vColor            = directional_light_1_color (inv_modelview_Matrix * transformedNormal);
-    vColor           += directional_light_2_color (inv_modelview_Matrix * transformedNormal);
+    vColor            = directional_light_1_color (transformedNormal *  (inv_modelview_Matrix));
+    vColor           += directional_light_2_color (transformedNormal *  (inv_modelview_Matrix));
 
     vCoords           = aCoords;
 }
