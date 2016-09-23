@@ -1,3 +1,5 @@
+#version 330 core
+
 struct directional_light
 {
    vec3   direction;        // Normalized light direction in eye space.
@@ -74,6 +76,9 @@ void main()
 {
    gl_Position = mvp_Matrix * vec4 (aSite, 1.0);
    
+//   vColor  = directional_light_1_color (inv_modelview_Matrix * normalize (aNormal));
+//   vColor += directional_light_2_color (inv_modelview_Matrix * normalize (aNormal));
+
    vColor  = directional_light_1_color (normalize (aNormal) * inv_modelview_Matrix);
    vColor += directional_light_2_color (normalize (aNormal) * inv_modelview_Matrix);
 
