@@ -11,14 +11,6 @@ varying   vec4   vColor;
 
 void main()
 {
-//   vec3    a = aSite;     
-   
-//   a.x = a.x * uScale.x;     
-//   a.y = a.y * uScale.y;     
-//   a.z = a.z * uScale.z;     
-   
-//   gl_Position = mvp_Matrix * vec4 (a, 1.0); 
    gl_Position = mvp_Matrix * vec4 (aSite * uScale, 1.0);
-
    vColor      = aColor;
 }

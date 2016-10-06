@@ -25,7 +25,6 @@ varying   vec4   vColor;
 varying   vec2   vCoords;
 
 
-
 const float   c_zero      =  0.0;
 const float   c_one       =  1.0;
 const float   c_shininess = 20.0;
@@ -76,9 +75,6 @@ void main()
 {
    gl_Position = mvp_Matrix * vec4 (aSite, 1.0);
    
-//   vColor  = directional_light_1_color (inv_modelview_Matrix * normalize (aNormal));
-//   vColor += directional_light_2_color (inv_modelview_Matrix * normalize (aNormal));
-
    vColor  = directional_light_1_color (normalize (aNormal) * inv_modelview_Matrix);
    vColor += directional_light_2_color (normalize (aNormal) * inv_modelview_Matrix);
 

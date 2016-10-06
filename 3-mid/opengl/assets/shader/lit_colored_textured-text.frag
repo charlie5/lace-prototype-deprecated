@@ -1,12 +1,9 @@
 #version 120
 
-//precision mediump float;
-
 uniform sampler2D   sTexture; 
 
 varying vec4        vColor;
 varying vec2        vCoords;
-
 
 
 void main()
@@ -19,13 +16,8 @@ void main()
    }   
 
 
-
    vec4    the_Color = vColor;
 
-   the_Color.a = the_Alpha * vColor.a;    // Modulate color alpha with texture alpha.
-   
-   
-   
+   the_Color.a  = the_Alpha * vColor.a;    // Modulate color alpha with texture alpha.
    gl_FragColor = the_Color;
 }
-

@@ -11,11 +11,8 @@ varying   vec4   vColor;
 varying   vec2   vCoords;
 
 
-
-const float   c_zero      = 0.0;
-const float   c_one       = 1.0;
-
-
+const float      c_zero = 0.0;
+const float      c_one  = 1.0;
 
 
 void main()
