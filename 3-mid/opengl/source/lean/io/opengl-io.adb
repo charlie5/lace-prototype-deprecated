@@ -460,48 +460,157 @@ is
    end Write_raw_BGR_frame;
 
 
+   procedure Write_raw_BGRA_frame (s             : Stream_Access;
+                                   width, height : Natural)
+   is
+      use GL, openGL.Texture;
+
+      -- 4-byte padding for .bmp/.avi formats is the same as GL's default
+      -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
+      -- http://www.openGL.org/sdk/docs/man/xhtml/glPixelStore.xml
+      --
+--        padded_row_size : constant Positive:= 4 * Integer(Float'Ceiling(Float(width) * 3.0 / 4.0));
+      padded_row_size : constant Positive:= 4 * Integer(Float'Ceiling(Float(width) * 4.0 / 4.0));
+      -- (in bytes)
+      --
+
+      type Temp_bitmap_type is array(Natural range <>) of aliased gl.GLUbyte;
+
+      PicData: Temp_bitmap_type(0..(padded_row_size+4) * (height+4) - 1);
+      -- No dynamic allocation needed!
+      -- The "+4" are there to avoid parity address problems when GL writes
+      -- to the buffer.
+
+      type loc_pointer is new gl.safe.GLvoid_Pointer;
+
+      function Cvt is new Ada.Unchecked_Conversion(System.Address,loc_pointer);
+      -- This method is functionally identical as GNAT's Unrestricted_Access
+      -- but has no type safety (cf GNAT Docs)
+
+      pragma No_Strict_Aliasing(loc_pointer); -- recommended by GNAT 2005+
+
+      pPicData :          loc_pointer;
+      data_max : constant Integer    := padded_row_size * height - 1;
+
+      -- Workaround for the severe xxx'Read xxx'Write performance
+      -- problems in the GNAT and ObjectAda compilers (as in 2009)
+      -- This is possible if and only if Byte = Stream_Element and
+      -- arrays types are both packed the same way.
+      --
+      type Byte_array is array (Integer range <>) of aliased GLUByte;
+
+      subtype Size_test_a is Byte_Array (1..19);
+      subtype Size_test_b is Ada.Streams.Stream_Element_Array (1..19);
+
+      workaround_possible: constant Boolean:=          Size_test_a'Size      = Size_test_b'Size
+                                              and then Size_test_a'Alignment = Size_test_b'Alignment;
+
+
+   begin
+      pPicData:= Cvt (PicData (0)'Address);
+
+      GLReadPixels (0, 0,
+                    GLSizei (width),
+                    GLSizei (height),
+                    to_GL (openGL.Texture.BGRA),
+                    GL.GL_UNSIGNED_BYTE,
+                    pPicData);
+
+      if workaround_possible
+      then
+         declare
+            use Ada.Streams;
+
+            SE_Buffer   : Stream_Element_Array (0..Stream_Element_Offset(PicData'Last));
+
+            for SE_Buffer'Address use PicData'Address;
+            pragma Import (Ada, SE_Buffer);
+         begin
+            Ada.Streams.Write(s.all, SE_Buffer(0..Stream_Element_Offset(data_max)));
+         end;
+
+      else
+         Temp_bitmap_type'Write(s, PicData(0..data_max) );
+      end if;
+
+   end Write_raw_BGRA_frame;
+
 
 
    -------------
    -- Screenshot
    --
 
-   procedure Screenshot (Filename : in String)
+   subtype FXPT2DOT30 is U32;
+
+   type CIEXYZ
+   is
+      record
+         ciexyzX : FXPT2DOT30;
+         ciexyzY : FXPT2DOT30;
+         ciexyzZ : FXPT2DOT30;
+      end record;
+
+   type CIEXYZTRIPLE is
+      record
+         ciexyzRed   : CIEXYZ;
+         ciexyzGreen : CIEXYZ;
+         ciexyzBlue  : CIEXYZ;
+      end record;
+
+   type BITMAPFILEHEADER is
+      record
+         bfType      : U16;
+         bfSize      : U32;
+         bfReserved1 : U16 := 0;
+         bfReserved2 : U16 := 0;
+         bfOffBits   : U32;
+      end record;
+   pragma Pack (BITMAPFILEHEADER);
+   for BITMAPFILEHEADER'Size use 8 * 14;
+
+
+   type BITMAPINFOHEADER is
+      record
+         biSize          : U32;
+         biWidth         : I32;
+         biHeight        : I32;
+         biPlanes        : U16;
+         biBitCount      : U16;
+         biCompression   : U32;
+         biSizeImage     : U32;
+         biXPelsPerMeter : I32 := 0;
+         biYPelsPerMeter : I32 := 0;
+         biClrUsed       : U32 := 0;
+         biClrImportant  : U32 := 0;
+      end record;
+   pragma Pack (BITMAPINFOHEADER);
+   for BITMAPINFOHEADER'Size use 8 * 40;
+
+   type BITMAPV4HEADER is
+      record
+         Core          : BITMAPINFOHEADER;
+         bV4RedMask    : U32;
+         bV4GreenMask  : U32;
+         bV4BlueMask   : U32;
+         bV4AlphaMask  : U32;
+         bV4CSType     : U32;
+         bV4Endpoints  : CIEXYZTRIPLE;
+         bV4GammaRed   : U32;
+         bV4GammaGreen : U32;
+         bV4GammaBlue  : U32;
+      end record;
+   pragma Pack (BITMAPV4HEADER);
+   for BITMAPV4HEADER'Size use 8 * 108;
+
+
+
+   procedure Screenshot_orig (Filename : in String)
    is
       use GL;
 
       check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       f           :          ada.Streams.Stream_IO.File_Type;
-
-      type BITMAPFILEHEADER is
-         record
-            bfType      : U16;
-            bfSize      : U32;
-            bfReserved1 : U16;
-            bfReserved2 : U16;
-            bfOffBits   : U32;
-         end record;
-      pragma Pack (BITMAPFILEHEADER);
-      for BITMAPFILEHEADER'Size use 8 * 14;
-
-
-      type BITMAPINFOHEADER is
-         record
-            biSize          : U32;
-            biWidth         : I32;
-            biHeight        : I32;
-            biPlanes        : U16;
-            biBitCount      : U16;
-            biCompression   : U32;
-            biSizeImage     : U32;
-            biXPelsPerMeter : I32;
-            biYPelsPerMeter : I32;
-            biClrUsed       : U32;
-            biClrImportant  : U32;
-         end record;
-      pragma Pack (BITMAPINFOHEADER);
-      for BITMAPINFOHEADER'Size use 8 * 40;
-
 
       FileInfo   : BITMAPINFOHEADER;
       FileHeader : BITMAPFILEHEADER;
@@ -518,8 +627,6 @@ is
       FileHeader.bfType        := 16#4D42#; -- 'BM'
       FileHeader.bfOffBits     :=   BITMAPINFOHEADER'Size / 8
                                   + BITMAPFILEHEADER'Size / 8;
-      FileHeader.bfReserved1   := 0;
-      FileHeader.bfReserved2   := 0;
 
       FileInfo.biSize          := BITMAPINFOHEADER'Size / 8;
       FileInfo.biWidth         := I32 (Viewport (2));
@@ -532,11 +639,6 @@ is
                                        * Integer (Float'Ceiling (Float (FileInfo.biWidth) * 3.0 / 4.0))
                                        * Integer(FileInfo.biHeight)
                                       );
-      FileInfo.biXPelsPerMeter := 0;
-      FileInfo.biYPelsPerMeter := 0;
-      FileInfo.biClrUsed       := 0;
-      FileInfo.biClrImportant  := 0;
-
       FileHeader.bfSize        := FileHeader.bfOffBits + FileInfo.biSizeImage;
 
       Create (f, Out_File, Filename);
@@ -574,7 +676,128 @@ is
             Close (f);
             raise;
       end;
+   end Screenshot_orig;
+
+
+
+
+   procedure Screenshot (Filename : in String)
+   is
+      use GL;
+
+      check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      f           :          ada.Streams.Stream_IO.File_Type;
+
+      FileHeader  : BITMAPFILEHEADER;
+      FileInfo    : BITMAPV4HEADER;
+
+      Viewport    : array (0 .. 3) of aliased GLint;
+
+      --  This method is functionally identical as GNAT's Unrestricted_Access
+      --  but has no type safety (cf GNAT Docs)
+      --        pragma No_Strict_Aliasing(intPtr); -- recommended by GNAT 2005+
+   begin
+      glGetIntegerv (GL_VIEWPORT,
+                     Viewport (0)'Unchecked_Access);
+
+      FileHeader.bfType        := 16#4D42#; -- 'BM'
+      FileHeader.bfOffBits     :=   BITMAPV4HEADER  'Size / 8
+                                  + BITMAPFILEHEADER'Size / 8;
+
+      FileInfo.Core.biSize          := BITMAPV4HEADER'Size / 8;
+      FileInfo.Core.biWidth         := I32 (Viewport (2));
+      FileInfo.Core.biHeight        := I32 (Viewport (3));
+      FileInfo.Core.biPlanes        := 1;
+      FileInfo.Core.biBitCount      := 32; -- 24;
+      FileInfo.Core.biCompression   := 3;
+      FileInfo.Core.biSizeImage     := U32 ( -- 4-byte padding for .bmp/.avi formats
+                                              4
+--                                       * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth) * 3.0 / 4.0))
+                                            * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth) * 4.0 / 4.0))
+                                            * Integer(FileInfo.Core.biHeight)
+                                      );
+
+--        FileInfo.bV4RedMask    := 16#0000FF00#;
+--        FileInfo.bV4GreenMask  := 16#00FF0000#;
+--        FileInfo.bV4BlueMask   := 16#FF000000#;
+--        FileInfo.bV4AlphaMask  := 16#000000FF#;
+--  --        FileInfo.bV4CSType     := 16#206E6957#; -- 0;
+--        FileInfo.bV4CSType     := 0; -- 16#57696E20#; -- 0;
+
+      FileInfo.bV4RedMask    := 16#00FF0000#;
+      FileInfo.bV4GreenMask  := 16#0000FF00#;
+      FileInfo.bV4BlueMask   := 16#000000FF#;
+      FileInfo.bV4AlphaMask  := 16#FF000000#;
+      FileInfo.bV4CSType     := 0; -- 16#206E6957#; -- 0;
+
+      FileInfo.bV4Endpoints  := (others => (others => 0));
+      FileInfo.bV4GammaRed   := 0;
+      FileInfo.bV4GammaGreen := 0;
+      FileInfo.bV4GammaBlue  := 0;
+
+      FileHeader.bfSize := FileHeader.bfOffBits + FileInfo.Core.biSizeImage;
+
+      Create (f, Out_File, Filename);
+      declare
+         procedure Write_Intel is new Write_Intel_x86_number (U16, Stream (f));
+         procedure Write_Intel is new Write_Intel_x86_number (U32, Stream (f));
+         function  Cvt         is new Ada.Unchecked_Conversion (I32, U32);
+      begin
+         -- ** Endian-safe: ** --
+         Write_Intel (FileHeader.bfType);
+         Write_Intel (FileHeader.bfSize);
+         Write_Intel (FileHeader.bfReserved1);
+         Write_Intel (FileHeader.bfReserved2);
+         Write_Intel (FileHeader.bfOffBits);
+         --
+         Write_Intel (     FileInfo.Core.biSize);
+         Write_Intel (Cvt (FileInfo.Core.biWidth));
+         Write_Intel (Cvt (FileInfo.Core.biHeight));
+         Write_Intel (     FileInfo.Core.biPlanes);
+         Write_Intel (     FileInfo.Core.biBitCount);
+         Write_Intel (     FileInfo.Core.biCompression);
+         Write_Intel (     FileInfo.Core.biSizeImage);
+         Write_Intel (Cvt (FileInfo.Core.biXPelsPerMeter));
+         Write_Intel (Cvt (FileInfo.Core.biYPelsPerMeter));
+         Write_Intel (     FileInfo.Core.biClrUsed);
+         Write_Intel (     FileInfo.Core.biClrImportant);
+
+         Write_Intel (     FileInfo.bV4RedMask);
+         Write_Intel (     FileInfo.bV4GreenMask);
+         Write_Intel (     FileInfo.bV4BlueMask);
+         Write_Intel (     FileInfo.bV4AlphaMask);
+         Write_Intel (     FileInfo.bV4CSType);
+
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzX);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzY);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzZ);
+
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzX);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzY);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzZ);
+
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzX);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzY);
+         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzZ);
+
+         Write_Intel (     FileInfo.bV4GammaRed);
+         Write_Intel (     FileInfo.bV4GammaGreen);
+         Write_Intel (     FileInfo.bV4GammaBlue);
+
+         --
+         Write_raw_BGRA_frame (Stream (f),
+                              Integer (Viewport (2)),
+                              Integer (Viewport (3)));
+         Close (f);
+
+      exception
+         when others =>
+            Close (f);
+            raise;
+      end;
    end Screenshot;
+
+
 
 
 

@@ -26,7 +26,8 @@ is
       glClearColor (GLfloat (to_Real (Self.Background.Red)),
                     GLfloat (to_Real (Self.Background.Green)),
                     GLfloat (to_Real (Self.Background.Blue)),
-                    1.0);
+--                      1.0);
+                    0.9);
 
       glClear (   GL_COLOR_BUFFER_BIT
                or GL_DEPTH_BUFFER_BIT);
