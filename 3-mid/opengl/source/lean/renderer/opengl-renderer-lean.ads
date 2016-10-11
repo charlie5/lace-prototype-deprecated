@@ -90,7 +90,8 @@ is
 
    procedure render       (Self : in out Item;   to_Surface : in openGL.Surface.view := null);
    procedure add_Font     (Self : in out Item;   font_Id    : in openGL.Font.font_Id);
-   procedure Screenshot   (Self : in out Item;   Filename   : in String);
+   procedure Screenshot   (Self : in out Item;   Filename   : in String;
+                                                 with_Alpha : in Boolean := False);
 
    function  is_Busy      (Self : in Item) return Boolean;
 
@@ -226,11 +227,12 @@ private
 
    task type Engine (Self : access Item'Class)
    is
-      entry start      (Context  : in openGL.Context.view);
+      entry start      (Context    : in openGL.Context.view);
       entry Stop;
       entry render;
-      entry add_Font   (font_Id  : in openGL.Font.font_Id);
-      entry Screenshot (Filename : in String);
+      entry add_Font   (font_Id    : in openGL.Font.font_Id);
+      entry Screenshot (Filename   : in String;
+                        with_Alpha : in Boolean := False);
 
       pragma Storage_Size (40_000_000);
    end Engine;

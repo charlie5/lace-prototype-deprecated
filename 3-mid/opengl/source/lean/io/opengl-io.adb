@@ -469,8 +469,7 @@ is
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
       -- http://www.openGL.org/sdk/docs/man/xhtml/glPixelStore.xml
       --
---        padded_row_size : constant Positive:= 4 * Integer(Float'Ceiling(Float(width) * 3.0 / 4.0));
-      padded_row_size : constant Positive:= 4 * Integer(Float'Ceiling(Float(width) * 4.0 / 4.0));
+      padded_row_size : constant Positive:= 4 * Integer (Float'Ceiling (Float (width)));
       -- (in bytes)
       --
 
@@ -605,7 +604,7 @@ is
 
 
 
-   procedure Screenshot_orig (Filename : in String)
+   procedure opaque_Screenshot (Filename : in String)
    is
       use GL;
 
@@ -676,12 +675,12 @@ is
             Close (f);
             raise;
       end;
-   end Screenshot_orig;
+   end opaque_Screenshot;
 
 
 
 
-   procedure Screenshot (Filename : in String)
+   procedure lucid_Screenshot (Filename : in String)
    is
       use GL;
 
@@ -712,24 +711,15 @@ is
       FileInfo.Core.biCompression   := 3;
       FileInfo.Core.biSizeImage     := U32 ( -- 4-byte padding for .bmp/.avi formats
                                               4
---                                       * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth) * 3.0 / 4.0))
-                                            * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth) * 4.0 / 4.0))
+                                            * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth)))
                                             * Integer(FileInfo.Core.biHeight)
-                                      );
-
---        FileInfo.bV4RedMask    := 16#0000FF00#;
---        FileInfo.bV4GreenMask  := 16#00FF0000#;
---        FileInfo.bV4BlueMask   := 16#FF000000#;
---        FileInfo.bV4AlphaMask  := 16#000000FF#;
---  --        FileInfo.bV4CSType     := 16#206E6957#; -- 0;
---        FileInfo.bV4CSType     := 0; -- 16#57696E20#; -- 0;
+                                           );
 
       FileInfo.bV4RedMask    := 16#00FF0000#;
       FileInfo.bV4GreenMask  := 16#0000FF00#;
       FileInfo.bV4BlueMask   := 16#000000FF#;
       FileInfo.bV4AlphaMask  := 16#FF000000#;
-      FileInfo.bV4CSType     := 0; -- 16#206E6957#; -- 0;
-
+      FileInfo.bV4CSType     := 0;
       FileInfo.bV4Endpoints  := (others => (others => 0));
       FileInfo.bV4GammaRed   := 0;
       FileInfo.bV4GammaGreen := 0;
@@ -784,10 +774,9 @@ is
          Write_Intel (     FileInfo.bV4GammaGreen);
          Write_Intel (     FileInfo.bV4GammaBlue);
 
-         --
          Write_raw_BGRA_frame (Stream (f),
-                              Integer (Viewport (2)),
-                              Integer (Viewport (3)));
+                               Integer (Viewport (2)),
+                               Integer (Viewport (3)));
          Close (f);
 
       exception
@@ -795,10 +784,19 @@ is
             Close (f);
             raise;
       end;
+   end lucid_Screenshot;
+
+
+
+   procedure Screenshot (Filename : in String;   with_Alpha : in Boolean := False)
+   is
+   begin
+      if with_Alpha then
+         lucid_Screenshot (Filename);
+      else
+         opaque_Screenshot (Filename);
+      end if;
    end Screenshot;
-
-
-
 
 
    ----------------

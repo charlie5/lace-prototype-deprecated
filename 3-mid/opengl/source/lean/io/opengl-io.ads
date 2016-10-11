@@ -151,9 +151,9 @@ is
 
    function  current_Frame return  openGL.Image;
 
-   procedure Screenshot   (Filename : in String);
+   procedure Screenshot (Filename : in String;   with_Alpha : in Boolean := False);
    --
-   --  Stores the image of the current, active viewport (in RGB Bitmap format).
+   --  Stores the image of the current, active viewport (in RGB or RGBA Bitmap format).
 
 
 

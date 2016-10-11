@@ -244,13 +244,14 @@ is
       while not Done
       loop
          declare
-            all_Updates       : camera_updates_Couples (1 .. 100);
-            Length            : Natural;
+            all_Updates        : camera_updates_Couples (1 .. 100);
+            Length             : Natural;
 
-            new_font_Name     : asset_Name := null_Asset;
-            new_font_Size     : Integer;
+            new_font_Name      : asset_Name := null_Asset;
+            new_font_Size      : Integer;
 
-            new_snapshot_Name : asset_Name := null_Asset;
+            new_snapshot_Name  : asset_Name := null_Asset;
+            snapshot_has_Alpha : Boolean;
 
          begin
             select
@@ -266,9 +267,11 @@ is
                   new_font_Size := font_Id.Size;
                end add_Font;
 
-            or accept Screenshot (Filename : in String)
+            or accept Screenshot (Filename   : in String;
+                                  with_Alpha : in Boolean := False)
                do
-                  new_snapshot_Name := to_Asset (Filename);
+                  new_snapshot_Name  := to_Asset (Filename);
+                  snapshot_has_Alpha := with_Alpha;
                end Screenshot;
 
             or accept Stop
@@ -288,7 +291,8 @@ is
 
             elsif new_snapshot_Name /= null_Asset
             then
-               openGL.IO.Screenshot (to_String (new_snapshot_Name));
+               openGL.IO.Screenshot (Filename   => to_String (new_snapshot_Name),
+                                     with_Alpha => snapshot_has_Alpha);
 
             else
                Self.update_Impostors_and_draw_Visuals (all_Updates (1 .. Length));
@@ -357,10 +361,11 @@ is
 
 
 
-   procedure Screenshot (Self : in out Item;   Filename   : in String)
+   procedure Screenshot   (Self : in out Item;   Filename   : in String;
+                                                 with_Alpha : in Boolean := False)
    is
    begin
-      Self.Engine.Screenshot (Filename);
+      Self.Engine.Screenshot (Filename, with_Alpha);
    end Screenshot;
 
 
