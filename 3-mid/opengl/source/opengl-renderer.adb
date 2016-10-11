@@ -10,9 +10,18 @@ is
    use GL, interfaces.C;
 
 
-   procedure Background_is (Self : in out Item;   Now : in openGL.Color)
+   procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
+                                                  Opacity : in Real        := 1.0)
    is
-      pragma Unreferenced (Self);
+   begin
+      Self.Background.Primary := Now;
+      Self.Background.Opacity := to_color_Value (Opacity);
+   end Background_is;
+
+
+
+   procedure Background_is (Self : in out Item;   Now : in openGL.lucid_Color)
+   is
    begin
       Self.Background := Now;
    end Background_is;
@@ -21,13 +30,12 @@ is
 
    procedure clear_Frame (Self : in Item)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;
+      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
-      glClearColor (GLfloat (to_Real (Self.Background.Red)),
-                    GLfloat (to_Real (Self.Background.Green)),
-                    GLfloat (to_Real (Self.Background.Blue)),
---                      1.0);
-                    0.9);
+      glClearColor (GLfloat (to_Real (Self.Background.Primary.Red)),
+                    GLfloat (to_Real (Self.Background.Primary.Green)),
+                    GLfloat (to_Real (Self.Background.Primary.Blue)),
+                    GLfloat (to_Real (Self.Background.Opacity)));
 
       glClear (   GL_COLOR_BUFFER_BIT
                or GL_DEPTH_BUFFER_BIT);

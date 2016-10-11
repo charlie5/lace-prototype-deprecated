@@ -10,7 +10,9 @@ is
 
    --  Attributes
    --
-   procedure Background_is (Self : in out Item;   Now : in openGL.Color);
+   procedure Background_is (Self : in out Item;   Now     : in openGL.lucid_Color);
+   procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
+                                                  Opacity : in Real        := 1.0);
 
 
    --  Operations
@@ -24,7 +26,7 @@ private
 
    type Item is abstract tagged limited
       record
-         Background : openGL.Color;
+         Background : openGL.lucid_Color;
       end record;
 
 end openGL.Renderer;
