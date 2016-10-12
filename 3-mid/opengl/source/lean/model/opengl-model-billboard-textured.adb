@@ -20,9 +20,10 @@ is
    is
       function new_Billboard (Scale   : in math.Vector_3;
                               Plane   : in billboard.Plane;
-                              Texture : in openGL.asset_Name) return View
+                              Texture : in openGL.asset_Name;
+                              Lucid   : in Boolean          := False) return View
       is
-         Self : constant View := new Item;
+         Self : constant View := new Item (Lucid);
       begin
          Self.Plane        := Plane;
          Self.Texture_Name := Texture;
@@ -88,13 +89,26 @@ is
             Self.Texture := openGL.io.to_Texture (to_String (Self.texture_Name));
          end if;
 
-         if Self.Image /= null
+         if Self.Lucid
          then
-            if Self.Texture /= null_Object
+            if Self.lucid_Image /= null
             then
-               openGL.Texture.set_Image (Self.Texture, Self.Image.all);
-            else
-               Self.Texture := openGL.Texture.to_Texture (Self.Image.all);
+               if Self.Texture /= null_Object
+               then
+                  openGL.Texture.set_Image (Self.Texture, Self.lucid_Image.all);
+               else
+                  Self.Texture := openGL.Texture.to_Texture (Self.lucid_Image.all);
+               end if;
+            end if;
+         else
+            if Self.Image /= null
+            then
+               if Self.Texture /= null_Object
+               then
+                  openGL.Texture.set_Image (Self.Texture, Self.Image.all);
+               else
+                  Self.Texture := openGL.Texture.to_Texture (Self.Image.all);
+               end if;
             end if;
          end if;
 
@@ -144,6 +158,30 @@ is
       else
          free (Self.Image);
          Self.Image := new openGL.Image' (Now);
+      end if;
+
+      Self.needs_Rebuild := True;
+   end Image_is;
+
+
+
+   procedure Image_is (Self : in out Item;   Now : in openGL.lucid_Image)
+   is
+      procedure free is new ada.unchecked_Deallocation (lucid_Image,
+                                                        lucid_Image_view);
+   begin
+      if Self.lucid_Image = null
+      then
+         Self.lucid_Image := new openGL.lucid_Image' (Now);
+
+      elsif Self.lucid_Image'Length (1) = Now'Length (1)
+        and Self.lucid_Image'Length (2) = Now'Length (2)
+      then
+         Self.lucid_Image.all := Now;
+
+      else
+         free (Self.lucid_Image);
+         Self.lucid_Image := new openGL.lucid_Image' (Now);
       end if;
 
       Self.needs_Rebuild := True;
