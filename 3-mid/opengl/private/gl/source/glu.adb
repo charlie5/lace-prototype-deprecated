@@ -1088,12 +1088,17 @@ is
             temp := (j + (i * widthout)) * components;
 
             for k in 0 .. C.size_t (components - 1) loop
-               -- totals[] should be rounded in the case of enlarging an RGB
-               -- ramp when the type is 332 or 4444
-               --
-               GLushort_view (dataout
-                              + C.ptrdiff_t (temp)
-                              + C.ptrdiff_t (k   )).all := GLushort ((totals (k) + 0.5) / area);
+               declare
+                  Data : GLfloat := (totals (k) + 0.5) / area;   -- totals[] should be rounded in the case of enlarging an RGB
+                                                                 -- ramp when the type is 332 or 4444
+               begin
+                  Data := GLfloat'Min (Data,
+                                       GLfloat (GLushort'Last));
+
+                  GLushort_view (dataout
+                                 + C.ptrdiff_t (temp)
+                                 + C.ptrdiff_t (k   )).all := GLushort (Data);
+               end;
             end loop;
 
          end loop;  -- for j

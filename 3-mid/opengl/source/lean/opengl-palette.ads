@@ -26,8 +26,10 @@ is
 
    --  Color Mixing
    --
+   type mix_Factor is digits 7 range 0.0 .. 1.0;   -- 0.0 returns Self, 1.0 returns Other.
 
-   function Mixed (Self : in Color;   Other : in Color) return Color;
+   function Mixed (Self : in Color;   Other : in Color;
+                                      Mix   : in mix_Factor := 0.5) return Color;
    --
    --  Combines two colors.
 

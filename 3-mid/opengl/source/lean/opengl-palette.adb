@@ -34,14 +34,27 @@ is
 
 
 
-   function Mixed (Self : in Color;   Other : in Color) return Color
+   function Mixed (Self : in Color;   Other : in Color;
+                                      Mix   : in mix_Factor := 0.5) return Color
    is
       use type color_Value;
-   begin
-      return (to_color_Value ((to_Real (Self.Red)   + to_Real (other.Red))   / 2.0),
-              to_color_Value ((to_Real (Self.Green) + to_Real (other.Green)) / 2.0),
-              to_color_Value ((to_Real (Self.Blue)  + to_Real (other.Blue))  / 2.0));
 
+      function Lerp (Value_1, Value_2 : color_Value) return color_Value
+      is
+         V1 : constant Real := Real (Value_1);
+         V2 : constant Real := Real (Value_2);
+      begin
+         return color_Value (V1 + (V2 - V1) * Real (Mix));
+      end Lerp;
+
+   begin
+      return (Lerp (Self.Red,   Other.Red),
+              Lerp (Self.Green, Other.Green),
+              Lerp (Self.Blue,  Other.Blue));
+
+--        return (to_color_Value ((to_Real (Self.Red)   + to_Real (other.Red))   / 2.0),
+--                to_color_Value ((to_Real (Self.Green) + to_Real (other.Green)) / 2.0),
+--                to_color_Value ((to_Real (Self.Blue)  + to_Real (other.Blue))  / 2.0));
    end Mixed;
 
 
