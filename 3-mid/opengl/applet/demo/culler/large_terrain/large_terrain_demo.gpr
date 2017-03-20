@@ -13,7 +13,7 @@ project Large_Terrain_Demo is
       ("safe", "lean", "desk");
    Opengl_Profile : Profile := external ("opengl_profile");
    type Platform is
-      ("egl", "glx");
+      ("egl", "glx", "osmesa");
    Opengl_Platform : Platform := external ("opengl_platform");
    type Restrictions is
       ("xgc", "ravenscar");
@@ -74,7 +74,7 @@ project Large_Terrain_Demo is
                               for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
 
                            when "glx" =>
-                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lexpat");
+                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lGLU", "-lexpat");
                               --                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lexpat", "-O2");
                         end case;
 

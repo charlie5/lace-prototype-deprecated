@@ -4,17 +4,20 @@ with
      "math",
      "shared";
      
+library
 project Opengl_Core is
 
-   for Object_Dir use "build";
+   for Object_Dir   use "build";
+   for Library_Dir  use "lib";
    for Library_Name use "opengl_core";
 
    type Platform is ("egl", "glx", "osmesa");
    The_Platform : Platform := external ("opengl_platform", "egl");
 
+
    case The_Platform is 
-      when "egl" =>   for Languages    use ("Ada");
-      when "glx" =>   for Languages    use ("Ada", "C");
+      when "egl"    =>   for Languages    use ("Ada");
+      when "glx"    =>   for Languages    use ("Ada", "C");
       when "osmesa" =>   for Languages    use ("Ada", "C");
    end case; 
 
@@ -22,26 +25,20 @@ project Opengl_Core is
    for Source_Dirs use ("../source",
                         "../source/profile/"  & external ("opengl_profile",  "lean"), 
                         "../source/platform/" & external ("opengl_platform", "egl"), 
-	                "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
-	                "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
+                        "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
+                        "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
+
    
-   package Builder is
-      for Default_Switches ("ada") use ("-j13", "-g", "-k");
-   end Builder;
+   package Builder renames Shared.Builder;
 
-   package Compiler renames Shared.Compiler;
 
---   package Compiler is
---      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
---   end Compiler;
+   package Compiler is
+      for Default_Switches ("ada")               use Shared.Compiler_Options;
+      for         Switches ("opengl-images.adb") use ("-O0");
+   end Compiler;
 
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
 
-   package Linker is
-      for Default_Switches ("ada") use ("-g");
-   end Linker;
+   package Binder renames Shared.Binder;
 
 end Opengl_Core;
 
