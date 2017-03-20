@@ -210,11 +210,11 @@ is
             Rotation := Inverse (get_Rotation (the_global_Transform));
             Rotation := Self.base_Sprite.Spin * Rotation;
 
-            Self.bone_Sprites (the_bone_Id).Element.all.Site_is (Site);
+            Self.bone_Sprites (the_bone_Id).all.Site_is (Site);
 
             if which_Joint /= Self.root_Joint.Name
             then
-               Self.bone_Sprites (the_bone_Id).Element.all.Spin_is (Rotation);
+               Self.bone_Sprites (the_bone_Id).all.Spin_is (Rotation);
             end if;
          end if;
       end;
