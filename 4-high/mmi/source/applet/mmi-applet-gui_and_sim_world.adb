@@ -26,7 +26,7 @@ is
       begin
          the_world_Info.World := mmi.World.forge.new_World (Name,
                                                             gui_world_Id,
-                                                            space_kind => physics.Forge.Bullet,
+                                                            space_kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
          the_world_Info.World.register (Self.all'Unchecked_Access,
@@ -52,7 +52,7 @@ is
       begin
          the_world_Info.World := mmi.World.forge.new_World (name       => Name,
                                                             id         => sim_world_Id,
-                                                            space_kind => physics.Forge.Bullet,
+                                                            space_kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
          the_world_Info.World.register (the_observer => Self.all'Unchecked_Access,

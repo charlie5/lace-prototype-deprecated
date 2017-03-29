@@ -260,17 +260,17 @@ is
 
 
 
-   function  new_World     (Self : access Item;   Name       : in String;
-                                                  space_Kind : in physics.Forge.space_Kind) return mmi.World.view
+   function  new_World (Self : access Item;   Name       : in String;
+                                              space_Kind : in physics.space_Kind) return mmi.World.view
    is
    begin
       Self.add_new_World (Name, space_Kind);
       return Self.Worlds.last_Element.World;
-   end;
+   end new_World;
 
 
    procedure add_new_World (Self : in out Item;   Name       : in String;
-                                                  space_Kind : in physics.Forge.space_Kind)
+                            space_Kind : in physics.space_Kind)
    is
       use lace.event.Utility;
       use type ada.Containers.Count_Type;

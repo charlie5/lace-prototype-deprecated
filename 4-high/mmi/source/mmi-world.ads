@@ -52,12 +52,12 @@ is
    is
       function to_World  (Name       : in     String;
                           Id         : in     world_Id;
-                          space_Kind : in     physics.Forge.space_Kind;
+                          space_Kind : in     physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.item;
 
       function new_World (Name       : in     String;
                           Id         : in     world_Id;
-                          space_Kind : in     physics.Forge.space_Kind;
+                          space_Kind : in     physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.view;
    end Forge;
 
@@ -324,7 +324,7 @@ private
    task
    type Engine (the_World : access mmi.World.item'Class)
    is
-      entry start (space_Kind : in standard.physics.Forge.space_Kind);
+      entry start (space_Kind : in standard.physics.space_Kind);
       entry stop;
 
       entry reset_Age;
@@ -559,7 +559,7 @@ private
 
          Id                              :         world_Id;
          Physics                         : aliased standard.physics.Space.view;
-         space_Kind                      :         standard.physics.Forge.space_Kind;
+         space_Kind                      :         standard.physics.space_Kind;
          Renderer                        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
          Age                             :         Duration := 0.0;

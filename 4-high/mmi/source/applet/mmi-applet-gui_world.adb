@@ -15,7 +15,7 @@ is
 
 
    procedure define (Self : in mmi.Applet.gui_world.view;   Name       : in String;
-                                                            space_Kind : in physics.Forge.space_Kind)
+                                                            space_Kind : in physics.space_Kind)
    is
 
    begin
@@ -53,7 +53,7 @@ is
 
       function new_Applet (Name       : in String;
                            use_Window : in mmi.Window.view;
-                           space_Kind : in physics.Forge.space_Kind) return View
+                           space_Kind : in physics.space_Kind) return mmi.Applet.gui_world.view
       is
          Self : constant View := new Item' (mmi.Applet.Forge.to_Applet (Name, use_Window)
                                             with others => <>);

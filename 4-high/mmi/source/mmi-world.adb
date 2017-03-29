@@ -61,7 +61,7 @@ is
 
    procedure define  (Self : in out Item'Class;   Name       : in     String;
                                                   Id         : in     world_Id;
-                                                  space_Kind : in     std_physics.Forge.space_Kind;
+                                                  space_Kind : in     std_physics.space_Kind;
                                                   Renderer   : access openGL.Renderer.lean.item'Class);
 
 
@@ -101,8 +101,8 @@ is
    is
 
       function to_World (Name       : in     String;
-                         Id         : in     world_Id;
-                         space_Kind : in     standard.physics.Forge.space_Kind;
+                          Id         : in     world_Id;
+                          space_Kind : in     standard.physics.space_Kind;
                          Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.item
       is
          use lace.remote.Subject_and_deferred_Observer.forge;
@@ -118,7 +118,7 @@ is
 
       function new_World (Name       : in     String;
                           Id         : in     world_Id;
-                          space_Kind : in     standard.physics.Forge.space_Kind;
+                          space_Kind : in     Standard.physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.view
       is
          use lace.remote.Subject_and_deferred_Observer.forge;
@@ -260,7 +260,7 @@ is
 
    procedure define  (Self : in out Item'Class;   Name       : in     String;
                                                   Id         : in     world_Id;
-                                                  space_Kind : in     std_physics.Forge.space_Kind;
+                                                  space_Kind : in     std_physics.space_Kind;
                                                   Renderer   : access openGL.Renderer.lean.Item'Class)
    is
       use lace.Subject_and_deferred_Observer.Forge;
@@ -839,7 +839,7 @@ is
       use type std_physics.Space.view;
 
    begin
-      accept start (space_Kind : in standard.physics.Forge.space_Kind)
+      accept start (space_Kind : in standard.physics.space_Kind)
       do
          Stopped           := False;
          the_World.Physics := std_physics.Forge.new_Space (space_Kind);

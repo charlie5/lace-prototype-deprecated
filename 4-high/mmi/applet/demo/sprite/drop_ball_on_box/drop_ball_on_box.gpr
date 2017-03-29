@@ -1,4 +1,4 @@
-with "sdl_mmi", "shared";
+with "lumen_mmi", "shared";
 
 project Drop_Ball_On_Box is
 

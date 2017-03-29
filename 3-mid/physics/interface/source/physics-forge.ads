@@ -14,8 +14,6 @@ is
    --- Space
    --
 
-   type space_Kind is (Bullet,    Box2d);
-
    function new_Space (Kind : in space_Kind)  return Space.view;
 
 

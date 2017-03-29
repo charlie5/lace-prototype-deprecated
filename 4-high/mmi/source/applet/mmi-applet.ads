@@ -101,10 +101,10 @@ is
    procedure add (Self : in out Item;   the_World : in world_Info_view);
 
    procedure add_new_World (Self : in out Item;   Name       : in String;
-                                                  space_Kind : in physics.Forge.space_Kind);
+                                                  space_Kind : in physics.space_Kind);
 
    function  new_World (Self : access Item;   Name       : in String;
-                        space_Kind : in physics.Forge.space_Kind) return mmi.World.view;
+                                              space_Kind : in physics.space_Kind) return mmi.World.view;
 
 
 

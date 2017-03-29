@@ -24,12 +24,12 @@ is
    function         new_gui_Applet (Named         : in String;
                                     window_Width  : in Positive                 := 500;
                                     window_Height : in Positive                 := 500;
-                                    space_Kind    : in physics.Forge.space_Kind := physics.Forge.Bullet) return mmi.Applet.gui_world.view;
+                                    space_Kind    : in physics.space_Kind := physics.Bullet) return mmi.Applet.gui_world.view;
 
    function new_gui_and_sim_Applet (Named         : in String;
                                     window_Width  : in Positive                 := 500;
                                     window_Height : in Positive                 := 500;
-                                    space_Kind    : in physics.Forge.space_Kind := physics.Forge.Bullet) return mmi.Applet.gui_and_sim_World.view;
+                                    space_Kind    : in physics.space_Kind := physics.Bullet) return mmi.Applet.gui_and_sim_World.view;
 
 
 

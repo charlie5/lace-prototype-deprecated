@@ -24,7 +24,7 @@ is
 --     the_Applet : constant mmi.Applet.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
 --                                                                         space_Kind => physics.Forge.Bullet);
    the_Applet : constant mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
-                                                                                 space_Kind => physics.Forge.Bullet);
+                                                                                 space_Kind => physics.Bullet);
 
 --     the_Ball   : constant mmi.Sprite.local.view     := mmi.Forge.new_circle_Sprite    (the_Applet.gui_World);
 --     the_Box    : constant mmi.Sprite.local.view     := mmi.Forge.new_rectangle_Sprite (the_Applet.gui_World,
@@ -54,7 +54,7 @@ is
                                                                            size => (20.0, 1.0, 20.0));
 begin
    gui_Camera.Site_is ((0.0, 2.0, 20.0));      -- Position the camera.
-   gui_Camera.world_Rotation_is (y_Rotation_from (to_Radians (45.0)));
+--     gui_Camera.world_Rotation_is (y_Rotation_from (to_Radians (45.0)));
 
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
 
