@@ -71,6 +71,7 @@ is
    is
    begin
       Self.sprite_transform_Updater.stop;
+      Self.physics_Engine          .stop;
       Self.Engine                  .stop;
 
       while not Self.Engine                  'Terminated
@@ -271,6 +272,8 @@ is
       Self.space_Kind   := space_Kind;
       Self.Renderer     := Renderer;
       Self.sprite_Count := 0;
+
+--        Self.physics_Engine := new std_Physics.Engine.item;
    end define;
 
 
@@ -741,10 +744,10 @@ is
 
          --  Evolve the physics.
          --
-         if not the_World.is_a_Mirror
-         then
-            the_World.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
-         end if;
+--           if not the_World.is_a_Mirror
+--           then
+--              the_World.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
+--           end if;
 
 
          --  Contact Manifolds
@@ -1757,6 +1760,7 @@ is
    is
    begin
       Self.Engine.start (Self.space_Kind);
+      Self.physics_Engine.start (Self.physics_Space);
    end start;
 
 

@@ -430,7 +430,8 @@ private
    --  Engine Commands
    --
 
-   type command_Kind is (add_Sprite,             rid_Sprite,
+   type command_Kind is (add_Sprite,
+                         rid_Sprite,
 --                           scale_Sprite,
                          destroy_Sprite,
 --                           update_Bounds,
@@ -568,7 +569,7 @@ private
 
          space_Kind                      :         standard.physics.space_Kind;
          physics_Space                   : aliased standard.physics.Space.view;
-         physics_Engine                  :         Standard.physics.Engine.view;
+         physics_Engine                  : aliased standard.physics.Engine.item;
 
          Renderer                        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
