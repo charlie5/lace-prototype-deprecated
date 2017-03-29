@@ -443,8 +443,10 @@ is
 
    procedure stop (Self : access Item)
    is
+      procedure free is new ada.Unchecked_Deallocation (safe_command_Set, safe_command_Set_view);
    begin
       Self.Evolver.stop;
+      free (Self.Commands);
    end stop;
 
 

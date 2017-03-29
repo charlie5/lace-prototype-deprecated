@@ -53,6 +53,29 @@ b3d_new_Space ()
 
 
 
+
+void
+b3d_free_Space (Space*   Self)
+{
+    //delete dynamics world
+	delete Self->dynamicsWorld;
+
+	//delete solver
+	delete Self->solver;
+
+	//delete broadphase
+	delete Self->overlappingPairCache;
+
+	//delete dispatcher
+	delete Self->dispatcher;
+
+	delete Self->collisionConfiguration;
+
+    free (Self);
+}
+
+
+
 void
 b3d_Space_Gravity_is (Space*   Self,    Vector_3*     Now)
 {

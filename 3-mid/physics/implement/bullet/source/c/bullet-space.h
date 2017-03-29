@@ -14,6 +14,7 @@ extern "C"
 
 
   struct Space*      b3d_new_Space ();
+  void               b3d_free_Space (Space*   Self);
 
   void               b3d_Space_add_Object (Space*   Self,    Object*     the_Object);
   void               b3d_Space_rid_Object (Space*   Self,    Object*     the_Object);

@@ -21,7 +21,6 @@ package bullet_Physics.Space
 --
 is
 
-
    type Item is new physics.Space.item with private;
    type View is access all Item'Class;
 

@@ -13,6 +13,7 @@ with
      lace.Any,
      Interfaces.C,
      ada.Unchecked_Conversion;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 
@@ -49,7 +50,7 @@ is
    procedure destruct (Self : in out Item)
    is
    begin
-      null;
+      bullet_c.Binding.b3d_free_Space (Self.C);
    end destruct;
 
 

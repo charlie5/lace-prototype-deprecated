@@ -1184,6 +1184,16 @@ extern          "C"
 
   }
 
+  DllExport void SWIGSTDCALL Ada_b3d_free_Space (void *jarg1)
+  {
+    Space          *arg1 = (Space *) 0;
+
+    arg1 = (Space *) jarg1;
+
+    b3d_free_Space (arg1);
+
+  }
+
   DllExport void SWIGSTDCALL Ada_b3d_Space_add_Object (void *jarg1,
 						       void *jarg2)
   {

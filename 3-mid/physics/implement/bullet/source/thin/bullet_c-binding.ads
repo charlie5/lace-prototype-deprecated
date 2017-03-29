@@ -17,7 +17,7 @@ package bullet_c.Binding is
 
    function b3d_new_Box
      (half_Extents : in c_math_c.Vector_3.Pointer)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_Capsule
      (Radii  : in c_math_c.Vector_2.Pointer;
@@ -30,18 +30,18 @@ package bullet_c.Binding is
    function b3d_new_convex_Hull
      (Points      : in c_math_c.Vector_3.Pointer;
       point_Count : in Interfaces.C.int)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_Mesh
      (Points         : in c_math_c.Vector_3.Pointer;
       point_Count    : in Interfaces.C.int;
       Triangles      : in c_math_c.Triangle.Pointer;
       triangle_Count : in Interfaces.C.int)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_Cylinder
      (half_Extents : in c_math_c.Vector_3.Pointer)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_Heightfield
      (Width      : in Interfaces.C.int;
@@ -50,13 +50,13 @@ package bullet_c.Binding is
       min_Height : in c_math_c.Real;
       max_Height : in c_math_c.Real;
       Scale      : in c_math_c.Vector_3.Pointer)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_multiSphere
      (Positions    : in c_math_c.Vector_3.Pointer;
       Radii        : in c_math_c.Pointers.Real_Pointer;
       sphere_Count : in Interfaces.C.int)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_new_Plane
      (Normal : in c_math_c.Vector_3.Pointer;
@@ -76,11 +76,11 @@ package bullet_c.Binding is
      (Mass         : in c_math_c.Real;
       the_Shape    : in bullet_c.Pointers.Shape_Pointer;
       is_Kinematic : in Interfaces.C.int)
-      return bullet_c.Pointers.Object_Pointer;
+     return bullet_c.Pointers.Object_Pointer;
 
    function b3d_Object_Shape
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return bullet_c.Pointers.Shape_Pointer;
+     return bullet_c.Pointers.Shape_Pointer;
 
    function b3d_Object_user_Data
      (Self : in bullet_c.Pointers.Object_Pointer) return Swig.void_ptr;
@@ -102,7 +102,7 @@ package bullet_c.Binding is
 
    function b3d_Object_Site
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return c_math_c.Vector_3.Item;
+     return c_math_c.Vector_3.Item;
 
    procedure b3d_Object_Site_is
      (Self : in bullet_c.Pointers.Object_Pointer;
@@ -110,7 +110,7 @@ package bullet_c.Binding is
 
    function b3d_Object_Spin
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return c_math_c.Matrix_3x3.Item;
+     return c_math_c.Matrix_3x3.Item;
 
    procedure b3d_Object_Spin_is
      (Self : in bullet_c.Pointers.Object_Pointer;
@@ -118,7 +118,7 @@ package bullet_c.Binding is
 
    function b3d_Object_Transform
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return c_math_c.Matrix_4x4.Item;
+     return c_math_c.Matrix_4x4.Item;
 
    procedure b3d_Object_Transform_is
      (Self : in bullet_c.Pointers.Object_Pointer;
@@ -126,7 +126,7 @@ package bullet_c.Binding is
 
    function b3d_Object_Speed
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return c_math_c.Vector_3.Item;
+     return c_math_c.Vector_3.Item;
 
    procedure b3d_Object_Speed_is
      (Self : in bullet_c.Pointers.Object_Pointer;
@@ -134,7 +134,7 @@ package bullet_c.Binding is
 
    function b3d_Object_Gyre
      (Self : in bullet_c.Pointers.Object_Pointer)
-      return c_math_c.Vector_3.Item;
+     return c_math_c.Vector_3.Item;
 
    procedure b3d_Object_Gyre_is
      (Self : in bullet_c.Pointers.Object_Pointer;
@@ -157,40 +157,40 @@ package bullet_c.Binding is
       Object_B : in bullet_c.Pointers.Object_Pointer;
       Frame_A  : in c_math_c.Matrix_4x4.Pointer;
       Frame_B  : in c_math_c.Matrix_4x4.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_new_space_hinge_Joint
      (Object_A : in bullet_c.Pointers.Object_Pointer;
       Frame_A  : in c_math_c.Matrix_4x4.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_new_DoF6_Joint
      (Object_A : in bullet_c.Pointers.Object_Pointer;
       Object_B : in bullet_c.Pointers.Object_Pointer;
       Frame_A  : in c_math_c.Matrix_4x4.Pointer;
       Frame_B  : in c_math_c.Matrix_4x4.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_new_cone_twist_Joint
      (Object_A : in bullet_c.Pointers.Object_Pointer;
       Object_B : in bullet_c.Pointers.Object_Pointer;
       Frame_A  : in c_math_c.Matrix_4x4.Pointer;
       Frame_B  : in c_math_c.Matrix_4x4.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_new_slider_Joint
      (Object_A : in bullet_c.Pointers.Object_Pointer;
       Object_B : in bullet_c.Pointers.Object_Pointer;
       Frame_A  : in c_math_c.Matrix_4x4.Pointer;
       Frame_B  : in c_math_c.Matrix_4x4.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_new_ball_Joint
      (Object_A   : in bullet_c.Pointers.Object_Pointer;
       Object_B   : in bullet_c.Pointers.Object_Pointer;
       Pivot_in_A : in c_math_c.Vector_3.Pointer;
       Pivot_in_B : in c_math_c.Vector_3.Pointer)
-      return bullet_c.Pointers.Joint_Pointer;
+     return bullet_c.Pointers.Joint_Pointer;
 
    function b3d_Joint_user_Data
      (Self : in bullet_c.Pointers.Joint_Pointer) return Swig.void_ptr;
@@ -201,19 +201,19 @@ package bullet_c.Binding is
 
    function b3d_Joint_Object_A
      (Self : in bullet_c.Pointers.Joint_Pointer)
-      return bullet_c.Pointers.Object_Pointer;
+     return bullet_c.Pointers.Object_Pointer;
 
    function b3d_Joint_Object_B
      (Self : in bullet_c.Pointers.Joint_Pointer)
-      return bullet_c.Pointers.Object_Pointer;
+     return bullet_c.Pointers.Object_Pointer;
 
    function b3d_Joint_Frame_A
      (Self : in bullet_c.Pointers.Joint_Pointer)
-      return c_math_c.Matrix_4x4.Item;
+     return c_math_c.Matrix_4x4.Item;
 
    function b3d_Joint_Frame_B
      (Self : in bullet_c.Pointers.Joint_Pointer)
-      return c_math_c.Matrix_4x4.Item;
+     return c_math_c.Matrix_4x4.Item;
 
    procedure b3d_Joint_Frame_A_is
      (Self : in bullet_c.Pointers.Joint_Pointer;
@@ -263,6 +263,8 @@ package bullet_c.Binding is
       DoF  : in Interfaces.C.int) return c_math_c.Real;
 
    function b3d_new_Space return bullet_c.Pointers.Space_Pointer;
+
+   procedure b3d_free_Space (Self : in bullet_c.Pointers.Space_Pointer);
 
    procedure b3d_Space_add_Object
      (Self       : in bullet_c.Pointers.Space_Pointer;
@@ -370,6 +372,7 @@ private
       b3d_Joint_6DoF_upper_Limit,
       "Ada_b3d_Joint_6DoF_upper_Limit");
    pragma Import (C, b3d_new_Space, "Ada_b3d_new_Space");
+   pragma Import (C, b3d_free_Space, "Ada_b3d_free_Space");
    pragma Import (C, b3d_Space_add_Object, "Ada_b3d_Space_add_Object");
    pragma Import (C, b3d_Space_rid_Object, "Ada_b3d_Space_rid_Object");
    pragma Import (C, b3d_Space_add_Joint, "Ada_b3d_Space_add_Joint");
