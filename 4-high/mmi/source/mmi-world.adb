@@ -86,7 +86,7 @@ is
          procedure free is new ada.Unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
          procedure free is new ada.Unchecked_Deallocation (Engine,                   Engine_view);
       begin
-         std_physics.Space.free (Self.Physics);
+         std_physics.Space.free (Self.physics_Space);
          free (Self.Commands);
       end;
 
@@ -514,34 +514,38 @@ is
             for Each in 1 .. Count
             loop
                declare
+                  use std_Physics.Engine;
                   the_Command : World.Command renames the_Commands (Each);
                begin
                   command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
 
                   case the_Command.Kind
                   is
-                     when scale_Sprite =>
-                        the_Command.Sprite.Solid.activate;
-                        the_Command.Sprite.Shape.Scale_is (the_Command.Scale);
-                        the_Command.Sprite.Solid.Scale_is (the_Command.Scale);
-
-                        the_World.Physics.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
-
-
-                     when update_Bounds =>
-                        the_World.Physics.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
-
-
-                     when update_Site =>
-                        std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
+--                       when scale_Sprite =>
+--                          the_World.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
+--                                                                                     Sprite => the_Command.Sprite.Solid,
+--                                                                                     Scale  => the_Command.Scale));
+--                          the_Command.Sprite.Solid.activate;
+--                          the_Command.Sprite.Shape.Scale_is (the_Command.Scale);
+--                          the_Command.Sprite.Solid.Scale_is (the_Command.Scale);
+--
+--                          the_World.physics_Space.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
 
 
-                     when set_Speed =>
-                        std_physics.Object.view (the_Command.Sprite.Solid).Speed_is (the_Command.Speed);
+--                       when update_Bounds =>
+--                          the_World.physics_Space.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
 
 
-                     when set_xy_Spin =>
-                        std_physics.Object.view (the_Command.Sprite.Solid).xy_Spin_is (the_Command.xy_Spin);
+--                       when update_Site =>
+--                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
+
+
+--                       when set_Speed =>
+--                          std_physics.Object.view (the_Command.Sprite.Solid).Speed_is (the_Command.Speed);
+
+
+--                       when set_xy_Spin =>
+--                          std_physics.Object.view (the_Command.Sprite.Solid).xy_Spin_is (the_Command.xy_Spin);
 
 
                      when add_Sprite =>
@@ -557,15 +561,13 @@ is
                               the_World.add (the_Sprite.graphics_Model.all'Access);
                               the_World.add (the_Sprite. physics_Model.all'Access);
 
+                              the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
+                              the_Sprite.Solid.user_Data_is (the_Sprite);
+
                               if the_Sprite.physics_Model.is_Tangible
                               then
-                                 the_World.Physics.add (standard.physics.Object.view (the_Sprite.Solid));
+                                 the_World.physics_Engine.add (std_physics.Object.view (the_Sprite.Solid));
                               end if;
-
-                              begin
-                                 the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
-                                 the_Sprite.Solid.user_Data_is (the_Sprite);
-                              end;
 
                               the_World.sprite_Count                     := the_World.sprite_Count + 1;
                               the_World.Sprites (the_World.sprite_Count) := the_Sprite;
@@ -602,7 +604,7 @@ is
                               then
                                  if the_Sprite.physics_Model.is_Tangible
                                  then
-                                    the_World.Physics.rid (standard.physics.Object.view (the_Sprite.Solid));
+                                    the_World.physics_Engine.rid (std_physics.Object.view (the_Sprite.Solid));
                                  end if;
 
                                  if the_sprite_Transforms.contains (the_Sprite) then
@@ -636,8 +638,8 @@ is
                         end;
 
 
-                     when apply_Force =>
-                        the_Command.Sprite.Solid.apply_Force (the_Command.Force);
+--                       when apply_Force =>
+--                          the_Command.Sprite.Solid.apply_Force (the_Command.Force);
 
 
                      when destroy_Sprite =>
@@ -649,19 +651,19 @@ is
                         end;
 
 
-                     when add_Joint =>
-                        the_World.Physics.add                  (the_Command.Joint.Physics.all'Access);
-                        the_Command.Joint.Physics.user_Data_is (the_Command.Joint);
+--                       when add_Joint =>
+--                          the_World.physics_Space.add            (the_Command.Joint.Physics.all'Access);
+--                          the_Command.Joint.Physics.user_Data_is (the_Command.Joint);
 
 
-                     when rid_Joint =>
-                        the_World.Physics.rid (the_Command.Joint.Physics.all'Access);
+--                       when rid_Joint =>
+--                          the_World.physics_Space.rid (the_Command.Joint.Physics.all'Access);
 
 
-                     when set_Joint_local_Anchor =>
-                        the_World.Physics.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
-                                                                  the_Command.is_Anchor_A,
-                                                                  the_Command.local_Anchor);
+--                       when set_Joint_local_Anchor =>
+--                          the_World.physics_Space.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
+--                                                                          the_Command.is_Anchor_A,
+--                                                                          the_Command.local_Anchor);
 
                      when free_Joint =>
                         mmi.Joint.free (the_Command.Joint);
@@ -673,7 +675,7 @@ is
                            is
                               use type std_physics.Object.view;
 
-                              physics_Collision : constant standard.physics.Space.ray_Collision := Self.physics.cast_Ray (From, To);
+                              physics_Collision : constant standard.physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
                            begin
                               if physics_Collision.near_Object = null
                               then
@@ -729,8 +731,8 @@ is
                         end;
 
 
-                     when set_Gravity =>
-                        the_World.Physics.Gravity_is (the_Command.Gravity);
+--                       when set_Gravity =>
+--                          the_World.physics_Space.Gravity_is (the_Command.Gravity);
                   end case;
                end;
             end loop;
@@ -741,7 +743,7 @@ is
          --
          if not the_World.is_a_Mirror
          then
-            the_World.Physics.evolve (by => 1.0 / 60.0);     -- Evolve the world.
+            the_World.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
          end if;
 
 
@@ -750,13 +752,13 @@ is
          declare
             Count : Natural := 0;
          begin
-            for Each in 1 .. the_World.Physics.manifold_Count
+            for Each in 1 .. the_World.physics_Space.manifold_Count
             loop
                declare
                   function to_Integer is new ada.unchecked_Conversion (physics_Object_view, Integer);
 
                   the_physics_Manifold : constant std_physics.Space.a_Manifold
-                    := the_World.Physics.Manifold (Each);
+                    := the_World.physics_Space.Manifold (Each);
                begin
                   Count                       := Count + 1;
                   the_World.Manifolds (Count) := (sprites => (to_MMI (the_physics_Manifold.Objects (1)),
@@ -769,7 +771,7 @@ is
                end;
             end loop;
 
-            the_World.manifold_Count := the_World.Physics.manifold_Count;
+            the_World.manifold_Count := the_World.physics_Space.manifold_Count;
 
          exception
             when E : others =>
@@ -842,7 +844,7 @@ is
       accept start (space_Kind : in standard.physics.space_Kind)
       do
          Stopped           := False;
-         the_World.Physics := std_physics.Forge.new_Space (space_Kind);
+         the_World.physics_Space := std_physics.Forge.new_Space (space_Kind);
       end start;
 
 
@@ -945,7 +947,7 @@ is
                reaction_Force,
                reaction_Torque : math.Real;
 
-               Cursor          : standard.physics.Space.joint_Cursor'Class := the_World.Physics.first_Joint;
+               Cursor          : standard.physics.Space.joint_Cursor'Class := the_World.physics_Space.first_Joint;
             begin
                while has_Element (Cursor)
                loop
@@ -960,7 +962,7 @@ is
                        or reaction_Torque > 100.0 / 8.0
                      then
                         begin
-                           the_World.Physics      .rid (the_Joint.Physics.all'Access);
+                           the_World.physics_Space      .rid (the_Joint.Physics.all'Access);
                            the_World.broken_Joints.add (the_Joint);
 
                         exception
@@ -1109,7 +1111,7 @@ is
    function Physics (Self : in Item) return standard.physics.Space.view
    is
    begin
-      return Self.Physics;
+      return Self.physics_Space;
    end Physics;
 
 
@@ -1117,8 +1119,10 @@ is
    procedure update_Bounds (Self : in out Item;   of_Sprite : in mmi.Sprite.view)
    is
    begin
-      Self.Commands.add ((kind   => update_Bounds,
-                          sprite => of_Sprite));
+      Self.physics_Engine.update_Bounds (std_physics.Object.view (of_Sprite.Solid));
+
+--        Self.Commands.add ((kind   => update_Bounds,
+--                            sprite => of_Sprite));
    end update_Bounds;
 
 
@@ -1127,19 +1131,24 @@ is
                                                   To        : in Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => update_Site,
-                          sprite => of_Sprite,
-                          site   => To));
+      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
+
+--        Self.Commands.add ((kind   => update_Site,
+--                            sprite => of_Sprite,
+--                            site   => To));
    end update_Site;
+
 
 
    procedure set_Speed   (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
                                                 To        : in Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => set_Speed,
-                          sprite => of_Sprite,
-                          speed  => To));
+      Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
+
+--        Self.Commands.add ((kind   => set_Speed,
+--                            sprite => of_Sprite,
+--                            speed  => To));
    end set_Speed;
 
 
@@ -1148,9 +1157,11 @@ is
                                                   To        : in Radians)
    is
    begin
-      Self.Commands.add ((kind    => set_xy_Spin,
-                          sprite  => of_Sprite,
-                          xy_spin => To));
+      Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
+
+--        Self.Commands.add ((kind    => set_xy_Spin,
+--                            sprite  => of_Sprite,
+--                            xy_spin => To));
    end set_xy_Spin;
 
 
@@ -1158,9 +1169,14 @@ is
                                                  To        : in Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => scale_Sprite,
-                          sprite => of_Sprite,
-                          scale  => To));
+      Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
+
+--        Self.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
+--                                                              Sprite => the_Command.Sprite.Solid,
+--                                                              Scale  => the_Command.Scale));
+--        Self.Commands.add ((kind   => scale_Sprite,
+--                            sprite => of_Sprite,
+--                            scale  => To));
    end update_Scale;
 
 
@@ -1169,9 +1185,11 @@ is
                                                 Force     : in Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => apply_Force,
-                          sprite => to_Sprite,
-                          force  => Force));
+      Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
+
+--        Self.Commands.add ((kind   => apply_Force,
+--                            sprite => to_Sprite,
+--                            force  => Force));
    end apply_Force;
 
 
@@ -1193,9 +1211,11 @@ is
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.Commands.add ((kind    => set_Gravity,
-                          sprite  => null,
-                          gravity => Now));
+      Self.physics_Engine.set_Gravity (to => Now);
+
+--        Self.Commands.add ((kind    => set_Gravity,
+--                            sprite  => null,
+--                            gravity => Now));
    end Gravity_is;
 
 
@@ -1369,11 +1389,20 @@ is
                                                           To        : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((Kind         => set_Joint_local_Anchor,
-                          Sprite       => null,
-                          anchor_Joint => for_Joint,
-                          is_Anchor_A  => True,
-                          local_Anchor => To));
+      Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+                                            to => To,
+                                            is_Anchor_A  => True);
+
+--        the_World.physics_Space.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
+--                                                        the_Command.is_Anchor_A,
+--                                                        the_Command.local_Anchor);
+--
+--
+--        Self.Commands.add ((Kind         => set_Joint_local_Anchor,
+--                            Sprite       => null,
+--                            anchor_Joint => for_Joint,
+--                            is_Anchor_A  => True,
+--                            local_Anchor => To));
    end set_local_Anchor_on_A;
 
 
@@ -1382,11 +1411,15 @@ is
                                                           To        : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((Kind         => set_Joint_local_Anchor,
-                          Sprite       => null,
-                          anchor_Joint => for_Joint,
-                          is_Anchor_A  => False,
-                          local_Anchor => To));
+      Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+                                            to => To,
+                                            is_Anchor_A  => False);
+
+--        Self.Commands.add ((Kind         => set_Joint_local_Anchor,
+--                            Sprite       => null,
+--                            anchor_Joint => for_Joint,
+--                            is_Anchor_A  => False,
+--                            local_Anchor => To));
    end set_local_anchor_on_B;
 
 
@@ -1608,9 +1641,7 @@ is
             begin
                if the_Sprite.parent_Joint /= null
                then
-                  Self.Commands.add ((kind   => add_Joint,
-                                      sprite => null,
-                                      joint  => the_Sprite.parent_Joint));
+                  Self.physics_Engine.add (the_Sprite.parent_Joint.Physics.all'Access);
                end if;
             end add_the_Joint;
 
@@ -1695,9 +1726,12 @@ is
    procedure add (Self : in out Item;   the_Joint : in mmi.Joint.view)
    is
    begin
-      Self.Commands.add ((kind   => add_Joint,
-                          sprite => null,
-                          joint  => the_Joint));
+      the_Joint.Physics.user_Data_is (the_Joint);
+      Self.physics_Engine.add        (the_Joint.Physics.all'Access);
+
+--        Self.Commands.add ((kind   => add_Joint,
+--                            sprite => null,
+--                            joint  => the_Joint));
    end add;
 
 
@@ -1705,9 +1739,11 @@ is
    procedure rid (Self : in out Item;   the_Joint : in mmi.Joint.view)
    is
    begin
-      Self.Commands.add ((kind   => rid_Joint,
-                          sprite => null,
-                          joint  => the_Joint));
+      Self.physics_Engine.rid (the_Joint.Physics.all'Access);
+
+--        Self.Commands.add ((kind   => rid_Joint,
+--                            sprite => null,
+--                            joint  => the_Joint));
    end rid;
 
 

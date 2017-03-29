@@ -21,7 +21,36 @@ is
    procedure start (Self : access Item;   the_Space : in Space.view);
    procedure stop  (Self : access Item);
 
-   procedure add (Self : access Item;   the_Sprite : in Object.view);
+
+   procedure add   (Self : access Item;   the_Sprite : in Object.view);
+   procedure rid   (Self : in out Item;   the_Sprite : in Object.view);
+
+   procedure add   (Self : in out Item;   the_Sprite : in Joint.view);
+   procedure rid   (Self : in out Item;   the_Sprite : in Joint.view);
+
+   procedure update_Scale (Self : in out Item;   of_Sprite : in Object.view;
+                                                 To        : in math.Vector_3);
+
+   procedure apply_Force (Self : in out Item;   to_Sprite : in Object.view;
+                                                Force     : in math.Vector_3);
+
+   procedure update_Site (Self : in out Item;   of_Sprite : in Object.view;
+                                                To        : in math.Vector_3);
+
+   procedure set_Speed (Self : in out Item;   of_Sprite : in Object.view;
+                                              To        : in math.Vector_3);
+
+   procedure set_Gravity (Self : in out Item;   To        : in math.Vector_3);
+
+   procedure set_xy_Spin (Self : in out Item;   of_Sprite : in Object.view;
+                                                To        : in math.Radians);
+
+   procedure update_Bounds (Self : in out Item;   of_Sprite : in Object.view);
+
+   procedure set_local_Anchor (Self : in out Item;   for_Joint : in Joint.view;
+                                                     To        : in math.Vector_3;
+                                                     is_Anchor_A : in Boolean);
+
 
 
 private
@@ -39,13 +68,13 @@ private
    end Evolver;
 
 
-   type Any_limited_view is access all lace.Any.limited_item'Class;
 
    --  Engine Commands
    --
+   type Any_limited_view is access all lace.Any.limited_item'Class;
 
    type command_Kind is (add_Sprite,             rid_Sprite,
-                         scale_Sprite,           destroy_Sprite,
+                         scale_Object,           destroy_Sprite,
                          update_Bounds,          update_Site,
                          set_Speed,              apply_Force,
                          set_xy_Spin,
@@ -71,7 +100,7 @@ private
             when update_Site =>
                Site   : math.Vector_3;
 
-            when scale_Sprite =>
+            when scale_Object =>
                Scale  : math.Vector_3;
 
             when apply_Force =>
@@ -79,6 +108,9 @@ private
 
             when set_Speed =>
                Speed  : math.Vector_3;
+
+            when set_Gravity =>
+               Gravity  : math.Vector_3;
 
             when set_xy_Spin =>
                xy_Spin : math.Radians;
@@ -100,9 +132,6 @@ private
 --              when new_impact_Response =>
 --                 Filter   : impact_Filter;
 --                 Response : impact_Response;
-
-            when set_Gravity =>
-               Gravity : math.Vector_3;
 
             when others =>
                null;

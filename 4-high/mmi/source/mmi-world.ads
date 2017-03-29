@@ -7,6 +7,7 @@ with
      openGL.Model,
 
      physics.Space,
+     physics.Engine,
      physics.Forge,
 
      lace.Event,
@@ -430,16 +431,20 @@ private
    --
 
    type command_Kind is (add_Sprite,             rid_Sprite,
-                         scale_Sprite,           destroy_Sprite,
-                         update_Bounds,          update_Site,
-                         set_Speed,              apply_Force,
-                         set_xy_Spin,
-                         add_Joint,              rid_Joint,
-                         set_Joint_local_Anchor,
+--                           scale_Sprite,
+                         destroy_Sprite,
+--                           update_Bounds,
+--                           update_Site,
+--                           set_Speed,
+--                           apply_Force,
+--                           set_xy_Spin,
+--                           add_Joint,
+--                           rid_Joint,
+--                           set_Joint_local_Anchor,
                          free_Joint,
                          cast_Ray,
-                         new_impact_Response,
-                         set_Gravity);
+                         new_impact_Response);
+--                           set_Gravity);
 
    type Command (Kind : command_Kind := command_Kind'First) is
       record
@@ -453,28 +458,30 @@ private
             when rid_Sprite =>
                rid_Children : Boolean;
 
-            when update_Site =>
-               Site   : math.Vector_3;
+--              when update_Site =>
+--                 Site   : math.Vector_3;
 
-            when scale_Sprite =>
-               Scale  : math.Vector_3;
+--              when scale_Sprite =>
+--                 Scale  : math.Vector_3;
 
-            when apply_Force =>
-               Force  : math.Vector_3;
+--              when apply_Force =>
+--                 Force  : math.Vector_3;
 
-            when set_Speed =>
-               Speed  : math.Vector_3;
+--              when set_Speed =>
+--                 Speed  : math.Vector_3;
 
-            when set_xy_Spin =>
-               xy_Spin : math.Radians;
+--              when set_xy_Spin =>
+--                 xy_Spin : math.Radians;
 
-            when add_Joint | rid_Joint | free_Joint =>
+            when --add_Joint |
+--                   rid_Joint |
+                 free_Joint =>
                Joint  : mmi.Joint.view;
 
-            when set_Joint_local_Anchor =>
-               anchor_Joint : mmi.Joint.view;
-               is_Anchor_A  : Boolean;         -- When false, is anchor B.
-               local_Anchor : math.Vector_3;
+--              when set_Joint_local_Anchor =>
+--                 anchor_Joint : mmi.Joint.view;
+--                 is_Anchor_A  : Boolean;         -- When false, is anchor B.
+--                 local_Anchor : math.Vector_3;
 
             when cast_Ray =>
                From, To : math.Vector_3;
@@ -486,8 +493,8 @@ private
                Filter   : impact_Filter;
                Response : impact_Response;
 
-            when set_Gravity =>
-               Gravity : math.Vector_3;
+--              when set_Gravity =>
+--                 Gravity : math.Vector_3;
 
             when others =>
                null;
@@ -558,8 +565,11 @@ private
          local_Subject_and_deferred_Observer :     lace.Subject_and_deferred_Observer.view;
 
          Id                              :         world_Id;
-         Physics                         : aliased standard.physics.Space.view;
+
          space_Kind                      :         standard.physics.space_Kind;
+         physics_Space                   : aliased standard.physics.Space.view;
+         physics_Engine                  :         Standard.physics.Engine.view;
+
          Renderer                        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
          Age                             :         Duration := 0.0;

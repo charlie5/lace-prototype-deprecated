@@ -98,7 +98,7 @@ is
 
                   case the_Command.Kind
                   is
-                     when scale_Sprite =>
+                     when scale_Object =>
                         the_Command.Sprite.activate;
                         the_Command.Sprite.Shape.Scale_is (the_Command.Scale);
                         the_Command.Sprite.Scale_is (the_Command.Scale);
@@ -451,19 +451,131 @@ is
 
    procedure add (Self : access Item;   the_Sprite   : in Object.view)
    is
---        use type math.Index;
-
    begin
       Self.Commands.add ((kind         => add_Sprite,
                           sprite       => the_Sprite,
                           add_children => False));
-
---        Self.id_Map_of_Sprite.insert (the_Sprite.Id,
---                                      the_Sprite'unchecked_Access);
    end add;
 
 
+   procedure rid (Self : in out Item;   the_Sprite   : in Object.view)
+   is
+   begin
+      Self.Commands.add ((kind         => rid_Sprite,
+                          sprite       => the_Sprite,
+                          rid_children => False));
+   end rid;
 
 
+
+   procedure add (Self : in out Item;   the_Sprite   : in Joint.view)
+   is
+   begin
+      Self.Commands.add ((kind   => add_Joint,
+                          sprite => null,
+                          joint  => the_Sprite));
+   end add;
+
+
+   procedure rid (Self : in out Item;   the_Sprite   : in Joint.view)
+   is
+   begin
+      Self.Commands.add ((kind   => rid_Joint,
+                          sprite => null,
+                          joint  => the_Sprite));
+   end rid;
+
+
+
+
+   procedure update_Scale (Self : in out Item;   of_Sprite : in Object.view;
+                                                 To        : in math.Vector_3)
+   is
+   begin
+      Self.Commands.add ((kind   => scale_Object,
+                          sprite => of_Sprite,
+                          scale  => To));
+   end update_Scale;
+
+
+
+   procedure apply_Force (Self : in out Item;   to_Sprite : in Object.view;
+                                                Force     : in math.Vector_3)
+   is
+   begin
+      Self.Commands.add ((kind   => apply_Force,
+                          sprite => to_Sprite,
+                          force  => Force));
+   end apply_Force;
+
+
+
+
+   procedure update_Site (Self : in out Item;   of_Sprite : in Object.view;
+                                                To        : in math.Vector_3)
+   is
+   begin
+      Self.Commands.add ((kind   => update_Site,
+                          sprite => of_Sprite,
+                          site   => To));
+   end update_Site;
+
+
+
+   procedure set_Speed (Self : in out Item;   of_Sprite : in Object.view;
+                                              To        : in math.Vector_3)
+   is
+   begin
+      Self.Commands.add ((kind   => set_Speed,
+                          sprite => of_Sprite,
+                          speed  => To));
+   end set_Speed;
+
+
+
+   procedure set_Gravity (Self : in out Item;   To        : in math.Vector_3)
+   is
+   begin
+      Self.Commands.add ((kind    => set_Gravity,
+                          sprite  => null,
+                          gravity => To));
+   end set_Gravity;
+
+
+
+
+
+   procedure set_xy_Spin (Self : in out Item;   of_Sprite : in Object.view;
+                                                To        : in math.Radians)
+   is
+   begin
+      Self.Commands.add ((kind    => set_xy_Spin,
+                          sprite  => of_Sprite,
+                          xy_Spin => To));
+   end set_xy_Spin;
+
+
+
+
+   procedure update_Bounds (Self : in out Item;   of_Sprite : in Object.view)
+   is
+   begin
+      Self.Commands.add ((kind   => update_Bounds,
+                          sprite => of_Sprite));
+   end update_Bounds;
+
+
+
+   procedure set_local_Anchor (Self : in out Item;   for_Joint : in Joint.view;
+                                                     To        : in math.Vector_3;
+                                                     is_Anchor_A : in Boolean)
+   is
+   begin
+      Self.Commands.add ((kind         => set_Joint_local_Anchor,
+                          sprite       => null,
+                          anchor_Joint => for_Joint,
+                          local_Anchor => To,
+                          is_Anchor_A  => is_Anchor_A));
+   end set_local_Anchor;
 
 end physics.Engine;
