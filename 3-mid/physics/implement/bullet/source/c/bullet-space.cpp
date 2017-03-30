@@ -71,7 +71,7 @@ b3d_free_Space (Space*   Self)
 
 	delete Self->collisionConfiguration;
 
-    free (Self);
+    delete Self;
 }
 
 

@@ -7666,3 +7666,71 @@
    obj:/usr/lib/libGLX_mesa.so.0.0.0
 }
 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:strlen
+   fun:XSetClassHint
+   fun:lumen__window__create
+   fun:mmi__window__lumen__define
+   fun:mmi__window__lumen__forge__to_window
+   fun:mmi__window__lumen__forge__new_window
+   fun:mmi__window__lumen__window_creator
+   fun:mmi__window__forge__new_window
+   fun:mmi__forge__new_gui_applet
+   fun:_ada_launch_drop_ball_on_box
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:strcpy
+   fun:XSetClassHint
+   fun:lumen__window__create
+   fun:mmi__window__lumen__define
+   fun:mmi__window__lumen__forge__to_window
+   fun:mmi__window__lumen__forge__new_window
+   fun:mmi__window__lumen__window_creator
+   fun:mmi__window__forge__new_window
+   fun:mmi__forge__new_gui_applet
+   fun:_ada_launch_drop_ball_on_box
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:calloc
+   obj:*
+   obj:*
+   obj:/usr/lib/libGLX_mesa.so.0.0.0
+   obj:/usr/lib/libGLX_mesa.so.0.0.0
+   obj:/usr/lib/libGLX_mesa.so.0.0.0
+   fun:glXCreateContext
+   fun:lumen__window__create
+   fun:mmi__window__lumen__define
+   fun:mmi__window__lumen__forge__to_window
+   fun:mmi__window__lumen__forge__new_window
+   fun:mmi__window__lumen__window_creator
+}
+
+

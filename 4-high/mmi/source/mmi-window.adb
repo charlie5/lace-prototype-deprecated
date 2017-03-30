@@ -61,11 +61,13 @@ is
       use lace.Subject_and_deferred_Observer,
           mmi.Keyboard.local,
           mmi.Mouse   .local;
+      procedure free is new ada.Unchecked_Deallocation (openGL.Surface.item'Class, openGL.Surface.View);
    begin
       destroy (lace.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
 
       free (Self.Keyboard);
       free (Self.Mouse);
+      free (Self.Surface);
    end destroy;
 
 

@@ -52,6 +52,7 @@ is
    --
 
    procedure destruct (Self : in out Item);
+   procedure free     (Self : in out View);
 
 
 
