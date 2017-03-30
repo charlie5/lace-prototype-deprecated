@@ -56,7 +56,8 @@ is
       Self.safe_camera_updates_Map.destruct;
 
       declare
-         procedure free is new ada.Unchecked_Deallocation (visual_geometry_Couples, visual_geometry_Couples_view);
+         procedure free is new ada.Unchecked_Deallocation (visual_geometry_Couples,
+                                                           visual_geometry_Couples_view);
       begin
          free (Self.all_opaque_Couples);
          free (Self.all_lucid_Couples);
@@ -64,6 +65,19 @@ is
 
       vacuum  (Self.texture_Pool);
       destroy (Self.texture_Pool);
+
+      while not Self.Fonts.Is_Empty
+      loop
+         declare
+            use Font, Font.font_id_Maps_of_font;
+            Cursor   : font_id_Maps_of_font.Cursor := Self.Fonts.First;
+            the_Font : Font.view                   := Element (Cursor);
+         begin
+            free (the_Font);
+            Self.Fonts.delete (Cursor);
+         end;
+      end loop;
+
    end destroy;
 
 

@@ -1,4 +1,4 @@
-with "sdl_mmi", "shared";
+with "lumen_mmi", "shared";
 
 project Hello_Lumen_MMI is
 
