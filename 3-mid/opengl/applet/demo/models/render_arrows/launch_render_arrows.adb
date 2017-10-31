@@ -34,11 +34,26 @@ begin
       the_Sprites : constant openGL.Visual.views := (1 => new_Visual (the_arrow_Model.all'Access));
       Current     :          Integer             := the_Sprites'First;
 
+      Angle       : Radians := 0.0;
    begin
       --  Main loop.
       --
       while not Demo.Done
       loop
+         Angle := Angle + 0.001;
+
+         if Angle >= 360.0 then
+            Angle :=   0.0;
+         end if;
+
+--           the_arrow_Model.Site_is (Now     => the_arrow_Model.Site (for_End => 2) + (-0.001, 0.0, 0.0),
+--                                    for_End => 2);
+
+         the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle => Angle,  Extent => 5.0)) & 0.0),
+                                  for_End => 2);
+
+         -- Handle user commands.
+         --
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
