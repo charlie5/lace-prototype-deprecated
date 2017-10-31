@@ -42,18 +42,18 @@ is
    -- Attributes
    --
 
-   function  Bounds           (Self : in     Item) return openGL.Bounds is abstract;
-
    function  Id               (Self : in     Item'Class)     return openGL.Model_Id;
    procedure Id_is            (Self : in out Item'Class;   Now : in openGL.Model_Id);
 
 
-   procedure modify           (Self : in out Item)             is null;
+   procedure modify           (Self : in out Item) is null;
    function  is_Modified      (Self : in     Item) return Boolean;
 
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
                                is abstract;
+
+   function  Bounds           (Self : in     Item) return openGL.Bounds is abstract;
 
 
    -------------

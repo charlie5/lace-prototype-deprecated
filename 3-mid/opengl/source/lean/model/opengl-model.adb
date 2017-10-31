@@ -1,6 +1,5 @@
 with
-     Ada.Unchecked_Deallocation,
-     Ada.Streams;
+     Ada.Unchecked_Deallocation;
 
 
 package body openGL.Model
@@ -34,7 +33,6 @@ is
 
       the_opaque_Faces : access_gl_Face_views := access_gl_Face_views (Self.opaque_Geometries);
       the_lucid_Faces  : access_gl_Face_views := access_gl_Face_views (Self. lucid_Geometries);
-
    begin
       if the_opaque_Faces /= null
       then
@@ -107,7 +105,6 @@ is
 
       -- Free any existing geometries.
       --
-
       if Self.opaque_Geometries /= null
       then
          for Each in Self.opaque_Geometries'Range
@@ -132,8 +129,7 @@ is
       --
       Self.opaque_Geometries := new openGL.Geometry.views' (opaque_Faces (1 .. opaque_Count));
       Self. lucid_Geometries := new openGL.Geometry.views' ( lucid_Faces (1 ..  lucid_Count));
-
-      Self.needs_Rebuild := False;
+      Self.needs_Rebuild     := False;
    end create_GL_Geometries;
 
 
@@ -147,24 +143,24 @@ is
 
 
 
-   -----------
-   --- Streams
-   --
-
-   procedure Item_write (Stream : access Ada.Streams.Root_Stream_Type'Class;   Item : in  Model.item)
-   is
-   begin
-      null;
-   end Item_write;
-
-
-   procedure Item_read (Stream : access Ada.Streams.Root_Stream_Type'Class;    Item : out Model.item)
-   is
-      pragma Unreferenced (Stream);
-   begin
-      Item.opaque_Geometries := null;
-      Item.lucid_Geometries  := null;
-   end Item_read;
+--     -----------
+--     --- Streams
+--     --
+--
+--     procedure Item_write (Stream : access Ada.Streams.Root_Stream_Type'Class;   Item : in  Model.item)
+--     is
+--     begin
+--        null;
+--     end Item_write;
+--
+--
+--     procedure Item_read (Stream : access Ada.Streams.Root_Stream_Type'Class;    Item : out Model.item)
+--     is
+--        pragma Unreferenced (Stream);
+--     begin
+--        Item.opaque_Geometries := null;
+--        Item.lucid_Geometries  := null;
+--     end Item_read;
 
 
 end openGL.Model;
