@@ -1,6 +1,6 @@
 with 
    "florist",
-   "shared";
+   "lace_shared";
 
 project Lace is
 
@@ -32,7 +32,7 @@ project Lace is
                         "../source/events/private",
                         "../source/strings");
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");
