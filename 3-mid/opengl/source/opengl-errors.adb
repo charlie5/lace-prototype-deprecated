@@ -1,6 +1,6 @@
 with
      openGL.Tasks,
-     ada.Text_IO;
+     Ada.Text_IO;
 
 
 package body openGL.Errors

@@ -289,8 +289,8 @@ is
 
 
 
-   ----------------------------
-   --  Model Program Parameters
+   -----------------------------
+   --  Shader Program Parameters
    --
 
    type Parameters is tagged limited private;
@@ -303,8 +303,6 @@ is
 
    type safe_Boolean is new Boolean;
    pragma Atomic (safe_Boolean);
-
-
 
 
 
