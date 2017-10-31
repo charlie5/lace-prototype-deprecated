@@ -462,11 +462,12 @@ is
             --
 --              if        the_Update.Width_size  /= openGL.texture.Size_width  (the_Model.Texture)
 --                or else the_Update.Height_size /= openGL.texture.Size_height (the_Model.Texture)
-            if        the_Update.current_Width_pixels  /= the_Model.Texture.my_Size.Width
-              or else the_Update.current_Height_pixels /= the_Model.Texture.my_Size.Height
+            if        Natural (the_Update.current_Width_pixels)  /= the_Model.Texture.Size.Width
+              or else Natural (the_Update.current_Height_pixels) /= the_Model.Texture.Size.Height
             then
                free (Self.texture_Pool,  the_Model.Texture);
-               the_Model.Texture := new_Texture (Self.texture_Pool'Access,  Natural (texture_Width),  Natural (texture_Height));
+               the_Model.Texture := new_Texture (Self.texture_Pool'Access,
+                                                 (Natural (texture_Width),  Natural (texture_Height)));
             end if;
 
             -- Set texture coordinates.

@@ -59,7 +59,7 @@ is
 
 
 
-   function to_Texture (min_Width, min_Height : in Positive) return Object
+   function to_Texture (Dimensions : in Texture.Dimensions) return Object
    is
       check_is_OK : constant Boolean       := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       Self        : aliased  Texture.Object;
@@ -70,9 +70,8 @@ is
    begin
 --        Self.Size_width  := Size_width;
 --        Self.Size_height := Size_height;
-      Self.Dimensions.Width  := GLsizei (min_Width);
-      Self.Dimensions.Height := GLsizei (min_Height);
-      Self.Name              := new_texture_Name;
+      Self.Dimensions := Dimensions;
+      Self.Name       := new_texture_Name;
 
       enable (Self);
 
@@ -179,8 +178,8 @@ is
 
 --           Self.Size_width  := Size_width;
 --           Self.Size_height := Size_height;
-         Self.Dimensions.width  := GLsizei (min_Width);
-         Self.Dimensions.height := GLsizei (min_Height);
+         Self.Dimensions.width  := min_Width;
+         Self.Dimensions.height := min_Height;
 
          enable (Self);
 
@@ -228,8 +227,8 @@ is
             glTexImage2D (GL_TEXTURE_2D,
                           0,
                           GL_RGB,
-                          Self.Dimensions.Width,
-                          Self.Dimensions.Height,
+                          GLsizei (Self.Dimensions.Width),
+                          GLsizei (Self.Dimensions.Height),
                           0,
                           GL_RGB,
                           GL_UNSIGNED_BYTE,
@@ -269,8 +268,8 @@ is
    begin
       Self.is_Transparent := True;
 
-      Self.Dimensions.width  := GLsizei (min_width);
-      Self.Dimensions.height := GLsizei (min_height);
+      Self.Dimensions.width  := min_width;
+      Self.Dimensions.height := min_height;
 
       enable (Self);
 
@@ -318,8 +317,8 @@ is
          glTexImage2D (GL_TEXTURE_2D,
                        0,
                        GL_RGBA,
-                       Self.Dimensions.Width,
-                       Self.Dimensions.Height,
+                       GLsizei (Self.Dimensions.Width),
+                       GLsizei (Self.Dimensions.Height),
                        0,
                        GL_RGBA,
                        GL_UNSIGNED_BYTE,
@@ -448,11 +447,11 @@ is
 
 
 
-   function  my_Size (Self : in Object) return Texture.Dimensions
+   function  Size (Self : in Object) return Texture.Dimensions
    is
    begin
       return Self.Dimensions;
-   end my_Size;
+   end Size;
 
 
 
@@ -500,14 +499,11 @@ is
 
 
 
-   function new_Texture (From : access Pool;   min_Width  : in Positive;
-                                               min_Height : in Positive) return Object
+   function new_Texture (From : access Pool;   Size : in Dimensions) return Object
    is
       check_is_OK         : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
 
       the_Pool            :          access Pool renames From;
-      Dims                : constant Dimensions := (GLsizei (min_Height),
-                                                    GLsizei (min_Height));
       the_Texture         : aliased  Object;
 
 --        Size_width          : constant Size    := to_Size (min_Width);
@@ -518,12 +514,12 @@ is
       unused_texture_List :          pool_texture_List_view;
 
    begin
-      if the_Pool.Map.contains (Dims)
+      if the_Pool.Map.contains (Size)
       then
-         unused_texture_List := the_Pool.Map.Element (Dims);
+         unused_texture_List := the_Pool.Map.Element (Size);
       else
          unused_texture_List := new pool_texture_List;
-         the_Pool.Map.insert (Dims, unused_texture_List);
+         the_Pool.Map.insert (Size, unused_texture_List);
       end if;
 
       -- Search for existing, but unused, object.
@@ -536,16 +532,19 @@ is
          enable (the_Texture);
 
          gltexImage2D  (GL_TEXTURE_2D,  0,  GL_RGBA,
-                        power_of_2_Ceiling (min_Width),
-                        power_of_2_Ceiling (min_Height),
+--                          power_of_2_Ceiling (min_Width),
+--                          power_of_2_Ceiling (min_Height),
+                        GLsizei (Size.Width),
+                        GLsizei (Size.Height),
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
                         null);                             -- nb: Actual image is not initialised.
+         the_Texture.Dimensions := Size;
 
       else     -- No existing, unused texture found, so create a new one.
 --           the_Texture.Size_width  := Size_width;
 --           the_Texture.Size_height := Size_height;
-         the_Texture.Dimensions := Dims;
+         the_Texture.Dimensions := Size;
 
          the_Texture.Pool        := From.all'unchecked_Access;
          the_Texture.Name        := new_texture_Name;
@@ -564,8 +563,10 @@ is
                           GL_LINEAR);
 
          gltexImage2D  (gl_TEXTURE_2D,  0,  gl_RGBA,
-                        power_of_2_Ceiling (min_Width),
-                        power_of_2_Ceiling (min_Height),
+--                          power_of_2_Ceiling (min_Width),
+--                          power_of_2_Ceiling (min_Height),
+                        GLsizei (Size.Width),
+                        GLsizei (Size.Height),
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
                         null);                             -- nb: Actual image is not initialised.

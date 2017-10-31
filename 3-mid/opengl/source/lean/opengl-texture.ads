@@ -49,11 +49,11 @@ is
 
    --  Size
    --
-   type Dimensions is
-      record
-         Width,
-         Height : GL.GLsizei;
-      end record;
+   subtype Dimensions is Extent_2d;
+--        record
+--           Width,
+--           Height : GL.GLsizei;
+--        end record;
 
 
 --     type Size is (Unknown,
@@ -83,8 +83,7 @@ is
 
    function  to_Texture (Name        : in     texture_Name)    return Object;
 
-   function  to_Texture (min_Width,
-                         min_Height  : in     Positive)        return Object;
+   function  to_Texture (Dimensions : in Texture.Dimensions) return Object;
 
    function  to_Texture (the_Image   : in     openGL.Image;
                          use_Mipmaps : in     Boolean := True) return Object;
@@ -119,7 +118,7 @@ is
    procedure set_Image      (Self        : in out Object;   To          : in     openGL.lucid_Image;
                                                             use_Mipmaps : in     Boolean := True);
 
-   function  my_Size           (Self : in Object) return Texture.Dimensions;
+   function  Size           (Self : in Object) return Texture.Dimensions;
 
 
 
@@ -144,8 +143,7 @@ is
 
 
 
-   function new_Texture (From : access Pool;   min_Width  : in Positive;
-                                               min_Height : in Positive) return Object;
+   function new_Texture (From : access Pool;   Size : in Dimensions) return Object;
    --
    --  returns a texture object, whose width and height are powers of two,
    --  sufficient to contain the requested minimums.

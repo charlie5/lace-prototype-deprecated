@@ -18,7 +18,7 @@ is
       Self        :          Item;
 
    begin
-      Self.Texture := to_Texture (Width, Height);
+      Self.Texture := to_Texture (Dimensions' (Width, Height));
 
       glGenFramebuffers (1, Self.Name'Access);
 
