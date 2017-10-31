@@ -1,0 +1,40 @@
+with
+     "opengl_demo",
+     "lace_shared"; 
+
+project render_Arrows
+is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_render_arrows.adb");
+
+--   type Os_Type is
+--      ("Windows_NT", "Linux", "MacOSX");
+--   Os : Os_Type := external ("OS");
+--   type Profile is
+--      ("safe", "lean", "desk");
+--   Opengl_Profile : Profile := external ("opengl_profile");
+--   type Platform is
+--      ("egl", "glx");
+--   Opengl_Platform : Platform := external ("opengl_platform");
+--   type Restrictions is
+--      ("xgc", "ravenscar");
+--   Restrictions : Restrictions := external ("restrictions");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-k", "-g", "-j13");
+   end Builder;
+
+   package Compiler renames Lace_Shared.Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
+   end Linker;
+
+end render_Arrows;
+
