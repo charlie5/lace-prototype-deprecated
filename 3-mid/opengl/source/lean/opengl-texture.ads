@@ -1,7 +1,7 @@
 with
-     ada.unchecked_Conversion,
-     ada.Strings.unbounded.Hash,
-     ada.Containers.hashed_Maps;
+     Ada.unchecked_Conversion,
+     Ada.Strings.unbounded.Hash,
+     Ada.Containers.hashed_Maps;
 
 
 package openGL.Texture
@@ -9,66 +9,8 @@ package openGL.Texture
 --  Provides openGL textures.
 --
 is
-
-   --------------
-   --  Core Types
-   --
-
-   --  TexFormatEnm
-   --
-
-   type TexFormatEnm is (ALPHA,
-                         RGB,               RGBA,
-                         LUMINANCE,         LUMINANCE_ALPHA,
-                         R3_G3_B2,
-                         ALPHA4,            ALPHA8,            ALPHA12,            ALPHA16,
-                         LUMINANCE4,        LUMINANCE8,        LUMINANCE12,        LUMINANCE16,
-                         LUMINANCE4_ALPHA4, LUMINANCE6_ALPHA2, LUMINANCE8_ALPHA8,  LUMINANCE12_ALPHA4, LUMINANCE12_ALPHA12, LUMINANCE16_ALPHA16,
-                         INTENSITY,         INTENSITY4,        INTENSITY8,         INTENSITY12,        INTENSITY16,
-                         RGB4,              RGB5,              RGB8,               RGB10,              RGB12,               RGB16,
-                         RGBA2,             RGBA4,             RGB5_A1,            RGBA8,              RGB10_A2,            RGBA12,      RGBA16,
-                         BGR,               BGRA);
-
-   function to_GL (Self : in TexFormatEnm) return GL.GLenum;
-
-
-   --  TexPixelFormatEnm
-   --
-   type TexPixelFormatEnm is (COLOR_INDEX,
-                              RED,
-                              GREEN,
-                              BLUE,
-                              ALPHA,
-                              RGB,
-                              RGBA,
-                              LUMINANCE,
-                              LUMINANCE_ALPHA);
-
-   function to_GL (Self : in TexPixelFormatEnm) return GL.GLenum;
-
-
-   --  Size
-   --
-   subtype Dimensions is Extent_2d;
---        record
---           Width,
---           Height : GL.GLsizei;
---        end record;
-
-
---     type Size is (Unknown,
---                   s2,    s4,     s8,    s16,    s32,
---                   s64,   s128,   s256,  s512,   s1024,
---                   s2048, s4096,  s8192, s16384, s32768);
-
---     function to_Size    (From : in Positive) return Size;
---     function to_Integer (From : in Size)     return Integer;
-
-
    --  Object - an openGL texture 'object'
    --
-
-   subtype texture_Name is GL.GLuint;     -- An openGL texture object 'Name'.
 
    type Object  is tagged private;
    type Objects is array (Positive range <>) of Object;
@@ -76,50 +18,44 @@ is
    null_Object : constant Object;
 
 
-
    ---------
    --- Forge
    --
 
-   function  to_Texture (Name        : in     texture_Name)    return Object;
+   subtype texture_Name is GL.GLuint;     -- An openGL texture object 'Name'.
+   subtype Dimensions   is Extent_2d;
 
-   function  to_Texture (Dimensions : in Texture.Dimensions) return Object;
+   function  to_Texture (Name        : in     texture_Name)       return Object;
+
+   function  to_Texture (Dimensions  : in     Texture.Dimensions) return Object;
 
    function  to_Texture (the_Image   : in     openGL.Image;
-                         use_Mipmaps : in     Boolean := True) return Object;
+                         use_Mipmaps : in     Boolean := True)    return Object;
 
    function  to_Texture (the_Image   : in     openGL.lucid_Image;
-                         use_Mipmaps : in     Boolean := True) return Object;
+                         use_Mipmaps : in     Boolean := True)    return Object;
 
    procedure destroy    (Self        : in out Object);
    procedure free       (Self        : in out Object);
-
 
 
    --------------
    --- Attributes
    --
 
-   function  is_Defined     (Self        : in     Object) return Boolean;
+   function  is_Defined     (Self : in     Object) return Boolean;
+   function  is_Transparent (Self : in     Object) return Boolean;
 
-   procedure set_Name       (Self        : in out Object;   To : in texture_Name);
-   function  Name           (Self        : in     Object)    return texture_Name;
+   procedure set_Name       (Self : in out Object;   To : in texture_Name);
+   function  Name           (Self : in     Object)    return texture_Name;
 
-   procedure enable         (Self        : in     Object);
+   procedure enable         (Self : in     Object);
+   procedure set_Image      (Self : in out Object;   To          : in     openGL.Image;
+                                                     use_Mipmaps : in     Boolean := True);
+   procedure set_Image      (Self : in out Object;   To          : in     openGL.lucid_Image;
+                                                     use_Mipmaps : in     Boolean := True);
 
---     function  Size_width     (Self        : in     Object) return Size;
---     function  Size_height    (Self        : in     Object) return Size;
-
-   function  is_Transparent (Self        : in     Object) return Boolean;
-
-   procedure set_Image      (Self        : in out Object;   To          : in     openGL.Image;
-                                                            use_Mipmaps : in     Boolean := True);
-
-   procedure set_Image      (Self        : in out Object;   To          : in     openGL.lucid_Image;
-                                                            use_Mipmaps : in     Boolean := True);
-
-   function  Size           (Self : in Object) return Texture.Dimensions;
-
+   function  Size           (Self : in     Object) return Texture.Dimensions;
 
 
    -------
@@ -132,39 +68,65 @@ is
 
 
 
-   --------
-   --  Pool - for rapid allocation/deallocation of texture objects.
+   ---------------------------------------------------------------
+   --  Pool - for rapid allocation/deallocation of texture objects - TODO: Move this into a child package ?
    --
 
-   type Pool is private;
+   type Pool      is private;
    type Pool_view is access all Pool;
 
    procedure destroy (the_Pool : in out Pool);
 
-
-
    function new_Texture (From : access Pool;   Size : in Dimensions) return Object;
    --
-   --  returns a texture object, whose width and height are powers of two,
-   --  sufficient to contain the requested minimums.
+   --  Returns a texture object of the requested size.
 
    procedure free (Self : in out Pool;   the_Texture : in Object);
    --
-   --  free's a texture, for future use.
+   --  Free's a texture, for future use.
 
    procedure vacuum (Self : in out Pool);
    --
-   --  releases any allocated, but unused, texture objects.
+   --  Releases any allocated, but unused, texture objects.
 
 
 
    -----------
-   --- Utility
+   -- GL Enums
+   --
+
+   --  TexFormatEnm
+   --
+   type Format is (ALPHA,
+                   RGB,               RGBA,
+                   LUMINANCE,         LUMINANCE_ALPHA,
+                   R3_G3_B2,
+                   ALPHA4,            ALPHA8,            ALPHA12,            ALPHA16,
+                   LUMINANCE4,        LUMINANCE8,        LUMINANCE12,        LUMINANCE16,
+                   LUMINANCE4_ALPHA4, LUMINANCE6_ALPHA2, LUMINANCE8_ALPHA8,  LUMINANCE12_ALPHA4, LUMINANCE12_ALPHA12, LUMINANCE16_ALPHA16,
+                   INTENSITY,         INTENSITY4,        INTENSITY8,         INTENSITY12,        INTENSITY16,
+                   RGB4,              RGB5,              RGB8,               RGB10,              RGB12,               RGB16,
+                   RGBA2,             RGBA4,             RGB5_A1,            RGBA8,              RGB10_A2,            RGBA12,      RGBA16,
+                   BGR,               BGRA);
+
+   function to_GL (Self : in Format) return GL.GLenum;
+
+
+   --  TexPixelFormatEnm
+   --
+   type pixel_Format is (COLOR_INDEX,
+                         RED, GREEN, BLUE, ALPHA,
+                         RGB, RGBA,
+                         LUMINANCE, LUMINANCE_ALPHA);
+
+   function to_GL (Self : in pixel_Format) return GL.GLenum;
+
+
+   ----------
+   -- Utility
    --
 
    function power_of_2_Ceiling (From : in Positive) return GL.GLsizei;
-
-
 
 
 
@@ -172,13 +134,9 @@ private
 
    type Object is tagged
       record
-         Name           : aliased texture_Name := 0;
---           Size_width,
---           Size_height    :         Size         := Unknown;
---           Width,
---           Height         :      GL.GLsizei      := 0;
-         Dimensions     : Texture.Dimensions := (0, 0);
-         is_Transparent :         Boolean;
+         Name           : aliased texture_Name       := 0;
+         Dimensions     :         Texture.Dimensions := (0, 0);
+         is_Transparent :         Boolean            := False;
          Pool           : access  texture.Pool;
       end record;
 
@@ -187,10 +145,12 @@ private
    -- Maps
    --
 
-   use ada.Strings.unbounded;
+   use Ada.Strings.unbounded;
 
-   package name_Maps_of_texture_id is new ada.Containers.Hashed_Maps (unbounded_String,  openGL.Texture.object,
-                                                                      ada.Strings.unbounded.hash, "=");
+   package name_Maps_of_texture_id is new ada.Containers.Hashed_Maps (unbounded_String,
+                                                                      openGL.Texture.object,
+                                                                      Ada.Strings.unbounded.Hash,
+                                                                      "=");
 
    type name_Map_of_texture is new name_Maps_of_texture_id.Map with null record;
 
@@ -199,7 +159,7 @@ private
    --- Rep Clauses
    --
 
-   for TexFormatEnm use
+   for Format use
      (ALPHA               => 16#1906#,
       RGB                 => 16#1907#,
       RGBA                => 16#1908#,
@@ -241,10 +201,10 @@ private
       BGR                 => 16#80E0#,
       BGRA                => 16#80E1#);
 
-   for TexFormatEnm'Size use GL.GLenum'Size;
+   for Format'Size use GL.GLenum'Size;
 
 
-   for TexPixelFormatEnm use
+   for pixel_Format use
      (COLOR_INDEX     => 16#1900#,
       RED             => 16#1903#,
       GREEN           => 16#1904#,
@@ -255,12 +215,12 @@ private
       LUMINANCE       => 16#1909#,
       LUMINANCE_ALPHA => 16#190A#);
 
-   for TexPixelFormatEnm'Size use GL.GLenum'Size;
+   for pixel_Format'Size use GL.GLenum'Size;
 
 
 
-   --------
-   --  Pool - re-uses existing textures when possible for performance.
+   ------------------------------------------------------------------
+   --  Pool - re-uses existing textures when possible for performance
    --
 
    type pool_texture_List is
@@ -270,8 +230,6 @@ private
       end record;
 
    type pool_texture_List_view is access all pool_texture_List;
-
---     type pool_texture_Lists_by_size is array (Size, Size) of pool_texture_List_view;
 
 
    function Hash (the_Dimensions : in Texture.Dimensions) return ada.Containers.Hash_Type;
@@ -283,7 +241,6 @@ private
                                                                              "="             => "=");
    type Pool is
       record
---           unused_Textures_for_size : pool_texture_Lists_by_size;
          Map : size_Maps_of_pool_texture_List.Map;
       end record;
 
@@ -291,18 +248,17 @@ private
    -------------
    --  Constants
    --
-
    null_Object : constant Object := (others => <>);
 
 
-   -----------
-   --  Utility
+   ---------------
+   --  Conversions
    --
 
-   function convert_1 is new Ada.Unchecked_Conversion (TexFormatEnm,      GL.GLenum);
-   function convert_2 is new Ada.Unchecked_Conversion (TexPixelFormatEnm, GL.GLenum);
+   function convert_1 is new Ada.Unchecked_Conversion (Format,       GL.GLenum);
+   function convert_2 is new Ada.Unchecked_Conversion (pixel_Format, GL.GLenum);
 
-   function to_GL (Self : in TexFormatEnm)      return GL.GLenum renames convert_1;
-   function to_GL (Self : in TexPixelFormatEnm) return GL.GLenum renames convert_2;
+   function to_GL (Self : in Format)       return GL.GLenum renames convert_1;
+   function to_GL (Self : in pixel_Format) return GL.GLenum renames convert_2;
 
 end openGL.Texture;

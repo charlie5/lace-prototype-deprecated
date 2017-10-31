@@ -4,19 +4,14 @@ with
      openGL.IO,
 
      GL.lean,
-     gl.Pointers,
-
-     GLU,
-
-     ada.Unchecked_Deallocation;
+     GL.Pointers;
 
 
 package body openGL.Texture
 is
    use GL,
        GL.lean,
-       GL.Pointers,
-       GLU;
+       GL.Pointers;
 
 
    ----------------
@@ -64,12 +59,7 @@ is
       check_is_OK : constant Boolean       := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       Self        : aliased  Texture.Object;
 
---        Size_width  : constant Size          := to_Size (min_Width);
---        Size_height : constant Size          := to_Size (min_Height);
-
    begin
---        Self.Size_width  := Size_width;
---        Self.Size_height := Size_height;
       Self.Dimensions := Dimensions;
       Self.Name       := new_texture_Name;
 
@@ -166,18 +156,9 @@ is
       declare
          min_Width   : constant Positive := the_Image'Length (2);
          min_Height  : constant Positive := the_Image'Length (1);
-
---           Width       : constant GLsizei  := power_of_2_Ceiling (min_Width);
---           Height      : constant GLsizei  := power_of_2_Ceiling (min_Height);
-
---           Size_width  : constant Size     := to_Size (min_Width);
---           Size_height : constant Size     := to_Size (min_Height);
-
       begin
          Self.is_Transparent := False;
 
---           Self.Size_width  := Size_width;
---           Self.Size_height := Size_height;
          Self.Dimensions.width  := min_Width;
          Self.Dimensions.height := min_Height;
 
@@ -193,55 +174,22 @@ is
 
          openGL.Errors.log;
 
---           if        min_Width  /= Positive (Width)
---             or else min_Height /= Positive (Height)
---           then
---              declare
---                 scaled_Image : aliased openGL.Image (1 .. Index_t (Height),
---                                                      1 .. Index_t (Width));
---              begin
---                 gluScaleImage (GL_RGB,
---                                GLint (min_Width),
---                                GLint (min_Height),
---                                GL_UNSIGNED_BYTE,
---                                the_Image (1, 1).Red'Address,
---                                Width,
---                                Height,
---                                GL_UNSIGNED_BYTE,
---                                scaled_Image (1, 1).Red'Address);
---                 openGL.Errors.log;
---
---                 glTexImage2D (GL_TEXTURE_2D,
---                               0,
---                               GL_RGB,
---                               Width,
---                               Height,
---                               0,
---                               GL_RGB,
---                               GL_UNSIGNED_BYTE,
---                               +scaled_Image (1, 1).Red'Address);
---                 openGL.Errors.log;
---              end;
---
---           else
-            glTexImage2D (GL_TEXTURE_2D,
-                          0,
-                          GL_RGB,
-                          GLsizei (Self.Dimensions.Width),
-                          GLsizei (Self.Dimensions.Height),
-                          0,
-                          GL_RGB,
-                          GL_UNSIGNED_BYTE,
-                          +the_Image (1, 1).Red'Address);
-            openGL.Errors.log;
---           end if;
+         glTexImage2D (GL_TEXTURE_2D,
+                       0,
+                       GL_RGB,
+                       GLsizei (Self.Dimensions.Width),
+                       GLsizei (Self.Dimensions.Height),
+                       0,
+                       GL_RGB,
+                       GL_UNSIGNED_BYTE,
+                       +the_Image (1, 1).Red'Address);
+         openGL.Errors.log;
 
          if use_Mipmaps
          then
             glGenerateMipmap (GL_TEXTURE_2D);
+            openGL.Errors.log;
          end if;
-
-         openGL.Errors.log;
       end;
    end set_Image;
 
@@ -258,12 +206,6 @@ is
 
       min_Width   : constant Positive := the_Image'Length (2);
       min_Height  : constant Positive := the_Image'Length (1);
-
---        Width       : constant GLsizei  := power_of_2_Ceiling (min_Width);
---        Height      : constant GLsizei  := power_of_2_Ceiling (min_Height);
---
---        Size_width  : constant Size     := to_Size (min_Width);
---        Size_height : constant Size     := to_Size (min_Height);
 
    begin
       Self.is_Transparent := True;
@@ -283,55 +225,22 @@ is
 
       openGL.Errors.log;
 
---        if        min_Width  /= Positive (Width)
---          or else min_Height /= Positive (Height)
---        then
---           declare
---              scaled_Image : aliased openGL.lucid_Image (1 .. Index_t (Height),
---                                                         1 .. Index_t (Width));
---           begin
---              gluScaleImage (GL_RGBA,
---                             GLint (min_Width),
---                             GLint (min_Height),
---                             GL_UNSIGNED_BYTE,
---                             the_Image (1, 1).Primary.Red'Address,
---                             Width,
---                             Height,
---                             GL_UNSIGNED_BYTE,
---                             scaled_Image (1, 1).Primary.Red'Address);
---              openGL.Errors.log;
---
---              glTexImage2D (GL_TEXTURE_2D,
---                            0,
---                            GL_RGBA,
---                            Width,
---                            Height,
---                            0,
---                            GL_RGBA,
---                            GL_UNSIGNED_BYTE,
---                            +scaled_Image (1, 1).Primary.Red'Address);
---              openGL.Errors.log;
---           end;
---
---        else
-         glTexImage2D (GL_TEXTURE_2D,
-                       0,
-                       GL_RGBA,
-                       GLsizei (Self.Dimensions.Width),
-                       GLsizei (Self.Dimensions.Height),
-                       0,
-                       GL_RGBA,
-                       GL_UNSIGNED_BYTE,
-                       +the_Image (1, 1).Primary.Red'Address);
-         openGL.Errors.log;
---        end if;
+      glTexImage2D (GL_TEXTURE_2D,
+                    0,
+                    GL_RGBA,
+                    GLsizei (Self.Dimensions.Width),
+                    GLsizei (Self.Dimensions.Height),
+                    0,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    +the_Image (1, 1).Primary.Red'Address);
+      openGL.Errors.log;
 
       if use_Mipmaps
       then
          glGenerateMipmap (GL_TEXTURE_2D);
+         openGL.Errors.log;
       end if;
-
-      openGL.Errors.log;
    end set_Image;
 
 
@@ -353,56 +262,6 @@ is
    begin
       glBindTexture (GL.GL_TEXTURE_2D, Self.Name);
    end enable;
-
-
-
---     function to_Size (From : in Positive) return Size
---     is
---     begin
---        if    From <=         2 then   return s2;
---        elsif From <=         4 then   return s4;
---        elsif From <=         8 then   return s8;
---        elsif From <=        16 then   return s16;
---        elsif From <=        32 then   return s32;
---        elsif From <=        64 then   return s64;
---        elsif From <=       128 then   return s128;
---        elsif From <=       256 then   return s256;
---        elsif From <=       512 then   return s512;
---        elsif From <=      1024 then   return s1024;
---        elsif From <=  2 * 1024 then   return s2048;
---        elsif From <=  4 * 1024 then   return s4096;
---        elsif From <=  8 * 1024 then   return s8192;
---        elsif From <= 16 * 1024 then   return s16384;
---        elsif From <= 32 * 1024 then   return s32768;
---        end if;
---
---        raise Constraint_Error with   "requested txture size too large:"
---                                    & Positive'Image (From);
---     end to_Size;
---
---
---
---     function to_Integer (From : in Size) return Integer is
---     begin
---        case From is
---        when Unknown => raise Constraint_Error;
---        when s2      => return     2;
---        when s4      => return     4;
---        when s8      => return     8;
---        when s16     => return    16;
---        when s32     => return    32;
---        when s64     => return    64;
---        when s128    => return   128;
---        when s256    => return   256;
---        when s512    => return   512;
---        when s1024   => return  1024;
---        when s2048   => return  2048;
---        when s4096   => return  4096;
---        when s8192   => return  8192;
---        when s16384  => return 16384;
---        when s32768  => return 32768;
---        end case;
---     end to_Integer;
 
 
 
@@ -432,21 +291,6 @@ is
 
 
 
---     function Size_width (Self : in Object) return Size
---     is
---     begin
---        return Self.Size_width;
---     end Size_width;
---
---
---     function Size_height (Self : in Object) return Size
---     is
---     begin
---        return Self.Size_height;
---     end Size_height;
-
-
-
    function  Size (Self : in Object) return Texture.Dimensions
    is
    begin
@@ -455,9 +299,8 @@ is
 
 
 
-
-   -------
-   -- Maps
+   -----------------------
+   -- Name Maps of Texture
    --
 
    function fetch (From : access name_Map_of_texture'Class;   texture_Name : in String) return Object
@@ -487,6 +330,7 @@ is
    is
 --        procedure free is new ada.Unchecked_Deallocation (pool_texture_List, pool_texture_List_view);
    begin
+      raise Program_Error with "TODO";
 --        for i in the_Pool.unused_Textures_for_size'Range (1)
 --        loop
 --           for j in the_Pool.unused_Textures_for_size'Range (2)
@@ -494,7 +338,6 @@ is
 --              free (the_Pool.unused_Textures_for_size (i, j));
 --           end loop;
 --        end loop;
-      null;
    end destroy;
 
 
@@ -503,15 +346,10 @@ is
    is
       check_is_OK         : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
 
-      the_Pool            :          access Pool renames From;
-      the_Texture         : aliased  Object;
+      the_Pool            : access  Pool renames From;
+      the_Texture         : aliased Object;
 
---        Size_width          : constant Size    := to_Size (min_Width);
---        Size_height         : constant Size    := to_Size (min_Height);
-
---        unused_texture_List :          pool_texture_List_view
---                                               := from.unused_Textures_for_size (Size_width, Size_height);
-      unused_texture_List :          pool_texture_List_view;
+      unused_texture_List : pool_texture_List_view;
 
    begin
       if the_Pool.Map.contains (Size)
@@ -532,20 +370,12 @@ is
          enable (the_Texture);
 
          gltexImage2D  (GL_TEXTURE_2D,  0,  GL_RGBA,
---                          power_of_2_Ceiling (min_Width),
---                          power_of_2_Ceiling (min_Height),
                         GLsizei (Size.Width),
                         GLsizei (Size.Height),
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
                         null);                             -- nb: Actual image is not initialised.
-         the_Texture.Dimensions := Size;
-
       else     -- No existing, unused texture found, so create a new one.
---           the_Texture.Size_width  := Size_width;
---           the_Texture.Size_height := Size_height;
-         the_Texture.Dimensions := Size;
-
          the_Texture.Pool        := From.all'unchecked_Access;
          the_Texture.Name        := new_texture_Name;
 
@@ -572,6 +402,8 @@ is
                         null);                             -- nb: Actual image is not initialised.
       end if;
 
+      the_Texture.Dimensions := Size;
+
       return the_Texture;
    end new_Texture;
 
@@ -585,6 +417,7 @@ is
          return;
       end if;
 
+      raise Program_Error with "TODO";
 --        declare
 --           unused_texture_List : constant pool_texture_List_view
 --             := Self.unused_Textures_for_size (the_Texture.Size_width,
@@ -617,7 +450,6 @@ is
          end;
       end loop;
 
-
 --        for each_Width in Self.unused_Textures_for_size'Range (1)
 --        loop
 --           for each_Height in self.unused_Textures_for_size'Range (2)
@@ -649,7 +481,6 @@ is
       return   Ada.Containers.Hash_Type (  the_Dimensions.Width  * 13
                                          + the_Dimensions.Height * 17);
    end Hash;
-
 
 
 end openGL.Texture;

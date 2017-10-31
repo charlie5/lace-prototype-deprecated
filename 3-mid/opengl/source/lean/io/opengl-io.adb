@@ -84,7 +84,7 @@ is
       glReadPixels (0, 0,
                     GLsizei (the_Extent.Width),
                     GLsizei (the_Extent.Height),
-                    to_GL (TexFormatEnm'(openGL.Texture.RGB)),
+                    to_GL (Format'(openGL.Texture.RGB)),
                     GL_UNSIGNED_BYTE,
                     to_GLvoid_access (the_Frame (1, 1).Red'Access));
       return the_Frame;
