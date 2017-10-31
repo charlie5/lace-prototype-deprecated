@@ -13,14 +13,11 @@ is
       end record;
 
 
-
    ---------
    --- Forge
    --
-
    package body Forge
    is
-
       function to_Arrow (Color      : in openGL.Color;
                          line_Width : in openGL.Real;
                          End_1,
@@ -38,10 +35,13 @@ is
          Self.State.Vertices (1).Site := End_1;                       -- Main line.
          Self.State.Vertices (2).Site := End_2;                       --
 
-         Self.State.Vertices (3).Site := End_2 + ( 0.5, -0.5, 0.0);   -- Side bits.
-         Self.State.Vertices (4).Site := End_2 + (-0.5, -0.5, 0.0);   --
+--           Self.State.Vertices (3).Site := End_2 + ( 0.5, -0.5, 0.0);   -- Side bits.
+--           Self.State.Vertices (4).Site := End_2 + (-0.5, -0.5, 0.0);   --
+         Self.State.Vertices (3).Site := End_2;   -- Side bits.
+         Self.State.Vertices (4).Site := End_2;   --
 
          Self.set_Bounds;
+         Self.set_side_Bits;
 
          return Self;
       end to_Arrow;
@@ -55,7 +55,6 @@ is
       begin
          return new Arrow.colored.item' (to_Arrow (Color, line_Width, End_1, End_2));
       end new_Arrow;
-
    end Forge;
 
 
@@ -120,6 +119,8 @@ is
       the_Indices   := (2, 4);
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices, line_Width => Self.line_Width);
       Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+
+      Self.set_side_Bits;
 
 
       return (1 => Self.State.Geometry.all'Access);

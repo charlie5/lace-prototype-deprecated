@@ -61,14 +61,13 @@ begin
    Demo.Renderer.add_Font (the_font_Id);
 
    declare
-
       --  The Models.
       --
       the_arrow_Model : constant openGL.Model.arrow.colored.view
         := openGL.Model.arrow.colored.Forge.new_Arrow (Color      => Radical_Red,
                                                        line_Width => 2.0,
                                                        End_1      => (0.0, 0.0, 0.0),
-                                                       End_2      => (0.0, 5.0, 0.0));
+                                                       End_2      => (5.0, 0.0, 0.0));
 
       the_billboard_Model : constant openGL.Model.billboard.textured.view
         := openGL.Model.billboard.textured.forge.new_Billboard (scale => (1.0, 1.0, 1.0),

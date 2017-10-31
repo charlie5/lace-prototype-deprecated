@@ -11,12 +11,9 @@ is
    type Item is new openGL.Model.arrow.item with private;
    type View is access all Item'Class;
 
-
-
    ---------
    --- Forge
    --
-
    package Forge
    is
       function  to_Arrow (Color      : in openGL.Color;
@@ -29,7 +26,6 @@ is
                           End_1,
                           End_2      : in math.Vector_3 := Origin_3d) return View;
    end Forge;
-
 
 
    --------------
@@ -55,11 +51,9 @@ is
 
 
 
-
-
 private
 
-   type State;     -- An opaque Taft type.
+   type State;     -- An opaque 'Taft' type.
 
 
    type Item is new openGL.Model.arrow.item with
