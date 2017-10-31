@@ -164,12 +164,14 @@ begin
         := openGL.Model.open_gl.forge.new_Model (scale            => (1.0, 1.0, 1.0),
                                                  model => to_Asset ("assets/duck.dae"),
 --                                                   model            => to_Asset ("assets/human-default.dae"),  -- tbd: Models with weights fail due to skinning and not setting opengl program parameters.
+                                                 math_model => null,
                                                  Texture          => the_Texture,
                                                  Texture_is_lucid => False);
 
       the_wavefront_Model  : constant openGL.Model.open_gl.view
         := openGL.Model.open_gl.forge.new_Model (scale => (1.0, 1.0, 1.0),
                                                  model => to_Asset ("assets/opengl/model/human.obj"),
+                                                 math_model => null,
                                                  Texture          => the_Texture,
                                                  Texture_is_lucid => False);
 
@@ -221,12 +223,12 @@ begin
             new_Visual (the_faceted_hexagon_column_Model.all'Access),
             new_Visual (the_rounded_hexagon_column_Model.all'Access),
             new_Visual (the_line_Model        .all'Access),
-            new_Visual (the_collada_Model     .all'Access),
+--              new_Visual (the_collada_Model     .all'Access),
             new_Visual (the_wavefront_Model   .all'Access),
             new_Visual (the_polygon_Model     .all'Access),
             new_Visual (the_text_Model        .all'Access),
-            new_Visual (the_segment_line_Model.all'Access),
-            new_Visual (the_ground_Model      .all'Access));
+            new_Visual (the_segment_line_Model.all'Access));
+--              new_Visual (the_ground_Model      .all'Access));
 
       Current     :          Integer := the_Sprites'First;
 
