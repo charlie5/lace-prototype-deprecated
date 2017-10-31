@@ -27,14 +27,20 @@ begin
       the_arrow_Model : constant openGL.Model.arrow.colored.view
         := openGL.Model.arrow.colored.Forge.new_Arrow (End_2 => (0.0, 5.0, 0.0));
 
+      the_spinner_arrow_Model : constant openGL.Model.arrow.colored.view
+        := openGL.Model.arrow.colored.Forge.new_Arrow (End_1 => (0.0, -2.5, 0.0),
+                                                       End_2 => (0.0,  2.5, 0.0));
+
       --  The Sprites.
       --
       use openGL.Visual.Forge;
 
-      the_Sprites : constant openGL.Visual.views := (1 => new_Visual (the_arrow_Model.all'Access));
-      Current     :          Integer             := the_Sprites'First;
+      the_Sprites : constant openGL.Visual.views := (new_Visual (        the_arrow_Model.all'Access),
+                                                     new_Visual (the_spinner_arrow_Model.all'Access));
 
-      Angle       : Radians := 0.0;
+      Current : Integer := the_Sprites'First;
+      Angle   : Radians := 0.0;
+
    begin
       --  Main loop.
       --
@@ -42,15 +48,16 @@ begin
       loop
          Angle := Angle + 0.001;
 
-         if Angle >= 360.0 then
-            Angle :=   0.0;
+         if Angle >= to_Radians (Degrees' (360.0))
+         then
+            Angle := 0.0;
          end if;
-
---           the_arrow_Model.Site_is (Now     => the_arrow_Model.Site (for_End => 2) + (-0.001, 0.0, 0.0),
---                                    for_End => 2);
 
          the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle => Angle,  Extent => 5.0)) & 0.0),
                                   for_End => 2);
+
+         the_Sprites (2).Spin_is (linear_Algebra_3d.to_Rotation (Axis  => (0.0, 0.0, 1.0),
+                                                                 Angle => Angle));
 
          -- Handle user commands.
          --
@@ -81,7 +88,8 @@ begin
 
          --  Render the sprite.
          --
-         Demo.Camera.render ((1 => the_Sprites (Current)));
+--           Demo.Camera.render ((1 => the_Sprites (Current)));
+         Demo.Camera.render (the_Sprites);
 
          while not Demo.Camera.cull_Completed
          loop
