@@ -199,7 +199,8 @@ is
          --
          the_cone_Model : constant openGL.Model.open_gl.view
            := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0) * 1.0,
-                                                          Model            => openGL.to_Asset ("assets/mmi/model/unit_cone.obj"),
+                                                    Model            => openGL.to_Asset ("assets/mmi/model/unit_cone.obj"),
+                                                    math_model => null,
                                                           Texture          => openGL.null_Asset,
                                                           Texture_is_lucid => False);
          the_cone_physics_Model : constant mmi.physics_Model.view
@@ -217,6 +218,7 @@ is
          the_cylinder_Model : constant openGL.Model.open_gl.view
            := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0),
                                                           Model            => openGL.to_Asset ("assets/mmi/model/unit_cylinder.obj"),
+                                                    math_model => null,
                                                           Texture          => openGL.null_Asset,
                                                           Texture_is_lucid => False);
          the_cylinder_physics_Model : constant mmi.physics_Model.view
