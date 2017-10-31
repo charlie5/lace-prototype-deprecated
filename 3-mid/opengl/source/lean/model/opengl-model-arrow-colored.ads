@@ -1,5 +1,6 @@
 with
-     openGL.Font;
+     openGL.Font,
+     openGL.Palette;
 
 
 package openGL.Model.arrow.colored
@@ -16,13 +17,13 @@ is
    --
    package Forge
    is
-      function  to_Arrow (Color      : in openGL.Color;
-                          line_Width : in openGL.Real;
+      function  to_Arrow (Color      : in openGL.Color := Palette.White;
+                          line_Width : in openGL.Real  := 1.0;
                           End_1,
                           End_2      : in math.Vector_3 := Origin_3d) return Item;
 
-      function new_Arrow (Color      : in openGL.Color;
-                          line_Width : in openGL.Real;
+      function new_Arrow (Color      : in openGL.Color  := Palette.White;
+                          line_Width : in openGL.Real   := 1.0;
                           End_1,
                           End_2      : in math.Vector_3 := Origin_3d) return View;
    end Forge;

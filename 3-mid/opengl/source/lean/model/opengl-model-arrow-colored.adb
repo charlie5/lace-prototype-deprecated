@@ -18,8 +18,8 @@ is
    --
    package body Forge
    is
-      function to_Arrow (Color      : in openGL.Color;
-                         line_Width : in openGL.Real;
+      function to_Arrow (Color      : in openGL.Color  := Palette.White;
+                         line_Width : in openGL.Real   := 1.0;
                          End_1,
                          End_2      : in math.Vector_3 := Origin_3d) return Item
       is
@@ -27,16 +27,14 @@ is
          Self : Model.arrow.colored.item;
 
       begin
-         Self.Color                   := Color;
-         Self.line_Width              := line_Width;
+         Self.Color      := Color;
+         Self.line_Width := line_Width;
 
-         Self.State                   := new State;
+         Self.State  := new State;
 
-         Self.State.Vertices (1).Site := End_1;                       -- Main line.
-         Self.State.Vertices (2).Site := End_2;                       --
+         Self.State.Vertices (1).Site := End_1;   -- Main line.
+         Self.State.Vertices (2).Site := End_2;   --
 
---           Self.State.Vertices (3).Site := End_2 + ( 0.5, -0.5, 0.0);   -- Side bits.
---           Self.State.Vertices (4).Site := End_2 + (-0.5, -0.5, 0.0);   --
          Self.State.Vertices (3).Site := End_2;   -- Side bits.
          Self.State.Vertices (4).Site := End_2;   --
 
@@ -47,8 +45,8 @@ is
       end to_Arrow;
 
 
-      function new_Arrow (Color      : in openGL.Color;
-                          line_Width : in openGL.Real;
+      function new_Arrow (Color      : in openGL.Color  := Palette.White;
+                          line_Width : in openGL.Real   := 1.0;
                           End_1,
                           End_2      : in math.Vector_3 := Origin_3d) return View
       is
