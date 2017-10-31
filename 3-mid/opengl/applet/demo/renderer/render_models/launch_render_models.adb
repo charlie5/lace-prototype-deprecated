@@ -48,10 +48,7 @@ is
    the_Texture : constant openGL.asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
 
 begin
-   openGL.Demo.define ("openGL 'render Models' Demo");
-
-   --  Setup the camera.
-   --
+   Demo.define ("openGL 'render Models' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
 
@@ -64,10 +61,7 @@ begin
       --  The Models.
       --
       the_arrow_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.Forge.new_Arrow (Color      => Radical_Red,
-                                                       line_Width => 2.0,
-                                                       End_1      => (0.0, 0.0, 0.0),
-                                                       End_2      => (5.0, 0.0, 0.0));
+        := openGL.Model.arrow.colored.Forge.new_Arrow (End_2 => (0.0, 5.0, 0.0));
 
       the_billboard_Model : constant openGL.Model.billboard.textured.view
         := openGL.Model.billboard.textured.forge.new_Billboard (scale => (1.0, 1.0, 1.0),
