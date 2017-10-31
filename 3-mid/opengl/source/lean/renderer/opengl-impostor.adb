@@ -318,14 +318,14 @@ is
                openGL.Visual;
       use type gl.glBitfield;
 
-      Width_size     : constant openGL.texture.Size := to_Size (Natural (Self.current_Width_pixels));
-      Height_size    : constant openGL.texture.Size := to_Size (Natural (Self.current_Height_pixels));
+--        Width_size     : constant openGL.texture.Size := to_Size (Natural (Self.current_Width_pixels));
+--        Height_size    : constant openGL.texture.Size := to_Size (Natural (Self.current_Height_pixels));
 
-      texture_Width  : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Width_pixels ));
-      texture_Height : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Height_pixels));
+--        texture_Width  : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Width_pixels ));
+--        texture_Height : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Height_pixels));
 
       the_Model      : constant openGL.Model.billboard.textured.view := openGL.Model.billboard.textured.view (Self.Visual.Model);
-      GL_Error       :          Boolean;
+--        GL_Error       :          Boolean;
 
    begin
       Self.Visual.all := Self.Target.all;

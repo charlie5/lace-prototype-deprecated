@@ -127,8 +127,10 @@ is
          begin
             impostor_updates_Last                    := impostor_updates_Last + 1;
             Impostor_updates (impostor_updates_Last) := (impostor              => the_Impostor,
-                                                         Width_size            => to_Size (Natural (the_Impostor.current_Width_pixels)),
-                                                         Height_size           => to_Size (Natural (the_Impostor.current_Height_pixels)),
+--                                                           Width_size            => to_Size (Natural (the_Impostor.current_Width_pixels)),
+--                                                           Height_size           => to_Size (Natural (the_Impostor.current_Height_pixels)),
+--                                                           Width_size            => Natural (the_Impostor.current_Width_pixels),
+--                                                           Height_size           => to_Size (Natural (the_Impostor.current_Height_pixels)),
                                                          current_Width_pixels  => the_Impostor.current_Width_pixels,
                                                          current_Height_pixels => the_Impostor.current_Height_pixels,
 
@@ -218,7 +220,7 @@ is
                                        end if;
                                     end loop;
 
-                                    raise program_Error;
+                                    raise Program_Error;
                                  end Slot_Id;
 
 

@@ -49,13 +49,20 @@ is
 
    --  Size
    --
-   type Size is (Unknown,
-                 s2,    s4,     s8,    s16,    s32,
-                 s64,   s128,   s256,  s512,   s1024,
-                 s2048, s4096,  s8192, s16384, s32768);
+   type Dimensions is
+      record
+         Width,
+         Height : GL.GLsizei;
+      end record;
 
-   function to_Size    (From : in Positive) return Size;
-   function to_Integer (From : in Size)     return Integer;
+
+--     type Size is (Unknown,
+--                   s2,    s4,     s8,    s16,    s32,
+--                   s64,   s128,   s256,  s512,   s1024,
+--                   s2048, s4096,  s8192, s16384, s32768);
+
+--     function to_Size    (From : in Positive) return Size;
+--     function to_Integer (From : in Size)     return Integer;
 
 
    --  Object - an openGL texture 'object'
@@ -101,8 +108,8 @@ is
 
    procedure enable         (Self        : in     Object);
 
-   function  Size_width     (Self        : in     Object) return Size;
-   function  Size_height    (Self        : in     Object) return Size;
+--     function  Size_width     (Self        : in     Object) return Size;
+--     function  Size_height    (Self        : in     Object) return Size;
 
    function  is_Transparent (Self        : in     Object) return Boolean;
 
@@ -111,6 +118,9 @@ is
 
    procedure set_Image      (Self        : in out Object;   To          : in     openGL.lucid_Image;
                                                             use_Mipmaps : in     Boolean := True);
+
+   function  my_Size           (Self : in Object) return Texture.Dimensions;
+
 
 
    -------
@@ -165,8 +175,11 @@ private
    type Object is tagged
       record
          Name           : aliased texture_Name := 0;
-         Size_width,
-         Size_height    :         Size         := Unknown;
+--           Size_width,
+--           Size_height    :         Size         := Unknown;
+--           Width,
+--           Height         :      GL.GLsizei      := 0;
+         Dimensions     : Texture.Dimensions := (0, 0);
          is_Transparent :         Boolean;
          Pool           : access  texture.Pool;
       end record;
@@ -260,12 +273,20 @@ private
 
    type pool_texture_List_view is access all pool_texture_List;
 
-   type pool_texture_Lists_by_size is array (Size, Size) of pool_texture_List_view;
+--     type pool_texture_Lists_by_size is array (Size, Size) of pool_texture_List_view;
 
 
+   function Hash (the_Dimensions : in Texture.Dimensions) return ada.Containers.Hash_Type;
+
+   package size_Maps_of_pool_texture_List is new ada.Containers.Hashed_Maps (Key_Type        => Dimensions,
+                                                                             Element_Type    => pool_texture_List_view,
+                                                                             Hash            => Hash,
+                                                                             Equivalent_Keys => "=",
+                                                                             "="             => "=");
    type Pool is
       record
-         unused_Textures_for_size : pool_texture_Lists_by_size;
+--           unused_Textures_for_size : pool_texture_Lists_by_size;
+         Map : size_Maps_of_pool_texture_List.Map;
       end record;
 
 

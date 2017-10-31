@@ -60,8 +60,8 @@ is
       record
          Impostor              : openGL.Impostor.view;
 
-         Width_size            : openGL.texture.Size;
-         Height_size           : openGL.texture.Size;
+--           Width_size            : openGL.texture.Size;
+--           Height_size           : openGL.texture.Size;
          current_Width_pixels  : gl.GLsizei;
          current_Height_pixels : gl.GLsizei;
 
