@@ -42,7 +42,7 @@ is
    function  Spin                     (Self : in     Item'Class)        return math.Matrix_3x3;
 
    procedure Position_is              (Self : in out Item'Class;   Site   : in math.Vector_3;
-                                                                 Spin   : in math.Matrix_3x3);
+                                                                   Spin   : in math.Matrix_3x3);
    function  world_Transform          (Self : in     Item)              return math.Matrix_4x4;
 
    function  FOVy                     (Self : in     Item'Class)        return math.Degrees;   -- Field of view angle (deg) in the y direction.
