@@ -30,3 +30,5 @@ is
    GLU_OUT_OF_MEMORY : exception;
 
 end GLU;
+
+pragma Obsolescent (GLU);
