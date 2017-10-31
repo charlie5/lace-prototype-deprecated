@@ -2,7 +2,7 @@ with
      "../private/gl/library/gl",
      "../private/gid/gid",
      "math",
-     "shared";
+     "lace_shared";
      
 library
 project Opengl_Core is
@@ -29,16 +29,15 @@ project Opengl_Core is
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
 
    
-   package Builder renames Shared.Builder;
+   package Builder renames Lace_shared.Builder;
 
 
    package Compiler is
-      for Default_Switches ("ada")               use Shared.Compiler_Options;
+      for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
       for         Switches ("opengl-images.adb") use ("-O0");
    end Compiler;
 
-
-   package Binder renames Shared.Binder;
+   package Binder renames Lace_shared.Binder;
 
 end Opengl_Core;
 

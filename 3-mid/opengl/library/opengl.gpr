@@ -2,7 +2,7 @@ with
      "opengl_core",
      "../private/freetype/library/freetype", 
      "collada",
-     "shared";
+     "lace_shared";
 
 library
 project Opengl is
@@ -48,16 +48,14 @@ project Opengl is
    end case;
 
 
-   package Builder renames Shared.Builder;
+   package Builder renames Lace_shared.Builder;
 
+   package Binder renames Lace_shared.Binder;
 
    package Compiler is
-      for Default_Switches ("ada")           use Shared.Compiler_Options;
+      for Default_Switches ("ada")           use Lace_shared.Compiler_Options;
       for         Switches ("opengl-io.adb") use ("-O0");
    end Compiler;
-
-
-   package Binder renames Shared.Binder;
 
 end Opengl;
 

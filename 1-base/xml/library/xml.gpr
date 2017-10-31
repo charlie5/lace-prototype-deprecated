@@ -1,6 +1,8 @@
-with "shared";
+with 
+     "lace_shared";
 
-project Xml is
+project Xml
+is
 
    for Source_Dirs use ("../source");
    for Object_Dir use "build";
@@ -9,7 +11,7 @@ project Xml is
       for Default_Switches ("ada") use ("-g", "-lpthread");
    end Builder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames Lace_shared.Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");

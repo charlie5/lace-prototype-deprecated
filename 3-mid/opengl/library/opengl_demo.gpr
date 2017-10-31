@@ -8,5 +8,4 @@ is
    for Source_Dirs use ("../source/demo");
    for Object_Dir use "build";
 
-
 end openGL_Demo;

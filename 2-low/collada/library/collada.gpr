@@ -1,14 +1,17 @@
-with "xml", "math", "shared";
+with
+     "xml",
+     "math",
+     "lace_shared";
 
-project Collada is
-
+project Collada
+is
    for Source_Dirs use ("../source");
 
    package Builder is
       for Default_Switches ("ada") use ("-g", "-lpthread");
    end Builder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames Lace_shared.Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");
