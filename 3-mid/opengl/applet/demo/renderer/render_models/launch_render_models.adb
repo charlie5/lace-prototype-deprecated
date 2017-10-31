@@ -3,8 +3,9 @@ with
      openGL.Palette,
      openGL.Texture,
      openGL.IO,
-     openGL.Font, -- .texture,
+     openGL.Font,
 
+     openGL.Model.arrow.colored,
      openGL.Model.billboard.textured,
      openGL.Model.box      .colored,
      openGL.Model.box      .lit_colored_textured,
@@ -44,9 +45,7 @@ is
        ada.Text_IO;
 
    the_font_Id : constant openGL.Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 24);
-
---     the_Font : openGL.Font.texture.view;
---     Success  : Boolean;
+   the_Texture : constant openGL.asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
 
 begin
    openGL.Demo.define ("openGL 'render Models' Demo");
@@ -62,14 +61,17 @@ begin
    Demo.Renderer.add_Font (the_font_Id);
 
    declare
-      the_Texture         : constant openGL.asset_Name
-        := to_Asset ("assets/opengl/texture/Face1.bmp");
 
       --  The Models.
       --
+      the_arrow_Model : constant openGL.Model.arrow.colored.view
+        := openGL.Model.arrow.colored.Forge.new_Arrow (Color      => Radical_Red,
+                                                       line_Width => 2.0,
+                                                       End_1      => (0.0, 0.0, 0.0),
+                                                       End_2      => (0.0, 5.0, 0.0));
+
       the_billboard_Model : constant openGL.Model.billboard.textured.view
         := openGL.Model.billboard.textured.forge.new_Billboard (scale => (1.0, 1.0, 1.0),
---                                                                  size    => (1.0, 1.0),
                                                                 plane   => Billboard.xy,
                                                                 texture => the_Texture);
 
@@ -190,12 +192,12 @@ begin
         := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),
                                                              color => Green);
 
-      heights_File     : constant String                      := "assets/kidwelly-terrain.png";
-      texture_File     : constant String                      := "assets/kidwelly-terrain-texture.png";
+      heights_File : constant String := "assets/kidwelly-terrain.png";
+      texture_File : constant String := "assets/kidwelly-terrain-texture.png";
 
-      the_Region       : constant opengl.io.height_Map_view   := opengl.io.to_height_Map (heights_File, 10.0);
-      Tiling           : constant opengl.texture_Transform_2d := (s => (0.0, 1.0),
-                                                                  t => (0.0, 1.0));
+      the_Region   : constant opengl.io.height_Map_view   := opengl.io.to_height_Map (heights_File, 10.0);
+      Tiling       : constant opengl.texture_Transform_2d := (s => (0.0, 1.0),
+                                                              t => (0.0, 1.0));
       the_ground_Model : constant access openGL.Model.terrain.item
         := new openGL.Model.terrain.item' (openGL.Model.item with
                                            heights_asset => to_Asset (heights_File),
@@ -211,7 +213,8 @@ begin
       use openGL.Visual.Forge;
 
       the_Sprites : constant openGL.Visual.views
-        := (new_Visual (the_box_Model_1       .all'Access),
+        := (new_Visual (the_arrow_Model       .all'Access),
+            new_Visual (the_box_Model_1       .all'Access),
             new_Visual (the_box_Model_2       .all'Access),
             new_Visual (the_ball_Model_1      .all'Access),
             new_Visual (the_ball_Model_2      .all'Access),
