@@ -15,3 +15,8 @@ build
 
 # Library files
 *.a
+
+
+*.stderr
+*.stdout
+
