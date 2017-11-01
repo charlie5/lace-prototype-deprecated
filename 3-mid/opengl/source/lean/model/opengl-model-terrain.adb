@@ -37,8 +37,8 @@ is
                                                  Row           => Row,
                                                  Col           => Col,
                                                  color_Map     => color_Map,
-                                                 tiling        => Tiling,
-                                                 Bounds        => <>);
+                                                 tiling        => Tiling);
+--                                                   Bounds        => <>);
       begin
          the_Model.set_Bounds;
          return the_Model;
@@ -63,12 +63,12 @@ is
    -- Attributes
    --
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds
-   is
-   begin
-      return Self.Bounds;
-   end Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds
+--     is
+--     begin
+--        return Self.Bounds;
+--     end Bounds;
 
 
 

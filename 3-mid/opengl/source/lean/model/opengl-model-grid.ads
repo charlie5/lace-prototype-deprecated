@@ -38,8 +38,8 @@ is
                                             for_End : in Integer);
    function  Site    (Self : in     Item;   for_End : in Integer) return math.Vector_3;
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds;
 
 
 
@@ -53,7 +53,7 @@ private
    type Item is new openGL.Model.item with
       record
          Color  :        openGL.Color;
-         Bounds :        openGL.Bounds;
+--           Bounds :        openGL.Bounds;
          State  : access grid.State;
          Width,
          Height :        Positive;

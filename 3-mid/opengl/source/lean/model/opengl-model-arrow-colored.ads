@@ -42,8 +42,8 @@ is
                                                 for_End : in Integer);
    function  Site        (Self : in     Item;   for_End : in Integer) return math.Vector_3;
 
-   overriding
-   function  Bounds      (Self : in     Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds      (Self : in     Item) return openGL.Bounds;
 
    overriding
    procedure modify      (Self : in out Item);
@@ -59,7 +59,7 @@ private
       record
          Color       :         openGL.Color;
          line_Width  :         openGL.Real;
-         Bounds      :         openGL.Bounds;
+--           Bounds      :         openGL.Bounds;
 
          Vertices    : aliased openGL.Geometry.colored.Vertex_array (1 .. 4);
          Geometry    : access  openGL.Geometry.colored.item'Class;

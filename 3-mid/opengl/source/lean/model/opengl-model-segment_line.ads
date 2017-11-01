@@ -73,8 +73,8 @@ is
    function segment_Count     (Self : in     Item) return Natural;
    function Segments          (Self : in     Item) return Model.segment_line.Segments_t;
 
-   overriding
-   function  Bounds           (Self : in     Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
 
 
@@ -93,7 +93,7 @@ private
          Color  :        openGL.Color;
          Points :        site_Vector;
 
-         Bounds :        openGL.Bounds;
+--           Bounds :        openGL.Bounds;
 
          State  : access Model.segment_line.State;
       end record;

@@ -88,6 +88,8 @@ is
       procedure free is new ada.unchecked_Deallocation (openGL.Geometry.views,
                                                         access_Geometry_views);
    begin
+      Self.Bounds := null_Bounds;
+
       -- Separate lucid and opaque geometries.
       --
       for Each in all_Geometries'Range
@@ -100,6 +102,12 @@ is
             opaque_Count                := opaque_Count + 1;
             opaque_Faces (opaque_Count) := all_Geometries (Each);
          end if;
+
+         Self.Bounds.Box :=    Self.Bounds.Box
+                            or all_Geometries (Each).Bounds.Box;
+
+         Self.Bounds.Ball:= math.Real'Max (Self.Bounds.Ball,
+                                           all_Geometries (Each).Bounds.Ball);
       end loop;
 
 
@@ -125,6 +133,7 @@ is
          free (Self.lucid_Geometries);
       end if;
 
+
       -- Create new gemometries.
       --
       Self.opaque_Geometries := new openGL.Geometry.views' (opaque_Faces (1 .. opaque_Count));
@@ -134,13 +143,19 @@ is
 
 
 
-   function  is_Modified (Self : in     Item) return Boolean
+   function is_Modified (Self : in     Item) return Boolean
    is
       pragma Unreferenced (Self);
    begin
       return False;
    end is_Modified;
 
+
+   function Bounds (Self : in     Item) return openGL.Bounds
+   is
+   begin
+      return Self.Bounds;
+   end Bounds;
 
 
 --     -----------

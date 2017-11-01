@@ -46,7 +46,7 @@ is
                                                      math_Model,
                                                      Texture,
                                                      Texture_is_lucid,
-                                                     bounds   => <>,
+--                                                       bounds   => <>,
                                                      geometry => null)
          do
             Self.define (Scale);
@@ -69,12 +69,12 @@ is
 
 
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds
-   is
-   begin
-      return Self.Bounds;
-   end Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds
+--     is
+--     begin
+--        return Self.Bounds;
+--     end Bounds;
 
 
 

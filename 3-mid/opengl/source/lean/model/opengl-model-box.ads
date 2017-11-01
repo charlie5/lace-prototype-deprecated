@@ -22,8 +22,8 @@ is
    --- Attributes
    --
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds;
 
 
 
@@ -32,7 +32,7 @@ private
 
    type Item is abstract new openGL.Model.item with
       record
-         Bounds : openGL.Bounds;
+         null; -- Bounds : openGL.Bounds;
       end record;
 
 

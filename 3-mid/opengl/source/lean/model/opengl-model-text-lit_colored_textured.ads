@@ -20,7 +20,7 @@ is
          Color    : openGL.lucid_Color;
          Centered : Boolean;
 
-         Bounds   : openGL.Bounds;
+--           Bounds   : openGL.Bounds;
       end record;
 
    type View is access all Item'Class;
@@ -57,8 +57,8 @@ is
    overriding
    function  Font             (Self : in     Item) return openGL.Font.view;
 
-   overriding
-   function  Bounds           (Self : in     Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
 
 end openGL.Model.Text.lit_colored_textured;

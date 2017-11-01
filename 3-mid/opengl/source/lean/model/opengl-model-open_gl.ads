@@ -20,7 +20,7 @@ is
          Texture           : asset_Name   := null_Asset;   -- The models texture image.
          has_lucid_Texture : Boolean      := False;
 
-         Bounds            : openGL.Bounds;
+--           Bounds            : openGL.Bounds;
          Geometry          : Geometry_view;
       end record;
 
@@ -52,8 +52,8 @@ is
    --- Attributes
    --
 
-   overriding
-   function  Bounds           (Self : in     Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;

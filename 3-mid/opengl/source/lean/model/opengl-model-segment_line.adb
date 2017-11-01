@@ -35,7 +35,7 @@ is
       Self : Model.segment_line.item := (openGL.Model.item with
                                          Color,
                                          site_Vectors.Empty_Vector,
-                                         null_Bounds,
+--                                           null_Bounds,
                                          new State);
    begin
       define_internal (Self);
@@ -75,12 +75,12 @@ is
 
 
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds
-   is
-   begin
-      return Self.Bounds;
-   end Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds
+--     is
+--     begin
+--        return Self.Bounds;
+--     end Bounds;
 
 
 

@@ -21,7 +21,8 @@ is
          opaque_Geometries : access_Geometry_views;
          lucid_Geometries  : access_Geometry_views;
 
-         needs_Rebuild     : safe_Boolean := False;
+         Bounds            : openGL.Bounds := null_Bounds;
+         needs_Rebuild     : safe_Boolean  := False;
       end record;
 
    type View is access all Item'Class;
@@ -53,7 +54,7 @@ is
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
                                is abstract;
 
-   function  Bounds           (Self : in     Item) return openGL.Bounds is abstract;
+   function  Bounds           (Self : in     Item) return openGL.Bounds; -- is abstract;
    --
    -- Returns the bounds in model space.
 
