@@ -17,6 +17,8 @@ is
        openGL.Math,
        openGL.linear_Algebra_3d,
        ada.Text_IO;
+
+   kkk : integer := 0;
 begin
    Demo.define ("openGL 'render Arrows' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
@@ -35,30 +37,27 @@ begin
       --
       use openGL.Visual.Forge;
 
-      the_Sprites : constant openGL.Visual.views := (new_Visual (        the_arrow_Model.all'Access),
-                                                     new_Visual (the_spinner_arrow_Model.all'Access));
+      the_Sprites : constant openGL.Visual.views := (1 => new_Visual (        the_arrow_Model.all'Access));
+--                                                       new_Visual (the_spinner_arrow_Model.all'Access));
 
       Current : Integer := the_Sprites'First;
       Angle   : Radians := 0.0;
 
    begin
+      put_Line (Geometry_3d.Image (the_Sprites (1).Model.Bounds.Box));
+      put_Line (       math.Image (the_Sprites (1).Model.Bounds.Ball));
+
+
       --  Main loop.
       --
       while not Demo.Done
       loop
-         Angle := Angle + 0.001;
-
-         if Angle >= to_Radians (Degrees' (360.0))
-         then
-            Angle := 0.0;
-         end if;
-
          the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle  => Angle,
                                                                                                           extent => 5.0)) & 0.0),
                                   for_End => 2);
 
-         the_Sprites (2).Spin_is (linear_Algebra_3d.to_Rotation (Axis  => (0.0, 0.0, 1.0),
-                                                                 Angle => Angle));
+--           the_Sprites (2).Spin_is (linear_Algebra_3d.to_Rotation (Axis  => (0.0, 0.0, 1.0),
+--                                                                   Angle => Angle));
 
          -- Handle user commands.
          --
@@ -99,6 +98,23 @@ begin
 
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
+
+      put_Line (Geometry_3d.Image (the_Sprites (1).Model.Bounds.Box));
+      put_Line (       math.Image (the_Sprites (1).Model.Bounds.Ball));
+
+--           if kkk = 2 then
+--              exit;
+--           end if;
+--
+--           kkk := kkk + 1;
+
+         Angle := Angle + 0.001;
+
+         if Angle >= to_Radians (Degrees' (360.0))
+         then
+            Angle := 0.0;
+         end if;
+
       end loop;
    end;
 

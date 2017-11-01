@@ -72,6 +72,39 @@ is
 
 
 
+   procedure set_Bounds (Self : in out Item)
+   is
+      use type openGL.Index_t;
+   begin
+      Self.Bounds := null_Bounds;
+
+      if Self.opaque_Geometries /= null
+      then
+         for Each of Self.opaque_Geometries.all
+         loop
+            Self.Bounds.Box  :=    Self.Bounds.Box
+                                or Each.Bounds.Box;
+
+            Self.Bounds.Ball := math.Real'Max (Self.Bounds.Ball,
+                                               Each.Bounds.Ball);
+         end loop;
+      end if;
+
+      if Self.lucid_Geometries /= null
+      then
+         for Each of Self.lucid_Geometries.all
+         loop
+            Self.Bounds.Box  :=    Self.Bounds.Box
+                                or Each.Bounds.Box;
+
+            Self.Bounds.Ball := math.Real'Max (Self.Bounds.Ball,
+                                               Each.Bounds.Ball);
+         end loop;
+      end if;
+   end set_Bounds;
+
+
+
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Maps_of_font.Map)
    is

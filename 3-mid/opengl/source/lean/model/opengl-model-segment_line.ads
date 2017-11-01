@@ -76,6 +76,8 @@ is
 --     overriding
 --     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
+   overriding
+   procedure set_Bounds (Self : in out Item);
 
 
 

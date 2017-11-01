@@ -67,7 +67,7 @@ private
          is_Modified :         Boolean := False;
       end record;
 
-   procedure set_Bounds    (Self : in out Item);
+--     procedure set_Bounds    (Self : in out Item);
    procedure set_side_Bits (Self : in out Item);
 
 

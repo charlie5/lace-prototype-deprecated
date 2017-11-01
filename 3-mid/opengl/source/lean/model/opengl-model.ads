@@ -21,7 +21,7 @@ is
          opaque_Geometries : access_Geometry_views;
          lucid_Geometries  : access_Geometry_views;
 
-         Bounds            : openGL.Bounds := null_Bounds;
+         Bounds            : openGL.Bounds := null_Bounds;   -- The combined bounds of all geometries.
          needs_Rebuild     : safe_Boolean  := False;
       end record;
 
@@ -53,6 +53,10 @@ is
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
                                is abstract;
+
+   procedure set_Bounds       (Self : in out Item);
+   --
+   -- Recalculate the bounds based on model geometry.
 
    function  Bounds           (Self : in     Item) return openGL.Bounds; -- is abstract;
    --

@@ -1,5 +1,6 @@
 with
      openGL.Primitive.indexed;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body openGL.Model.arrow.colored
@@ -28,7 +29,7 @@ is
          Self.Vertices (3).Site := End_2;   -- Side bits.
          Self.Vertices (4).Site := End_2;   --
 
-         Self.set_Bounds;
+--           Self.set_Bounds;
          Self.set_side_Bits;
 
          return Self;
@@ -113,18 +114,18 @@ is
 
 
 
-   procedure set_Bounds (Self : in out Item)
-   is
-      use math.Geometry;
-   begin
-      Self.Bounds      := null_Bounds;
-
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (1).Site);
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (2).Site);
-
-      Self.Bounds.Ball := Real'Max (abs (Self.Vertices (1).Site),
-                                    abs (Self.Vertices (2).Site));
-   end set_Bounds;
+--     procedure set_Bounds (Self : in out Item)
+--     is
+--        use math.Geometry;
+--     begin
+--        Self.Bounds      := null_Bounds;
+--
+--        Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (1).Site);
+--        Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (2).Site);
+--
+--        Self.Bounds.Ball := Real'Max (abs (Self.Vertices (1).Site),
+--                                      abs (Self.Vertices (2).Site));
+--     end set_Bounds;
 
 
 
@@ -171,7 +172,7 @@ is
    begin
       Self.Vertices (openGL.Index_t (for_End)).Site := Now;
       Self.set_side_Bits;
-      Self.set_Bounds;
+--        Self.set_Bounds;
 
       Self.is_Modified := True;
    end Site_is;
@@ -193,6 +194,7 @@ is
    is
    begin
       Self.Geometry.Vertices_are (Self.Vertices);
+      Self.set_Bounds;
       Self.is_Modified := False;
    end modify;
 

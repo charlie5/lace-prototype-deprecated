@@ -556,15 +556,13 @@ is
             the_Visual : Visual.view renames the_Visuals (Each);
 
          begin
-            if         the_Visual.Model /= null
-              and then (   Boolean (the_Visual.Model.needs_Rebuild)
-                        or (    the_Visual.Model.opaque_Geometries = null
-                            and the_Visual.Model. lucid_Geometries = null))
+            if    Boolean (the_Visual.Model.needs_Rebuild)
+               or (    the_Visual.Model.opaque_Geometries = null
+                   and the_Visual.Model. lucid_Geometries = null)
             then
                the_Visual.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
-            end if;
 
-            if the_Visual.Model.is_Modified
+            elsif the_Visual.Model.is_Modified
             then
                the_Visual.Model.modify;
             end if;

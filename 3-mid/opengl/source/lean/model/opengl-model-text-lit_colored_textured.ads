@@ -50,15 +50,17 @@ is
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     openGL.Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
    overriding
-   procedure Text_is          (Self : in out Item;   Now : in String);
+   procedure Text_is    (Self : in out Item;   Now : in String);
    overriding
-   function  Text             (Self : in     Item)     return String;
+   function  Text       (Self : in     Item)     return String;
 
    overriding
-   function  Font             (Self : in     Item) return openGL.Font.view;
+   function  Font       (Self : in     Item) return openGL.Font.view;
 
 --     overriding
 --     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
+   overriding
+   procedure set_Bounds (Self : in out Item);
 
 end openGL.Model.Text.lit_colored_textured;

@@ -13,6 +13,7 @@ with
      openGL.Buffer.general,
      System.Storage_Elements,
      openGL.Attribute;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body openGL.Geometry.colored
@@ -184,6 +185,18 @@ is
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                   usage => openGL.buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
+
+      -- Set the bounds.
+      --
+      declare
+         function get_Site (Index : in Index_t) return Vector_3
+         is (Now (Index).Site);
+
+         function bBox is new get_Bounds (Index_t, get_Site);
+      begin
+         put_Line ("GEOM.colored: " & Geometry_3d.Image (bBox (count => Now'Length).Box));
+         Self.Bounds_are (bBox (count => Now'Length));
+      end;
    end Vertices_are;
 
 
