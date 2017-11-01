@@ -1,11 +1,21 @@
-with "opengl",
-     "lumen";
+with
+     "opengl",
+     "lumen",
+     "lace_shared";
 
 
 project openGL_Demo
 is
 
    for Source_Dirs use ("../source/demo");
-   for Object_Dir use "build";
+   for Object_Dir  use "build";
+
+   package Builder renames Lace_shared.Builder;
+
+
+   package Compiler is
+      for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
+      for         Switches ("opengl-images.adb") use ("-O0");
+   end Compiler;
 
 end openGL_Demo;
