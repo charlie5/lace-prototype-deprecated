@@ -1,4 +1,5 @@
 with
+     openGL.geometry.colored,
      openGL.Font,
      openGL.Palette;
 
@@ -54,15 +55,14 @@ is
 
 private
 
-   type State;     -- An opaque 'Taft' type.
-
-
    type Item is new openGL.Model.arrow.item with
       record
          Color       :        openGL.Color;
          line_Width  :        openGL.Real;
          Bounds      :        openGL.Bounds;
-         State       : access arrow.colored.State;
+
+         Vertices    : aliased openGL.Geometry.colored.Vertex_array (1 .. 4);
+         Geometry    : access  openGL.Geometry.colored.item'Class;
 
          is_Modified :        Boolean := False;
       end record;

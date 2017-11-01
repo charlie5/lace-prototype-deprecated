@@ -24,7 +24,7 @@ begin
    declare
       --  The Models.
       --
-      the_arrow_Model : constant openGL.Model.arrow.colored.view
+      the_arrow_Model         : constant openGL.Model.arrow.colored.view
         := openGL.Model.arrow.colored.Forge.new_Arrow (End_2 => (0.0, 5.0, 0.0));
 
       the_spinner_arrow_Model : constant openGL.Model.arrow.colored.view
@@ -86,7 +86,7 @@ begin
             end if;
          end;
 
-         --  Render the sprite.
+         --  Render the sprites.
          --
 --           Demo.Camera.render ((1 => the_Sprites (Current)));
          Demo.Camera.render (the_Sprites);

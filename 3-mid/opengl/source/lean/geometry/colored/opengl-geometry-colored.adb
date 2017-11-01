@@ -160,20 +160,32 @@ is
       free (Self.Vertices);
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                        usage => openGL.buffer.static_Draw));
-      Self.is_Transparent := False;
+      Self.is_Transparent := is_Transparent (Now.all);
    end Vertices_are;
 
 
-
-   procedure Vertices_are (Self : in out Geometry.Item'Class;   Now : in  Vertex_array)
+   procedure Vertices_are (Self : in out Item'Class;   Now : in Vertex_array)
    is
       use openGL.Buffer,
           openGL_Buffer_of_geometry_Vertices;
    begin
       free (Self.Vertices);
-      self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
-                                                                                  usage => openGL.buffer.static_Draw));
+      Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
+                                                                       usage => openGL.buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
    end Vertices_are;
+
+
+
+--     procedure Vertices_are (Self : in out Geometry.Item'Class;   Now : in  Vertex_array)
+--     is
+--        use openGL.Buffer,
+--            openGL_Buffer_of_geometry_Vertices;
+--     begin
+--        free (Self.Vertices);
+--        self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
+--                                                                                    usage => openGL.buffer.static_Draw));
+--        Self.is_Transparent := is_Transparent (Now);
+--     end Vertices_are;
 
 end openGL.Geometry.colored;

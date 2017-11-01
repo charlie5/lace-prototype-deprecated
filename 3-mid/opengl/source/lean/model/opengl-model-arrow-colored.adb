@@ -6,13 +6,6 @@ with
 package body openGL.Model.arrow.colored
 is
 
-   type State is
-      record
-         Vertices : access openGL.geometry.colored.Vertex_array := new openGL.geometry.colored.Vertex_array (1 .. 4);
-         Geometry : access openGL.Geometry.colored.item'Class;
-      end record;
-
-
    ---------
    --- Forge
    --
@@ -30,13 +23,11 @@ is
          Self.Color      := Color;
          Self.line_Width := line_Width;
 
-         Self.State  := new State;
+         Self.Vertices (1).Site := End_1;   -- Main line.
+         Self.Vertices (2).Site := End_2;   --
 
-         Self.State.Vertices (1).Site := End_1;   -- Main line.
-         Self.State.Vertices (2).Site := End_2;   --
-
-         Self.State.Vertices (3).Site := End_2;   -- Side bits.
-         Self.State.Vertices (4).Site := End_2;   --
+         Self.Vertices (3).Site := End_2;   -- Side bits.
+         Self.Vertices (4).Site := End_2;   --
 
          Self.set_Bounds;
          Self.set_side_Bits;
@@ -75,10 +66,10 @@ is
 
    begin
       declare
-         the_Geometry : openGL.Geometry.view := openGL.Geometry.view (Self.State.Geometry);
+         the_Geometry : openGL.Geometry.view := openGL.Geometry.view (Self.Geometry);
       begin
          openGL.Geometry.free (the_Geometry);
-         Self.State.Geometry := openGL.Geometry.colored.new_Geometry;
+         Self.Geometry := openGL.Geometry.colored.new_Geometry;
       end;
 
 
@@ -86,42 +77,40 @@ is
       declare
          use type math.Real;
       begin
-         Self.State.Vertices (1).Color := (primary => Self.Color,   opacity => openGL.Opaque);
-         Self.State.Vertices (2).Color := (primary => Self.Color,   opacity => openGL.Opaque);
-         Self.State.Vertices (3).Color := (primary => Self.Color,   opacity => openGL.Opaque);
-         Self.State.Vertices (4).Color := (primary => Self.Color,   opacity => openGL.Opaque);
+         Self.Vertices (1).Color := (primary => Self.Color,   opacity => openGL.Opaque);
+         Self.Vertices (2).Color := (primary => Self.Color,   opacity => openGL.Opaque);
+         Self.Vertices (3).Color := (primary => Self.Color,   opacity => openGL.Opaque);
+         Self.Vertices (4).Color := (primary => Self.Color,   opacity => openGL.Opaque);
       end set_Colors;
 
 
-      Self.State.Geometry.is_Transparent (False);
-
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices);
+      Self.Geometry.is_Transparent (False);
+      Vertices_are (Self.Geometry.all, Self.Vertices);
 
 
       -- Main line.
       --
-      Self.State.Geometry.free_Primitives;
+      Self.Geometry.free_Primitives;
 
       the_Indices   := (1, 2);
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices, line_Width => Self.line_Width);
-      Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+      Self.Geometry.add (openGL.Primitive.view (the_Primitive));
 
       -- Left bit.
       --
       the_Indices   := (2, 3);
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices, line_Width => Self.line_Width);
-      Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+      Self.Geometry.add (openGL.Primitive.view (the_Primitive));
 
       -- Right bit.
       --
       the_Indices   := (2, 4);
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices, line_Width => Self.line_Width);
-      Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+      Self.Geometry.add (openGL.Primitive.view (the_Primitive));
 
       Self.set_side_Bits;
 
-
-      return (1 => Self.State.Geometry.all'Access);
+      return (1 => Self.Geometry.all'Access);
    end to_GL_Geometries;
 
 
@@ -132,11 +121,11 @@ is
    begin
       Self.Bounds      := null_Bounds;
 
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.state.Vertices (1).Site);
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.state.Vertices (2).Site);
+      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (1).Site);
+      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.Vertices (2).Site);
 
-      Self.Bounds.Ball := Real'Max (abs (Self.state.Vertices (1).Site),
-                                    abs (Self.state.Vertices (2).Site));
+      Self.Bounds.Ball := Real'Max (abs (Self.Vertices (1).Site),
+                                    abs (Self.Vertices (2).Site));
    end set_Bounds;
 
 
@@ -146,13 +135,12 @@ is
       use math.Geometry;
       use linear_Algebra_3d;
 
-      End_1           :          Vector_3    renames Self.State.Vertices (1).Site;
-      End_2           :          Vector_3    renames Self.State.Vertices (2).Site;
+      End_1           :          Vector_3    renames Self.Vertices (1).Site;
+      End_2           :          Vector_3    renames Self.Vertices (2).Site;
 
       polar_Coords    : constant Geometry_2d.polar_Site := Geometry_2d.to_Polar (to_Vector_2 (End_2 - End_1));
 
       the_Angle       : constant Radians          := polar_Coords.Angle;
-
       bit_Length      : constant Real             := abs (End_2 - End_1) * 0.1;
 
       left_bit_Offst  : constant Geometry_2d.Site := Geometry_2d.to_Site ((angle  => the_Angle + to_Radians (135.0),
@@ -164,8 +152,8 @@ is
       right_bit_End   : constant Vector_3         := End_2 + to_Vector_3 (right_bit_Offst);
 
    begin
-      Self.State.Vertices (3).Site :=  left_bit_End;   -- Left bit.
-      Self.State.Vertices (4).Site := right_bit_End;   -- Right bit.
+      Self.Vertices (3).Site :=  left_bit_End;   -- Left bit.
+      Self.Vertices (4).Site := right_bit_End;   -- Right bit.
    end set_side_Bits;
 
 
@@ -174,9 +162,8 @@ is
    is
       use openGL.Geometry.colored;
    begin
-      return Self.State.Vertices (openGL.Index_t (for_End)).Site;
+      return Self.Vertices (openGL.Index_t (for_End)).Site;
    end Site;
-
 
 
    procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
@@ -184,7 +171,7 @@ is
    is
       use openGL.Geometry.colored;
    begin
-      Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
+      Self.Vertices (openGL.Index_t (for_End)).Site := Now;
       Self.set_side_Bits;
       Self.set_Bounds;
 
@@ -206,10 +193,9 @@ is
    procedure modify (Self : in out Item)
    is
    begin
-      Self.State.Geometry.Vertices_are (Self.State.Vertices);
+      Self.Geometry.Vertices_are (Self.Vertices);
       Self.is_Modified := False;
    end modify;
-
 
 
    overriding
