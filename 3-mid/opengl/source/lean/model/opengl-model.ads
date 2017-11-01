@@ -54,6 +54,8 @@ is
                                is abstract;
 
    function  Bounds           (Self : in     Item) return openGL.Bounds is abstract;
+   --
+   -- Returns the bounds in model space.
 
 
    -------------

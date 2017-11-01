@@ -53,7 +53,8 @@ begin
             Angle := 0.0;
          end if;
 
-         the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle => Angle,  Extent => 5.0)) & 0.0),
+         the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle  => Angle,
+                                                                                                          extent => 5.0)) & 0.0),
                                   for_End => 2);
 
          the_Sprites (2).Spin_is (linear_Algebra_3d.to_Rotation (Axis  => (0.0, 0.0, 1.0),

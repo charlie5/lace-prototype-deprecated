@@ -129,16 +129,6 @@ is
 
 
 
-   function is_Transparent (Self : access Vertex_array) return Boolean
-   is
-      pragma Unreferenced (Self);
-      use type color_Value;
-   begin
-      return False;     -- tbd: Also need to check if texture is transparent ?
-   end is_Transparent;
-
-
-
    --------------
    --- Operations
    --
@@ -153,9 +143,8 @@ is
       use      openGL_Buffer_of_geometry_Vertices;
       use type Index_t;
    begin
-      self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
-                                                                                  usage => openGL.buffer.static_Draw));
-      Self.is_Transparent := is_Transparent (Now);
+      Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
+                                                                                  usage => openGL.Buffer.static_Draw));
    end Vertices_are;
 
 
@@ -174,7 +163,7 @@ is
    procedure enable_Texture (Self : in Item)
    is
       use GL, openGL.Texture;
-      check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
       glActiveTexture (gl.GL_TEXTURE0);
 

@@ -250,6 +250,17 @@ is
       end if;
 
       Self.is_Transparent := is_Transparent (Now);
+
+      -- Set the bounds.
+      --
+      declare
+         function get_Site (Index : in Index_t) return Vector_3
+         is (Now (Index).Site);
+
+         function bBox is new get_Bounds (Index_t, get_Site);
+      begin
+         Self.Bounds_are (bBox (count => Now'Length));
+      end;
    end Vertices_are;
 
 

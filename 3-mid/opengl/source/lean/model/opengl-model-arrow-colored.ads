@@ -57,14 +57,14 @@ private
 
    type Item is new openGL.Model.arrow.item with
       record
-         Color       :        openGL.Color;
-         line_Width  :        openGL.Real;
-         Bounds      :        openGL.Bounds;
+         Color       :         openGL.Color;
+         line_Width  :         openGL.Real;
+         Bounds      :         openGL.Bounds;
 
          Vertices    : aliased openGL.Geometry.colored.Vertex_array (1 .. 4);
          Geometry    : access  openGL.Geometry.colored.item'Class;
 
-         is_Modified :        Boolean := False;
+         is_Modified :         Boolean := False;
       end record;
 
    procedure set_Bounds    (Self : in out Item);

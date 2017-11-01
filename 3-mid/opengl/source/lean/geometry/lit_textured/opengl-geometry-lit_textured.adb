@@ -173,6 +173,17 @@ is
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                         usage => openGL.buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
+
+      -- Set the bounds.
+      --
+      declare
+         function get_Site (Index : in long_Index_t) return Vector_3
+         is (Now (Index).Site);
+
+         function bBox is new get_Bounds (long_Index_t, get_Site);
+      begin
+         Self.Bounds_are (bBox (count => Now'Length));
+      end;
    end Vertices_are;
 
 

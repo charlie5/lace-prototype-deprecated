@@ -38,21 +38,13 @@ is
    --  Attributes
    --
 
-   overriding
-   function  is_Transparent (Self : in     Item) return Boolean;
-
-
-
-   --  Operations
-   --
-
    procedure Vertices_are (Self : in out Item'Class;   Now : access Vertex_array);
 
    overriding
    procedure Indices_are  (Self : in out Item;         Now       : in Indices;
                                                        for_Facia : in Positive);
 
-   function Program return openGL.Program.lit_textured_skinned.view;
+   function  Program return openGL.Program.lit_textured_skinned.view;
 
 
 

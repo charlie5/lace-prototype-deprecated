@@ -90,7 +90,6 @@ is
 
 
 
-
 private
 
    use ada.Strings.unbounded;
@@ -98,16 +97,22 @@ private
    type Item is abstract tagged limited
       record
          Label           : unbounded_String;
-         Texture         : openGL.Texture.Object   := openGL.Texture.null_Object;
+         Texture         : openGL.Texture.Object := openGL.Texture.null_Object;
 
          Program         : openGL.Program.view;
          Vertices        : Buffer.view;
 
          Primitives      : Primitive.views (1 .. 5);
-         primitive_Count : Index_t                 := 0;
+         primitive_Count : Index_t      := 0;
 
-         is_Transparent  : Boolean;
+         is_Transparent  : Boolean      := False;
          Bounds          : openGL.Bounds;
       end record;
+
+
+   generic
+      type any_Index_t is range <>;
+      with function get_Site (Index : in any_Index_t) return Vector_3;
+   function get_Bounds (Count : in Natural) return openGL.Bounds;
 
 end openGL.Geometry;

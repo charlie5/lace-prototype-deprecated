@@ -32,6 +32,25 @@ is
    white_Texture       :         openGL.Texture.Object;
 
 
+   -- Utility
+   --
+
+   function is_Transparent (Self : access Vertex_array) return Boolean
+   is
+      use type color_Value;
+   begin
+      for Each in Self'Range
+      loop
+         if Self (Each).Color.Opacity /= Opaque
+         then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end is_Transparent;
+
+
 
    --  Forge
    --
@@ -51,18 +70,6 @@ is
 
    --  Attributes
    --
-
-   overriding
-   function  is_Transparent (Self : in     Item) return Boolean
-   is
-      pragma Unreferenced (Self);
-   begin
-      return False;
-   end is_Transparent;
-
-
-
-
 
    function Program return openGL.Program.lit_textured_skinned.view
    is
@@ -226,9 +233,6 @@ is
 
 
 
-   --  Operations
-   --
-
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => long_Index_t,
                                                                             element       => Vertex,
@@ -236,12 +240,22 @@ is
 
    procedure Vertices_are (Self : in out Item'Class;   Now : access Vertex_array)
    is
-      use      openGL_Buffer_of_geometry_Vertices;
---        use type Index_t;
+      use openGL_Buffer_of_geometry_Vertices;
    begin
-      Self.Vertices := new openGL_Buffer_of_geometry_Vertices.object' (to_Buffer (Now,
-                                                                                  usage => openGL.buffer.static_Draw));
---        Self.is_Transparent := is_Transparent (Now);
+      Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.object' (to_Buffer (Now,
+                                                                                        usage => openGL.buffer.static_Draw));
+      Self.is_Transparent := Self.is_Transparent or is_Transparent (Now);
+
+      -- Set the bounds.
+      --
+      declare
+         function get_Site (Index : in long_Index_t) return Vector_3
+         is (Now (Index).Site);
+
+         function bBox is new get_Bounds (long_Index_t, get_Site);
+      begin
+         Self.Bounds_are (bBox (count => Now'Length));
+      end;
    end Vertices_are;
 
 
