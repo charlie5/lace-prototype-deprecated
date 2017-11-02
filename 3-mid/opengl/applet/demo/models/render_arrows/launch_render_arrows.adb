@@ -17,8 +17,6 @@ is
        openGL.Math,
        openGL.linear_Algebra_3d,
        ada.Text_IO;
-
-   kkk : integer := 0;
 begin
    Demo.define ("openGL 'render Arrows' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
@@ -32,16 +30,13 @@ begin
       the_spinner_arrow_Model : constant openGL.Model.arrow.colored.view
         := openGL.Model.arrow.colored.Forge.new_Arrow (End_1 => (0.0, -2.5, 0.0),
                                                        End_2 => (0.0,  2.5, 0.0));
-
       --  The Sprites.
       --
       use openGL.Visual.Forge;
 
       the_Sprites : constant openGL.Visual.views := (new_Visual (        the_arrow_Model.all'Access),
                                                      new_Visual (the_spinner_arrow_Model.all'Access));
-
-      Current : Integer := the_Sprites'First;
-      Angle   : Radians := 0.0;
+      Angle : Radians := 0.0;
 
    begin
       --  Main loop.
