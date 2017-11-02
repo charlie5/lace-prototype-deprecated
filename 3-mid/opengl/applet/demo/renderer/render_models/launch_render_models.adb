@@ -5,35 +5,34 @@ with
      openGL.IO,
      openGL.Font,
 
-     openGL.Model.arrow.colored,
-     openGL.Model.billboard.textured,
-     openGL.Model.box      .colored,
-     openGL.Model.box      .lit_colored_textured,
-     openGL.Model.capsule  .lit_colored_textured,
+     openGL.Model.arrow         .colored,
+     openGL.Model.billboard     .textured,
+     openGL.Model.box           .colored,
+     openGL.Model.box           .lit_colored_textured,
+     openGL.Model.capsule       .lit_colored_textured,
      openGL.Model.grid,
-     openGL.Model.hexagon  .lit_colored_textured,
+     openGL.Model.hexagon       .lit_colored_textured,
      openGL.Model.hexagon_Column.lit_colored_textured_faceted,
      openGL.Model.hexagon_Column.lit_colored_textured_rounded,
-     openGL.Model.line     .colored,
+     openGL.Model.line          .colored,
      openGL.Model.open_gl,
-     openGL.Model.polygon  .lit_colored,
+     openGL.Model.polygon       .lit_colored,
      openGL.Model.segment_line,
-     openGL.Model.sphere   .colored,
-     openGL.Model.sphere   .lit_colored,
-     openGL.Model.sphere   .lit_colored_textured,
-     openGL.Model.Text     .lit_colored_textured,
+     openGL.Model.sphere        .colored,
+     openGL.Model.sphere        .lit_colored,
+     openGL.Model.sphere        .lit_colored_textured,
+     openGL.Model.Text          .lit_colored_textured,
      openGL.Model.terrain,
 
      openGL.Demo,
 
-     ada.Text_IO,
-     ada.Unchecked_Deallocation,
-     ada.Exceptions;
-
+     Ada.Text_IO,
+     Ada.Unchecked_Deallocation,
+     Ada.Exceptions;
 
 procedure launch_render_Models
 --
---  Exercise the renderer with a set of models.
+--  Exercise the renderer with an example of all the models.
 --
 is
    use openGL,
@@ -178,7 +177,7 @@ begin
         := openGL.Model.Text.lit_colored_textured.forge.new_Text (scale => (1.0, 1.0, 1.0),
                                                                   text     => "Howdy",
                                                                   Font     => the_font_Id,
-                                                                  Color    => (Red, Opaque),
+                                                                  Color    => (Green, Opaque),
                                                                   Centered => False);
 
       the_segment_line_Model : constant openGL.Model.segment_line.view
@@ -198,9 +197,7 @@ begin
                                            col           => 1,
                                            heights       => the_Region.all'Access,
                                            color_map     => to_Asset (texture_File),
-                                           tiling        => Tiling,
-                                           bounds        => (ball => 1.0,
-                                                             box  => <>));
+                                           tiling        => Tiling);
       --  The Sprites.
       --
       use openGL.Visual.Forge;
@@ -219,21 +216,20 @@ begin
             new_Visual (the_faceted_hexagon_column_Model.all'Access),
             new_Visual (the_rounded_hexagon_column_Model.all'Access),
             new_Visual (the_line_Model        .all'Access),
---              new_Visual (the_collada_Model     .all'Access),
+--            new_Visual (the_collada_Model     .all'Access),
             new_Visual (the_wavefront_Model   .all'Access),
             new_Visual (the_polygon_Model     .all'Access),
             new_Visual (the_text_Model        .all'Access),
             new_Visual (the_segment_line_Model.all'Access));
 --              new_Visual (the_ground_Model      .all'Access));
 
-      Current     :          Integer := the_Sprites'First;
+      Current : Integer := the_Sprites'First;
 
 
       procedure flip (Self : opengl.io.height_Map_view)
       is
          procedure free is new ada.Unchecked_Deallocation (opengl.height_Map,
                                                            opengl.IO.height_Map_view);
---           use type opengl.Index_t;
          Pad : opengl.io.height_Map_view := new opengl.height_Map' (Self.all);
       begin
          for Row in Self'Range (1)
@@ -247,7 +243,6 @@ begin
          free (Pad);
       end flip;
 
-
    begin
       flip (the_Region);
 
@@ -256,7 +251,6 @@ begin
       the_segment_line_Model.add_Segment     (end_Site   => (0.0, 1.0, 0.0));
       the_segment_line_Model.add_Segment     (end_Site   => (2.0, 2.0, 0.0));
       the_segment_line_Model.add_Segment     (end_Site   => (0.0, 2.0, 0.0));
-
 
       --  Main loop.
       --
