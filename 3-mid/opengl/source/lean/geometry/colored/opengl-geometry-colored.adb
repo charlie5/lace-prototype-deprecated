@@ -194,7 +194,6 @@ is
 
          function bBox is new get_Bounds (Index_t, get_Site);
       begin
-         put_Line ("GEOM.colored: " & Geometry_3d.Image (bBox (count => Now'Length).Box));
          Self.Bounds_are (bBox (count => Now'Length));
       end;
    end Vertices_are;
