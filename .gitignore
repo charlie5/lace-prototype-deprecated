@@ -22,3 +22,5 @@ build
 
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
+
+**/assets/opengl
