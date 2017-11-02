@@ -24,3 +24,5 @@ build
 3-mid/physics/implement/vox/*
 
 **/assets/opengl
+**/assets/mmi
+
