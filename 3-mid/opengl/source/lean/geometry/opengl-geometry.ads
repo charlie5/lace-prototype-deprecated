@@ -49,8 +49,8 @@ is
    --
    --  returns the bounds in Object space.
 
-   procedure is_Transparent  (Self : in out Item'Class;   Now : in Boolean := True);
-   function  is_Transparent  (Self : in     Item)           return Boolean;
+   procedure is_Transparent  (Self : in out Item;   Now : in Boolean := True);
+   function  is_Transparent  (Self : in     Item)     return Boolean;
 
    function  Program         (Self : in     Item)           return openGL.Program.view;
    procedure Program_is      (Self : in out Item;         Now : in openGL.Program.view);
@@ -105,7 +105,7 @@ private
          Primitives      : Primitive.views (1 .. 5);
          primitive_Count : Index_t      := 0;
 
-         is_Transparent  : Boolean      := False;
+         is_Transparent  : Boolean      := False;   -- Geometry contain lucid colors.
          Bounds          : openGL.Bounds;
       end record;
 

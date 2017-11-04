@@ -20,15 +20,10 @@ is
 
    type Vertex_array is array (Index_t range <>) of aliased Vertex;
 
-   function is_Transparent (Self : in Vertex_array) return Boolean;
-
 
    --------------
    --  Attributes
    --
-
-   overriding
-   function  is_Transparent (Self : in     Item) return Boolean;
 
    procedure Vertices_are   (Self : in out Item;   Now : in Vertex_array);
 

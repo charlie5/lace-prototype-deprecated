@@ -149,14 +149,6 @@ is
    --  Attributes
    --
 
-   overriding
-   function is_Transparent (Self : in Item) return Boolean
-   is
-   begin
-      return Self.is_Transparent;
-   end is_Transparent;
-
-
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => long_Index_t,
                                                                             element       => Vertex,

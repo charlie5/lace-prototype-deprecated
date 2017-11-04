@@ -29,9 +29,6 @@ is
    --
 
    overriding
-   function  is_Transparent (Self : in     Item) return Boolean;
-
-   overriding
    procedure Indices_are    (Self : in out Item;   Now       : in Indices;
                                                    for_Facia : in Positive);
 

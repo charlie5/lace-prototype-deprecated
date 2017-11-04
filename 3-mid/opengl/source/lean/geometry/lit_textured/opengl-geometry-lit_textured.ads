@@ -27,9 +27,6 @@ is
    --  Attributes
    --
 
-   overriding
-   function  is_Transparent (Self : in     Item) return Boolean;
-
    procedure Vertices_are   (Self : in out Item;   Now       : in Vertex_array);
 
    overriding

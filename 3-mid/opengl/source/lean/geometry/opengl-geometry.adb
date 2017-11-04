@@ -146,11 +146,12 @@ is
    function is_Transparent (self : in Item) return Boolean
    is
    begin
-      return Self.is_Transparent;
+      return Self.is_Transparent
+        or   Self.Texture.is_Transparent;
    end is_Transparent;
 
 
-   procedure is_Transparent (Self : in out Item'Class;   Now : in Boolean := True)
+   procedure is_Transparent (Self : in out Item;   Now : in Boolean := True)
    is
    begin
       Self.is_Transparent := Now;

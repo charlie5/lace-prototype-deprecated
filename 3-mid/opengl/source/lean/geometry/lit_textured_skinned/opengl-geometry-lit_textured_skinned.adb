@@ -36,7 +36,7 @@ is
    --  Vertex
    --
 
-   function is_Transparent (Self : in Vertex_array) return Boolean
+   function is_Transparent (Self : in Vertex_array) return Boolean   -- TODO: Replace this with the generic (check all similar use the generic).
    is
       use type color_Value;
    begin
