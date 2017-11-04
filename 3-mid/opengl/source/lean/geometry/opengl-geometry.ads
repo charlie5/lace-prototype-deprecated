@@ -6,7 +6,7 @@ with
 
 private
 with
-     ada.Strings.unbounded;
+     Ada.Strings.unbounded;
 
 
 package openGL.Geometry
@@ -64,7 +64,7 @@ is
    procedure Indices_are     (Self : in out Item;         Now       : in Indices;
                                                           for_Facia : in Positive);
 
-   procedure Indices_are    (Self : in out Item;          Now       : in long_Indices;
+   procedure Indices_are     (Self : in out Item;         Now       : in long_Indices;
                                                           for_Facia : in Positive);
 
    --------------
@@ -72,7 +72,7 @@ is
    --
 
    procedure render         (Self : in out Item'Class);
-   procedure enable_Texture (Self : in     Item)        is null;
+   procedure enable_Texture (Self : in     Item) is null;
 
 
 

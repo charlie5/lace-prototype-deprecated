@@ -2,9 +2,8 @@ with
      openGL.Primitive.indexed,
      openGL.Primitive.long_indexed,
 
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
-
+     Ada.unchecked_Deallocation,
+     Ada.unchecked_Conversion;
 
 
 package body openGL.Geometry
@@ -23,7 +22,6 @@ is
    end destroy;
 
 
-
    procedure free (Self : in out View)
    is
       procedure deallocate is new ada.unchecked_Deallocation (Geometry.item'Class, View);
@@ -35,7 +33,6 @@ is
       Self.destroy;
       deallocate (Self);
    end free;
-
 
 
    procedure free_Primitives (Self : in out Item)
@@ -202,7 +199,6 @@ is
    end render;
 
 
-
    -----------
    --  Normals
    --
@@ -297,10 +293,6 @@ is
    function any_Facets_of  (face_Kind : in primitive.facet_Kind;
                             Indices   : in any_Indices) return access Facets;
 
---     generic
---        type any_Index_t is range <>;
---        type any_Indices is array (long_Index_t range <>) of any_Index_t;
-
    function any_Facets_of  (face_Kind : in primitive.facet_Kind;
                             Indices   : in any_Indices) return access Facets
    is
@@ -314,9 +306,8 @@ is
 
       the_Facets : Facets_view  := new Facets (1 .. facet_Count_in (face_Kind, Indices));
       Count      : long_Index_t := 0;
-   begin
---        put_Line ("Indices'Length: " & Integer'image (self.Indices'Length));
 
+   begin
       for Each in the_Facets'Range
       loop
          declare
@@ -384,7 +375,6 @@ is
       function Facets_of is new any_Facets_of (any_Index_t,
                                                any_Indices);
 
-
       the_Normals : constant access Normals     := new Normals (Sites'Range);
       the_Facets  :                 Facets_view :=     Facets_of (face_Kind,
                                                                   Indices  ).all'unchecked_Access;
@@ -414,7 +404,6 @@ is
          end if;
       end loop;
 
-
       --  Calculate normal at each vertex.
       --
       declare
@@ -435,7 +424,6 @@ is
             end loop;
          end loop;
 
-
          for p in the_Normals'Range
          loop
             length := abs (the_Normals (p));
@@ -452,7 +440,6 @@ is
 
       return the_Normals.all'Unchecked_Access;
    end any_Normals_of;
-
 
 
 
@@ -479,14 +466,10 @@ is
    end Normals_of;
 
 
+   ---------
+   -- Bounds
+   --
 
---     function Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
---                                                any_Indices => long_Indices);
-
-
-
---     generic
---        with function get_Vertex (Index : in Index_t) return Vector_3;
    function get_Bounds (Count : in Natural) return openGL.Bounds
    is
       use Geometry_3d;
