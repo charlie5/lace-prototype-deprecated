@@ -133,10 +133,15 @@ is
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
-      pragma Unreferenced (Self);
       use type color_Value;
+
+      function get_Color (Index : in long_Index_t) return lucid_Color
+      is (Self (Index).Color);
+
+      function my_Transparency is new get_Transparency (any_Index_t => long_Index_t,
+                                                        get_Color   => get_Color);
    begin
-      return True;
+      return my_Transparency (count => Self'Length);
    end is_Transparent;
 
 

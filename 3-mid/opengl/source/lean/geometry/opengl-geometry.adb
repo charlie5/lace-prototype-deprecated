@@ -488,4 +488,24 @@ is
    end get_Bounds;
 
 
+   ---------------
+   -- Transparency
+   --
+
+   function get_Transparency (Count : in Natural) return Boolean
+   is
+      use type color_Value;
+   begin
+      for i in 1 .. any_Index_t (Count)
+      loop
+         if get_Color (i).Opacity /= Opaque
+         then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end get_Transparency;
+
+
 end openGL.Geometry;

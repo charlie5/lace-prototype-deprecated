@@ -115,4 +115,9 @@ private
       with function get_Site (Index : in any_Index_t) return Vector_3;
    function get_Bounds (Count : in Natural) return openGL.Bounds;
 
+   generic
+      type any_Index_t is range <>;
+      with function get_Color (Index : in any_Index_t) return lucid_Color;
+   function get_Transparency (Count : in Natural) return Boolean;
+
 end openGL.Geometry;

@@ -193,16 +193,14 @@ is
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
       use type color_Value;
-   begin
-      for Each in Self'Range
-      loop
-         if Self (Each).Color.Opacity /= Opaque
-         then
-            return True;
-         end if;
-      end loop;
 
-      return False;
+      function get_Color (Index : in Index_t) return lucid_Color
+      is (Self (Index).Color);
+
+      function my_Transparency is new get_Transparency (any_Index_t => Index_t,
+                                                        get_Color   => get_Color);
+   begin
+      return my_Transparency (count => Self'Length);
    end is_Transparent;
 
 
