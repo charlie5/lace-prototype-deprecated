@@ -99,6 +99,25 @@ is
    end new_Geometry;
 
 
+   ----------
+   --  Vertex
+   --
+
+   function is_Transparent (Self : in Vertex_array) return Boolean
+   is
+      use type color_Value;
+   begin
+      for Each in Self'Range
+      loop
+         if Self (Each).Color.Opacity /= Opaque
+         then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end is_Transparent;
+
 
    --------------
    --  Attributes
@@ -139,20 +158,5 @@ is
       end;
    end Vertices_are;
 
-
-   function is_Transparent (Self : in Vertex_array) return Boolean
-   is
-      use type color_Value;
-   begin
-      for Each in Self'Range
-      loop
-         if Self (Each).Color.Opacity /= Opaque
-         then
-            return True;
-         end if;
-      end loop;
-
-      return False;
-   end is_Transparent;
 
 end openGL.Geometry.colored;
