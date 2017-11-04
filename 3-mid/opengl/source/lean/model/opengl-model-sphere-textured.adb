@@ -217,7 +217,7 @@ is
 
 
       the_Geometry.is_Transparent (False);   -- tbd: Base this on vertex data.
-      Vertices_are (the_Geometry.all,  the_Vertices'Access);
+      Vertices_are (the_Geometry.all,  the_Vertices);
 
       declare
          the_Primitive : constant openGL.Primitive.indexed.view

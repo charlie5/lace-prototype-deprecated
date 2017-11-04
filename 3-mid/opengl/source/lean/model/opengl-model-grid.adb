@@ -170,7 +170,7 @@ is
       end set_Sites;
 
       Self.State.Geometry.is_Transparent (False);
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices);
+      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
 
       the_Primitive := openGL.Primitive.non_indexed.new_Primitive (openGL.primitive.Lines,  Self.State.Vertices'Length);
       Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
@@ -209,7 +209,7 @@ is
    begin
       Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
 
-      Vertices_are (self.State.Geometry.all, self.State.Vertices);
+      Vertices_are (self.State.Geometry.all, self.State.Vertices.all);
       Self.set_Bounds;
    end Site_is;
 

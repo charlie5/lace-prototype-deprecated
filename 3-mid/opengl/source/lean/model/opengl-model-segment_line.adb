@@ -157,7 +157,7 @@ is
 
       Self.state.Geometry.is_Transparent (False);
 
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices);
+      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
       Self.State.Geometry.add (openGL.Primitive.view (new_Primitive (Line_Strip, the_Indices)));
 
       return (1 => Self.State.Geometry.all'Access);

@@ -38,7 +38,7 @@ is
    --  Attributes
    --
 
-   procedure Vertices_are (Self : in out Item'Class;   Now : access Vertex_array);
+   procedure Vertices_are (Self : in out Item;   Now : in Vertex_array);
 
    overriding
    procedure Indices_are  (Self : in out Item;         Now       : in Indices;

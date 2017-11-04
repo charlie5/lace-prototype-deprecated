@@ -68,7 +68,7 @@ is
          the_Primitive : constant Primitive.indexed.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                              the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are   (Vertices);
+         the_Geometry.Vertices_are   (Vertices.all);
          the_Geometry.add            (openGL.Primitive.view (the_Primitive));
 
          the_Geometry.is_Transparent (now => False);

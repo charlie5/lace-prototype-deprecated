@@ -33,7 +33,7 @@ is
    overriding
    function  is_Transparent (Self : in     Item) return Boolean;
 
-   procedure Vertices_are   (Self : in out          Item'Class;   Now : access Vertex_array);
+--     procedure Vertices_are   (Self : in out          Item'Class;   Now : access Vertex_array);
    procedure Vertices_are   (Self : in out          Item'Class;   Now : in     Vertex_array);
 --     procedure Vertices_are   (Self : in out Geometry.Item'Class;   Now : in     Vertex_array);
 

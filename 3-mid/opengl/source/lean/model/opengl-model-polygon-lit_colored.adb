@@ -88,7 +88,7 @@ is
       the_Geometry.Bounds_are     (Self.Bounds);
       the_Geometry.is_Transparent (False);
 
-      Vertices_are (the_Geometry.all, the_Vertices'Access);
+      Vertices_are (the_Geometry.all, the_Vertices);
 
       declare
          the_Primitive : constant openGL.Primitive.indexed.view

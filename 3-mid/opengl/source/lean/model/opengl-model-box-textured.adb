@@ -82,7 +82,7 @@ is
          the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                      the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices);
+         the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (the_Primitive);
          the_Geometry.Bounds_are   (Bounds);
 

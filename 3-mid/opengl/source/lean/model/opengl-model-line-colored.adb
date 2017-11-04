@@ -81,7 +81,7 @@ is
 
       Self.State.Geometry.is_Transparent (False);
 
-      Vertices_are (self.State.Geometry.all, self.State.Vertices);
+      Vertices_are (self.State.Geometry.all, self.State.Vertices.all);
 
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices);
       Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
@@ -120,7 +120,7 @@ is
       use openGL.Geometry.colored;
    begin
       Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices);
+      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
       Self.set_Bounds;
    end Site_is;
 

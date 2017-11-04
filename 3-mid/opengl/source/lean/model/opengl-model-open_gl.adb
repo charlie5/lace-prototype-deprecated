@@ -400,7 +400,7 @@ is
                   end set_Normals;
                end if;
 
-               Vertices_are (my_Geometry.all, now => my_Vertices'Access);
+               Vertices_are (my_Geometry.all, now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;
             end;
 
@@ -415,7 +415,7 @@ is
                  := lit_textured_skinned.new_Geometry.all'Access;
 
             begin
-               Vertices_are (my_Geometry.all, now => my_Vertices'Access);
+               Vertices_are (my_Geometry.all, now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;
             end;
          end if;

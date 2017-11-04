@@ -47,7 +47,7 @@ is
    procedure Indices_are  (Self : in out Item;         Now       : in     Indices;
                                                        for_Facia : in     Positive);
 
-   procedure Vertices_are (Self : in out Item'Class;   Now       : access Vertex_array);
+   procedure Vertices_are (Self : in out Item;   Now       : in Vertex_array);
 
 
 
