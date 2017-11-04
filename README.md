@@ -27,7 +27,7 @@ Content
 |3 ~ Mid |opengl     |OpenGL rendering support (2d/3d).                                |
 |        |physics    |Physics space/dynamics support (2d/3d).                          |
 |2 ~ Low |collada    |Provides a Collada parser.                                       |
-|1 ~ Base|lace       |Provides core types and a namespace fot the Lace package family. |
+|1 ~ Base|lace       |Provides core types and a namespace for the Lace package family. |
 |        |lace/events|Provides an event mechanism for event-driven architectures.      |
 |        |math       |Provides core math functionality.                                |
 |        |xml        |Provides a simple XML parser.                                    |
