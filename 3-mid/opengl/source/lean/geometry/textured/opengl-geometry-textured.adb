@@ -11,8 +11,8 @@ with
      GL.Pointers,
 
      System,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.textured
@@ -22,7 +22,6 @@ is
 
        Interfaces,
        System;
-
 
    -----------
    --  Globals
@@ -40,13 +39,11 @@ is
    Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
 
 
-
    ---------
    --  Forge
    --
 
    type Geometry_view is access all Geometry.textured.item'class;
-
 
    function new_Geometry return access Geometry.textured.item'class
    is
@@ -115,7 +112,6 @@ is
    end new_Geometry;
 
 
-
    --------------
    --  Attributes
    --
@@ -127,11 +123,6 @@ is
       return Self.is_Transparent;
    end is_Transparent;
 
-
-
-   --------------
-   --- Operations
-   --
 
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => Index_t,
@@ -148,15 +139,13 @@ is
    end Vertices_are;
 
 
-
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive)
    is
    begin
-      raise Program_Error with "TBD";
+      raise Program_Error with "TODO";
    end Indices_are;
-
 
 
    overriding

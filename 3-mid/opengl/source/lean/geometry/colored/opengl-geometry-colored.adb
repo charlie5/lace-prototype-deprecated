@@ -2,18 +2,14 @@ with
      openGL.Shader,
      openGL.Program.colored,
      openGL.Tasks,
+     openGL.Buffer.general,
+     openGL.Attribute,
 
      GL.lean,
      GL.Pointers,
 
-     System,
-
-     interfaces.c.Strings,
-
-     openGL.Buffer.general,
-     System.Storage_Elements,
-     openGL.Attribute;
-with Ada.Text_IO; use Ada.Text_IO;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.colored
@@ -35,33 +31,12 @@ is
                                   C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
 
 
-   function is_Transparent (Self : in Vertex_array) return Boolean
-   is
-      use type color_Value;
-   begin
-      for Each in Self'Range
-      loop
-         if Self (Each).Color.Opacity /= Opaque
-         then
-            return True;
-         end if;
-      end loop;
-
-      return False;
-   end is_Transparent;
-
-
-
-   ---------
-   --  Forge
-   --
-
    type colored_Geometry_view is access all Geometry.colored.item'class;
 
 
    function new_Geometry return access Geometry.colored.item'class
    is
-      use      system.Storage_Elements;
+      use      System.storage_Elements;
       use type openGL.Program.colored.view;
 
       check_is_OK : constant Boolean               :=     openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -96,7 +71,7 @@ is
                                                           data_kind   => attribute.GL_UNSIGNED_BYTE,
                                                           stride      => colored.Vertex'Size / 8,
                                                           offset       =>   sample_Vertex.Color.Primary.Red'Address
-                                                                         - sample_Vertex.Site (1)         'Address,
+                                                                          - sample_Vertex.Site (1)         'Address,
                                                           normalized  => True);
             the_Program.add (Attribute_1);
             the_Program.add (Attribute_2);
@@ -130,53 +105,12 @@ is
    end is_Transparent;
 
 
-
-   function is_Transparent (Self : access Vertex_array) return Boolean
-   is
-      use type color_Value;
-   begin
-      for Each in Self'Range
-      loop
-         if Self (Each).Color.Opacity /= Opaque
-         then
-            return True;
-         end if;
-      end loop;
-
-      return False;
-   end is_Transparent;
-
-
-
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => Index_t,
                                                                             element       => Vertex,
                                                                             element_array => Vertex_array);
 
---     procedure Vertices_are (Self : in out Item'Class;   Now : access Vertex_array)
---     is
---        use openGL.Buffer,
---            openGL_Buffer_of_geometry_Vertices;
---     begin
---        free (Self.Vertices);
---        Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
---                                                                                    usage => openGL.buffer.static_Draw));
---        Self.is_Transparent := is_Transparent (Now.all);
---
---        -- Set the bounds.
---        --
---        declare
---           function get_Site (Index : in Index_t) return Vector_3
---           is (Now (Index).Site);
---
---           function bBox is new get_Bounds (Index_t, get_Site);
---        begin
---           Self.Bounds_are (bBox (count => Now'Length));
---        end;
---     end Vertices_are;
-
-
-   procedure Vertices_are (Self : in out Item'Class;   Now : in Vertex_array)
+   procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use openGL.Buffer,
           openGL_Buffer_of_geometry_Vertices;
@@ -199,16 +133,19 @@ is
    end Vertices_are;
 
 
+   function is_Transparent (Self : in Vertex_array) return Boolean
+   is
+      use type color_Value;
+   begin
+      for Each in Self'Range
+      loop
+         if Self (Each).Color.Opacity /= Opaque
+         then
+            return True;
+         end if;
+      end loop;
 
---     procedure Vertices_are (Self : in out Geometry.Item'Class;   Now : in  Vertex_array)
---     is
---        use openGL.Buffer,
---            openGL_Buffer_of_geometry_Vertices;
---     begin
---        free (Self.Vertices);
---        self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
---                                                                                    usage => openGL.buffer.static_Draw));
---        Self.is_Transparent := is_Transparent (Now);
---     end Vertices_are;
+      return False;
+   end is_Transparent;
 
 end openGL.Geometry.colored;

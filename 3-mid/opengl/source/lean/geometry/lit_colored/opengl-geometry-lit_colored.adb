@@ -8,8 +8,8 @@ with
      GL.lean,
      GL.Pointers,
 
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored
@@ -20,15 +20,16 @@ is
        System;
 
 
+   ------------------
    --  Shader Program
    --
+
    type Program is
       record
          vertex_Shader   : aliased openGL.Shader.item;
          fragment_Shader : aliased openGL.Shader.item;
          Program         :         openGL.Program.lit_colored.view;
       end record;
-
 
 
    -----------
@@ -53,13 +54,12 @@ is
 
    type Geometry_view is access all Geometry.lit_colored.item'class;
 
-
    function new_Geometry return access Geometry.lit_colored.item'class
    is
       use      system.Storage_Elements;
       use type openGL.Program.lit_colored.view;
 
-      check_is_OK : constant Boolean       :=     openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean       :=     openGL.Tasks.Check;        pragma Unreferenced (check_is_OK);
       Self        : constant Geometry_view := new Geometry.lit_colored.item;
 
       procedure define (the_Program : access Program)
@@ -137,19 +137,9 @@ is
    end new_Geometry;
 
 
-
-   --------------
-   --  Attributes
+   ----------
+   --  Vertex
    --
-
-   overriding
-   function is_Transparent (Self : in Item) return Boolean
-   is
-   begin
-      return Self.is_Transparent;
-   end is_Transparent;
-
-
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
@@ -167,6 +157,16 @@ is
    end is_Transparent;
 
 
+   --------------
+   --  Attributes
+   --
+
+   overriding
+   function is_Transparent (Self : in Item) return Boolean
+   is
+   begin
+      return Self.is_Transparent;
+   end is_Transparent;
 
 
    --------------

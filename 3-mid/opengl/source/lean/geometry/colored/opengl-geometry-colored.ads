@@ -5,6 +5,12 @@ package openGL.Geometry.colored
 is
    type Item is new openGL.Geometry.item with private;
 
+   function new_Geometry return access Geometry.colored.item'class;
+
+
+   ------------
+   --  Vertices
+   --
 
    type Vertex is
       record
@@ -14,16 +20,7 @@ is
 
    type Vertex_array is array (Index_t range <>) of aliased Vertex;
 
-
    function is_Transparent (Self : in Vertex_array) return Boolean;
-
-
-
-   ---------
-   --  Forge
-   --
-
-   function new_Geometry return access Geometry.colored.item'class;
 
 
    --------------
@@ -33,9 +30,7 @@ is
    overriding
    function  is_Transparent (Self : in     Item) return Boolean;
 
---     procedure Vertices_are   (Self : in out          Item'Class;   Now : access Vertex_array);
-   procedure Vertices_are   (Self : in out          Item'Class;   Now : in     Vertex_array);
---     procedure Vertices_are   (Self : in out Geometry.Item'Class;   Now : in     Vertex_array);
+   procedure Vertices_are   (Self : in out Item;   Now : in Vertex_array);
 
 
 

@@ -10,9 +10,8 @@ with
      GL.lean,
      GL.Pointers,
 
-     System,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored_textured
@@ -37,7 +36,6 @@ is
       end record;
 
    type Programs is array (program_Id) of aliased Program;
-
 
 
    -----------
@@ -67,12 +65,11 @@ is
 
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
-
    function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class
    is
       use type openGL.Program.lit_colored_textured.view;
 
-      check_is_OK : constant Boolean       :=     openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean       :=     openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
       Self        : constant Geometry_view := new Geometry.lit_colored_textured.item;
 
       procedure define (the_Program         : access Program;
@@ -94,13 +91,12 @@ is
          white_Texture       := openGL.Texture.to_Texture (white_Image);
          the_Program.Program := new openGL.Program.lit_colored_textured.item;
 
-         the_Program.vertex_Shader  .define (openGL.Shader.Vertex,    "assets/opengl/shader/lit_colored_textured.vert");
-         the_Program.fragment_Shader.define (openGL.Shader.Fragment,  use_fragment_Shader);
+         the_Program.vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");
+         the_Program.fragment_Shader.define (openGL.Shader.Fragment, use_fragment_Shader);
 
          the_Program.Program.define (the_Program.vertex_Shader  'Access,
                                      the_Program.fragment_Shader'Access);
          the_Program.Program.enable;
-
 
          Attribute_1 := attribute.Forge.new_Attribute
                           (name        => "aSite",
@@ -146,7 +142,6 @@ is
          the_Program.Program.add (Attribute_3);
          the_Program.Program.add (Attribute_4);
 
-
          glBindAttribLocation (program =>  the_Program.Program.gl_Program,
                                index   =>  the_Program.Program.Attribute (named => "aSite").gl_Location,
                                name    => +Attribute_1_Name_ptr);
@@ -174,7 +169,6 @@ is
             define (the_Programs (alpha_Texture)'Access,
                     use_fragment_shader => "assets/opengl/shader/lit_colored_textured-text.frag");
          end if;
-
       else
          if the_Programs (rgba_Texture).Program = null
          then
@@ -182,7 +176,6 @@ is
                     use_fragment_shader => "assets/opengl/shader/lit_colored_textured.frag");
          end if;
       end if;
-
 
       if texture_is_Alpha
       then   Self.Program_is (openGL.Program.view (the_Programs (alpha_Texture).Program));
@@ -193,19 +186,9 @@ is
    end new_Geometry;
 
 
-
-   --------------
-   --  Attributes
+   ----------
+   --  Vertex
    --
-
-   overriding
-   function is_Transparent (Self : in     Item) return Boolean
-   is
-   begin
-      return Self.is_Transparent;
-   end is_Transparent;
-
-
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
@@ -223,18 +206,25 @@ is
    end is_Transparent;
 
 
-
-
    --------------
-   --- Operations
+   --  Attributes
    --
+
+   overriding
+   function is_Transparent (Self : in Item) return Boolean
+   is
+   begin
+      return Self.is_Transparent;
+   end is_Transparent;
+
+
 
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => Index_t,
                                                                             element       => Vertex,
                                                                             element_array => Vertex_array);
 
-   procedure Vertices_are (Self : in out Item;   Now       : in Vertex_array)
+   procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use      openGL_Buffer_of_geometry_Vertices;
       use type Index_t,
@@ -264,7 +254,6 @@ is
    end Vertices_are;
 
 
-
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive)
@@ -274,12 +263,11 @@ is
    end Indices_are;
 
 
-
    overriding
    procedure enable_Texture (Self : in Item)
    is
       use GL, openGL.Texture;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
       glActiveTexture (gl.GL_TEXTURE0);
 

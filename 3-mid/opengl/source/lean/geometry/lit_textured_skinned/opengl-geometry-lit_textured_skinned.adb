@@ -10,8 +10,8 @@ with
      GL.Pointers,
 
      System,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.lit_textured_skinned
@@ -32,7 +32,8 @@ is
    white_Texture       :         openGL.Texture.Object;
 
 
-   -- Utility
+   ----------
+   --  Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean
@@ -51,7 +52,7 @@ is
    end is_Transparent;
 
 
-
+   ---------
    --  Forge
    --
 
@@ -67,7 +68,7 @@ is
    end new_Geometry;
 
 
-
+   --------------
    --  Attributes
    --
 
@@ -76,6 +77,8 @@ is
       use type openGL.Program.lit_textured_skinned.view;
 --        check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
+      raise Program_Error with "TODO";
+
 --        if the_Program = null then   -- Define the shaders and program.
 --           declare
 --              use openGL.Palette,
@@ -228,7 +231,7 @@ is
                                                  for_Facia : in Positive)
    is
    begin
-      raise Program_Error with "TBD";
+      raise Program_Error with "TODO";
    end Indices_are;
 
 
@@ -266,7 +269,7 @@ is
       use GL,
           openGL.Texture;
 
-      check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
 
    begin
       glActiveTexture (gl.GL_TEXTURE0);

@@ -11,8 +11,8 @@ with
      GL.Pointers,
 
      System,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.lit_textured
@@ -42,18 +42,16 @@ is
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
 
 
-
    ---------
    --  Forge
    --
 
    type Geometry_view is access all Geometry.lit_textured.item'class;
 
-
    function new_Geometry return access Geometry.lit_textured.item'class
    is
       use      System,
-               system.Storage_Elements;
+               System.storage_Elements;
       use type openGL.Program.lit_textured.view;
 
       check_is_OK : constant Boolean       := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -132,6 +130,18 @@ is
    end new_Geometry;
 
 
+   ----------
+   --  Vertex
+   --
+
+   function is_Transparent (Self : in Vertex_array) return Boolean
+   is
+      pragma Unreferenced (Self);
+      use type color_Value;
+   begin
+      return False;
+   end is_Transparent;
+
 
    --------------
    --  Attributes
@@ -145,26 +155,10 @@ is
    end is_Transparent;
 
 
-
-   function is_Transparent (Self : in Vertex_array) return Boolean
-   is
-      pragma Unreferenced (Self);
-      use type color_Value;
-   begin
-      return False;
-   end is_Transparent;
-
-
-
-   --------------
-   --  Operations
-   --
-
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => long_Index_t,
                                                                             element       => Vertex,
                                                                             element_array => Vertex_array);
-
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use      openGL_Buffer_of_geometry_Vertices;
@@ -187,7 +181,6 @@ is
    end Vertices_are;
 
 
-
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive)
@@ -195,7 +188,6 @@ is
    begin
       raise Program_Error with "TBD";
    end Indices_are;
-
 
 
    overriding
@@ -212,6 +204,5 @@ is
       else   enable (Self.Texture);
       end if;
    end enable_Texture;
-
 
 end openGL.Geometry.lit_textured;

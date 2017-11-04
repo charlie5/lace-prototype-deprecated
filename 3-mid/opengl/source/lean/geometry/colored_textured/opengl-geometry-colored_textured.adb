@@ -11,8 +11,8 @@ with
      GL.Pointers,
 
      System,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     Interfaces.C.Strings,
+     System.storage_Elements;
 
 
 package body openGL.Geometry.colored_textured
@@ -41,13 +41,7 @@ is
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
 
 
-
-   ---------
-   --  Forge
-   --
-
    type Geometry_view is access all Geometry.colored_textured.item'class;
-
 
    function new_Geometry return access Geometry.colored_textured.item'class
    is
@@ -77,12 +71,10 @@ is
             the_vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/colored_textured.vert");
             the_fragment_Shader.define (openGL.Shader.Fragment, "assets/opengl/shader/colored_textured.frag");
 
-
             the_Program := new openGL.Program.colored_textured.item;
             the_Program.define (the_vertex_Shader  'Access,
                                 the_fragment_Shader'Access);
             the_Program.enable;
-
 
             Attribute_1 := attribute.Forge.new_Attribute (name        => "aSite",
                                                           gl_location => the_Program.attribute_Location ("aSite"),
@@ -132,6 +124,18 @@ is
    end new_Geometry;
 
 
+   ----------
+   --  Vertex
+   --
+
+   function is_Transparent (Self : in Vertex_array) return Boolean
+   is
+      pragma Unreferenced (Self);
+      use type color_Value;
+   begin
+      return True;
+   end is_Transparent;
+
 
    --------------
    --  Attributes
@@ -144,21 +148,6 @@ is
       return Self.is_Transparent;
    end is_Transparent;
 
-
-
-   function is_Transparent (Self : in Vertex_array) return Boolean
-   is
-      pragma Unreferenced (Self);
-      use type color_Value;
-   begin
-      return True;
-   end is_Transparent;
-
-
-
-   --------------
-   --  Operations
-   --
 
    package openGL_Buffer_of_geometry_Vertices is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
                                                                             index         => long_Index_t,
@@ -187,7 +176,6 @@ is
    end Vertices_are;
 
 
-
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive)
@@ -195,7 +183,6 @@ is
    begin
       raise Program_Error with "TBD";
    end Indices_are;
-
 
 
    overriding

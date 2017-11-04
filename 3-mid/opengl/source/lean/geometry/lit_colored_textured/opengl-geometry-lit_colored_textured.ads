@@ -6,7 +6,10 @@ is
 
    type Item is new openGL.Geometry.item with private;
 
+   function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'class;
 
+
+   ----------
    --  Vertex
    --
 
@@ -21,15 +24,6 @@ is
    type Vertex_array is array (Index_t range <>) of aliased Vertex;
 
 
-
-   ---------
-   --  Forge
-   --
-
-   function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'class;
-
-
-
    --------------
    --  Attributes
    --
@@ -37,19 +31,11 @@ is
    overriding
    function  is_Transparent (Self : in     Item) return Boolean;
 
-
-
-   --------------
-   --  Operations
-   --
-
    overriding
-   procedure Indices_are  (Self : in out Item;         Now       : in     Indices;
-                                                       for_Facia : in     Positive);
+   procedure Indices_are    (Self : in out Item;   Now       : in Indices;
+                                                   for_Facia : in Positive);
 
-   procedure Vertices_are (Self : in out Item;   Now       : in Vertex_array);
-
-
+   procedure Vertices_are   (Self : in out Item;   Now       : in Vertex_array);
 
 
 
@@ -60,9 +46,7 @@ private
          null;
       end record;
 
-
    overriding
    procedure enable_Texture (Self : in Item);
-
 
 end openGL.Geometry.lit_colored_textured;
