@@ -1,7 +1,5 @@
 with
      openGL.Primitive.indexed;
-with Ada.Text_IO; use Ada.Text_IO;
-
 
 package body openGL.Model.arrow.colored
 is

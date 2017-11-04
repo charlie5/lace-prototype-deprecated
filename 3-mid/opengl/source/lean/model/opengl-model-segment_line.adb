@@ -83,8 +83,6 @@ is
 --     end Bounds;
 
 
-
-
    procedure set_Indices (Self : in out Item)
    is
       use type ada.Containers.Count_Type;
@@ -109,6 +107,7 @@ is
 
 
 
+   overriding
    procedure set_Bounds (Self : in out Item)
    is
       the_Vertices : Vector_3_array (1 .. Index_t (Self.Points.Length));

@@ -1,28 +1,13 @@
 with
      openGL.Shader,
      openGL.Buffer.general,
-     openGL.Attribute,
      openGL.Texture,
      openGL.Palette,
-     openGL.Tasks,
-
-     GL.lean,
-     GL.Pointers,
-
-     System,
-     Interfaces.C.Strings,
-     System.storage_Elements;
+     openGL.Tasks;
 
 
 package body openGL.Geometry.lit_textured_skinned
 is
-   use GL.lean,
-       GL.Pointers,
-
-       Interfaces,
-       System;
-
-
    --  Globals
    --
    the_vertex_Shader   : aliased openGL.Shader.item;

@@ -1,7 +1,5 @@
 with
-     openGL.Palette,
-     openGL.Server;
-with Ada.Text_IO; use Ada.Text_IO;
+     openGL.Palette;
 
 
 package body openGL.Demo
@@ -66,7 +64,7 @@ is
    begin
       Camera  .destroy;
       Renderer.stop_Engine;
-   end;
+   end destroy;
 
 
 

@@ -57,6 +57,7 @@ private
       end record;
 
 
+   overriding
    procedure set_Bounds (Self : in out Item);
 
 

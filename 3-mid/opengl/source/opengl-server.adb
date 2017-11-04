@@ -12,7 +12,7 @@ is
    is
       use GL, Interfaces;
 
-      check_is_OK : constant Boolean   := openGL.Tasks.Check;
+      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
 
       type GLubyte_Pointer  is access all GLubyte;
       function to_chars_ptr is new ada.Unchecked_Conversion (GLubyte_Pointer,

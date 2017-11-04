@@ -151,11 +151,6 @@ is
          end if;
 
          return the_Array (1 .. Count);
-
-      exception
-         when constraint_Error =>
-            -- put_Line ("could not convert '" & From (Start .. From'Last) & "' to a real.");
-            raise;
       end;
    end to_float_Array;
 
@@ -212,11 +207,6 @@ is
          end if;
 
          return the_Array (1 .. Count);
-
-      exception
-         when constraint_Error =>
-            -- put_Line ("could not convert '" & From (Start .. From'Last) & "' to a real.");
-            raise;
       end;
    end to_Text_array;
 
@@ -234,7 +224,7 @@ is
 
 
 
-   function to_Source (From : in xml.Element) return collada.Library.Source
+   function to_Source (From : in Xml.Element) return collada.Library.Source
    is
       use collada.Library;
 

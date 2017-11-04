@@ -91,6 +91,7 @@ is
 
 
 
+   overriding
    procedure set_Bounds (Self : in out Item)
    is
       use math.Geometry;

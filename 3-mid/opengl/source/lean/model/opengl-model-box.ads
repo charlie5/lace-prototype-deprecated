@@ -55,6 +55,8 @@ private
 
 
    function  vertex_Sites (Self : in     Item'Class) return Sites;
+
+   overriding
    procedure set_Bounds   (Self : in out Item);
 
 

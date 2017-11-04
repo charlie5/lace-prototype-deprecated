@@ -5,6 +5,7 @@ is
    --- Attributes
    --
 
+   overriding
    procedure set_Bounds (Self : in out Item)
    is
       use openGL.Geometry;

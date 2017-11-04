@@ -1,8 +1,6 @@
 with
      ada.Unchecked_Deallocation,
      ada.Unchecked_Conversion;
-with Ada.Text_IO; use Ada.Text_IO;
-
 
 package body openGL.Font
 is

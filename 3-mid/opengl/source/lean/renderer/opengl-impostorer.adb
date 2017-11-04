@@ -2,7 +2,6 @@ with
      openGL.Camera,
      openGL.Impostor.simple,
      openGL.Impostor.terrain,
-     openGL.Texture,
 
      ada.Containers.Generic_Array_Sort,
      ada.Unchecked_Deallocation;
@@ -123,7 +122,6 @@ is
 
          procedure add (the_Impostor : in Impostor.view)
          is
-            use openGL.Texture;
          begin
             impostor_updates_Last                    := impostor_updates_Last + 1;
             Impostor_updates (impostor_updates_Last) := (impostor              => the_Impostor,
@@ -186,7 +184,7 @@ is
 
                   declare
                      use linear_Algebra_3d,
-                         openGL.Renderer.lean, openGL.Visual, openGL.Texture;
+                         openGL.Renderer.lean, openGL.Visual;
 
                      impostor_Target          : Visual.view renames the_Visual;
 

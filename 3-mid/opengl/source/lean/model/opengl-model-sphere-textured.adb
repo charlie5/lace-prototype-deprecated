@@ -1,5 +1,4 @@
 with
-     openGL.Palette,
      openGL.Geometry.textured,
      openGL.Texture,
      openGL.IO,
@@ -49,7 +48,6 @@ is
       pragma Unreferenced (Textures, Fonts);
 
       use openGL.Geometry,
-          openGL.Palette,
           openGL.Geometry.textured;
 
       use type Real;

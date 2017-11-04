@@ -77,6 +77,7 @@ is
 
 private
 
+   overriding
    procedure set_Bounds (Self : in out Item);
 
 end openGL.Model.terrain;

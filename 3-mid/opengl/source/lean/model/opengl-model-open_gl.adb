@@ -383,7 +383,7 @@ is
                      end get_Sites;
 
 
-                     the_Sites   : openGL.Sites := get_Sites;
+                     the_Sites   : constant openGL.Sites := get_Sites;
 
                      the_Normals : Normals_view := openGL.Geometry.Normals_of (openGL.primitive.Triangles,
                                                                                tri_Indices,
@@ -408,7 +408,7 @@ is
             declare
                use openGL.Geometry.lit_textured_skinned;
 
-               my_Vertices : aliased lit_textured_skinned.Vertex_array
+               my_Vertices : aliased constant lit_textured_skinned.Vertex_array
                  := to_lit_textured_skinned_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_skinned_Geometry_view

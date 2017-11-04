@@ -215,8 +215,8 @@ is
             x_Length : constant Real := Real (the_Bounds.Box.upper (1) - the_Bounds.Box.lower (1));
             x_Min    : constant Real := Real (the_Bounds.Box.lower (1));
 
-            y_Length : constant Real := Real (the_Bounds.Box.upper (2) - the_Bounds.Box.lower (2));
-            y_Min    : constant Real := Real (the_Bounds.Box.lower (2));
+--              y_Length : constant Real := Real (the_Bounds.Box.upper (2) - the_Bounds.Box.lower (2));
+--              y_Min    : constant Real := Real (the_Bounds.Box.lower (2));
 
             z_Length : constant Real := Real (the_Bounds.Box.upper (3) - the_Bounds.Box.lower (3));
             z_Min    : constant Real := Real (the_Bounds.Box.lower (3));
@@ -266,7 +266,7 @@ is
 
 
 
-
+   overriding
    procedure set_Bounds (Self : in out Item)
    is
       use openGL.Geometry,

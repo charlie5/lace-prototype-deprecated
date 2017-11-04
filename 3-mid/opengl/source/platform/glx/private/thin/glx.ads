@@ -1,7 +1,6 @@
 with
-     Interfaces.C.Strings,
+     Interfaces.C,
      System;
-
 
 package GLX
 is
@@ -11,7 +10,6 @@ is
    ---------
    --  Types
    --
-
 
    -- XEventQueueOwner
    --

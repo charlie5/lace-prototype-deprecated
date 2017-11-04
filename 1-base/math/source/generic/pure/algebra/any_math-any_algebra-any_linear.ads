@@ -3,7 +3,6 @@ package any_math.any_Algebra.any_linear
 is
 
    pragma Pure;
-   pragma Optimize (Time);
 
 
    ----------

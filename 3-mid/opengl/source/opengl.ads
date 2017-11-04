@@ -6,7 +6,6 @@ with
      float_Math.Geometry.d2,
      float_Math.Geometry.d3,
 
-     Ada.Streams,
      Ada.Containers;
 
 

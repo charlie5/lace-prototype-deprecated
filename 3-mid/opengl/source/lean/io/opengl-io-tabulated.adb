@@ -1,18 +1,11 @@
 with
      float_Math.Geometry.d3.Modeller.Forge,
 
-     float_Math,
-     ada.Text_IO;
+     float_Math;
 
 
 package body openGL.IO.tabulated
 is
---     package Math        renames float_Math;
-
-   use Ada.Text_IO;
-
-
-
 
    function to_Model (math_Model : access Geometry_3d.a_Model;
                       Scale      : in     Vector_3 := (1.0, 1.0, 1.0)) return IO.Model

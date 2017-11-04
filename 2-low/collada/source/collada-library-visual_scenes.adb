@@ -1,15 +1,10 @@
 with
      float_math.Algebra.linear.d3,
-
-     ada.unchecked_Deallocation,
-     ada.Text_IO;
-
+     Ada.unchecked_Deallocation;
 
 
 package body collada.Library.visual_scenes
 is
-   use ada.Text_IO;
-
 
    ----------
    -- Utility
@@ -20,7 +15,6 @@ is
 
    function "+" (From : in ada.Strings.unbounded.unbounded_String) return String
      renames ada.Strings.unbounded.to_String;
-
 
 
    -------------

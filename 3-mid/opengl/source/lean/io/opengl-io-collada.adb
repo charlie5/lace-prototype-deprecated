@@ -10,7 +10,7 @@ with
 package body openGL.IO.collada
 is
    package Math        renames float_Math;
-   package std_Collada renames standard.Collada;
+   package std_Collada renames Standard.Collada;
 
    use Ada.Text_IO;
 

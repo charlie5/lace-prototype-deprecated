@@ -240,7 +240,9 @@ is
    is
       use freetype.charMap;
 
-      Success   :          Boolean                           := Self.CheckGlyph      (to_characterCode (for_Character));
+      Success :constant Boolean := Self.CheckGlyph (to_characterCode (for_Character));
+      pragma Unreferenced (Success);
+
       the_Glyph : constant openGL.Glyph.Container.Glyph_view := Self.glyphList.Glyph (to_characterCode (for_Character));
    begin
       return openGL.Glyph.Texture.item (the_Glyph.all).Quad ((0.0, 0.0, 0.0));
@@ -276,7 +278,7 @@ is
 
       if     Self.textureWidth >  Self.maximumGLTextureSize
       then   Self.textureWidth := Self.maximumGLTextureSize;
-      else   Self.textureWidth := Self.textureWidth;
+      else   null;   -- Self.textureWidth := Self.textureWidth;
       end if;
 
       h                  := Integer (   Real (Integer (Self.textureWidth) - (Self.padding * 2))
@@ -287,7 +289,7 @@ is
 
       if     Self.textureHeight >  Self.maximumGLTextureSize
       then   Self.textureHeight := Self.maximumGLTextureSize;
-      else   Self.textureHeight := Self.textureHeight;
+      else   null;   -- Self.textureHeight := Self.textureHeight;
       end if;
    end CalculateTextureSize;
 

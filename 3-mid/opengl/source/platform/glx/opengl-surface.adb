@@ -28,7 +28,7 @@ is
    is
       pragma Unreferenced (Window_Id);
 
-      the_surface_Profile : constant openGL.surface_Profile.item'Class := surface_Profile;
+--        the_surface_Profile : constant openGL.surface_Profile.item'Class := surface_Profile;
    begin
       null;
    end define;

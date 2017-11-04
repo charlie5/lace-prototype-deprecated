@@ -10,7 +10,7 @@ is
 
    function Current return String
    is
-      check_is_OK : constant Boolean   := openGL.Tasks.Check;
+      check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
       the_Error   : constant GL.GLenum := glGetError;
    begin
       case the_Error is

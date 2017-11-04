@@ -1,6 +1,5 @@
 with
-     interfaces.C.Pointers,
-     interfaces.C.Strings,
+     Interfaces.C,
      System;
 
 
