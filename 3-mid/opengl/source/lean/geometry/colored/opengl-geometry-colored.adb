@@ -18,6 +18,10 @@ is
    use Interfaces;
 
 
+   -----------
+   --  Globals
+   --
+
    the_vertex_Shader    : aliased openGL.Shader.item;
    the_fragment_Shader  : aliased openGL.Shader.item;
    the_Program          :         openGL.Program.colored.view;
@@ -31,8 +35,11 @@ is
                                   C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
 
 
-   type colored_Geometry_view is access all Geometry.colored.item'class;
+   ---------
+   --  Forge
+   --
 
+   type colored_Geometry_view is access all Geometry.colored.item'class;
 
    function new_Geometry return access Geometry.colored.item'class
    is

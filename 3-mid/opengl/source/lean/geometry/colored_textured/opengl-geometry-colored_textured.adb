@@ -21,7 +21,6 @@ is
        GL.Pointers,
        Interfaces;
 
-
    -----------
    --  Globals
    --
@@ -40,6 +39,10 @@ is
    Attribute_3_Name     : aliased          C.char_array        := "aCoords";
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
 
+
+   ---------
+   --  Forge
+   --
 
    type Geometry_view is access all Geometry.colored_textured.item'class;
 
