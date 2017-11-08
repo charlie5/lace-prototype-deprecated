@@ -202,7 +202,7 @@ is
 
       the_collada_Model    : constant openGL.Model.open_gl.view   -- tbd: broken for human models
         := openGL.Model.open_gl.forge.new_Model (scale            => (1.0, 1.0, 1.0),
-                                                 model => to_Asset ("assets/opengl/model/duck.dae"),
+                                                 model => to_Asset ("assets/opengl/model/human.dae"),
 --                                                   model => to_Asset ("assets/opengl/model/deer.dae"),
                                                  math_model => null,
                                                  Texture          => the_Texture,
