@@ -120,6 +120,8 @@ is
       text_Scale : openGL.Vector_3 := (2.0 * 4.0 / 78.0,
                                        2.0 * 4.0 / 95.0,
                                        1.0/1.0);
+--        text_Scale : openGL.Vector_3 := (1.0, 1.0, 1.0);
+
    begin
       if Self.Text.all = ""
       then
@@ -312,14 +314,14 @@ is
 
          -- Setup the geometry.
          --
-         the_Primitive := Primitive.indexed                   .new_Primitive (Triangles,  the_Indices).all'Access;
-         the_Geometry  := openGL.Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True).all'Access;
+         the_Primitive := Primitive.indexed            .new_Primitive (Triangles,   the_Indices).all'Access;
+         the_Geometry  := Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True).all'Access;
 
          the_Geometry.add          (openGL.Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
          the_Geometry.Bounds_are   (Self.Bounds);
          the_Geometry.Texture_is   (openGL.Texture.to_Texture (Self.Font.gl_Texture));
-         the_Geometry.is_Transparent;
+--           the_Geometry.is_Transparent;
 
          return (1 => the_Geometry.all'Access);
       end;
