@@ -168,14 +168,15 @@ is
 
 
       declare
-         the_Bounds : constant openGL.Bounds := (ball => Self.Scale (1) / 2.0,
-                                                 box  => (lower => (-Self.Scale (1) / 2.0,
-                                                                    -Self.Scale (2) / 2.0,
-                                                                    -Self.Scale (3) / 2.0),
-                                                          upper => ( Self.Scale (1) / 2.0,
-                                                                     Self.Scale (2) / 2.0,
-                                                                     Self.Scale (3) / 2.0)));
+         the_Bounds : openGL.Bounds := (ball => Self.Scale (1) / 2.0,
+                                        box  => (lower => (-Self.Scale (1) / 2.0,
+                                                           -Self.Scale (2) / 2.0,
+                                                           -Self.Scale (3) / 2.0),
+                                                 upper => ( Self.Scale (1) / 2.0,
+                                                            Self.Scale (2) / 2.0,
+                                                            Self.Scale (3) / 2.0)));
       begin
+         set_Ball_from_Box       (the_Bounds);
          the_Geometry.Bounds_are (the_Bounds);
       end;
 

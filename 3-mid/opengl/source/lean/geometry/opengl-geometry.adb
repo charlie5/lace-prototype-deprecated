@@ -24,7 +24,7 @@ is
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.unchecked_Deallocation (Geometry.item'Class, View);
+      procedure deallocate is new Ada.unchecked_Deallocation (Geometry.item'Class, View);
    begin
       if Self = null then
          return;

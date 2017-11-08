@@ -15,6 +15,7 @@ uniform   mat3                  inv_modelview_Matrix;
 uniform   directional_light     uLight_1;
 uniform   directional_light     uLight_2;
 
+uniform   vec3   uScale;
 
 attribute vec3   aSite;
 attribute vec3   aNormal;
@@ -73,7 +74,7 @@ directional_light_2_color (vec3   normal)      // 'normal' has been transformed 
 
 void main()
 { 
-   gl_Position = mvp_Matrix * vec4 (aSite, 1.0); 
+   gl_Position = mvp_Matrix * vec4 (aSite * uScale, 1.0);
    
    vColor  = directional_light_1_color (normalize (aNormal) * inv_modelview_Matrix);
    vColor += directional_light_2_color (normalize (aNormal) * inv_modelview_Matrix);
