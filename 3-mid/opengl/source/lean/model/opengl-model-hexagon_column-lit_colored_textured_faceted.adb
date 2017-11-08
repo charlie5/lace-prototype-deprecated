@@ -18,21 +18,24 @@ is
 
    package body Forge
    is
-      function new_hexagon_Column (Scale : in math.Vector_3;
+      function new_hexagon_Column (Radius : in Real;
+                                   Height : in Real;
                                    Upper,
                                    Lower : in lit_colored_textured_faceted.hex_Face;
                                    Shaft : in shaft_Face) return View
       is
          Self : constant View := new Item;
       begin
+         Self.Radius     := Radius;
+         Self.Height     := Height;
          Self.upper_Face := Upper;
          Self.lower_Face := Lower;
          Self.shaft_Face := Shaft;
 
-         Self.Bounds     := (ball => Scale (1),
-                             box  => (lower => (-Scale (1), -Scale (2), -Scale (3)),
-                                      upper => ( Scale (1),  Scale (2),  Scale (3))));
-         Self.define (Scale);
+--           Self.Bounds     := (ball => Scale (1),
+--                               box  => (lower => (-Scale (1), -Scale (2), -Scale (3)),
+--                                        upper => ( Scale (1),  Scale (2),  Scale (3))));
+--           Self.define (Scale);
 
          return Self;
       end new_hexagon_Column;
@@ -56,7 +59,7 @@ is
           openGL.Texture,
           math.Geometry;
 
-      shaft_Height  : constant openGL.Real          := 10.0;
+      shaft_Height  : constant openGL.Real          := Self.Height;
       height_Offset : constant openGL.Vector_3      := (0.0,  shaft_Height / 2.0,  0.0);
 
       mid_Sites     : constant hexagon.Sites := vertex_Sites (Self.Radius);
@@ -98,7 +101,7 @@ is
       is
          use openGL.Primitive;
 
-         the_Indices   : constant Indices      := (1, 2, 3, 4);
+         the_Indices   : constant Indices := (1, 2, 3, 4);
 
          the_Geometry  : constant Geometry_view
            := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'Access;

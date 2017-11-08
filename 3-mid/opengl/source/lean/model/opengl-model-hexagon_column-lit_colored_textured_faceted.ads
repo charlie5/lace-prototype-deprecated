@@ -50,7 +50,8 @@ is
 
    package Forge
    is
-      function new_hexagon_Column (Scale : in math.Vector_3;
+      function new_hexagon_Column (Radius : in Real;
+                                   Height : in Real;
                                    Upper,
                                    Lower : in lit_colored_textured_faceted.hex_Face;
                                    Shaft : in shaft_Face) return View;

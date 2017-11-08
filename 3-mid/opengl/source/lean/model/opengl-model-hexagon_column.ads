@@ -10,7 +10,8 @@ is
 
    type Item is abstract new openGL.Model.item with
       record
-         Radius : Real          := 1.0;
+         Radius : Real := 1.0;
+         Height : Real := 1.0;
 --           Bounds : openGL.Bounds := null_Bounds;
       end record;
 

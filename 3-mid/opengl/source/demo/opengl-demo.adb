@@ -149,7 +149,8 @@ is
 
       the_faceted_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_faceted.view
         := openGL.Model.hexagon_Column.lit_colored_textured_faceted.forge.new_hexagon_Column
-             (scale => (0.05 * (1.0, 1.0, 1.0)),
+             (radius => 0.25,
+              height => 1.0,
               upper => (center_Color => (Green, Opaque),
                         colors       => (others => (Red, Opaque)),
                         texture      => <>),
@@ -161,7 +162,8 @@ is
 
       the_rounded_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_rounded.view
         := openGL.Model.hexagon_Column.lit_colored_textured_rounded.forge.new_hexagon_Column
-             (scale => (0.05 * (1.0, 1.0, 1.0)),
+             (radius => 0.25,
+              height => 1.0,
               upper => (center_Color => (Green, Opaque),
                         colors       => (others => (Red, Opaque)),
                         texture      => <>),
