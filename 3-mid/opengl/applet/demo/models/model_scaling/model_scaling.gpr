@@ -20,7 +20,7 @@ is
    end Binder;
 
    package Linker is
-      for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
+      for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lexpat");
    end Linker;
 
 end Model_scaling;

@@ -37,45 +37,14 @@ begin
       scaling_Up  : Boolean       := True;
       Scale       : math.Vector_3 := (1.0, 1.0, 1.0);
 
-      -- Visual positioning.
-      --
-      initial_X : constant openGL.Real := -6.0;
-      initial_Y : constant openGL.Real :=  6.0;
-
-      X    :          openGL.Real := initial_X;
-      Y    :          openGL.Real := initial_Y;
-      Pad  : constant openGL.Real := 3.0;
    begin
       for i in the_Visuals'Range
       loop
          the_Visuals (i) := new_Visual (the_Models (i));
       end loop;
 
+      Demo.layout (the_Visuals);
 
-      -- Set visual positions
-      --
-      the_Visuals (1).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (2).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (3).Site_is ((X, Y, 0.0));
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals (4).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (5).Site_is ((X, Y, 0.0));
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals (6).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (7).Site_is ((X, Y, 0.0));
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals  (8).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals  (9).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (10).Site_is ((X, Y, 0.0));   X := X + Pad;
 
       --  Main loop.
       --

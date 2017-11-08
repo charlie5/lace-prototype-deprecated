@@ -851,6 +851,10 @@ is
                                        the_Document.Libraries.visual_Scenes.skeletal_Root := +the_skeleton_Child.Data (2 .. the_skeleton_Child.Data'Last);
                                     end;
 
+                                 elsif the_Child.Name = "instance_geometry"
+                                 then
+                                    null;   -- TODO.
+
                                  else
                                     raise collada.Error with "unhandled collada 'visual scene element' found: " & the_Child.Name;
                                  end if;

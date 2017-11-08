@@ -210,12 +210,12 @@ is
 
    function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
                               Indices   : in any_Indices;
-                              for_Facet : in any_Index_t;
+                              for_Facet : in long_Index_t;
                               for_Point : in openGL.long_Index_t) return any_Index_t;
 
    function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
                               Indices   : in any_Indices;
-                              for_Facet : in any_Index_t;
+                              for_Facet : in long_Index_t;
                               for_Point : in openGL.long_Index_t) return any_Index_t
    is
       use openGL.Primitive;
@@ -279,7 +279,7 @@ is
    --  Facets
    --
    type Facet  is array (     Index_t range 1 .. 3) of Index_t;     -- An 'indexed' triangle.
-   type Facets is array (long_Index_t   range   <>  ) of Facet;
+   type Facets is array (long_Index_t range   <>  ) of Facet;
 
    type Facets_view is access all Facets;
    procedure free   is new ada.unchecked_Deallocation (Facets, Facets_view);
@@ -302,8 +302,8 @@ is
       function facet_Count_in is new any_facet_Count_in (any_Index_t => any_Index_t,
                                                          any_Indices => any_Indices);
 
-      function vertex_Id_in is new any_vertex_Id_in (any_Index_t => any_Index_t,
-                                                     any_Indices => any_Indices);
+      function vertex_Id_in   is new any_vertex_Id_in   (any_Index_t => any_Index_t,
+                                                         any_Indices => any_Indices);
 
       the_Facets : Facets_view  := new Facets (1 .. facet_Count_in (face_Kind, Indices));
       Count      : long_Index_t := 0;
@@ -312,9 +312,9 @@ is
       for Each in the_Facets'Range
       loop
          declare
-            P1 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 1));
-            P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 2));
-            P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  any_Index_t (Each), 3));
+            P1 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 1));
+            P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 2));
+            P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 3));
          begin
             if not (P1 = P2 or P1 = P3 or P2 = P3)
             then
@@ -350,8 +350,8 @@ is
    end any_Facets_of;
 
 
-   function Facets_of is new any_Facets_of (openGL.Index_t,
-                                            openGL.Indices);
+--     function Facets_of is new any_Facets_of (openGL.Index_t,
+--                                              openGL.Indices);
 
 
    -----------

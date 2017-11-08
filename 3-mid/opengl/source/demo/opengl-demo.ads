@@ -1,6 +1,7 @@
 with
      lumen.Window,
      openGL.Model,
+     openGL.Visual,
      openGL.Renderer.lean,
      openGL.Camera,
      openGL.Dolly,
@@ -22,6 +23,11 @@ is
    function Models return openGL.Model.views;
    --
    -- Creates a set of models with one model of each kind.
+
+   procedure layout (the_Visuals : in openGL.Visual.views);
+   --
+   -- Layout the visuals in a grid fashion for viewing all at once.
+
 
 
    procedure define (Name   : in String;
