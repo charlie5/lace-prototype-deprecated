@@ -16,13 +16,13 @@ is
 
    package body Forge
    is
-      function new_Hexagon (Scale : in math.Vector_3;
-                            Face  : in lit_colored_textured.Face) return View
+      function new_Hexagon (Radius : in Real;
+                            Face   : in lit_colored_textured.Face) return View
       is
          Self : constant View := new Item;
       begin
-         Self.Face := Face;
-         Self.define (Scale);
+         Self.Radius := Radius;
+         Self.Face   := Face;
 
          return Self;
       end new_Hexagon;
@@ -45,7 +45,7 @@ is
           openGL.Texture,
           math.Geometry;
 
-      the_Sites    :         constant hexagon.Sites := Self.vertex_Sites;
+      the_Sites    :         constant hexagon.Sites := vertex_Sites (Self.Radius);
       the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
 
 

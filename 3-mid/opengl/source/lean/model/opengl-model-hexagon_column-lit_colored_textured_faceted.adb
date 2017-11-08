@@ -1,6 +1,8 @@
 with
      openGL.Primitive.indexed,
      openGL.Geometry.lit_colored_textured,
+     openGL.Model.hexagon,
+
      float_math.Algebra.linear.d3;
 
 
@@ -50,15 +52,16 @@ is
 
       use openGL.Geometry,
           openGL.Geometry.lit_colored_textured,
+          openGL.Model.hexagon,
           openGL.Texture,
           math.Geometry;
 
       shaft_Height  : constant openGL.Real          := 10.0;
       height_Offset : constant openGL.Vector_3      := (0.0,  shaft_Height / 2.0,  0.0);
 
-      mid_Sites     : constant hexagon_Column.Sites := Self.vertex_Sites;
-      upper_Sites   :          hexagon_Column.Sites := mid_Sites;
-      lower_Sites   :          hexagon_Column.Sites := mid_Sites;
+      mid_Sites     : constant hexagon.Sites := vertex_Sites (Self.Radius);
+      upper_Sites   :          hexagon.Sites := mid_Sites;
+      lower_Sites   :          hexagon.Sites := mid_Sites;
 
 
       function new_hexagon_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array;

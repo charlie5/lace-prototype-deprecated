@@ -120,10 +120,10 @@ begin
                                              height => 5);
 
       the_hexagon_Model    : constant openGL.Model.hexagon.lit_colored_textured.view
-        := openGL.Model.hexagon.lit_colored_textured.forge.new_Hexagon (scale => (1.0, 1.0, 1.0),
-                                                                        face => (center_Color => (Green, Opaque),
-                                                                                 colors       => (others => (Red, Opaque)),
-                                                                                 texture      => <>)); --openGL.io.to_Texture ("assets/mmi/Face1.bmp")));
+        := openGL.Model.hexagon.lit_colored_textured.forge.new_Hexagon (radius => 1.0,
+                                                                        face   => (center_Color => (Green, Opaque),
+                                                                                   colors       => (others => (Red, Opaque)),
+                                                                                   texture      => <>)); --openGL.io.to_Texture ("assets/mmi/Face1.bmp")));
 
       the_faceted_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_faceted.view
         := openGL.Model.hexagon_Column.lit_colored_textured_faceted.forge.new_hexagon_Column

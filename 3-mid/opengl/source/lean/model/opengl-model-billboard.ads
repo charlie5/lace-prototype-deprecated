@@ -4,30 +4,29 @@ package openGL.Model.billboard
 --
 is
 
+   type Item is abstract new openGL.Model.item with private;
+
    type Plane is (xy, xz, yz);
 
+   --------------
+   --- Attributes
+   --
+
+   function  Width  (Self : in Item) return Real;
+   function  Height (Self : in Item) return Real;
+
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds;
+
+
+
+private
 
    type Item is abstract new openGL.Model.item with
       record
          Plane : billboard.Plane := xy;
       end record;
 
-
-   --------------
-   --- Attributes
-   --
-
-   function Width  (Self : in Item) return Real;
-   function Height (Self : in Item) return Real;
-
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds;
-
-
-
-
-
-private
 
    subtype site_Id is openGL.Index_t range 1 .. 4;
    subtype Sites   is openGL.Vector_3_array (site_Id'Range);

@@ -40,8 +40,8 @@ is
 
    package Forge
    is
-      function new_Hexagon (Scale : in math.Vector_3;
-                            Face  : in lit_colored_textured.Face) return View;
+      function new_Hexagon (Radius : in Real;
+                            Face   : in lit_colored_textured.Face) return View;
    end Forge;
 
 

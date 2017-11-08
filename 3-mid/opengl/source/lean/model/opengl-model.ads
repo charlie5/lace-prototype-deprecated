@@ -25,7 +25,8 @@ is
          needs_Rebuild     : safe_Boolean  := False;
       end record;
 
-   type View is access all Item'Class;
+   type View  is access all Item'Class;
+   type Views is array (Positive range <>) of View;
 
 
 

@@ -1,5 +1,6 @@
 with
      lumen.Window,
+     openGL.Model,
      openGL.Renderer.lean,
      openGL.Camera,
      openGL.Dolly,
@@ -17,6 +18,11 @@ is
    Dolly        :         openGL.Dolly.item (camera => Camera'unchecked_Access);
    FPS_Counter  :         openGL.frame_Counter.item;
    Done         :         Boolean := False;
+
+   function Models return openGL.Model.views;
+   --
+   -- Creates a set of models with one model of each kind.
+
 
    procedure define (Name   : in String;
                      Width  : in Positive := 1000;

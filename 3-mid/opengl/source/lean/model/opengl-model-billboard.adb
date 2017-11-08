@@ -5,14 +5,14 @@ is
    --- Attributes
    --
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds
-   is
-      the_Sites  : constant Sites         := vertex_Sites (Self.Plane,  Self.Width, Self.Height);
-      the_Bounds : constant openGL.Bounds := bounding_Box_of (the_Sites);
-   begin
-      return the_Bounds;
-   end Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds
+--     is
+--        the_Sites  : constant Sites         := vertex_Sites (Self.Plane,  Self.Width, Self.Height);
+--        the_Bounds : constant openGL.Bounds := bounding_Box_of (the_Sites);
+--     begin
+--        return the_Bounds;
+--     end Bounds;
 
 
 
