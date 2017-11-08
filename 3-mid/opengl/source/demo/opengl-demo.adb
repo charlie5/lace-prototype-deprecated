@@ -204,7 +204,6 @@ is
         := openGL.Model.open_gl.forge.new_Model (scale            => (1.0, 1.0, 1.0),
                                                  model => to_Asset ("assets/opengl/model/duck.dae"),
 --                                                   model => to_Asset ("assets/opengl/model/deer.dae"),
---                                                   model            => to_Asset ("assets/human-default.dae"),  -- tbd: Models with weights fail due to skinning and not setting opengl program parameters.
                                                  math_model => null,
                                                  Texture          => the_Texture,
                                                  Texture_is_lucid => False);
@@ -247,6 +246,12 @@ is
                                            tiling        => Tiling);
    begin
       Demo.Renderer.add_Font (the_font_Id);
+
+      the_segment_line_Model.add_1st_Segment (start_Site => (0.0, 0.0, 0.0),
+                                              end_Site   => (1.0, 1.0, 0.0));
+      the_segment_line_Model.add_Segment     (end_Site   => (0.0, 1.0, 0.0));
+      the_segment_line_Model.add_Segment     (end_Site   => (2.0, 2.0, 0.0));
+      the_segment_line_Model.add_Segment     (end_Site   => (0.0, 2.0, 0.0));
 
       return (            the_arrow_Model.all'Access,
                          the_ball_1_Model.all'Access,

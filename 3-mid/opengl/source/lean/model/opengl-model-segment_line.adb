@@ -4,6 +4,7 @@ with
      openGL.Primitive,
 
      ada.Unchecked_Deallocation;
+--  with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body openGL.Model.segment_line
@@ -100,33 +101,33 @@ is
             the_Indices (Each) := openGL.Index_t (Each);
          end loop;
 
-         self.State.Geometry.Indices_are (the_Indices, for_facia => 1);
+         Self.State.Geometry.Indices_are (the_Indices, for_facia => 1);
       end if;
    end set_Indices;
 
 
 
 
+--     overriding
+--     procedure set_Bounds (Self : in out Item)
+--     is
+--        the_Vertices : Vector_3_array (1 .. Index_t (Self.Points.Length));
+--     begin
+--        for i in the_Vertices'Range
+--        loop
+--           the_Vertices (i) := Self.Points.Element (Integer (i));
+--        end loop;
+--
+--        Self.Bounds := bounding_Box_of (the_Vertices);
+--     end set_Bounds;
+
+
+
+
+
    overriding
-   procedure set_Bounds (Self : in out Item)
-   is
-      the_Vertices : Vector_3_array (1 .. Index_t (Self.Points.Length));
-   begin
-      for i in the_Vertices'Range
-      loop
-         the_Vertices (i) := Self.Points.Element (Integer (i));
-      end loop;
-
-      Self.Bounds := bounding_Box_of (the_Vertices);
-   end set_Bounds;
-
-
-
-
-
-   overriding
-   function to_GL_Geometries (Self : access Item;         Textures : access Texture.name_Map_of_texture'Class;
-                              Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
    is
       pragma Unreferenced (Textures, Fonts);
 
@@ -156,7 +157,9 @@ is
 
       Self.state.Geometry.is_Transparent (False);
 
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
+      Vertices_are (Self.State.Geometry.all,
+                    Self.State.Vertices (1 .. Index_t (Self.State.vertex_Count)));
+
       Self.State.Geometry.add (openGL.Primitive.view (new_Primitive (Line_Strip, the_Indices)));
 
       return (1 => Self.State.Geometry.all'Access);
@@ -252,14 +255,10 @@ is
       use openGL.Geometry.colored;
    begin
       Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
-
       Self.Points.replace_Element (for_End, Now);
-
       set_Bounds (Self);
-
       Self.needs_Rebuild := True;
    end Site_is;
-
 
 
 

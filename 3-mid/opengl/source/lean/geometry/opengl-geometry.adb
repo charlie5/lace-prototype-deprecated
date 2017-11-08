@@ -190,7 +190,7 @@ is
 
       if Self.primitive_Count = 0
       then
-         raise program_Error;
+         raise Program_Error;
       end if;
 
       for Each in 1 .. self.primitive_Count
