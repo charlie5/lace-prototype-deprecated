@@ -1,7 +1,5 @@
 #version 120
 
-#precision mediump float;
-
 uniform sampler2D   sTexture; 
 
 varying vec4        vColor;
