@@ -44,13 +44,17 @@ Installation
 ============
 The development packages for the following projects need to be installed on your OS.
 
-- box2d
-- bullet3d
+- Box2d
+- Bullet3d
+- Florist
+- Freetype
+- Expat
+- X11
 
-Example for Ubuntu 15.10:
+Example for Debian/Ubuntu:
 
 ```
-apt-get install libbullet-dev libbox2d-dev
+apt-get install libbullet-dev libbox2d-dev libflorist2016-dev libfreetype6-dev libexpat1-dev libx11-dev
 ```
 
 The Lumen project is also required:
@@ -71,8 +75,6 @@ export opengl_platform=glx
 export restrictions=xgc
 export OS=Linux
 export FLORIST_BUILD=default
-
-ADA_PROJECT_PATH=/path/to/lumen:$ADA_PROJECT_PATH
 
 export LUMEN=/path/to/lumen
 ADA_PROJECT_PATH=$LUMEN:$ADA_PROJECT_PATH
