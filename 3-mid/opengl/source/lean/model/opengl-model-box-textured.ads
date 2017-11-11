@@ -44,7 +44,7 @@ is
 
    package Forge
    is
-      function new_Box (Scale     : in math.Vector_3;
+      function new_Box (Size      : in math.Vector_3;
                         Faces     : in textured.Faces;
                         is_Skybox : in Boolean       := False) return View;
    end Forge;

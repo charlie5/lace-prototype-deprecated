@@ -124,7 +124,7 @@ is
 
       the_box_1_Model : constant openGL.Model.box.colored.view
         := openGL.Model.box.colored.forge.new_Box
-             (scale => (1.0, 2.0, 3.0),
+             (Size => (1.0, 2.0, 3.0),
               faces => (front => (colors => (others => (Blue,     Opaque))),
                         rear  => (colors => (others => (Blue,     Opaque))),
                         upper => (colors => (others => (Green,    Opaque))),
@@ -134,7 +134,7 @@ is
 
       the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
         := openGL.Model.box.lit_colored_textured.forge.new_Box
-             (scale => (1.0, 2.0, 3.0),
+             (Size => (1.0, 2.0, 3.0),
               faces => (front => (colors         => (others => (Blue,     Opaque)),
                                   texture_name   => the_Texture,
                                   texture_object => Texture.null_Object),

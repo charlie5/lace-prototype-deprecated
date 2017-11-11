@@ -32,7 +32,7 @@ private
 
    type Item is abstract new openGL.Model.item with
       record
-         null; -- Bounds : openGL.Bounds;
+         Size : Vector_3;
       end record;
 
 
@@ -42,6 +42,7 @@ private
                     Left_Upper_Rear,   Right_Upper_Rear);
 
    type Sites is array (site_Id) of openGL.Vector_3;
+--     type Sites is new openGL.Sites (1 .. 6);
 
 
    use type openGL.Real;
@@ -54,10 +55,10 @@ private
    right_Normal : constant openGL.Vector_3 := ( 1.0,  0.0,  0.0);
 
 
-   function  vertex_Sites (Self : in     Item'Class) return Sites;
+   function vertex_Sites (Self : in Item'Class) return Sites;
 
-   overriding
-   procedure set_Bounds   (Self : in out Item);
+--     overriding
+--     procedure set_Bounds   (Self : in out Item);
 
 
 end openGL.Model.box;
