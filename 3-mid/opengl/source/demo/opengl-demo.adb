@@ -7,8 +7,9 @@ with
      openGL.Model.billboard.        textured,
      openGL.Model.billboard.colored_textured,
      openGL.Model.box      .colored,
-     openGL.Model.box  .lit_colored_textured,
-     openGL.Model.capsule.lit_colored_textured,
+     openGL.Model.box      .textured,
+     openGL.Model.box      .lit_colored_textured,
+     openGL.Model.capsule  .lit_colored_textured,
      openGL.Model.grid,
      openGL.Model.hexagon       .lit_colored_textured,
      openGL.Model.hexagon_Column.lit_colored_textured_faceted,
@@ -154,6 +155,16 @@ is
                                   texture_name   => the_Texture,
                                   texture_object => Texture.null_Object)));
 
+      the_box_3_Model : constant openGL.Model.box.textured.view
+        := openGL.Model.box.textured.forge.new_Box
+             (Size => (1.0, 2.0, 3.0),
+              faces => (front => (texture_name   => the_Texture),
+                        rear  => (texture_name   => the_Texture),
+                        upper => (texture_name   => the_Texture),
+                        lower => (texture_name   => the_Texture),
+                        left  => (texture_name   => the_Texture),
+                        right => (texture_name   => the_Texture)));
+
       the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
         := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 1.0,
                                                                         height => 2.0,
@@ -262,6 +273,7 @@ is
               the_colored_billboard_Model.all'Access,
                           the_box_1_Model.all'Access,
                           the_box_2_Model.all'Access,
+                          the_box_3_Model.all'Access,
 
                         the_capsule_Model.all'Access,
                            the_grid_Model.all'Access,
@@ -291,53 +303,58 @@ is
       X    :          openGL.Real := initial_X;
       Y    :          openGL.Real := initial_Y;
       Pad  : constant openGL.Real := 3.0;
+      i    :          Positive    := 1;
+
+      procedure set_next_visual_Site
+      is
+      begin
+         the_Visuals (i).Site_is ((X, Y, 0.0));
+
+         i := i + 1;
+         X := X + Pad;
+      end;
+
+      procedure new_Line
+      is
+      begin
+         X := initial_X;
+         Y := Y - Pad;
+      end;
 
    begin
-      the_Visuals (1).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (2).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (3).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (4).Site_is ((X, Y, 0.0));
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      X := initial_X;
-      Y := Y - Pad;
+      new_Line;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      the_Visuals (5).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (6).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (7).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (8).Site_is ((X, Y, 0.0));
+      new_Line;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      X := initial_X;
-      Y := Y - Pad;
+      new_Line;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      the_Visuals  (9).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (10).Site_is ((X, Y, 0.0));   X := X + Pad;
+      new_Line;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      X := initial_X;
-      Y := Y - Pad;
+      new_Line;
+      set_next_visual_Site;
+      set_next_visual_Site;
+      set_next_visual_Site;
 
-      the_Visuals (11).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (12).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (13).Site_is ((X, Y, 0.0));   X := X + Pad;
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals (14).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (15).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (16).Site_is ((X, Y, 0.0));   X := X + Pad;
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals (17).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (18).Site_is ((X, Y, 0.0));   X := X + Pad;
-      the_Visuals (19).Site_is ((X, Y, 0.0));   X := X + Pad;
-
-      X := initial_X;
-      Y := Y - Pad;
-
-      the_Visuals (20).Site_is ((X, Y, 0.0));   X := X + Pad;
-
+      new_Line;
+      set_next_visual_Site;
    end layout;
 
 
