@@ -94,10 +94,10 @@ is
       --
       declare
          the_Vertices : aliased openGL.Geometry.textured.Vertex_array
-           := (1 => (site => the_Sites (left_lower_front),    coords => (0.0, 0.0)),
+           := (1 => (site => the_Sites ( left_lower_front),   coords => (0.0, 0.0)),
                2 => (site => the_Sites (right_lower_front),   coords => (1.0, 0.0)),
                3 => (site => the_Sites (right_upper_front),   coords => (1.0, 1.0)),
-               4 => (site => the_Sites (left_upper_front),    coords => (0.0, 1.0)));
+               4 => (site => the_Sites ( left_upper_front),   coords => (0.0, 1.0)));
       begin
          front_Face := new_Face (vertices => the_Vertices'Access);
 

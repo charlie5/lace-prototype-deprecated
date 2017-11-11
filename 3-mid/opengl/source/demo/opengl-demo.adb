@@ -135,25 +135,13 @@ is
 
       the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
         := openGL.Model.box.lit_colored_textured.forge.new_Box
-             (Size => (1.0, 2.0, 3.0),
-              faces => (front => (colors         => (others => (Blue,     Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        rear  => (colors         => (others => (Blue,     Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        upper => (colors         => (others => (Green,    Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        lower => (colors         => (others => (Green,    Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        left  => (colors         => (others => (Dark_Red, Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        right => (colors         => (others => (Red,      Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object)));
+             (Size => (1.0, 2.0, 1.0),
+              faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
+                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
+                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
+                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
+                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
+                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
 
       the_box_3_Model : constant openGL.Model.box.textured.view
         := openGL.Model.box.textured.forge.new_Box
@@ -169,12 +157,12 @@ is
         := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 1.0,
                                                                         height => 2.0,
                                                                         image  => the_Texture);
-      the_grid_Model       : constant openGL.Model.grid.view
+      the_grid_Model    : constant openGL.Model.grid.view
         := openGL.Model.grid.new_grid_Model (color  => Red,
                                              width  => 3,
                                              height => 3);
 
-      the_hexagon_Model    : constant openGL.Model.hexagon.lit_colored_textured.view
+      the_hexagon_Model : constant openGL.Model.hexagon.lit_colored_textured.view
         := openGL.Model.hexagon.lit_colored_textured.forge.new_Hexagon (radius => 0.25,
                                                                         face   => (center_Color => (Green, Opaque),
                                                                                    colors       => (others => (Red, Opaque)),

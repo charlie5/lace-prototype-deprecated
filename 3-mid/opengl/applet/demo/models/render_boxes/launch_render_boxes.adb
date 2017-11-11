@@ -6,7 +6,6 @@ with
      openGL.Model.box.lit_colored_textured,
 
      openGL.Palette,
-     openGL.Texture,
      openGL.Demo,
 
      Ada.Text_IO,
@@ -30,9 +29,7 @@ begin
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      use --openGL,
-          --openGL.Model,
-          openGL.Model.box,
+      use openGL.Model.box,
           openGL.Palette;
 
       --  The Models.
@@ -50,24 +47,12 @@ begin
       the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
         := openGL.Model.box.lit_colored_textured.forge.new_Box
              (Size => (1.0, 2.0, 1.0),
-              faces => (front => (colors         => (others => (Blue,     Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => openGL.Texture.null_Object),
-                        rear  => (colors         => (others => (Blue,     Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        upper => (colors         => (others => (Green,    Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        lower => (colors         => (others => (Green,    Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        left  => (colors         => (others => (Dark_Red, Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object),
-                        right => (colors         => (others => (Red,      Opaque)),
-                                  texture_name   => the_Texture,
-                                  texture_object => Texture.null_Object)));
+              faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
+                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
+                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
+                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
+                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
+                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
 
       the_box_3_Model : constant openGL.Model.box.textured.view
         := openGL.Model.box.textured.forge.new_Box

@@ -102,9 +102,9 @@ is
             front_Face.Texture_is (Textures.fetch (to_String (Self.Faces (Front).texture_Name)));
             front_Face.is_Transparent (now => front_Face.Texture.is_Transparent);
 
-         elsif Self.Faces (Front).texture_Object /= null_Object
-         then
-            front_Face.Texture_is (Self.Faces (Front).texture_Object);
+--           elsif Self.Faces (Front).texture_Object /= null_Object
+--           then
+--              front_Face.Texture_is (Self.Faces (Front).texture_Object);
          end if;
       end;
 
