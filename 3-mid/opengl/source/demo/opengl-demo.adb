@@ -154,8 +154,9 @@ is
                         right => (texture_name   => the_Texture)));
 
       the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-        := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 1.0,
+        := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 0.5,
                                                                         height => 2.0,
+                                                                        color  => (White, Opaque),
                                                                         image  => the_Texture);
       the_grid_Model    : constant openGL.Model.grid.view
         := openGL.Model.grid.new_grid_Model (color  => Red,
