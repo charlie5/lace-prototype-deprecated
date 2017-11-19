@@ -1,0 +1,26 @@
+with
+     "opengl_demo",
+     "lace_shared"; 
+
+project render_Capsules
+is
+
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_render_capsules.adb");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-k", "-g", "-j5");
+   end Builder;
+
+   package Compiler renames Lace_Shared.Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end render_Capsules;
