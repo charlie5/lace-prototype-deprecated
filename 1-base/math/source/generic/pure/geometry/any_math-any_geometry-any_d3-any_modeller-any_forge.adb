@@ -132,13 +132,14 @@ is
                   loop
                      the_arch_Edges (each_Hoop)(Each) (1) := ny2 * Radius;
                      the_arch_Edges (each_Hoop)(Each) (2) := nz2 * Radius;
-                     the_arch_Edges (each_Hoop)(Each) (3) := L   + nx2 * Radius;
+                     the_arch_Edges (each_Hoop)(Each) (3) := nx2 * Radius + L;
 
                      --  Rotate n,n2.
                      --
                      tmp := ca * ny  -  sa * nz;
                      nz  := sa * ny  +  ca * nz;
                      ny  := tmp;
+
                      tmp := ca * ny2  -  sa * nz2;
                      nz2 := sa * ny2  +  ca * nz2;
                      ny2 := tmp;
