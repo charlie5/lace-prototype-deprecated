@@ -1,11 +1,8 @@
 with
-     openGL.Palette,
      openGL.Geometry.lit_colored_textured,
      openGL.Texture,
      openGL.IO,
-     openGL.Primitive.indexed,
-
-     float_math.Geometry.d3.Modeller.forge;
+     openGL.Primitive.indexed;
 
 
 package body openGL.Model.capsule.lit_colored_textured
@@ -40,22 +37,7 @@ is
    --- Attributes
    --
 
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---        Length       : constant Real := Self.Scale (3);
---        Radius       : constant Real := Self.Scale (1) / 2.0;
---        total_Length : constant Real := Length + 2.0 * Radius;
---     begin
---        return (ball => total_Length / 2.0,
---                box  => (lower => (-Radius, -Radius, -total_Length / 2.0),
---                         upper => ( Radius,  Radius,  total_Length / 2.0)));
---     end Bounds;
-
-
-
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
-
 
 
    overriding
@@ -65,10 +47,7 @@ is
       pragma Unreferenced (Textures, Fonts);
 
       use openGL.Geometry,
-          openGL.Palette,
-          openGL.Geometry.lit_colored_textured,
-          math.Functions,
-          math.Geometry.d3.Modeller.Forge;
+          openGL.Geometry.lit_colored_textured;
 
       Length        : constant Real    := Self.Height;
       Radius        : constant Real    := Self.Radius;
@@ -76,7 +55,7 @@ is
       quality_Level : constant Index_t := 4;
       sides_Count   : constant Index_t := Index_t (quality_Level * 4);     -- Number of sides to the cylinder (divisible by 4):
 
-      type Edge is   -- 'barrel' edge.
+      type Edge is   -- A 'shaft' edge.
          record
             Fore : Site;
             Aft  : Site;
