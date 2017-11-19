@@ -402,7 +402,7 @@ is
       check_is_OK              : constant Boolean                      := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       inverse_view_Transform   : constant openGL.Matrix_3x3            := inverse_Rotation (get_Rotation (view_Transform));
 
-      light_Site               : constant openGL.Vector_3              := (10_000.0, 10_000.0, 10_000.0); --, 0.0);
+      light_Site               : constant openGL.Vector_3              := (10_000.0, -10_000.0, 10_000.0); --, 0.0);
       the_Light                :          openGL.Light.directional.item;
 
    begin

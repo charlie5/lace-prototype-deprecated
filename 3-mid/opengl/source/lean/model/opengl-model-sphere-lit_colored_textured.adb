@@ -123,7 +123,7 @@ is
             the_Vertices (vert_Id).Color  := (primary => White,
                                               opacity => openGL.Opaque);
 
-            the_Vertices (vert_Id).Coords := (s => a / Degrees_360,
+            the_Vertices (vert_Id).Coords := (s =>       a / Degrees_360,
                                               t => 1.0 - b / Degrees_180);
 
             for long_Id in 1 .. longitude_Count
@@ -142,7 +142,7 @@ is
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
                the_Vertices (vert_Id).Color  := (primary => White,
                                                  opacity => openGL.Opaque);
-               the_Vertices (vert_Id).Coords := (s => a / Degrees_360,
+               the_Vertices (vert_Id).Coords := (s =>       a / Degrees_360,
                                                  t => 1.0 - b / Degrees_180);
             end loop;
 

@@ -20,10 +20,8 @@ is
 
    type Face is
       record
-         Colors         : openGL.lucid_Colors (1 .. 4);                          -- The color of each of the faces 4 vertices.
-
-         texture_Name   : asset_Name            := null_Asset;
---           texture_Object : openGL.Texture.Object := openGL.Texture.null_Object;   -- The texture applied to the face.
+         Colors       : openGL.lucid_Colors (1 .. 4);                -- The color of each of the faces 4 vertices.
+         texture_Name : asset_Name                  := null_Asset;   -- The texture applied to the face.
       end record;
 
    type Faces is array (Side) of Face;

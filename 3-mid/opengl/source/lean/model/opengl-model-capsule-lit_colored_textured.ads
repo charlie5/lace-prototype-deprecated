@@ -11,7 +11,11 @@ is
 
    type Item is new openGL.Model.capsule.item with
       record
-         Image : asset_Name := null_Asset;   -- Usually a mercator projection to be mapped onto the sphere.
+         Radius : math.Real;
+         Height : math.Real;
+
+         Color  : lucid_Color;
+         Image  : asset_Name := null_Asset;
       end record;
 
    type View is access all Item'Class;
@@ -25,17 +29,17 @@ is
    is
       function new_Capsule (Radius : in math.Real;
                             Height : in math.Real;
+                            Color  : in lucid_Color;
                             Image  : in asset_Name := null_Asset) return View;
    end Forge;
-
 
 
    --------------
    --- Attributes
    --
 
-   overriding
-   function  Bounds (Self : in Item) return openGL.Bounds;
+--     overriding
+--     function  Bounds (Self : in Item) return openGL.Bounds;
 
 
    overriding
