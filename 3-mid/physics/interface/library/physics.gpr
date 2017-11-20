@@ -1,25 +1,23 @@
 with
      "bullet_thin", 
      "box2d_thin", 
-     "shared";
+     "lace_shared";
 
 project Physics is
 
    type Restrictions is
       ("xgc", "ravenscar");
 
-   for Source_Dirs use ("../source", 
-                        "../source/private/box2d",
-                        "../source/private/bullet");
+   for Source_Dirs  use ("../source", 
+                         "../source/private/box2d",
+                         "../source/private/bullet");
 
-   for Object_Dir use "build";
+   for Object_Dir   use "build";
    for Library_Name use "lace_physics";
    Restrictions : Restrictions := external ("restrictions");
 
    package Builder is
-
       case Restrictions is
-
          when "xgc" =>
             for Default_Switches ("ada") use ("-g", "-j13");
 
@@ -28,7 +26,7 @@ project Physics is
       end case;
    end Builder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");

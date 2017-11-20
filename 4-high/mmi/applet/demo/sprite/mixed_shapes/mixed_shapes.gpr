@@ -1,4 +1,4 @@
-with "lumen_mmi", "shared";
+with "lumen_mmi", "lace_shared";
 
 project Mixed_Shapes is
 
@@ -84,7 +84,7 @@ project Mixed_Shapes is
       for Default_Switches ("ada") use ("-E");
    end Binder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    package Linker is
 

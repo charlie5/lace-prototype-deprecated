@@ -1,4 +1,6 @@
-with "lumen_mmi", "shared";
+with
+     "lumen_mmi",
+     "lace_shared";
 
 project Drop_Box_On_Box is
 
@@ -84,7 +86,7 @@ project Drop_Box_On_Box is
       for Default_Switches ("ada") use ("-E");
    end Binder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    package Linker is
 

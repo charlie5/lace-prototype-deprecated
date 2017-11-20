@@ -1,20 +1,31 @@
 with 
      "lace", 
-     "opengl", 
+     "opengl",
      "collada",
      "physics", 
-     "shared";
+     "lace_shared";
 
 project Mmi is
 
-   for Object_Dir use "build";
-   for Library_Dir use "lib";
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Source_Dirs use ("../source", "../source/remote", "../source/interface", "../source/concrete", "../source/dolly", "../source/forge", "../source/joint", 
-      "../source/model/physics", "../source/applet", "../source/terrain");
+
+   for Source_Dirs use ("../source",
+                        "../source/remote",
+                        "../source/interface",
+                        "../source/concrete",
+                        "../source/dolly",
+                        "../source/forge",
+                        "../source/joint", 
+                        "../source/model/physics",
+                        "../source/applet",
+                        "../source/terrain");
+
    type Restrictions is
       ("xgc", "ravenscar");
    Restrictions : Restrictions := external ("restrictions");
+
    type Platform is
       ("egl", "glx", "sdl");
    Opengl_Platform : Platform := external ("opengl_platform");
@@ -39,14 +50,15 @@ project Mmi is
       end case;
    end Builder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    --   package Compiler is
    --      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-g", "-gnata", "-fstack-check", "-gnat12");
    --   end Compiler;
 
    package Binder is
-      for Default_Switches ("ada") use ("-r");
+   --   for Default_Switches ("ada") use ("-r");
+      for Default_Switches ("ada") use ("-E");
    end Binder;
 
 end Mmi;

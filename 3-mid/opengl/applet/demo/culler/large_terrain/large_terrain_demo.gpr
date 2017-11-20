@@ -1,4 +1,7 @@
-with "opengl_demo", "shared";
+with
+     "opengl_demo",
+     "lace_shared";
+
 with "box2d_thin_c"; -- This is required to avoid an Ubuntu bug with shared libraries.
 
 project Large_Terrain_Demo is
@@ -23,7 +26,7 @@ project Large_Terrain_Demo is
       for Default_Switches ("ada") use ("-k", "-g", "-j13");
    end Builder;
 
-   package Compiler renames Shared.Compiler;
+   package Compiler renames lace_Shared.Compiler;
 
    package Binder is
       for Default_Switches ("ada") use ("-E");
