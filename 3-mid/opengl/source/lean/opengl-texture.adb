@@ -330,7 +330,7 @@ is
    is
 --        procedure free is new ada.Unchecked_Deallocation (pool_texture_List, pool_texture_List_view);
    begin
-      raise Program_Error with "TODO";
+      raise Program_Error with "destroy texture pool ~ TODO";
 --        for i in the_Pool.unused_Textures_for_size'Range (1)
 --        loop
 --           for j in the_Pool.unused_Textures_for_size'Range (2)
@@ -417,7 +417,7 @@ is
          return;
       end if;
 
-      raise Program_Error with "TODO";
+      raise Program_Error with "free texture from pool ~ TODO";
 --        declare
 --           unused_texture_List : constant pool_texture_List_view
 --             := Self.unused_Textures_for_size (the_Texture.Size_width,

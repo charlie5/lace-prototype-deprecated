@@ -216,7 +216,7 @@ is
                         declare
 --                             the_free_Set : free_Set renames the_World.free_Sets (the_World.current_free_Set);
                         begin
-                           raise Program_Error with "TODO";
+                           raise Program_Error with "destroy_Sprite ~ TODO";
 --                             the_free_Set.Count                        := the_free_Set.Count + 1;
 --                             the_free_Set.Sprites (the_free_Set.Count) := the_Command.Sprite;
                         end;

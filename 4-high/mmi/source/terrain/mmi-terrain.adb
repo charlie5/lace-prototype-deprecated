@@ -170,8 +170,7 @@ is
                                                        col           => Col,
                                                        heights       => the_Region.all'Access,
                                                        color_map     => openGL.to_Asset (texture_File),
-                                                       tiling        => Tiling,
-                                                       bounds => <>);
+                                                       tiling        => Tiling);
 
                   function to_Physics is new ada.Unchecked_Conversion (height_Map_view, Heightfield_view);
 

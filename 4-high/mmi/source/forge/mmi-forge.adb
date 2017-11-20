@@ -184,7 +184,7 @@ is
           Math;
 
       the_box_Model         : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box (scale => Size,
+        := openGL.Model.box.colored.forge.new_Box (size => Size,
                                                    faces => (front => (colors => (others => (Colors (1), Opaque))),
                                                              rear  => (colors => (others => (Colors (2), Opaque))),
                                                              upper => (colors => (others => (Colors (3), Opaque))),
@@ -219,7 +219,7 @@ is
           Math;
 
       the_box_Model         : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.forge.new_Box (scale => Size,
+        := openGL.Model.box.textured.forge.new_Box (size => Size,
                                                     faces => (front => (texture_Name => Texture, others => <>),
                                                               rear  => (texture_Name => Texture, others => <>),
                                                               upper => (texture_Name => Texture, others => <>),

@@ -48,7 +48,7 @@ is
    --  Plane
    --
    the_plane_Model : constant openGL.Model.box.colored.view
-     := openGL.Model.box.colored.forge.new_Box (scale => (1000.0, 0.05, 1000.0),
+     := openGL.Model.box.colored.forge.new_Box (size => (1000.0, 0.05, 1000.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
                                                                 upper => (colors => (others => (Green,   Opaque))),
@@ -114,7 +114,6 @@ is
 
    the_terrain_Grid : access mmi.Sprite.Grid
      := mmi.Terrain.new_Terrain (World        => the_Applet.gui_World,
---                                   Space        => mmi.Sprite.physics_Space_view (the_Applet.gui_World.Physics),
                                  heights_File => "assets/mmi/kidwelly_255x255.tga",
                                  texture_File => "assets/mmi/kidwelly_255x255.tga",
                                  scale        => (1.0, 64.0, 1.0));
@@ -122,7 +121,10 @@ is
  begin
 --     the_Applet.gui_World.Gravity_is ((0.0, 0.0, 0.0));
    the_Applet.gui_Camera.Site_is ((0.0, 4.0, 30.0));      -- Position the camera.
-   the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboard.
+
+   the_Applet.enable_simple_Dolly (in_world => 1);                    -- Enable user camera control via keyboard.
+   the_Applet.Dolly.Speed_is (0.1);
+
    the_Applet.Renderer.Background_is (Blue);
 
 --     the_Applet.gui_World.Gravity_is ((0.0, 0.0, 0.0));
@@ -161,7 +163,7 @@ is
          --  Box
          --
          the_box_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.forge.new_Box (scale => (1.0, 2.0, 4.0),
+           := openGL.Model.box.colored.forge.new_Box (size => (1.0, 2.0, 4.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
                                                                 upper => (colors => (others => (Violet,  Opaque))),
@@ -236,7 +238,8 @@ is
          --
          the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
            := openGL.Model.capsule.lit_colored_textured.Forge.new_Capsule (radius => 0.5,
-                                                                                 height => 1.0);
+                                                                           height => 1.0,
+                                                                           color  => (palette.Green, Opaque));
 
          the_capsule_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.a_Capsule,
@@ -254,8 +257,9 @@ is
          --
          the_multi_Sphere_Model : constant openGL.Model.capsule.lit_colored_textured.view
            := openGL.Model.capsule.lit_colored_textured.Forge.new_Capsule (radius => 0.5,
-                                                                                 height => 1.0,
-                                                                                 image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
+                                                                           height => 1.0,
+                                                                           color  => (palette.Green, Opaque),
+                                                                           image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
 
          the_multi_Sphere_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind  => mmi.physics_Model.multi_Sphere,
@@ -275,13 +279,13 @@ is
          --
          s              : constant := 0.5;
          the_hull_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.forge.new_Box (scale => (s*2.0, s*2.0, s*2.0),
-                                                            faces => (front => (colors => (others => (Shade_of (Grey, 1.0), Opaque))),
-                                                                      rear  => (colors => (others => (Shade_of (Grey, 0.5), Opaque))),
-                                                                      upper => (colors => (others => (Shade_of (Grey, 0.4), Opaque))),
-                                                                      lower => (colors => (others => (Shade_of (Grey, 0.3), Opaque))),
-                                                                      left  => (colors => (others => (Shade_of (Grey, 0.2), Opaque))),
-                                                                      right => (colors => (others => (Shade_of (Grey, 0.1), Opaque)))));
+           := openGL.Model.box.colored.forge.new_Box (size  => (s*2.0, s*2.0, s*2.0),
+                                                      faces => (front => (colors => (others => (Shade_of (Grey, 1.0), Opaque))),
+                                                                rear  => (colors => (others => (Shade_of (Grey, 0.5), Opaque))),
+                                                                upper => (colors => (others => (Shade_of (Grey, 0.4), Opaque))),
+                                                                lower => (colors => (others => (Shade_of (Grey, 0.3), Opaque))),
+                                                                left  => (colors => (others => (Shade_of (Grey, 0.2), Opaque))),
+                                                                right => (colors => (others => (Shade_of (Grey, 0.1), Opaque)))));
          the_Hull_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind   => mmi.physics_Model.Hull,
                                                                         points => new physics.Vector_3_array' ((-s, -s,  s),

@@ -154,7 +154,7 @@ is
                                                  for_Facia : in Positive)
    is
    begin
-      raise Program_Error with "TODO";
+      raise Program_Error with "opengl gemoetry textured - set indices ~ TODO";
    end Indices_are;
 
 

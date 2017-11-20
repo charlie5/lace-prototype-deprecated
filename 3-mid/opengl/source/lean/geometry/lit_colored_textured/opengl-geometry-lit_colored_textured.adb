@@ -91,7 +91,7 @@ is
          white_Texture       := openGL.Texture.to_Texture (white_Image);
          the_Program.Program := new openGL.Program.lit_colored_textured.item;
 
-         the_Program.vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");
+         the_Program.  vertex_Shader.define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");
          the_Program.fragment_Shader.define (openGL.Shader.Fragment, use_fragment_Shader);
 
          the_Program.Program.define (the_Program.vertex_Shader  'Access,
