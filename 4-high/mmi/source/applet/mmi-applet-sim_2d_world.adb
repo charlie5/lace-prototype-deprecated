@@ -24,7 +24,7 @@ is
       begin
          the_world_Info.World := mmi.World.forge.new_World (Name,
                                                             sim_world_Id,
-                                                            physics.Forge.Box2d,
+                                                            physics.Box2d,
                                                             Self.Renderer);
 
          the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
