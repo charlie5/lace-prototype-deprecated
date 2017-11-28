@@ -32,7 +32,7 @@ is
 
 
    the_ground_graphics_Model : openGL.Model.box.colored.view
-     := openGL.Model.box.colored.forge.new_Box (scale => (10.0, 0.5, 10.0),
+     := openGL.Model.box.colored.forge.new_Box (size => (10.0, 0.5, 10.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
                                                                 upper => (colors => (others => (Green,   Opaque))),
@@ -57,7 +57,7 @@ is
                                                    Mass => 1.0);
 
    the_box_graphics_Model :  openGL.Model.box.colored.view
-     := openGL.Model.box.colored.forge.new_Box (scale => (1.0, 1.0, 1.0),
+     := openGL.Model.box.colored.forge.new_Box (size => (1.0, 1.0, 1.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
                                                                 upper => (colors => (others => (Green,   Opaque))),

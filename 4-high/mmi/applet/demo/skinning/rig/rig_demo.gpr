@@ -1,159 +1,18 @@
-with "lumen_mmi";
+with
+     "lumen_mmi",
+     "lace_shared";
 
-project rig_Demo is
+project rig_Demo
+is
 
-   type Build_Kind is
-      ("default");
-   type Profile is
-      ("safe", "lean", "desk");
-   type Platform is
-      ("egl", "glx");
-   type Restrictions is
-      ("xgc", "ravenscar");
-   type Os_Type is
-      ("Windows_NT", "Linux", "MacOSX");
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_rig_demo.adb");
-   for Languages use ("Ada");
-   OS : Os_Type := external ("OS");
-   Restrictions : Restrictions := external ("restrictions");
-   Opengl_Platform : Platform := external ("opengl_platform");
-   Opengl_Profile : Profile := external ("opengl_profile");
-   FLORIST_BUILD : Build_Kind := external ("FLORIST_BUILD");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_rig_demo.adb");
+   for Languages  use ("Ada");
 
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
-   end Compiler;
-
-   package Linker is
-
-      case OS is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-
-                           when "desk" =>
-
-                              case FLORIST_BUILD is
-
-                                 when "default" =>
-                                    for Default_Switches ("ada") use ("-g", "-lGL", "-lX11", "-lm", "-lexpat");
-                              end case;
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Linker;
-
-   package Builder is
-
-      case OS is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-
-                           when "desk" =>
-
-                              case FLORIST_BUILD is
-
-                                 when "default" =>
-                                    for Default_Switches ("ada") use ("-g", "-j13", "-k");
-                              end case;
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Builder;
-
-   package Binder is
-
-      case OS is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-
-                           when "desk" =>
-
-                              case FLORIST_BUILD is
-
-                                 when "default" =>
-                                    for Default_Switches ("ada") use ("-E");
-                              end case;
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Binder;
+   package Builder  renames lace_Shared.Builder;
+   package Compiler renames lace_Shared.Compiler;
+   package Binder   renames lace_Shared.Binder;
 
 end rig_Demo;
 

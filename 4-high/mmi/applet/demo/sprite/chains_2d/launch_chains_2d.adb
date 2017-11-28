@@ -41,7 +41,7 @@ is
 
    the_Applet : mmi.Applet.gui_World.view := new_gui_Applet     ("Chains 2D",
                                                                  1920, 1200,
-                                                                 space_Kind => physics.Forge.Box2D);
+                                                                 space_Kind => physics.Box2D);
    the_Ground : mmi.Sprite          .view := new_rectangle_Sprite (the_Applet.gui_World,
                                                                    mass   =>   0.0,
                                                                    width  => 200.0,

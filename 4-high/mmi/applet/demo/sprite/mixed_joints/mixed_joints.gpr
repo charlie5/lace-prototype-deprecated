@@ -2,146 +2,17 @@ with
      "lumen_mmi",
      "lace_shared";
 
-project Mixed_Joints is
+project mixed_Joints
+is
 
-   type Build_Kind is
-      ("default");
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_mixed_joints.adb");
-   type Restrictions is
-      ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("restrictions");
-   type Platform is
-      ("egl", "glx");
-   Opengl_Platform : Platform := external ("opengl_platform");
-   type Os_Type is
-      ("Windows_NT", "Linux", "MacOSX");
-   Os : Os_Type := external ("OS");
-   type Profile is
-      ("safe", "lean", "desk");
-   Opengl_Profile : Profile := external ("opengl_profile");
-   FLORIST_BUILD : Build_Kind := external ("FLORIST_BUILD");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_mixed_joints.adb");
+   for Languages  use ("Ada");
 
-   case Opengl_Platform is
-
-      when "egl" =>
-         for Languages use ("Ada");
-
-      when "glx" =>
-
-         case Restrictions is
-
-            when "xgc" =>
-
-               case Os is
-
-                  when "Windows_NT" =>
-                     for Languages use ("Ada");
-
-                  when "Linux" =>
-                     for Languages use ("Ada");
-
-                  when "MacOSX" =>
-                     for Languages use ("Ada");
-               end case;
-
-            when "ravenscar" =>
-               for Languages use ("Ada");
-         end case;
-   end case;
-
-   package Builder is
-
-      case Os is
-
-         when "Windows_NT" =>
-            for Default_Switches ("ada") use ("-g", "-j13");
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-                        for Default_Switches ("ada") use ("-g", "-j13");
-
-                     when "glx" =>
-                        for Default_Switches ("ada") use ("-g", "-j13", "-k");
-                  end case;
-
-               when "ravenscar" =>
-                  for Default_Switches ("ada") use ("-g", "-j13");
-            end case;
-
-         when "MacOSX" =>
-            for Default_Switches ("ada") use ("-g", "-j13");
-      end case;
-   end Builder;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
+   package Builder  renames lace_Shared.Builder;
    package Compiler renames lace_Shared.Compiler;
+   package Binder   renames lace_Shared.Binder;
 
-   package Linker is
-
-      case Opengl_Platform is
-
-         when "egl" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-                  for Default_Switches ("ada") use ("-L/usr/local/lib", "-lEGL", "-lGL", "-lexpat", "-lX11", "-lX11-xcb", "-lxcb", "-lxcb-render", "-lxcb-glx", "-lfreetype");
-
-               when "ravenscar" =>
-                  for Default_Switches ("ada") use ("-lGL", "-lexpat", "-lX11", "-lgfortran", "-lxcb", "-lfreetype");
-            end case;
-
-         when "glx" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Os is
-
-                     when "Windows_NT" =>
-                        for Default_Switches ("ada") use ("-g", "-lGL", "-lexpat", "-lX11-xcb", "-lX11", "-lxcb", "-lxcb-glx", "-lxcb-render");
-
-                     when "Linux" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-                              for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lGLU", "-lX11", "-lm");
-
-                           when "lean" =>
-                              for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lGLU", "-lX11", "-lm");
-
-                           when "desk" =>
-
-                              case FLORIST_BUILD is
-
-                                 when "default" =>
-                                    for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lX11", "-lm");
-                              end case;
-                        end case;
-
-                     when "MacOSX" =>
-                        for Default_Switches ("ada") use ("-g", "-lGL", "-lexpat", "-lX11-xcb", "-lX11", "-lxcb", "-lxcb-glx", "-lxcb-render");
-                  end case;
-
-               when "ravenscar" =>
-                  for Default_Switches ("ada") use ("-lGL", "-lexpat", "-lX11", "-lgfortran", "-lxcb", "-lfreetype");
-            end case;
-      end case;
-   end Linker;
-
-end Mixed_Joints;
+end mixed_Joints;
 

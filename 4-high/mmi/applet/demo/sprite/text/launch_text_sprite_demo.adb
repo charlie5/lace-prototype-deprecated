@@ -21,7 +21,7 @@ is
    use mmi.Applet, openGL.Palette;
 
    the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet  ("text sprite Demo",
-                                                                                 space_Kind => physics.Forge.Bullet);
+                                                                                 space_Kind => physics.Bullet);
 
    the_Text   : constant mmi.Sprite.view           := mmi.Forge.new_text_Sprite (the_Applet.gui_World,
                                                                                  "Howdy",
@@ -49,7 +49,7 @@ begin
    loop
       Counter := Counter + 1;
 
-      if Counter mod 2 = 0
+      if Counter mod 20 = 0
       then
          if openGL.Model.text.lit_colored_textured.view (the_Text.graphics_Model).Text.all = "Yay"
          then
@@ -66,7 +66,7 @@ begin
 --        end if;
 
 
-      the_Applet.gui_World.evolve (by => 1.0/60.0);
+      the_Applet.gui_World.evolve (by => 1.0 / 60.0);
       the_Applet.freshen;                                 -- Handle any new events and update the screen.
    end loop;
 

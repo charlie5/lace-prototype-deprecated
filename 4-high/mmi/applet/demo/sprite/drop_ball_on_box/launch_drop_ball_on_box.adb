@@ -22,16 +22,8 @@ is
        float_Math,
        float_math.Algebra.linear.d3;
 
---     the_Applet : constant mmi.Applet.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
---                                                                         space_Kind => physics.Forge.Bullet);
    the_Applet :  mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
                                                                          space_Kind => physics.Bullet);
-
---     the_Ball   : constant mmi.Sprite.local.view     := mmi.Forge.new_circle_Sprite    (the_Applet.gui_World);
---     the_Box    : constant mmi.Sprite.local.view     := mmi.Forge.new_rectangle_Sprite (the_Applet.gui_World,
---                                                                                        mass   => 0.0,
---                                                                                        width  => 1.0,
---                                                                                        height => 1.0);
 
    function gui_World return mmi.World.view
    is
@@ -49,26 +41,26 @@ is
 
 
 
---     the_Ball   : constant mmi.Sprite.view     := mmi.Forge.new_ball_Sprite (gui_World);
---     the_Box    : constant mmi.Sprite.view     := mmi.Forge.new_box_Sprite  (gui_World,
---                                                                             mass => 0.0,
---                                                                             size => (20.0, 1.0, 20.0));
+   the_Ball   : constant mmi.Sprite.view     := mmi.Forge.new_ball_Sprite (gui_World);
+   the_Box    : constant mmi.Sprite.view     := mmi.Forge.new_box_Sprite  (gui_World,
+                                                                           mass => 0.0,
+                                                                           size => (20.0, 1.0, 20.0));
 begin
    gui_Camera.Site_is ((0.0, 2.0, 20.0));      -- Position the camera.
 --     gui_Camera.world_Rotation_is (y_Rotation_from (to_Radians (45.0)));
 
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
 
-   gui_World.Gravity_is ((0.0, -9.8, 0.0));
+   gui_World.Gravity_is ((0.0, -0.8, 0.0));
 
---     gui_World.add (the_Box);                    -- Add box.
---     gui_World.add (the_Ball);                   -- Add ball.
+   gui_World.add (the_Box);                    -- Add box.
+   gui_World.add (the_Ball);                   -- Add ball.
 --
---     the_Ball.Site_is ((0.0, 10.0, 0.0));
+   the_Ball.Site_is ((0.0, 10.0, 0.0));
 
    while the_Applet.is_open
    loop
---        gui_World.evolve (by => 1.0 / 60.0);
+      gui_World.evolve (by => 1.0 / 60.0);
       the_Applet.freshen;                                 -- Handle any new events and update the screen.
    end loop;
 

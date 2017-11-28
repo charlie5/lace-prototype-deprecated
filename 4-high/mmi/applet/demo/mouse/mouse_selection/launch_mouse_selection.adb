@@ -53,7 +53,7 @@ begin
       use type math.Real,  opengl.Real;
 
       the_Applet : mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("mouse Selection",
-                                                                           space_Kind => physics.Forge.Bullet);
+                                                                           space_Kind => physics.Bullet);
 
 
       the_Ball : mmi.Sprite.view := mmi.Forge.new_ball_Sprite (the_Applet.World (1),

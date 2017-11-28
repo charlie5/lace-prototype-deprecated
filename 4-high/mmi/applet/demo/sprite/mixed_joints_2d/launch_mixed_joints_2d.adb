@@ -39,7 +39,7 @@ is
 
    the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("hinged Box",
                                                                                 1920, 1200,
-                                                                                space_Kind => Physics.Forge.Box2D);
+                                                                                space_Kind => Physics.Box2D);
    Counter    :          Natural                   := 0;
 
 begin

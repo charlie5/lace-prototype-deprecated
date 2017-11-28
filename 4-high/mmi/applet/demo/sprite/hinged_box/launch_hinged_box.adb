@@ -63,7 +63,7 @@ begin
       --  Box
       --
       the_box_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box (scale => (bs, bs, bs),
+        := openGL.Model.box.colored.forge.new_Box (size  => (bs, bs, bs),
                                                    faces => (front => (colors => (others => (Red,     Opaque))),
                                                              rear  => (colors => (others => (Blue,    Opaque))),
                                                              upper => (colors => (others => (Violet,  Opaque))),
