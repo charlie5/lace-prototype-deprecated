@@ -7,7 +7,7 @@ with
      mmi.physics_Model,
 
      openGL.Model.box.colored,
-     opengl.Palette,
+     openGL.Palette,
 
      float_math.Algebra.linear.d3,
 
