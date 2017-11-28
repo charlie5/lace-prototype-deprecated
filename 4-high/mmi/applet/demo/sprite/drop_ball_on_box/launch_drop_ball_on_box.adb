@@ -5,11 +5,13 @@ with
      mmi.Sprite,
      mmi.World,
      mmi.Camera,
-     physics.Forge,
-     float_Math.Algebra.linear.d3;
 
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Exceptions;
+     Physics,
+
+     Ada.Text_IO,
+     Ada.Exceptions;
+
+pragma Unreferenced (mmi.Window.setup);
 
 
 procedure launch_drop_Ball_on_Box
@@ -19,8 +21,7 @@ procedure launch_drop_Ball_on_Box
 is
    use mmi.Applet,
        mmi.Applet.gui_world,
-       float_Math,
-       float_math.Algebra.linear.d3;
+       Ada.Text_IO;
 
    the_Applet :  mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
                                                                          space_Kind => physics.Bullet);
@@ -40,18 +41,16 @@ is
    end gui_Camera;
 
 
-
    the_Ball   : constant mmi.Sprite.view     := mmi.Forge.new_ball_Sprite (gui_World);
    the_Box    : constant mmi.Sprite.view     := mmi.Forge.new_box_Sprite  (gui_World,
                                                                            mass => 0.0,
                                                                            size => (20.0, 1.0, 20.0));
 begin
    gui_Camera.Site_is ((0.0, 2.0, 20.0));      -- Position the camera.
---     gui_Camera.world_Rotation_is (y_Rotation_from (to_Radians (45.0)));
 
-   the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
+   the_Applet.enable_simple_Dolly (1);         -- Enable user camera control via keyboards.
 
-   gui_World.Gravity_is ((0.0, -0.8, 0.0));
+   gui_World.Gravity_is ((0.0, -9.8, 0.0));
 
    gui_World.add (the_Box);                    -- Add box.
    gui_World.add (the_Ball);                   -- Add ball.
@@ -61,10 +60,9 @@ begin
    while the_Applet.is_open
    loop
       gui_World.evolve (by => 1.0 / 60.0);
-      the_Applet.freshen;                                 -- Handle any new events and update the screen.
+      the_Applet.freshen;                      -- Handle any new events and update the screen.
    end loop;
 
---     the_Applet.destroy;
    free (the_Applet);
 
 exception
