@@ -1,28 +1,24 @@
 with
      mmi.Window.lumen,
      mmi.Applet.gui_world,
-
      mmi.Forge,
      mmi.Sprite,
-
      mmi.hinge_Joint,
      mmi.ball_Joint,
      mmi.cone_twist_Joint,
      mmi.slider_Joint,
      mmi.any_Joint,
 
-     opengl.Palette,
-     Physics,
+     openGL.Palette,
 
-     float_math.Algebra.linear.d3;
+     float_Math.Algebra.linear.d3;
 
 pragma Unreferenced (mmi.Window.lumen);
 
 
 procedure launch_mixed_Joints
 --
---  Drops a variety of shapes a plane terrain.
---
+--  Shows a variety of joints.
 --
 is
    package Math renames float_Math;
@@ -33,7 +29,7 @@ is
 
    use type openGL.Real;
 
-   the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("hinged Box", 1920, 1200);
+   the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("mixed Joints", 1920, 1200);
 begin
    the_Applet.gui_World .Gravity_is    ((0.0, -10.0, 0.0));
    the_Applet.gui_Camera.Site_is       ((0.0, 4.0, 30.0));      -- Position the camera.
@@ -55,9 +51,9 @@ begin
 
          the_hinge_Box_1 : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World, mass => 0.0);
          the_hinge_Box_2 : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World);
-         the_hinge_Joint :          mmi.hinge_Joint .view := new mmi.hinge_Joint.item;
+         the_hinge_Joint : constant mmi.hinge_Joint .view := new mmi.hinge_Joint.item;
 
-         Frame_A : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
          Frame_B : math.Matrix_4x4 := math.Identity_4x4;
       begin
          set_Translation (Frame_B, (  2.0, 2.0, 0.0));
@@ -83,9 +79,9 @@ begin
 
          the_dof6_Box_1  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World, mass => 0.0);
          the_dof6_Box_2  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World);
-         the_DoF6_Joint  :          mmi.any_Joint   .view := new mmi.any_Joint.item;
+         the_DoF6_Joint  : constant mmi.any_Joint   .view := new mmi.any_Joint.item;
 
-         Frame_A : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
          Frame_B : math.Matrix_4x4 := math.Identity_4x4;
       begin
          set_Translation (Frame_B, (  2.0, 2.0, 0.0));
@@ -110,10 +106,10 @@ begin
 
          the_ball_Box_1  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World, mass => 0.0);
          the_ball_Box_2  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World);
-         the_ball_Joint  :          mmi.ball_Joint  .view := new mmi.ball_Joint.item;
+         the_ball_Joint  : constant mmi.ball_Joint  .view := new mmi.ball_Joint.item;
 
-         Pivot_in_A : math.Vector_3 := (0.0, -1.0, 0.0);
-         Pivot_in_B : math.Vector_3 := (0.0,  1.0, 0.0);
+         Pivot_in_A : constant math.Vector_3 := (0.0, -1.0, 0.0);
+         Pivot_in_B : constant math.Vector_3 := (0.0,  1.0, 0.0);
       begin
          the_ball_Joint.define (the_Applet.gui_World.Physics,
                                 the_ball_Box_1,  the_ball_Box_2,
@@ -135,7 +131,7 @@ begin
 
          the_slider_Box_1  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World, mass => 0.0);
          the_slider_Box_2  : constant mmi.Sprite.view := new_box_Sprite (the_Applet.gui_World);
-         the_slider_Joint  :          mmi.slider_Joint.view := new mmi.slider_Joint.item;
+         the_slider_Joint  : constant mmi.slider_Joint.view := new mmi.slider_Joint.item;
 
          Frame_A : math.Matrix_4x4 := math.Identity_4x4;
          Frame_B : math.Matrix_4x4 := math.Identity_4x4;
@@ -168,9 +164,9 @@ begin
 
          the_cone_twist_Box_1  : constant mmi.Sprite.view     := new_box_Sprite (the_Applet.gui_World, mass => 0.0);
          the_cone_twist_Box_2  : constant mmi.Sprite.view     := new_box_Sprite (the_Applet.gui_World);
-         the_cone_twist_Joint  :          mmi.cone_twist_Joint.view := new mmi.cone_twist_Joint.item;
+         the_cone_twist_Joint  : constant mmi.cone_twist_Joint.view := new mmi.cone_twist_Joint.item;
 
-         Frame_A : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
          Frame_B : math.Matrix_4x4 := math.Identity_4x4;
 
          y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (45.0));
@@ -183,7 +179,7 @@ begin
 
          the_cone_twist_Joint.define (the_Applet.gui_World.Physics,
                                       the_cone_twist_Box_1,  the_cone_twist_Box_2,
-                                      Frame_A,           Frame_B);
+                                      Frame_A,               Frame_B);
 
          the_cone_twist_Box_1.Site_is ((10.0,        10.0,  0.0));
          the_cone_twist_Box_2.Site_is ((10.0 + 2.0,  10.0,  0.0));
