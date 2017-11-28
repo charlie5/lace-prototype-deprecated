@@ -1,30 +1,22 @@
-with mmi.Window.setup,
+with
+     mmi.Window.setup,
      mmi.Applet.gui_world,
      mmi.Camera,
      mmi.Mouse,
-
      mmi.Sprite,
-     openGL.Model,
-     openGL.Model.box,
-     openGL.Model.sphere.lit_colored_textured,
+     mmi.Events,
+     mmi.Forge,
 
-     physics.Forge;
-
-with opengl.Palette,
-     float_Math.Algebra.linear.d3,
+     Physics,
+     float_Math,
      lace.Response,
-     lace.remote.Response,
-     ada.Calendar;
-with lace.event       .Utility,
+     lace.event       .Utility,
      lace.event.remote.Utility,
-     lace.event.remote.logger.text;
-with lace.remote.Subject;
-with lace.remote.Observer;
-with ada.Text_IO;
-with ada.Exceptions;
-with mmi.Events;
-with mmi.Forge;
+     Ada.Calendar,
+     Ada.Text_IO,
+     Ada.Exceptions;
 
+pragma Unreferenced (mmi.Window.setup);
 
 
 procedure launch_mouse_Selection
@@ -36,45 +28,34 @@ is
    use lace.event       .Utility,
        lace.event.remote.Utility,
        ada.Text_IO;
-
-   package Math renames float_Math;
-
 begin
    lace.Event.remote.Utility.use_text_Logger ("event.log");
    lace.Event.remote.Utility.Logger.ignore (to_Kind (mmi.Mouse.motion_Event'Tag));
 
-
    declare
       use mmi.Applet,
-          math.Algebra.linear.d3,
-          lace.event.Utility,
           ada.Calendar;
 
-      use type math.Real,  opengl.Real;
-
-      the_Applet : mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("mouse Selection",
-                                                                           space_Kind => physics.Bullet);
-
-
-      the_Ball : mmi.Sprite.view := mmi.Forge.new_ball_Sprite (the_Applet.World (1),
-                                                                       mass => 0.0);
-
+      the_Applet : constant mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("mouse Selection",
+                                                                                    space_Kind => physics.Bullet);
+      the_Ball   : constant mmi.Sprite.view           := mmi.Forge.new_ball_Sprite (the_Applet.World (1),
+                                                                                    mass => 0.0);
 
       type retreat_Sprite is new lace.Response.item with
          record
             Sprite : mmi.Sprite.view;
          end record;
 
+      overriding
       procedure respond (Self : in out retreat_Sprite;  to_Event : in lace.Event.Item'Class)
       is
          use float_Math;
       begin
          put_Line ("retreat_Sprite");
          Self.Sprite.Site_is (self.Sprite.Site - the_Applet.gui_Camera.world_Rotation * (0.0, 0.0, 1.0));
-      end;
+      end respond;
 
       retreat_Sprite_Response : aliased retreat_Sprite := (lace.Response.item with sprite => the_Ball);
-
 
 
       type advance_Sprite is new lace.Response.item with
@@ -82,13 +63,14 @@ begin
             Sprite : mmi.Sprite.view;
          end record;
 
+      overriding
       procedure respond (Self : in out advance_Sprite;  to_Event : in lace.Event.Item'Class)
       is
          use float_Math;
       begin
          put_Line ("advance_Sprite");
          Self.Sprite.Site_is (self.Sprite.Site + the_Applet.gui_Camera.world_Rotation * (0.0, 0.0, 1.0));
-      end;
+      end respond;
 
       advance_Sprite_Response : aliased advance_Sprite := (lace.Response.Item with sprite => the_Ball);
 
@@ -107,12 +89,13 @@ begin
       the_Applet.gui_world .add      (the_Ball, and_Children => False);
       the_Applet.gui_Camera.Site_is  ((0.0, 0.0, 5.0));
       the_Applet.enable_simple_Dolly (in_World => 1);
-      the_Applet.enable_Mouse (detect_Motion => False);
+      the_Applet.enable_Mouse        (detect_Motion => False);
 
 
       next_render_Time := ada.calendar.Clock;
 
-      while the_Applet.is_open loop
+      while the_Applet.is_open
+      loop
          the_Applet.gui_World.evolve (by => 1.0/60.0);
          the_Ball.respond;
          the_Applet.freshen;
@@ -125,7 +108,6 @@ begin
    end;
 
    lace.Event.remote.Utility.close;
-
 
 exception
    when E : others =>
