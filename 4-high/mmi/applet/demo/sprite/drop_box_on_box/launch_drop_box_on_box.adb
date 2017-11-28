@@ -1,37 +1,33 @@
-with mmi.Forge,
+with
+     mmi.Forge,
      mmi.Window.lumen,
      mmi.Applet.gui_world,
      mmi.Camera,
-     mmi.Mouse,
-
      mmi.Sprite,
-     openGL.Model.box.colored,
-     openGL.Model.sphere.lit_colored_textured,
      mmi.physics_Model,
 
-     opengl.Palette,
-     lace.event.Utility,
+     openGL.Model.box.colored,
+     openGL.Palette,
 
-     ada.Calendar;
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Exceptions;
+     Ada.Text_IO,
+     Ada.Exceptions;
 
+pragma Unreferenced (mmi.window.lumen);
 
 procedure launch_drop_Box_on_Box
 --
 --  Drops a box onto a box 'terrain'.
 --
---
 is
    use mmi.Applet,    openGL.Model.box,
        openGL,        opengl.Palette,
-       ada.Calendar;
+       Ada.Text_IO;
 
    the_Applet : constant mmi.Applet.gui_World.view
      := mmi.Forge.new_gui_Applet ("drop Ball on Box");
 
 
-   the_ground_graphics_Model : openGL.Model.box.colored.view
+   the_ground_graphics_Model : constant openGL.Model.box.colored.view
      := openGL.Model.box.colored.forge.new_Box (size => (10.0, 0.5, 10.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
@@ -42,9 +38,8 @@ is
    the_ground_physics_Model : constant mmi.physics_Model.view
      := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                   half_extents => (5.0, 0.25, 5.0)));
---       := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind => mmi.physics_Model.a_Sphere, sphere_radius => 1.0));
 
-   the_Ground : mmi.Sprite.view
+   the_Ground : constant mmi.Sprite.view
      := mmi.Sprite.forge.new_Sprite ("demo.Ground",
                                      the_Applet.gui_World,
                                      the_ground_graphics_Model.all'access,
@@ -56,7 +51,7 @@ is
                                                                   half_extents => (1.0, 0.5, 1.0)),
                                                    Mass => 1.0);
 
-   the_box_graphics_Model :  openGL.Model.box.colored.view
+   the_box_graphics_Model : constant openGL.Model.box.colored.view
      := openGL.Model.box.colored.forge.new_Box (size => (1.0, 1.0, 1.0),
                                                       faces => (front => (colors => (others => (Red,     Opaque))),
                                                                 rear  => (colors => (others => (Blue,    Opaque))),
@@ -64,7 +59,7 @@ is
                                                                 lower => (colors => (others => (Yellow,  Opaque))),
                                                                 left  => (colors => (others => (Cyan,    Opaque))),
                                                                 right => (colors => (others => (Magenta, Opaque)))));
-   the_Box : mmi.Sprite.view
+   the_Box : constant mmi.Sprite.view
      := mmi.Sprite.forge.new_Sprite ("demo.Box",
                                      the_Applet.gui_World,
                                      the_box_graphics_Model,
