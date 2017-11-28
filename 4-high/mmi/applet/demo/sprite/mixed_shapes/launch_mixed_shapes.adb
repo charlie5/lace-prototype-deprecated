@@ -1,37 +1,29 @@
 with
      mmi.Window.lumen,
      mmi.Applet.gui_world,
-
      mmi.Forge,
      mmi.Sprite,
+     mmi.Terrain,
+     mmi.physics_Model,
 
      openGL.Model.box.colored,
      openGL.Model.sphere.lit_colored_textured,
      openGL.Model.capsule.lit_colored_textured,
      openGL.Model.open_gl,
-     openGL.Model.terrain,
-     mmi.Terrain,
+     openGL.Palette,
 
-     mmi.physics_Model,
+     Physics,
 
-     opengl.Palette,
-     opengl.IO,
-     Physics;
+     float_Math.Algebra.linear;
 
 pragma Unreferenced (mmi.Window.lumen);
-
-with float_math.Algebra.linear.d3;
-with openGL.IO;
 
 
 procedure launch_mixed_Shapes
 --
---  Drops a variety of shapes a plane terrain.
---
+--  Drops a variety of shapes onto a terrain.
 --
 is
-   package Math   renames float_Math;
-
    use mmi.Applet,  openGL.Model.box,
        openGL,      opengl.Palette;
 
@@ -112,14 +104,13 @@ is
    --                                                   the_Heightfield_physics_Model,
    --                                                   mass => 0.0);
 
-   the_terrain_Grid : access mmi.Sprite.Grid
+   the_terrain_Grid : constant access mmi.Sprite.Grid
      := mmi.Terrain.new_Terrain (World        => the_Applet.gui_World,
                                  heights_File => "assets/mmi/kidwelly_255x255.tga",
                                  texture_File => "assets/mmi/kidwelly_255x255.tga",
                                  scale        => (1.0, 64.0, 1.0));
 
  begin
---     the_Applet.gui_World.Gravity_is ((0.0, 0.0, 0.0));
    the_Applet.gui_Camera.Site_is ((0.0, 4.0, 30.0));      -- Position the camera.
 
    the_Applet.enable_simple_Dolly (in_world => 1);                    -- Enable user camera control via keyboard.
@@ -127,7 +118,6 @@ is
 
    the_Applet.Renderer.Background_is (Blue);
 
---     the_Applet.gui_World.Gravity_is ((0.0, 0.0, 0.0));
 
 --     -- Terrain.
 --     --
@@ -152,13 +142,13 @@ is
 --                                    ((64.0/2.0,      0.0,      64.0/2.0));
 
 
-   --  Add shapes
+   --  Add several of each shape.
    --
    for i in 1 .. 5
    loop
       declare
          use float_Math,
-             float_math.Algebra.linear.d3;
+             float_math.Algebra.linear;
 
          --  Box
          --
@@ -190,7 +180,7 @@ is
 
          the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
            := openGL.Model.sphere.lit_colored_textured.Forge.new_Sphere (radius => 1.0,
-                                                                               image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
+                                                                         image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
          the_Ball : constant mmi.Sprite.view
            := mmi.Sprite.forge.new_Sprite ("demo.Ball",
                                            the_Applet.gui_World,
@@ -202,9 +192,9 @@ is
          the_cone_Model : constant openGL.Model.open_gl.view
            := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0) * 1.0,
                                                     Model            => openGL.to_Asset ("assets/mmi/model/unit_cone.obj"),
-                                                    math_model => null,
-                                                          Texture          => openGL.null_Asset,
-                                                          Texture_is_lucid => False);
+                                                    math_model       => null,
+                                                    Texture          => openGL.null_Asset,
+                                                    Texture_is_lucid => False);
          the_cone_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind => mmi.physics_Model.Cone),
                                                          mass       => 1.0);
@@ -219,10 +209,11 @@ is
          --
          the_cylinder_Model : constant openGL.Model.open_gl.view
            := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                                          Model            => openGL.to_Asset ("assets/mmi/model/unit_cylinder.obj"),
-                                                    math_model => null,
-                                                          Texture          => openGL.null_Asset,
-                                                          Texture_is_lucid => False);
+                                                    Model            => openGL.to_Asset ("assets/mmi/model/unit_cylinder.obj"),
+                                                    math_model       => null,
+                                                    Texture          => openGL.null_Asset,
+                                                    Texture_is_lucid => False);
+
          the_cylinder_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cylinder,
                                                                         half_extents => the_cylinder_Model.Scale / 2.0),
@@ -243,9 +234,9 @@ is
 
          the_capsule_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.a_Capsule,
-                                                                        lower_radius => 0.5, -- the_capsule_Model.Scale (2),
-                                                                        upper_radius => 0.5, -- the_capsule_Model.Scale (2),
-                                                                        height       => 1.0), --the_capsule_Model.Scale (1) - the_capsule_Model.Scale (2)));
+                                                                        lower_radius => 0.5,
+                                                                        upper_radius => 0.5,
+                                                                        height       => 1.0),
                                                          mass       => 1.0);
          the_Capsule : constant mmi.Sprite.view
            := mmi.Sprite.forge.new_Sprite ("demo.Capsule",
@@ -266,7 +257,7 @@ is
                                                                         sites => new physics.Vector_3_array' ((0.0, 0.0, -0.5),
                                                                                                               (0.0, 0.0,  0.5)),
                                                                         radii => new float_math.Vector' (1 => 0.5,
-                                                                                                        2 => 0.5)),
+                                                                                                         2 => 0.5)),
                                                          mass       => 1.0);
 
          the_multi_Sphere : constant mmi.Sprite.view
@@ -288,15 +279,16 @@ is
                                                                 right => (colors => (others => (Shade_of (Grey, 0.1), Opaque)))));
          the_Hull_physics_Model : constant mmi.physics_Model.view
            := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind   => mmi.physics_Model.Hull,
-                                                                        points => new physics.Vector_3_array' ((-s, -s,  s),
-                                                                          ( s, -s,  s),
-                                                                          ( s,  s,  s),
-                                                                          (-s,  s,  s),
+                                                                        points => new physics.Vector_3_array'
+                                                                          ((-s, -s,  s),
+                                                                           ( s, -s,  s),
+                                                                           ( s,  s,  s),
+                                                                           (-s,  s,  s),
 
-                                                                          (-s, -s, -s),
-                                                                          ( s, -s, -s),
-                                                                          ( s,  s, -s),
-                                                                          (-s,  s, -s))),
+                                                                           (-s, -s, -s),
+                                                                           ( s, -s, -s),
+                                                                           ( s,  s, -s),
+                                                                           (-s,  s, -s))),
                                                          mass       => 1.0);
          the_Hull : constant mmi.Sprite.view
            := mmi.Sprite.forge.new_Sprite ("demo.Hull",
@@ -304,7 +296,7 @@ is
                                            the_Hull_Model.all'Access,
                                            the_Hull_physics_Model);
 
-         y : math.Real := 2.0;
+         y : constant math.Real := 2.0;
 
       begin
          the_Applet.gui_World.add (the_Ball);                   -- Add ball.
@@ -315,7 +307,7 @@ is
          the_Applet.gui_World.add (the_multi_Sphere);           -- Add multi Sphere.
          the_Applet.gui_World.add (the_Hull);                   -- Add hull.
 
-         the_Ball        .Site_is (( x,        y+3.0,      0.0));
+         the_Ball        .Site_is (( x,        y+3.0,  0.0));
          the_Box         .Site_is (( 0.0,      y,     -2.5));
          the_Cone        .Site_is (( 0.0,      y,      0.0));
          the_Capsule     .Site_is (( 0.0 + X,  y,  0.0 + x));
@@ -327,9 +319,8 @@ is
          --     the_Cylinder.Spin_is (x_Rotation_from (to_Radians (45.0)));
          --     the_Cylinder.Gyre_is ((0.0, 1.0, 0.0));
          the_Ball.Gyre_is ((0.0, 1.0, 0.0));
-
-
       end;
+
       x := x + 1.25;
    end loop;
 
