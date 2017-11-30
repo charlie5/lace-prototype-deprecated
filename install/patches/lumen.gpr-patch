@@ -1,5 +1,5 @@
---- lumen-pristine/lumen.gpr	2015-12-05 20:30:37.850276160 +1100
-+++ lumen/lumen.gpr	2014-05-06 11:48:46.000000000 +1000
+--- lumen/orig-lumen.gpr	2017-11-30 19:45:39.133226520 +1100
++++ lumen/lumen.gpr	2017-11-10 19:17:58.679192425 +1100
 @@ -11,8 +11,8 @@
     end case;
  
@@ -10,4 +10,23 @@
 +--   for Library_Dir use "lib";
  
     for Languages use ("Ada");
-
+ 
+@@ -28,5 +28,18 @@
+       for Default_Switches ("ada") use ("-gnat05", "-gnatn", "-fstack-check");
+    end Compiler;
+ 
++   package Linker is
++      case Config.Os is
++         when "Windows_NT" =>
++            for Linker_Options use ("-lopengl32","-lgdi32");
++
++         when "Linux" =>
++            for Linker_Options use ("-lGL","-lX11");
++
++         when "MacOSX" =>
++            for Linker_Options use ("-Wl,-framework,OpenGL","-lX11");
++      end case;
++   end Linker;
++
+ end Lumen;
+ 
