@@ -15,7 +15,7 @@ project c_Math_Thin_Cxx is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g");
+      for Default_Switches ("c++") use ("-g", "-fPIC");
    end Compiler;
 
 end c_Math_Thin_Cxx;

@@ -15,7 +15,7 @@ project Box2d_Thin_C is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-lpthread", "-I/usr/include/Box2D", "-I/usr/local/include/Box2D");
+      for Default_Switches ("c++") use ("-g", "-fPIC", "-lpthread", "-I/usr/include/Box2D", "-I/usr/local/include/Box2D");
    end Compiler;
 
    package Linker is
