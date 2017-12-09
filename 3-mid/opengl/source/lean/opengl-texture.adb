@@ -303,9 +303,9 @@ is
    -- Name Maps of Texture
    --
 
-   function fetch (From : access name_Map_of_texture'Class;   texture_Name : in String) return Object
+   function fetch (From : access name_Map_of_texture'Class;   texture_Name : in asset_Name) return Object
    is
-      Name : constant unbounded_String := to_unbounded_String (texture_Name);
+      Name : constant unbounded_String := to_unbounded_String (to_String (texture_Name));
    begin
       if From.Contains (Name)
       then

@@ -237,7 +237,7 @@ is
 
          set_Texture :
          declare
-            the_Image   : constant openGL.Image          := openGL.io.to_Image (to_String (self.color_Map));
+            the_Image   : constant openGL.Image          := openGL.io.to_Image (Self.color_Map);
             the_Texture : constant openGL.Texture.object := to_Texture (the_Image);
          begin
             the_Geometry.Texture_is (the_Texture);
@@ -359,7 +359,7 @@ is
       Integer          'read (Stream,  Self.Col);
 
       declare
-         the_Pixels           : openGL.io.height_Map_view :=  openGL.io.to_height_Map (to_String (self.heights_Asset),
+         the_Pixels           : openGL.io.height_Map_view :=  openGL.io.to_height_Map (Self.heights_Asset,
                                                                                        scale => 1.0);
          row_First, row_Last,
          col_First, col_Last  : math.Index;   -- Row and col ranges for each submatrix.

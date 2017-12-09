@@ -99,7 +99,7 @@ is
 
          if Self.Faces (Front).texture_Name /= null_Asset
          then
-            front_Face.Texture_is (Textures.fetch (to_String (Self.Faces (Front).texture_Name)));
+            front_Face.Texture_is (Textures.fetch (Self.Faces (Front).texture_Name));
             front_Face.is_Transparent (now => front_Face.Texture.is_Transparent);
 
 --           elsif Self.Faces (Front).texture_Object /= null_Object
@@ -122,7 +122,7 @@ is
 
          if Self.Faces (Rear).texture_Name /= null_Asset
          then
-            rear_Face.Texture_is     (Textures.fetch (to_String (Self.Faces (Rear).texture_Name)));
+            rear_Face.Texture_is (Textures.fetch (Self.Faces (Rear).texture_Name));
             rear_Face.is_Transparent (now => rear_Face.Texture.is_Transparent);
          end if;
       end;
@@ -141,7 +141,7 @@ is
 
          if Self.Faces (Upper).texture_Name /= null_Asset
          then
-            upper_Face.Texture_is     (Textures.fetch (to_String (Self.Faces (Upper).texture_Name)));
+            upper_Face.Texture_is (Textures.fetch (Self.Faces (Upper).texture_Name));
             upper_Face.is_Transparent (now => upper_Face.Texture.is_Transparent);
          end if;
       end;
@@ -160,7 +160,7 @@ is
 
          if Self.Faces (Lower).texture_Name /= null_Asset
          then
-            lower_Face.Texture_is     (Textures.fetch (to_String (Self.Faces (Lower).texture_Name)));
+            lower_Face.Texture_is (Textures.fetch (Self.Faces (Lower).texture_Name));
             lower_Face.is_Transparent (now => lower_Face.Texture.is_Transparent);
          end if;
       end;
@@ -179,7 +179,7 @@ is
 
          if Self.Faces (Left).texture_Name /= null_Asset
          then
-            left_Face.Texture_is     (Textures.fetch (to_String (Self.Faces (Left).texture_Name)));
+            left_Face.Texture_is (Textures.fetch (Self.Faces (Left).texture_Name));
             left_Face.is_Transparent (now => left_Face.Texture.is_Transparent);
          end if;
       end;
@@ -198,7 +198,7 @@ is
 
          if Self.Faces (Right).texture_Name /= null_Asset
          then
-            right_Face.Texture_is     (Textures.fetch (to_String (Self.Faces (Right).texture_Name)));
+            right_Face.Texture_is (Textures.fetch (Self.Faces (Right).texture_Name));
             right_Face.is_Transparent (now => right_Face.Texture.is_Transparent);
          end if;
       end;

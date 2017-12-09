@@ -32,8 +32,8 @@ is
 
 
 
-   function new_Terrain (heights_File : in     String;
-                         texture_File : in     String        := "";
+   function new_Terrain (heights_File : in     asset_Name;
+                         texture_File : in     asset_Name    := null_Asset;
                          Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return openGL.Visual.Grid
    is
       use type math.Index, openGL.Real;
@@ -154,11 +154,11 @@ is
                                openGL.Real (tile_Z_Scale * Scale (3))));
 
                   the_ground_Model : constant openGL.Model.terrain.view
-                    := openGL.Model.terrain.Forge.new_Item (heights_asset => openGL.to_Asset (heights_File),
+                    := openGL.Model.terrain.Forge.new_Item (heights_asset => heights_File,
                                                             row           => Row,
                                                             col           => Col,
                                                             heights       => the_Region.all'Access,
-                                                            color_map     => openGL.to_Asset (texture_File),
+                                                            color_map     => texture_File,
                                                             tiling        => Tiling);
 
                   the_height_Extents : openGL.Vector_2    :=      openGL.height_Extent (the_Region.all);

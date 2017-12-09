@@ -64,7 +64,7 @@ is
 
    type name_Map_of_texture is tagged private;
 
-   function fetch (From : access name_Map_of_texture'Class;   texture_Name : in String) return Object;
+   function fetch (From : access name_Map_of_texture'Class;   texture_Name : in asset_Name) return Object;
 
 
 

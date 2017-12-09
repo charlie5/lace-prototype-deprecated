@@ -85,7 +85,7 @@ is
 
          if Self.texture_Name /= null_Asset
          then
-            Self.Texture := openGL.io.to_Texture (to_String (Self.texture_Name));
+            Self.Texture := io.to_Texture (Self.texture_Name);
          end if;
 
          if Self.Lucid

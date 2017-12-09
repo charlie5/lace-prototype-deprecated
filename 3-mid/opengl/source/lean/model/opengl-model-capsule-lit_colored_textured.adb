@@ -176,8 +176,8 @@ is
             set_Texture :
             declare
                use openGL.Texture;
-               the_Image   : constant openGL.Image          := openGL.io.to_Image (to_String (Self.Image));
-               the_Texture : constant openGL.Texture.object := to_Texture (the_Image);
+               the_Image   : constant openGL.Image          := io.to_Image   (Self.Image);
+               the_Texture : constant openGL.Texture.object :=    to_Texture (the_Image);
             begin
                the_shaft_Geometry.Texture_is (the_Texture);
             end set_Texture;
@@ -370,8 +370,8 @@ is
                   set_the_Texture :
                   declare
                      use openGL.Texture;
-                     the_Image   : constant openGL.Image          := openGL.io.to_Image (to_String (Self.Image));
-                     the_Texture : constant openGL.Texture.object := to_Texture (the_Image);
+                     the_Image   : constant openGL.Image          := io.to_Image   (Self.Image);
+                     the_Texture : constant openGL.Texture.object :=    to_Texture (the_Image);
                   begin
                      cap_Geometry.Texture_is (the_Texture);
                   end set_the_Texture;

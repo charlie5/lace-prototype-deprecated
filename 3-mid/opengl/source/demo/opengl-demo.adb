@@ -193,7 +193,7 @@ is
                         colors       => (others => (Red, Opaque)),
                         texture      => <>),
               Shaft => (color        => (Green, Opaque),
-                        texture      => <>));
+                        texture      => the_Texture));
 
       the_line_Model       : constant openGL.Model.line.colored.view
         := openGL.Model.line.colored.new_line_Model (color  => Red,
@@ -230,20 +230,23 @@ is
         := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),
                                                              color => Green);
 
-      heights_File : constant String := "assets/opengl/terrain/kidwelly-terrain.png";
-      texture_File : constant String := "assets/opengl/terrain/kidwelly-terrain-texture.png";
+      -- Terrain
+      --
+      heights_File : constant openGL.asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain.png");
+      texture_File : constant openGL.asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain-texture.png");
 
       the_Region   : constant opengl.io.height_Map_view   := opengl.io.to_height_Map (heights_File, 10.0);
       Tiling       : constant opengl.texture_Transform_2d := (s => (0.0, 1.0),
                                                               t => (0.0, 1.0));
       the_ground_Model : constant access openGL.Model.terrain.item
         := new openGL.Model.terrain.item' (openGL.Model.item with
-                                           heights_asset => to_Asset (heights_File),
+                                           heights_asset => heights_File,
                                            row           => 1,
                                            col           => 1,
                                            heights       => the_Region.all'Access,
-                                           color_map     => to_Asset (texture_File),
+                                           color_map     => texture_File,
                                            tiling        => Tiling);
+
    begin
       Demo.Renderer.add_Font (the_font_Id);
 
@@ -280,8 +283,8 @@ is
                         the_segment_line_Model.all'Access,
 
                               the_ground_Model.all'Access);
+   end Models;
 
-                          end Models;
 
 
    procedure layout (the_Visuals : in openGL.Visual.views)

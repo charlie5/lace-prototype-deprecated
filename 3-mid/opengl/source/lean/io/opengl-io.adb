@@ -96,17 +96,17 @@ is
    --  Forge
    --
 
-   function to_height_Map (image_Filename : in String;
+   function to_height_Map (image_Filename : in asset_Name;
                            Scale          : in Real  := 1.0) return height_Map_view
    is
       f       :          Ada.Streams.Stream_IO.File_Type;
       image   :          GID.Image_descriptor;
-      up_name : constant String                         := To_Upper (image_Filename);
+      up_name : constant String              := To_Upper (to_String (image_Filename));
 
       next_frame : Ada.Calendar.Day_Duration := 0.0;
 
    begin
-      Open (f, In_File, image_Filename);
+      Open (f, In_File, to_String (image_Filename));
 
       GID.Load_image_header (image,
                              Stream (f).all,
@@ -186,12 +186,12 @@ is
 
 
 
-   function to_Image (image_Filename : in String) return openGL.Image
+   function to_Image (image_Filename : in     asset_Name)  return openGL.Image
    is
       the_File :          Ada.Streams.Stream_IO.File_Type;
-      up_Name  : constant String                         := To_Upper (image_Filename);
+      up_Name  : constant String                         := To_Upper (to_String (image_Filename));
    begin
-      open (the_File, In_File, image_Filename);
+      open (the_File, In_File, to_String (image_Filename));
 
       declare
          the_Image : constant openGL.Image
@@ -206,7 +206,7 @@ is
 
 
 
-   function to_lucid_Image (image_Filename : in String) return openGL.lucid_Image
+   function to_lucid_Image (image_Filename : in asset_Name) return openGL.lucid_Image
    is
       unused : aliased Boolean;
    begin
@@ -215,17 +215,17 @@ is
 
 
 
-   function to_lucid_Image (image_Filename : in     String;
+   function to_lucid_Image (image_Filename : in     asset_Name;
                             is_Lucid       : access Boolean) return openGL.lucid_Image
    is
       the_File   :          Ada.Streams.Stream_IO.File_Type;
       the_Image  :          GID.Image_descriptor;
-      up_Name    : constant String                    := To_Upper (image_Filename);
+      up_Name    : constant String                    := to_Upper (to_String (image_Filename));
 
       next_Frame :          Ada.Calendar.Day_Duration := 0.0;
 
    begin
-      Open (the_File, In_File, image_Filename);
+      Open (the_File, In_File, to_String (image_Filename));
 
       GID.Load_image_header (the_Image,
                              Stream (the_File).all,
@@ -298,7 +298,7 @@ is
 
 
 
-   function to_Texture (image_Filename : in String) return openGL.Texture.Object
+   function to_Texture (image_Filename : in asset_Name) return openGL.Texture.Object
    is
       use openGL.Texture;
 

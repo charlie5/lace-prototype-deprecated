@@ -118,7 +118,7 @@ is
 
    type height_Map_view is access all openGL.height_Map;
 
-   function to_height_Map (image_Filename : in String;
+   function to_height_Map (image_Filename : in asset_Name;
                            Scale          : in Real  := 1.0) return height_Map_view;
 
 
@@ -131,9 +131,9 @@ is
    pragma Obsolescent   (fetch_Image, "use 'openGL.Images.fetch_Image' instead");
 
 
-   function       to_Image (image_Filename : in     String)  return openGL.Image;
-   function to_lucid_Image (image_Filename : in     String)  return openGL.lucid_Image;
-   function to_lucid_Image (image_Filename : in     String;
+   function       to_Image (image_Filename : in     asset_Name)  return openGL.Image;
+   function to_lucid_Image (image_Filename : in     asset_Name)  return openGL.lucid_Image;
+   function to_lucid_Image (image_Filename : in     asset_Name;
                             is_Lucid       : access Boolean) return openGL.lucid_Image;
 
 
@@ -141,7 +141,7 @@ is
    --  Textures
    --
 
-   function to_Texture (image_Filename : in     String)  return openGL.Texture.Object;
+   function to_Texture (image_Filename : in     asset_Name) return openGL.Texture.Object;
 
 
 

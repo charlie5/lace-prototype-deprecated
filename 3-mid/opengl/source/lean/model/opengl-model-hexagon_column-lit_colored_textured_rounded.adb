@@ -15,13 +15,14 @@ is
    ---------
    --- Forge
    --
+
    package body Forge
    is
       function new_hexagon_Column (Radius : in Real;
                                    Height : in Real;
                                    Upper,
-                                   Lower : in lit_colored_textured_rounded.hex_Face;
-                                   Shaft : in shaft_Face) return View
+                                   Lower  : in lit_colored_textured_rounded.hex_Face;
+                                   Shaft  : in shaft_Face) return View
       is
          Self : constant View := new Item;
       begin
@@ -32,15 +33,9 @@ is
          Self.lower_Face := Lower;
          Self.shaft_Face := Shaft;
 
---           Self.Bounds     := (ball => Scale (1),
---                               box  => (lower => (-Scale (1), -Scale (2), -Scale (3)),
---                                        upper => ( Scale (1),  Scale (2),  Scale (3))));
---           Self.define (Scale);
-
          return Self;
       end new_hexagon_Column;
    end Forge;
-
 
 
 
@@ -52,7 +47,7 @@ is
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
    is
-      pragma Unreferenced (Textures, Fonts);
+      pragma Unreferenced (Fonts);
 
       use openGL.Geometry,
           openGL.Geometry.lit_colored_textured,
@@ -63,13 +58,13 @@ is
       shaft_Height  : constant openGL.Real     := Self.Height;
       height_Offset : constant openGL.Vector_3 := (0.0,  shaft_Height / 2.0,  0.0);
 
-      mid_Sites     : constant hexagon.Sites := vertex_Sites (Self.Radius);
-      upper_Sites   :          hexagon.Sites := mid_Sites;
-      lower_Sites   :          hexagon.Sites := mid_Sites;
+      mid_Sites     : constant hexagon.Sites   := vertex_Sites (Self.Radius);
+      upper_Sites   :          hexagon.Sites   := mid_Sites;
+      lower_Sites   :          hexagon.Sites   := mid_Sites;
 
 
-      function new_hexagon_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array;
-                                 Flip     : in     Boolean      := False) return Geometry_view
+      function new_hexagon_Face (Vertices : in openGL.geometry.lit_colored_textured.Vertex_array;
+                                 Flip     : in Boolean := False) return Geometry_view
       is
          use openGL.Primitive;
 
@@ -86,10 +81,11 @@ is
            := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'Access;
 
          the_Primitive : constant Primitive.view
-           := Primitive.indexed.new_Primitive (triangle_Fan,  the_Indices).all'Access;
+           := Primitive.indexed.new_Primitive (triangle_Fan,
+                                               the_Indices).all'Access;
 
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (the_Primitive);
 
          return the_Geometry;
@@ -97,7 +93,7 @@ is
 
 
 
-      function new_shaft_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array)
+      function new_shaft_Face (Vertices : in openGL.geometry.lit_colored_textured.Vertex_array)
                                return Geometry_view
       is
          use openGL.Primitive;
@@ -108,7 +104,7 @@ is
          the_Primitive : constant Primitive.indexed.view := Primitive.indexed.new_Primitive (triangle_Strip,
                                                                                              the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
          return the_Geometry;
@@ -126,18 +122,11 @@ is
          lower_Sites (Each) := lower_Sites (Each) - height_Offset;
       end loop;
 
-      declare
-         upper_Bounds : constant openGL.Bounds := bounding_Box_of (Vector_3_array (upper_Sites));
-         lower_Bounds : constant openGL.Bounds := bounding_Box_of (Vector_3_array (lower_Sites));
-      begin
-         Self.Bounds.Box  := upper_Bounds.Box or lower_Bounds.Box;
-         Self.Bounds.Ball := upper_Bounds.Ball;
-      end;
 
       --  Upper
       --
       declare
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
+         the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
            := (1 => (site => height_Offset,    normal => Normal,  color => Self.upper_Face.center_Color,  coords => (0.0, 0.0)),
                2 => (site => upper_Sites (1),  normal => Normal,  color => Self.upper_Face.Colors (1),    coords => (0.0, 0.0)),
                3 => (site => upper_Sites (2),  normal => Normal,  color => Self.upper_Face.Colors (2),    coords => (1.0, 0.0)),
@@ -146,11 +135,11 @@ is
                6 => (site => upper_Sites (5),  normal => Normal,  color => Self.upper_Face.Colors (5),    coords => (0.0, 1.0)),
                7 => (site => upper_Sites (6),  normal => Normal,  color => Self.upper_Face.Colors (6),    coords => (0.0, 1.0)));
       begin
-         upper_Face := new_hexagon_Face (vertices => the_Vertices'Access);
+         upper_Face := new_hexagon_Face (vertices => the_Vertices);
 
-         if Self.upper_Face.Texture /= null_Object
+         if Self.upper_Face.Texture /= null_Asset
          then
-            upper_Face.Texture_is (Self.upper_Face.Texture);
+            upper_Face.Texture_is (Textures.fetch (Self.upper_Face.Texture));
          end if;
       end;
 
@@ -158,21 +147,21 @@ is
       --  Lower
       --
       declare
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1 => (site => -height_Offset,     normal => -Normal,   color => Self.upper_Face.center_Color,   coords => (0.0, 0.0)),
-               2 => (site =>  lower_Sites (1),   normal => -Normal,   color => Self.upper_Face.Colors (1),     coords => (0.0, 0.0)),
-               3 => (site =>  lower_Sites (2),   normal => -Normal,   color => Self.upper_Face.Colors (2),     coords => (1.0, 0.0)),
-               4 => (site =>  lower_Sites (3),   normal => -Normal,   color => Self.upper_Face.Colors (3),     coords => (1.0, 1.0)),
-               5 => (site =>  lower_Sites (4),   normal => -Normal,   color => Self.upper_Face.Colors (4),     coords => (0.0, 1.0)),
-               6 => (site =>  lower_Sites (5),   normal => -Normal,   color => Self.upper_Face.Colors (5),     coords => (0.0, 1.0)),
-               7 => (site =>  lower_Sites (6),   normal => -Normal,   color => Self.upper_Face.Colors (6),     coords => (0.0, 1.0)));
+         the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
+           := (1 => (site => -height_Offset,     normal => -Normal,   color => Self.lower_Face.center_Color,   coords => (0.0, 0.0)),
+               2 => (site =>  lower_Sites (1),   normal => -Normal,   color => Self.lower_Face.Colors (1),     coords => (0.0, 0.0)),
+               3 => (site =>  lower_Sites (2),   normal => -Normal,   color => Self.lower_Face.Colors (2),     coords => (1.0, 0.0)),
+               4 => (site =>  lower_Sites (3),   normal => -Normal,   color => Self.lower_Face.Colors (3),     coords => (1.0, 1.0)),
+               5 => (site =>  lower_Sites (4),   normal => -Normal,   color => Self.lower_Face.Colors (4),     coords => (0.0, 1.0)),
+               6 => (site =>  lower_Sites (5),   normal => -Normal,   color => Self.lower_Face.Colors (5),     coords => (0.0, 1.0)),
+               7 => (site =>  lower_Sites (6),   normal => -Normal,   color => Self.lower_Face.Colors (6),     coords => (0.0, 1.0)));
       begin
-         lower_Face := new_hexagon_Face (vertices => the_Vertices'Access,
+         lower_Face := new_hexagon_Face (vertices => the_Vertices,
                                          flip     => True);
 
-         if Self.upper_Face.Texture /= null_Object
+         if Self.lower_Face.Texture /= null_Asset
          then
-            lower_Face.Texture_is (Self.lower_Face.Texture);
+            lower_Face.Texture_is (Textures.fetch (Self.lower_Face.Texture));
          end if;
       end;
 
@@ -215,7 +204,7 @@ is
 
          Normals      : constant shaft_Normals := get_Normals;
 
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
+         the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
            := ( 1 => (site => upper_Sites (1),   normal => Normals (1),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
                 2 => (site => lower_Sites (1),   normal => Normals (1),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
                 3 => (site => upper_Sites (2),   normal => Normals (2),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
@@ -229,11 +218,11 @@ is
                11 => (site => upper_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
                12 => (site => lower_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)));
       begin
-         shaft_Face := new_shaft_Face (vertices => the_Vertices'Access);
+         shaft_Face := new_shaft_Face (vertices => the_Vertices);
 
-         if Self.shaft_Face.Texture /= null_Object
+         if Self.shaft_Face.Texture /= null_Asset
          then
-            shaft_Face.Texture_is (Self.shaft_Face.Texture);
+            shaft_Face.Texture_is (Textures.fetch (Self.shaft_Face.Texture));
          end if;
       end;
 

@@ -347,7 +347,7 @@ is
             end;
          end loop;
 
-         pragma assert ( tri_indices_Count =  tri_indices_Last);
+         pragma Assert (tri_indices_Count = tri_indices_Last);
 
 
          --  Decide which geometry class is required and create the geometry.
@@ -433,7 +433,7 @@ is
                declare
                   use openGL.Texture;
                   the_Image   : constant openGL.lucid_Image
-                    := openGL.io.to_lucid_Image (to_String (Self.Texture));
+                    := io.to_lucid_Image (Self.Texture);
 
                   the_Texture : constant openGL.Texture.object
                     := to_Texture (the_Image);
@@ -445,8 +445,8 @@ is
             else
                declare
                   use openGL.Texture;
-                  the_Image   : constant openGL.Image          := openGL.io.to_Image (to_String (Self.Texture));
-                  the_Texture : constant openGL.Texture.object := to_Texture (the_Image);
+                  the_Image   : constant openGL.Image          := io.to_Image   (Self.Texture);
+                  the_Texture : constant openGL.Texture.object :=    to_Texture (the_Image);
                begin
                   Self.Geometry.Texture_is (the_Texture);
                end;
