@@ -1,33 +1,9 @@
 with
+     openGL.Model,
      openGL.Visual,
-     openGL.Palette,
-     openGL.Texture,
-     openGL.IO,
-     openGL.Font,
-
-     openGL.Model.arrow         .colored,
-     openGL.Model.billboard     .textured,
-     openGL.Model.box           .colored,
-     openGL.Model.box           .lit_colored_textured,
-     openGL.Model.capsule       .lit_colored_textured,
-     openGL.Model.grid,
-     openGL.Model.hexagon       .lit_colored_textured,
-     openGL.Model.hexagon_Column.lit_colored_textured_faceted,
-     openGL.Model.hexagon_Column.lit_colored_textured_rounded,
-     openGL.Model.line          .colored,
-     openGL.Model.open_gl,
-     openGL.Model.polygon       .lit_colored,
-     openGL.Model.segment_line,
-     openGL.Model.sphere        .colored,
-     openGL.Model.sphere        .lit_colored,
-     openGL.Model.sphere        .lit_colored_textured,
-     openGL.Model.Text          .lit_colored_textured,
-     openGL.Model.terrain,
-
      openGL.Demo,
 
      Ada.Text_IO,
-     Ada.Unchecked_Deallocation,
      Ada.Exceptions;
 
 procedure launch_render_Models
@@ -36,9 +12,6 @@ procedure launch_render_Models
 --
 is
    use openGL,
-       openGL.Model,
-       openGL.Model.box,
-       openGL.Palette,
        openGL.Math,
        openGL.linear_Algebra_3d,
        ada.Text_IO;
