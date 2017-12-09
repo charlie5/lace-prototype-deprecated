@@ -1,24 +1,17 @@
 with
      openGL.Palette,
-     openGL.Geometry.colored,
      openGL.Primitive.non_indexed;
 
 
 package body openGL.Model.Grid
 is
 
-   type State is
-      record
-         Vertices : access openGL.geometry.colored.Vertex_array;
-         Geometry : access openGL.Geometry.colored.item'Class;
-      end record;
-
-
 
    function Line_Count (Extent : in Positive) return Positive
    is
    begin
-      if Extent mod 2  /=  0 then
+      if Extent mod 2  /=  0
+      then
          return Extent;
       else
          return Extent + 1;
@@ -35,14 +28,13 @@ is
                            Width  : Integer;
                            Height : Integer) return Model.Grid.item
    is
-      Self : Model.Grid.item;
+      Self         :          Model.Grid.item;
 
-      vertex_Count : constant Positive := (  line_Count (Width)
-                                           + line_Count (Height))  *  2;
+      vertex_Count : constant Positive  := (  line_Count (Width)
+                                            + line_Count (Height))  *  2;
 
-      half_Width  : constant math.Real := math.Real (Width)  / 2.0;
-      half_Height : constant math.Real := math.Real (Height) / 2.0;
-
+      half_Width   : constant math.Real := math.Real (Width)  / 2.0;
+      half_Height  : constant math.Real := math.Real (Height) / 2.0;
    begin
       Self.Color  := Color;
       Self.Width  := Width;
@@ -52,12 +44,10 @@ is
                                upper => ( half_Width,  half_Height,  0.01)));
       set_Ball_from_Box (Self.Bounds);
 
-      Self.State          := new State;
-      Self.State.Vertices := new openGL.Geometry.colored.Vertex_array (1 .. openGL.Index_t (vertex_Count));
+      Self.Vertices := new openGL.Geometry.colored.Vertex_array (1 .. openGL.Index_t (vertex_Count));
 
       return Self;
    end to_grid_Model;
-
 
 
    function new_grid_Model (Color  : openGL.Color;
@@ -86,9 +76,9 @@ is
       the_Primitive : openGL.Primitive.non_indexed.view;
 
    begin
-      if Self.State.Geometry = null
+      if Self.Geometry = null
       then
-         Self.State.Geometry := openGL.Geometry.colored.new_Geometry;
+         Self.Geometry := openGL.Geometry.colored.new_Geometry;
       end if;
 
       set_Sites :
@@ -123,19 +113,19 @@ is
                Color := White;
             end if;
 
-            vertex_Count                             := vertex_Count + 1;
-            Self.State.Vertices (vertex_Count).Site  := (-half_Width,
-                                                         openGL.Real (Row - 1) - half_Height + y_Adjust,
-                                                         0.16);
-            Self.State.Vertices (vertex_Count).Color := (primary => Color,
-                                                         opacity => openGL.Opaque);
+            vertex_Count                       := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site  := (-half_Width,
+                                                   openGL.Real (Row - 1) - half_Height + y_Adjust,
+                                                   0.16);
+            Self.Vertices (vertex_Count).Color := (primary => Color,
+                                                   opacity => openGL.Opaque);
 
-            vertex_Count                             := vertex_Count + 1;
-            Self.State.Vertices (vertex_Count).Site  := ( half_Width,
-                                                         openGL.Real (Row - 1) - half_Height + y_Adjust,
-                                                         0.16);
-            Self.State.Vertices (vertex_Count).Color := (primary => Color,
-                                                         opacity => openGL.Opaque);
+            vertex_Count                       := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site  := (half_Width,
+                                                   openGL.Real (Row - 1) - half_Height + y_Adjust,
+                                                   0.16);
+            Self.Vertices (vertex_Count).Color := (primary => Color,
+                                                   opacity => openGL.Opaque);
             if Row = row_Count / 2 + 1
             then
                Color := Self.Color;
@@ -149,19 +139,19 @@ is
                Color := White;
             end if;
 
-            vertex_Count                             := vertex_Count + 1;
-            Self.State.Vertices (vertex_Count).Site  := (openGL.Real (Col - 1) - half_Width + x_Adjust,
-                                                         -half_Height,
-                                                         0.16);
-            Self.State.Vertices (vertex_Count).Color := (primary => Color,
-                                                         opacity => openGL.Opaque);
+            vertex_Count                       := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site  := (openGL.Real (Col - 1) - half_Width + x_Adjust,
+                                                   -half_Height,
+                                                   0.16);
+            Self.Vertices (vertex_Count).Color := (primary => Color,
+                                                   opacity => openGL.Opaque);
 
-            vertex_Count                             := vertex_Count + 1;
-            Self.State.Vertices (vertex_Count).Site  := (openGL.Real (Col - 1) - half_Width + x_Adjust,
-                                                         half_Height,
-                                                         0.16);
-            Self.State.Vertices (vertex_Count).Color := (primary => Color,
-                                                         opacity => openGL.Opaque);
+            vertex_Count                       := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site  := (openGL.Real (Col - 1) - half_Width + x_Adjust,
+                                                   half_Height,
+                                                   0.16);
+            Self.Vertices (vertex_Count).Color := (primary => Color,
+                                                   opacity => openGL.Opaque);
             if Col = col_Count / 2 + 1
             then
                Color := Self.Color;
@@ -169,59 +159,14 @@ is
          end loop;
       end set_Sites;
 
-      Self.State.Geometry.is_Transparent (False);
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
+      Self.Geometry.is_Transparent (False);
+      Vertices_are (Self.Geometry.all, Self.Vertices.all);
 
-      the_Primitive := openGL.Primitive.non_indexed.new_Primitive (openGL.primitive.Lines,  Self.State.Vertices'Length);
-      Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+      the_Primitive := openGL.Primitive.non_indexed.new_Primitive (openGL.primitive.Lines,  Self.Vertices'Length);
+      Self.Geometry.add (openGL.Primitive.view (the_Primitive));
 
-      return (1 => Self.State.Geometry.all'Access);
+      return (1 => Self.Geometry.all'Access);
    end to_GL_Geometries;
-
-
-
-   overriding
-   procedure set_Bounds (Self : in out Item)
-   is
-      use math.Geometry;
-   begin
-      Self.Bounds     := null_Bounds;
-      Self.Bounds.Box := Self.Bounds.Box or Vector_3' (Self.state.Vertices (1).Site);
-      Self.Bounds.Box := Self.Bounds.Box or Vector_3' (Self.state.Vertices (2).Site);
-
-      set_Ball_from_Box (Self.Bounds);
-   end set_Bounds;
-
-
-
-   function Site (Self : in  Item;   for_End : in Integer) return math.Vector_3
-   is
-      use openGL.Geometry.colored;
-   begin
-      return Self.State.Vertices (openGL.Index_t (for_End)).Site;
-   end Site;
-
-
-
-   procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
-                                            for_End : in Integer)
-   is
-      use openGL.Geometry.colored;
-   begin
-      Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
-
-      Vertices_are (self.State.Geometry.all, self.State.Vertices.all);
-      Self.set_Bounds;
-   end Site_is;
-
-
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
 
 
 end openGL.Model.Grid;
