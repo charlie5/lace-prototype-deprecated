@@ -28,7 +28,6 @@ is
    end Forge;
 
 
-
    --------------
    --- Attributes
    --
@@ -48,7 +47,7 @@ is
       the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
 
 
-      function new_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : in openGL.geometry.lit_colored_textured.Vertex_array) return Geometry_view
       is
          use openGL.Primitive;
 
@@ -58,7 +57,7 @@ is
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan,  the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
          return the_Geometry;
@@ -71,7 +70,7 @@ is
       --  Upper Face
       --
       declare
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
+         the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
            := (1 => (site => (0.0, 0.0, 0.0), normal => Normal, color => self.Face.center_Color, coords => (0.0, 0.0)),
                2 => (site =>   the_Sites (1), normal => Normal, color => self.Face.Colors (1),   coords => (0.0, 0.0)),
                3 => (site =>   the_Sites (2), normal => Normal, color => self.Face.Colors (2),   coords => (1.0, 0.0)),
@@ -80,7 +79,7 @@ is
                6 => (site =>   the_Sites (5), normal => Normal, color => self.Face.Colors (5),   coords => (0.0, 1.0)),
                7 => (site =>   the_Sites (6), normal => Normal, color => self.Face.Colors (6),   coords => (0.0, 1.0)));
       begin
-         upper_Face := new_Face (vertices => the_Vertices'Access);
+         upper_Face := new_Face (vertices => the_Vertices);
 
          if Self.Face.Texture /= null_Object
          then

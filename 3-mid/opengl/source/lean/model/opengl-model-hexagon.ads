@@ -6,12 +6,8 @@ is
 
    type Item is abstract new openGL.Model.item with
       record
-         Radius : Real          := 1.0;
---           Bounds : openGL.Bounds := null_Bounds;
+         Radius : Real := 1.0;
       end record;
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
 
 
    subtype site_Id is Integer range 1 .. 6;
