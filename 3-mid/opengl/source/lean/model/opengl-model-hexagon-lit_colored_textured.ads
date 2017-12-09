@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Geometry,
      openGL.Texture;
 
@@ -10,9 +9,9 @@ package openGL.Model.Hexagon.lit_colored_textured
 --
 is
 
-   --------
-   --- Face
-   --
+   type Item is new openGL.Model.item with private;
+   type View is access all Item'Class;
+
 
    type Face is
       record
@@ -20,18 +19,6 @@ is
          Colors       : openGL.lucid_Colors (1 .. 6);                                --  The color of each of the faces 6 vertices.
          Texture      : openGL.Texture.Object       := openGL.Texture.null_Object;   --  The texture to be applied to the face.
       end record;
-
-
-   -----------------
-   --- Hexagon Model
-   --
-
-   type Item is new openGL.Model.Hexagon.item with
-      record
-         Face : lit_colored_textured.Face;
-      end record;
-
-   type View is access all Item'Class;
 
 
    ---------
@@ -45,7 +32,6 @@ is
    end Forge;
 
 
-
    --------------
    --- Attributes
    --
@@ -53,5 +39,14 @@ is
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
+
+private
+
+
+   type Item is new openGL.Model.Hexagon.item with
+      record
+         Face : lit_colored_textured.Face;
+      end record;
+
 
 end openGL.Model.Hexagon.lit_colored_textured;

@@ -153,7 +153,6 @@ is
       end loop;
 
       Self.State.Geometry := openGL.Geometry.colored.new_Geometry;
-      Self.state.Geometry.Bounds_are  (Self.Bounds);
 
       Self.state.Geometry.is_Transparent (False);
 

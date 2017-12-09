@@ -247,7 +247,6 @@ is
 
 
       the_Geometry.is_Transparent (False);
-      the_Geometry.Bounds_are     (the_Bounds);
       the_Geometry.Vertices_are   (the_Vertices);
 
       Self.Bounds := the_Bounds;

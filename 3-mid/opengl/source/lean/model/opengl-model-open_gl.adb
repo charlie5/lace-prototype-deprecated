@@ -500,13 +500,6 @@ is
             Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;
          end if;
 
-         Self.Geometry.Bounds_are ((ball => Self.Scale (1) / 2.0,
-                                    box  => (lower => ( -Self.Scale (1) / 2.0,
-                                                        -Self.Scale (2) / 2.0,
-                                                        -Self.Scale (3) / 2.0),
-                                             upper => (  Self.Scale (1) / 2.0,
-                                                         Self.Scale (2) / 2.0,
-                                                         Self.Scale (3) / 2.0))));
          Self.Geometry.is_Transparent (now => False);
          Self.Geometry.Label_is (to_String (Self.Model) & "-" & to_String (Self.Texture));
       end;

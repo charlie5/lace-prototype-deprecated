@@ -195,22 +195,11 @@ is
          end set_Texture;
       end if;
 
-      declare
-         the_Bounds : openGL.Bounds := (ball => <>,
-                                        box  => (lower => (-self.Scale (1) / 2.0,
-                                                           -self.Scale (2) / 2.0,
-                                                           -self.Scale (3) / 2.0),
-                                                 upper => ( self.Scale (1) / 2.0,
-                                                            self.Scale (2) / 2.0,
-                                                            self.Scale (3) / 2.0)));
-      begin
-         set_Ball_from_Box       (the_Bounds);
-         the_Geometry.Bounds_are (the_Bounds);
-      end;
 
       for i in the_Vertices'Range
       loop
-         the_Vertices (i).Site := Scaled (the_Vertices (i).Site, by => Self.Scale);
+         the_Vertices (i).Site := Scaled (the_Vertices (i).Site,
+                                          by => Self.Scale);
       end loop;
 
 

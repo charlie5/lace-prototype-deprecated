@@ -8,8 +8,8 @@ is
    type View is access all Item'Class;
 
 
-   overriding
-   procedure define (Self : in out Item);
+--     overriding
+--     procedure define (Self : in out Item);
 
    overriding
    procedure define  (Self : in out Item;   use_vertex_Shader   : in openGL.Shader.view;

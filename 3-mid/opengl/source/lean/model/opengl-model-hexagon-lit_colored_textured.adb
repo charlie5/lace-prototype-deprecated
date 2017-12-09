@@ -9,7 +9,6 @@ is
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
 
 
-
    ---------
    --- Forge
    --
@@ -62,8 +61,6 @@ is
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         the_Geometry.Bounds_are (Self.Bounds);
-
          return the_Geometry;
       end new_Face;
 
@@ -71,9 +68,7 @@ is
       upper_Face : Geometry_view;
 
    begin
-      Self.Bounds := bounding_Box_of (Vector_3_array (the_Sites));
-
-      --  Upper
+      --  Upper Face
       --
       declare
          the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array

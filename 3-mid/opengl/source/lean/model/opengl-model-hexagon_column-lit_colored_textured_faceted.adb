@@ -91,7 +91,6 @@ is
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (openGL.Primitive.view (the_Primitive));
 
-         the_Geometry.Bounds_are (Self.Bounds);
          return the_Geometry;
       end new_hexagon_Face;
 
@@ -111,7 +110,6 @@ is
       begin
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (the_Primitive);
-         the_Geometry.Bounds_are   (Self.Bounds);
 
          return the_Geometry;
       end new_shaft_Face;

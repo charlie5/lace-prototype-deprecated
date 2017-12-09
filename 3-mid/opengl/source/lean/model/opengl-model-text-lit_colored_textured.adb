@@ -319,7 +319,6 @@ is
 
          the_Geometry.add          (openGL.Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
-         the_Geometry.Bounds_are   (Self.Bounds);
          the_Geometry.Texture_is   (openGL.Texture.to_Texture (Self.Font.gl_Texture));
 --           the_Geometry.is_Transparent;
 

@@ -85,7 +85,6 @@ is
          the_Indices (Each) := openGL.Index_t (Each);
       end loop;
 
-      the_Geometry.Bounds_are     (Self.Bounds);
       the_Geometry.is_Transparent (False);
 
       Vertices_are (the_Geometry.all, the_Vertices);
