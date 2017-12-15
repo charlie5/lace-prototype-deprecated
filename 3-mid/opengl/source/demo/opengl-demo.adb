@@ -180,7 +180,7 @@ is
                         colors       => (others => (Red, Opaque)),
                         texture      => <>),
               Shaft => (color        => (Green, Opaque),
-                        texture      => <>));
+                        texture      => the_Texture));
 
       the_rounded_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_rounded.view
         := openGL.Model.hexagon_Column.lit_colored_textured_rounded.forge.new_hexagon_Column
@@ -192,7 +192,7 @@ is
               lower => (center_Color => (Green, Opaque),
                         colors       => (others => (Red, Opaque)),
                         texture      => <>),
-              Shaft => (color        => (Green, Opaque),
+              Shaft => (color        => (White, Opaque),
                         texture      => the_Texture));
 
       the_line_Model       : constant openGL.Model.line.colored.view
