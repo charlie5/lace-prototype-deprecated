@@ -205,18 +205,18 @@ is
          Normals      : constant shaft_Normals := get_Normals;
 
          the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
-           := ( 1 => (site => upper_Sites (1),   normal => Normals (1),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
+           := ( 1 => (site => upper_Sites (1),   normal => Normals (1),   color => Self.shaft_Face.Color,   coords => (0.0, 1.0)),
                 2 => (site => lower_Sites (1),   normal => Normals (1),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                3 => (site => upper_Sites (2),   normal => Normals (2),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                4 => (site => lower_Sites (2),   normal => Normals (2),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                5 => (site => upper_Sites (3),   normal => Normals (3),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                6 => (site => lower_Sites (3),   normal => Normals (3),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                7 => (site => upper_Sites (4),   normal => Normals (4),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                8 => (site => lower_Sites (4),   normal => Normals (4),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-                9 => (site => upper_Sites (5),   normal => Normals (5),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-               10 => (site => lower_Sites (5),   normal => Normals (5),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-               11 => (site => upper_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)),
-               12 => (site => lower_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (0.0, 0.0)));
+                3 => (site => upper_Sites (2),   normal => Normals (2),   color => Self.shaft_Face.Color,   coords => (0.2, 1.0)),
+                4 => (site => lower_Sites (2),   normal => Normals (2),   color => Self.shaft_Face.Color,   coords => (0.2, 0.0)),
+                5 => (site => upper_Sites (3),   normal => Normals (3),   color => Self.shaft_Face.Color,   coords => (0.4, 1.0)),
+                6 => (site => lower_Sites (3),   normal => Normals (3),   color => Self.shaft_Face.Color,   coords => (0.4, 0.0)),
+                7 => (site => upper_Sites (4),   normal => Normals (4),   color => Self.shaft_Face.Color,   coords => (0.6, 1.0)),
+                8 => (site => lower_Sites (4),   normal => Normals (4),   color => Self.shaft_Face.Color,   coords => (0.6, 0.0)),
+                9 => (site => upper_Sites (5),   normal => Normals (5),   color => Self.shaft_Face.Color,   coords => (0.8, 1.0)),
+               10 => (site => lower_Sites (5),   normal => Normals (5),   color => Self.shaft_Face.Color,   coords => (0.8, 0.0)),
+               11 => (site => upper_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (1.0, 1.0)),
+               12 => (site => lower_Sites (6),   normal => Normals (6),   color => Self.shaft_Face.Color,   coords => (1.0, 0.0)));
       begin
          shaft_Face := new_shaft_Face (vertices => the_Vertices);
 

@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Geometry,
      openGL.Texture;
 
@@ -23,9 +22,9 @@ is
 
    type hex_Face is
       record
-         center_Color : openGL.lucid_Color;                         --  The color of the center of the hex.
-         Colors       : openGL.lucid_Colors (1 .. 6);               --  The color of each of the faces 4 vertices.
-         Texture      : openGL.asset_Name := openGL.null_Asset;     --  The texture to be applied to the face.
+         center_Color : openGL.lucid_Color;                         -- The color of the center of the hex.
+         Colors       : openGL.lucid_Colors (1 .. 6);               -- The color of each of the faces 4 vertices.
+         Texture      : openGL.asset_Name := openGL.null_Asset;     -- The texture to be applied to the face.
       end record;
 
 
