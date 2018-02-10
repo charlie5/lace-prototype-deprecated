@@ -6,7 +6,7 @@ with
      float_math.Algebra.linear.d3;
 
 
-package body openGL.Model.Hexagon_Column.lit_colored_textured_rounded
+package body openGL.Model.hexagon_Column.lit_colored_textured_rounded
 is
 
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'Class;
@@ -232,4 +232,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.Hexagon_Column.lit_colored_textured_rounded;
+end openGL.Model.hexagon_Column.lit_colored_textured_rounded;
