@@ -3,7 +3,7 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.open_gl
+package openGL.Model.any
 --
 --  Provides a general 3D model.
 --
@@ -37,13 +37,13 @@ is
                           Model            : in asset_Name;
                           math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
-                          Texture_is_lucid : in Boolean) return openGL.Model.open_gl.item;
+                          Texture_is_lucid : in Boolean) return openGL.Model.any.item;
 
       function new_Model (Scale            : in math.Vector_3;
                           Model            : in asset_Name;
                           math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
-                          Texture_is_lucid : in Boolean) return openGL.Model.open_gl.view;
+                          Texture_is_lucid : in Boolean) return openGL.Model.any.view;
    end Forge;
 
 
@@ -70,4 +70,4 @@ private
 
    procedure build_GL_Geometries (Self : in out Item);
 
-end openGL.Model.open_gl;
+end openGL.Model.any;

@@ -19,7 +19,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body openGL.Model.open_gl
+package body openGL.Model.any
 is
 
    type lit_textured_Geometry_view         is access all openGL.Geometry.lit_textured.item'class;
@@ -35,13 +35,13 @@ is
    is
 
       function to_Model (Scale            : in math.Vector_3;
-                         Model            : in asset_Name;
-                         math_Model       : access Geometry_3d.a_Model;
-                         Texture          : in asset_Name;
-                         Texture_is_lucid : in Boolean) return openGL.Model.open_gl.item
+                          Model            : in asset_Name;
+                          math_Model       : access Geometry_3d.a_Model;
+                          Texture          : in asset_Name;
+                         Texture_is_lucid : in Boolean) return openGL.Model.any.item
       is
       begin
-         return Self : openGL.Model.open_gl.item := (openGL.Model.item with
+         return Self : openGL.Model.any.item := (openGL.Model.item with
                                                      Model,
                                                      math_Model,
                                                      Texture,
@@ -59,10 +59,10 @@ is
                           Model            : in asset_Name;
                           math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
-                          Texture_is_lucid : in Boolean) return openGL.Model.open_gl.view
+                          Texture_is_lucid : in Boolean) return openGL.Model.any.view
       is
       begin
-         return new openGL.Model.open_GL.item' (to_Model (Scale, Model, math_Model, Texture, Texture_is_lucid));
+         return new openGL.Model.any.item' (to_Model (Scale, Model, math_Model, Texture, Texture_is_lucid));
       end new_Model;
 
    end Forge;
@@ -507,4 +507,4 @@ is
    end build_GL_Geometries;
 
 
-end openGL.Model.open_gl;
+end openGL.Model.any;

@@ -15,7 +15,7 @@ with
      openGL.Model.hexagon_Column.lit_colored_textured_faceted,
      openGL.Model.hexagon_Column.lit_colored_textured_rounded,
      openGL.Model.line          .colored,
-     openGL.Model.open_gl,
+     openGL.Model.any,
      openGL.Model.polygon       .lit_colored,
      openGL.Model.segment_line,
      openGL.Model.sphere        .colored,
@@ -200,16 +200,16 @@ is
                                                      End_1 => (0.0, 0.0, 0.0),
                                                      End_2 => (5.0, 5.0, 0.0));
 
-      the_collada_Model    : constant openGL.Model.open_gl.view   -- tbd: broken for human models
-        := openGL.Model.open_gl.forge.new_Model (scale            => (1.0, 1.0, 1.0),
+      the_collada_Model    : constant openGL.Model.any.view   -- tbd: broken for human models
+        := openGL.Model.any.forge.new_Model (scale            => (1.0, 1.0, 1.0),
                                                  model => to_Asset ("assets/opengl/model/human.dae"),
 --                                                   model => to_Asset ("assets/opengl/model/deer.dae"),
                                                  math_model => null,
                                                  Texture          => the_Texture,
                                                  Texture_is_lucid => False);
 
-      the_wavefront_Model  : constant openGL.Model.open_gl.view
-        := openGL.Model.open_gl.forge.new_Model (scale => (1.0, 1.0, 1.0),
+      the_wavefront_Model  : constant openGL.Model.any.view
+        := openGL.Model.any.forge.new_Model (scale => (1.0, 1.0, 1.0),
                                                  model => to_Asset ("assets/opengl/model/human.obj"),
                                                  math_model => null,
                                                  Texture          => the_Texture,
@@ -304,14 +304,14 @@ is
 
          i := i + 1;
          X := X + Pad;
-      end;
+      end set_next_visual_Site;
 
       procedure new_Line
       is
       begin
          X := initial_X;
          Y := Y - Pad;
-      end;
+      end new_Line;
 
    begin
       set_next_visual_Site;
