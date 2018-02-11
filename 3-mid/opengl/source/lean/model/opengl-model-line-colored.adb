@@ -1,18 +1,9 @@
 with
-     openGL.Geometry.colored,
      openGL.Primitive.indexed;
 
 
 package body openGL.Model.line.colored
 is
-
-   type State is
-      record
-         Vertices : access openGL.geometry.colored.Vertex_array := new openGL.geometry.colored.Vertex_array (1 .. 2);
-         Geometry : access openGL.Geometry.colored.item'Class;
-      end record;
-
-
 
    ---------
    --- Forge
@@ -26,9 +17,8 @@ is
       Self : Model.line.colored.item;
    begin
       Self.Color                   := Color;
-      Self.State                   := new State;
-      Self.State.Vertices (1).Site := End_1;
-      Self.State.Vertices (2).Site := End_2;
+      Self.Vertices (1).Site := End_1;
+      Self.Vertices (2).Site := End_2;
 
       Self.set_Bounds;
 
@@ -64,75 +54,51 @@ is
       the_Primitive :          openGL.Primitive.indexed.view;
 
    begin
-      if Self.State.Geometry = null
+      if Self.Geometry = null
       then
-         Self.State.Geometry := openGL.Geometry.colored.new_Geometry;
+         Self.Geometry := openGL.Geometry.colored.new_Geometry;
       end if;
 
       set_Sites :
       declare
          use type math.Real;
       begin
-         self.State.Vertices (1).Color := (primary => self.Color,  opacity => openGL.Opaque);
-         self.State.Vertices (2).Color := (primary => self.Color,  opacity => openGL.Opaque);
+         Self.Vertices (1).Color := (primary => Self.Color,  opacity => openGL.Opaque);
+         self.Vertices (2).Color := (primary => self.Color,  opacity => openGL.Opaque);
       end set_Sites;
 
       the_Indices := (1, 2);
 
-      Self.State.Geometry.is_Transparent (False);
+      Self.Geometry.is_Transparent (False);
 
-      Vertices_are (self.State.Geometry.all, self.State.Vertices.all);
+      Vertices_are (Self.Geometry.all, Self.Vertices);
 
       the_Primitive := openGL.Primitive.indexed.new_Primitive (openGL.primitive.Lines,  the_Indices);
-      Self.State.Geometry.add (openGL.Primitive.view (the_Primitive));
+      Self.Geometry.add (openGL.Primitive.view (the_Primitive));
 
-      return (1 => Self.State.Geometry.all'Access); -- the_Face.all'access);
+      return (1 => Self.Geometry.all'Access);
    end to_GL_Geometries;
 
 
 
-   overriding
-   procedure set_Bounds (Self : in out Item)
-   is
-      use math.Geometry;
-   begin
-      Self.Bounds      := null_Bounds;
-
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.state.Vertices (1).Site);
-      Self.Bounds.Box  := Self.Bounds.Box or Vector_3' (Self.state.Vertices (2).Site);
-
-      Self.Bounds.Ball := Real'Max (abs (Self.state.Vertices (1).Site),
-                                    abs (Self.state.Vertices (2).Site));
-   end set_Bounds;
-
-
-
-   function  Site    (Self : in     Item;   for_End : in Integer) return math.Vector_3
+   function  Site    (Self : in     Item;   for_End : in end_Id) return math.Vector_3
    is
       use openGL.Geometry.colored;
    begin
-      return self.State.Vertices (openGL.Index_t (for_End)).Site;
+      return Self.Vertices (for_End).Site;
    end Site;
 
 
    procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
-                                            for_End : in Integer)
+                                            for_End : in end_Id)
    is
       use openGL.Geometry.colored;
    begin
-      Self.State.Vertices (openGL.Index_t (for_End)).Site := Now;
-      Vertices_are (Self.State.Geometry.all, Self.State.Vertices.all);
+      Self.Vertices (for_End).Site := Now;
+      Vertices_are (Self.Geometry.all, Self.Vertices);
+
       Self.set_Bounds;
    end Site_is;
-
-
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
 
 
 end openGL.Model.line.colored;

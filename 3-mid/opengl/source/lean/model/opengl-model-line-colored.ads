@@ -1,6 +1,10 @@
 with
      openGL.Model;
 
+private
+with
+     openGL.Geometry.colored;
+
 
 package openGL.Model.line.colored
 --
@@ -16,10 +20,6 @@ is
    --- Forge
    --
 
-   function  to_line_Model (Color : in openGL.Color;
-                            End_1,
-                            End_2 : in math.Vector_3 := Origin_3d) return Model.line.colored.item;
-
    function new_line_Model (Color : in openGL.Color;
                             End_1,
                             End_2 : in math.Vector_3 := Origin_3d) return Model.line.colored.view;
@@ -33,32 +33,22 @@ is
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
 
+   subtype end_Id is Index_t range 1 .. 2;
+
    procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
-                                            for_End : in Integer);
-   function  Site    (Self : in     Item;   for_End : in Integer) return math.Vector_3;
-
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
-
+                                            for_End : in end_Id);
+   function  Site    (Self : in     Item;   for_End : in end_Id) return math.Vector_3;
 
 
 
 private
 
-   type State;     -- An opaque Taft type.
-
-
    type Item is new openGL.Model.line.item with
       record
-         Color  :        openGL.Color;
---           Bounds :        openGL.Bounds;
-         State  : access line.colored.State;
+         Color    :        openGL.Color;
+
+         Vertices :        openGL.geometry.colored.Vertex_array (end_Id);
+         Geometry : access openGL.Geometry.colored.item'Class;
       end record;
-
-
-   overriding
-   procedure set_Bounds (Self : in out Item);
-
 
 end openGL.Model.line.colored;

@@ -13,7 +13,8 @@ is
 
    type Group (Kind : group_Kind := group_Name) is
       record
-         case Kind is
+         case Kind
+         is
          when object_Name     =>   object_Name     : Text;
          when group_Name      =>   group_Name      : Text;
          when smoothing_Group =>   smooth_group_Id : Natural;
@@ -33,7 +34,8 @@ is
 
    type Face (Kind : face_Kind := a_Facet) is
       record
-         case Kind is
+         case Kind
+         is
          when a_Group =>   Group : wavefront.Group;
          when a_Facet =>   Facet : openGL.IO.Face;
          end case;

@@ -179,7 +179,7 @@ is
          elsif Tail (model_Name, 4) = ".obj" then   return wavefront.to_Model (model_Name);
          elsif Tail (model_Name, 4) = ".dae" then   return collada  .to_Model (model_Name,   (1.0, 1.0, 1.0));
          elsif Tail (model_Name, 4) = ".tab" then   return tabulated.to_Model (model_Name,   (1.0, 1.0, 1.0));
-         else                                       raise unsupported_model_Format with "for model => '" & model_Name & "'";
+         else                                       raise  unsupported_model_Format with "for model => '" & model_Name & "'";
          end if;
       end load_Model;
 
@@ -218,9 +218,9 @@ is
                begin
                   case the_model_Face.Kind
                   is
-                     when Triangle => tri_Count  := tri_Count  + 1;
-                     when Quad     => tri_Count  := tri_Count  + 2;
-                     when Polygon  => null;
+                     when Triangle =>   tri_Count := tri_Count + 1;
+                     when Quad     =>   tri_Count := tri_Count + 2;
+                     when Polygon  =>   null;
                   end case;
 
                   for Each in the_io_Vertices'Range
@@ -304,9 +304,9 @@ is
       --            - Set the quad     faceted Indices.
       --
       declare
-         tri_indices_Last   : constant openGL.long_Index_t                  := openGL.long_Index_t (tri_Count) * 3;
+         tri_indices_Last   : constant openGL.long_Index_t                 := openGL.long_Index_t (tri_Count) * 3;
          tri_Indices        : aliased  long_Indices (1 .. tri_indices_Last);
-         tri_indices_Count  :          openGL.long_Index_t                  := 0;
+         tri_indices_Count  :          openGL.long_Index_t                 := 0;
 
          procedure add_to_Tri (the_Vertex : in io.Vertex)
          is
