@@ -22,11 +22,8 @@ is
 
 
 
-   package Forge
-   is
-      function new_Polygon (Vertices : in Vector_2_array;
-                            Color    : in lucid_Color) return View;
-   end Forge;
+   function new_Polygon (Vertices : in Vector_2_array;
+                         Color    : in lucid_Color) return View;
 
 
    overriding

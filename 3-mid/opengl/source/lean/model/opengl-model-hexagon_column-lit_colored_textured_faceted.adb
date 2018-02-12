@@ -16,25 +16,22 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_hexagon_Column (Radius : in Real;
+                                Height : in Real;
+                                Upper,
+                                Lower  : in lit_colored_textured_faceted.hex_Face;
+                                Shaft  : in shaft_Face) return View
    is
-      function new_hexagon_Column (Radius : in Real;
-                                   Height : in Real;
-                                   Upper,
-                                   Lower  : in lit_colored_textured_faceted.hex_Face;
-                                   Shaft  : in shaft_Face) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Radius     := Radius;
-         Self.Height     := Height;
-         Self.upper_Face := Upper;
-         Self.lower_Face := Lower;
-         Self.shaft_Face := Shaft;
+      Self : constant View := new Item;
+   begin
+      Self.Radius     := Radius;
+      Self.Height     := Height;
+      Self.upper_Face := Upper;
+      Self.lower_Face := Lower;
+      Self.shaft_Face := Shaft;
 
-         return Self;
-      end new_hexagon_Column;
-   end Forge;
+      return Self;
+   end new_hexagon_Column;
 
 
 

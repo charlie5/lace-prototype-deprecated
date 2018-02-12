@@ -25,11 +25,8 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Hexagon (Radius : in Real;
-                            Face   : in lit_colored_textured.Face) return View;
-   end Forge;
+   function new_Hexagon (Radius : in Real;
+                         Face   : in lit_colored_textured.Face) return View;
 
 
    --------------

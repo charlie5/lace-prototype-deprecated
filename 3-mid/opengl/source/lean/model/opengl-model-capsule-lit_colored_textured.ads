@@ -25,13 +25,10 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Capsule (Radius : in math.Real;
-                            Height : in math.Real;
-                            Color  : in lucid_Color;
-                            Image  : in asset_Name := null_Asset) return View;
-   end Forge;
+   function new_Capsule (Radius : in math.Real;
+                         Height : in math.Real;
+                         Color  : in lucid_Color;
+                         Image  : in asset_Name := null_Asset) return View;
 
 
    --------------

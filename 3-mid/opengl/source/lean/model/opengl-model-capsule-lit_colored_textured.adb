@@ -12,24 +12,21 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Capsule (Radius : in math.Real;
+                         Height : in math.Real;
+                         Color  : in lucid_Color;
+                         Image  : in asset_Name := null_Asset) return View
    is
-      function new_Capsule (Radius : in math.Real;
-                            Height : in math.Real;
-                            Color  : in lucid_Color;
-                            Image  : in asset_Name := null_Asset) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Radius := Radius;
-         Self.Height := Height;
+      Self : constant View := new Item;
+   begin
+      Self.Radius := Radius;
+      Self.Height := Height;
 
-         Self.Color := Color;
-         Self.Image := Image;
+      Self.Color := Color;
+      Self.Image := Image;
 
-         return Self;
-      end new_Capsule;
-   end Forge;
+      return Self;
+   end new_Capsule;
 
 
 

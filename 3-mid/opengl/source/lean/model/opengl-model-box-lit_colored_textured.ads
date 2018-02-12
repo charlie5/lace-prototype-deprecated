@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Geometry,
      openGL.Font,
      openGL.Texture;
@@ -45,14 +44,8 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Box (Size  : in math.Vector_3;
-                        Faces : in lit_colored_textured.Faces) return View;
-   end Forge;
-
-   procedure free (Self : in out view);
-
+   function new_Box (Size  : in math.Vector_3;
+                     Faces : in lit_colored_textured.Faces) return View;
 
 
    --------------

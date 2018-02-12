@@ -13,19 +13,16 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Hexagon (Radius : in Real;
+                         Face   : in lit_colored_textured.Face) return View
    is
-      function new_Hexagon (Radius : in Real;
-                            Face   : in lit_colored_textured.Face) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Radius := Radius;
-         Self.Face   := Face;
+      Self : constant View := new Item;
+   begin
+      Self.Radius := Radius;
+      Self.Face   := Face;
 
-         return Self;
-      end new_Hexagon;
-   end Forge;
+      return Self;
+   end new_Hexagon;
 
 
    --------------

@@ -4,7 +4,7 @@ with
 
 package openGL.Model.line
 --
---  Models a line.
+--  Provides an abstract class for line models.
 --
 is
 

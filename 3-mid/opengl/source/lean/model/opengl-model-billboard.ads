@@ -15,9 +15,6 @@ is
    function  Width  (Self : in Item) return Real;
    function  Height (Self : in Item) return Real;
 
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
-
 
 
 private

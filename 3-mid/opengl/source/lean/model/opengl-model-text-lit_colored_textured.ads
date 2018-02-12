@@ -28,15 +28,11 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Text (Scale    : in math.Vector_3;
-                         Text     : in String;
-                         Font     : in openGL.Font.font_Id;
-                         Color    : in openGL.lucid_Color;
-                         Centered : in Boolean            := True) return View;
-   end Forge;
-
+   function new_Text (Scale    : in math.Vector_3;
+                      Text     : in String;
+                      Font     : in openGL.Font.font_Id;
+                      Color    : in openGL.lucid_Color;
+                      Centered : in Boolean            := True) return View;
 
 
    --------------

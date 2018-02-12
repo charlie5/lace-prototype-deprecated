@@ -1,6 +1,5 @@
 with
      openGL.Palette,
-     openGL.Texture,
      openGL.Font,
      openGL.IO,
      openGL.Model.arrow    .colored,
@@ -56,8 +55,6 @@ is
                            name     => Name,
                            animated => True);
 
---        put_Line ("openGL Server: " & openGL.Server.Version);
-
       Renderer.define; --  := openGL.Renderer.lean.forge.to_Renderer;
 
       Renderer.Background_is (Grey);
@@ -100,16 +97,16 @@ is
                                                      24);
 
       the_arrow_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.Forge.new_Arrow (End_2 => (0.0, 1.0, 0.0));
+        := openGL.Model.arrow.colored.new_Arrow (End_2 => (0.0, 1.0, 0.0));
 
       the_ball_1_Model : constant openGL.Model.sphere.colored.view
-        := openGL.Model.sphere.colored.forge.new_Sphere (Radius => 0.5, color => (Red, Opaque));
+        := openGL.Model.sphere.colored.new_Sphere (Radius => 0.5, color => (Red, Opaque));
 
       the_ball_2_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.forge.new_Sphere (Radius => 1.0, color => (Green, Opaque));
+        := openGL.Model.sphere.lit_colored.new_Sphere (Radius => 1.0, color => (Green, Opaque));
 
       the_ball_3_Model : constant openGL.Model.sphere.lit_colored_textured.view
-        := openGL.Model.sphere.lit_colored_textured.forge.new_Sphere (Radius => 1.0, image => the_Texture);
+        := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, image => the_Texture);
 
       the_billboard_Model : constant openGL.Model.billboard.textured.view
         := openGL.Model.billboard.textured.forge.new_Billboard (scale   => (1.0, 1.0, 1.0),
@@ -117,14 +114,14 @@ is
                                                                 texture => the_Texture);
 
       the_colored_billboard_Model : constant openGL.Model.billboard.colored_textured.view
-        := openGL.Model.billboard.colored_textured.forge.new_Billboard (scale   => (1.0, 1.0, 1.0),
-                                                                        plane   => Billboard.xy,
-                                                                        color   => (Green, Opaque),
-                                                                        texture => the_Texture);
+        := openGL.Model.billboard.colored_textured.new_Billboard (scale   => (1.0, 1.0, 1.0),
+                                                                  plane   => Billboard.xy,
+                                                                  color   => (Green, Opaque),
+                                                                  texture => the_Texture);
       use openGL.Model.box;
 
       the_box_1_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box
+        := openGL.Model.box.colored.new_Box
              (Size => (1.0, 2.0, 3.0),
               faces => (front => (colors => (others => (Blue,     Opaque))),
                         rear  => (colors => (others => (Blue,     Opaque))),
@@ -134,7 +131,7 @@ is
                         right => (colors => (others => (Red,      Opaque)))));
 
       the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.forge.new_Box
+        := openGL.Model.box.lit_colored_textured.new_Box
              (Size => (1.0, 2.0, 1.0),
               faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
                         rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
@@ -144,7 +141,7 @@ is
                         right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
 
       the_box_3_Model : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.forge.new_Box
+        := openGL.Model.box.textured.new_Box
              (Size => (1.0, 2.0, 3.0),
               faces => (front => (texture_name   => the_Texture),
                         rear  => (texture_name   => the_Texture),
@@ -154,23 +151,23 @@ is
                         right => (texture_name   => the_Texture)));
 
       the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-        := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 0.5,
-                                                                        height => 2.0,
-                                                                        color  => (White, Opaque),
-                                                                        image  => the_Texture);
+        := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
+                                                                  height => 2.0,
+                                                                  color  => (White, Opaque),
+                                                                  image  => the_Texture);
       the_grid_Model    : constant openGL.Model.grid.view
         := openGL.Model.grid.new_grid_Model (color  => Red,
                                              width  => 3,
                                              height => 3);
 
       the_hexagon_Model : constant openGL.Model.hexagon.lit_colored_textured.view
-        := openGL.Model.hexagon.lit_colored_textured.forge.new_Hexagon (radius => 0.25,
-                                                                        face   => (center_Color => (Green, Opaque),
-                                                                                   colors       => (others => (Red, Opaque)),
-                                                                                   texture      => <>)); --openGL.io.to_Texture ("assets/mmi/Face1.bmp")));
+        := openGL.Model.hexagon.lit_colored_textured.new_Hexagon (radius => 0.25,
+                                                                  face   => (center_Color => (Green, Opaque),
+                                                                             colors       => (others => (Red, Opaque)),
+                                                                             texture      => <>)); --openGL.io.to_Texture ("assets/mmi/Face1.bmp")));
 
       the_faceted_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_faceted.view
-        := openGL.Model.hexagon_Column.lit_colored_textured_faceted.forge.new_hexagon_Column
+        := openGL.Model.hexagon_Column.lit_colored_textured_faceted.new_hexagon_Column
              (radius => 0.25,
               height => 1.0,
               upper => (center_Color => (Green, Opaque),
@@ -183,7 +180,7 @@ is
                         texture      => the_Texture));
 
       the_rounded_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_rounded.view
-        := openGL.Model.hexagon_Column.lit_colored_textured_rounded.forge.new_hexagon_Column
+        := openGL.Model.hexagon_Column.lit_colored_textured_rounded.new_hexagon_Column
              (radius => 0.25,
               height => 1.0,
               upper => (center_Color => (Green, Opaque),
@@ -201,28 +198,28 @@ is
                                                      End_2 => (5.0, 5.0, 0.0));
 
       the_collada_Model    : constant openGL.Model.any.view   -- tbd: broken for human models
-        := openGL.Model.any.forge.new_Model (scale            => (1.0, 1.0, 1.0),
-                                             model            => to_Asset ("assets/opengl/model/human.dae"),
---                                                   model => to_Asset ("assets/opengl/model/deer.dae"),
-                                             Texture          => the_Texture,
-                                             Texture_is_lucid => False);
+        := openGL.Model.any.new_Model (scale            => (1.0, 1.0, 1.0),
+                                       model            => to_Asset ("assets/opengl/model/human.dae"),
+--                                     model => to_Asset ("assets/opengl/model/deer.dae"),
+                                       Texture          => the_Texture,
+                                       Texture_is_lucid => False);
 
       the_wavefront_Model  : constant openGL.Model.any.view
-        := openGL.Model.any.forge.new_Model (scale            => (1.0, 1.0, 1.0),
-                                             model            => to_Asset ("assets/opengl/model/human.obj"),
-                                             Texture          => the_Texture,
-                                             Texture_is_lucid => False);
+        := openGL.Model.any.new_Model (scale            => (1.0, 1.0, 1.0),
+                                       model            => to_Asset ("assets/opengl/model/human.obj"),
+                                       Texture          => the_Texture,
+                                       Texture_is_lucid => False);
 
       the_polygon_Model    : constant openGL.Model.polygon.lit_colored.view
-        := openGL.Model.polygon.lit_colored.forge.new_Polygon (vertices => (Origin_2d, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
-                                                               color    => (Red, Opaque));
+        := openGL.Model.polygon.lit_colored.new_Polygon (vertices => (Origin_2d, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
+                                                         color    => (Red, Opaque));
 
       the_text_Model       : constant openGL.Model.Text.lit_colored_textured.view
-        := openGL.Model.Text.lit_colored_textured.forge.new_Text (scale => (1.0, 1.0, 1.0),
-                                                                  text     => "Howdy",
-                                                                  Font     => the_font_Id,
-                                                                  Color    => (Green, Opaque),
-                                                                  Centered => False);
+        := openGL.Model.Text.lit_colored_textured.new_Text (scale => (1.0, 1.0, 1.0),
+                                                            text     => "Howdy",
+                                                            Font     => the_font_Id,
+                                                            Color    => (Green, Opaque),
+                                                            Centered => False);
 
       the_segment_line_Model : constant openGL.Model.segment_line.view
         := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),

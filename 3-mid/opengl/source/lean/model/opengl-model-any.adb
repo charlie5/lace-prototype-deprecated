@@ -30,38 +30,38 @@ is
    --- Forge
    --
 
-   package body Forge
+   function to_Model (Scale            : in math.Vector_3;
+                      Model            : in asset_Name;
+                      Texture          : in asset_Name;
+                      Texture_is_lucid : in Boolean) return openGL.Model.any.item
    is
-
-      function to_Model (Scale            : in math.Vector_3;
-                         Model            : in asset_Name;
-                         Texture          : in asset_Name;
-                         Texture_is_lucid : in Boolean) return openGL.Model.any.item
-      is
-      begin
-         return Self : openGL.Model.any.item := (openGL.Model.item with
-                                                   Model,
-                                                   Texture,
-                                                   Texture_is_lucid,
-                                                   geometry => null)
-         do
-            Self.define (Scale);
-            Self.Bounds.Ball := 1.0;
-         end return;
-      end to_Model;
+   begin
+      return Self : openGL.Model.any.item := (openGL.Model.item with
+                                              Model,
+                                              Texture,
+                                              Texture_is_lucid,
+                                              geometry => null)
+      do
+         Self.define (Scale);
+         Self.Bounds.Ball := 1.0;
+      end return;
+   end to_Model;
 
 
-      function new_Model (Scale            : in math.Vector_3;
-                          Model            : in asset_Name;
-                          Texture          : in asset_Name;
-                          Texture_is_lucid : in Boolean) return openGL.Model.any.view
-      is
-      begin
-         return new openGL.Model.any.item' (to_Model (Scale, Model, Texture, Texture_is_lucid));
-      end new_Model;
+   function new_Model (Scale            : in math.Vector_3;
+                       Model            : in asset_Name;
+                       Texture          : in asset_Name;
+                       Texture_is_lucid : in Boolean) return openGL.Model.any.view
+   is
+   begin
+      return new openGL.Model.any.item' (to_Model (Scale, Model, Texture, Texture_is_lucid));
+   end new_Model;
 
-   end Forge;
 
+
+   --------------
+   --- Attributes
+   --
 
    use openGL,  openGL.IO,  openGL.IO.wavefront;
    use type math.Real;

@@ -18,13 +18,17 @@ is
 
 
 
-   package Forge
-   is
-      function new_Sphere (Radius : in math.Real;
-                           Color  : in openGL.lucid_Color) return View;
-   end Forge;
+   ---------
+   --- Forge
+   --
+
+   function new_Sphere (Radius : in math.Real;
+                        Color  : in openGL.lucid_Color) return View;
 
 
+   --------------
+   --- Attributes
+   --
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;

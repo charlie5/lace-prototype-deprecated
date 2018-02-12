@@ -13,21 +13,15 @@ is
    type Item is new openGL.Model.arrow.item with private;
    type View is access all Item'Class;
 
+
    ---------
    --- Forge
    --
-   package Forge
-   is
-      function  to_Arrow (Color      : in openGL.Color := Palette.White;
-                          line_Width : in openGL.Real  := 1.0;
-                          End_1,
-                          End_2      : in math.Vector_3 := Origin_3d) return Item;
 
-      function new_Arrow (Color      : in openGL.Color  := Palette.White;
-                          line_Width : in openGL.Real   := 1.0;
-                          End_1,
-                          End_2      : in math.Vector_3 := Origin_3d) return View;
-   end Forge;
+   function new_Arrow (Color      : in openGL.Color  := Palette.White;
+                       line_Width : in openGL.Real   := 1.0;
+                       End_1,
+                       End_2      : in math.Vector_3 := Origin_3d) return View;
 
 
    --------------

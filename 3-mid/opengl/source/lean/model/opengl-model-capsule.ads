@@ -1,12 +1,9 @@
 package openGL.Model.capsule
 --
---  Models a capsule.
+--  Provides an abstract base class for capsule models.
 --
 is
 
-   type Item is abstract new openGL.Model.item with
-      record
-         null;
-      end record;
+   type Item is abstract new openGL.Model.item with null record;
 
 end openGL.Model.capsule;

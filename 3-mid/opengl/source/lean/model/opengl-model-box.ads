@@ -10,22 +10,11 @@ package openGL.Model.box
 --
 is
 
-   type Side is (Front, Rear, Upper, Lower, Left, Right);
-
-
-
    type Item is abstract new openGL.Model.item with private;
 
-
-
-   --------------
-   --- Attributes
-   --
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
-
-
+   type Side is (Front, Rear,
+                 Upper, Lower,
+                 Left,  Right);
 
 
 private
@@ -36,13 +25,12 @@ private
       end record;
 
 
-   type site_Id is (Left_Lower_Front,  Right_Lower_Front,
-                    Right_Upper_Front, Left_Upper_Front,
-                    Right_Lower_Rear,  Left_Lower_Rear,
-                    Left_Upper_Rear,   Right_Upper_Rear);
+   type site_Id is ( Left_Lower_Front, Right_Lower_Front,
+                    Right_Upper_Front,  Left_Upper_Front,
+                    Right_Lower_Rear,   Left_Lower_Rear,
+                     Left_Upper_Rear,  Right_Upper_Rear);
 
    type Sites is array (site_Id) of openGL.Vector_3;
---     type Sites is new openGL.Sites (1 .. 6);
 
 
    use type openGL.Real;
@@ -56,9 +44,6 @@ private
 
 
    function vertex_Sites (Self : in Item'Class) return Sites;
-
---     overriding
---     procedure set_Bounds   (Self : in out Item);
 
 
 end openGL.Model.box;

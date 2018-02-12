@@ -32,18 +32,10 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function  to_Model (Scale            : in     math.Vector_3;
-                         Model            : in     asset_Name;
-                         Texture          : in     asset_Name;
-                          Texture_is_lucid : in     Boolean) return openGL.Model.any.item;
-
-      function new_Model (Scale            : in math.Vector_3;
-                          Model            : in asset_Name;
-                          Texture          : in asset_Name;
-                          Texture_is_lucid : in Boolean) return openGL.Model.any.view;
-   end Forge;
+   function new_Model (Scale            : in math.Vector_3;
+                       Model            : in asset_Name;
+                       Texture          : in asset_Name;
+                       Texture_is_lucid : in Boolean) return openGL.Model.any.view;
 
 
 

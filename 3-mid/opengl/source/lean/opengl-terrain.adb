@@ -154,12 +154,12 @@ is
                                openGL.Real (tile_Z_Scale * Scale (3))));
 
                   the_ground_Model : constant openGL.Model.terrain.view
-                    := openGL.Model.terrain.Forge.new_Item (heights_asset => heights_File,
-                                                            row           => Row,
-                                                            col           => Col,
-                                                            heights       => the_Region.all'Access,
-                                                            color_map     => texture_File,
-                                                            tiling        => Tiling);
+                    := openGL.Model.terrain.new_Item (heights_asset => heights_File,
+                                                      row           => Row,
+                                                      col           => Col,
+                                                      heights       => the_Region.all'Access,
+                                                      color_map     => texture_File,
+                                                      tiling        => Tiling);
 
                   the_height_Extents : openGL.Vector_2    :=      openGL.height_Extent (the_Region.all);
                   the_Visual         : openGL.Visual.view renames the_visual_Grid      (Row, Col);

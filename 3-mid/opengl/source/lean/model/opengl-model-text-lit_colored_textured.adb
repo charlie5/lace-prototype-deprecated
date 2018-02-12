@@ -16,27 +16,24 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Text (Scale    : in math.Vector_3;
+                      Text     : in String;
+                      Font     : in openGL.Font.font_Id;
+                      Color    : in openGL.lucid_Color;
+                      Centered : in Boolean            := True) return View
    is
-      function new_Text (Scale    : in math.Vector_3;
-                         Text     : in String;
-                         Font     : in openGL.Font.font_Id;
-                         Color    : in openGL.lucid_Color;
-                         Centered : in Boolean            := True) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Text     := new String' (Text);
-         Self.Font_Id  := Font;
-         Self.Color    := Color;
-         Self.Centered := Centered;
-         Self.Bounds   := null_Bounds;
+      Self : constant View := new Item;
+   begin
+      Self.Text     := new String' (Text);
+      Self.Font_Id  := Font;
+      Self.Color    := Color;
+      Self.Centered := Centered;
+      Self.Bounds   := null_Bounds;
 
-         Self.define (Scale);
+      Self.define (Scale);
 
-         return Self;
-      end new_Text;
-   end Forge;
+      return Self;
+   end new_Text;
 
 
 

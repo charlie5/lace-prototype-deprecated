@@ -7,42 +7,38 @@ is
    ---------
    --- Forge
    --
-   package body Forge
+
+   function to_Arrow (Color      : in openGL.Color  := Palette.White;
+                      line_Width : in openGL.Real   := 1.0;
+                      End_1,
+                      End_2      : in math.Vector_3 := Origin_3d) return Item
    is
-      function to_Arrow (Color      : in openGL.Color  := Palette.White;
-                         line_Width : in openGL.Real   := 1.0;
-                         End_1,
-                         End_2      : in math.Vector_3 := Origin_3d) return Item
-      is
-         use openGL.Geometry.colored;
-         Self : Model.arrow.colored.item;
+      use openGL.Geometry.colored;
+      Self : Model.arrow.colored.item;
+   begin
+      Self.Color      := Color;
+      Self.line_Width := line_Width;
 
-      begin
-         Self.Color      := Color;
-         Self.line_Width := line_Width;
+      Self.Vertices (1).Site := End_1;   -- Main line.
+      Self.Vertices (2).Site := End_2;   --
 
-         Self.Vertices (1).Site := End_1;   -- Main line.
-         Self.Vertices (2).Site := End_2;   --
+      Self.Vertices (3).Site := End_2;   -- Side bits.
+      Self.Vertices (4).Site := End_2;   --
 
-         Self.Vertices (3).Site := End_2;   -- Side bits.
-         Self.Vertices (4).Site := End_2;   --
+      Self.set_side_Bits;
 
---           Self.set_Bounds;
-         Self.set_side_Bits;
-
-         return Self;
-      end to_Arrow;
+      return Self;
+   end to_Arrow;
 
 
-      function new_Arrow (Color      : in openGL.Color  := Palette.White;
-                          line_Width : in openGL.Real   := 1.0;
-                          End_1,
-                          End_2      : in math.Vector_3 := Origin_3d) return View
-      is
-      begin
-         return new Arrow.colored.item' (to_Arrow (Color, line_Width, End_1, End_2));
-      end new_Arrow;
-   end Forge;
+   function new_Arrow (Color      : in openGL.Color  := Palette.White;
+                       line_Width : in openGL.Real   := 1.0;
+                       End_1,
+                       End_2      : in math.Vector_3 := Origin_3d) return View
+   is
+   begin
+      return new Arrow.colored.item' (to_Arrow (Color, line_Width, End_1, End_2));
+   end new_Arrow;
 
 
 

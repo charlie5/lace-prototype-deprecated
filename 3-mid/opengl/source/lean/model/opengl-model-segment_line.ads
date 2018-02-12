@@ -21,11 +21,8 @@ is
    --- Forge
    --
 
-   function  to_segment_line_Model (Scale : math.Vector_3;
-                                    Color : openGL.Color) return Model.segment_line.item;
-
-   function new_segment_line_Model (Scale : math.Vector_3;
-                                    Color : openGL.Color) return Model.segment_line.view;
+   function new_segment_line_Model (Scale : in math.Vector_3;
+                                    Color : in openGL.Color) return Model.segment_line.view;
 
 
    -----------

@@ -9,23 +9,27 @@ is
    use type math.Real;
 
 
-   package body Forge
+   ---------
+   --- Forge
+   --
+
+   function new_Sphere (Radius : in math.Real;
+                        Color  : in openGL.lucid_Color) return View
    is
-      function new_Sphere (Radius : in math.Real;
-                           Color  : in openGL.lucid_Color) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Color := Color;
-         Self.define (scale => (Radius * 2.0,
-                                Radius * 2.0,
-                                Radius * 2.0));
-         return Self;
-      end new_Sphere;
-   end Forge;
+      Self : constant View := new Item;
+   begin
+      Self.Color := Color;
+      Self.define (scale => (Radius * 2.0,
+                             Radius * 2.0,
+                             Radius * 2.0));
+      return Self;
+   end new_Sphere;
 
 
 
+   --------------
+   --- Attributes
+   --
 
    type Geometry_view is access all openGL.Geometry.colored.item'Class;
 

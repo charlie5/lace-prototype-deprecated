@@ -15,19 +15,16 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Box (Size : in math.Vector_3;
+                     Faces : in colored.Faces) return View
    is
-      function new_Box (Size : in math.Vector_3;
-                        Faces : in colored.Faces) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Faces := Faces;
-         Self.Size  := Size;
+      Self : constant View := new Item;
+   begin
+      Self.Faces := Faces;
+      Self.Size  := Size;
 
-         return Self;
-      end new_Box;
-   end Forge;
+      return Self;
+   end new_Box;
 
 
 

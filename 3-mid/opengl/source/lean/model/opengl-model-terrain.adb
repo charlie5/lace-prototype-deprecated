@@ -12,34 +12,29 @@ package body openGL.Model.terrain
 is
    use openGL.Texture;
 
-   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
-
 
    --------
    -- Forge
    --
 
-   package body Forge
+   function new_Item (heights_Asset : in asset_Name;
+                      Row, Col      : in Integer;
+                      Heights       : in height_Map_view;
+                      color_Map     : in asset_Name;
+                      Tiling        : in openGL.texture_Transform_2d := (s => (0.0, 1.0),
+                                                                         t => (0.0, 1.0))) return View
    is
-      function new_Item (heights_Asset : in asset_Name;
-                         Row, Col      : in Integer;
-                         Heights       : in height_Map_view;
-                         color_Map     : in asset_Name;
-                         Tiling        : in openGL.texture_Transform_2d := (s => (0.0, 1.0),
-                                                                            t => (0.0, 1.0))) return View
-      is
-         the_Model : constant View := new Item' (openGL.Model.item with
-                                                 heights_Asset => heights_Asset,
-                                                 Heights       => Heights,
-                                                 Row           => Row,
-                                                 Col           => Col,
-                                                 color_Map     => color_Map,
-                                                 tiling        => Tiling);
-      begin
-         the_Model.set_Bounds;
-         return the_Model;
-      end new_Item;
-   end Forge;
+      the_Model : constant View := new Item' (openGL.Model.item with
+                                              heights_Asset => heights_Asset,
+                                              Heights       => Heights,
+                                              Row           => Row,
+                                              Col           => Col,
+                                              color_Map     => color_Map,
+                                              tiling        => Tiling);
+   begin
+      the_Model.set_Bounds;
+      return the_Model;
+   end new_Item;
 
 
 
@@ -58,6 +53,9 @@ is
    -------------
    -- Attributes
    --
+
+   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
+
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
@@ -84,9 +82,7 @@ is
       the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
       the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
 
-      the_Geometry  : constant Geometry_view
-        := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
-
+      the_Geometry  : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
       the_Bounds    :          openGL.Bounds := null_Bounds;
 
    begin

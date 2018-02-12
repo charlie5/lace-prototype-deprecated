@@ -16,10 +16,6 @@ is
    --- Forge
    --
 
-   function  to_grid_Model (Color  : openGL.Color;
-                            Width  : Integer;
-                            Height : Integer) return Model.Grid.item;
-
    function new_grid_Model (Color  : openGL.Color;
                             Width  : Integer;
                             Height : Integer) return Model.Grid.view;

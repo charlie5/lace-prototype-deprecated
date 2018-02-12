@@ -20,13 +20,18 @@ is
 
 
 
-   package Forge
-   is
-      function new_Sphere (Radius       : in math.Real;
-                           Image        : in asset_Name := null_Asset;
-                           is_Skysphere : in Boolean    := False) return View;
-   end Forge;
+   ---------
+   --- Forge
+   --
 
+   function new_Sphere (Radius       : in math.Real;
+                        Image        : in asset_Name := null_Asset;
+                        is_Skysphere : in Boolean    := False) return View;
+
+
+   --------------
+   --- Attributes
+   --
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;

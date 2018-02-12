@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Font,
      openGL.Geometry;
 
@@ -23,7 +22,6 @@ is
    type Faces is array (Side) of Face;
 
 
-
    -------
    --- Box
    --
@@ -41,11 +39,8 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Box (Size  : in math.Vector_3;
-                        Faces : in colored.Faces) return View;
-   end Forge;
+   function new_Box (Size  : in math.Vector_3;
+                     Faces : in colored.Faces) return View;
 
 
 

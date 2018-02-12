@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Geometry,
      openGL.Texture;
 

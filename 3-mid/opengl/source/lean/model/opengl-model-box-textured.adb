@@ -1,8 +1,6 @@
 with
      openGL.Geometry.textured,
-     openGL.Primitive.indexed,
-
-     ada.unchecked_Deallocation;
+     openGL.Primitive.indexed;
 
 
 package body openGL.Model.box.textured
@@ -15,30 +13,18 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Box (Size      : in math.Vector_3;
+                     Faces     : in textured.Faces;
+                     is_Skybox : in Boolean       := False) return View
    is
-      function new_Box (Size      : in math.Vector_3;
-                        Faces     : in textured.Faces;
-                        is_Skybox : in Boolean       := False) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Faces     := Faces;
-         Self.is_Skybox := is_Skybox;
-         Self.Size      := Size;
-
-         return Self;
-      end new_Box;
-   end Forge;
-
-
-   procedure free (Self : in out view)
-   is
-      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
+      Self : constant View := new Item;
    begin
-      Self.destroy;
-      deallocate (Self);
-   end free;
+      Self.Faces     := Faces;
+      Self.is_Skybox := is_Skybox;
+      Self.Size      := Size;
+
+      return Self;
+   end new_Box;
 
 
 

@@ -13,32 +13,36 @@ is
    use type math.Real;
 
 
+   ---------
+   --- Forge
+   --
 
-   package body Forge
+   function new_Sphere (Radius : in math.Real;
+                        Image  : in asset_Name := null_Asset) return View
    is
-      function new_Sphere (Radius : in math.Real;
-                           Image  : in asset_Name := null_Asset) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Image  := Image;
-         Self.define (scale => (Radius * 2.0,
-                                Radius * 2.0,
-                                Radius * 2.0));
-         return Self;
-      end new_Sphere;
-   end Forge;
+      Self : constant View := new Item;
+   begin
+      Self.Image  := Image;
+      Self.define (scale => (Radius * 2.0,
+                             Radius * 2.0,
+                             Radius * 2.0));
+      return Self;
+   end new_Sphere;
 
 
+
+   --------------
+   --- Attributes
+   --
 
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
 
-   --  nb: - an extra vertex is required at the end of each latitude ring
-   --      - this last vertex has the same site as the rings initial vertex.
-   --      - the  last    vertex has 's' texture coord of 1.0, whereas
+
+   --  NB: - An extra vertex is required at the end of each latitude ring.
+   --      - This last vertex has the same site as the rings initial vertex.
+   --      - The  last    vertex has 's' texture coord of 1.0, whereas
    --        the  initial vertex has 's' texture coord of 0.0
    --
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views

@@ -9,23 +9,20 @@ is
    use type math.Real;
 
 
-   package body Forge
+   function new_Polygon (Vertices : in Vector_2_array;
+                         Color    : in lucid_Color) return View
    is
-      function new_Polygon (Vertices : in Vector_2_array;
-                            Color    : in lucid_Color) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Color := Color;
+      Self : constant View := new Item;
+   begin
+      Self.Color := Color;
 
-         Self.Vertices (Vertices'Range) := Vertices;
-         Self.vertex_Count              := Vertices'Length;
+      Self.Vertices (Vertices'Range) := Vertices;
+      Self.vertex_Count              := Vertices'Length;
 
-         Self.define  (scale => (1.0, 1.0, 1.0));
-         return Self;
-      end new_Polygon;
+      Self.define  (scale => (1.0, 1.0, 1.0));
+      return Self;
+   end new_Polygon;
 
-   end Forge;
 
 
    type Geometry_view is access all openGL.Geometry.lit_colored.item'class;

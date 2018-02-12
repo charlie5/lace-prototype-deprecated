@@ -4,14 +4,15 @@ package openGL.Model.sphere
 --
 is
 
-   Radius : constant := 0.5;
-
-
    type Item is abstract new openGL.Model.item with
       record
          null;
       end record;
 
+
+   --------------
+   --- Attributes
+   --
 
    overriding
    function  Bounds (Self : in Item) return openGL.Bounds;

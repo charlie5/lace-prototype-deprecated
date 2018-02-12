@@ -1,5 +1,4 @@
 with
-     openGL.Model,
      openGL.Geometry.colored_textured,
      openGL.Texture,
      openGL.Font,
@@ -37,13 +36,10 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Billboard (Scale   : in math.Vector_3;
-                              Plane   : in billboard.Plane;
-                              Color   : in openGL.lucid_Color;
-                              Texture : in openGL.asset_Name) return View;
-   end Forge;
+   function new_Billboard (Scale   : in math.Vector_3;
+                           Plane   : in billboard.Plane;
+                           Color   : in openGL.lucid_Color;
+                           Texture : in openGL.asset_Name) return View;
 
 
 

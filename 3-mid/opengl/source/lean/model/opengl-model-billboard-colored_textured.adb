@@ -18,23 +18,20 @@ is
    --- Forge
    --
 
-   package body Forge
+   function new_Billboard (Scale   : in math.Vector_3;
+                           Plane   : in billboard.Plane;
+                           Color   : in openGL.lucid_Color;
+                           Texture : in openGL.asset_Name) return View
    is
-      function new_Billboard (Scale   : in math.Vector_3;
-                              Plane   : in billboard.Plane;
-                              Color   : in openGL.lucid_Color;
-                              Texture : in openGL.asset_Name) return View
-      is
-         Self : constant View := new Item;
-      begin
-         Self.Plane        := Plane;
-         Self.Color        := Color;
-         Self.Texture_Name := Texture;
-         Self.define (Scale);
+      Self : constant View := new Item;
+   begin
+      Self.Plane        := Plane;
+      Self.Color        := Color;
+      Self.Texture_Name := Texture;
+      Self.define (Scale);
 
-         return Self;
-      end new_Billboard;
-   end Forge;
+      return Self;
+   end new_Billboard;
 
 
 

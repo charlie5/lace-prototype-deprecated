@@ -1,12 +1,9 @@
 package openGL.Model.polygon
 --
---  Models a polygon.
+--  Provides an abstract class for polygon models.
 --
 is
 
-   type Item is abstract new openGL.Model.item with
-      record
-         null;
-      end record;
+   type Item is abstract new openGL.Model.item with null record;
 
 end openGL.Model.polygon;

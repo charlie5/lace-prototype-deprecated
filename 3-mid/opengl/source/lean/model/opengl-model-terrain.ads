@@ -29,15 +29,12 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Item (heights_Asset : in asset_Name;
-                         Row, Col      : in Integer;
-                         Heights       : in height_Map_view;
-                         color_Map     : in asset_Name;
-                         Tiling        : in openGL.texture_Transform_2d :=  (s => (0.0, 1.0),
-                                                                             t => (0.0, 1.0))) return View;
-   end Forge;
+   function new_Item (heights_Asset : in asset_Name;
+                      Row, Col      : in Integer;
+                      Heights       : in height_Map_view;
+                      color_Map     : in asset_Name;
+                      Tiling        : in openGL.texture_Transform_2d :=  (s => (0.0, 1.0),
+                                                                          t => (0.0, 1.0))) return View;
 
    overriding
    procedure destroy (Self : in out Item);

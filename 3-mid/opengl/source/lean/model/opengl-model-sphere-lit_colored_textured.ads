@@ -19,11 +19,8 @@ is
 
 
 
-   package Forge
-   is
-      function new_Sphere (Radius : in math.Real;
-                           Image  : in asset_Name := null_Asset) return View;
-   end Forge;
+   function new_Sphere (Radius : in math.Real;
+                        Image  : in asset_Name := null_Asset) return View;
 
 
    overriding

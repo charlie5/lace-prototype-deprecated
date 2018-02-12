@@ -42,15 +42,9 @@ is
    --- Forge
    --
 
-   package Forge
-   is
-      function new_Box (Size      : in math.Vector_3;
-                        Faces     : in textured.Faces;
-                        is_Skybox : in Boolean       := False) return View;
-   end Forge;
-
-
-   procedure free (Self : in out view);
+   function new_Box (Size      : in math.Vector_3;
+                     Faces     : in textured.Faces;
+                     is_Skybox : in Boolean       := False) return View;
 
 
    --------------

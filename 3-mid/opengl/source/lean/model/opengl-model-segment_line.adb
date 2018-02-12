@@ -9,8 +9,8 @@ package body openGL.Model.segment_line
 is
 
 
-   function to_segment_line_Model (Scale : math.Vector_3;
-                                   Color : openGL.Color) return Model.segment_line.item
+   function to_segment_line_Model (Scale : in math.Vector_3;
+                                   Color : in openGL.Color) return Model.segment_line.item
    is
       pragma Unreferenced (Scale);
       Self : constant Model.segment_line.item := (openGL.Model.item with
@@ -23,8 +23,8 @@ is
 
 
 
-   function new_segment_line_Model (Scale : math.Vector_3;
-                                    Color : openGL.Color) return Model.segment_line.view
+   function new_segment_line_Model (Scale : in math.Vector_3;
+                                    Color : in openGL.Color) return Model.segment_line.view
    is
    begin
       return new Item' (to_segment_line_Model (Scale, Color));
