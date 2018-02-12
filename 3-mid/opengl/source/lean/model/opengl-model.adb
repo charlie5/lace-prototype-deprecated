@@ -110,13 +110,13 @@ is
    is
       use type openGL.Index_t;
 
-      all_Geometries : constant openGL.Geometry.views := Self.to_GL_Geometries (Textures, Fonts);
+      all_Geometries : constant Geometry.views := Self.to_GL_Geometries (Textures, Fonts);
 
-      opaque_Faces   :          openGL.Geometry.views (1 .. all_Geometries'Length);
-      opaque_Count   :          openGL.Index_t := 0;
+      opaque_Faces   :          Geometry.views (1 .. all_Geometries'Length);
+      opaque_Count   :          Index_t := 0;
 
-      lucid_Faces    :          openGL.Geometry.views (1 .. all_Geometries'Length);
-      lucid_Count    :          openGL.Index_t := 0;
+      lucid_Faces    :          Geometry.views (1 .. all_Geometries'Length);
+      lucid_Count    :          Index_t := 0;
 
       procedure free is new ada.unchecked_Deallocation (openGL.Geometry.views,
                                                         access_Geometry_views);
@@ -139,8 +139,8 @@ is
          Self.Bounds.Box :=    Self.Bounds.Box
                             or all_Geometries (Each).Bounds.Box;
 
-         Self.Bounds.Ball:= math.Real'Max (Self.Bounds.Ball,
-                                           all_Geometries (Each).Bounds.Ball);
+         Self.Bounds.Ball:= Real'Max (Self.Bounds.Ball,
+                                      all_Geometries (Each).Bounds.Ball);
       end loop;
 
 
@@ -189,26 +189,6 @@ is
    begin
       return Self.Bounds;
    end Bounds;
-
-
---     -----------
---     --- Streams
---     --
---
---     procedure Item_write (Stream : access Ada.Streams.Root_Stream_Type'Class;   Item : in  Model.item)
---     is
---     begin
---        null;
---     end Item_write;
---
---
---     procedure Item_read (Stream : access Ada.Streams.Root_Stream_Type'Class;    Item : out Model.item)
---     is
---        pragma Unreferenced (Stream);
---     begin
---        Item.opaque_Geometries := null;
---        Item.lucid_Geometries  := null;
---     end Item_read;
 
 
 end openGL.Model;

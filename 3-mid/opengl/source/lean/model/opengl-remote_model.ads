@@ -1,6 +1,6 @@
 package openGL.remote_Model
 --
---  Provides a DSA friendly bsse for a model describing a 3D model.
+--  Provides a DSA friendly bsse class for 3D models.
 --
 is
    pragma Remote_Types;

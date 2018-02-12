@@ -7,7 +7,7 @@ with
 
 package openGL.Model
 --
---  Provides a type for 3D models.
+--  Provides an abstract base class for 3D models.
 --
 is
    use Geometry_3d;
