@@ -1,12 +1,11 @@
 with
-     openGL.Model,
      openGL.Font.texture,
      openGL.Geometry;
 
 
 package openGL.Model.Text.lit_colored_textured
 --
---  Models a lit, colored text.
+--  Models lit, colored text.
 --
 is
 
@@ -19,8 +18,6 @@ is
 
          Color    : openGL.lucid_Color;
          Centered : Boolean;
-
---           Bounds   : openGL.Bounds;
       end record;
 
    type View is access all Item'Class;
@@ -56,11 +53,5 @@ is
 
    overriding
    function  Font       (Self : in     Item) return openGL.Font.view;
-
---     overriding
---     function  Bounds           (Self : in     Item) return openGL.Bounds;
-
-   overriding
-   procedure set_Bounds (Self : in out Item);
 
 end openGL.Model.Text.lit_colored_textured;

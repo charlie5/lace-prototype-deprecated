@@ -1,11 +1,10 @@
 with
-     openGL.Model,
      openGL.Font;
 
 
 package openGL.Model.text
 --
---  Provides a model for rendering text.
+--  Provides an abstract model for rendering text.
 --
 is
 

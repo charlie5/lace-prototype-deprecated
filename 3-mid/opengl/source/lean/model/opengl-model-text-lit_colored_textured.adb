@@ -12,7 +12,6 @@ is
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
 
 
-
    ---------
    --- Forge
    --
@@ -73,51 +72,13 @@ is
 
 
 
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
-
-
-
-   overriding
-   procedure set_Bounds (Self : in out Item)
-   is
-      use type openGL.Real;
-
-      the_Bounds : openGL.Bounds := Self.Font.BBox (Self.Text.all);     -- In pixels.
-
-      text_Scale : openGL.Vector_3 := (2.0 * 1.0 / 78.0,
-                                       2.0 * 1.0 / 95.0,
-                                       1.0 /  1.0);
-   begin
-      the_Bounds.Box.Lower (1) := the_Bounds.Box.Lower (1)  * text_Scale (1);
-      the_Bounds.Box.Upper (1) := the_Bounds.Box.Upper (1)  * text_Scale (1);
-
-      the_Bounds.Box.Lower (2) := the_Bounds.Box.Lower (2)  * text_Scale (2);
-      the_Bounds.Box.Upper (2) := the_Bounds.Box.Upper (2)  * text_Scale (2);
-
-      set_Ball_from_Box (the_Bounds);
-
-      Self.Bounds := the_Bounds;
-   end set_Bounds;
-
-
-
-   use openGL;
-   use type openGL.Real;
-
-
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     openGL.Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
    is
       pragma Unreferenced (Textures);
 
-      text_Scale : openGL.Vector_3 := (2.0 * 4.0 / 78.0,
+      text_Scale : openGL.Vector_3 := (2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
                                        2.0 * 4.0 / 95.0,
                                        1.0/1.0);
 --        text_Scale : openGL.Vector_3 := (1.0, 1.0, 1.0);
@@ -156,7 +117,7 @@ is
             pragma Unreferenced (Next);
             use math.Geometry;
 
-            the_Quad : openGL.GlyphImpl.Texture.Quad_t := Self.Font.Quad (the_Character);
+            the_Quad : GlyphImpl.Texture.Quad_t := Self.Font.Quad (the_Character);
 
          begin
             --- Add indices.
@@ -209,7 +170,7 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : openGL.Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
@@ -223,7 +184,7 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : openGL.Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
@@ -237,7 +198,7 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : openGL.Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
@@ -251,7 +212,7 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : openGL.Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
@@ -283,7 +244,7 @@ is
 
          -- Add vertices and indices for each character in the text.
          --
-         unused := Self.Font.check_Glyphs (Self.Text.all);   -- Make sure the glyphs, for each character in Self.Text, exist in the font.
+         unused := Self.Font.check_Glyphs (Self.Text.all);   -- Make sure the glyphs, for each character in 'Self.Text' exist in the font.
 
          for Each in Self.Text'Range
          loop
