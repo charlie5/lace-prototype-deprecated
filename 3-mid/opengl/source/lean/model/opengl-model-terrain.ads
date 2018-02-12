@@ -1,12 +1,10 @@
-with openGL.Model,
-     openGL.Geometry,
-     ada.Streams;
-
+with
+     openGL.Geometry;
 
 
 package openGL.Model.terrain
 --
---  models lit, textured terrain.
+--  Models lit, textured terrain.
 --
 is
 
@@ -22,12 +20,14 @@ is
 
          color_Map     : asset_Name    := null_Asset;  -- Texture must be square, atm.
          Tiling        : openGL.texture_Transform_2d;
-
---           Bounds        : openGL.Bounds := null_Bounds;
       end record;
 
    type View is access all Item'Class;
 
+
+   ---------
+   --- Forge
+   --
 
    package Forge
    is
@@ -39,40 +39,18 @@ is
                                                                              t => (0.0, 1.0))) return View;
    end Forge;
 
-
-
-
-
    overriding
    procedure destroy (Self : in out Item);
 
-   overriding
-   function  to_GL_Geometries     (Self : access Item;         Textures : access Texture.name_Map_of_texture'Class;
-                                                               Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
 
 
-
-   -----------
-   --  Streams
+   --------------
+   --- Attributes
    --
 
-   procedure Item_write  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;   Self : in  Item);
-   for       Item'Write use Item_write;
-
-   procedure Item_read   (Stream : not null access Ada.Streams.Root_Stream_Type'Class;   Self : out Item);
-   for       Item'Read use Item_read;
-
-
-   procedure Item_output (Stream : not null access Ada.Streams.Root_Stream_Type'Class;   Self : in  Item);
-   for       Item'Output use Item_output;
-
-   function Item_input   (Stream : not null access Ada.Streams.Root_Stream_Type'Class) return Item;
-   for      Item'Input use Item_input;
-
-
-
+   overriding
+   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
 
 
 private

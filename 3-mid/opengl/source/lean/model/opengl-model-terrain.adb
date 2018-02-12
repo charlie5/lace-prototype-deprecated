@@ -5,17 +5,14 @@ with
      openGL.Texture.Coordinates,
      openGL.IO,
 
-     Ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Model.terrain
 is
    use openGL.Texture;
 
-
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
-
 
 
    --------
@@ -38,12 +35,12 @@ is
                                                  Col           => Col,
                                                  color_Map     => color_Map,
                                                  tiling        => Tiling);
---                                                   Bounds        => <>);
       begin
          the_Model.set_Bounds;
          return the_Model;
       end new_Item;
    end Forge;
+
 
 
    overriding
@@ -58,19 +55,9 @@ is
 
 
 
-
    -------------
    -- Attributes
    --
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
-
-
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
@@ -82,35 +69,34 @@ is
           openGL.Palette,
           openGL.Geometry.lit_colored_textured;
 
-      Heights       :          height_Map_view renames self.Heights;
+      Heights       :          height_Map_view renames Self.Heights;
 
-      row_Count     : constant openGL.Index_t    := Heights'Length (1) - 1;
-      col_Count     : constant openGL.Index_t    := Heights'Length (2) - 1;
+      row_Count     : constant Index_t      := Heights'Length (1) - 1;
+      col_Count     : constant Index_t      := Heights'Length (2) - 1;
 
-      vertex_Count  : constant openGL.Index_t    := Heights'Length (1) * Heights'Length (2);
+      vertex_Count  : constant Index_t      := Heights'Length (1) * Heights'Length (2);
 
-      indices_Count : constant openGL.long_Index_t
-        :=   (2 * (long_Index_t (Heights'Length (2)) + 1)) * (long_Index_t (row_Count) - 1)
-           +  2 * (long_Index_t (Heights'Length (2)));
+      indices_Count : constant long_Index_t :=   (2 * (long_Index_t (Heights'Length (2)) + 1)) * (long_Index_t (row_Count) - 1)
+                                               +  2 * (long_Index_t (Heights'Length (2)));
 
-      the_Sites     : aliased  openGL.Sites      := (1 .. vertex_Count => <>);
+      the_Sites     : aliased  openGL.Sites := (1 .. vertex_Count => <>);
 
-      the_Vertices  : aliased  openGL.Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
-      the_Indices   : aliased  Indices                                           := (1 .. indices_Count => <>);
+      the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
+      the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
 
       the_Geometry  : constant Geometry_view
-        := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
+        := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
 
-      the_Bounds    :          openGL.Bounds     := null_Bounds;
+      the_Bounds    :          openGL.Bounds := null_Bounds;
 
    begin
       set_Sites :
       declare
          use type Real;
 
-         vert_Id          :          openGL.Index_t := 0;
-         the_height_Range :          Vector_2       := height_Extent (Heights.all);
-         Middle           : constant Real           := (the_height_Range (1) + the_height_Range (2)) / 2.0;
+         vert_Id          :          Index_t  := 0;
+         the_height_Range :          Vector_2 := height_Extent (Heights.all);
+         Middle           : constant Real     := (the_height_Range (1) + the_height_Range (2))  /  2.0;
       begin
          for Row in 1 .. row_Count + 1
          loop
@@ -139,7 +125,7 @@ is
             end loop;
          end loop;
 
-         the_Bounds.Ball := the_Bounds.Ball * 1.1;
+         the_Bounds.Ball := the_Bounds.Ball * 1.1;     -- TODO: Why the '* 1.1' ?
       end set_Sites;
 
 
@@ -192,7 +178,7 @@ is
       declare
          type Normals_view is access all openGL.Normals;
 
-         the_Normals : Normals_view := openGL.Geometry.Normals_of (openGL.primitive.triangle_Strip,
+         the_Normals : Normals_view := openGL.Geometry.Normals_of (Primitive.triangle_Strip,
                                                                    the_Indices,
                                                                    the_Sites).all'Access;
          procedure free is new ada.Unchecked_Deallocation (openGL.Normals, Normals_view);
@@ -207,7 +193,7 @@ is
       end set_Normals;
 
 
-      if self.color_Map /= null_Asset
+      if Self.color_Map /= null_Asset
       then
          set_texture_Coords :
          declare
@@ -224,7 +210,7 @@ is
             upper_Generator : constant openGL.texture.Coordinates.xz_Generator
               := (normalise => (s => (-x_Min, 1.0/x_Length),
                                 t => (-z_Min, 1.0/z_Length)),
-                  tile      =>  self.Tiling);
+                  tile      =>  Self.Tiling);
 
             the_Coords : constant Coordinates_2D := upper_Generator.to_Coordinates (the_Sites'Access);
          begin
@@ -242,7 +228,6 @@ is
          begin
             the_Geometry.Texture_is (the_Texture);
          end set_Texture;
-
       end if;
 
 
@@ -259,7 +244,6 @@ is
          the_Geometry.add (openGL.Primitive.view (the_Primitive));
       end;
 
-
       return (1 => the_Geometry.all'Access);
    end to_GL_Geometries;
 
@@ -272,25 +256,25 @@ is
           openGL.Palette,
           openGL.Geometry.lit_colored_textured;
 
-      Heights       :          height_Map_view renames Self.Heights;
+      Heights      :          height_Map_view renames Self.Heights;
 
-      row_Count     : constant openGL.Index_t  :=      Heights'Length (1) - 1;
-      col_Count     : constant openGL.Index_t  :=      Heights'Length (2) - 1;
+      row_Count    : constant openGL.Index_t  := Heights'Length (1) - 1;
+      col_Count    : constant openGL.Index_t  := Heights'Length (2) - 1;
 
-      vertex_Count  : constant openGL.Index_t  :=      Heights'Length (1) * Heights'Length (2);
+      vertex_Count : constant openGL.Index_t  := Heights'Length (1) * Heights'Length (2);
 
-      the_Sites     : aliased  openGL.Sites    :=      (1 .. vertex_Count => <>);
-      the_Bounds    :          openGL.Bounds   :=      null_Bounds;
+      the_Sites    : aliased  openGL.Sites    := (1 .. vertex_Count => <>);
+      the_Bounds   :          openGL.Bounds   := null_Bounds;
 
    begin
       set_Sites :
       declare
          use type Real;
 
-         vert_Id          :          openGL.Index_t := 0;
-         the_height_Range :          Vector_2       := height_Extent (Heights.all);
-         Middle           : constant Real           :=   (the_height_Range (1) + the_height_Range (2))
-                                                       / 2.0;
+         vert_Id          :          Index_t  := 0;
+         the_height_Range :          Vector_2 := height_Extent (Heights.all);
+         Middle           : constant Real     :=   (the_height_Range (1) + the_height_Range (2))
+                                                 / 2.0;
       begin
          for Row in 1 .. row_Count + 1
          loop
@@ -315,108 +299,11 @@ is
             end loop;
          end loop;
 
-         the_Bounds.Ball := the_Bounds.Ball * 1.1;
+         the_Bounds.Ball := the_Bounds.Ball * 1.1;     -- TODO: Why the '* 1.1' ?
       end set_Sites;
 
       Self.Bounds := the_Bounds;
    end set_Bounds;
-
-
-
-
-   -----------
-   --  Streams
-   --
-
-   procedure Item_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;   Self : in  Item)
-   is
-   begin
-      openGL.Model.item   'write (Stream, openGL.Model.item (Self));   -- Write the base class.
-
-      asset_Name          'write (Stream, self.heights_Asset);
-
-      Integer             'write (Stream, self.Row);
-      Integer             'write (Stream, self.Col);
-
-      asset_Name          'write (Stream, self.color_Map);
-      texture_Transform_2d'write (Stream, self.Tiling);
-   end Item_write;
-
-
-
-
-   procedure Item_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;    Self : out Item)
-   is
-      tile_Depth : constant := 255;
-      tile_Width : constant := 255;
-
-   begin
-      openGL.Model.item'read (Stream,  openGL.Model.Item (Self));   -- Read the base class.
-
-      asset_Name       'read (Stream,  Self.heights_Asset);
-
-      Integer          'read (Stream,  Self.Row);
-      Integer          'read (Stream,  Self.Col);
-
-      declare
-         the_Pixels           : openGL.io.height_Map_view :=  openGL.io.to_height_Map (Self.heights_Asset,
-                                                                                       scale => 1.0);
-         row_First, row_Last,
-         col_First, col_Last  : math.Index;   -- Row and col ranges for each submatrix.
-
-
-         procedure flip (Self : openGL.io.height_Map_view)
-         is
-            Pad : constant openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
-         begin
-            for Row in Self'Range (1)
-            loop
-               for Col in Self'Range (2)
-               loop
-                  Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
-               end loop;
-            end loop;
-         end flip;
-
-
-         procedure free is new ada.Unchecked_Deallocation (openGL.height_Map,
-                                                           openGL.io.height_Map_view);
-      begin
-         row_First := math.Index (tile_Depth - 1) * (self.Row - 1) + 1;
-         row_Last  := math.Index'Min (row_First + math.Index (tile_Depth - 1),
-                                      math.Index (the_Pixels'Last (1)));
-
-         col_First := math.Index (tile_Width - 1) * (self.Col - 1) + 1;
-         col_Last  := math.Index'Min (col_First + math.Index (tile_Width - 1),
-                                      math.Index (the_Pixels'Last (2)));
-
-         flip (the_Pixels.all'Unchecked_Access);
-
-         self.Heights := new openGL.height_Map' (Region (the_Pixels.all, (Index_t (row_First), Index_t (row_Last)),
-                                                                         (Index_t (col_First), Index_t (col_Last))));
-         free (the_Pixels);
-      end;
-
-      asset_Name          'read (Stream,  Self.color_Map);
-      texture_Transform_2d'read (Stream,  Self.Tiling);
-   end Item_read;
-
-
-
-   procedure Item_output (Stream : not null access Ada.Streams.Root_Stream_Type'Class;   Self : in  Item)
-   is
-   begin
-      Item_write (Stream, Self);
-   end Item_output;
-
-
-   function Item_input (Stream : not null access Ada.Streams.Root_Stream_Type'Class) return Item
-   is
-      Self : Item;
-   begin
-      Item_read (Stream, Self);
-      return Self;
-   end Item_input;
 
 
 end openGL.Model.terrain;
