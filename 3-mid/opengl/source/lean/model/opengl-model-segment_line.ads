@@ -1,11 +1,10 @@
 with
-     openGL.Model,
      openGL.Font;
 
 private
 with
-     ada.Containers.Vectors,
-     ada.Streams;
+     openGL.Geometry.colored,
+     ada.Containers.Vectors;
 
 
 package openGL.Model.segment_line
@@ -42,7 +41,7 @@ is
    type Segments_t is array (Positive range <>) of aliased Segment;
 
 
-   function Angle_in_xz_plane (Self : in Segment) return math.Radians;
+   function Angle_in_xz_plane (the_Segment : in Segment) return math.Radians;
 
 
 
@@ -73,18 +72,11 @@ is
    function segment_Count     (Self : in     Item) return Natural;
    function Segments          (Self : in     Item) return Model.segment_line.Segments_t;
 
---     overriding
---     function  Bounds           (Self : in     Item) return openGL.Bounds;
-
---     overriding
---     procedure set_Bounds (Self : in out Item);
-
 
 
 private
 
-   type State;   -- An opaque Taft type.
-
+   type vertex_Array_view is access all openGL.geometry.colored.Vertex_array;
 
    package site_Vectors is new ada.Containers.Vectors (Positive, math.Vector_3);
    subtype site_Vector  is site_Vectors.Vector;
@@ -92,25 +84,14 @@ private
 
    type Item is new openGL.Model.item with
       record
-         Color  :        openGL.Color;
-         Points :        site_Vector;
+         Color        :        openGL.Color;
+         Points       :        site_Vector;
 
---           Bounds :        openGL.Bounds;
+         Vertices     :        Vertex_array_view := new openGL.geometry.colored.Vertex_array (1 .. 2);
+         vertex_Count :        Natural           := 0;
 
-         State  : access Model.segment_line.State;
+         Geometry     : access openGL.Geometry.colored.item'Class;
       end record;
-
-
-
-   procedure Item_write (Stream : access Ada.Streams.Root_Stream_Type'Class;
-                         Self   : in     segment_Line.Item);
-   for Item'Write use Item_write;
-
-
-
-   procedure Item_read (Stream : access Ada.Streams.Root_Stream_Type'Class;
-                        Self   : out    segment_Line.Item);
-   for Item'Read use Item_read;
 
 
 end openGL.Model.segment_line;
