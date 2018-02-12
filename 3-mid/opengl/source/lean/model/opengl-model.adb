@@ -5,22 +5,16 @@ with
 package body openGL.Model
 is
 
+
+   ---------
+   --- Forge
+   --
+
    procedure define (Self : in out Item;   Scale : in Vector_3)
    is
    begin
       Self.Scale := Scale;
    end define;
-
-
-
-   procedure free (Self : in out View)
-   is
-      procedure deallocate is new ada.unchecked_Deallocation (Model.item'Class,
-                                                              Model.view);
-   begin
-      Self.destroy;
-      deallocate (Self);
-   end free;
 
 
 
@@ -56,6 +50,20 @@ is
    end destroy;
 
 
+   procedure free (Self : in out View)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Model.item'Class,
+                                                              Model.view);
+   begin
+      Self.destroy;
+      deallocate (Self);
+   end free;
+
+
+
+   --------------
+   --- Attributes
+   --
 
    function  Id (Self : in Item'Class) return openGL.Model_Id
    is
