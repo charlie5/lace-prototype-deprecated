@@ -26,7 +26,6 @@ is
    type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_textured_skinned.item'class;
 
 
-
    ---------
    --- Forge
    --
@@ -35,19 +34,16 @@ is
    is
 
       function to_Model (Scale            : in math.Vector_3;
-                          Model            : in asset_Name;
-                          math_Model       : access Geometry_3d.a_Model;
-                          Texture          : in asset_Name;
+                         Model            : in asset_Name;
+                         Texture          : in asset_Name;
                          Texture_is_lucid : in Boolean) return openGL.Model.any.item
       is
       begin
          return Self : openGL.Model.any.item := (openGL.Model.item with
-                                                     Model,
-                                                     math_Model,
-                                                     Texture,
-                                                     Texture_is_lucid,
---                                                       bounds   => <>,
-                                                     geometry => null)
+                                                   Model,
+                                                   Texture,
+                                                   Texture_is_lucid,
+                                                   geometry => null)
          do
             Self.define (Scale);
             Self.Bounds.Ball := 1.0;
@@ -57,28 +53,17 @@ is
 
       function new_Model (Scale            : in math.Vector_3;
                           Model            : in asset_Name;
-                          math_Model       : access Geometry_3d.a_Model;
                           Texture          : in asset_Name;
                           Texture_is_lucid : in Boolean) return openGL.Model.any.view
       is
       begin
-         return new openGL.Model.any.item' (to_Model (Scale, Model, math_Model, Texture, Texture_is_lucid));
+         return new openGL.Model.any.item' (to_Model (Scale, Model, Texture, Texture_is_lucid));
       end new_Model;
 
    end Forge;
 
 
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
-
-
-
-   use openGL,  openGL.IO,  openGL.io.wavefront;
+   use openGL,  openGL.IO,  openGL.IO.wavefront;
    use type math.Real;
 
 
@@ -175,22 +160,21 @@ is
       is
          use ada.Strings.fixed;
       begin
-         if    Self.math_Model /= null       then   return tabulated.to_Model (Self.math_Model);
-         elsif Tail (model_Name, 4) = ".obj" then   return wavefront.to_Model (model_Name);
+         if    Tail (model_Name, 4) = ".obj" then   return wavefront.to_Model (model_Name);
          elsif Tail (model_Name, 4) = ".dae" then   return collada  .to_Model (model_Name,   (1.0, 1.0, 1.0));
          elsif Tail (model_Name, 4) = ".tab" then   return tabulated.to_Model (model_Name,   (1.0, 1.0, 1.0));
          else                                       raise  unsupported_model_Format with "for model => '" & model_Name & "'";
          end if;
       end load_Model;
 
-      the_Model     :          openGL.io.Model                   := load_Model;
-      the_Map       :          io_vertex_Maps_of_gl_vertex_id.Map;
+      the_Model     : openGL.io.Model       := load_Model;
+      the_Map       : io_vertex_Maps_of_gl_vertex_id.Map;
 
-      the_Vertices  :          any_Vertex_array_view             := new any_Vertex_array' (1 .. 100_000 => <>);
-      vertex_Count  :          openGL.long_Index_t               := 0;
+      the_Vertices  : any_Vertex_array_view := new any_Vertex_array' (1 .. 100_000 => <>);
+      vertex_Count  : openGL.long_Index_t   := 0;
 
-      tri_Count     :          Index_t := 0;
-      normals_Known :          Boolean := False;
+      tri_Count     : Index_t := 0;
+      normals_Known : Boolean := False;
 
       --  nb: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
       --
@@ -198,8 +182,8 @@ is
    begin
       Self.Bounds := null_Bounds;
 
-      --  1st pass: - set our openGL face vertices
-      --            - build 'io vertex' to 'openGL face vertex_Id' map
+      --  1st pass: - Set our openGL face vertices.
+      --            - Build 'io vertex' to 'openGL face vertex_Id' map.
       --
       for Each in the_Model.Faces'Range
       loop
@@ -237,8 +221,9 @@ is
                         begin
                            the_gl_Vertex.Site := Scaled (the_Model.Sites (the_io_Vertex.site_Id),  by => Self.Scale);
 
-                           Self.Bounds.Box    := Self.Bounds.Box or the_gl_Vertex.Site;
-                           Self.Bounds.Ball   := Real'Max (Self.Bounds.Ball, abs (the_gl_Vertex.Site));
+                           Self.Bounds.Box  := Self.Bounds.Box or the_gl_Vertex.Site;
+                           Self.Bounds.Ball := Real'Max (Self.Bounds.Ball,
+                                                         abs (the_gl_Vertex.Site));
 
                            if the_io_Vertex.coord_Id /= null_Id
                            then   the_gl_Vertex.Coords := the_Model.Coords (the_io_Vertex.coord_Id);
@@ -362,7 +347,6 @@ is
 
                my_Geometry : constant lit_textured_Geometry_view
                  := lit_textured.new_Geometry.all'Access;
-
             begin
                if not normals_Known
                then
@@ -384,10 +368,9 @@ is
 
 
                      the_Sites   : constant openGL.Sites := get_Sites;
-
-                     the_Normals : Normals_view := openGL.Geometry.Normals_of (openGL.primitive.Triangles,
-                                                                               tri_Indices,
-                                                                               the_Sites).all'Access;
+                     the_Normals :          Normals_view := openGL.Geometry.Normals_of (openGL.primitive.Triangles,
+                                                                                        tri_Indices,
+                                                                                        the_Sites).all'Access;
                      procedure free is new ada.Unchecked_Deallocation (openGL.Normals, Normals_view);
 
                   begin
@@ -400,7 +383,7 @@ is
                   end set_Normals;
                end if;
 
-               Vertices_are (my_Geometry.all, now => my_Vertices);
+               my_Geometry.Vertices_are (now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;
             end;
 
@@ -413,9 +396,8 @@ is
 
                my_Geometry : constant lit_textured_skinned_Geometry_view
                  := lit_textured_skinned.new_Geometry.all'Access;
-
             begin
-               Vertices_are (my_Geometry.all, now => my_Vertices);
+               my_Geometry.Vertices_are (now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;
             end;
          end if;
@@ -497,7 +479,7 @@ is
 
          if Geometry_3d.Extent (Self.Bounds.Box, 3) = 0.0
          then
-            Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;
+            Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;     -- TODO: The is dubious at best.
          end if;
 
          Self.Geometry.is_Transparent (now => False);

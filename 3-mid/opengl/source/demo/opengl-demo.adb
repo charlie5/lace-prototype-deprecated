@@ -202,18 +202,16 @@ is
 
       the_collada_Model    : constant openGL.Model.any.view   -- tbd: broken for human models
         := openGL.Model.any.forge.new_Model (scale            => (1.0, 1.0, 1.0),
-                                                 model => to_Asset ("assets/opengl/model/human.dae"),
+                                             model            => to_Asset ("assets/opengl/model/human.dae"),
 --                                                   model => to_Asset ("assets/opengl/model/deer.dae"),
-                                                 math_model => null,
-                                                 Texture          => the_Texture,
-                                                 Texture_is_lucid => False);
+                                             Texture          => the_Texture,
+                                             Texture_is_lucid => False);
 
       the_wavefront_Model  : constant openGL.Model.any.view
-        := openGL.Model.any.forge.new_Model (scale => (1.0, 1.0, 1.0),
-                                                 model => to_Asset ("assets/opengl/model/human.obj"),
-                                                 math_model => null,
-                                                 Texture          => the_Texture,
-                                                 Texture_is_lucid => False);
+        := openGL.Model.any.forge.new_Model (scale            => (1.0, 1.0, 1.0),
+                                             model            => to_Asset ("assets/opengl/model/human.obj"),
+                                             Texture          => the_Texture,
+                                             Texture_is_lucid => False);
 
       the_polygon_Model    : constant openGL.Model.polygon.lit_colored.view
         := openGL.Model.polygon.lit_colored.forge.new_Polygon (vertices => (Origin_2d, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
