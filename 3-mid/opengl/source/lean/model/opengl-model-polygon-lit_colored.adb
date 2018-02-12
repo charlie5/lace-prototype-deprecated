@@ -11,16 +11,15 @@ is
 
    package body Forge
    is
-      function new_Polygon (Vertices : in Vector_2_array;    Color : openGL.lucid_Color) return View
+      function new_Polygon (Vertices : in Vector_2_array;
+                            Color    : in lucid_Color) return View
       is
          Self : constant View := new Item;
       begin
-         Self.Color  := (Color);
+         Self.Color := Color;
 
          Self.Vertices (Vertices'Range) := Vertices;
          Self.vertex_Count              := Vertices'Length;
-
-         Self.Bounds := bounding_Box_of (to_Vector_3_array (Self.Vertices (1 .. Self.vertex_Count)));
 
          Self.define  (scale => (1.0, 1.0, 1.0));
          return Self;
@@ -29,22 +28,12 @@ is
    end Forge;
 
 
-
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds
---     is
---     begin
---        return Self.Bounds;
---     end Bounds;
-
-
-
    type Geometry_view is access all openGL.Geometry.lit_colored.item'class;
 
 
-   --  nb: - an extra vertex is required at the end of each latitude ring
-   --      - this last vertex has the same site as the rings initial vertex.
-   --      - the  last    vertex has 's' texture coord of 1.0, whereas
+   --  nb: - An extra vertex is required at the end of each latitude ring
+   --      - This last vertex has the same site as the rings initial vertex.
+   --      - The  last    vertex has 's' texture coord of 1.0, whereas
    --        the  initial vertex has 's' texture coord of 0.0
    --
    overriding
@@ -56,13 +45,13 @@ is
       use openGL.Geometry,
           openGL.Geometry.lit_colored;
 
-      vertex_Count  : constant openGL.     Index_t := openGL.     Index_t (Self.vertex_Count);
-      indices_Count : constant openGL.long_Index_t := openGL.long_Index_t (Self.vertex_Count);
+      vertex_Count  : constant      Index_t :=      Index_t (Self.vertex_Count);
+      indices_Count : constant long_Index_t := long_Index_t (Self.vertex_Count);
 
-      the_Vertices  : aliased  openGL.geometry.lit_colored.Vertex_array := (1 .. vertex_Count  => <>);
-      the_Indices   : aliased  Indices                                  := (1 .. indices_Count => <>);
+      the_Vertices  : aliased  Geometry.lit_colored.Vertex_array := (1 .. vertex_Count  => <>);
+      the_Indices   : aliased  Indices                           := (1 .. indices_Count => <>);
 
-      the_Geometry  : constant Geometry_view       := Geometry_view (openGL.Geometry.lit_colored.new_Geometry);
+      the_Geometry  : constant Geometry_view := Geometry_view (Geometry.lit_colored.new_Geometry);
 
    begin
       set_Vertices :
@@ -86,8 +75,7 @@ is
       end loop;
 
       the_Geometry.is_Transparent (False);
-
-      Vertices_are (the_Geometry.all, the_Vertices);
+      the_Geometry.Vertices_are   (the_Vertices);
 
       declare
          the_Primitive : constant openGL.Primitive.indexed.view

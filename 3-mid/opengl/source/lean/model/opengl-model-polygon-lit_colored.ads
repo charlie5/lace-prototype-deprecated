@@ -12,12 +12,10 @@ is
 
    type Item is new openGL.Model.polygon.item with
       record
-         Color        : openGL.lucid_Color;
+         Color        : lucid_Color;
 
          Vertices     : Vector_2_array (1 .. 8);
-         vertex_Count : Natural                := 0;
-
---           Bounds       : openGL.Bounds;
+         vertex_Count : Natural := 0;
       end record;
 
    type View is access all Item'Class;
@@ -26,13 +24,10 @@ is
 
    package Forge
    is
-      function new_Polygon (Vertices : in Vector_2_array;    Color : openGL.lucid_Color) return View;
+      function new_Polygon (Vertices : in Vector_2_array;
+                            Color    : in lucid_Color) return View;
    end Forge;
 
-
-
---     overriding
---     function  Bounds           (Self : in     Item) return openGL.Bounds;
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
