@@ -522,20 +522,19 @@ is
 
       light_Sites              : constant openGL.Vector_3_array := (1 => (10_000.0,  10_000.0,  10_000.0),
                                                                     2 => (     0.0, -10_000.0,  0.0));
-      the_Lights               :          openGL.Light.directional.items (1 .. 2);
+--        the_Lights               :          openGL.Light.directional.items (1 .. 2);
 
    begin
-      the_Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
-      the_Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
+      Self.Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
+      Self.Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
 
-      the_Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                               diffuse  => (0.3, 0.3, 0.3, 0.0),
-                               specular => (0.01, 0.01, 0.01, 0.0));
+      Self.Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+                                diffuse  => (0.3, 0.3, 0.3, 0.0),
+                                specular => (0.91, 0.91, 0.91, 0.0));
 
-      the_Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                               diffuse  => (0.6, 0.1, 0.1, 0.0),
-                               specular => (0.01, 0.01, 0.01, 0.0));
-
+      Self.Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+                                diffuse  => (0.6, 0.1, 0.1, 0.0),
+                                specular => (0.01, 0.01, 0.01, 0.0));
       if clear_Frame then
          Self.clear_Frame;
       end if;
@@ -658,8 +657,8 @@ is
 
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, the_Lights (1));
-            current_Program.directional_Light_is        (2, the_Lights (2));
+            current_Program.directional_Light_is        (1, Self.Lights (1));
+            current_Program.directional_Light_is        (2, Self.Lights (2));
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
 
@@ -722,8 +721,8 @@ is
 
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, the_Lights (1));
-            current_Program.directional_Light_is        (2, the_Lights (2));
+            current_Program.directional_Light_is        (1, Self.Lights (1));
+            current_Program.directional_Light_is        (2, Self.Lights (2));
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
             if the_Couple.Visual.program_Parameters /= null then

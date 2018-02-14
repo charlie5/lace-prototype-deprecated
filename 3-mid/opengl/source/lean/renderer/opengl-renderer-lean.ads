@@ -16,6 +16,7 @@ with
 
 private
 with
+     openGL.Light.directional,
      ada.unchecked_Conversion;
 
 
@@ -111,7 +112,6 @@ is
 
    buffer_Overflow   : exception;
    Texture_not_found : exception;
-
 
 
 
@@ -244,6 +244,8 @@ private
 
    type Item is limited new Renderer.item with
       record
+         Lights                  :         openGL.Light.directional.items (1 .. 2);
+
          Textures                : aliased openGL.Texture.name_Map_of_texture;
          Fonts                   :         Font.font_id_Maps_of_font.Map;
 
