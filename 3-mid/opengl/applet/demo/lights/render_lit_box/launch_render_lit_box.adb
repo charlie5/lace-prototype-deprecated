@@ -1,6 +1,7 @@
 with
      openGL.Visual,
      openGL.Model.box.lit_colored_textured,
+     openGL.Model.sphere.lit_colored_textured,
      openGL.Palette,
      openGL.Demo,
 
@@ -10,7 +11,7 @@ with
 
 procedure launch_render_lit_Box
 --
---  Exercise the render of box models.
+--  Exercise the rendering of lit models.
 --
 is
    use openGL,
@@ -40,12 +41,16 @@ begin
                         left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
                         right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
 
+      the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
+        := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
+                                                                Image  => the_Texture);
 
       --  The Visuals.
       --
       use openGL.Visual.Forge;
 
-      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_box_Model.all'Access));
+--        the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_box_Model.all'Access));
+      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_ball_Model.all'Access));
    begin
       the_Visuals (1).Site_is ((0.0, 0.0, 0.0));
 
