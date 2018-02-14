@@ -58,7 +58,7 @@ void main()
    gl_Position = mvp_Matrix * vec4 (aSite * uScale, 1.0);
    
 
-   vec3   light_Normal = normalize (aNormal) * inv_modelview_Matrix);
+   vec3   light_Normal = normalize (aNormal) * inv_modelview_Matrix;
 
    vColor  = directional_light_color (light_Normal, uLight_1);
    vColor += directional_light_color (light_Normal, uLight_2);
