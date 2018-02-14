@@ -42,11 +42,11 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    NdotL = max (c_zero,  dot (normal, light.direction));
    NdotH = max (c_zero,  dot (normal, light.halfplane));
 
-   computed_color += (        light.ambient_color * aColor);
-   computed_color += (NdotL * light.diffuse_color  * aColor);
+   computed_color += (        light.ambient_color);
+   computed_color += (NdotL * light.diffuse_color);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * aColor * light.specular_color);
+      computed_color += (pow (NdotH, c_shininess) * light.specular_color);
 
    return computed_color;
 }
