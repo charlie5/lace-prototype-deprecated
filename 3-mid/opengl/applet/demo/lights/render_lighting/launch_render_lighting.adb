@@ -9,7 +9,7 @@ with
      Ada.Exceptions;
 
 
-procedure launch_render_lit_Box
+procedure launch_render_Lighting
 --
 --  Exercise the rendering of lit models.
 --
@@ -83,7 +83,7 @@ begin
 exception
    when E : others =>
       new_Line;
-      put_Line ("Unhandled exception in main thread !");
+      put_Line ("Unhandled exception in main task !");
       put_Line (Ada.Exceptions.Exception_Information (E));
       new_Line;
-end launch_render_lit_Box;
+end launch_render_Lighting;
