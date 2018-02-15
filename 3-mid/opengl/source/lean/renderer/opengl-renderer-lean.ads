@@ -7,6 +7,7 @@ with
      openGL.Impostor,
      openGL.Texture,
      openGL.Font,
+     openGL.Light.directional,
 
      ada.Containers.Hashed_Maps;
 
@@ -16,7 +17,6 @@ with
 
 private
 with
-     openGL.Light.directional,
      ada.unchecked_Conversion;
 
 
@@ -43,6 +43,12 @@ is
    --------------
    --- Attributes
    --
+
+   type      light_Id is range 1 .. 2;
+   procedure Light_is (Self : in out Item;   Id  : in light_Id;
+                                             Now : in Light.directional.item);
+   function  Light    (Self : in out Item;   Id  : in light_Id) return Light.directional.item;
+
 
    type context_Setter is access procedure;
    type Swapper        is access procedure;
@@ -222,6 +228,23 @@ private
 
 
 
+   -- Lights
+   --
+
+   type light_Set is array (light_Id) of openGL.Light.directional.item;
+
+   protected
+   type safe_Lights
+   is
+      procedure set   (the_Light : in light_Id;
+                      To         : in openGL.Light.directional.item);
+      function  fetch return light_Set;
+   private
+      my_Lights : light_Set;
+   end safe_Lights;
+
+
+
    -- Engine
    --
 
@@ -244,7 +267,7 @@ private
 
    type Item is limited new Renderer.item with
       record
-         Lights                  :         openGL.Light.directional.items (1 .. 2);
+         Lights                  :         safe_Lights;
 
          Textures                : aliased openGL.Texture.name_Map_of_texture;
          Fonts                   :         Font.font_id_Maps_of_font.Map;

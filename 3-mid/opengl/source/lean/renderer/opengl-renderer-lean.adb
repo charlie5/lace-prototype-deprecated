@@ -26,8 +26,7 @@ with
 
 package body openGL.Renderer.lean
 is
-   use GL,           openGL.Program,  interfaces.C,
-       ada.Text_IO;
+   use GL, openGL.Program, interfaces.C, ada.Text_IO;
 
 
    ---------
@@ -406,7 +405,8 @@ is
       the_Light                :          openGL.Light.directional.item;
 
    begin
-      the_Light.Site_is  (light_Site, inverse_view_Transform);
+      the_Light.inverse_view_Transform_is (inverse_view_Transform);
+      the_Light.Site_is  (light_Site);
       the_Light.Color_is (ambient  => (0.7, 0.7, 0.7, 1.0),
                           diffuse  => (1.0, 1.0, 1.0, 1.0),
                           specular => (1.0, 1.0, 1.0, 1.0));
@@ -522,19 +522,24 @@ is
 
       light_Sites              : constant openGL.Vector_3_array := (1 => (10_000.0,  10_000.0,  10_000.0),
                                                                     2 => (     0.0, -10_000.0,  0.0));
---        the_Lights               :          openGL.Light.directional.items (1 .. 2);
-
+      Lights                   :          light_Set := Self.Lights.fetch;
    begin
-      Self.Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
-      Self.Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
+      for Light of Lights
+      loop
+         Light.Site_is  (light_Sites (1));
+         Light.inverse_view_Transform_is (inverse_view_Transform);
+      end loop;
 
-      Self.Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                                diffuse  => (0.3, 0.3, 0.3, 0.0),
-                                specular => (0.91, 0.91, 0.91, 0.0));
+      --        Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
+      --        Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
 
-      Self.Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                                diffuse  => (0.6, 0.1, 0.1, 0.0),
-                                specular => (0.01, 0.01, 0.01, 0.0));
+      Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+                           diffuse  => (0.3, 0.3, 0.3, 0.0),
+                           specular => (0.91, 0.91, 0.91, 0.0));
+
+      Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+                           diffuse  => (0.6, 0.1, 0.1, 0.0),
+                           specular => (0.01, 0.01, 0.01, 0.0));
       if clear_Frame then
          Self.clear_Frame;
       end if;
@@ -657,8 +662,8 @@ is
 
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, Self.Lights (1));
-            current_Program.directional_Light_is        (2, Self.Lights (2));
+            current_Program.directional_Light_is        (1, Lights (1));
+            current_Program.directional_Light_is        (2, Lights (2));
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
 
@@ -721,8 +726,8 @@ is
 
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, Self.Lights (1));
-            current_Program.directional_Light_is        (2, Self.Lights (2));
+            current_Program.directional_Light_is        (1, Lights (1));
+            current_Program.directional_Light_is        (2, Lights (2));
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
 
             if the_Couple.Visual.program_Parameters /= null then
@@ -737,6 +742,30 @@ is
 
       openGL.Errors.log;
    end draw;
+
+
+
+   ---------
+   -- Lights
+   --
+
+   procedure Light_is (Self : in out Item;   Id  : in light_Id;
+                                             Now : in openGL.Light.directional.item)
+   is
+   begin
+      Self.Lights.set (Id, Now);
+   end Light_is;
+
+
+
+   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item
+   is
+   begin
+      return Self.Lights.fetch (Id);
+   end Light;
+
+
+
 
 
 
@@ -932,6 +961,30 @@ is
    begin
       Self.obsolete_Impostors.add (the_Impostor);
    end free;
+
+
+
+   -----------------
+   -- safe_Lights
+   --
+
+   protected
+   body safe_Lights
+   is
+      procedure set   (the_Light : in light_Id;
+                      To         : in openGL.Light.directional.item)
+      is
+      begin
+         my_Lights (the_Light) := To;
+      end set;
+
+      function  fetch return light_Set
+      is
+      begin
+         return my_Lights;
+      end fetch;
+   end safe_Lights;
+
 
 
 end openGL.Renderer.lean;
