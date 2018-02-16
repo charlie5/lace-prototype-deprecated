@@ -12,8 +12,6 @@ is
          ambient_Color      : Vector_4;
          diffuse_Color      : Vector_4;
          specular_Color     : Vector_4;
-
-         inv_view_Transform : Matrix_3x3;
       end record;
 
    type Items is array (Positive range <>) of Item;

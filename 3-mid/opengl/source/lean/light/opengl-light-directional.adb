@@ -5,9 +5,7 @@ is
    is
       use linear_Algebra;
    begin
-      Self.inv_view_Transform := Now;
-
-      Self.Direction          := Normalised (Self.Site) * Self.inv_view_Transform;
+      Self.Direction          := Normalised (Self.Site) * Now;
       Self.halfplane_Vector   := Normalised (Normalised (Self.Direction (1 .. 3)) + (0.0, 0.0, 1.0));
    end inverse_view_Transform_is;
 
@@ -18,8 +16,8 @@ is
                                              Specular : in Vector_4)
    is
    begin
-      Self.ambient_Color  := Ambient;
-      Self.diffuse_Color  := Diffuse;
+      Self. ambient_Color := Ambient;
+      Self. diffuse_Color := Diffuse;
       Self.specular_Color := Specular;
    end Color_is;
 
