@@ -15,7 +15,7 @@ private
 
    type Item is abstract tagged
       record
-         Site : openGL.Site := (0.0, 0.0, 1_000_000.0);
+         Site : openGL.Site := (0.0, 0.0, 100_000_000.0);
       end record;
 
 end openGL.Light;

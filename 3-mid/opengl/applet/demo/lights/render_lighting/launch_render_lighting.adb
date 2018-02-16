@@ -1,4 +1,5 @@
 with
+     openGL.Light.directional,
      openGL.Visual,
      openGL.Model.box   .lit_colored_textured,
      openGL.Model.sphere.lit_colored_textured,
@@ -61,6 +62,17 @@ begin
       the_Visuals (1).Site_is ((0.0,  0.0, 0.0));
       the_Visuals (1).Site_is ((0.0, -2.0, 0.0));
 
+      -- Set the lights initial position to far behind and far to the left.
+      --
+      declare
+         Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+      begin
+         Light.Site_is (Light.Site + (-100_000_000.0, 0.0, 0.0));
+         Demo.Renderer.Light_is (Id  => 1,
+                                 Now => Light);
+      end;
+
+
       --  Main loop.
       --
       while not Demo.Done
@@ -69,6 +81,16 @@ begin
          --
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
+
+         -- Move the light.
+         --
+         declare
+            Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+         begin
+            Light.Site_is (Light.Site + (10_000.0, 0.0, 0.0));
+            Demo.Renderer.Light_is (Id  => 1,
+                                    Now => Light);
+         end;
 
          --  Render the sprites.
          --

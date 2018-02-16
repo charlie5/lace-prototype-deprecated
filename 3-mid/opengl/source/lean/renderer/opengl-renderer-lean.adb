@@ -520,18 +520,12 @@ is
       view_and_perspective_Transform
                                : constant openGL.Matrix_4x4 := view_Transform * perspective_Transform;
 
-      light_Sites              : constant openGL.Vector_3_array := (1 => (10_000.0,  10_000.0,  10_000.0),
-                                                                    2 => (     0.0, -10_000.0,  0.0));
       Lights                   :          light_Set := Self.Lights.fetch;
    begin
       for Light of Lights
       loop
-         Light.Site_is  (light_Sites (1));
          Light.inverse_view_Transform_is (inverse_view_Transform);
       end loop;
-
-      --        Lights (1).Site_is  (light_Sites (1), inverse_view_Transform);
-      --        Lights (2).Site_is  (light_Sites (2), inverse_view_Transform);
 
       Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
                            diffuse  => (0.3, 0.3, 0.3, 0.0),
