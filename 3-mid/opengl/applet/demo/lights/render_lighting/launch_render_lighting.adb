@@ -62,9 +62,9 @@ begin
          Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
       begin
          Light.Site_is  (initial_Site);
-         Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-                         Diffuse  => (openGL.Palette.Grey,       Opaque),
-                         Specular => (openGL.Palette.White,      Opaque));
+--         Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+--                         Diffuse  => (openGL.Palette.Grey,       Opaque),
+--                         Specular => (openGL.Palette.White,      Opaque));
 
          Demo.Renderer.Light_is (Id  => 1,
                                  Now => Light);
@@ -85,15 +85,25 @@ begin
          declare
             Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          begin
-            if    Light.Site (1) >  100_000_000.0 then   site_Delta (1) := -10_000.0;
-            elsif Light.Site (1) < -100_000_000.0 then   site_Delta (1) :=  10_000.0;
+            if    Light.Site (1) >  100_000_000.0
+            then
+               site_Delta (1) := -10_000.0;
+
+               Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+                               Diffuse  => (openGL.Palette.Grey,       Opaque),
+                               Specular => (openGL.Palette.White,      Opaque));
+
+            elsif Light.Site (1) < -100_000_000.0
+            then
+               site_Delta (1) :=  10_000.0;
+
+               Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
+                               Diffuse  => (openGL.Palette.Grey,     Opaque),
+                               Specular => (openGL.Palette.White,    Opaque));
             end if;
 
             Light.Site_is (Light.Site + site_Delta);
 
-            Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-                            Diffuse  => (openGL.Palette.Grey,       Opaque),
-                            Specular => (openGL.Palette.White,      Opaque));
 
             Demo.Renderer.Light_is (Id  => 1,
                                     Now => Light);
