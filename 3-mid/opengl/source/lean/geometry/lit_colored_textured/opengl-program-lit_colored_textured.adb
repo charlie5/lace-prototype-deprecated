@@ -1,3 +1,7 @@
+with
+     openGL.Conversions;
+
+
 package body openGL.Program.lit_colored_textured
 is
 
@@ -18,6 +22,8 @@ is
 
       Light_1:
       declare
+         use openGL.Conversions;
+
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
            := Self.uniform_Variable ("uLight_1.direction");
          the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3
@@ -35,14 +41,16 @@ is
          the_light_direction_Uniform         .Value_is (the_Light.Direction);
          the_light_halfplane_Uniform         .Value_is (the_Light.halfplane_Vector);
 
-         the_light_ambient_color_Uniform     .Value_is (the_Light.ambient_Color);
-         the_light_diffuse_color_Uniform     .Value_is (the_Light.diffuse_Color);
+         the_light_ambient_color_Uniform     .Value_is (the_Light. ambient_Color);
+         the_light_diffuse_color_Uniform     .Value_is (the_Light. diffuse_Color);
          the_light_specular_color_Uniform    .Value_is (the_Light.specular_Color);
       end Light_1;
 
 
       Light_2:
       declare
+         use openGL.Conversions;
+
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
            := Self.uniform_Variable ("uLight_2.direction");
          the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3

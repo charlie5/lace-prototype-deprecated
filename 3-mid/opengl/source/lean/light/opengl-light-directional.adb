@@ -1,3 +1,7 @@
+with
+     openGL.Conversions;
+
+
 package body openGL.Light.directional
 is
 
@@ -11,15 +15,66 @@ is
 
 
 
-   procedure Color_is (Self : in out Item;   Ambient  : in Vector_4;
-                                             Diffuse  : in Vector_4;
-                                             Specular : in Vector_4)
+   procedure Color_is (Self : in out Item;   Ambient  : in lucid_Color;
+                                             Diffuse  : in lucid_Color;
+                                             Specular : in lucid_Color)
+   is
+      use openGL.Conversions;
+   begin
+      Self. ambient_Color := to_Vector_4 (Ambient);
+      Self. diffuse_Color := to_Vector_4 (Diffuse);
+      Self.specular_Color := to_Vector_4 (Specular);
+   end Color_is;
+
+
+
+   procedure light_Color_is (Self : in out Item;   Ambient  : in light_Color;
+                                                   Diffuse  : in light_Color;
+                                                   Specular : in light_Color)
+   is
+      use openGL.Conversions;
+   begin
+      Self. ambient_Color := to_Vector_4 (Ambient);
+      Self. diffuse_Color := to_Vector_4 (Diffuse);
+      Self.specular_Color := to_Vector_4 (Specular);
+   end light_Color_is;
+
+
+   function  ambient_Color (Self : in    Item) return Vector_4
    is
    begin
-      Self. ambient_Color := Ambient;
-      Self. diffuse_Color := Diffuse;
-      Self.specular_Color := Specular;
-   end Color_is;
+      return Self.ambient_Color;
+   end ambient_Color;
+
+
+   function  diffuse_Color (Self : in    Item) return Vector_4
+   is
+   begin
+      return Self.diffuse_Color;
+   end diffuse_Color;
+
+
+   function specular_Color (Self : in    Item) return Vector_4
+   is
+   begin
+      return Self.specular_Color;
+   end specular_Color;
+
+
+
+   function  Direction        (Self : in    Item) return Vector_3
+   is
+   begin
+      return Self.Direction;
+   end Direction;
+
+
+   function  halfplane_Vector (Self : in    Item) return Vector_3
+   is
+   begin
+      return Self.halfplane_Vector;
+   end halfplane_Vector;
+
 
 end openGL.Light.directional;
 

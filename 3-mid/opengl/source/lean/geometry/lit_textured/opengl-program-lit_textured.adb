@@ -1,3 +1,7 @@
+with
+     openGL.Conversions;
+
+
 package body openGL.Program.lit_textured
 is
 
@@ -18,6 +22,8 @@ is
 
       Light_1:
       declare
+         use openGL.Conversions;
+
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
            := Self.uniform_Variable ("uLight_1.direction");
          the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3
@@ -43,6 +49,8 @@ is
 
       Light_2:
       declare
+         use openGL.Conversions;
+
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
            := Self.uniform_Variable ("uLight_2.direction");
          the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3

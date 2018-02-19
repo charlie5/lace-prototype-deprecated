@@ -213,6 +213,17 @@ is
    type lucid_Colors is array (Index_t range <>) of lucid_Color;
 
 
+   subtype light_color_Value is Real range 0.0 .. 1.0;
+
+   type light_Color is
+      record
+         Red     : light_color_Value;
+         Green   : light_color_Value;
+         Blue    : light_color_Value;
+         Opacity : light_color_Value;
+      end record;
+
+
 
    ----------
    --  Images

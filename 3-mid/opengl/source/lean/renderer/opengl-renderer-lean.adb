@@ -2,6 +2,7 @@ with
      openGL.Viewport,
      openGL.Program,
      openGL.Camera,
+     openGL.Palette,
      openGL.Light.directional,
      openGL.Model.billboard.textured,
      openGL.Font.texture,
@@ -407,9 +408,9 @@ is
    begin
       the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light.Site_is  (light_Site);
-      the_Light.Color_is (ambient  => (0.7, 0.7, 0.7, 1.0),
-                          diffuse  => (1.0, 1.0, 1.0, 1.0),
-                          specular => (1.0, 1.0, 1.0, 1.0));
+      the_Light.Color_is (ambient  => (Palette.White, Opaque),     -- (0.7, 0.7, 0.7, 1.0),
+                          diffuse  => (Palette.White, Opaque),     -- (1.0, 1.0, 1.0, 1.0),
+                          specular => (Palette.White, Opaque));    -- (1.0, 1.0, 1.0, 1.0));
 
 
       for i in the_Updates'Range
@@ -527,13 +528,22 @@ is
          Light.inverse_view_Transform_is (inverse_view_Transform);
       end loop;
 
-      Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                           diffuse  => (0.3, 0.3, 0.3, 0.0),
-                           specular => (0.91, 0.91, 0.91, 0.0));
+--        Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+--                             diffuse  => (0.3, 0.3, 0.3, 0.0),
+--                             specular => (0.91, 0.91, 0.91, 0.0));
+--
+--        Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
+--                             diffuse  => (0.6, 0.1, 0.1, 0.0),
+--                             specular => (0.01, 0.01, 0.01, 0.0));
 
-      Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
-                           diffuse  => (0.6, 0.1, 0.1, 0.0),
-                           specular => (0.01, 0.01, 0.01, 0.0));
+--        Lights (1).Color_is (ambient  => (Palette.Grey, Lucid),
+--                             diffuse  => (Palette.Dark_blue, Lucid),
+--                             specular => (Palette.White, Lucid));
+--
+--        Lights (2).Color_is (ambient  => (Palette.Grey, Lucid),
+--                             diffuse  => (Palette.Dark_blue, Lucid),
+--                             specular => (Palette.White, Lucid));
+
       if clear_Frame then
          Self.clear_Frame;
       end if;

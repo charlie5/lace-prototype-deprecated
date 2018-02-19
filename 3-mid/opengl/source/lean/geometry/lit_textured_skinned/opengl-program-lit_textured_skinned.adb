@@ -3,6 +3,7 @@ with
      openGL.Texture,
      openGL.Geometry.lit_textured_skinned,
      openGL.Tasks,
+     openGL.Conversions,
 
      GL.lean,
      GL.Pointers,
@@ -198,6 +199,8 @@ is
 
       Light_1:
       declare
+         use openGL.Conversions;
+
          the_Light : openGL.Light.directional.item renames Self.directional_Light (1);
 
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
@@ -222,6 +225,8 @@ is
 
       Light_2:
       declare
+         use openGL.Conversions;
+
          the_Light : openGL.Light.directional.item renames Self.directional_Light (2);
 
          the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3

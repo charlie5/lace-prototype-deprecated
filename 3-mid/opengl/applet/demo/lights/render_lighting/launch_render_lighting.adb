@@ -33,16 +33,6 @@ begin
 
       --  The Models.
       --
-      the_box_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.new_Box
-             (Size => (1.0, 2.0, 1.0),
-              faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
-                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
-
       the_ball_1_Model : constant openGL.Model.sphere.lit_colored_textured.view
         := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
                                                                 Image  => the_Texture);
@@ -53,8 +43,6 @@ begin
       --  The Visuals.
       --
       use openGL.Visual.Forge;
-
---        the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_box_Model.all'Access));
 
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_ball_1_Model.all'Access),
                                                      2 => new_Visual (the_ball_2_Model.all'Access));
@@ -93,11 +81,16 @@ begin
          declare
             Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          begin
-            if    Light.Site (1) > 100_000_000.0 then   site_Delta (1) := -10_000.0;
-            elsif Light.Site (1) > 100_000_000.0 then   site_Delta (1) :=  10_000.0;
+            if    Light.Site (1) >  100_000_000.0 then   site_Delta (1) := -10_000.0;
+            elsif Light.Site (1) < -100_000_000.0 then   site_Delta (1) :=  10_000.0;
             end if;
 
             Light.Site_is (Light.Site + site_Delta);
+
+            Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+                            Diffuse  => (openGL.Palette.Grey,       Opaque),
+                            Specular => (openGL.Palette.White,      Opaque));
+
             Demo.Renderer.Light_is (Id  => 1,
                                     Now => Light);
          end;
