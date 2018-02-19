@@ -347,6 +347,15 @@ is
 
 
 
+   procedure Shine_is (Self : in out Item'Class;   Now : in Shine)
+   is
+   begin
+      Self.Shine := Now;
+   end Shine_is;
+
+
+
+
    procedure set_mvp_Uniform (Self : in Item)
    is
       the_mvp_Uniform : constant openGL.Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Matrix");

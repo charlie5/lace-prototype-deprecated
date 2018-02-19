@@ -93,9 +93,10 @@ is
    procedure mvp_Matrix_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
-   procedure directional_Light_is (Self : in out Item'Class;   light_Id : in Positive;
-                                   Now      : in openGL.Light.directional.item);
-   procedure Scale_is                    (Self : in out Item'Class;   Now : in Vector_3);
+   procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
+                                                                      Now      : in openGL.Light.directional.item);
+   procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
+   procedure Shine_is                    (Self : in out Item'Class;   Now      : in openGL.Shine);
 
    procedure set_Uniforms                (Self : in     Item)   is abstract;
 
@@ -128,7 +129,8 @@ private
 
          directional_Light        : openGL.Light.directional.items (1 .. 2);
 
-         Scale                    : Vector_3  := (1.0, 1.0, 1.0);
+         Scale                    : Vector_3     := (1.0, 1.0, 1.0);
+         Shine                    : openGL.Shine := 1.0;
       end record;
 
 

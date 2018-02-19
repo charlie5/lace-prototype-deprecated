@@ -120,6 +120,7 @@ is
    function to_Vector_3_array (Self : in Vector_2_array) return Vector_3_array;
 
 
+   ------------
    --  Matrices
    --
 
@@ -130,7 +131,7 @@ is
    subtype Matrix_4x4 is math.Matrix_4x4;
 
 
-
+   ---------------
    --  Height Maps
    --
    type height_Map is array (Index_t range <>,
@@ -223,6 +224,7 @@ is
          Opacity : light_color_Value;
       end record;
 
+   subtype Shine is Real range 1.0 .. Real'Last;
 
 
    ----------

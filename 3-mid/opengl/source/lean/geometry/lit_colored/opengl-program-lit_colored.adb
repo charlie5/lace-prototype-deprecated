@@ -14,9 +14,13 @@ is
       the_scale_Uniform : constant openGL.Variable.uniform.vec3
         := Self.uniform_Variable ("uScale");
 
+      the_shine_Uniform : constant openGL.Variable.uniform.float
+        := Self.uniform_Variable ("uShine");
+
    begin
       Self.set_mvp_Uniform;
       the_scale_Uniform.Value_is (Self.Scale);
+      the_shine_Uniform.Value_is (Self.Shine);
 
       the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
 

@@ -192,8 +192,13 @@ is
       the_inverse_modelview_matrix_Uniform : constant openGL.Variable.uniform.mat3
         := Self.uniform_Variable ("inv_modelview_Matrix");
 
+      the_shine_Uniform : constant openGL.Variable.uniform.float
+        := Self.uniform_Variable ("uShine");
+
    begin
       Self.set_mvp_Uniform;
+
+      the_shine_Uniform.Value_is (Self.Shine);
 
       the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
 

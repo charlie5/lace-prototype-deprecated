@@ -15,7 +15,7 @@ uniform   mat3                  inv_modelview_Matrix;
 uniform   directional_light     uLight_1;
 uniform   directional_light     uLight_2;
 uniform   vec3                  uScale;
-
+uniform   float                  uShine;
 
 attribute vec3   aSite;
 attribute vec3   aNormal;
@@ -28,7 +28,6 @@ varying   vec2   vCoords;
 
 const float   c_zero      =  0.0;
 const float   c_one       =  1.0;
-const float   c_shininess = 20.0;
 
 
 vec4                                                        // Returns the computed color.
@@ -46,7 +45,7 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    computed_color += (NdotL * light.diffuse_color);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * light.specular_color);
+      computed_color += (pow (NdotH, uShine) * light.specular_color);
 
    return computed_color;
 }

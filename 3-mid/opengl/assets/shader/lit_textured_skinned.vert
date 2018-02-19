@@ -15,6 +15,7 @@ uniform   mat3                  inv_modelview_Matrix;
 
 uniform   directional_light     uLight_1;
 uniform   directional_light     uLight_2;
+uniform   float                  uShine;
 
 uniform   mat4                  bone_Matrices[120];
 
@@ -34,7 +35,6 @@ varying   vec2   vCoords;
 
 const float   c_zero      = 0.0;
 const float   c_one       = 1.0;
-const float   c_shininess = 200.0;
 
 
 vec4                                                        // Returns the computed color.
@@ -52,7 +52,7 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    computed_color += (NdotL * light.diffuse_color  * aColor);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * aColor * light.specular_color);
+      computed_color += (pow (NdotH, uShine) * aColor * light.specular_color);
 
    return computed_color;
 }

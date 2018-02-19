@@ -12,10 +12,12 @@ struct directional_light
 
 uniform   mat4                  mvp_Matrix;
 uniform   mat3                  inv_modelview_Matrix;
+
 uniform   directional_light     uLight_1;
 uniform   directional_light     uLight_2;
 
-uniform   vec3   uScale;
+uniform   vec3                  uScale;
+uniform   float                  uShine;
 
 attribute vec3   aSite;
 attribute vec3   aNormal;
@@ -27,7 +29,6 @@ varying   vec4   vColor;
 
 const float   c_zero      = 0.0;
 const float   c_one       = 1.0;
-const float   c_shininess = 200.0;
 
 
 
@@ -46,7 +47,7 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    computed_color += (NdotL * light.diffuse_color  * aColor);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, c_shininess) * aColor * light.specular_color);
+      computed_color += (pow (NdotH, uShine) * aColor * light.specular_color);
 
    return computed_color;
 }

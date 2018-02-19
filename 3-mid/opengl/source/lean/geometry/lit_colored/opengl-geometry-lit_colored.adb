@@ -75,7 +75,7 @@ is
          the_Program.  vertex_Shader.define (openGL.Shader.Vertex,    "assets/opengl/shader/lit_colored.vert");
          the_Program.fragment_Shader.define (openGL.Shader.Fragment,  "assets/opengl/shader/lit_colored.frag");
          the_Program.        Program.define (the_Program.vertex_Shader  'Access,
-                                            the_Program.fragment_Shader'Access);
+                                             the_Program.fragment_Shader'Access);
 
          Attribute_1 := attribute.Forge.new_Attribute
                           (name        => "aSite",
