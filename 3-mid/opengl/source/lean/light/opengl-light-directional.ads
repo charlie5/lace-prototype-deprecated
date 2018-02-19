@@ -37,9 +37,9 @@ private
          Direction          : Vector_3;
          halfplane_Vector   : Vector_3;
 
-         ambient_Color      : Vector_4;
-         diffuse_Color      : Vector_4;
-         specular_Color     : Vector_4;
+         ambient_Color      : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
+         diffuse_Color      : Vector_4 := (0.0, 0.0, 0.0, 1.0);
+         specular_Color     : Vector_4 := (0.0, 0.0, 0.0, 1.0);
       end record;
 
 end openGL.Light.directional;

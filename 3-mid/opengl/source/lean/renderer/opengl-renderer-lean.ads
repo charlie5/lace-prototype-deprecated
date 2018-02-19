@@ -236,8 +236,8 @@ private
    protected
    type safe_Lights
    is
-      procedure set   (the_Light : in light_Id;
-                      To         : in openGL.Light.directional.item);
+      procedure set (Id : in light_Id;
+                     To        : in openGL.Light.directional.item);
       function  fetch return light_Set;
    private
       my_Lights : light_Set;

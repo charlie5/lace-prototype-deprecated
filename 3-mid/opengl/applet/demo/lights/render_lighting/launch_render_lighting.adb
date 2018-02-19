@@ -61,7 +61,11 @@ begin
       declare
          Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
       begin
-         Light.Site_is (initial_Site);
+         Light.Site_is  (initial_Site);
+         Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+                         Diffuse  => (openGL.Palette.Grey,       Opaque),
+                         Specular => (openGL.Palette.White,      Opaque));
+
          Demo.Renderer.Light_is (Id  => 1,
                                  Now => Light);
       end;

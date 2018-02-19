@@ -255,6 +255,20 @@ is
       end select;
 
 
+      -- Setup the default light.
+      --
+      declare
+         Lights : light_Set := Self.Lights.fetch;
+      begin
+         Lights (1).light_Color_is (ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
+                                    diffuse  => (1.0, 1.0, 1.0, 1.0),
+                                    specular => (1.0, 1.0, 1.0, 1.0));
+
+         Self.Lights.set (Id => 1,
+                          to => Lights (1));
+      end;
+
+
       while not Done
       loop
          declare
@@ -975,11 +989,11 @@ is
    protected
    body safe_Lights
    is
-      procedure set   (the_Light : in light_Id;
+      procedure set   (Id : in light_Id;
                       To         : in openGL.Light.directional.item)
       is
       begin
-         my_Lights (the_Light) := To;
+         my_Lights (Id) := To;
       end set;
 
       function  fetch return light_Set
