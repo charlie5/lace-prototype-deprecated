@@ -58,6 +58,12 @@ begin
 
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_ball_1_Model.all'Access),
                                                      2 => new_Visual (the_ball_2_Model.all'Access));
+
+      -- Light movement.
+      --
+      initial_Site : constant openGL.Vector_3    := (-100_000_000.0, 0.0, 100_000_000.0);
+      site_Delta   :          openGL.Vector_3    := (      10_000.0, 0.0,           0.0);
+
    begin
       the_Visuals (1).Site_is ((0.0,  0.0, 0.0));
       the_Visuals (1).Site_is ((0.0, -2.0, 0.0));
@@ -67,7 +73,7 @@ begin
       declare
          Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
       begin
-         Light.Site_is (Light.Site + (-100_000_000.0, 0.0, 0.0));
+         Light.Site_is (initial_Site);
          Demo.Renderer.Light_is (Id  => 1,
                                  Now => Light);
       end;
@@ -87,7 +93,11 @@ begin
          declare
             Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          begin
-            Light.Site_is (Light.Site + (10_000.0, 0.0, 0.0));
+            if    Light.Site (1) > 100_000_000.0 then   site_Delta (1) := -10_000.0;
+            elsif Light.Site (1) > 100_000_000.0 then   site_Delta (1) :=  10_000.0;
+            end if;
+
+            Light.Site_is (Light.Site + site_Delta);
             Demo.Renderer.Light_is (Id  => 1,
                                     Now => Light);
          end;
