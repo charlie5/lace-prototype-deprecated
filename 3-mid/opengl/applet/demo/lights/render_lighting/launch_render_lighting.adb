@@ -1,4 +1,5 @@
 with
+     openGL.Conversions,
      openGL.Light.directional,
      openGL.Visual,
      openGL.Model.box   .lit_colored_textured,
@@ -83,23 +84,24 @@ begin
          -- Move the light.
          --
          declare
+            use openGL.Conversions;
             Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          begin
             if    Light.Site (1) >  100_000_000.0
             then
                site_Delta (1) := -10_000.0;
 
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,       Opaque),
-                               Specular => (openGL.Palette.White,      Opaque));
+               Light.Color_is (Ambient  => +(openGL.Palette.dark_Green, Opaque),
+                               Diffuse  => +(openGL.Palette.Grey,       Opaque),
+                               Specular => +(openGL.Palette.White,      Opaque));
 
             elsif Light.Site (1) < -100_000_000.0
             then
                site_Delta (1) :=  10_000.0;
 
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,     Opaque),
-                               Specular => (openGL.Palette.White,    Opaque));
+               Light.Color_is (Ambient  => +(openGL.Palette.dark_Red, Opaque),
+                               Diffuse  => +(openGL.Palette.Grey,     Opaque),
+                               Specular => +(openGL.Palette.White,    Opaque));
             end if;
 
             Light.Site_is (Light.Site + site_Delta);

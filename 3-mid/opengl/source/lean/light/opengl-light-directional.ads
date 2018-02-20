@@ -10,20 +10,13 @@ is
 
    procedure inverse_view_Transform_is (Self : in out Item;   Now : in Matrix_3x3);
 
-
-   procedure Color_is (Self : in out Item;   Ambient  : in lucid_Color;
-                                             Diffuse  : in lucid_Color;
-                                             Specular : in lucid_Color);
-
-   procedure light_Color_is (Self : in out Item;   Ambient  : in light_Color;
-                                                   Diffuse  : in light_Color;
-                                                   Specular : in light_Color);
-
+   procedure Color_is (Self : in out Item;   Ambient  : in light_Color;
+                                             Diffuse  : in light_Color;
+                                             Specular : in light_Color);
 
    function  ambient_Color (Self : in    Item) return Vector_4;
    function  diffuse_Color (Self : in    Item) return Vector_4;
    function specular_Color (Self : in    Item) return Vector_4;
-
 
 
    function  Direction        (Self : in    Item) return Vector_3;    -- Normalized light direction in eye space.

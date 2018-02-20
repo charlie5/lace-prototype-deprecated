@@ -22,4 +22,15 @@ is
    end to_Vector_4;
 
 
+
+   function to_light_Color (From : in lucid_Color) return light_Color
+   is
+   begin
+      return (to_Real (From.Primary.Red),
+              to_Real (From.Primary.Green),
+              to_Real (From.Primary.Blue),
+              to_Real (From.Opacity));
+   end to_light_Color;
+
+
 end openGL.Conversions;

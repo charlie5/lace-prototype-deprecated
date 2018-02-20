@@ -10,6 +10,7 @@ with
      openGL.Tasks,
      openGL.IO,
      openGL.Errors,
+     openGL.Conversions,
 
      GL.lean,
 
@@ -260,9 +261,9 @@ is
       declare
          Lights : light_Set := Self.Lights.fetch;
       begin
-         Lights (1).light_Color_is (ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
-                                    diffuse  => (1.0, 1.0, 1.0, 1.0),
-                                    specular => (1.0, 1.0, 1.0, 1.0));
+         Lights (1).Color_is (ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
+                              diffuse  => (1.0, 1.0, 1.0, 1.0),
+                              specular => (1.0, 1.0, 1.0, 1.0));
 
          Self.Lights.set (Id => 1,
                           to => Lights (1));
@@ -411,7 +412,8 @@ is
                                                      view_Transform         : in math.Matrix_4x4;
                                                      perspective_Transform  : in math.Matrix_4x4)
    is
-      use math.Algebra.linear.d3, math.Vectors;
+      use openGL.Conversions,
+          math.Algebra.linear.d3, math.Vectors;
 
       check_is_OK              : constant Boolean                      := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       inverse_view_Transform   : constant openGL.Matrix_3x3            := inverse_Rotation (get_Rotation (view_Transform));
@@ -422,9 +424,9 @@ is
    begin
       the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light.Site_is  (light_Site);
-      the_Light.Color_is (ambient  => (Palette.White, Opaque),     -- (0.7, 0.7, 0.7, 1.0),
-                          diffuse  => (Palette.White, Opaque),     -- (1.0, 1.0, 1.0, 1.0),
-                          specular => (Palette.White, Opaque));    -- (1.0, 1.0, 1.0, 1.0));
+      the_Light.Color_is (ambient  => +(Palette.White, Opaque),     -- (0.7, 0.7, 0.7, 1.0),
+                          diffuse  => +(Palette.White, Opaque),     -- (1.0, 1.0, 1.0, 1.0),
+                          specular => +(Palette.White, Opaque));    -- (1.0, 1.0, 1.0, 1.0));
 
 
       for i in the_Updates'Range
