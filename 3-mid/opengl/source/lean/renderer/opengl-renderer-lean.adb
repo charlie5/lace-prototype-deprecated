@@ -261,6 +261,7 @@ is
       declare
          Lights : light_Set := Self.Lights.fetch;
       begin
+         Lights (1).is_On;
          Lights (1).Color_is (ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
                               diffuse  => (1.0, 1.0, 1.0, 1.0),
                               specular => (1.0, 1.0, 1.0, 1.0));
@@ -424,9 +425,9 @@ is
    begin
       the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light.Site_is  (light_Site);
-      the_Light.Color_is (ambient  => +(Palette.White, Opaque),     -- (0.7, 0.7, 0.7, 1.0),
-                          diffuse  => +(Palette.White, Opaque),     -- (1.0, 1.0, 1.0, 1.0),
-                          specular => +(Palette.White, Opaque));    -- (1.0, 1.0, 1.0, 1.0));
+      the_Light.Color_is (ambient  => +(Palette.White, Opaque),
+                          diffuse  => +(Palette.White, Opaque),
+                          specular => +(Palette.White, Opaque));
 
 
       for i in the_Updates'Range

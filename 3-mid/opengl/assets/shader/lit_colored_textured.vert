@@ -1,12 +1,16 @@
 #version 120
 
+
 struct directional_light
 {
    vec3   direction;        // Normalized light direction in eye space.
    vec3   halfplane;        // Normalized half-plane vector.
+
    vec4   ambient_color;     
    vec4   diffuse_color;
    vec4   specular_color;
+
+   bool   is_on;
 };
 
 
@@ -39,7 +43,10 @@ vec4                                                        // Returns the compu
 directional_light_color (in vec3                normal,     // 'normal' has been transformed into eye space and normalized.
                          in directional_light   light)
 {
-   vec4   computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
+   if (!light.is_on)
+      return vec4 (0.0, 0.0, 0.0, 0.0);
+
+   vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
    float   NdotL;                                            // Dot product of normal and light direction.
    float   NdotH;                                            // Dot product of normal and half-plane vector.
 

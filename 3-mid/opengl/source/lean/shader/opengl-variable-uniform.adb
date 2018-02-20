@@ -51,6 +51,17 @@ is
    --  Actuals
    --
 
+   --  bool
+   --
+   procedure Value_is (Self : in bool;   Now : in Boolean)
+   is
+      use type Interfaces.c.int;
+      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+   begin
+      glUniform1i (Self.gl_Variable,
+                   Boolean'Pos (Now));
+   end Value_is;
+
 
    --  int
    --

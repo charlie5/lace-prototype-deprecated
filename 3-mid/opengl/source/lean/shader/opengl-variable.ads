@@ -21,8 +21,9 @@ is
 
 
 
-
 private
+
+   use type gl.GLint;
 
    type Item is abstract tagged
       record

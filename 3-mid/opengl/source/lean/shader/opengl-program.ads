@@ -61,6 +61,7 @@ is
 
    function is_defined         (Self : in     Item'Class) return Boolean;
 
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.bool;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.int;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.float;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.vec3;

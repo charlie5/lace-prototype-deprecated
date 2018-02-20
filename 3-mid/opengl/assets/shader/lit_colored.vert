@@ -7,6 +7,7 @@ struct directional_light
    vec4   ambient_color;     
    vec4   diffuse_color;
    vec4   specular_color;
+   bool   is_on;
 };
 
 
@@ -15,9 +16,10 @@ uniform   mat3                  inv_modelview_Matrix;
 
 uniform   directional_light     uLight_1;
 uniform   directional_light     uLight_2;
+uniform   directional_light     uLights [8];
 
 uniform   vec3                  uScale;
-uniform   float                  uShine;
+uniform   float                 uShine;
 
 attribute vec3   aSite;
 attribute vec3   aNormal;
@@ -27,8 +29,8 @@ attribute vec4   aColor;
 varying   vec4   vColor;
 
 
-const float   c_zero      = 0.0;
-const float   c_one       = 1.0;
+const float   c_zero = 0.0;
+const float   c_one  = 1.0;
 
 
 
@@ -36,7 +38,10 @@ vec4                                                        // Returns the compu
 directional_light_color (in vec3                normal,     // 'normal' has been transformed into eye space and normalized.
                          in directional_light   light)
 {
-   vec4   computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
+   if (!light.is_on)
+      return vec4 (0.0, 0.0, 0.0, 0.0);
+
+   vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
    float   NdotL;                                            // Dot product of normal and light direction.
    float   NdotH;                                            // Dot product of normal and half-plane vector.
 
@@ -63,4 +68,9 @@ main()
 
    vColor  = directional_light_color (light_Normal, uLight_1);
    vColor += directional_light_color (light_Normal, uLight_2);
+
+   for (int i=0; i<=8; i++)
+   {
+      vColor += directional_light_color (light_Normal, uLights [i]);
+   }
 }

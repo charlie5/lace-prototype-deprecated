@@ -219,13 +219,18 @@ is
            := Self.uniform_Variable ("uLight_1.diffuse_color");
          the_light_specular_color_Uniform     : constant openGL.Variable.uniform.vec4
            := Self.uniform_Variable ("uLight_1.specular_color");
-      begin
-         the_light_direction_Uniform         .Value_is (the_Light.Direction);
-         the_light_halfplane_Uniform         .Value_is (the_Light.halfplane_Vector);
 
-         the_light_ambient_color_Uniform     .Value_is (the_Light.ambient_Color);
-         the_light_diffuse_color_Uniform     .Value_is (the_Light.diffuse_Color);
-         the_light_specular_color_Uniform    .Value_is (the_Light.specular_Color);
+         the_light_on_Uniform                 : constant openGL.Variable.uniform.bool
+           := Self.uniform_Variable ("uLight_1.is_on");
+      begin
+         the_light_on_Uniform            .Value_is (the_Light.is_On);
+
+         the_light_direction_Uniform     .Value_is (the_Light.Direction);
+         the_light_halfplane_Uniform     .Value_is (the_Light.halfplane_Vector);
+
+         the_light_ambient_color_Uniform .Value_is (the_Light.ambient_Color);
+         the_light_diffuse_color_Uniform .Value_is (the_Light.diffuse_Color);
+         the_light_specular_color_Uniform.Value_is (the_Light.specular_Color);
       end Light_1;
 
       Light_2:
@@ -245,13 +250,18 @@ is
            := Self.uniform_Variable ("uLight_2.diffuse_color");
          the_light_specular_color_Uniform     : constant openGL.Variable.uniform.vec4
            := Self.uniform_Variable ("uLight_2.specular_color");
-      begin
-         the_light_direction_Uniform         .Value_is (the_Light.Direction);
-         the_light_halfplane_Uniform         .Value_is (the_Light.halfplane_Vector);
 
-         the_light_ambient_color_Uniform     .Value_is (the_Light.ambient_Color);
-         the_light_diffuse_color_Uniform     .Value_is (the_Light.diffuse_Color);
-         the_light_specular_color_Uniform    .Value_is (the_Light.specular_Color);
+         the_light_on_Uniform                 : constant openGL.Variable.uniform.bool
+           := Self.uniform_Variable ("uLight_2.is_on");
+      begin
+         the_light_on_Uniform            .Value_is (the_Light.is_On);
+
+         the_light_direction_Uniform     .Value_is (the_Light.Direction);
+         the_light_halfplane_Uniform     .Value_is (the_Light.halfplane_Vector);
+
+         the_light_ambient_color_Uniform .Value_is (the_Light.ambient_Color);
+         the_light_diffuse_color_Uniform .Value_is (the_Light.diffuse_Color);
+         the_light_specular_color_Uniform.Value_is (the_Light.specular_Color);
       end Light_2;
 
       declare

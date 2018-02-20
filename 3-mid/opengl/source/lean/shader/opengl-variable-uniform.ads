@@ -26,6 +26,7 @@ is
    --  Actuals
    --
 
+   type bool  is new Variable.uniform.item with private;
    type int   is new Variable.uniform.item with private;
    type float is new Variable.uniform.item with private;
    type vec3  is new Variable.uniform.item with private;
@@ -33,6 +34,7 @@ is
    type mat3  is new Variable.uniform.item with private;
    type mat4  is new Variable.uniform.item with private;
 
+   procedure Value_is (Self : in bool;    Now : in Boolean);
    procedure Value_is (Self : in int;     Now : in Integer);
    procedure Value_is (Self : in float;   Now : in openGL.Real);
    procedure Value_is (Self : in vec3;    Now : in openGL.Vector_3);
@@ -51,6 +53,7 @@ private
          null;
       end record;
 
+   type bool  is new Variable.uniform.item with null record;
    type int   is new Variable.uniform.item with null record;
    type float is new Variable.uniform.item with null record;
 

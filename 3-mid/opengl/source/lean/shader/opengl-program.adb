@@ -207,6 +207,18 @@ is
 
 
 
+
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.bool
+   is
+      use openGL.Variable.uniform;
+      the_Variable : openGL.Variable.uniform.bool;
+   begin
+      define (the_Variable, Self, Named);
+      return  the_Variable;
+   end uniform_Variable;
+
+
+
    function uniform_Variable (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.int
    is
       use openGL.Variable.uniform;
