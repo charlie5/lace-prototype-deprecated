@@ -104,13 +104,11 @@ is
 
 
    ----------
-   --  Privvy   tbd: move this to privvy child package.
+   --  Privvy   ToDo: move this to privvy child package.
    --
 
    subtype a_gl_Program is gl.GLuint;
    function  gl_Program (Self : in Item) return a_gl_Program;
-
-
 
 
 

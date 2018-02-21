@@ -4,9 +4,11 @@ struct directional_light
 {
    vec3   direction;        // Normalized light direction in eye space.
    vec3   halfplane;        // Normalized half-plane vector.
+
    vec4   ambient_color;     
    vec4   diffuse_color;
    vec4   specular_color;
+
    bool   is_on;
 };
 
@@ -14,8 +16,6 @@ struct directional_light
 uniform   mat4                  mvp_Matrix;
 uniform   mat3                  inv_modelview_Matrix;
 
-uniform   directional_light     uLight_1;
-uniform   directional_light     uLight_2;
 uniform   directional_light     uLights [8];
 
 uniform   vec3                  uScale;
@@ -66,10 +66,10 @@ main()
    
    vec3   light_Normal = normalize (aNormal) * inv_modelview_Matrix;
 
-   vColor  = directional_light_color (light_Normal, uLight_1);
-   vColor += directional_light_color (light_Normal, uLight_2);
 
-   for (int i=0; i<=8; i++)
+   vColor = vec4 (0.0, 0.0, 0.0, 0.0);
+
+   for (int i = 0; i < 8; i++)
    {
       vColor += directional_light_color (light_Normal, uLights [i]);
    }

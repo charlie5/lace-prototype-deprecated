@@ -14,14 +14,13 @@ struct directional_light
 };
 
 
-uniform   mat4                  mvp_Matrix;
-uniform   mat3                  inv_modelview_Matrix;
+uniform   mat4                mvp_Matrix;
+uniform   mat3                inv_modelview_Matrix;
 
-uniform   directional_light     uLight_1;
-uniform   directional_light     uLight_2;
-uniform   float                  uShine;
+uniform   directional_light   uLights [8];
+uniform   float               uShine;
 
-uniform   mat4                  bone_Matrices[120];
+uniform   mat4                bone_Matrices[120];
 
 
 attribute vec3   aSite;
@@ -138,9 +137,14 @@ void main()
 
     vec3   light_Normal = normalize (transformedNormal) * inv_modelview_Matrix;
 
-    vColor  = directional_light_color (light_Normal, uLight_1);
-    vColor += directional_light_color (light_Normal, uLight_2);
+
+    vColor = vec4 (0.0, 0.0, 0.0, 0.0);
+
+    for (int i = 0; i < 8; i++)
+    {
+       vColor += directional_light_color (light_Normal, uLights [i]);
+    }
 
 
-    vCoords           = aCoords;
+    vCoords = aCoords;
 }

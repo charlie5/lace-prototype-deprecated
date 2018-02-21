@@ -1,5 +1,6 @@
 with
-     openGL.Conversions;
+     openGL.Conversions,
+     Ada.Strings.fixed;
 
 
 package body openGL.Program.lit_colored
@@ -19,73 +20,55 @@ is
 
    begin
       Self.set_mvp_Uniform;
+
       the_scale_Uniform.Value_is (Self.Scale);
       the_shine_Uniform.Value_is (Self.Shine);
 
       the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
 
-      Light_1:
-      declare
-         use openGL.Conversions;
+      -- Lights
+      --
+      for i in Self.directional_Light'Range
+      loop
+         declare
+            Light : openGL.Light.directional.item renames Self.directional_Light (i);
 
-         the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
-           := Self.uniform_Variable ("uLight_1.direction");
-         the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3
-           := Self.uniform_Variable ("uLight_1.halfplane");
+            function light_Name return String is
+               use Ada.Strings, Ada.Strings.fixed;
+            begin
+               return "uLights[" & Trim (Integer'Image (i - 1), Left) & "]";
+            end light_Name;
 
-         the_light_ambient_color_Uniform      : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_1.ambient_color");
-         the_light_diffuse_color_Uniform      : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_1.diffuse_color");
-         the_light_specular_color_Uniform     : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_1.specular_color");
+            the_light_on_Uniform : constant openGL.Variable.uniform.bool
+              := Self.uniform_Variable (light_Name & ".is_on");
+         begin
+            the_light_on_Uniform.Value_is (Light.is_On);
 
-         the_light_on_Uniform                 : constant openGL.Variable.uniform.bool
-           := Self.uniform_Variable ("uLight_1.is_on");
+            if Light.is_On
+            then
+               declare
+                  the_light_direction_Uniform      : constant openGL.Variable.uniform.vec3
+                    := Self.uniform_Variable (light_Name & ".direction");
+                  the_light_halfplane_Uniform      : constant openGL.Variable.uniform.vec3
+                    := Self.uniform_Variable (light_Name & ".halfplane");
 
-         the_Light : openGL.Light.directional.item  renames Self.directional_Light (1);
-      begin
-         the_light_on_Uniform            .Value_is (the_Light.is_On);
+                  the_light_ambient_color_Uniform  : constant openGL.Variable.uniform.vec4
+                    := Self.uniform_Variable (light_Name & ".ambient_color");
+                  the_light_diffuse_color_Uniform  : constant openGL.Variable.uniform.vec4
+                    := Self.uniform_Variable (light_Name & ".diffuse_color");
+                  the_light_specular_color_Uniform : constant openGL.Variable.uniform.vec4
+                    := Self.uniform_Variable (light_Name & ".specular_color");
+               begin
+                  the_light_direction_Uniform     .Value_is (Light.Direction);
+                  the_light_halfplane_Uniform     .Value_is (Light.halfplane_Vector);
 
-         the_light_direction_Uniform     .Value_is (the_Light.Direction);
-         the_light_halfplane_Uniform     .Value_is (the_Light.halfplane_Vector);
-
-         the_light_ambient_color_Uniform .Value_is (the_Light.ambient_Color);
-         the_light_diffuse_color_Uniform .Value_is (the_Light.diffuse_Color);
-         the_light_specular_color_Uniform.Value_is (the_Light.specular_Color);
-      end Light_1;
-
-
-      Light_2:
-      declare
-         use openGL.Conversions;
-
-         the_light_direction_Uniform          : constant openGL.Variable.uniform.vec3
-           := Self.uniform_Variable ("uLight_2.direction");
-         the_light_halfplane_Uniform          : constant openGL.Variable.uniform.vec3
-           := Self.uniform_Variable ("uLight_2.halfplane");
-
-         the_light_ambient_color_Uniform      : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_2.ambient_color");
-         the_light_diffuse_color_Uniform      : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_2.diffuse_color");
-         the_light_specular_color_Uniform     : constant openGL.Variable.uniform.vec4
-           := Self.uniform_Variable ("uLight_2.specular_color");
-
-         the_light_on_Uniform                 : constant openGL.Variable.uniform.bool
-           := Self.uniform_Variable ("uLight_2.is_on");
-
-         the_Light : openGL.Light.directional.item  renames Self.directional_Light (2);
-      begin
---           the_Lightght_on_Uniform            .Value_is (the_Light.is_On);
-
-         the_light_direction_Uniform     .Value_is (the_Light.Direction);
-         the_light_halfplane_Uniform     .Value_is (the_Light.halfplane_Vector);
-
-         the_light_ambient_color_Uniform .Value_is (the_Light.ambient_Color);
-         the_light_diffuse_color_Uniform .Value_is (the_Light.diffuse_Color);
-         the_light_specular_color_Uniform.Value_is (the_Light.specular_Color);
-      end Light_2;
+                  the_light_ambient_color_Uniform .Value_is (Light.ambient_Color);
+                  the_light_diffuse_color_Uniform .Value_is (Light.diffuse_Color);
+                  the_light_specular_color_Uniform.Value_is (Light.specular_Color);
+               end;
+            end if;
+         end;
+      end loop;
    end set_Uniforms;
 
 

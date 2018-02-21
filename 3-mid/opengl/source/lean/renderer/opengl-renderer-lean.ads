@@ -44,7 +44,7 @@ is
    --- Attributes
    --
 
-   type      light_Id is range 1 .. 2;
+   type      light_Id is range 1 .. 8;
    procedure Light_is (Self : in out Item;   Id  : in light_Id;
                                              Now : in Light.directional.item);
    function  Light    (Self : in out Item;   Id  : in light_Id) return Light.directional.item;
