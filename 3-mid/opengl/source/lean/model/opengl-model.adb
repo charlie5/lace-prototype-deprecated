@@ -199,4 +199,24 @@ is
    end Bounds;
 
 
+   function opaque_Geometries (Self : in     Item) return access_Geometry_views
+   is
+   begin
+      return Self.opaque_Geometries;
+   end opaque_Geometries;
+
+
+   function  lucid_Geometries (Self : in     Item) return access_Geometry_views
+   is
+   begin
+      return Self.lucid_Geometries;
+   end lucid_Geometries;
+
+
+   function  needs_Rebuild    (Self : in     Item) return Boolean
+   is
+   begin
+      return Boolean (Self.needs_Rebuild);
+   end needs_Rebuild;
+
 end openGL.Model;

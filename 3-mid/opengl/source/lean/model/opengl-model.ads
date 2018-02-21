@@ -12,22 +12,9 @@ package openGL.Model
 is
    use Geometry_3d;
 
-
-   type access_Geometry_views is access openGL.Geometry.views;
-
-
-   type Item is abstract new openGL.remote_Model.item with
-      record
-         opaque_Geometries : access_Geometry_views;
-         lucid_Geometries  : access_Geometry_views;
-
-         Bounds            : openGL.Bounds := null_Bounds;   -- The combined bounds of all geometries.
-         needs_Rebuild     : safe_Boolean  := False;
-      end record;
-
+   type Item  is abstract new openGL.remote_Model.item with private;
    type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
-
 
 
    --------
@@ -55,13 +42,22 @@ is
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
                                is abstract;
 
+   type access_Geometry_views is access openGL.Geometry.views;
+
+   function opaque_Geometries (Self : in     Item) return access_Geometry_views;
+   function  lucid_Geometries (Self : in     Item) return access_Geometry_views;
+
+
    procedure set_Bounds       (Self : in out Item);
    --
    -- Recalculate the bounds based on model geometry.
 
-   function  Bounds           (Self : in     Item) return openGL.Bounds; -- is abstract;
+   function  Bounds           (Self : in     Item) return openGL.Bounds;
    --
    -- Returns the bounds in model space.
+
+
+   function  needs_Rebuild    (Self : in     Item) return Boolean;
 
 
    -------------
@@ -71,5 +67,17 @@ is
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Maps_of_font.Map);
 
+
+
+private
+
+   type Item is abstract new openGL.remote_Model.item with
+      record
+         opaque_Geometries : access_Geometry_views;
+         lucid_Geometries  : access_Geometry_views;
+
+         Bounds            : openGL.Bounds := null_Bounds;   -- The combined bounds of all geometries.
+         needs_Rebuild     : safe_Boolean  := False;
+      end record;
 
 end openGL.Model;
