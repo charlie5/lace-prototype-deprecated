@@ -55,7 +55,7 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    NdotH = max (c_zero,  dot (normal, light.halfplane));
 
    computed_color += (        light.ambient_color * aColor);
-   computed_color += (NdotL * light.diffuse_color  * aColor);
+   computed_color += (NdotL * light.diffuse_color * aColor);
    
    if (NdotH > c_zero)
       computed_color += (pow (NdotH, uShine) * aColor * light.specular_color);

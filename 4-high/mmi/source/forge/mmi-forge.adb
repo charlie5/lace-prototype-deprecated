@@ -74,8 +74,8 @@ is
                                Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view
    is
       the_graphics_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.Forge.new_Sphere (Radius,
-                                                             (Color, openGL.Opaque));
+        := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
+                                                       (Color, openGL.Opaque));
 
       the_physics_Model  : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.Circle, Radius),
@@ -101,8 +101,8 @@ is
       use type Geometry_2d.Sites;
 
       the_graphics_Model : constant openGL.Model.polygon.lit_colored.view
-        := openGL.Model.polygon.lit_colored.Forge.new_Polygon (openGL.Vector_2_array (Vertices),
-                                                               (Color, openGL.Opaque));
+        := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
+                                                         (Color, openGL.Opaque));
 
       Padding            : constant Geometry_2d.Sites (1 .. 8 - Vertices'Length) := (others => <>);
 
@@ -155,7 +155,7 @@ is
                              Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view
    is
       the_graphics_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.Forge.new_Sphere (Radius, (Color, openGL.Opaque));
+        := openGL.Model.sphere.lit_colored.new_Sphere (Radius, (Color, openGL.Opaque));
 
       the_physics_Model  : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.a_Sphere, Radius / 2.0),
@@ -184,13 +184,13 @@ is
           Math;
 
       the_box_Model         : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box (size => Size,
-                                                   faces => (front => (colors => (others => (Colors (1), Opaque))),
-                                                             rear  => (colors => (others => (Colors (2), Opaque))),
-                                                             upper => (colors => (others => (Colors (3), Opaque))),
-                                                             lower => (colors => (others => (Colors (4), Opaque))),
-                                                             left  => (colors => (others => (Colors (5), Opaque))),
-                                                             right => (colors => (others => (Colors (6), Opaque)))));
+        := openGL.Model.box.colored.new_Box (size => Size,
+                                             faces => (front => (colors => (others => (Colors (1), Opaque))),
+                                                       rear  => (colors => (others => (Colors (2), Opaque))),
+                                                       upper => (colors => (others => (Colors (3), Opaque))),
+                                                       lower => (colors => (others => (Colors (4), Opaque))),
+                                                       left  => (colors => (others => (Colors (5), Opaque))),
+                                                       right => (colors => (others => (Colors (6), Opaque)))));
       the_box_physics_Model : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                      half_extents => the_box_Model.Scale / 2.0),
@@ -219,13 +219,13 @@ is
           Math;
 
       the_box_Model         : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.forge.new_Box (size => Size,
-                                                    faces => (front => (texture_Name => Texture, others => <>),
-                                                              rear  => (texture_Name => Texture, others => <>),
-                                                              upper => (texture_Name => Texture, others => <>),
-                                                              lower => (texture_Name => Texture, others => <>),
-                                                              left  => (texture_Name => Texture, others => <>),
-                                                              right => (texture_Name => Texture, others => <>)));
+        := openGL.Model.box.textured.new_Box (size => Size,
+                                              faces => (front => (texture_Name => Texture, others => <>),
+                                                        rear  => (texture_Name => Texture, others => <>),
+                                                        upper => (texture_Name => Texture, others => <>),
+                                                        lower => (texture_Name => Texture, others => <>),
+                                                        left  => (texture_Name => Texture, others => <>),
+                                                        right => (texture_Name => Texture, others => <>)));
       the_box_physics_Model : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                      half_extents => the_box_Model.Scale / 2.0),
@@ -289,10 +289,10 @@ is
           Math;
 
       the_billboard_Model         : constant openGL.Model.billboard.colored_textured.view
-        := openGL.Model.billboard.colored_textured.forge.new_Billboard (scale   => Size,
-                                                                        plane   => openGL.Model.Billboard.xy,
-                                                                        texture => Texture,
-                                                                        color   => Color);
+        := openGL.Model.billboard.colored_textured.new_Billboard (scale   => Size,
+                                                                  plane   => openGL.Model.Billboard.xy,
+                                                                  texture => Texture,
+                                                                  color   => Color);
       the_billboard_physics_Model : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                      half_extents => the_billboard_Model.Scale / 2.0),
@@ -325,8 +325,8 @@ is
           Math;
 
       the_graphics_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.forge.new_Arrow (color      => Color.primary,
-                                                       line_Width => line_Width);
+        := openGL.Model.arrow.colored.new_Arrow (color      => Color.primary,
+                                                 line_Width => line_Width);
 
       the_physics_Model  : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
@@ -425,11 +425,11 @@ is
                              Centered : in Boolean            := True) return mmi.Sprite.view
    is
       the_graphics_Model  : constant openGL.Model.text.lit_colored_textured.View
-        := openGL.Model.text.lit_colored_textured.Forge.new_Text (scale    => Scale,
-                                                                  text     => Text,
-                                                                  font     => Font,
-                                                                  color    => (Color, openGL.Opaque),
-                                                                  centered => Centered);
+        := openGL.Model.text.lit_colored_textured.new_Text (scale    => Scale,
+                                                            text     => Text,
+                                                            font     => Font,
+                                                            color    => (Color, openGL.Opaque),
+                                                            centered => Centered);
       the_physics_Model   : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                      half_extents => the_graphics_Model.Scale));

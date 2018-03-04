@@ -3,7 +3,7 @@ with
      mmi.Conversions,
      mmi.physics_Model,
 
-     openGL.Model.open_gl,
+     openGL.Model.any,
      opengl.Palette,
      opengl.Program.lit_textured_skinned,
      opengl.Geometry.lit_textured_skinned,
@@ -333,9 +333,9 @@ is
           math.Vectors,
           ada.Strings.unbounded,  ada.Strings;
 
-      type gl_Model_view is access all openGL.Model.open_gl.item;
+      type any_Model_view is access all openGL.Model.any.item;
 
-      the_Model    : constant gl_Model_view         := gl_Model_view (Model);
+      the_Model    : constant any_Model_view        := any_Model_view (Model);
       the_Document : constant collada.Document.item := to_Document (openGL.to_String (the_Model.Model));
 
 

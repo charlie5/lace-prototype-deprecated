@@ -13,7 +13,7 @@ with mmi.Sprite,
      mmi.Forge,
      openGL.Model,
      openGL.Model.box,
-     openGL.Model.open_gl;
+     openGL.Model.any;
 
 with opengl.Palette,
      opengl.IO,
@@ -61,11 +61,10 @@ is
                                                                                       mass => 0.0,
                                                                                       size => (50.0, 1.0, 50.0));
 
-   the_rig_Model    : aliased  openGL.Model.open_gl.item := openGL.Model.open_gl.Forge.to_Model (Scale            => (1.0, 1.0, 1.0),
-                                                                                                 Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
-                                                                                                 math_Model       => null,
-                                                                                                 Texture          => openGL.null_Asset,
-                                                                                                 Texture_is_lucid => False);
+   the_rig_Model    : aliased  openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                                                                    Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
+                                                                                    Texture          => openGL.null_Asset,
+                                                                                    Texture_is_lucid => False);
    the_Rig          : aliased  mmi.Rig.item;
 
    Counter          :         Integer          := 0;
@@ -115,7 +114,7 @@ begin
                                                                            to_Radians ( 40.0))));
 
       the_Rig.define (the_Applet.gui_World,
-                      the_rig_Model'unchecked_Access,
+                      the_rig_Model.all'Access,
                       mass         => 1.0,
                       bone_Details => leaf_bone_Lengths,
                       is_Kinematic => False);

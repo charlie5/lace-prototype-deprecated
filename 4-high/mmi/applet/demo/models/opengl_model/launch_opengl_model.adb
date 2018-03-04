@@ -6,7 +6,7 @@ with
      mmi.Sprite,
      mmi.physics_Model,
 
-     openGL.Model.open_gl,
+     openGL.Model.any,
 
      float_Math,
      ada.Calendar,
@@ -31,7 +31,7 @@ is
    the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("openGL Model", 500, 500);
 
 
-   the_human_graphics_Model : aliased openGL.Model.open_gl.item
+   the_human_graphics_Model : aliased openGL.Model.any.item
      := (openGL.Model.item with
          model   => openGL.to_Asset ("./assets/opengl/model/human.obj"),
          texture => openGL.null_Asset,

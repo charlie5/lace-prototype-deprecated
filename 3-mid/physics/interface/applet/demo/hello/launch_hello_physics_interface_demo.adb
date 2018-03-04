@@ -16,7 +16,7 @@ is
        physics.Forge,
        ada.text_IO;
 
-   the_Space  : physics.Space.view  := physics.Space .view (new_Space (Box2d));
+   the_Space  : physics.Space.view  := physics.Space .view (new_Space (Physics.Box2d));
 
    the_Sphere : physics.Shape .view := the_Space.new_circle_Shape;
    the_Box    : physics.Shape .view := the_Space.new_circle_Shape;
