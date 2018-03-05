@@ -1,6 +1,7 @@
 with
      openGL.Model,
      openGL.Visual,
+     openGL.Light.directional,
      openGL.Demo,
 
      Ada.Text_IO,
@@ -20,6 +21,13 @@ begin
    Demo.define ("openGL 'render Models' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
+
+   declare
+      the_Light : openGL.Light.directional.item := Demo.Renderer.Light (1);
+   begin
+      the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
+      Demo.Renderer.Light_is (1, the_Light);
+   end;
 
    declare
       --  The models.

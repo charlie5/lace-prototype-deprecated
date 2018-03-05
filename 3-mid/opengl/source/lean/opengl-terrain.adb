@@ -154,9 +154,9 @@ is
                                openGL.Real (tile_Z_Scale * Scale (3))));
 
                   the_ground_Model : constant openGL.Model.terrain.view
-                    := openGL.Model.terrain.new_Item (heights_asset => heights_File,
-                                                      row           => Row,
-                                                      col           => Col,
+                    := openGL.Model.terrain.new_Item (--heights_asset => heights_File,
+                                                      --row           => Row,
+                                                      --col           => Col,
                                                       heights       => the_Region.all'Access,
                                                       color_map     => texture_File,
                                                       tiling        => Tiling);

@@ -17,18 +17,18 @@ is
    -- Forge
    --
 
-   function new_Item (heights_Asset : in asset_Name;
-                      Row, Col      : in Integer;
+   function new_Item (-- heights_Asset : in asset_Name;
+                      -- Row, Col      : in Integer;
                       Heights       : in height_Map_view;
                       color_Map     : in asset_Name;
                       Tiling        : in openGL.texture_Transform_2d := (s => (0.0, 1.0),
                                                                          t => (0.0, 1.0))) return View
    is
       the_Model : constant View := new Item' (openGL.Model.item with
-                                              heights_Asset => heights_Asset,
+--                                                heights_Asset => heights_Asset,
                                               Heights       => Heights,
-                                              Row           => Row,
-                                              Col           => Col,
+--                                                Row           => Row,
+--                                                Col           => Col,
                                               color_Map     => color_Map,
                                               tiling        => Tiling);
    begin
@@ -85,7 +85,31 @@ is
       the_Geometry  : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
       the_Bounds    :          openGL.Bounds := null_Bounds;
 
+
+      procedure free is new ada.unchecked_Deallocation (openGL.height_Map, openGL.IO.height_Map_view);
+
+
+      procedure flip (Self : height_Map_view)
+      is
+         use type openGL.Index_t;
+         Pad : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
+
+      begin
+         for Row in Self'Range (1)
+         loop
+            for Col in Self'Range (2)
+            loop
+               Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
+            end loop;
+         end loop;
+
+         free (Pad);
+      end flip;
+
+
    begin
+      flip (Heights);
+
       set_Sites :
       declare
          use type Real;

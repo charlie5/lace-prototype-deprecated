@@ -235,9 +235,9 @@ is
                                                               t => (0.0, 1.0));
       the_ground_Model : constant access openGL.Model.terrain.item
         := new openGL.Model.terrain.item' (openGL.Model.item with
-                                           heights_asset => heights_File,
-                                           row           => 1,
-                                           col           => 1,
+--                                             heights_asset => heights_File,
+--                                             row           => 1,
+--                                             col           => 1,
                                            heights       => the_Region.all'Access,
                                            color_map     => texture_File,
                                            tiling        => Tiling);
@@ -251,7 +251,10 @@ is
       the_segment_line_Model.add_Segment     (end_Site   => (2.0, 2.0, 0.0));
       the_segment_line_Model.add_Segment     (end_Site   => (0.0, 2.0, 0.0));
 
-      return (            the_arrow_Model.all'Access,
+      return (           the_ground_Model.all'Access,
+                        the_polygon_Model.all'Access,
+                           the_text_Model.all'Access,
+                          the_arrow_Model.all'Access,
                          the_ball_1_Model.all'Access,
                          the_ball_2_Model.all'Access,
                          the_ball_3_Model.all'Access,
@@ -273,11 +276,7 @@ is
                              the_collada_Model.all'Access,
                            the_wavefront_Model.all'Access,
 
-                             the_polygon_Model.all'Access,
-                                the_text_Model.all'Access,
-                        the_segment_line_Model.all'Access,
-
-                              the_ground_Model.all'Access);
+                        the_segment_line_Model.all'Access);
    end Models;
 
 
