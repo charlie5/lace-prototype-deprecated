@@ -215,6 +215,8 @@ is
    overriding
    function  new_Object (Self : access Item;   of_Shape     : in physics.Shape .view;
                                                of_Mass      : in Real;
+                                               Friction     : in Real;
+                                               Restitution  : in Real;
                                                at_Site      : in Vector_3;
                                                is_Kinematic : in Boolean) return physics.Object.view
    is
@@ -222,6 +224,8 @@ is
       the_Object : physics.Object.view
         := physics.Object.view (box2d_physics.Object.new_Object (of_Shape,
                                                                  of_Mass,
+                                                                 Friction,
+                                                                 Restitution,
                                                                  at_Site));
    begin
       return the_Object;

@@ -68,12 +68,12 @@ is
 
    function world_Count    (Self : in     Item)                            return Natural;
    function Worlds         (Self : in     Item)                            return mmi.World.views;
-   function World          (Self : in     Item;   Id        : in world_Id) return mmi.World.view;
-   function World_as_iFace (Self : in     Item;   Id        : in world_Id) return mmi.remote.World.view;
+   function World          (Self : in     Item;   Id        : in world_Id := 1) return mmi.World.view;
+   function World_as_iFace (Self : in     Item;   Id        : in world_Id := 1) return mmi.remote.World.view;
 
 
-   function Camera         (Self : in     Item;   world_Id  : in mmi.world_Id;
-                                                  camera_Id : in mmi.camera_Id) return mmi.Camera.view;
+   function Camera         (Self : in     Item;   world_Id  : in mmi.world_Id  := 1;
+                                                  camera_Id : in mmi.camera_Id := 1) return mmi.Camera.view;
 
 
    function        Font    (Self : in     Item) return opengl.Font.font_Id;

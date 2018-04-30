@@ -12,8 +12,11 @@ extern "C"
 
 
 struct Object*
-b2d_new_Object (Real     Mass,
-                Shape*   the_Shape)
+b2d_new_Object (Vector_2*   Site,
+                Real        Mass,
+                Real        Friction,
+                Real        Restitution,
+                Shape*      the_Shape)
 {
   Object*    Self     = new Object;
   b2Shape*   b2_Shape = (b2Shape*) (the_Shape);
@@ -22,11 +25,13 @@ b2d_new_Object (Real     Mass,
     Self->bodyDef.type = b2_dynamicBody;
 
   Self->body = 0;
-  Self->bodyDef.position.Set (0.0, 0.0);
+  Self->bodyDef.position.Set (Site->x,
+                              Site->y);
 
-  Self->fixtureDef.shape    = b2_Shape;
-  Self->fixtureDef.density  = Mass;
-  Self->fixtureDef.friction = 0.3;
+  Self->fixtureDef.shape       = b2_Shape;
+  Self->fixtureDef.density     = Mass;
+  Self->fixtureDef.friction    = Friction;
+  Self->fixtureDef.restitution = Restitution;
 
   Self->Scale = b2Vec2 (1.0, 1.0);
 

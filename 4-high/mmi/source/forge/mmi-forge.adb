@@ -27,7 +27,7 @@ is
                             space_Kind    : in physics.space_Kind := physics.Bullet) return mmi.Applet.gui_world.view
    is
       the_Window : constant mmi.Window.view
-        := mmi.Window.Forge.new_Window ("Window." & Named,
+        := mmi.Window.Forge.new_Window (Named,
                                         window_Width,
                                         window_Height);
 
@@ -69,7 +69,10 @@ is
    --
 
    function new_circle_Sprite (in_World : in mmi.World.view;
+                               Site     : in math.Vector_2 := math.Origin_2d;
                                Mass     : in math.Real     := 1.0;
+                               Friction : in math.Real     := 0.5;
+                               Bounce   : in math.Real     := 0.5;
                                Radius   : in math.Real     := 0.5;
                                Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view
    is
@@ -78,8 +81,10 @@ is
                                                        (Color, openGL.Opaque));
 
       the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.Circle, Radius),
-                                                      mass       => Mass);
+        := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (mmi.physics_Model.Circle, Radius),
+                                                      Mass        => Mass,
+                                                      Friction    => Friction,
+                                                      Restitution => Bounce);
    begin
       return mmi.Sprite.Forge.new_Sprite ("circle_Sprite",
                                           in_World,
@@ -94,10 +99,14 @@ is
 
 
    function new_polygon_Sprite (in_World : in mmi.World.view;
+                                Site     : in math.Vector_2    := math.Origin_2d;
                                 Mass     : in math.Real        := 1.0;
+                                Friction : in math.Real        := 0.5;
+                                Bounce   : in math.Real        := 0.5;
                                 Vertices : in Geometry_2d.Sites;
                                 Color    : in openGL.Color     := opengl.Palette.White) return mmi.Sprite.view
    is
+      use Math;
       use type Geometry_2d.Sites;
 
       the_graphics_Model : constant openGL.Model.polygon.lit_colored.view
@@ -107,10 +116,12 @@ is
       Padding            : constant Geometry_2d.Sites (1 .. 8 - Vertices'Length) := (others => <>);
 
       the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.Polygon,
-                                                                     vertex_count => Vertices'Length,
-                                                                     vertices     => Vertices & Padding),
-                                                      mass       => Mass);
+        := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (mmi.physics_Model.Polygon,
+                                                                      vertex_count => Vertices'Length,
+                                                                      vertices     => Vertices & Padding),
+                                                      Mass        => Mass,
+                                                      Friction    => Friction,
+                                                      Restitution => Bounce);
    begin
       return mmi.Sprite.Forge.new_Sprite ("polygon_Sprite",
                                           in_World,
@@ -118,14 +129,18 @@ is
                                           the_physics_Model,
                                           owns_graphics => True,
                                           owns_physics  => True,
-                                          is_Kinematic  => False);
+                                          is_Kinematic  => False,
+                                          Site          => Vector_3 (Site & 0.0));
    end new_polygon_Sprite;
 
 
 
 
    function new_rectangle_Sprite (in_World : in mmi.World.view;
+                                  Site     : in math.Vector_2 := math.Origin_2d;
                                   Mass     : in math.Real     := 1.0;
+                                  Friction : in math.Real     := 0.5;
+                                  Bounce   : in math.Real     := 0.5;
                                   Width,
                                   Height   : in math.Real;
                                   Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view
@@ -139,7 +154,7 @@ is
                                                              ( half_Width,  half_Height),
                                                              (-half_Width,  half_Height));
    begin
-      return new_polygon_Sprite (in_World, Mass, the_Vertices, Color);
+      return new_polygon_Sprite (in_World, Site, Mass, Friction, Bounce, the_Vertices, Color);
    end new_rectangle_Sprite;
 
 
@@ -220,12 +235,12 @@ is
 
       the_box_Model         : constant openGL.Model.box.textured.view
         := openGL.Model.box.textured.new_Box (size => Size,
-                                              faces => (front => (texture_Name => Texture, others => <>),
-                                                        rear  => (texture_Name => Texture, others => <>),
-                                                        upper => (texture_Name => Texture, others => <>),
-                                                        lower => (texture_Name => Texture, others => <>),
-                                                        left  => (texture_Name => Texture, others => <>),
-                                                        right => (texture_Name => Texture, others => <>)));
+                                              faces => (front => (texture_Name => Texture),
+                                                        rear  => (texture_Name => Texture),
+                                                        upper => (texture_Name => Texture),
+                                                        lower => (texture_Name => Texture),
+                                                        left  => (texture_Name => Texture),
+                                                        right => (texture_Name => Texture)));
       the_box_physics_Model : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
                                                                      half_extents => the_box_Model.Scale / 2.0),

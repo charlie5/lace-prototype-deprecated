@@ -19,9 +19,11 @@ is
    type View is access all Item'Class;
 
 
-   function  new_Object (Shape   : in physics.Shape.view;
-                         Mass    : in Real;
-                         at_Site : in Vector_3) return View;
+   function  new_Object (Shape       : in physics.Shape.view;
+                         Mass        : in Real;
+                         Friction    : in Real;
+                         Restitution : in Real;
+                         at_Site     : in Vector_3) return View;
 
 
    procedure free (the_Object : in out physics.Object.view);

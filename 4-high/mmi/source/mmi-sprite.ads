@@ -66,7 +66,8 @@ is
                                                  owns_Graphics  : in     Boolean;
                                                  owns_Physics   : in     Boolean;
 
-                                                 is_Kinematic   : in     Boolean := False);
+                                                 is_Kinematic   : in     Boolean       := False;
+                                                 Site           : in     math.Vector_3 := math.Origin_3d);
 
    procedure destroy      (Self : access Item;   and_Children   : in Boolean);
    function  is_Destroyed (Self : in     Item)                return Boolean;
@@ -82,19 +83,18 @@ is
                            physics_Model  : access mmi.physics_Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean := False) return Item;
+                           is_Kinematic   : in     Boolean       := False;
+                           Site           : in     math.Vector_3 := math.Origin_3d) return Item;
 
       function new_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access mmi.physics_Model.item'class;
-                           owns_Graphics  : in     Boolean := True;
-                           owns_Physics   : in     Boolean := True;
-                           is_Kinematic   : in     Boolean := False) return View;
+                           owns_Graphics  : in     Boolean       := True;
+                           owns_Physics   : in     Boolean       := True;
+                           is_Kinematic   : in     Boolean       := False;
+                           Site           : in     math.Vector_3 := math.Origin_3d) return View;
    end Forge;
-
-
-
 
 
 

@@ -40,21 +40,30 @@ is
    --- 2D
    --
 
-   function new_circle_Sprite    (in_World : in mmi.World.view;
-                                  Mass     : in math.Real        := 1.0;
-                                  Radius   : in math.Real        := 0.5;
-                                  Color    : in openGL.Color     := opengl.Palette.White) return mmi.Sprite.view;
+   function new_circle_Sprite (in_World : in mmi.World.view;
+                               Site     : in math.Vector_2 := math.Origin_2d;
+                               Mass     : in math.Real     := 1.0;
+                               Friction : in math.Real     := 0.5;
+                               Bounce   : in math.Real     := 0.5;
+                               Radius   : in math.Real     := 0.5;
+                               Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view;
 
    function new_polygon_Sprite   (in_World : in mmi.World.view;
+                                  Site     : in math.Vector_2    := math.Origin_2d;
                                   Mass     : in math.Real        := 1.0;
+                                  Friction : in math.Real        := 0.5;
+                                  Bounce   : in math.Real        := 0.5;
                                   Vertices : in Geometry_2d.Sites;
                                   Color    : in openGL.Color     := opengl.Palette.White) return mmi.Sprite.view;
 
    function new_rectangle_Sprite (in_World : in mmi.World.view;
-                                  Mass     : in math.Real        := 1.0;
+                                  Site     : in math.Vector_2 := math.Origin_2d;
+                                  Mass     : in math.Real     := 1.0;
+                                  Friction : in math.Real     := 0.5;
+                                  Bounce   : in math.Real     := 0.5;
                                   Width,
                                   Height   : in math.Real;
-                                  Color    : in openGL.Color     := opengl.Palette.White) return mmi.Sprite.view;
+                                  Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view;
 
    --- 3D
    --

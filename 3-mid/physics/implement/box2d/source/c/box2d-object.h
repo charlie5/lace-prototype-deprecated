@@ -10,7 +10,10 @@ extern "C"
 {
   struct Object;
 
-  struct Object*   b2d_new_Object            (Real      Mass,
+  struct Object*   b2d_new_Object            (Vector_2* Site,
+                                              Real      Mass,
+                                              Real      Friction,
+                                              Real      Restitution,
 					      Shape*    the_Shape);
 
   void             b2d_free_Object           (Object*   Self);

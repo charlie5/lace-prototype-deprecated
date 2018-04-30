@@ -100,6 +100,8 @@ is
 
    function  new_Object (Self : access Item;   of_Shape     : in Shape .view;
                                                of_Mass      : in Real;
+                                               Friction     : in Real;
+                                               Restitution  : in Real;
                                                at_Site      : in Vector_3;
                                                is_Kinematic : in Boolean) return Object.view   is abstract;
 

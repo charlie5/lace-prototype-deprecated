@@ -15,7 +15,7 @@ package openGL.Program
 --
 is
 
-   type Item  is abstract tagged limited private;
+   type Item  is tagged limited private;
    type View  is access all Item'Class;
 
 
@@ -99,7 +99,7 @@ is
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
    procedure Shine_is                    (Self : in out Item'Class;   Now      : in openGL.Shine);
 
-   procedure set_Uniforms                (Self : in     Item)   is abstract;
+   procedure set_Uniforms                (Self : in     Item)   is null; -- abstract;
 
 
 
@@ -114,7 +114,7 @@ is
 
 private
 
-   type Item is abstract tagged limited
+   type Item is tagged limited
       record
          gl_Program               : gl.GLuint := 0;
          vertex_Shader            : openGL.Shader.view;

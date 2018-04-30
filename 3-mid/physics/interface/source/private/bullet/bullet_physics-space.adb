@@ -233,6 +233,8 @@ is
    overriding
    function  new_Object (Self : access Item;   of_Shape     : in physics.Shape .view;
                                                of_Mass      : in Real;
+                                               Friction     : in Real;
+                                               Restitution  : in Real;
                                                at_Site      : in Vector_3;
                                                is_Kinematic : in Boolean) return physics.Object.view
    is

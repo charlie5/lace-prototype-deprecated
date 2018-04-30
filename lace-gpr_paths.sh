@@ -13,6 +13,7 @@ ADA_PROJECT_PATH=$LACE/3-mid/opengl/library:$ADA_PROJECT_PATH
 ADA_PROJECT_PATH=$LACE/3-mid/physics/interface/library:$ADA_PROJECT_PATH
 ADA_PROJECT_PATH=$LACE/3-mid/physics/implement/bullet/library:$ADA_PROJECT_PATH
 ADA_PROJECT_PATH=$LACE/3-mid/physics/implement/box2d/library:$ADA_PROJECT_PATH
+ADA_PROJECT_PATH=$LACE/3-mid/physics/implement/impact/library:$ADA_PROJECT_PATH
 
 
 ADA_PROJECT_PATH=$LACE/4-high/mmi/library:$ADA_PROJECT_PATH

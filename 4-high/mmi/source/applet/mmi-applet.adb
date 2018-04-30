@@ -343,7 +343,7 @@ is
 
 
 
-   function World (Self : in Item;   Id : in world_Id) return mmi.World.view
+   function World (Self : in Item;   Id : in world_Id := 1) return mmi.World.view
    is
    begin
       return Self.Worlds.Element (Integer (Id)).World;
@@ -351,7 +351,7 @@ is
 
 
 
-   function World_as_iFace (Self : in Item;   Id : in world_Id) return mmi.remote.World.view
+   function World_as_iFace (Self : in Item;   Id : in world_Id := 1) return mmi.remote.World.view
    is
    begin
       return remote.World.view (Self.Worlds.Element (Integer (Id)).World);
@@ -360,8 +360,8 @@ is
 
 
 
-   function Camera (Self : in Item;   world_Id  : in mmi.world_Id;
-                                      camera_Id : in mmi.camera_Id) return mmi.Camera.view
+   function Camera (Self : in Item;   world_Id  : in mmi.world_Id  := 1;
+                                      camera_Id : in mmi.camera_Id := 1) return mmi.Camera.view
    is
    begin
       return Self.Worlds.Element (Integer (world_Id)) .Cameras.Element (Integer (camera_Id));

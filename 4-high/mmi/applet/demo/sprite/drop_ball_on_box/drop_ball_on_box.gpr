@@ -1,17 +1,91 @@
-with
-     "lumen_mmi",
-     "lace_shared";
+with "lumen_mmi", "lace_shared";
 
-project drop_Ball_on_Box
-is
+project Drop_Ball_On_Box is
 
+   type Build_Kind is
+      ("default");
+   type Build_Mode_Type is
+      ("debug", "fast", "small");
+   type Profile is
+      ("safe", "lean", "desk");
+   type Platform is
+      ("egl", "glx", "osmesa");
+   type Restrictions is
+      ("xgc", "ravenscar");
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
    for Object_Dir use "build";
-   for Exec_Dir   use ".";
-   for Main       use ("launch_drop_ball_on_box.adb");
-   for Languages  use ("Ada");
+   for Exec_Dir use ".";
+   for Main use ("launch_drop_ball_on_box.adb");
+   for Languages use ("Ada");
+   OS : Os_Type := external ("OS");
+   Restrictions : Restrictions := external ("restrictions");
+   Opengl_Platform : Platform := external ("opengl_platform");
+   Opengl_Profile : Profile := external ("opengl_profile");
+   Build_Mode : Build_Mode_Type := external ("Build_Mode");
+   FLORIST_BUILD : Build_Kind := external ("FLORIST_BUILD");
 
-   package Builder  renames lace_Shared.Builder;
-   package Compiler renames lace_Shared.Compiler;
-   package Binder   renames lace_Shared.Binder;
+   package Builder renames Lace_Shared.Builder;
 
-end drop_Ball_on_Box;
+   package Compiler renames Lace_Shared.Compiler;
+
+   package Binder renames Lace_Shared.Binder;
+
+   package Linker is
+
+      case OS is
+
+         when "Windows_NT" =>
+
+         when "Linux" =>
+
+            case Restrictions is
+
+               when "xgc" =>
+
+                  case Opengl_Platform is
+
+                     when "egl" =>
+
+                     when "glx" =>
+
+                        case Opengl_Profile is
+
+                           when "safe" =>
+
+                           when "lean" =>
+
+                           when "desk" =>
+
+                              case Build_Mode is
+
+                                 when "debug" =>
+
+                                    case FLORIST_BUILD is
+
+                                       when "default" =>
+                                          for Switches ("ada") use ("-g", "-g");
+                                    end case;
+
+                                 when "fast" =>
+
+                                 when "small" =>
+
+                              end case;
+                        end case;
+
+                     when "osmesa" =>
+
+                  end case;
+
+               when "ravenscar" =>
+
+            end case;
+
+         when "MacOSX" =>
+
+      end case;
+   end Linker;
+
+end Drop_Ball_On_Box;
+

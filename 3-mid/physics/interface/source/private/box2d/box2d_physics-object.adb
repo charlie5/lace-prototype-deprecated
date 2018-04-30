@@ -31,14 +31,22 @@ is
 
 
 
-   function new_Object (Shape   : in physics.Shape.view;
-                        Mass    : in Real;
-                        at_Site : in Vector_3) return View
+   function new_Object (Shape       : in physics.Shape.view;
+                        Mass        : in Real;
+                        Friction    : in Real;
+                        Restitution : in Real;
+                        at_Site     : in Vector_3) return View
    is
       Self        : constant View             := new Item;
       Self_as_any : constant Any_limited_view := Any_limited_view (Self);
+
+      c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
+                                                       c_math_c.Real (at_Site (2)));
    begin
-      Self.C := b2d_new_Object (c_math_c.Real (Mass),
+      Self.C := b2d_new_Object (c_Site'unchecked_Access,
+                                c_math_c.Real (Mass),
+                                c_math_c.Real (Friction),
+                                c_math_c.Real (Restitution),
                                 box2d_physics.Shape.view (Shape).C);
 
       Self.Shape := Shape;

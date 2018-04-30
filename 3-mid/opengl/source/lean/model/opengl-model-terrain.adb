@@ -86,29 +86,29 @@ is
       the_Bounds    :          openGL.Bounds := null_Bounds;
 
 
-      procedure free is new ada.unchecked_Deallocation (openGL.height_Map, openGL.IO.height_Map_view);
+--        procedure free is new ada.Unchecked_Deallocationhecked_Deallocation (openGL.height_Map, openGL.IO.height_Map_view);
 
 
-      procedure flip (Self : height_Map_view)
-      is
-         use type openGL.Index_t;
-         Pad : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
-
-      begin
-         for Row in Self'Range (1)
-         loop
-            for Col in Self'Range (2)
-            loop
-               Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
-            end loop;
-         end loop;
-
-         free (Pad);
-      end flip;
+--        procedure flip (Self : height_Map_view)
+--        is
+--           use type openGL.Index_t;
+--           Pad : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
+--
+--        begin
+--           for Row in Self'Range (1)
+--           loop
+--              for Col in Self'Range (2)
+--              loop
+--                 Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
+--              end loop;
+--           end loop;
+--
+--           free (Pad);
+--        end flip;
 
 
    begin
-      flip (Heights);
+--        flip (Heights);
 
       set_Sites :
       declare
@@ -117,16 +117,18 @@ is
          vert_Id          :          Index_t  := 0;
          the_height_Range :          Vector_2 := height_Extent (Heights.all);
          Middle           : constant Real     := (the_height_Range (1) + the_height_Range (2))  /  2.0;
+         flipped_Row      :          Index_t;
       begin
          for Row in 1 .. row_Count + 1
          loop
             for Col in 1 .. col_Count + 1
             loop
-               vert_Id := vert_Id + 1;
+               vert_Id     := vert_Id + 1;
+               flipped_Row := 2 + row_Count - Row;     -- Flipping the row simplifies building the triangle strip below.
 
-               the_Sites (vert_Id) := (Real (Col)         - Real (col_Count) / 2.0 - 1.0,
-                                       Heights (Row, Col) - Middle,
-                                       Real (Row)         - Real (row_Count) / 2.0 - 1.0);
+               the_Sites (vert_Id) := (Real (Col)                 - Real (col_Count) / 2.0 - 1.0,
+                                       Heights (flipped_Row, Col) - Middle,
+                                       Real (Row)                 - Real (row_Count) / 2.0 - 1.0);
 
                the_Bounds.Box.Lower (1) := real'Min (the_Bounds.Box.Lower (1),  the_Sites (vert_Id)(1));
                the_Bounds.Box.Lower (2) := real'Min (the_Bounds.Box.Lower (2),  the_Sites (vert_Id)(2));
@@ -149,13 +151,12 @@ is
       end set_Sites;
 
 
-      set_Indices :
+      set_Indices  :
       declare
-         strip_Id : long_Index_t := 0;
-
-         Start    : Index_t;
-         Upper    : Index_t;
-         Lower    : Index_t;
+         Cursor : long_Index_t := 0;
+         Start,
+         Upper,
+         Lower  : Index_t;
       begin
          Start := 1;
 
@@ -166,8 +167,8 @@ is
 
             for Col in 1 .. col_Count + 1
             loop
-               strip_Id := strip_Id + 1;   the_Indices (strip_Id) := Upper;
-               strip_Id := strip_Id + 1;   the_Indices (strip_Id) := Lower;
+               Cursor := Cursor + 1;   the_Indices (Cursor) := Upper;
+               Cursor := Cursor + 1;   the_Indices (Cursor) := Lower;
 
                if Col /= col_Count + 1
                then
@@ -176,18 +177,16 @@ is
                end if;
             end loop;
 
-            if Row /= row_Count
+            if Row /= row_Count   -- Not the last row.
             then
                -- Add 1st redundant triangle to allow for next strip.
-               strip_Id               := strip_Id + 1;
-               the_Indices (strip_Id) := Lower;
+               Cursor := Cursor + 1;   the_Indices (Cursor) := Lower;
 
                -- Advance Start index.
-               Start                  := Start + col_Count + 1;
+               Start  := Start + col_Count + 1;
 
                -- Add 2nd redundant triangle to allow for next strip.
-               strip_Id               := strip_Id + 1;
-               the_Indices (strip_Id) := Start;
+               Cursor := Cursor + 1;   the_Indices (Cursor) := Start;
             end if;
          end loop;
 

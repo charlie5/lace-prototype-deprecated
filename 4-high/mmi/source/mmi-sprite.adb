@@ -99,6 +99,8 @@ is
 
       Self.Solid := physics_Object_view (Self.World.Physics.new_Object (physics.Shape.view (Self.Shape),
                                                                         Self.physics_Model.Mass,
+                                                                        Self.physics_Model.Friction,
+                                                                        Self.physics_Model.Restitution,
                                                                         Site,
                                                                         Self.is_Kinematic));
    end rebuild_Solid;
@@ -111,7 +113,8 @@ is
                                            physics_Model  : access mmi.physics_Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
-                                           is_Kinematic   : in     Boolean := False)
+                                           is_Kinematic   : in     Boolean       := False;
+                                           Site           : in     math.Vector_3 := Math.Origin_3d)
    is
       use type mmi.physics_Model.view;
    begin
@@ -119,7 +122,7 @@ is
       Self.World          := World;
 
       Self.Visual.Model_is (openGL.Model.view (graphics_Model));
-      Self.physics_Model  := mmi. physics_Model.view (physics_Model);
+      Self.physics_Model  := mmi.physics_Model.view (physics_Model);
       Self.owns_Graphics  := owns_Graphics;
       Self.owns_Physics   := owns_Physics;
 
@@ -130,7 +133,7 @@ is
       if Self.physics_Model /= null
       then
          Self.rebuild_Shape;
-         Self.rebuild_Solid (Origin_3d);
+         Self.rebuild_Solid (Site);
       end if;
    end define;
 
@@ -230,13 +233,14 @@ is
                            physics_Model  : access mmi.physics_Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean := False) return Item
+                           is_Kinematic   : in     Boolean       := False;
+                           Site           : in     math.Vector_3 := math.Origin_3d) return Item
       is
       begin
          return Self : Item := (lace.Subject_and_deferred_Observer.forge.to_Subject_and_Observer (Name)
                                 with others => <>)
          do
-            Self.define (World, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic);
+            Self.define (World, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic, Site);
          end return;
       end to_Sprite;
 
@@ -246,9 +250,10 @@ is
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access mmi.physics_Model.item'class;
-                           owns_Graphics  : in     Boolean := True;
-                           owns_Physics   : in     Boolean := True;
-                           is_Kinematic   : in     Boolean := False) return View
+                           owns_Graphics  : in     Boolean       := True;
+                           owns_Physics   : in     Boolean       := True;
+                           is_Kinematic   : in     Boolean       := False;
+                           Site           : in     math.Vector_3 := math.Origin_3d) return View
       is
          Self : constant View := new Item' (to_Sprite (Name,
                                                        World,
@@ -256,7 +261,8 @@ is
                                                        physics_Model,
                                                        owns_Graphics,
                                                        owns_Physics,
-                                                       is_Kinematic));
+                                                       is_Kinematic,
+                                                       Site));
       begin
          return Self;
       end new_Sprite;
