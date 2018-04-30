@@ -12,8 +12,11 @@ is
    --- Event Kinds
    --
 
-   function to_Kind (From     : in ada.Tags.Tag) return lace.Event.Kind;
    function Name_of (the_Kind : in event.Kind)   return String;
+
+   function to_Kind (From     : in ada.Tags.Tag) return lace.Event.Kind;
+   function "+"     (From     : in ada.Tags.Tag) return lace.Event.Kind
+                     renames to_Kind;
 
 
    -----------

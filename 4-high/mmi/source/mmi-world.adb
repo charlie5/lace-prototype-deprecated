@@ -1111,6 +1111,14 @@ is
 
 
 
+   function  space_Kind (Self : in     Item) return standard.physics.space_Kind
+   is
+   begin
+      return Self.space_Kind;
+   end space_Kind;
+
+
+
    function Physics (Self : in Item) return standard.physics.Space.view
    is
    begin

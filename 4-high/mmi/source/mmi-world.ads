@@ -83,6 +83,7 @@ is
 
    procedure Gravity_is      (Self : in out Item;   Now : in Vector_3);
 
+   function  space_Kind      (Self : in     Item)     return physics.space_Kind;
    function  Physics         (Self : in     Item)     return physics.Space.view;
 
    procedure update_Bounds   (Self : in out Item;   of_Sprite : in mmi.Sprite.view);

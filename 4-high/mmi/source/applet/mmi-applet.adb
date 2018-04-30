@@ -111,20 +111,7 @@ is
 
       -- Set up the keyboard events.
       --
-      Self.Keyboard                    := Self.Window.Keyboard;
-      Self.key_press_Response  .Applet := Self;
-      Self.key_release_Response.Applet := Self;
-
-
-      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
-                                        lace.Subject .view (Self.Keyboard),
-                                        Self.key_press_Response  'Unchecked_Access,
-                                        to_Kind (mmi.Keyboard.key_press_Event'Tag));
-
-      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
-                                        lace.Subject .view (Self.Keyboard),
-                                        Self.key_release_Response'Unchecked_Access,
-                                        to_Kind (mmi.Keyboard.key_release_Event'Tag));
+      Self.Keyboard := Self.Window.Keyboard;
 
       Self.Mouse                          := Self.Window.Mouse;
       Self.button_press_Response  .Applet := Self;
@@ -732,7 +719,7 @@ is
    is
    begin
       Self.Dolly := Now;
-   end;
+   end Dolly_is;
 
 
 
@@ -742,6 +729,19 @@ is
    begin
       Self.Dolly := new mmi.Dolly.simple.item;
       Self.Dolly.add_Camera (Self.Camera (in_World, 1));
+
+      Self.key_press_Response  .Applet := mmi.Applet.view (Self);
+      Self.key_release_Response.Applet := mmi.Applet.view (Self);
+
+      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                        lace.Subject .view (Self.Keyboard),
+                                        Self.key_press_Response  'Unchecked_Access,
+                                        to_Kind (mmi.Keyboard.key_press_Event'Tag));
+
+      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                        lace.Subject .view (Self.Keyboard),
+                                        Self.key_release_Response'Unchecked_Access,
+                                        to_Kind (mmi.Keyboard.key_release_Event'Tag));
    end enable_simple_Dolly;
 
 
@@ -1036,6 +1036,20 @@ is
    begin
       return Self.local_Subject_and_Observer;
    end local_Subject_and_Observer;
+
+
+   function local_Subject (Self : access Item) return lace.Subject.view
+   is
+   begin
+      return lace.Subject.view (Self.local_Subject_and_Observer);
+   end local_Subject;
+
+
+   function local_Observer (Self : access Item) return lace.Observer.view
+   is
+   begin
+      return lace.Observer.view (Self.local_Subject_and_Observer);
+   end local_Observer;
 
 
 end mmi.Applet;

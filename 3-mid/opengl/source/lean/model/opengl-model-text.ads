@@ -13,6 +13,9 @@ is
          null;
       end record;
 
+   type View is access all Item'Class;
+
+
    procedure Text_is (Self : in out Item;   Now : in String)            is abstract;
    function  Text    (Self : in     Item)     return String             is abstract;
 

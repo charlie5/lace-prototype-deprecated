@@ -445,10 +445,31 @@ is
                                                             font     => Font,
                                                             color    => (Color, openGL.Opaque),
                                                             centered => Centered);
-      the_physics_Model   : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
-                                                                     half_extents => the_graphics_Model.Scale));
+      the_physics_Model   : mmi.physics_Model.view;
+      use type Physics.space_Kind;
    begin
+      if in_World.space_Kind = Physics.Box2d
+      then
+         declare
+            use Math;
+
+            half_Width   : constant Real                       := Scale (1) / 2.0;
+            half_Height  : constant Real                       := Scale (2) / 2.0;
+            the_Vertices : constant Geometry_2d.Sites (1 .. 8) := ((-half_Width, -half_Height),
+                                                                   ( half_Width, -half_Height),
+                                                                   ( half_Width,  half_Height),
+                                                                   (-half_Width,  half_Height),
+                                                                   others => (0.0, 0.0));
+         begin
+            the_physics_Model := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => physics_Model.Polygon,
+                                                                                           vertices     => the_Vertices,
+                                                                                           vertex_Count => 4));
+         end;
+      else
+         the_physics_Model := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => physics_Model.Cube,
+                                                                                        half_extents => the_graphics_Model.Scale));
+      end if;
+
       return mmi.Sprite.Forge.new_Sprite ("text_Sprite",
                                           in_World,
                                           the_graphics_Model,

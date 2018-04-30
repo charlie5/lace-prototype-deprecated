@@ -15,6 +15,8 @@ with
 
      lace.Event,
      lace.       Response,
+     lace.       Subject,
+     lace.       Observer,
      lace.       Subject_and_deferred_Observer,
      lace.remote.Subject_and_deferred_Observer,
 
@@ -143,6 +145,8 @@ is
    --
 
    function local_Subject_and_Observer (Self : access Item) return lace.Subject_and_deferred_Observer.view;
+   function local_Subject              (Self : access Item) return lace.Subject.view;
+   function local_Observer             (Self : access Item) return lace.Observer.view;
 
 
 
