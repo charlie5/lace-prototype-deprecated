@@ -9,6 +9,7 @@ is
          null;
       end record;
 
+   type View is access all Item'Class;
 
    --------------
    --- Attributes

@@ -1,5 +1,6 @@
 with
      openGL.Model.text     .lit_colored_textured,
+     openGL.Model.sphere   .lit_colored_textured,
      openGL.Model.sphere   .lit_colored,
      openGL.Model.polygon  .lit_colored,
      openGL.Model.box      .colored,
@@ -74,11 +75,12 @@ is
                                Friction : in math.Real     := 0.5;
                                Bounce   : in math.Real     := 0.5;
                                Radius   : in math.Real     := 0.5;
-                               Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view
+                               Color    : in openGL.Color      := opengl.Palette.White;
+                               Texture  : in openGL.asset_Name := openGL.null_Asset) return mmi.Sprite.view
    is
-      the_graphics_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
-                                                       (Color, openGL.Opaque));
+      use openGL;
+
+      the_graphics_Model : openGL.Model.sphere.view;
 
       the_physics_Model  : constant mmi.physics_Model.view
         := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (mmi.physics_Model.Circle, Radius),
@@ -86,6 +88,15 @@ is
                                                       Friction    => Friction,
                                                       Restitution => Bounce);
    begin
+      if Texture = openGL.null_Asset
+      then
+         the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
+                                                                           (Color, openGL.Opaque)).all'Access;
+      else
+         the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
+                                                                                    Texture).all'Access;
+      end if;
+
       return mmi.Sprite.Forge.new_Sprite ("circle_Sprite",
                                           in_World,
                                           the_graphics_Model,

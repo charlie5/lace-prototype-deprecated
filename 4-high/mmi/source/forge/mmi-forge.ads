@@ -4,7 +4,7 @@ with
      mmi.Sprite,
      mmi.World,
 
-     physics.Forge,
+     Physics,
 
      openGL.Primitive,
      openGL.Font,
@@ -46,7 +46,8 @@ is
                                Friction : in math.Real     := 0.5;
                                Bounce   : in math.Real     := 0.5;
                                Radius   : in math.Real     := 0.5;
-                               Color    : in openGL.Color  := opengl.Palette.White) return mmi.Sprite.view;
+                               Color    : in openGL.Color      := opengl.Palette.White;
+                               Texture  : in openGL.asset_Name := openGL.null_Asset) return mmi.Sprite.view;
 
    function new_polygon_Sprite   (in_World : in mmi.World.view;
                                   Site     : in math.Vector_2    := math.Origin_2d;
