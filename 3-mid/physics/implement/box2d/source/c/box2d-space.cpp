@@ -56,8 +56,6 @@ public:
 };
 
 
-
-
 /// Collisions
 //
 
@@ -97,7 +95,6 @@ public:
 };
 
 
-
 contact_Listener::
 contact_Listener()
 {
@@ -109,8 +106,6 @@ contact_Listener::
 ~contact_Listener()
 {
 }
-
-
 
 
 void
@@ -163,9 +158,6 @@ PreSolve (b2Contact*          contact,
 }
 
 
-
-
-
 ///////////////
 /// C Interface
 //
@@ -181,8 +173,6 @@ b2d_space_contact_Count (Space*   Self)
 
   return the_contact_Listener->m_pointCount;
 }
-
-
 
 
 b2d_Contact
@@ -210,8 +200,6 @@ b2d_space_Contact       (Space*   Self,   int   contact_Id)
 
 
 
-
-
 struct Space*
 b2d_new_Space ()
 {
@@ -221,7 +209,6 @@ b2d_new_Space ()
 
   return to_Space (Self);
 }
-
 
 
 void
@@ -234,8 +221,6 @@ b2d_free_Space (struct Space*    Self)
 }
 
 
-
-
 void
 b2d_Space_Gravity_is (Space*   Self,    Vector_3*     Now)
 {
@@ -243,7 +228,6 @@ b2d_Space_Gravity_is (Space*   Self,    Vector_3*     Now)
 
   the_World->SetGravity (b2Vec2 (Now->x, Now->y));
 }
-
 
 
 void
@@ -258,7 +242,6 @@ b2d_Space_evolve (Space*   Self,     float   By)
 }
 
 
-
 void
 b2d_Space_add_Object (Space*   Self,    Object*   the_Object)
 {
@@ -271,7 +254,6 @@ b2d_Space_add_Object (Space*   Self,    Object*   the_Object)
 }
 
 
-
 void
 b2d_Space_rid_Object (Space*   Self,    Object*   the_Object)
 {
@@ -279,7 +261,6 @@ b2d_Space_rid_Object (Space*   Self,    Object*   the_Object)
   the_Object->body = 0;
 }
  
-
 
 void
 b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
@@ -308,7 +289,6 @@ b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
 }
 
 
-
 void
 b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
 {
@@ -326,7 +306,6 @@ b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
   the_Joint_Def->bodyA = (b2Body*) Object_A;
   the_Joint_Def->bodyB = (b2Body*) Object_B;
 }
-
 
 
 void*
@@ -349,13 +328,11 @@ b2d_Space_first_Joint    (Space*          Self)
 }
 
 
-
 void
 b2d_Space_next_Joint    (joint_Cursor*   Cursor)
 {
   Cursor->Joint = Cursor->Joint->GetNext();
 }
-
 
 
 b2Joint*
@@ -366,10 +343,8 @@ b2d_Space_joint_Element (joint_Cursor*   Cursor)
 
   
 
-
 ///  Raycasts
 //
-
 
 b2d_ray_Collision
 b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,

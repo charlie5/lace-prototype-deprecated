@@ -1772,7 +1772,6 @@ is
    end start;
 
 
-
    overriding
    procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
    is

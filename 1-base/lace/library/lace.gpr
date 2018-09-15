@@ -1,5 +1,5 @@
 with 
-   "florist",
+--   "florist",
    "lace_shared";
 
 project Lace is

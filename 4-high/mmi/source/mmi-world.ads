@@ -316,7 +316,6 @@ is
 
 
 
-
 private
 
    ----------
@@ -559,7 +558,7 @@ private
    --  World Item
    --
 
-   -- tbd: refactor into two subclasses 'local' and 'mirror'.
+   -- TODO: refactor into two subclasses 'local' and 'mirror'.
 
    type Item is limited new lace.remote.Subject_and_deferred_Observer.item
                         and mmi.remote.World                         .item with
