@@ -1,7 +1,6 @@
 with
-     mmi.remote.physics_Model,
-
-     openGL.remote_Model,
+     physics.remote.Model,
+     openGL .remote_Model,
 
      lace.remote.Observer,
      lace.remote.Subject,
@@ -82,12 +81,13 @@ is
 
    --  Physics
    --
-   use remote.physics_Model;
-   package  physics_model_Vectors is new ada.containers.indefinite_Vectors (Positive,  remote.physics_Model.item'Class);
+   use physics.remote.Model;
+   package  physics_model_Vectors is new ada.containers.indefinite_Vectors (Positive,  physics.remote.Model.item'Class);
 
-   function Hash is new ada.unchecked_Conversion (mmi.physics_model_Id, ada.containers.Hash_type);
-   package  Id_Maps_of_physics_Model_Plan is new ada.containers.indefinite_Hashed_Maps (mmi.physics_model_Id,
-                                                                                        remote.physics_Model.item'Class,
+   use type physics.model_Id;
+   function Hash is new ada.unchecked_Conversion (physics.model_Id, ada.containers.Hash_type);
+   package  Id_Maps_of_physics_Model_Plan is new ada.containers.indefinite_Hashed_Maps (physics.model_Id,
+                                                                                        physics.remote.Model.item'Class,
                                                                                         Hash,
                                                                                         "=");
    subtype  physics_Model_Set is Id_Maps_of_physics_Model_Plan.Map;
@@ -97,7 +97,7 @@ is
 
    type new_physics_model_Event is new lace.Event.item with
       record
-         Model : access remote.physics_Model.item'Class;
+         Model : access physics.remote.Model.item'Class;
       end record;
 
 
@@ -117,7 +117,7 @@ is
       record
          sprite_Id         : mmi.sprite_Id;
          graphics_model_Id : openGL.model_Id;
-         physics_model_Id  : mmi.physics_model_Id;
+         physics_model_Id  : physics.model_Id;
 
          Mass              : math.Real;
          Transform         : math.Matrix_4x4;

@@ -2,7 +2,7 @@ with
      ada.Unchecked_Deallocation;
 
 
-package body mmi.physics_Model
+package body physics.Model
 is
 
    ----------
@@ -11,13 +11,13 @@ is
 
    package body Forge
    is
-      function new_physics_Model (Id          : in mmi.physics_model_Id := mmi.null_physics_model_Id;
+      function new_physics_Model (Id          : in physics.model_Id := null_physics_model_Id;
                                   shape_Info  : in a_Shape;
                                   Scale       : in math.Vector_3        := (1.0, 1.0, 1.0);
                                   Mass        : in math.Real            := 0.0;
                                   Friction    : in math.Real            := 0.1;
                                   Restitution : in math.Real            := 0.1;
-                                  is_Tangible : in Boolean              := True) return mmi.physics_Model.view
+                                  is_Tangible : in Boolean              := True) return physics.Model.view
       is
       begin
          return new Item' (id          => Id,
@@ -51,7 +51,8 @@ is
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.unchecked_Deallocation (physics_Model.item'Class, physics_Model.view);
+      procedure deallocate is new ada.unchecked_Deallocation (physics.Model.item'Class,
+                                                              physics.Model.view);
    begin
       Self.destroy;
       deallocate (Self);
@@ -63,14 +64,14 @@ is
    --- Attributes
    --
 
-   function  Id (Self : in Item'Class) return mmi.physics_model_Id
+   function  Id (Self : in     Item'Class)     return physics.model_Id
    is
    begin
       return self.Id;
    end Id;
 
 
-   procedure Id_is (Self : in out Item'Class;   Now : in mmi.physics_model_Id)
+   procedure Id_is (Self : in out Item'Class;   Now : in physics.model_Id)
    is
    begin
       self.Id := Now;
@@ -85,4 +86,4 @@ is
    end Scale_is;
 
 
-end mmi.physics_Model;
+end physics.Model;

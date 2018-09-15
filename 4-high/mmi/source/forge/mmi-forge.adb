@@ -11,7 +11,7 @@ with
      openGL.Model.line     .colored,
      openGL.Model.segment_line,
 
-     mmi.physics_Model,
+     physics.Model,
      mmi.Window;
 
 
@@ -82,8 +82,8 @@ is
 
       the_graphics_Model : openGL.Model.sphere.view;
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (mmi.physics_Model.Circle, Radius),
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Circle, Radius),
                                                       Mass        => Mass,
                                                       Friction    => Friction,
                                                       Restitution => Bounce);
@@ -126,8 +126,8 @@ is
 
       Padding            : constant Geometry_2d.Sites (1 .. 8 - Vertices'Length) := (others => <>);
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (mmi.physics_Model.Polygon,
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Polygon,
                                                                       vertex_count => Vertices'Length,
                                                                       vertices     => Vertices & Padding),
                                                       Mass        => Mass,
@@ -183,8 +183,8 @@ is
       the_graphics_Model : constant openGL.Model.sphere.lit_colored.view
         := openGL.Model.sphere.lit_colored.new_Sphere (Radius, (Color, openGL.Opaque));
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (mmi.physics_Model.a_Sphere, Radius / 2.0),
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius / 2.0),
                                                       mass       => Mass);
    begin
       return mmi.Sprite.Forge.new_Sprite ("ball_Sprite",
@@ -217,8 +217,8 @@ is
                                                        lower => (colors => (others => (Colors (4), Opaque))),
                                                        left  => (colors => (others => (Colors (5), Opaque))),
                                                        right => (colors => (others => (Colors (6), Opaque)))));
-      the_box_physics_Model : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_box_physics_Model : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_box_Model.Scale / 2.0),
                                                       mass       => Mass);
       the_Box               : constant mmi.Sprite.view
@@ -252,8 +252,8 @@ is
                                                         lower => (texture_Name => Texture),
                                                         left  => (texture_Name => Texture),
                                                         right => (texture_Name => Texture)));
-      the_box_physics_Model : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_box_physics_Model : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_box_Model.Scale / 2.0),
                                                       mass       => Mass);
       the_Box               : constant mmi.Sprite.view
@@ -285,8 +285,8 @@ is
                                                                 plane   => openGL.Model.Billboard.xy,
                                                                 texture => Texture);
 
-      the_billboard_physics_Model : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_billboard_physics_Model : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_billboard_Model.Scale / 2.0),
                                                       mass       => Mass);
 
@@ -319,8 +319,8 @@ is
                                                                   plane   => openGL.Model.Billboard.xy,
                                                                   texture => Texture,
                                                                   color   => Color);
-      the_billboard_physics_Model : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_billboard_physics_Model : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_billboard_Model.Scale / 2.0),
                                                       mass       => Mass);
 
@@ -354,8 +354,8 @@ is
         := openGL.Model.arrow.colored.new_Arrow (color      => Color.primary,
                                                  line_Width => line_Width);
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_graphics_Model.Scale / 2.0),
                                                       mass       => Mass);
       the_Arrow          : constant mmi.Sprite.view
@@ -386,8 +386,8 @@ is
       the_graphics_Model : constant openGL.Model.line.colored.view
         := openGL.Model.line.colored. new_line_Model (color      => Color.primary);
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_graphics_Model.Scale / 2.0),
                                                       mass       => Mass);
       the_Line           : constant mmi.Sprite.view
@@ -420,8 +420,8 @@ is
         := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),
                                                              color => Color.primary);
 
-      the_physics_Model  : constant mmi.physics_Model.view
-        := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                      half_extents => the_graphics_Model.Scale / 2.0),
                                                       mass       => Mass);
       the_Line           : constant mmi.Sprite.view
@@ -456,7 +456,7 @@ is
                                                             font     => Font,
                                                             color    => (Color, openGL.Opaque),
                                                             centered => Centered);
-      the_physics_Model   : mmi.physics_Model.view;
+      the_physics_Model   : physics.Model.view;
       use type Physics.space_Kind;
    begin
       if in_World.space_Kind = Physics.Box2d
@@ -472,12 +472,12 @@ is
                                                                    (-half_Width,  half_Height),
                                                                    others => (0.0, 0.0));
          begin
-            the_physics_Model := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => physics_Model.Polygon,
+            the_physics_Model := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Polygon,
                                                                                            vertices     => the_Vertices,
                                                                                            vertex_Count => 4));
          end;
       else
-         the_physics_Model := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => physics_Model.Cube,
+         the_physics_Model := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
                                                                                         half_extents => the_graphics_Model.Scale));
       end if;
 

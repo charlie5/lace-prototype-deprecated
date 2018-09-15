@@ -1,6 +1,6 @@
 with
      mmi.Events,
-     mmi.remote.physics_Model,
+     physics.remote.Model,
 
      openGL.remote_Model,
      openGL.Renderer.lean,
@@ -169,14 +169,14 @@ is
                        the_World          : in mmi.World.view) return mmi.Sprite.view
    is
       the_graphics_Model : access openGL.      Model.item'Class;
-      the_physics_Model  : access mmi. physics_Model.item'Class;
+      the_physics_Model  : access Standard.physics.Model.item'Class;
       the_Sprite         :        mmi.Sprite.view;
 
       use openGL;
 
    begin
       the_graphics_Model := openGL     .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
-      the_physics_Model  := mmi.physics_Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
+      the_physics_Model  := Standard.physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := mmi.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
                                                  the_World,
@@ -1535,8 +1535,8 @@ is
    type graphics_Model_iface_view is access all openGL.remote_Model.item'Class;
    type graphics_Model_view       is access all openGL.       Model.item'Class;
 
-   type physics_Model_iface_view is access all mmi.remote.physics_Model.item'Class;
-   type physics_Model_view       is access all mmi.physics_Model       .item'Class;
+   type physics_Model_iface_view is access all Standard.physics.remote.Model.item'Class;
+   type physics_Model_view       is access all Standard.physics.Model       .item'Class;
 
 
 
@@ -1593,8 +1593,8 @@ is
          begin
             while has_Element (Cursor)
             loop
-               new_Model := new mmi.remote.physics_Model.item'Class' (Element (Cursor));
-               Self.add (mmi.physics_Model.view (new_Model));
+               new_Model := new Standard.physics.remote.Model.item'Class' (Element (Cursor));
+               Self.add (Standard.physics.Model.view (new_Model));
 
                next (Cursor);
             end loop;
@@ -1717,10 +1717,10 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Model : in mmi.physics_Model.view)
+   procedure add (Self : in out Item;   the_Model    : in Standard.physics.Model.view)
    is
    begin
-      if the_Model.Id = null_physics_model_Id
+      if the_Model.Id = Standard.Physics.null_physics_model_Id
       then
          Self.last_used_physics_model_Id := Self.last_used_physics_model_Id + 1;
          the_Model.Id_is (Self.last_used_physics_model_Id);

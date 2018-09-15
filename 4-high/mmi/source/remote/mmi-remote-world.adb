@@ -192,7 +192,7 @@ is
                     the_Event : in              new_physics_model_Event)
    is
    begin
-      remote.physics_Model.item'Class'Output (Stream, the_Event.Model.all);
+      physics.Remote.Model.item'Class'Output (Stream, the_Event.Model.all);
    end Write;
 
 
@@ -200,7 +200,7 @@ is
                    the_Event : out             new_physics_model_Event)
    is
    begin
-      the_Event.Model := new remote.physics_Model.item'Class' (remote.physics_Model.item'Class'Input (Stream));
+      the_Event.Model := new physics.remote.Model.item'Class' (physics.remote.Model.item'Class'Input (Stream));
    end Read;
 
 

@@ -1,9 +1,9 @@
 with
-     mmi.remote.physics_Model,
+     physics.remote.Model,
      physics.Shape;
 
 
-package mmi.physics_Model
+package physics.Model
 --
 --  Provides a model describing physical properties.
 --
@@ -61,7 +61,7 @@ is
 
 
 
-   type Item is new mmi.remote.physics_Model.item with
+   type Item is new physics.remote.Model.item with
       record
          shape_Info  : a_Shape;
          Shape       : physics.Shape.view;
@@ -84,13 +84,13 @@ is
 
    package Forge
    is
-      function new_physics_Model (Id          : in mmi.physics_model_Id := mmi.null_physics_model_Id;
+      function new_physics_Model (Id          : in physics.model_Id := null_physics_model_Id;
                                   shape_Info  : in a_Shape;
                                   Scale       : in math.Vector_3        := (1.0, 1.0, 1.0);
                                   Mass        : in math.Real            := 0.0;
                                   Friction    : in math.Real            := 0.1;
                                   Restitution : in math.Real            := 0.1;
-                                  is_Tangible : in Boolean              := True) return mmi.physics_Model.view;
+                                  is_Tangible : in Boolean              := True) return physics.Model.view;
    end Forge;
 
 
@@ -105,11 +105,11 @@ is
    --- Attributes
    --
 
-   function  Id       (Self : in     Item'Class)     return mmi.physics_model_Id;
-   procedure Id_is    (Self : in out Item'Class;   Now : in mmi.physics_model_Id);
+   function  Id       (Self : in     Item'Class)     return physics.model_Id;
+   procedure Id_is    (Self : in out Item'Class;   Now : in physics.model_Id);
 
 
    procedure Scale_is (Self : in out Item'Class;   Now : in math.Vector_3);
 
 
-end mmi.physics_Model;
+end physics.Model;

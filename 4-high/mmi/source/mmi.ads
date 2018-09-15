@@ -1,5 +1,6 @@
 with
      openGL,
+     Physics,
      float_Math.Geometry.d2,
      float_Math.Geometry.d3,
      float_Math.Algebra.linear.d3;
@@ -29,7 +30,7 @@ is
    max_Worlds          : constant := 1000;
    max_Cameras         : constant := 1000;
    max_graphics_Models : constant := 2**32 - 1;
-   max_physics_Models  : constant := 2**32 - 1;
+--     max_physics_Models  : constant := 2**32 - 1;
    max_Sprites         : constant := 2**32 - 1;
 
 
@@ -40,15 +41,15 @@ is
    type         camera_Id is range 0 .. max_Cameras;
 
    subtype graphics_model_Id is openGL.model_Id;
-   type  physics_model_Id is range 0 .. max_physics_Models;
+--     type  physics_model_Id is range 0 .. max_physics_Models;
    type         sprite_Id is range 0 .. max_Sprites;
 
    null_graphics_model_Id : constant graphics_model_Id;
-   null_physics_model_Id  : constant physics_model_Id;
+--     null_physics_model_Id  : constant physics.model_Id;
    null_sprite_Id         : constant sprite_Id;
 
    type graphics_model_Ids is array (Positive range <>) of graphics_model_Id;
-   type  physics_model_Ids is array (Positive range <>) of  physics_model_Id;
+   type  physics_model_Ids is array (Positive range <>) of  physics.model_Id;
    type         sprite_Ids is array (Positive range <>) of         sprite_Id;
 
 
@@ -69,7 +70,7 @@ is
 private
 
    null_graphics_model_Id : constant graphics_model_Id := 0;
-   null_physics_model_Id  : constant physics_model_Id  := 0;
+--     null_physics_model_Id  : constant physics.model_Id  := 0;
    null_sprite_Id         : constant sprite_Id         := 0;
 
    null_Asset             : constant asset_Name        := (others => ' ');

@@ -1,11 +1,11 @@
 with
-     mmi.physics_Model,
      mmi.Joint,
 
      openGL.Model,
      openGL.Visual,
      openGL.Program,
 
+     physics.Model,
      physics.Object,
      physics.Shape,
      physics.Space,
@@ -62,7 +62,7 @@ is
    procedure define       (Self : access Item;   World          : access mmi.World.item'Class;
 
                                                  graphics_Model : access openGL.     Model.item'Class;
-                                                 physics_Model  : access mmi.physics_Model.item'Class;
+                                                 physics_Model  : access physics.Model.item'Class;
                                                  owns_Graphics  : in     Boolean;
                                                  owns_Physics   : in     Boolean;
 
@@ -80,7 +80,7 @@ is
       function  to_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access mmi.physics_Model.item'class;
+                           physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
                            is_Kinematic   : in     Boolean       := False;
@@ -89,7 +89,7 @@ is
       function new_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access mmi.physics_Model.item'class;
+                           physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
                            owns_Physics   : in     Boolean       := True;
                            is_Kinematic   : in     Boolean       := False;
@@ -114,8 +114,8 @@ is
    procedure Model_is              (Self : in out Item'Class;   Now : in openGL.Model.view);
    function  owns_Graphics         (Self : in     Item)           return Boolean;
 
-   function  physics_Model         (Self : in     Item'Class)     return access mmi.physics_Model.item'class;
-   procedure physics_Model_is      (Self : in out Item'Class;   Now : in mmi.physics_Model.view);
+   function  physics_Model         (Self : in     Item'Class)     return access physics.Model.item'class;
+   procedure physics_Model_is      (Self : in out Item'Class;   Now : in physics.Model.view);
 
    function  Scale                 (Self : in     Item'Class)     return math.Vector_3;
    procedure Scale_is              (Self : in out Item'Class;   Now : in math.Vector_3);
@@ -363,7 +363,7 @@ private
          program_Parameters      : access opengl.Program.Parameters'Class;
          owns_Graphics           :        Boolean;
 
-         physics_Model           :        mmi. physics_Model.view;
+         physics_Model           :        physics.Model.view;
          owns_Physics            :        Boolean;
 
          World                   : access mmi.World.item'Class;

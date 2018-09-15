@@ -31,8 +31,8 @@ is
 
    procedure rebuild_Shape (Self : in out Item)
    is
-      use type mmi.physics_Model.shape_Kind,
-               mmi.physics_Model.View;
+      use type physics.Model.shape_Kind,
+               physics.Model.View;
 
       the_Scale : aliased Vector_3;
 
@@ -45,40 +45,40 @@ is
 
       case Self.physics_Model.shape_Info.Kind
       is
-         when mmi.physics_Model.Cube =>
+         when physics.Model.Cube =>
             Self.Shape := physics_Shape_view (Self.World.Physics.        new_box_Shape (Self.physics_Model.shape_Info.half_Extents));
 
-         when mmi.physics_Model.a_Sphere =>
+         when physics.Model.a_Sphere =>
             Self.Shape := physics_Shape_view (Self.World.Physics.     new_sphere_Shape (Self.physics_Model.shape_Info.sphere_Radius));
 
-         when mmi.physics_Model.multi_Sphere =>
+         when physics.Model.multi_Sphere =>
             Self.Shape := physics_Shape_view (Self.World.Physics.new_multisphere_Shape (Self.physics_Model.shape_Info.Sites.all,
                                                                                         Self.physics_Model.shape_Info.Radii.all));
-         when mmi.physics_Model.Cone =>
+         when physics.Model.Cone =>
             Self.Shape := physics_Shape_view (Self.World.Physics.       new_cone_Shape (radius => Real (Self.physics_Model.Scale (1) / 2.0),
                                                                                         height => Real (Self.physics_Model.Scale (2))));
-         when mmi.physics_Model.a_Capsule =>
+         when physics.Model.a_Capsule =>
             Self.Shape := physics_Shape_view (Self.World.Physics.    new_capsule_Shape (Self.physics_Model.shape_Info.lower_Radius,
                                                                                         Self.physics_Model.shape_Info.Height));
-         when mmi.physics_Model.Cylinder =>
+         when physics.Model.Cylinder =>
             Self.Shape := physics_Shape_view (Self.World.Physics.   new_cylinder_Shape (Self.physics_Model.shape_Info.half_Extents));
 
-         when mmi.physics_Model.Hull =>
+         when physics.Model.Hull =>
             Self.Shape := physics_Shape_view (Self.World.Physics.new_convex_hull_Shape (Self.physics_Model.shape_Info.Points.all));
 
-         when mmi.physics_Model.Mesh =>
+         when physics.Model.Mesh =>
             Self.Shape := physics_Shape_view (Self.World.Physics       .new_mesh_Shape (Self.physics_Model.shape_Info.Model));
 
-         when mmi.physics_Model.Plane =>
+         when physics.Model.Plane =>
             Self.Shape := physics_Shape_view (Self.World.Physics.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
                                                                                         Self.physics_Model.Shape_Info.plane_Offset));
-         when mmi.physics_Model.Heightfield =>
+         when physics.Model.Heightfield =>
             Self.Shape := physics_Shape_view (Self.World.Physics.new_heightfield_Shape (Self.physics_Model.shape_Info.Heights.all,
                                                                                         Self.physics_Model.Scale));
-         when mmi.physics_Model.Circle =>
+         when physics.Model.Circle =>
             Self.Shape := physics_Shape_view (Self.World.Physics.     new_circle_Shape (Self.physics_Model.shape_Info.circle_Radius));
 
-         when mmi.physics_Model.Polygon =>
+         when physics.Model.Polygon =>
             Self.Shape := physics_Shape_view (Self.World.Physics.    new_polygon_Shape (physics.space.polygon_Vertices (Self.physics_Model.shape_Info.Vertices (1 .. Self.physics_Model.shape_Info.vertex_Count))));
       end case;
 
@@ -110,19 +110,19 @@ is
 
    procedure define (Self : access Item;   World          : access mmi.        World.item'Class;
                                            graphics_Model : access openGL.     Model.item'Class;
-                                           physics_Model  : access mmi.physics_Model.item'Class;
+                                           physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
                                            is_Kinematic   : in     Boolean       := False;
                                            Site           : in     math.Vector_3 := Math.Origin_3d)
    is
-      use type mmi.physics_Model.view;
+      use type physics.Model.view;
    begin
       Self.Id             := World.new_sprite_Id;
       Self.World          := World;
 
       Self.Visual.Model_is (openGL.Model.view (graphics_Model));
-      Self.physics_Model  := mmi.physics_Model.view (physics_Model);
+      Self.physics_Model  := physics.Model.view (physics_Model);
       Self.owns_Graphics  := owns_Graphics;
       Self.owns_Physics   := owns_Physics;
 
@@ -193,7 +193,7 @@ is
       pragma assert (Self.is_Destroyed);
 
       use mmi.Joint,
-          mmi.physics_Model,
+          physics.Model,
           physics.Object,
           physics.Shape;
 
@@ -230,7 +230,7 @@ is
       function  to_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access mmi.physics_Model.item'class;
+                           physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
                            is_Kinematic   : in     Boolean       := False;
@@ -249,7 +249,7 @@ is
       function new_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access mmi.physics_Model.item'class;
+                           physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
                            owns_Physics   : in     Boolean       := True;
                            is_Kinematic   : in     Boolean       := False;
@@ -423,7 +423,7 @@ is
 
 
 
-   function physics_Model (Self : in Item'Class) return access mmi.physics_Model.item'class
+   function physics_Model (Self : in     Item'Class)     return access physics.Model.item'class
    is
    begin
       return Self.physics_Model;
@@ -431,7 +431,7 @@ is
 
 
 
-   procedure physics_Model_is  (Self : in out Item'Class;   Now : in mmi.physics_Model.view)
+   procedure physics_Model_is (Self : in out Item'Class;   Now : in physics.Model.view)
    is
    begin
       Self.physics_Model := Now;
@@ -520,7 +520,7 @@ is
 
    procedure Site_is   (Self : in out Item;   Now : in math.Vector_3)
    is
-      use type mmi.physics_Model.view;
+      use type Standard.physics.Model.view;
       my_Transform : Matrix_4x4 := Self.Transform.Value;
 
    begin

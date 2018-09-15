@@ -1,7 +1,6 @@
 with
      mmi.remote.World,
      mmi.Sprite,
-     mmi.physics_Model,
      mmi.Joint,
 
      openGL.Model,
@@ -9,6 +8,7 @@ with
      physics.Space,
      physics.Engine,
      physics.Forge,
+     physics.Model,
 
      lace.Event,
      lace.Observer,
@@ -84,7 +84,7 @@ is
    procedure Gravity_is      (Self : in out Item;   Now : in Vector_3);
 
    function  space_Kind      (Self : in     Item)     return physics.space_Kind;
-   function  Physics         (Self : in     Item)     return physics.Space.view;
+   function  Physics         (Self : in     Item)     return physics.Space.view;     -- TODO: rename to Space.
 
    procedure update_Bounds   (Self : in out Item;   of_Sprite : in mmi.Sprite.view);
    procedure update_Site     (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
@@ -179,7 +179,7 @@ is
    procedure is_a_Mirror          (Self : access Item'Class;   of_World : in mmi.remote.World.view);
 
    procedure add                  (Self : in out Item;   the_Model    : in openGL.Model.view);
-   procedure add                  (Self : in out Item;   the_Model    : in mmi.physics_Model.view);
+   procedure add                  (Self : in out Item;   the_Model    : in Standard.physics.Model.view);
    procedure add                  (Self : access Item;   the_Sprite   : in mmi.Sprite.view;
                                                          and_Children : in Boolean        := False);
    procedure add                  (Self : in out Item;   the_Joint    : in mmi.Joint.view);
@@ -289,9 +289,10 @@ is
 
    --  Physics Models
    --
-   use type mmi.physics_Model.view;
-   function Hash                     is new ada.unchecked_Conversion   (mmi.physics_model_Id,  ada.Containers.Hash_Type);
-   package  id_Maps_of_physics_model is new ada.containers.hashed_Maps (mmi.physics_model_Id,  mmi.physics_Model.view,
+   use type Standard.physics.Model.view,
+            Standard.physics.model_Id;
+   function Hash                     is new ada.unchecked_Conversion   (Standard.physics.model_Id,  ada.Containers.Hash_Type);
+   package  id_Maps_of_physics_model is new ada.containers.hashed_Maps (Standard.physics.model_Id,  Standard.physics.Model.view,
                                                                         Hash,                  "=");
 
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map;
@@ -598,7 +599,7 @@ private
          --
          last_used_sprite_Id             :         mmi.sprite_Id         := 0;
          last_used_model_Id              :         mmi.graphics_model_Id := 0;
-         last_used_physics_model_Id      :         mmi. physics_model_Id := 0;
+         last_used_physics_model_Id      :         Standard.physics.model_Id := 0;
 
          --  Command sets
          --
