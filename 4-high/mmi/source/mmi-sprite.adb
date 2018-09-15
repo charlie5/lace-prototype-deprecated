@@ -108,8 +108,8 @@ is
 
 
 
-   procedure define (Self : access Item;   World          : access mmi.        World.item'Class;
-                                           graphics_Model : access openGL.     Model.item'Class;
+   procedure define (Self : access Item;   World          : access mmi.    World.item'Class;
+                                           graphics_Model : access openGL. Model.item'Class;
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
@@ -132,8 +132,9 @@ is
       --
       if Self.physics_Model /= null
       then
-         Self.rebuild_Shape;
-         Self.rebuild_Solid (Site);
+--           Self.rebuild_Shape;
+--           Self.rebuild_Solid (Site);
+         null;
       end if;
    end define;
 

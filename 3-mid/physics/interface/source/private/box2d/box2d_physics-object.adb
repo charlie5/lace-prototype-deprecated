@@ -88,6 +88,20 @@ is
    end C;
 
 
+   overriding
+   function  Model        (Self : in     Item)     return physics.Model.view
+   is
+   begin
+      return Self.Model;
+   end Model;
+
+
+   overriding
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)
+   is
+   begin
+      Self.Model := Now;
+   end Model_is;
 
 
    overriding
@@ -97,6 +111,12 @@ is
       return Self.Shape;
    end Shape;
 
+
+   procedure Shape_is (Self : in out Item;   Now : in Physics.Shape.view)
+   is
+   begin
+      Self.Shape := Now;
+   end Shape_is;
 
 
    overriding

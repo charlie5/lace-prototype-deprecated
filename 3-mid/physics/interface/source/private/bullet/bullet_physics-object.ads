@@ -1,5 +1,6 @@
 with
      physics.Object,
+     physics.Model,
      physics.Shape,
      bullet_C;
 
@@ -29,6 +30,8 @@ is
 
    function C           (Self         : in     Item) return access bullet_C.Object;
 
+   function  Model        (Self : in     Item)     return physics.Model.view;
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view);
 
 
 

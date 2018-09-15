@@ -1,6 +1,7 @@
 with
      physics.Object,
      physics.Shape,
+     physics.Model,
      box2d_C;
 
 private
@@ -31,6 +32,12 @@ is
 
    function C (Self : in Item) return access box2d_C.Object;
 
+   procedure Shape_is (Self : in out Item;   Now : in Physics.Shape.view);
+
+   overriding
+   function  Model        (Self : in     Item)     return physics.Model.view;
+   overriding
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view);
 
 
 
@@ -40,6 +47,7 @@ private
       record
          C         : access box2d_C.Object;
          Shape     :        physics.Shape.view;
+         Model     :        physics.Model.view;
          user_Data : access lace.Any.limited_Item'Class;
       end record;
 

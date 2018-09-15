@@ -1,6 +1,7 @@
 with
      physics.Space,
      physics.Joint,
+     physics.Model,
      physics.Object,
 
      lace.Observer,
@@ -22,30 +23,30 @@ is
    procedure stop  (Self : access Item);
 
 
-   procedure add   (Self : access Item;   the_Sprite : in Object.view);
-   procedure rid   (Self : in out Item;   the_Sprite : in Object.view);
+   procedure add   (Self : access Item;   the_Object : in Object.view);
+   procedure rid   (Self : in out Item;   the_Object : in Object.view);
 
-   procedure add   (Self : in out Item;   the_Sprite : in Joint.view);
-   procedure rid   (Self : in out Item;   the_Sprite : in Joint.view);
+   procedure add   (Self : in out Item;   the_Object : in Joint.view);
+   procedure rid   (Self : in out Item;   the_Object : in Joint.view);
 
-   procedure update_Scale (Self : in out Item;   of_Sprite : in Object.view;
+   procedure update_Scale (Self : in out Item;   of_Object : in Object.view;
                                                  To        : in math.Vector_3);
 
-   procedure apply_Force (Self : in out Item;   to_Sprite : in Object.view;
+   procedure apply_Force (Self : in out Item;   to_Object : in Object.view;
                                                 Force     : in math.Vector_3);
 
-   procedure update_Site (Self : in out Item;   of_Sprite : in Object.view;
+   procedure update_Site (Self : in out Item;   of_Object : in Object.view;
                                                 To        : in math.Vector_3);
 
-   procedure set_Speed (Self : in out Item;   of_Sprite : in Object.view;
+   procedure set_Speed (Self : in out Item;   of_Object : in Object.view;
                                               To        : in math.Vector_3);
 
    procedure set_Gravity (Self : in out Item;   To        : in math.Vector_3);
 
-   procedure set_xy_Spin (Self : in out Item;   of_Sprite : in Object.view;
+   procedure set_xy_Spin (Self : in out Item;   of_Object : in Object.view;
                                                 To        : in math.Radians);
 
-   procedure update_Bounds (Self : in out Item;   of_Sprite : in Object.view);
+   procedure update_Bounds (Self : in out Item;   of_Object : in Object.view);
 
    procedure set_local_Anchor (Self : in out Item;   for_Joint : in Joint.view;
                                                      To        : in math.Vector_3;
@@ -73,8 +74,8 @@ private
    --
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
-   type command_Kind is (add_Sprite,             rid_Sprite,
-                         scale_Object,           destroy_Sprite,
+   type command_Kind is (add_Object,             rid_Object,
+                         scale_Object,           destroy_Object,
                          update_Bounds,          update_Site,
                          set_Speed,              apply_Force,
                          set_xy_Spin,
@@ -87,14 +88,15 @@ private
 
    type Command (Kind : command_Kind := command_Kind'First) is
       record
-         Sprite : Physics.Object.view;
+         Object : physics.Object.view;
 
          case Kind
          is
-            when add_Sprite =>
+            when add_Object =>
                add_Children : Boolean;
+--                 Model        : physics.Model.view;
 
-            when rid_Sprite =>
+            when rid_Object =>
                rid_Children : Boolean;
 
             when update_Site =>

@@ -1,5 +1,6 @@
 with
      physics.Shape,
+     physics.Model,
      lace.Any;
 
 
@@ -40,6 +41,9 @@ is
 
    --- Shape
    --
+
+   function  Model        (Self : in     Item)     return physics.Model.view   is abstract;
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)  is abstract;
 
    function  Shape        (Self : in     Item)     return physics.Shape.view   is abstract;
 

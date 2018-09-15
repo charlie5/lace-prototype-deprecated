@@ -79,6 +79,21 @@ is
    end C;
 
 
+   function  Model        (Self : in     Item)     return physics.Model.view
+   is
+   begin
+      raise Program_Error with "TODO 437cob5";
+      return null;
+   end;
+
+
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)
+   is
+   begin
+      raise Program_Error with "TODO 437sdfsdcob5";
+   end;
+
+
 
 
    overriding

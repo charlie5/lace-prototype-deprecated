@@ -84,9 +84,9 @@ is
 
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Circle, Radius),
-                                                      Mass        => Mass,
-                                                      Friction    => Friction,
-                                                      Restitution => Bounce);
+                                                  Mass        => Mass,
+                                                  Friction    => Friction,
+                                                  Restitution => Bounce);
    begin
       if Texture = openGL.null_Asset
       then

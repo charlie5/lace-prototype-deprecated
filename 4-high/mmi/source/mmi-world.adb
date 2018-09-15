@@ -565,7 +565,9 @@ is
                               the_World.add (the_Sprite. physics_Model.all'Access);
 
                               the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
+
                               the_Sprite.Solid.user_Data_is (the_Sprite);
+                              the_Sprite.Solid.Model_is (the_Sprite.physics_Model);
 
                               if the_Sprite.physics_Model.is_Tangible
                               then
@@ -846,7 +848,7 @@ is
    begin
       accept start (space_Kind : in standard.physics.space_Kind)
       do
-         Stopped           := False;
+         Stopped                 := False;
          the_World.physics_Space := std_physics.Forge.new_Space (space_Kind);
       end start;
 

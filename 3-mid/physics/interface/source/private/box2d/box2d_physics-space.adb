@@ -7,6 +7,8 @@ with
      box2d_physics.Joint,
      box2d_physics.Object,
 
+     physics.Model,
+
      c_math_c.Vector_3,
      c_math_c.Conversion,
 
@@ -169,9 +171,10 @@ is
 
 
 
+   overriding
    function new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view
    is
-      pragma Unreferenced (Self);
+      pragma Unreferenced (Self, Points);
       the_Sphere :  physics.Shape .view; -- := vox_2d_physics.Shape.new_sphere_Shape (Radius);
    begin
       return the_Sphere;
@@ -375,8 +378,69 @@ is
    overriding
    procedure add (Self : in out Item;   the_Object : in physics.Object.view)
    is
-      the_c_Object : constant Object_Pointer := box2d_physics.Object.view (the_Object).C;
+
+      the_box2d_Object : constant box2d_physics.Object.view := box2d_physics.Object.view (the_Object);
+      the_c_Object     : constant Object_Pointer            := the_box2d_Object.C;
+
+      procedure rebuild_Shape
+      is
+         use type physics.Model.shape_Kind,
+             physics.Model.View;
+
+--           the_Scale : aliased Vector_3;
+         shape_Info : Physics.Model.a_Shape renames the_Object.Model.shape_Info;
+      begin
+--           if the_Object.physics_Model = null then
+--              return;
+--           end if;
+
+--           the_Scale := Self.physics_Model.Scale;
+
+         case shape_Info.Kind
+         is
+         when physics.Model.Cube =>
+            the_box2d_Object.Shape_is (Self.new_box_Shape (shape_Info.half_Extents));
+
+         when physics.Model.a_Sphere =>
+            the_box2d_Object.Shape_is (Self.new_sphere_Shape (shape_Info.sphere_Radius));
+
+         when physics.Model.multi_Sphere =>
+            the_box2d_Object.Shape_is (Self.new_multisphere_Shape (shape_Info.Sites.all,
+                                                                   shape_Info.Radii.all));
+         when physics.Model.Cone =>
+            the_box2d_Object.Shape_is (Self.new_cone_Shape (radius => Real (the_Object.Model.Scale (1) / 2.0),
+                                                            height => Real (the_Object.Model.Scale (2))));
+         when physics.Model.a_Capsule =>
+            the_box2d_Object.Shape_is (Self.new_capsule_Shape (shape_Info.lower_Radius,
+                                                               shape_Info.Height));
+         when physics.Model.Cylinder =>
+            the_box2d_Object.Shape_is (Self.new_cylinder_Shape (shape_Info.half_Extents));
+
+         when physics.Model.Hull =>
+            the_box2d_Object.Shape_is (Self.new_convex_hull_Shape (shape_Info.Points.all));
+
+         when physics.Model.Mesh =>
+            the_box2d_Object.Shape_is (Self.new_mesh_Shape (shape_Info.Model));
+
+         when physics.Model.Plane =>
+            the_box2d_Object.Shape_is (Self.new_plane_Shape (Shape_Info.plane_Normal,
+                                                             Shape_Info.plane_Offset));
+         when physics.Model.Heightfield =>
+            the_box2d_Object.Shape_is (Self.new_heightfield_Shape (shape_Info.Heights.all,
+                                                                   the_Object.Model.Scale));
+         when physics.Model.Circle =>
+            the_box2d_Object.Shape_is (Self.new_circle_Shape (shape_Info.circle_Radius));
+
+         when physics.Model.Polygon =>
+            the_box2d_Object.Shape_is (Self.new_polygon_Shape (physics.space.polygon_Vertices (shape_Info.Vertices (1 .. shape_Info.vertex_Count))));
+         end case;
+
+      end rebuild_Shape;
+
    begin
+      rebuild_Shape;
+
+
       b2d_Space_add_Object (Self.C, the_c_Object);
    end add;
 
