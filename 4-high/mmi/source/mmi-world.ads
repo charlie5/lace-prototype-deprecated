@@ -84,7 +84,7 @@ is
    procedure Gravity_is      (Self : in out Item;   Now : in Vector_3);
 
    function  space_Kind      (Self : in     Item)     return physics.space_Kind;
-   function  Physics         (Self : in     Item)     return physics.Space.view;     -- TODO: rename to Space.
+   function  Space           (Self : in     Item)     return physics.Space.view;
 
    procedure update_Bounds   (Self : in out Item;   of_Sprite : in mmi.Sprite.view);
    procedure update_Site     (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
@@ -436,7 +436,7 @@ private
 --                           scale_Sprite,
                          destroy_Sprite,
 --                           update_Bounds,
---                           update_Site,
+                         update_Site,
 --                           set_Speed,
 --                           apply_Force,
 --                           set_xy_Spin,
@@ -460,8 +460,8 @@ private
             when rid_Sprite =>
                rid_Children : Boolean;
 
---              when update_Site =>
---                 Site   : math.Vector_3;
+            when update_Site =>
+               Site   : math.Vector_3;
 
 --              when scale_Sprite =>
 --                 Scale  : math.Vector_3;

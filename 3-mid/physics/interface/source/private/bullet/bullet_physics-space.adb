@@ -14,6 +14,7 @@ with
      Interfaces.C,
      ada.Unchecked_Conversion;
 with Ada.Text_IO; use Ada.Text_IO;
+with Physics.Model;
 
 
 
@@ -58,6 +59,17 @@ is
    -----------
    --- Factory
    --
+
+
+   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view
+   is
+   begin
+      raise Program_Error with "TODO: doartncaet";
+      return null;
+   end new_Shape;
+
+
+
 
    overriding
    function  new_sphere_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape .view
@@ -244,6 +256,13 @@ is
    end new_Object;
 
 
+   overriding
+   function  object_Count (Self : in     Item) return Natural
+   is
+   begin
+      raise Program_Error with "TODO: asdlkhgaeg";
+      return 0;
+   end object_Count;
 
    --  Joints
    --

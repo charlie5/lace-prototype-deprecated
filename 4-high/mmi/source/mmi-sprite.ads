@@ -66,8 +66,7 @@ is
                                                  owns_Graphics  : in     Boolean;
                                                  owns_Physics   : in     Boolean;
 
-                                                 is_Kinematic   : in     Boolean       := False;
-                                                 Site           : in     math.Vector_3 := math.Origin_3d);
+                                                 is_Kinematic   : in     Boolean       := False);
 
    procedure destroy      (Self : access Item;   and_Children   : in Boolean);
    function  is_Destroyed (Self : in     Item)                return Boolean;
@@ -83,8 +82,7 @@ is
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean       := False;
-                           Site           : in     math.Vector_3 := math.Origin_3d) return Item;
+                           is_Kinematic   : in     Boolean       := False) return Item;
 
       function new_Sprite (Name           : in     String;
                            World          : access mmi.        World.item'Class;
@@ -92,8 +90,7 @@ is
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
                            owns_Physics   : in     Boolean       := True;
-                           is_Kinematic   : in     Boolean       := False;
-                           Site           : in     math.Vector_3 := math.Origin_3d) return View;
+                           is_Kinematic   : in     Boolean       := False) return View;
    end Forge;
 
 
@@ -329,7 +326,7 @@ is
    --- Physics
    --
    procedure rebuild_Shape (Self : in out Item);
-   procedure rebuild_Solid (Self : in out Item;   Site : in Vector_3);
+   procedure rebuild_Solid (Self : in out Item);
 
 
 
@@ -348,6 +345,7 @@ private
    is
       function  Value       return math.Matrix_4x4;
       procedure Value_is (Now : in math.Matrix_4x4);
+      procedure Site_is  (Now : in math.Vector_3);
 
    private
       the_Value : math.Matrix_4x4 := Identity_4x4;
@@ -360,7 +358,7 @@ private
          Id                      :        mmi.sprite_Id      := null_sprite_Id;
 
          Visual                  :        openGL.Visual.view := new openGL.Visual.item;
-         program_Parameters      : access opengl.Program.Parameters'Class;
+         program_Parameters      : access openGL.program.Parameters'Class;
          owns_Graphics           :        Boolean;
 
          physics_Model           :        physics.Model.view;

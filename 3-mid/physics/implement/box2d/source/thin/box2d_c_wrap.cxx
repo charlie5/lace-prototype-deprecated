@@ -1137,6 +1137,21 @@ DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Torque_impulse (
 
 
 
+DllExport void SWIGSTDCALL Ada_b2d_dump (
+  void * jarg1
+  )
+{
+  Object *arg1 = (Object *) 0 ;
+  
+  arg1 = (Object *)jarg1; 
+  
+  b2d_dump(arg1);
+  
+  
+}
+
+
+
 DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint_with_local_anchors (
   void * jarg1
   ,

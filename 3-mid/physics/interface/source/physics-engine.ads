@@ -11,7 +11,7 @@ with
 
 package physics.Engine
 --
--- Provides a task which evolves a  physical space.
+-- Provides a task which evolves a physical space.
 --
 is
 

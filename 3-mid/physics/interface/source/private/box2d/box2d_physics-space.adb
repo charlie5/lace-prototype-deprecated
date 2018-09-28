@@ -66,6 +66,41 @@ is
    --- Factory
    --
 
+   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view
+   is
+--        the_Shape :
+   begin
+      raise Program_Error with "TODO: doartncaet";
+      return null;
+   end new_Shape;
+
+   --  2d
+   --
+
+   overriding
+   function  new_circle_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape .view
+   is
+      pragma Unreferenced (Self);
+      the_Circle : constant physics.Shape .view
+        := box2d_physics.Shape.new_circle_Shape (Radius);
+   begin
+      return the_Circle;
+   end new_circle_Shape;
+
+
+
+   overriding
+   function  new_polygon_Shape (Self : access Item;   Vertices : in physics.Space.polygon_Vertices) return physics.Shape .view
+   is
+      pragma Unreferenced (Self);
+      the_Polygon : constant physics.Shape .view
+        := box2d_physics.Shape.new_polygon_Shape (Vertices);
+   begin
+      return the_Polygon;
+   end new_polygon_Shape;
+
+   -- 3d
+
    overriding
    function  new_sphere_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape .view
    is
@@ -175,45 +210,24 @@ is
    function new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view
    is
       pragma Unreferenced (Self, Points);
-      the_Sphere :  physics.Shape .view; -- := vox_2d_physics.Shape.new_sphere_Shape (Radius);
    begin
-      return the_Sphere;
+      raise physics.Space.unsupported_Error with "mesh shape not allowed in box2d_Physics";
+      return null;
    end new_mesh_Shape;
-
-
-
-
-
-
-   --  2d
-   --
-
-   overriding
-   function  new_circle_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape .view
-   is
-      pragma Unreferenced (Self);
-      the_Circle : constant physics.Shape .view
-        := box2d_physics.Shape.new_circle_Shape (Radius);
-   begin
-      return the_Circle;
-   end new_circle_Shape;
-
-
-
-   overriding
-   function  new_polygon_Shape (Self : access Item;   Vertices : in physics.Space.polygon_Vertices) return physics.Shape .view
-   is
-      pragma Unreferenced (Self);
-      the_Polygon : constant physics.Shape .view
-        := box2d_physics.Shape.new_polygon_Shape (Vertices);
-   begin
-      return the_Polygon;
-   end new_polygon_Shape;
 
 
 
    --  Objects
    --
+
+   function Hash (the_C_Object : in box2d_c.Pointers.Object_Pointer) return ada.Containers.Hash_Type
+   is
+      function convert is new ada.Unchecked_Conversion (box2d_c.Pointers.Object_Pointer,
+                                                         ada.Containers.Hash_Type);
+   begin
+      return convert (the_C_Object);
+   end;
+
 
    overriding
    function  new_Object (Self : access Item;   of_Shape     : in physics.Shape .view;
@@ -224,16 +238,23 @@ is
                                                is_Kinematic : in Boolean) return physics.Object.view
    is
       pragma Unreferenced (Self, is_Kinematic);
-      the_Object : physics.Object.view
-        := physics.Object.view (box2d_physics.Object.new_Object (of_Shape,
-                                                                 of_Mass,
-                                                                 Friction,
-                                                                 Restitution,
-                                                                 at_Site));
+      the_box2d_Object : box2d_Physics.Object.view := box2d_physics.Object.new_Object (of_Shape);
+      the_Object       : physics.Object.view       := physics.Object.view (the_box2d_Object);
+--                                                                   of_Mass,
+--                                                                   Friction,
+--                                                                   Restitution,
+--                                                                   at_Site));
    begin
       return the_Object;
    end new_Object;
 
+
+   overriding
+   function  object_Count (Self : in     Item) return Natural
+   is
+   begin
+      return Natural (Self.object_Map.Length);
+   end object_Count;
 
 
    --  Joints
@@ -438,8 +459,9 @@ is
       end rebuild_Shape;
 
    begin
-      rebuild_Shape;
+--        rebuild_Shape;
 
+      Self.object_Map.insert (the_C_Object, the_box2d_Object);
 
       b2d_Space_add_Object (Self.C, the_c_Object);
    end add;
@@ -488,6 +510,22 @@ is
    is
    begin
       b2d_Space_evolve (Self.C, C.C_float (By));
+
+      -- Update each objects dynamics.
+      --
+      declare
+         use c_Object_Maps_of_Object;
+         Cursor     : c_Object_Maps_of_Object.Cursor := Self.object_Map.First;
+         the_Object : box2d_Physics.Object.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Object := Element (Cursor);
+            the_Object.update_Dynamics;
+
+            next (Cursor);
+         end loop;
+      end;
    end evolve;
 
 

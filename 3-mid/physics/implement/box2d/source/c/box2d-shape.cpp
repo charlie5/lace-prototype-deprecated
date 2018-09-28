@@ -48,7 +48,8 @@ b2d_new_Polygon (Vector_2   Vertices[],
 			  Vertices [i].y);
     }
 
-  Self->Set (Verts, vertex_Count);
+    //  Self->Set (Verts, vertex_Count);
+    Self->SetAsBox (Verts [2].x, Verts [2].y);
 
   return (Shape*) Self;
 }

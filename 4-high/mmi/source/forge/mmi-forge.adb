@@ -79,6 +79,7 @@ is
                                Texture  : in openGL.asset_Name := openGL.null_Asset) return mmi.Sprite.view
    is
       use openGL;
+      use type Vector_2;
 
       the_graphics_Model : openGL.Model.sphere.view;
 
@@ -86,8 +87,10 @@ is
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Circle, Radius),
                                                   Mass        => Mass,
                                                   Friction    => Friction,
-                                                  Restitution => Bounce);
+                                                  Restitution => Bounce,
+                                                  Site        => Vector_3 (Site & 0.0));
    begin
+
       if Texture = openGL.null_Asset
       then
          the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
@@ -128,11 +131,12 @@ is
 
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Polygon,
-                                                                      vertex_count => Vertices'Length,
-                                                                      vertices     => Vertices & Padding),
-                                                      Mass        => Mass,
-                                                      Friction    => Friction,
-                                                      Restitution => Bounce);
+                                                                  vertex_count => Vertices'Length,
+                                                                  vertices     => Vertices & Padding),
+                                                  Site        => Vector_3 (Site & 0.0),
+                                                  Mass        => Mass,
+                                                  Friction    => Friction,
+                                                  Restitution => Bounce);
    begin
       return mmi.Sprite.Forge.new_Sprite ("polygon_Sprite",
                                           in_World,
@@ -140,8 +144,7 @@ is
                                           the_physics_Model,
                                           owns_graphics => True,
                                           owns_physics  => True,
-                                          is_Kinematic  => False,
-                                          Site          => Vector_3 (Site & 0.0));
+                                          is_Kinematic  => False);
    end new_polygon_Sprite;
 
 

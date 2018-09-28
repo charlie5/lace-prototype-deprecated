@@ -3,16 +3,20 @@ with
 
 private
 with
+     box2d_Physics.Object,
      box2d_c.joint_Cursor,
      box2d_c.Pointers,
 
+     physics.Model,
      physics.Shape,
      physics.Object,
      physics.Joint.ball,
      physics.Joint.slider,
      physics.Joint.hinge,
      physics.Joint.cone_twist,
-     physics.Joint.DoF6;
+     physics.Joint.DoF6,
+
+     ada.Containers.Hashed_Maps;
 
 
 package box2d_Physics.Space
@@ -35,14 +39,27 @@ is
    function Manifold       (Self : access Item;   Index : in    Positive) return physics.space.a_Manifold;
 
 
+   overriding
+   function  object_Count (Self : in     Item) return Natural;
 
 
 
 private
 
+   function Hash (the_C_Object : in box2d_c.Pointers.Object_Pointer) return ada.Containers.Hash_Type;
+   use type box2d_c.Pointers.Object_Pointer;
+   use type box2d_Physics.Object.view;
+   package c_Object_Maps_of_Object is new ada.Containers.Hashed_Maps (Key_Type        => box2d_c.Pointers.Object_Pointer,
+                                                                      Element_Type    => box2d_Physics.Object.view,
+                                                                      Hash            => Hash,
+                                                                      Equivalent_Keys => "=",
+                                                                      "="             => "=");
+
+
    type Item is new physics.Space.item with
       record
-         C : box2d_c.Pointers.Space_Pointer;
+         C          : box2d_c.Pointers.Space_Pointer;
+         object_Map : c_Object_Maps_of_Object.Map;
       end record;
 
 
@@ -81,6 +98,11 @@ private
    --
 
    -- Shapes
+
+   overriding
+   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view;
+
+
 
    -- 3D
 
@@ -183,15 +205,15 @@ private
    --
 
    overriding
+   procedure evolve        (Self : in out Item;   By           : in Duration);
+
+   overriding
    procedure add           (Self : in out Item;   the_Object   : in physics.Object.view);
    overriding
    procedure rid           (Self : in out Item;   the_Object   : in physics.Object.view);
 
    overriding
    function cast_Ray       (Self : access Item;   From, To     : in Vector_3) return physics.Space.ray_Collision;
-
-   overriding
-   procedure evolve        (Self : in out Item;   By           : in Duration);
 
    overriding
    function  Gravity       (Self : in     Item)              return Vector_3;

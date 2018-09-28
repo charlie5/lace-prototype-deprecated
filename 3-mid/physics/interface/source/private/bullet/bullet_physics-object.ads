@@ -26,6 +26,12 @@ is
                          at_Site      : in     Vector_3;
                          is_Kinematic : in     Boolean) return View;
 
+   procedure define (Self : access Item;   Mass        : in Real;
+                                           Friction    : in Real;
+                                           Restitution : in Real;
+                                           at_Site     : in Vector_3);
+
+
    procedure free       (the_Object   : in out physics.Object.view);
 
    function C           (Self         : in     Item) return access bullet_C.Object;
@@ -33,6 +39,8 @@ is
    function  Model        (Self : in     Item)     return physics.Model.view;
    procedure Model_is     (Self : in out Item;   Now : in physics.Model.view);
 
+   procedure update_Dynamics (Self : in out Item);
+   function     get_Dynamics (Self : in     Item) return physics.Object.Dynamics;
 
 
 private

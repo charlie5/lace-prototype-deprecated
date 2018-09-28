@@ -26,6 +26,16 @@ is
    --  Base Shape
    --
 
+
+   overriding
+   procedure define (Self : in out Item)
+   is
+   begin
+      raise Program_Error with "Bullet Shape not supported";
+   end;
+
+
+
    overriding
    procedure destruct (Self : in out Item)
    is

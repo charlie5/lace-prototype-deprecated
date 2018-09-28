@@ -56,6 +56,7 @@ extern "C"
   void             b2d_Object_apply_Torque         (Object*   Self,   Vector_3*   Torque);
   void             b2d_Object_apply_Torque_impulse (Object*   Self,   Vector_3*   Torque);
 
+  void             b2d_dump (Object*   Self);
 } // extern "C"
 
 

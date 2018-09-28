@@ -21,6 +21,10 @@ is
 
 
    overriding
+   procedure define (Self : in out Item);
+
+
+   overriding
    procedure destruct (Self : in out Item);
 
    overriding

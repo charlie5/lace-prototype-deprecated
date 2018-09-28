@@ -19,12 +19,22 @@ is
    type Item is new physics.Object.item with private;
    type View is access all Item'Class;
 
+   function new_Object (Shape : in physics.Shape.view) return Object.view;
 
-   function  new_Object (Shape       : in physics.Shape.view;
-                         Mass        : in Real;
-                         Friction    : in Real;
-                         Restitution : in Real;
-                         at_Site     : in Vector_3) return View;
+   overriding
+   procedure define (Self : access Item;   Mass        : in Real;
+                                           Friction    : in Real;
+                                           Restitution : in Real;
+                                           at_Site     : in Vector_3);
+
+
+
+   -- old
+--     function  new_Object (Shape       : in physics.Shape.view;
+--                           Mass        : in Real;
+--                           Friction    : in Real;
+--                           Restitution : in Real;
+--                           at_Site     : in Vector_3) return Object.view;
 
 
    procedure free (the_Object : in out physics.Object.view);
@@ -39,6 +49,10 @@ is
    overriding
    procedure Model_is     (Self : in out Item;   Now : in physics.Model.view);
 
+   overriding
+   procedure update_Dynamics (Self : in out Item);
+   overriding
+   function     get_Dynamics (Self : in     Item) return physics.Object.Dynamics;
 
 
 private
@@ -49,6 +63,8 @@ private
          Shape     :        physics.Shape.view;
          Model     :        physics.Model.view;
          user_Data : access lace.Any.limited_Item'Class;
+
+         Dynamics  : physics.Object.safe_Dynamics;
       end record;
 
 

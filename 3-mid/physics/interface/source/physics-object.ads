@@ -29,6 +29,10 @@ is
    ----------
    --- Forge
    --
+   procedure define (Self : access Item;   Mass        : in Real;
+                                           Friction    : in Real;
+                                           Restitution : in Real;
+                                           at_Site     : in Vector_3) is abstract;
 
    procedure destruct (Self : in out Item)   is abstract;
    procedure free     (Self : in out View);
@@ -53,6 +57,24 @@ is
 
    --- Dynamics
    --
+
+   type Dynamics is
+      record
+         Site : Vector_3;
+      end record;
+
+   protected
+   type safe_Dynamics
+   is
+      procedure set (To : in Dynamics);
+      function  get   return Dynamics;
+   private
+      Value : Dynamics := (Site => (0.0, 0.0, 0.0));
+   end safe_Dynamics;
+
+   procedure update_Dynamics (Self : in out Item)                          is abstract;
+   function     get_Dynamics (Self : in     Item) return Object.Dynamics   is abstract;
+
 
    procedure activate       (Self : in out Item;   force_Activation : in Boolean := False)   is abstract;
 

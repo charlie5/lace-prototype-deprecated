@@ -18,6 +18,14 @@ is
    --
 
    overriding
+   procedure define (Self : in out Item)
+   is
+   begin
+      raise Program_Error with "Shape not supported";
+   end;
+
+
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin
@@ -45,29 +53,56 @@ is
    function  new_circle_Shape (Radius : in Real) return physics.Shape.view
    is
       Self     : constant access  Circle        := new Circle;
-      c_Radius : aliased constant c_math_c.Real := +Radius;
+--        c_Radius : aliased constant c_math_c.Real := +Radius;
    begin
-      Self.C := b2d_new_Circle (c_Radius);
+      --        Self.C := b2d_new_Circle (c_Radius);
+      Self.Radius := Radius;
       return Self;
    end new_circle_Shape;
+
+
+   overriding
+   procedure define (Self : in out Circle)
+   is
+      c_Radius : aliased constant c_math_c.Real := +Self.Radius;
+   begin
+      Self.C := b2d_new_Circle (c_Radius);
+   end define;
+
+
 
 
 
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
-      Self    : constant access Polygon := new Polygon;
-      c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
+      Self    : constant access Polygon := new Polygon (vertex_Count => Vertices'Length);
+--        c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
+   begin
+         Self.Vertices := Vertices;
+--        for i in c_Verts'Range
+--        loop
+--           c_Verts (i) := +Vertices (i);
+--        end loop;
+--
+--        Self.C := b2d_new_Polygon (c_Verts (1)'Unchecked_Access,
+--                                   c_Verts'Length);
+      return Self;
+   end new_polygon_Shape;
+
+
+   overriding
+   procedure define (Self : in out Polygon)
+   is
+      c_Verts : array (1 .. Self.vertex_Count) of aliased c_math_c.Vector_2.item;
    begin
       for i in c_Verts'Range
       loop
-         c_Verts (i) := +Vertices (i);
+         c_Verts (i) := +Self.Vertices (i);
       end loop;
 
       Self.C := b2d_new_Polygon (c_Verts (1)'Unchecked_Access,
                                  c_Verts'Length);
-      return Self;
-   end new_polygon_Shape;
-
+   end define;
 
 
 

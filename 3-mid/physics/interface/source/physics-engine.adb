@@ -193,7 +193,13 @@ is
 --                                if the_Object.physics_Model.is_Tangible
 --                                then
 
---                                rebuild_Shape  (the_Object);
+                              --                                rebuild_Shape  (the_Object);
+                              the_Object.Shape.define;
+                              the_Object.define (Mass        => the_Object.Model.Mass,
+                                                 Friction    => the_Object.Model.Friction,
+                                                 Restitution => the_Object.Model.Restitution,
+                                                 at_Site     => the_Object.Model.Site);
+
                               Self.Space.add (the_Object);
 --                                end if;
 
@@ -360,6 +366,7 @@ is
 
          Self.Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
 --           free_Objects;
+
       end evolve;
 
       use ada.Calendar;
@@ -517,6 +524,7 @@ is
    procedure add (Self : access Item;   the_Object   : in Object.view)
    is
    begin
+      put_Line ("physics engine: add Object");
       Self.Commands.add ((kind         => add_Object,
                           Object       => the_Object,
                           add_children => False));
@@ -580,6 +588,7 @@ is
                                                 To        : in math.Vector_3)
    is
    begin
+      put_Line ("physics engine: update_Site");
       Self.Commands.add ((kind   => update_Site,
                           Object => of_Object,
                           site   => To));

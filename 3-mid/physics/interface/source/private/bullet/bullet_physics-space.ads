@@ -1,5 +1,6 @@
 with
-     physics.Space;
+     physics.Space,
+     physics.Model;
 
 private
 with
@@ -74,6 +75,10 @@ private
    --- Factory
    --
 
+   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view;
+
+
+
    overriding
    function  new_sphere_Shape      (Self : access Item;   Radius       : in Real := 0.5)                 return physics.Shape .view;
 
@@ -118,6 +123,9 @@ private
                                                           Restitution  : in Real;
                                                           at_Site      : in Vector_3;
                                                           is_Kinematic : in Boolean)                     return physics.Object.view;
+   overriding
+   function  object_Count (Self : in     Item) return Natural;
+
 
    --  Joints
    --

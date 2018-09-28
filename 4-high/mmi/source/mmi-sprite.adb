@@ -37,6 +37,10 @@ is
       the_Scale : aliased Vector_3;
 
    begin
+--        Self.Shape := Self.World.Space.new_Shape (Self.physics_Model);
+
+
+      -- Old
       if Self.physics_Model = null then
          return;
       end if;
@@ -46,40 +50,40 @@ is
       case Self.physics_Model.shape_Info.Kind
       is
          when physics.Model.Cube =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.        new_box_Shape (Self.physics_Model.shape_Info.half_Extents));
+            Self.Shape := physics_Shape_view (Self.World.Space.        new_box_Shape (Self.physics_Model.shape_Info.half_Extents));
 
          when physics.Model.a_Sphere =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.     new_sphere_Shape (Self.physics_Model.shape_Info.sphere_Radius));
+            Self.Shape := physics_Shape_view (Self.World.Space.     new_sphere_Shape (Self.physics_Model.shape_Info.sphere_Radius));
 
          when physics.Model.multi_Sphere =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.new_multisphere_Shape (Self.physics_Model.shape_Info.Sites.all,
+            Self.Shape := physics_Shape_view (Self.World.Space.new_multisphere_Shape (Self.physics_Model.shape_Info.Sites.all,
                                                                                         Self.physics_Model.shape_Info.Radii.all));
          when physics.Model.Cone =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.       new_cone_Shape (radius => Real (Self.physics_Model.Scale (1) / 2.0),
+            Self.Shape := physics_Shape_view (Self.World.Space.       new_cone_Shape (radius => Real (Self.physics_Model.Scale (1) / 2.0),
                                                                                         height => Real (Self.physics_Model.Scale (2))));
          when physics.Model.a_Capsule =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.    new_capsule_Shape (Self.physics_Model.shape_Info.lower_Radius,
+            Self.Shape := physics_Shape_view (Self.World.Space.    new_capsule_Shape (Self.physics_Model.shape_Info.lower_Radius,
                                                                                         Self.physics_Model.shape_Info.Height));
          when physics.Model.Cylinder =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.   new_cylinder_Shape (Self.physics_Model.shape_Info.half_Extents));
+            Self.Shape := physics_Shape_view (Self.World.Space.   new_cylinder_Shape (Self.physics_Model.shape_Info.half_Extents));
 
          when physics.Model.Hull =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.new_convex_hull_Shape (Self.physics_Model.shape_Info.Points.all));
+            Self.Shape := physics_Shape_view (Self.World.Space.new_convex_hull_Shape (Self.physics_Model.shape_Info.Points.all));
 
          when physics.Model.Mesh =>
-            Self.Shape := physics_Shape_view (Self.World.Physics       .new_mesh_Shape (Self.physics_Model.shape_Info.Model));
+            Self.Shape := physics_Shape_view (Self.World.Space       .new_mesh_Shape (Self.physics_Model.shape_Info.Model));
 
          when physics.Model.Plane =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
+            Self.Shape := physics_Shape_view (Self.World.Space.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
                                                                                         Self.physics_Model.Shape_Info.plane_Offset));
          when physics.Model.Heightfield =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.new_heightfield_Shape (Self.physics_Model.shape_Info.Heights.all,
+            Self.Shape := physics_Shape_view (Self.World.Space.new_heightfield_Shape (Self.physics_Model.shape_Info.Heights.all,
                                                                                         Self.physics_Model.Scale));
          when physics.Model.Circle =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.     new_circle_Shape (Self.physics_Model.shape_Info.circle_Radius));
+            Self.Shape := physics_Shape_view (Self.World.Space.     new_circle_Shape (Self.physics_Model.shape_Info.circle_Radius));
 
          when physics.Model.Polygon =>
-            Self.Shape := physics_Shape_view (Self.World.Physics.    new_polygon_Shape (physics.space.polygon_Vertices (Self.physics_Model.shape_Info.Vertices (1 .. Self.physics_Model.shape_Info.vertex_Count))));
+            Self.Shape := physics_Shape_view (Self.World.Space.    new_polygon_Shape (physics.space.polygon_Vertices (Self.physics_Model.shape_Info.Vertices (1 .. Self.physics_Model.shape_Info.vertex_Count))));
       end case;
 
    end rebuild_Shape;
@@ -88,7 +92,7 @@ is
 
 
 
-   procedure rebuild_Solid (Self : in out Item;   Site : in Vector_3)
+   procedure rebuild_Solid (Self : in out Item)
    is
       use Physics.Object;
    begin
@@ -97,11 +101,11 @@ is
          raise Program_Error;
       end if;
 
-      Self.Solid := physics_Object_view (Self.World.Physics.new_Object (physics.Shape.view (Self.Shape),
+      Self.Solid := physics_Object_view (Self.World.Space.new_Object (physics.Shape.view (Self.Shape),
                                                                         Self.physics_Model.Mass,
                                                                         Self.physics_Model.Friction,
                                                                         Self.physics_Model.Restitution,
-                                                                        Site,
+                                                                        Self.physics_Model.Site,
                                                                         Self.is_Kinematic));
    end rebuild_Solid;
 
@@ -113,8 +117,8 @@ is
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
-                                           is_Kinematic   : in     Boolean       := False;
-                                           Site           : in     math.Vector_3 := Math.Origin_3d)
+                                           is_Kinematic   : in     Boolean       := False)
+
    is
       use type physics.Model.view;
    begin
@@ -127,13 +131,14 @@ is
       Self.owns_Physics   := owns_Physics;
 
       Self.is_Kinematic   := is_Kinematic;
+      Self.Transform.Site_is (physics_Model.Site);
 
       --  Physics
       --
       if Self.physics_Model /= null
       then
---           Self.rebuild_Shape;
---           Self.rebuild_Solid (Site);
+         Self.rebuild_Shape;
+         Self.rebuild_Solid;
          null;
       end if;
    end define;
@@ -234,14 +239,13 @@ is
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean       := False;
-                           Site           : in     math.Vector_3 := math.Origin_3d) return Item
+                           is_Kinematic   : in     Boolean       := False) return Item
       is
       begin
          return Self : Item := (lace.Subject_and_deferred_Observer.forge.to_Subject_and_Observer (Name)
                                 with others => <>)
          do
-            Self.define (World, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic, Site);
+            Self.define (World, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic);
          end return;
       end to_Sprite;
 
@@ -253,8 +257,7 @@ is
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
                            owns_Physics   : in     Boolean       := True;
-                           is_Kinematic   : in     Boolean       := False;
-                           Site           : in     math.Vector_3 := math.Origin_3d) return View
+                           is_Kinematic   : in     Boolean       := False) return View
       is
          Self : constant View := new Item' (to_Sprite (Name,
                                                        World,
@@ -262,8 +265,7 @@ is
                                                        physics_Model,
                                                        owns_Graphics,
                                                        owns_Physics,
-                                                       is_Kinematic,
-                                                       Site));
+                                                       is_Kinematic));
       begin
          return Self;
       end new_Sprite;
@@ -952,7 +954,7 @@ is
    is
       the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
    begin
-      the_Joint.define (Self.World.Physics,
+      the_Joint.define (Self.World.Space,
                         Self,       the_Child,
                         pivot_Axis,
                         Anchor,     child_Anchor,
@@ -977,7 +979,7 @@ is
    is
       the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
    begin
-      the_Joint.define     (Self.World.Physics,
+      the_Joint.define     (Self.World.Space,
                             Self,        the_Child,
                             pivot_Axis,  pivot_Anchor);
 
@@ -998,7 +1000,7 @@ is
    is
       the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
    begin
-      the_Joint.define     (Self.World.Physics,
+      the_Joint.define     (Self.World.Space,
                             Self, the_Child,
                             pivot_Axis);
 
@@ -1020,7 +1022,7 @@ is
    is
       the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
    begin
-      the_Joint.define (Self.World.Physics,
+      the_Joint.define (Self.World.Space,
                         Self,             the_Child,
                         Frame_in_parent,  Frame_in_child,
                         Limits.Low,       Limits.High,
@@ -1070,7 +1072,7 @@ is
    is
       the_Joint : constant mmi.any_Joint.view := new mmi.any_Joint.item;
    begin
-      the_Joint.define     (Self.World.Physics,
+      the_Joint.define     (Self.World.Space,
                             Self,         the_Child,
                             pivot_Anchor, pivot_Axis);
 
@@ -1093,7 +1095,7 @@ is
    is
       the_Joint : constant mmi.any_Joint.view := new mmi.any_Joint.item;
    begin
-      the_Joint.define (Self.World.Physics,
+      the_Joint.define (Self.World.Space,
                         Self,             the_Child,
                         Frame_in_parent,  Frame_in_child);
 
@@ -1153,6 +1155,14 @@ is
       begin
          the_Value := Now;
       end Value_is;
+
+      procedure Site_is  (Now : in math.Vector_3)
+      is
+      begin
+         the_Value (4, 1) := Now (1);
+         the_Value (4, 2) := Now (2);
+         the_Value (4, 3) := Now (3);
+      end;
    end safe_Matrix_4x4;
 
 

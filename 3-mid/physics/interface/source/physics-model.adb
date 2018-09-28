@@ -17,6 +17,7 @@ is
                                   Mass        : in math.Real            := 0.0;
                                   Friction    : in math.Real            := 0.1;
                                   Restitution : in math.Real            := 0.1;
+                                  Site        : in Vector_3             := (0.0, 0.0, 0.0);
                                   is_Tangible : in Boolean              := True) return physics.Model.view
       is
       begin
@@ -27,6 +28,7 @@ is
                            Mass        => Mass,
                            Friction    => Friction,
                            Restitution => Restitution,
+                           Site        => Site,
                            is_Tangible => is_Tangible);
       end new_physics_Model;
    end Forge;

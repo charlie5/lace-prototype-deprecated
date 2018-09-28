@@ -51,6 +51,17 @@ is
 
 
 
+   procedure define (Self : access Item;   Mass        : in Real;
+                                           Friction    : in Real;
+                                           Restitution : in Real;
+                                           at_Site     : in Vector_3)
+   is
+   begin
+      raise Program_Error with "TODO: oanrtcenkt";
+   end;
+
+
+
    overriding
    procedure destruct (Self : in out Item)
    is
@@ -124,6 +135,24 @@ is
    begin
       put_Line ("Scale_is not implemented for bullet_Physics.Object");
    end Scale_is;
+
+
+
+   procedure update_Dynamics (Self : in out Item)
+   is
+   begin
+      raise Program_Error with "TODO: slakjhaslk";
+   end update_Dynamics;
+
+
+   function get_Dynamics (Self : in     Item) return physics.Object.Dynamics
+   is
+      Dummy : physics.Object.Dynamics;
+   begin
+      raise Program_Error with "TODO: slasdfskjhaslk";
+      return Dummy;
+   end get_Dynamics;
+
 
 
 

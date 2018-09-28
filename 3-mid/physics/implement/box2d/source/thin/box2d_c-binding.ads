@@ -132,6 +132,8 @@ Torque : in c_math_c.Vector_3.Pointer);
    procedure b2d_Object_apply_Torque_impulse (Self : in box2d_c.Pointers.Object_Pointer;
 Torque : in c_math_c.Vector_3.Pointer);
 
+   procedure b2d_dump (Self : in box2d_c.Pointers.Object_Pointer);
+
    function  b2d_new_hinge_Joint_with_local_anchors (in_Space : in box2d_c.Pointers.Space_Pointer;
 Object_A : in box2d_c.Pointers.Object_Pointer;
 Object_B : in box2d_c.Pointers.Object_Pointer;
@@ -306,6 +308,7 @@ private
    pragma Import (C, b2d_Object_apply_Force, "Ada_b2d_Object_apply_Force");
    pragma Import (C, b2d_Object_apply_Torque, "Ada_b2d_Object_apply_Torque");
    pragma Import (C, b2d_Object_apply_Torque_impulse, "Ada_b2d_Object_apply_Torque_impulse");
+   pragma Import (C, b2d_dump, "Ada_b2d_dump");
    pragma Import (C, b2d_new_hinge_Joint_with_local_anchors, "Ada_b2d_new_hinge_Joint_with_local_anchors");
    pragma Import (C, b2d_new_hinge_Joint, "Ada_b2d_new_hinge_Joint");
    pragma Import (C, b2d_free_hinge_Joint, "Ada_b2d_free_hinge_Joint");

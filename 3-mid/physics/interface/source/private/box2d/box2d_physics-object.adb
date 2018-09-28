@@ -31,11 +31,36 @@ is
 
 
 
+   function new_Object (Shape       : in physics.Shape.view) return Object.view
+   is
+      Self        : constant View             := new Item;
+--        Self_as_any : constant Any_limited_view := Any_limited_view (Self);
+
+--        c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
+--                                                         c_math_c.Real (at_Site (2)));
+   begin
+--        Self.C := b2d_new_Object (c_Site'unchecked_Access,
+--                                  c_math_c.Real (Mass),
+--                                  c_math_c.Real (Friction),
+--                                  c_math_c.Real (Restitution),
+--                                  box2d_physics.Shape.view (Shape).C);
+
+      Self.Shape := Shape;
+--        b2d_Object_user_Data_is (box2d_c.Pointers.Object_Pointer (Self.C),
+--                                 to_void_ptr (Self_as_any));
+--        Self.Site_is (at_Site);
+
+      return Self;
+   end new_Object;
+
+
+   -- old
+
    function new_Object (Shape       : in physics.Shape.view;
                         Mass        : in Real;
                         Friction    : in Real;
                         Restitution : in Real;
-                        at_Site     : in Vector_3) return View
+                        at_Site     : in Vector_3) return Object.view
    is
       Self        : constant View             := new Item;
       Self_as_any : constant Any_limited_view := Any_limited_view (Self);
@@ -43,6 +68,7 @@ is
       c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
                                                        c_math_c.Real (at_Site (2)));
    begin
+      raise Program_Error with "old";
       Self.C := b2d_new_Object (c_Site'unchecked_Access,
                                 c_math_c.Real (Mass),
                                 c_math_c.Real (Friction),
@@ -57,6 +83,30 @@ is
       return Self;
    end new_Object;
 
+
+   overriding
+   procedure define (Self : access Item;   Mass        : in Real;
+                                           Friction    : in Real;
+                                           Restitution : in Real;
+                                           at_Site     : in Vector_3)
+   is
+      Self_as_any : constant Any_limited_view := Any_limited_view (Self);
+
+      c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
+                                                       c_math_c.Real (at_Site (2)));
+   begin
+      Self.C := b2d_new_Object (c_Site'unchecked_Access,
+                                c_math_c.Real (Mass),
+                                c_math_c.Real (Friction),
+                                c_math_c.Real (Restitution),
+                                box2d_physics.Shape.view (Self.Shape).C);
+
+--        Self.Shape := Shape;
+      b2d_Object_user_Data_is (box2d_c.Pointers.Object_Pointer (Self.C),
+                               to_void_ptr (Self_as_any));
+      --        Self.Site_is (at_Site);
+      Self.update_Dynamics;
+   end define;
 
 
    overriding
@@ -161,6 +211,24 @@ is
    end activate;
 
 
+   overriding
+   procedure update_Dynamics (Self : in out Item)
+   is
+      Dynamics : physics.Object.Dynamics;
+   begin
+      Dynamics.Site := Self.Site;
+      Self.Dynamics.set (Dynamics);
+   end update_Dynamics;
+
+
+   overriding
+   function get_Dynamics (Self : in Item) return physics.Object.Dynamics
+   is
+   begin
+      return Self.Dynamics.get;
+   end get_Dynamics;
+
+
 
    overriding
    function  Mass         (Self : in     Item)     return Real
@@ -176,7 +244,9 @@ is
    function  Site   (Self : in     Item) return Vector_3
    is
       the_Site : constant c_math_c.Vector_3.item := b2d_Object_Site (Self.C);
+--        the_Site : constant Vector_3 := Self.Dynamics.get.Site;
    begin
+--        return the_Site;
       return +the_Site;
    end Site;
 

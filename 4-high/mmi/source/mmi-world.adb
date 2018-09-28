@@ -175,7 +175,7 @@ is
       use openGL;
 
    begin
-      the_graphics_Model := openGL     .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
+      the_graphics_Model := openGL          .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
       the_physics_Model  := Standard.physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := mmi.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
@@ -539,7 +539,8 @@ is
 --                          the_World.physics_Space.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
 
 
---                       when update_Site =>
+                     when update_Site =>
+                        the_World.physics_Engine.update_Site (std_physics.Object.view (the_Command.Sprite.Solid), the_Command.Site);
 --                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
 
 
@@ -831,8 +832,19 @@ is
             while has_Element (Cursor)
             loop
                the_Sprite := Key (Cursor);
-               the_sprite_Transforms.replace_Element (Cursor,   the_Sprite.Solid.Transform);
-
+               declare
+--                    the_Site : Vector_3 := the_Sprite.Solid.Site;
+                  the_Site      : Vector_3   := the_Sprite.Solid.get_Dynamics.Site;
+                  the_Transform : Matrix_4x4 := Identity_4x4;
+               begin
+                  the_Transform (4, 1) := the_Site (1);
+                  the_Transform (4, 2) := the_Site (2);
+                  the_sprite_Transforms.replace_Element (Cursor,   the_Transform);
+--                    the_sprite_Transforms.replace_Element (Cursor,   the_Sprite.Solid.Transform);
+--                 exception
+--                    when Storage_Error    => null;
+--                    when Constraint_Error => null;
+               end;
                next (Cursor);
             end loop;
          end;
@@ -1121,11 +1133,11 @@ is
 
 
 
-   function Physics (Self : in Item) return standard.physics.Space.view
+   function Space (Self : in Item) return standard.physics.Space.view
    is
    begin
       return Self.physics_Space;
-   end Physics;
+   end Space;
 
 
 
@@ -1144,11 +1156,11 @@ is
                                                   To        : in Vector_3)
    is
    begin
-      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
+--      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
 
---        Self.Commands.add ((kind   => update_Site,
---                            sprite => of_Sprite,
---                            site   => To));
+      Self.Commands.add ((kind   => update_Site,
+                          sprite => of_Sprite,
+                          site   => To));
    end update_Site;
 
 

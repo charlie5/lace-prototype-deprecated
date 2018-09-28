@@ -26,6 +26,8 @@ is
    overriding
    procedure Scale_is (Self : in out Item;   Now : math.Vector_3);
 
+   overriding
+   procedure define (Self : in out Item);
 
 
    -----------
@@ -70,8 +72,23 @@ is
 
 private
 
-   type Circle      is new Item with null record;
-   type Polygon     is new Item with null record;
+   type Circle is new Item with
+      record
+         Radius : Real;
+      end record;
+
+   overriding
+   procedure define (Self : in out Circle);
+
+
+   type Polygon (vertex_Count : Positive) is new Item with
+      record
+         Vertices : physics.Space.polygon_Vertices (1 .. vertex_Count);
+      end record;
+
+   overriding
+   procedure define (Self : in out Polygon);
+
 
    type Box         is new Item with null record;
    type Capsule     is new Item with null record;

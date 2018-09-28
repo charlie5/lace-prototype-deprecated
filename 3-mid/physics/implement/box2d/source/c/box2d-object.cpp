@@ -155,6 +155,7 @@ b2d_Object_Site (Object*   Self)
 
       the_Site.x = Pos.x;
       the_Site.y = Pos.y;
+/* 	b2d_dump (Self); */
     }
   else
     {
@@ -162,7 +163,7 @@ b2d_Object_Site (Object*   Self)
       the_Site.y = Self->bodyDef.position (1);
     }
 
-  the_Site.z = 0.0;
+    the_Site.z = 0.0;
 
   return the_Site;
 }
@@ -395,6 +396,14 @@ void
 b2d_Object_apply_Force (Object*   Self,   Vector_3*   Force)
 {
   Self->body->ApplyForceToCenter (b2Vec2 (Force->x, Force->y), 1);
+}
+
+
+
+void
+b2d_dump (Object*   Self)
+{
+  Self->body->Dump();
 }
 
 

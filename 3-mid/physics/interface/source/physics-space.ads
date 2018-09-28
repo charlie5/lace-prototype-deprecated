@@ -1,4 +1,5 @@
 with
+     physics.Model,
      physics.Shape,
      physics.Object,
      physics.Joint.DoF6,
@@ -98,18 +99,25 @@ is
    --- Physical Objects
    --
 
-   function  new_Object (Self : access Item;   of_Shape     : in Shape .view;
-                                               of_Mass      : in Real;
-                                               Friction     : in Real;
-                                               Restitution  : in Real;
-                                               at_Site      : in Vector_3;
-                                               is_Kinematic : in Boolean) return Object.view   is abstract;
+   function  new_Object   (Self : access Item;   of_Shape     : in Shape .view;
+                                                 of_Mass      : in Real;
+                                                 Friction     : in Real;
+                                                 Restitution  : in Real;
+                                                 at_Site      : in Vector_3;
+                                                 is_Kinematic : in Boolean) return Object.view   is abstract;
+
+   function  object_Count (Self : in     Item) return Natural   is abstract;
+
 
    --- 3D
    --
 
    --  Shapes
    --
+
+   function  new_Shape (Self : access Item;   Model : in physics.Model.view) return Shape.view   is abstract;
+
+
 
    function          new_box_Shape (Self : access Item;   half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return Shape .view   is abstract;
    function       new_sphere_Shape (Self : access Item;   Radius       : in Real     :=  0.5)            return Shape .view   is abstract;
