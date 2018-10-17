@@ -71,7 +71,6 @@ is
    function new_Primitive (Kind    : in facet_Kind;
                            Indices : in openGL.short_Indices) return Primitive.short_indexed.view
    is
-      use openGL.Buffer.short_indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices);
@@ -83,7 +82,6 @@ is
    function new_Primitive (Kind    : in facet_Kind;
                            Indices : in openGL.Indices) return Primitive.short_indexed.view
    is
-      use openGL.Buffer.short_indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices);
@@ -95,7 +93,6 @@ is
    function new_Primitive (Kind    : in facet_Kind;
                            Indices : in openGL.long_Indices) return Primitive.short_indexed.view
    is
-      use openGL.Buffer.short_indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices);

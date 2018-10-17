@@ -45,11 +45,9 @@ is
    is
       pragma Unreferenced (Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.lit_colored_textured,
+      use openGL.Geometry.lit_colored_textured,
           openGL.Model.hexagon,
-          openGL.Texture,
-          math.Geometry;
+          openGL.Texture;
 
       shaft_Height  : constant openGL.Real     := Self.Height;
       height_Offset : constant openGL.Vector_3 := (0.0,  shaft_Height / 2.0,  0.0);

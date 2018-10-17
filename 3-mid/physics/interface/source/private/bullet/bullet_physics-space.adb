@@ -12,9 +12,8 @@ with
      Swig,
      lace.Any,
      Interfaces.C,
-     ada.Unchecked_Conversion;
-with Ada.Text_IO; use Ada.Text_IO;
-with Physics.Model;
+     ada.Unchecked_Conversion,
+     physics.Model;
 
 
 
@@ -26,11 +25,7 @@ is
        c_math_c.Conversion,
        Interfaces;
 
-   use type c_math_c.Real;
-
-
    function to_Object_view is new ada.Unchecked_Conversion (swig.void_ptr, physics.Object.view);
-
 
 
    ----------
@@ -61,6 +56,7 @@ is
    --
 
 
+   overriding
    function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view
    is
    begin
@@ -153,7 +149,7 @@ is
          return (Min, Max);
       end height_Extent;
 
-      the_height_Extent : Vector_2 := height_Extent (Heightfield);
+      the_height_Extent : constant Vector_2 := height_Extent (Heightfield);
 
       the_Heightfield : constant physics.Shape .view := bullet_physics.Shape.new_heightfield_Shape (Heightfield'Length (1),
                                                                                                Heightfield'Length (2),

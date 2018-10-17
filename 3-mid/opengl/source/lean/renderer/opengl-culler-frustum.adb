@@ -84,7 +84,7 @@ is
          the_Object := the_Visuals (i);
 
          declare
-            use openGL.Frustum, openGL.Renderer.lean, openGL.Visual;
+            use openGL.Frustum, openGL.Visual;
 
             the_Size      : constant Real := the_Object.Model.Bounds.Ball;
             the_Distance  : constant Real := abs (camera_Site - Site_of (the_Object.all));

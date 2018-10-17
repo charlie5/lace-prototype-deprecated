@@ -8,10 +8,8 @@ with
      mmi.Dolly,
      mmi.Window,
 
-     physics.Forge,
-
      openGL.Renderer.lean,
-     opengl.Font, -- .texture,
+     opengl.Font,
 
      lace.Event,
      lace.       Response,

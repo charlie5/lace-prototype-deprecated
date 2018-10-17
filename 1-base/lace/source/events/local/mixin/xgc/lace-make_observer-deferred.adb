@@ -47,7 +47,6 @@ is
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in String)
    is
-      use event_Vectors;
    begin
       Self.pending_Events.add (the_Event, from_Subject);
 
@@ -139,7 +138,6 @@ is
       end actuate;
 
 
-      use subject_Maps_of_safe_events;
 --        Cursor : subject_Maps_of_safe_events.Cursor := Self.pending_Events.First;
 
       the_subject_Events : subject_events_Pairs (1 .. 1_000);

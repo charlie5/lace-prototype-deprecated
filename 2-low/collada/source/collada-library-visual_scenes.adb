@@ -32,7 +32,6 @@ is
 
          when rotate =>
             declare
-               use math.Vectors;
                the_Rotation : constant Matrix_3x3 := Transpose (to_Rotation (Self.Axis (1),     -- Transpose converts from math Row vectors to collada Col vectors.
                                                                              Self.Axis (2),
                                                                              Self.Axis (3),
@@ -199,7 +198,6 @@ is
 
    function  find_Transform (Self : in     Node;   of_Kind : in transform_Kind) return Positive
    is
-      use type Text;
    begin
       for Each in Self.Transforms'Range
       loop
@@ -216,7 +214,6 @@ is
 
    function  fetch_Transform (Self : in     Node;   of_Kind : in transform_Kind) return Transform
    is
-      use type Text;
    begin
       return Self.Transforms (find_Transform (Self, of_Kind));
    end fetch_Transform;
@@ -248,7 +245,7 @@ is
 
    function Rotate_Z (Self : in Node) return Vector_4
    is
-      use Math, math.Vectors;
+      use Math;
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self,  Rotate, "rotationZ");
@@ -360,7 +357,7 @@ is
 
    function Rotate_Y (Self : in Node) return Vector_4
    is
-      use Math, math.Vectors;
+      use Math;
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self,  Rotate, "rotationY");
@@ -379,7 +376,7 @@ is
 
    function Rotate_X (Self : in Node) return Vector_4
    is
-      use Math, math.Vectors;
+      use Math;
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self,  Rotate, "rotationX");

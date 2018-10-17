@@ -55,8 +55,7 @@ is
 
    function to_Facet (Self : in String) return IO.Face
    is
-      use      Ada.Integer_Text_IO;
-      use type Index_t;
+      use Ada.Integer_Text_IO;
 
       site_Id,
       coord_Id,
@@ -137,9 +136,7 @@ is
 
    function to_Model (model_Path : in String) return IO.Model
    is
-      use      Ada.Strings.Fixed;
-      use type Index_t,
-               long_Index_t;
+      use Ada.Strings.Fixed;
 
       the_File     : File_Type;
 
@@ -242,8 +239,7 @@ is
 
    function Image (Self : in IO.Face) return String
    is
-      use      ada.Strings.unbounded;
-      use type openGL.Index_t;
+      use ada.Strings.unbounded;
 
       the_Vertices : Vertices         renames Vertices_of (Self);
       the_Image    : unbounded_String :=      To_unbounded_String ("f ");
@@ -324,7 +320,6 @@ is
    function to_Model (model_Path : in String) return wavefront.Model
    is
       use Ada.Strings.Fixed;
-      use type Index_t, long_Index_t;
 
       the_File     : File_Type;
 

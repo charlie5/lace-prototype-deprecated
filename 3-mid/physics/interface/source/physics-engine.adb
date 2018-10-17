@@ -1,7 +1,4 @@
 with
-     physics.Forge,
-     physics.Model,
-
      ada.unchecked_Deallocation,
      ada.Containers,
      ada.Calendar,
@@ -108,11 +105,11 @@ is
                         the_Command.Object.Shape.Scale_is (the_Command.Scale);
                         the_Command.Object.Scale_is (the_Command.Scale);
 
-                        Self.Space.update_Bounds (Object.view (the_Command.Object));
+                        Self.Space.update_Bounds (the_Command.Object);
 
 
                      when update_Bounds =>
-                        Self.Space.update_Bounds (Object.view (the_Command.Object));
+                        Self.Space.update_Bounds (the_Command.Object);
 
 
                      when update_Site =>
@@ -243,7 +240,7 @@ is
                               then
 --                                   if the_Object.physics_Model.is_Tangible
 --                                   then
-                                    Self.Space.rid (Object.view (the_Object));
+                                    Self.Space.rid (the_Object);
 --                                   end if;
 
 --                                   if the_Object_Transforms.contains (the_Object) then
@@ -256,7 +253,6 @@ is
 
 
                               declare
-                                 use type math.Index;
                                  Id : Index;
                               begin
                                  Id := find (the_Object);
@@ -370,7 +366,6 @@ is
       end evolve;
 
       use ada.Calendar;
-      use type Space.view;
 
    begin
 --        accept start (space_Kind : in physics.space_Kind)

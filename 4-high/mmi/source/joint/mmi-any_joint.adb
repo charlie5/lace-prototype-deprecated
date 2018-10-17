@@ -1,16 +1,13 @@
 with
      physics.Object,
      float_Math.Algebra.linear.d3,
-     interfaces.C,
-
-     ada.Text_IO;   -- for debug only
+     interfaces.C;
 
 
 package body mmi.any_Joint
 is
    use Math,
-       Interfaces,
-       ada.Text_IO;
+       Interfaces;
 
    package std_Physics renames Standard.Physics;
 
@@ -24,9 +21,6 @@ is
                                            Sprite_A, Sprite_B : access mmi.Sprite.Item'Class;
                                            Frame_A,  Frame_B  : in     Math.Matrix_4x4)
    is
-      use      math.Algebra.linear.d3;
-      use type Real;
-
       the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
       the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
 
@@ -59,7 +53,7 @@ is
                                            pivot_Anchor       : in     math.Vector_3;
                                            pivot_Axis         : in     math.Matrix_3x3)
    is
-      use Math.Algebra.linear.d3, Math.Vectors;
+      use Math.Algebra.linear.d3;
 
       pivot_in_A : constant Math.Vector_3   := Inverse (Sprite_A.Spin) * (pivot_Anchor - Sprite_A.Site);
       pivot_in_B : constant Math.Vector_3   := Inverse (Sprite_B.Spin) * (pivot_Anchor - Sprite_B.Site);
@@ -148,7 +142,6 @@ is
    overriding
    function is_Bound (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Boolean
    is
-      use type C.unsigned_char;
    begin
       if for_Degree in Sway .. Surge then
          return False;
@@ -162,7 +155,7 @@ is
    overriding
    function low_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
    is
-      use type Math.Real, C.C_float;
+      use type Math.Real;
    begin
       case for_Degree
       is
@@ -179,7 +172,7 @@ is
    procedure low_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
                                                  Now        : in Math.Real)
    is
-      use type Math.Real, C.int;
+      use type Math.Real;
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
@@ -188,7 +181,7 @@ is
    overriding
    function high_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
    is
-      use type Math.Real, C.C_float;
+      use type Math.Real;
    begin
       case for_Degree
       is
@@ -205,7 +198,7 @@ is
    procedure high_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
                                                   Now        : in Math.Real)
    is
-      use type Math.Real, C.int;
+      use type Math.Real;
    begin
       Self.Physics.upper_Limit_is (Now, for_Degree);
    end high_Bound_is;

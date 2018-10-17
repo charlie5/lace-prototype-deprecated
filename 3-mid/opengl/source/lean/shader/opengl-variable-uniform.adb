@@ -55,7 +55,6 @@ is
    --
    procedure Value_is (Self : in bool;   Now : in Boolean)
    is
-      use type Interfaces.c.int;
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
       glUniform1i (Self.gl_Variable,
@@ -79,7 +78,6 @@ is
    --
    procedure Value_is (Self : in float;   Now : in openGL.Real)
    is
-      use GL, openGL;
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
       glUniform1fv (Self.gl_Variable,
@@ -93,7 +91,6 @@ is
    --
    procedure Value_is (Self : in vec3;   Now : in openGL.Vector_3)
    is
-      use GL;
       check_is_OK : constant Boolean         := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       the_Vector  : aliased  openGL.Vector_3 := Now;
    begin
@@ -108,7 +105,6 @@ is
    --
    procedure Value_is (Self : in vec4;   Now : in openGL.Vector_4)
    is
-      use GL;
       check_is_OK : constant Boolean         := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       the_Vector  : aliased  openGL.Vector_4 := Now;
    begin

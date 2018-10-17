@@ -1,12 +1,6 @@
-with lumen.Events.Animate;
-
-with interfaces.C;
-
 with ada.Unchecked_Conversion;
 with ada.Text_IO; use Ada.Text_IO;
 
-with interfaces.c;
-with lumen.Window;
 with lumen.Events.Keys;
 with ada.Characters.Latin_1;
 
@@ -17,8 +11,7 @@ package body mmi.Window.lumen
 --
 --
 is
-   use standard.Lumen.Events,
-       Interfaces, Interfaces.C;
+   use standard.Lumen.Events;
 
 
 
@@ -31,11 +24,12 @@ is
 
 
 
+   overriding
    procedure swap_GL (Self : in out Item)
    is
    begin
       std_Lumen.Window.swap (Self.window_Handle);
-   end;
+   end swap_GL;
 
 
 
@@ -64,7 +58,6 @@ is
                                             Width  : in Natural;
                                             Height : in Natural)
    is
-      use type std_lumen.Window.Window_Handle;
 --        Attrs : std_Lumen.Window.Context_Attributes := ((std_Lumen.Window.Attr_Red_Size,    8),
 --                                                        (std_Lumen.Window.Attr_Green_Size,  8),
 --                                                        (std_Lumen.Window.Attr_Blue_Size,   8),
@@ -96,12 +89,13 @@ is
 
 
 
+   overriding
    procedure destroy (Self : in out Item)
    is
    begin
       standard.Lumen.Window.destroy (Self.window_Handle);
       destroy (mmi.Window.item (Self));                     -- Destroy base class.
-   end;
+   end destroy;
 
 
 
@@ -117,17 +111,17 @@ is
          do
             define (Self'unchecked_Access,  Title, Width, Height);
          end return;
-      end;
+      end to_Window;
 
 
       function new_Window (Title  : in String;
                            Width  : in Natural;
                            Height : in Natural) return mmi.Window.lumen.view
       is
-         Self : mmi.Window.lumen.view := new Window.lumen.item' (to_Window (Title, Width, Height));
+         Self : constant mmi.Window.lumen.view := new Window.lumen.item' (to_Window (Title, Width, Height));
       begin
          return Self;
-      end;
+      end new_Window;
    end Forge;
 
 
@@ -243,9 +237,6 @@ is
    procedure Key_Handler (Category : in std_Lumen.Events.Key_Category;
                           Symbol   : in std_Lumen.Events.Key_Symbol;
                           Modifiers : in std_Lumen.Events.Modifier_Set) is
-
-      use type std_Lumen.Events.Key_Symbol;
-
    begin  -- Key_Handler
       case Symbol is
          when Escape | Letter_q =>
@@ -272,9 +263,6 @@ is
    procedure Key_Release_Handler (Category  : in std_Lumen.Events.Key_Category;
                                   Symbol    : in std_Lumen.Events.Key_Symbol;
                                   Modifiers : in std_Lumen.Events.Modifier_Set) is
-
-      use type std_Lumen.Events.Key_Symbol;
-
    begin  -- Key_Handler
       case Symbol is
          when Escape | Letter_q =>
@@ -412,6 +400,7 @@ is
 --     end New_Frame;
 
 
+   overriding
    procedure emit_Events  (Self : in out Item)
    is
       Success : Boolean;
@@ -440,23 +429,25 @@ is
       Self.window_Handle.Mouse_Move  := Drag_Handler          'Unrestricted_Access;
 
       std_Lumen.Window.Swap (Self.window_Handle);
-   end;
+   end emit_Events;
 
 
 
+   overriding
    procedure enable_GL    (Self : in     Item)
    is
    begin
       standard.lumen.Window.make_current (Self.window_Handle);
-   end;
+   end enable_GL;
 
 
 
+   overriding
    procedure disable_GL    (Self : in     Item)
    is
    begin
       standard.lumen.Window.make_non_current (Self.window_Handle);
-   end;
+   end disable_GL;
 
 
 
@@ -498,7 +489,7 @@ is
       end case;
 
       return mmi.keyboard.Key'First;
-   end;
+   end to_mmi_Key;
 
 
 
@@ -513,7 +504,7 @@ is
    is
    begin
       return mmi.Window.view (Forge.new_Window (Name, Width, Height));
-   end;
+   end window_Creator;
 
 
 begin

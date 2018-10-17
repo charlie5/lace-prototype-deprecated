@@ -35,10 +35,8 @@ is
    is
       pragma Unreferenced (Textures, Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.lit_colored_textured,
-          openGL.Texture,
-          math.Geometry;
+      use openGL.Geometry.lit_colored_textured,
+          openGL.Texture;
 
       the_Sites    :         constant hexagon.Sites := vertex_Sites (Self.Radius);
       the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);

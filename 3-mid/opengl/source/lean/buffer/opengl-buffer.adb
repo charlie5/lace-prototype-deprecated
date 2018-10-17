@@ -6,7 +6,6 @@ with
 
 package body openGL.Buffer
 is
-   use GL;
    use type a_Name;
 
 

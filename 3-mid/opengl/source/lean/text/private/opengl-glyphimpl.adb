@@ -12,8 +12,7 @@ is
 
    function Bounds_of (glyth_Slot : in freetype_c.FT_GlyphSlot.item) return Bounds
    is
-      use      freetype_c.Binding;
-      use type Real;
+      use freetype_c.Binding;
 
       bbox       : aliased freetype_c.FT_BBox.item;
       the_Bounds :         Bounds;
@@ -51,8 +50,7 @@ is
          Self.bBox := Bounds_of (glyth_Slot);
 
          declare
-            use      freetype_c.Binding;
-            use type Real;
+            use freetype_c.Binding;
             the_Advance : constant freetype_c.FT_Vector.item := FT_GlyphSlot_Get_Advance (glyth_Slot);
          begin
             Self.advance := (Real (the_Advance.x) / 64.0,

@@ -324,8 +324,6 @@ is
    package Float_Functions is new Ada.Numerics.Generic_Elementary_Functions (Real);
    use Float_Functions;
 
-   use type Real;
-
 
    function to_Radians (from : in Latitude) return Real
    is

@@ -33,8 +33,6 @@ private
    type Sites is array (site_Id) of openGL.Vector_3;
 
 
-   use type openGL.Real;
-
    front_Normal : constant openGL.Vector_3 := ( 0.0,  0.0,  1.0);
    rear_Normal  : constant openGL.Vector_3 := ( 0.0,  0.0, -1.0);
    upper_Normal : constant openGL.Vector_3 := ( 0.0,  1.0,  0.0);

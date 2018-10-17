@@ -5,13 +5,7 @@ with
 
 package body openGL.Model.billboard.colored_textured
 is
-
-   use openGL;
-   use type openGL.Real;
-
-
    type Geometry_view is access all openGL.Geometry.colored_textured.item'Class;
-
 
 
    ---------

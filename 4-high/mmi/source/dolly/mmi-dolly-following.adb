@@ -4,12 +4,9 @@ with
 
 package body mmi.Dolly.following
 is
-   use      Math,
-            math.Algebra.linear,
-            math.Algebra.linear.d3;
-
-   use type math.Real;
-
+   use Math,
+       math.Algebra.linear,
+       math.Algebra.linear.d3;
 
 
    overriding

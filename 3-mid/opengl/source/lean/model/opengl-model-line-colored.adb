@@ -13,7 +13,6 @@ is
                            End_1,
                            End_2 : in math.Vector_3 := Origin_3d) return Model.line.colored.item
    is
-      use openGL.Geometry.colored;
       Self : Model.line.colored.item;
    begin
       Self.Color                   := Color;
@@ -60,8 +59,6 @@ is
       end if;
 
       set_Sites :
-      declare
-         use type math.Real;
       begin
          Self.Vertices (1).Color := (primary => Self.Color,  opacity => openGL.Opaque);
          self.Vertices (2).Color := (primary => self.Color,  opacity => openGL.Opaque);
@@ -83,7 +80,6 @@ is
 
    function  Site    (Self : in     Item;   for_End : in end_Id) return math.Vector_3
    is
-      use openGL.Geometry.colored;
    begin
       return Self.Vertices (for_End).Site;
    end Site;

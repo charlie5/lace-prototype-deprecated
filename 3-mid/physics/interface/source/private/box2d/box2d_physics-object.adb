@@ -194,7 +194,6 @@ is
    overriding
    function  is_Active    (Self : in     Item)     return Boolean
    is
-      use type Swig.bool;
    begin
       return True;
    end is_Active;

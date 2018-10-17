@@ -41,7 +41,6 @@ is
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in String)
    is
-      use event_Vectors;
    begin
       if not Self.pending_Events.contains (from_Subject) then
          Self.pending_Events.insert (from_Subject,

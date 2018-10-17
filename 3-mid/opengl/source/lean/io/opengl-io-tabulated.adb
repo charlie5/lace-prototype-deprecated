@@ -10,12 +10,6 @@ is
    function to_Model (math_Model : access Geometry_3d.a_Model;
                       Scale      : in     Vector_3 := (1.0, 1.0, 1.0)) return IO.Model
    is
-      use float_Math.Geometry.d3.Modeller.Forge;
-
-      use type Math.Index,
-               long_Index_t,
-               Real;
-
       site_Count        : constant long_Index_t  := long_Index_t (math_Model.site_Count);
       coord_Count       : constant long_Index_t  := 0; --get_coord_Count;
       normal_Count      : constant long_Index_t  := 0; --collada_Normals'Length   / 3;
@@ -80,17 +74,10 @@ is
 
 
 
-
-
-
    function to_Model (model_Path : in String;
                       Scale      : in Vector_3 := (1.0, 1.0, 1.0)) return IO.Model
    is
       use float_Math.Geometry.d3.Modeller.Forge;
-
-      use type Math.Index,
-               long_Index_t,
-               Real;
 
       the_math_Model : aliased Geometry_3d.a_Model := mesh_Model_from (the_Model => polar_Model_from ("./gaspra.tab"));
    begin

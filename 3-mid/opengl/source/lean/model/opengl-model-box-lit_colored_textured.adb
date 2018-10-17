@@ -5,11 +5,7 @@ with
 
 package body openGL.Model.box.lit_colored_textured
 is
-   use openGL;
-
-
    type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
-
 
 
    ---------
@@ -38,10 +34,8 @@ is
    is
       pragma Unreferenced (Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.lit_colored_textured,
-          openGL.Texture,
-          math.Geometry;
+      use openGL.Geometry.lit_colored_textured,
+          openGL.Texture;
 
       the_Sites    :         constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased constant Indices   := (1, 2, 3, 4);

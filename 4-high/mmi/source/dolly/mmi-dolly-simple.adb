@@ -5,11 +5,9 @@ with
 package body mmi.Dolly.simple
 is
 
-   use      Math,
-            math.Algebra.linear,
-            math.Algebra.linear.d3;
-   use type math.Real;
-
+   use Math,
+       math.Algebra.linear,
+       math.Algebra.linear.d3;
 
 
    overriding
@@ -41,8 +39,8 @@ is
       rotate_Factor : constant Real := 0.04;
       orbit_Factor  : constant Real := 0.08;
 
-      initial_Site : math.Vector_3   := Self.Cameras.first_Element.Site;
-      initial_Spin : math.Matrix_3x3 := Self.Cameras.first_Element.world_Rotation;
+      initial_Site : constant math.Vector_3   := Self.Cameras.first_Element.Site;
+      initial_Spin : constant math.Matrix_3x3 := Self.Cameras.first_Element.world_Rotation;
 
       new_Site     : math.Vector_3;
       new_Spin     : math.Matrix_3x3;

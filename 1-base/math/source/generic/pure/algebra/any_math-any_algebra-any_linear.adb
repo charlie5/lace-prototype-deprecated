@@ -364,7 +364,6 @@ is
 
    function Unit (Self : in Quaternion) return Quaternion
    is
-      use Vectors;
    begin
       return to_Quaternion (       to_Vector (Self)
                             / abs (to_Vector (Self)));

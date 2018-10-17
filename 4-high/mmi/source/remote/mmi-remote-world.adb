@@ -14,7 +14,6 @@ is
 
    function coarsen (Self : in   math.Vector_3) return coarse_Vector_3
    is
-      use type math.Real;
       Result : coarse_Vector_3;
    begin
       begin
@@ -68,7 +67,6 @@ is
 
    function coarsen (Self : in   math.Quaternion) return coarse_Quaternion
    is
-      use type math.Real;
       Result : coarse_Quaternion;
    begin
       begin

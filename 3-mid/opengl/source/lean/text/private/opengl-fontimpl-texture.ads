@@ -17,9 +17,6 @@ package openGL.FontImpl.Texture
 --  Implements a texture font.
 --
 is
-   use openGL.FontImpl;
-
-
    type Item is new FontImpl.item with private;
    type View is access all Item'Class;
 

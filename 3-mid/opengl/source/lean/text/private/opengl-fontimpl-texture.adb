@@ -119,7 +119,6 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
-      use      GL.lean;
       use type ada.Containers.Count_Type;
    begin
       destruct (FontImpl.item (Self));   -- Destroy base class.
@@ -165,7 +164,7 @@ is
                                           spacing  : in Vector_3;
                                           Mode     : in renderMode) return Vector_3
    is
-      use GL, GL.lean;
+      use GL;
       function to_Integer is new ada.Unchecked_Conversion (fontImpl.RenderMode, Integer);
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -188,10 +187,7 @@ is
 
    function MakeGlyphImpl (Self : access Item;   ftGlyph : in freetype_c.FT_GlyphSlot.item) return access Glyph.Item'Class
    is
-      use type openGL.Real;
-
       tempGlyph : glyph.Container.Glyph_view;
-
    begin
       Self.glyphHeight := Integer (Self.charSize.Height + 0.5);
       Self.glyphWidth  := Integer (Self.charSize.Width  + 0.5);
@@ -253,8 +249,8 @@ is
    procedure  CalculateTextureSize (Self : in out Item)
    is
       use      openGL.Texture,
-               GL,   GL.lean;
-      use type Real, GL.GLsizei;
+               GL;
+      use type GL.GLsizei;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       h           :          Integer;
@@ -298,7 +294,7 @@ is
    function CreateTexture (Self : access Item) return openGL.Texture.texture_Name
    is
       use openGL.Palette,
-          GL, GL.lean;
+          GL; --, GL.lean;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
 
@@ -306,7 +302,7 @@ is
       Self.CalculateTextureSize;
 
       declare
-         use openGL.Texture, GL.Pointers;
+         use GL.Pointers;
 
          the_Image :         openGL.Image (1 .. Index_t (self.textureHeight),
                                            1 .. Index_t (Self.textureWidth)) := (others => (others => openGL.Palette.Black));

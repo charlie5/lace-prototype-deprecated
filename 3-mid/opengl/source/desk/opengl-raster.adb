@@ -1,7 +1,5 @@
 package body openGL.Raster
 is
-   use GL;
-
 
    procedure set_window_Pos (x, y : in Real;
                              z    : in Real := 0.0;
@@ -11,6 +9,5 @@ is
    begin
       raise Program_Error with "unimplemented";
    end set_window_Pos;
-
 
 end openGL.Raster;

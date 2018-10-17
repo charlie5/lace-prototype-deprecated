@@ -105,8 +105,6 @@ is
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
-      use type color_Value;
-
       function get_Color (Index : in Index_t) return lucid_Color
       is (Self (Index).Color);
 

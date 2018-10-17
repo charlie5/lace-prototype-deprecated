@@ -174,11 +174,6 @@ is
 
    procedure render (Self : in out Item'Class)
    is
-      use GL,
-          openGL.Texture;
-
-      use type glSizei,
-               GLuint;
    begin
       Self         .enable_Texture;
       Self.Program .set_Uniforms;
@@ -223,15 +218,15 @@ is
       case face_Kind
       is
          when Triangles =>
-            return Indices (3 * (long_Index_t (for_Facet) - 1) + for_Point);
+            return Indices (3 * (for_Facet - 1) + for_Point);
 
          when triangle_Strip =>
-            return Indices (long_Index_t (for_Facet) - 1 + for_Point);
+            return Indices (for_Facet - 1 + for_Point);
 
          when Triangle_Fan =>
             if for_Point = 1
             then   return 1;
-            else   return Indices (long_Index_t (for_Facet) - 1 + for_Point);
+            else   return Indices (for_Facet - 1 + for_Point);
             end if;
 
          when others =>
@@ -370,9 +365,6 @@ is
                             Indices   : in any_Indices;
                             Sites     : in openGL.Sites) return access Normals
    is
-      use      linear_Algebra;
-      use type Real;
-
       function Facets_of is new any_Facets_of (any_Index_t,
                                                any_Indices);
 

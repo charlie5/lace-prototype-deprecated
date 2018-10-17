@@ -7,7 +7,6 @@ with
 
      physics.Space,
      physics.Engine,
-     physics.Forge,
      physics.Model,
 
      lace.Event,

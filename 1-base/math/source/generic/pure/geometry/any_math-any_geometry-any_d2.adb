@@ -188,7 +188,6 @@ is
 
    function "+" (Left : in bounding_Box;   Right : in Vector_2) return bounding_Box
    is
-      use Vectors;
    begin
       return (Left.Lower + Right,
               Left.Upper + Right);

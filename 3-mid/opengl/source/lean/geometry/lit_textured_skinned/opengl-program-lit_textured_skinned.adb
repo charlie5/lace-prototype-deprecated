@@ -1,16 +1,6 @@
 with
-     openGL.Palette,
      openGL.Texture,
-     openGL.Geometry.lit_textured_skinned,
-     openGL.Tasks,
-     openGL.Conversions,
-
-     GL.lean,
-     GL.Pointers,
-
-     Ada.Strings.fixed,
-     interfaces.c.Strings,
-     system.Storage_Elements;
+     ada.Strings.fixed;
 
 
 package body openGL.Program.lit_textured_skinned

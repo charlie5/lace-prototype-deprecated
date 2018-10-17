@@ -106,7 +106,6 @@ is
 
    procedure apparent_Size_is (Self : in out Item;   Now : in Real)
    is
-      use linear_Algebra_3d;
    begin
       Self.apparent_Size := Now;
    end apparent_Size_is;
@@ -122,7 +121,6 @@ is
 
    procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
-      use linear_Algebra_3d;
    begin
       Self.Transform := Now;
    end Transform_is;
@@ -131,7 +129,6 @@ is
 
    procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3)
    is
-      use linear_Algebra_3d;
    begin
       Self.inverse_modelview_Matrix := Now;
    end inverse_modelview_Matrix_is;
@@ -155,7 +152,6 @@ is
 
    procedure mvp_Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
-      use linear_Algebra_3d;
    begin
       Self.mvp_Transform := Now;
    end mvp_Transform_is;

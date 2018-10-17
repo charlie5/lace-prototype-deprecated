@@ -9,9 +9,6 @@ with
      openGL.Renderer.lean.forge,
 
      lace.Any,
-     lace.Observer,
-     lace.remote.Response,
-     lace.Subject,
      lace.event.Utility.local,
 
      ada.Unchecked_Conversion,
@@ -21,13 +18,9 @@ with
 
 package body mmi.Applet
 is
-   use      Math,
-            lace.event.Utility,
-            ada.Text_IO;
-
-   use type math.Real,
-            math.Index;
-
+   use Math,
+       lace.Event.utility,
+       ada.Text_IO;
 
 
    procedure my_context_Setter
@@ -78,7 +71,6 @@ is
 
    procedure define (Self : in View;   use_Window : in mmi.Window.view)
    is
-      Success : Boolean;
    begin
       Self.Window := use_Window;
 
@@ -259,7 +251,6 @@ is
    procedure add_new_World (Self : in out Item;   Name       : in String;
                             space_Kind : in physics.space_Kind)
    is
-      use lace.event.Utility;
       use type ada.Containers.Count_Type;
 
       the_world_Info : constant world_Info_view  := new world_Info;
@@ -437,7 +428,7 @@ is
 
          next (world_Cursor);
       end loop;
-   end;
+   end evolve_all_Worlds;
 
 
 
@@ -780,8 +771,7 @@ is
    overriding
    procedure respond (Self : in out mouse_click_raycast_Response;   to_Event : in lace.Event.item'Class)
    is
-      use      mmi.World;
-      use type mmi.sprite_Id;
+      use mmi.World;
 
       the_Event   :          raycast_collision_Event           := raycast_collision_Event (to_Event);
       the_Context : constant button_press_raycast_Context_view := button_press_raycast_Context_view (the_Event.Context);
@@ -822,10 +812,8 @@ is
    overriding
    procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use      world_Vectors,
-               mmi.Sprite, mmi.Mouse, mmi.Dolly;
-
-      use type Real;
+      use world_Vectors,
+          mmi.Mouse;
 
       the_Event       : mmi.mouse.button_press_Event renames mmi.mouse.button_press_Event (to_Event);
       Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
@@ -837,8 +825,7 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            use       mmi.World;
-            use type lace.remote.Response.view;
+            use mmi.World;
 
             the_Camera        : constant        mmi.Camera.view              := the_world_Info.Cameras.first_Element;
 
@@ -871,7 +858,7 @@ is
    procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.Item'Class)
    is
       use world_Vectors,
-          mmi.Sprite, mmi.Mouse, mmi.Dolly;
+          mmi.Mouse;
 
       the_Event      : mmi.mouse.button_release_Event renames mmi.mouse.button_release_Event (to_Event);
       Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
@@ -913,7 +900,7 @@ is
    procedure respond (Self : in out mouse_motion_Response;   to_Event : in lace.Event.Item'Class)
    is
       use world_Vectors,
-          mmi.Mouse, mmi.Dolly;
+          mmi.Mouse;
 
       the_Event      : mmi.mouse.motion_Event renames mmi.mouse.motion_Event (to_Event);
       Cursor         : world_Vectors.Cursor   :=      Self.Applet.Worlds.First;

@@ -1,12 +1,12 @@
 with
      mmi.Events,
      physics.remote.Model,
+     physics.Forge,
 
      openGL.remote_Model,
      openGL.Renderer.lean,
 
      physics.Object,
-     physics.Shape,
 
      float_math.Algebra.linear.d3,
 
@@ -17,9 +17,7 @@ with
      ada.Text_IO,
      ada.Exceptions,
      ada.Unchecked_Deallocation,
-     ada.Containers.Hashed_Sets,
-
-     system.Address_Image;
+     ada.Containers.Hashed_Sets;
 
 
 package body mmi.World
@@ -623,7 +621,6 @@ is
 
 
                               declare
-                                 use type math.Index;
                                  Id : Index;
                               begin
                                  Id := find (the_Sprite);
@@ -824,7 +821,7 @@ is
          --  Update sprite transforms.
          --
          declare
-            use remote.World,  sprite_Maps_of_transforms;
+            use sprite_Maps_of_transforms;
 
             Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
             the_Sprite : mmi.Sprite.view;
@@ -834,7 +831,7 @@ is
                the_Sprite := Key (Cursor);
                declare
 --                    the_Site : Vector_3 := the_Sprite.Solid.Site;
-                  the_Site      : Vector_3   := the_Sprite.Solid.get_Dynamics.Site;
+                  the_Site      : constant Vector_3   := the_Sprite.Solid.get_Dynamics.Site;
                   the_Transform : Matrix_4x4 := Identity_4x4;
                begin
                   the_Transform (4, 1) := the_Site (1);
@@ -1467,9 +1464,7 @@ is
    overriding
    procedure respond (Self : in out new_model_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use remote.World.model_Vectors;
       the_Event : constant remote.World.new_model_Event := remote.World.new_model_Event (to_Event);
-
    begin
       Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
    end respond;
@@ -1508,8 +1503,6 @@ is
    overriding
    procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use remote.World.model_Vectors;
-
       the_Event  : constant mmi.events.my_new_sprite_added_to_world_Event
         := mmi.events.my_new_sprite_added_to_world_Event (to_Event);
 
@@ -1617,11 +1610,8 @@ is
          --  Fetch sprites from the server.
          --
          declare
-            use type mmi.sprite_Id;
-
             the_Sprite         :          mmi.Sprite.view;
             the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
-
          begin
             for Each in the_server_Sprites'Range
             loop
@@ -1641,8 +1631,6 @@ is
    procedure add (Self : access Item;   the_Sprite   : in mmi.Sprite.view;
                                         and_Children : in Boolean        := False)
    is
-      use type math.Index;
-
       procedure add_the_Sprite (the_Sprite : in out Sprite.item'Class)
       is
       begin
@@ -1793,7 +1781,7 @@ is
       for Each in Now'Range
       loop
          declare
-            use math.Vectors,  remote.World;
+            use remote.World;
 
             the_Id             : constant mmi.sprite_Id := Now (Each).Id;
             the_Sprite         :          Sprite.view;
@@ -2072,9 +2060,7 @@ is
    overriding
    function Sprites (Self : in Item) return remote.World.sprite_model_Pairs
    is
-      use type math.Index;
       the_Pairs : remote.World.sprite_model_Pairs (1 .. Self.sprite_Count);
-
    begin
       for Each in the_Pairs'Range
       loop

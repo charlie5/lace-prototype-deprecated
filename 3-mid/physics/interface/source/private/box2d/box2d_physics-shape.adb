@@ -22,7 +22,7 @@ is
    is
    begin
       raise Program_Error with "Shape not supported";
-   end;
+   end define;
 
 
    overriding

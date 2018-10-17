@@ -75,6 +75,7 @@ private
    --- Factory
    --
 
+   overriding
    function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view;
 
 

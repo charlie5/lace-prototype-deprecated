@@ -26,6 +26,7 @@ is
                          at_Site      : in     Vector_3;
                          is_Kinematic : in     Boolean) return View;
 
+   overriding
    procedure define (Self : access Item;   Mass        : in Real;
                                            Friction    : in Real;
                                            Restitution : in Real;
@@ -36,10 +37,14 @@ is
 
    function C           (Self         : in     Item) return access bullet_C.Object;
 
+   overriding
    function  Model        (Self : in     Item)     return physics.Model.view;
+   overriding
    procedure Model_is     (Self : in out Item;   Now : in physics.Model.view);
 
+   overriding
    procedure update_Dynamics (Self : in out Item);
+   overriding
    function     get_Dynamics (Self : in     Item) return physics.Object.Dynamics;
 
 

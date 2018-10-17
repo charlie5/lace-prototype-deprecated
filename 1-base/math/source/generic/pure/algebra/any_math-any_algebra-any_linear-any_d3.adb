@@ -26,7 +26,7 @@ is
 
    function angle_Between_preNorm (U : in Vector_3;   V : in Vector_3) return Real
    is
-      use Functions, Vectors;
+      use Functions;
       Val : Real := U * V;   -- Dot product.
    begin
       if    val < -1.0 then   val := -1.0;   -- Clamp to avoid rounding errors; arcCos will
@@ -384,7 +384,6 @@ is
 
    function "*" (Left : in Transform_3d;   Right : in Vector_3) return Vector_3
    is
-      use Vectors;
    begin
       return (Row (left.Rotation, 1) * Right  +  left.Translation (1),
               Row (left.Rotation, 2) * Right  +  left.Translation (2),
@@ -403,7 +402,6 @@ is
 
    function "*" (Left : in Transform_3d;   Right : in Transform_3d) return Transform_3d
    is
-      use Vectors;
    begin
       return (rotation    => left.Rotation * right.Rotation,
               translation => Left          * right.Translation);
@@ -996,7 +994,6 @@ is
 
    function to_transform_Matrix (Self : in Transform_3d) return Matrix_4x4
    is
-      use Vectors;
    begin
       return   to_rotate_Matrix (Self.Rotation)
              * to_translate_Matrix (Self.Translation);

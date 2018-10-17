@@ -4,10 +4,7 @@ with
 
 package body mmi.Dolly
 is
-
    use Math;
-   use type math.Real;
-
 
 
    procedure free (Self : in out View)

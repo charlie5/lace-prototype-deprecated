@@ -4,9 +4,6 @@ with
 
 package body openGL.Palette
 is
-   use type Real;
-
-
    package random_Colors is new ada.Numerics.Discrete_Random (color_Value);
    use     random_Colors;
 
@@ -37,8 +34,6 @@ is
    function Mixed (Self : in Color;   Other : in Color;
                                       Mix   : in mix_Factor := 0.5) return Color
    is
-      use type color_Value;
-
       function Lerp (Value_1, Value_2 : color_Value) return color_Value
       is
          V1 : constant Real := Real (Value_1);

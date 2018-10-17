@@ -75,9 +75,9 @@ is
    is
       pragma Unreferenced (Textures);
 
-      text_Scale : openGL.Vector_3 := (2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
-                                       2.0 * 4.0 / 95.0,
-                                       1.0/1.0);
+      text_Scale : constant openGL.Vector_3 := (2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
+                                                2.0 * 4.0 / 95.0,
+                                                1.0/1.0);
 --        text_Scale : openGL.Vector_3 := (1.0, 1.0, 1.0);
 
    begin
@@ -112,10 +112,7 @@ is
                         Next          : in Character)
          is
             pragma Unreferenced (Next);
-            use math.Geometry;
-
             the_Quad : GlyphImpl.Texture.Quad_t := Self.Font.Quad (the_Character);
-
          begin
             --- Add indices.
             --
@@ -258,7 +255,7 @@ is
          if Self.Centered
          then
             declare
-               the_Bounds : openGL.Bounds := Self.Font.BBox (Self.Text.all);
+               the_Bounds : constant openGL.Bounds := Self.Font.BBox (Self.Text.all);
             begin
                for Each in the_Vertices'Range
                loop

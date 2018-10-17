@@ -9,10 +9,6 @@ with
 
 package body mmi.Applet.gui_world
 is
-   use      Math;
-   use type math.Real, math.Index;
-
-
 
    procedure define (Self : in mmi.Applet.gui_world.view;   Name       : in String;
                                                             space_Kind : in physics.space_Kind)

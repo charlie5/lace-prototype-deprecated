@@ -59,7 +59,6 @@ is
                            Indices    : in openGL.Indices;
                            line_Width : in Real          := unused_line_Width) return Primitive.indexed.view
    is
-      use openGL.Buffer.indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices, line_Width);
@@ -72,7 +71,6 @@ is
                            Indices    : in openGL.long_Indices;
                            line_Width : in Real               := unused_line_Width) return Primitive.indexed.view
    is
-      use openGL.Buffer.indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices, line_Width);

@@ -103,7 +103,7 @@ is
    function  Tokens    (Self : in Item;   Delimiter : in Character) return Text.items_1k;
    function  Hashed    (Self : in Item) return ada.containers.hash_type;
 
-   overriding 
+   overriding
    function  "=" (Left, Right : in Item) return Boolean;
 
 

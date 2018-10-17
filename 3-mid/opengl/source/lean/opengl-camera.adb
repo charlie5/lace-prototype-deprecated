@@ -44,8 +44,6 @@ is
 
    function to_world_Site (Self : in Item'Class;   window_Site : in math.Vector_3) return math.Vector_3
    is
-      use math.Vectors;
-
       perspective_Transform : constant math.Matrix_4x4 := to_Perspective (fovy   => 60.0,
                                                                           aspect => Self.Aspect, -- 1200.0 / 1200.0,
                                                                           zNear  => Self.near_plane_Distance,
@@ -66,7 +64,6 @@ is
 
    procedure Site_is (Self : in out Item'Class;   Now : in math.Vector_3)
    is
-      use math.Vectors;
    begin
       Self.world_Transform := to_transform_Matrix ((Self.Spin,
                                                     Now));
@@ -86,7 +83,6 @@ is
    procedure Position_is (Self : in out Item'Class;   Site : in math.Vector_3;
                                                       Spin : in math.Matrix_3x3)
    is
-      use math.Vectors;
    begin
       Self.world_Transform := to_transform_Matrix ((Spin,
                                                     Site));
@@ -97,7 +93,6 @@ is
 
    procedure Spin_is (Self : in out Item'Class;   Now : in math.Matrix_3x3)
    is
-      use math.Vectors;
    begin
       set_Rotation (Self.world_Transform, to => Now);
       Self.update_view_Transform;
@@ -189,6 +184,8 @@ is
 
    procedure Viewport_is (Self : in out Item'Class;   width, height : in Integer)
    is
+      use real_Functions;
+
       deg2rad                  : constant := pi / 180.0;
       half_fov_max_rads        : Real;
       Tan_of_half_fov_max_rads : Real;
@@ -336,9 +333,6 @@ is
          exit when Done;
 
          declare
-            use math.Vectors;
-
-
             function get_Visuals return Visual.views
             is
             begin
@@ -400,7 +394,7 @@ is
 
       Proj       : constant Matrix_4x4 := Self.projection_Transform;
       Modl       : constant Matrix_4x4 := Self.view_Transform;
-      Clip       :          Matrix_4x4 := Modl * Proj;
+      Clip       : constant Matrix_4x4 := Modl * Proj;
 
    begin
       -- Extract the RIGHT plane.

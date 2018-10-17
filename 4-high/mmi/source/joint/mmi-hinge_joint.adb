@@ -1,14 +1,12 @@
 with
      physics.Object,
-     interfaces.C,
      ada.Unchecked_Deallocation;
 
 
 package body mmi.hinge_Joint
 is
    use mmi.Joint,
-       Math,
-       Interfaces;
+       Math;
 
 
    package std_Physics renames Standard.Physics;
@@ -20,9 +18,6 @@ is
                                           pivot_Axis         : in     math.Vector_3;
                                           pivot_Anchor       : in     math.Vector_3)
    is
-      use      math.Vectors;
-      use type Real;
-
       pivot_in_A : aliased constant Vector_3 := (pivot_Anchor - Sprite_A.Site);
       pivot_in_B : aliased constant Vector_3 := (pivot_Anchor - Sprite_B.Site);
 
@@ -44,9 +39,6 @@ is
                                            Sprite_A, Sprite_B : access mmi.Sprite.item'class;
                                            pivot_Axis         : in     math.Vector_3)
    is
-      use      math.Vectors;
-      use type Real;
-
       Midpoint : constant math.Vector_3 := (Sprite_A.Site + Sprite_B.Site) / 2.0;
    begin
       define (Self,  in_Space,  Sprite_A, Sprite_B,  pivot_Axis,  pivot_anchor => Midpoint);
@@ -61,8 +53,6 @@ is
                                            high_Limit            : in     math.Real := math.to_Radians ( 180.0);
                                            collide_Conected      : in     Boolean)
    is
-      use type Real;
-
       the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
       the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
 
@@ -96,8 +86,6 @@ is
                                            Sprite_A  : access mmi.Sprite.item'class;
                                            Frame_A   : in     math.Matrix_4x4)
    is
-      use type Real;
-
       type joint_Cast is access all mmi.Joint.Item;
 
       the_Frame_A    : aliased constant Matrix_4x4 := Frame_A;
@@ -124,8 +112,6 @@ is
                                            high_Limit       : in     Real;
                                            collide_Conected : in     Boolean)
    is
-      use type Real;
-
       type joint_Cast is access all mmi.Joint.Item;
 
       sprite_A_Solid,
@@ -274,7 +260,7 @@ is
    overriding
    function  low_Bound    (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom) return math.Real
    is
-      use type mmi.Joint.Degree_of_freedom,  math.Real, C.c_float;
+      use type mmi.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -289,7 +275,7 @@ is
    procedure low_Bound_is (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom;
                                                        Now        : in     math.Real)
    is
-      use type mmi.Joint.Degree_of_freedom, math.Real, C.int;
+      use type mmi.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -304,7 +290,7 @@ is
    overriding
    function  high_Bound    (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom) return math.Real
    is
-      use type mmi.Joint.Degree_of_freedom, math.Real, C.c_float;
+      use type mmi.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -319,7 +305,7 @@ is
    procedure high_Bound_is (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom;
                                                        Now        : in     math.Real)
    is
-      use type mmi.Joint.Degree_of_freedom, math.Real, C.int;
+      use type mmi.Joint.Degree_of_freedom;
 
       Span : math.Real := abs (Now) * 2.0;
    begin
@@ -350,7 +336,6 @@ is
    overriding
    function is_Bound (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
    is
-      use type interfaces.c.unsigned_char;
    begin
       return self.Physics.is_Limited (for_Degree);
    end is_Bound;

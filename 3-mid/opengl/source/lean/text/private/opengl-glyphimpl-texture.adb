@@ -45,8 +45,7 @@ is
       use      freetype_c,
                freetype_c.Binding,
                GL;
-      use type Real,
-               interfaces.c.unsigned,
+      use type interfaces.c.unsigned,
                GLint;
 
       check_is_OK : constant Boolean                := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -59,7 +58,6 @@ is
       Self.glTextureID := texture_id;
       Self.err         := error_Kind'Val (FT_Render_Glyph (glyth_Slot,
                                                            FT_RENDER_MODE_NORMAL));
-
       if Self.err /= no_Error
       then
          raise openGL.Error with "FT_Render_Glyph failed with error code: " & error_Kind'Image (Self.err);
@@ -126,8 +124,6 @@ is
 
    function Quad (Self : in Item;   Pen : in Vector_3) return Quad_t
    is
-      use type openGL.Real;
-
       dx       :         constant Real   := Real'Floor (Pen (1) + Self.corner (1));
       dy       :         constant Real   := Real'Floor (Pen (2) + Self.corner (2));
 
@@ -171,10 +167,6 @@ is
    is
       pragma Unreferenced (renderMode);
 
-      use      GL;
-      use type openGL.Texture.texture_Name,
-               openGL.Real;
-
       dx : constant Real := Real'Floor (Pen (1) + Self.corner (1));
       dy : constant Real := Real'Floor (Pen (2) + Self.corner (2));
 
@@ -217,7 +209,6 @@ is
       begin
          null;
       end;
-
 
       return Self.advance;
    end renderImpl;

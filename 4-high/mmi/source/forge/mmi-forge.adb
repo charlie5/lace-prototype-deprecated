@@ -209,7 +209,7 @@ is
                             is_Kinematic : in Boolean       := False) return mmi.Sprite.view
    is
       use openGL.Model.box,
-          openGL, openGL.Palette,
+          openGL,
           Math;
 
       the_box_Model         : constant openGL.Model.box.colored.view
@@ -244,7 +244,6 @@ is
                             Texture  : in openGL.asset_Name) return mmi.Sprite.view
    is
       use openGL.Model.box,
-          openGL, openGL.Palette,
           Math;
 
       the_box_Model         : constant openGL.Model.box.textured.view
@@ -279,9 +278,7 @@ is
                                   Size     : in math.Vector_3     := (1.0, 1.0, 1.0);
                                   Texture  : in openGL.asset_Name := openGL.null_Asset) return mmi.Sprite.view
    is
-      use openGL.Model.box,
-          openGL, openGL.Palette,
-          Math;
+      use Math;
 
       the_billboard_Model         : constant openGL.Model.billboard.textured.view
         := openGL.Model.billboard.textured.forge.new_Billboard (scale   => Size,
@@ -313,9 +310,7 @@ is
                                   Size     : in math.Vector_3      := (1.0, 1.0, 1.0);
                                   Texture  : in openGL.asset_Name  := openGL.null_Asset) return mmi.Sprite.view
    is
-      use openGL.Model.box,
-          openGL, openGL.Palette,
-          Math;
+      use Math;
 
       the_billboard_Model         : constant openGL.Model.billboard.colored_textured.view
         := openGL.Model.billboard.colored_textured.new_Billboard (scale   => Size,
@@ -349,9 +344,7 @@ is
                               Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                               line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return mmi.Sprite.view
    is
-      use openGL.Model.box,
-          openGL, openGL.Palette,
-          Math;
+      use Math;
 
       the_graphics_Model : constant openGL.Model.arrow.colored.view
         := openGL.Model.arrow.colored.new_Arrow (color      => Color.primary,
@@ -382,9 +375,7 @@ is
                               Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                               line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return mmi.Sprite.view
    is
-      use openGL.Model.box,
-          openGL, openGL.Palette,
-          Math;
+      use Math;
 
       the_graphics_Model : constant openGL.Model.line.colored.view
         := openGL.Model.line.colored. new_line_Model (color      => Color.primary);
@@ -414,10 +405,7 @@ is
                                       Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                                       line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return mmi.Sprite.view
    is
-      use openGL.Model.box,
-          openGL,
-          openGL.Palette,
-          Math;
+      use Math;
 
       the_graphics_Model : constant openGL.Model.segment_line.view
         := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),

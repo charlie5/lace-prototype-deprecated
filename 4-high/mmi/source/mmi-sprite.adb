@@ -12,11 +12,8 @@ with
 
 package body mmi.Sprite
 is
-   use      ada.Tags,
-            float_math.Algebra.linear.d3;
-
-   use type math.Index,
-            math.Real;
+   use ada.Tags,
+       float_math.Algebra.linear.d3;
 
 
    procedure log (Message : in String)
@@ -544,8 +541,6 @@ is
       --  do children
       --
       declare
-         use math.Vectors;
-
          the_Offset   : constant math.Vector_3 := to_Site - Self.Site;
          child_Sprite :          Sprite.view;
       begin
@@ -623,8 +618,6 @@ is
 
    procedure rotate (Self : in out Item;   to_Spin : in math.Matrix_3x3)
    is
-      use math.Vectors;
-
       the_spin_Delta : constant math.Matrix_3x3 := to_Spin * Inverse (Self.Spin);   -- The rotation matrix describing the amount by which Self has rotated.
 
       procedure spin_Children (the_Sprite : in Sprite.item'class)
@@ -769,7 +762,6 @@ is
 
    procedure desired_Site_is (Self : in out Item;   Now : in math.Vector_3)
    is
-      use math.Vectors;
    begin
       Self.desired_Site         := Now;
       Self.interpolation_Vector := (Self.desired_Site - Self.Site) / 15.0;
@@ -795,7 +787,7 @@ is
       end if;
 
       declare
-         current_Distance : math.Vector_3 := (Self.desired_Site - Self.Site) / 15.0;
+         current_Distance : constant math.Vector_3 := (Self.desired_Site - Self.Site) / 15.0;
       begin
          if         abs (current_Distance (1)) < 0.005   -- Prevent drift due to very small interpolation vectors.
            and then abs (current_Distance (2)) < 0.005
@@ -1162,7 +1154,7 @@ is
          the_Value (4, 1) := Now (1);
          the_Value (4, 2) := Now (2);
          the_Value (4, 3) := Now (3);
-      end;
+      end Site_is;
    end safe_Matrix_4x4;
 
 

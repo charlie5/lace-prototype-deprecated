@@ -5,9 +5,6 @@ with
 
      box2d_physics.Shape,
      box2d_physics.Joint,
-     box2d_physics.Object,
-
-     physics.Model,
 
      c_math_c.Vector_3,
      c_math_c.Conversion,
@@ -16,8 +13,7 @@ with
      lace.Any,
      Interfaces.C,
 
-     ada.Unchecked_Conversion,
-     ada.Text_IO;
+     ada.Unchecked_Conversion;
 
 
 package body box2d_Physics.Space
@@ -25,8 +21,7 @@ is
    use      box2d_c.Binding,
             box2d_c.Pointers,
             c_math_c.Conversion,
-            Interfaces,
-            ada.Text_IO;
+            Interfaces;
 
    use type c_math_c.Real;
 
@@ -66,6 +61,7 @@ is
    --- Factory
    --
 
+   overriding
    function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view
    is
 --        the_Shape :
@@ -226,7 +222,7 @@ is
                                                          ada.Containers.Hash_Type);
    begin
       return convert (the_C_Object);
-   end;
+   end Hash;
 
 
    overriding
@@ -238,8 +234,8 @@ is
                                                is_Kinematic : in Boolean) return physics.Object.view
    is
       pragma Unreferenced (Self, is_Kinematic);
-      the_box2d_Object : box2d_Physics.Object.view := box2d_physics.Object.new_Object (of_Shape);
-      the_Object       : physics.Object.view       := physics.Object.view (the_box2d_Object);
+      the_box2d_Object : constant box2d_Physics.Object.view := box2d_physics.Object.new_Object (of_Shape);
+      the_Object       : constant physics.Object.view       := physics.Object.view (the_box2d_Object);
 --                                                                   of_Mass,
 --                                                                   Friction,
 --                                                                   Restitution,

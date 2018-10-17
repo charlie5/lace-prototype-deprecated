@@ -316,7 +316,6 @@ is
 
    procedure enable_Attributes (Self : in Item)
    is
-      use type GL.GLuint;
    begin
       for Each in 1 .. Self.attribute_Count
       loop

@@ -141,7 +141,6 @@ private
 
    type updates_for_Camera_view is access updates_for_Camera;
 
-   use type openGL.Visual.views;
    function Hash                   is new ada.unchecked_Conversion   (Camera_view, ada.Containers.Hash_Type);
    package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,  updates_for_Camera_view,
                                                                       Hash,         "=");

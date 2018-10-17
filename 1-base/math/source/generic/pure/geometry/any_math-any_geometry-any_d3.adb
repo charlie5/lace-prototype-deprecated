@@ -101,7 +101,6 @@ is
 
    function "+" (Left : in bounding_Box;   Right : in Vector_3) return bounding_Box
    is
-      use Vectors;
    begin
       return (Left.Lower + Right,
               Left.Upper + Right);

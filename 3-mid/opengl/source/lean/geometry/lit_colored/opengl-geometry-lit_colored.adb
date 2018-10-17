@@ -143,8 +143,6 @@ is
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
-      use type color_Value;
-
       function get_Color (Index : in Index_t) return lucid_Color
       is (Self (Index).Color);
 
@@ -167,8 +165,7 @@ is
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use      openGL_Buffer_of_geometry_Vertices;
-      use type Index_t,
-               openGL.Buffer.view;
+      use type openGL.Buffer.view;
    begin
       openGL.Buffer.free (Self.Vertices);
 

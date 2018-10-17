@@ -22,10 +22,6 @@ is
       use std_Collada.Library,
           std_Collada.Library.geometries;
 
-      use type Math.Index,
-               long_Index_t,
-               Real;
-
       which_Geometry    : constant := 1;     -- Select which gemometry.
 
       the_Document      : constant        std_Collada.Document.item := std_Collada.Document.to_Document (model_Path);

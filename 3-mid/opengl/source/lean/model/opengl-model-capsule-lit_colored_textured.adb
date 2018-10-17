@@ -44,7 +44,9 @@ is
       pragma Unreferenced (Textures, Fonts);
 
       use openGL.Geometry,
-          openGL.Geometry.lit_colored_textured;
+          openGL.Geometry.lit_colored_textured,
+          real_Functions;
+
 
       Length        : constant Real    := Self.Height;
       Radius        : constant Real    := Self.Radius;

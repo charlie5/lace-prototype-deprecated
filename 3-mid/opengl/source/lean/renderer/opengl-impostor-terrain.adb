@@ -50,7 +50,7 @@ is
                                                           camera_Viewport             => the_Camera.Viewport);
 
       declare
-         use      GL,        openGL.Texture;
+         use      GL;
          use type GL.glInt;
 
          update_Required : Boolean          := Self.general_Update_required (the_Camera.Site, Self.current_pixel_Region);

@@ -51,6 +51,7 @@ is
 
 
 
+   overriding
    procedure define (Self : access Item;   Mass        : in Real;
                                            Friction    : in Real;
                                            Restitution : in Real;
@@ -58,7 +59,7 @@ is
    is
    begin
       raise Program_Error with "TODO: oanrtcenkt";
-   end;
+   end define;
 
 
 
@@ -90,19 +91,21 @@ is
    end C;
 
 
+   overriding
    function  Model        (Self : in     Item)     return physics.Model.view
    is
    begin
       raise Program_Error with "TODO 437cob5";
       return null;
-   end;
+   end Model;
 
 
+   overriding
    procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
       raise Program_Error with "TODO 437sdfsdcob5";
-   end;
+   end Model_is;
 
 
 
@@ -138,6 +141,7 @@ is
 
 
 
+   overriding
    procedure update_Dynamics (Self : in out Item)
    is
    begin
@@ -145,6 +149,7 @@ is
    end update_Dynamics;
 
 
+   overriding
    function get_Dynamics (Self : in     Item) return physics.Object.Dynamics
    is
       Dummy : physics.Object.Dynamics;
@@ -159,7 +164,6 @@ is
    overriding
    function  is_Active    (Self : in     Item)     return Boolean
    is
-      use type Swig.bool;
    begin
       return True;
    end is_Active;

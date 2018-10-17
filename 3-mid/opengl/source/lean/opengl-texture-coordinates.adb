@@ -4,7 +4,6 @@ is
    overriding
    function to_Coordinates (Self : in xz_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
-      use type openGL.Real;
       the_Coords : Coordinates_2D (1 .. the_Vertices'Length);
    begin
       for Each in the_Coords'Range
@@ -33,7 +32,6 @@ is
    overriding
    function to_Coordinates (Self : in xy_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
-      use type openGL.Real;
       the_Coords : Coordinates_2D (1 .. the_Vertices'Length);
    begin
       for Each in the_Coords'Range
@@ -62,7 +60,6 @@ is
    overriding
    function to_Coordinates (Self : in zy_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
-      use type openGL.Real;
       the_Coords : Coordinates_2D (1 .. the_Vertices'Length);
    begin
       for Each in the_Coords'Range
@@ -103,13 +100,14 @@ is
    function to_Coordinates (Self : in mercator_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
       pragma Unreferenced (Self);
-      use type openGL.Real, Index_t;
 
       the_Coords : Coordinates_2D (1 .. the_Vertices'Length);
    begin
       for Each in the_Coords'Range
       loop
          declare
+            use real_Functions;
+
             the_Vertex  :          Site renames the_Vertices (Index_t (Each));
 
             x           :          Real renames the_Vertex (1);

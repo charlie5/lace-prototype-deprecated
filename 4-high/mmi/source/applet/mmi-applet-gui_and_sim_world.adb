@@ -2,18 +2,11 @@ with
      mmi.Camera.forge,
      mmi.Events,
 
-     physics.Forge,
-
      lace.event.Utility;
 
 
 package body mmi.Applet.gui_and_sim_world
 is
-
-   use      Math;
-   use type math.Real, math.Index;
-
-
 
    procedure define (Self : access Item;   Name       : in String;
                                            use_Window : in mmi.Window.view)

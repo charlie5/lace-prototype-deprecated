@@ -85,7 +85,6 @@ is
                       Repeat    : in     Positive := 1;
                       Skip_Delimiter : in     Boolean := True)
    is
-      use Ada.Strings.Fixed;
    begin
       for Count in 1 .. Repeat
       loop

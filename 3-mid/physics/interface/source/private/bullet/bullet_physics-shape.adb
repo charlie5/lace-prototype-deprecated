@@ -32,7 +32,7 @@ is
    is
    begin
       raise Program_Error with "Bullet Shape not supported";
-   end;
+   end define;
 
 
 

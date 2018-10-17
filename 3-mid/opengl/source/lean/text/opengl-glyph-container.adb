@@ -109,7 +109,6 @@ is
    function Advance (Self : in Item;   character         : in freetype.charMap.characterCode;
                                        nextCharacterCode : in freetype.charMap.characterCode) return Real
    is
-      use type Real;
       left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (character);
       right : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode);
    begin

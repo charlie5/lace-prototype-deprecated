@@ -4,13 +4,9 @@ with
 
 package body any_math.any_Random
 is
-
    use ada.numerics.Float_random;
-   use type Real, Integer;
-
 
    the_Generator : ada.numerics.Float_random.Generator;
-
 
 
    function random_Boolean return Boolean

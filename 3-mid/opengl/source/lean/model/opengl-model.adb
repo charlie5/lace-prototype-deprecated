@@ -82,7 +82,6 @@ is
 
    procedure set_Bounds (Self : in out Item)
    is
-      use type openGL.Index_t;
    begin
       Self.Bounds := null_Bounds;
 
@@ -116,8 +115,6 @@ is
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Maps_of_font.Map)
    is
-      use type openGL.Index_t;
-
       all_Geometries : constant Geometry.views := Self.to_GL_Geometries (Textures, Fonts);
 
       opaque_Faces   :          Geometry.views (1 .. all_Geometries'Length);

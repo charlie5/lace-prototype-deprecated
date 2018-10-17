@@ -52,8 +52,6 @@ is
 
    function to_world_Site (Self : in Item'Class;   Site : in math.Vector_3) return math.Vector_3
    is
-      use math.Vectors;
-
       the_perspective_Transform : constant math.Matrix_4x4 := to_Perspective (fovy   => 60.0,
                                                                               aspect => Self.Aspect, -- 1200.0 / 1200.0,
                                                                               zNear  => Self.near_plane_Distance,
@@ -76,7 +74,6 @@ is
 
    procedure Site_is (Self : in out Item'Class;   Now : in math.Vector_3)
    is
-      use math.Vectors;
    begin
       Self.Clipper.eye_position := Now;
       Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
@@ -97,7 +94,6 @@ is
    procedure Position_is (Self : in out Item'Class;   Site : in math.Vector_3;
                                                       Spin : in math.Matrix_3x3)
    is
-      use math.Vectors;
    begin
       Self.Clipper.eye_position := Site;
       Self.world_Rotation       := Spin;
@@ -112,7 +108,6 @@ is
 
    procedure world_Rotation_is (Self : in out Item'Class;   Now : in math.Matrix_3x3)
    is
-      use math.Vectors;
    begin
       Self.world_Rotation := Now;
       Self.view_Transform := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
@@ -229,11 +224,8 @@ is
 
    function ModelView_Matrix (Self : in Item'Class) return math.Matrix_4x4
    is
-      use math.Vectors;
-
       R : Matrix_3x3 renames Self.world_Rotation;
       S : Vector_3   renames Self.Site;
-
    begin
       return ((R (1, 1),  R (1, 2),  R (1, 3),  0.0),
               (R (2, 1),  R (2, 2),  R (2, 3),  0.0),
@@ -307,8 +299,6 @@ is
    procedure render (Self : in out Item;   the_World : in     mmi.World.view;
                                            To        : in     openGL.Surface.view)
    is
-      use math.Vectors;
-
       all_Sprites   : mmi.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
 
       the_Visuals   : openGL.Visual.views (1 .. all_Sprites'Length);

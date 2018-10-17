@@ -9,10 +9,6 @@ with
 package body openGL.Model.sphere.lit_colored_textured
 is
 
-   use openGL;
-   use type math.Real;
-
-
    ---------
    --- Forge
    --
@@ -53,8 +49,6 @@ is
           openGL.Palette,
           openGL.Geometry.lit_colored_textured;
 
-      use type Real;
-
       Degrees_180       : constant      := Pi;
       Degrees_360       : constant      := Pi * 2.0;
 
@@ -81,9 +75,8 @@ is
    begin
       set_Sites :
       declare
-         use      linear_Algebra,
-                  linear_Algebra_3d;
-         use type math.Real;
+         use linear_Algebra,
+             linear_Algebra_3d;
 
          north_Pole : constant Site    := (0.0,  0.5,  0.0);
          south_Pole : constant Site    := (0.0, -0.5,  0.0);

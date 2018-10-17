@@ -5,7 +5,7 @@ with
 
 package body openGL
 is
-   use type Real;
+--   use type Real;
 
 
    ------------
@@ -176,7 +176,7 @@ is
 
    function Region (Self : in height_Map;   Rows, Cols : in index_Pair) return height_Map
    is
-      use type Index_t;
+--      use type Index_t;
 
       Width      : constant Index_t := Index_t (Rows (2) - Rows (1));
       Height     : constant Index_t := Index_t (Cols (2) - Cols (1));

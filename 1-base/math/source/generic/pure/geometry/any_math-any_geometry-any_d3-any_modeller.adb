@@ -5,8 +5,7 @@ with
 package body any_math.any_geometry.any_d3.any_Modeller
 is
 
-   use ada.containers;
-   use type Real;
+   use ada.Containers;
 
 
    function Hash (the_Site : in my_Vertex) return ada.Containers.Hash_Type

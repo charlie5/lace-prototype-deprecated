@@ -1,7 +1,6 @@
 with
      physics.Space,
      physics.Joint,
-     physics.Model,
      physics.Object,
 
      lace.Observer,

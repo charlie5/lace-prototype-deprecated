@@ -44,8 +44,6 @@ is
    function vertex_Sites (for_Plane     : in Plane;
                           Width, Height : in math.Real) return Sites
    is
-      use type openGL.Real;
-
       half_Width  : constant openGL.Real            := openGL.Real (Width  / 2.0);
       half_Height : constant openGL.Real            := openGL.Real (Height / 2.0);
 

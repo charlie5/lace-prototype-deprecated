@@ -32,8 +32,6 @@ is
 
    function to_Time (From : in String) return ada.calendar.Time
    is
-      use ada.Calendar.Formatting;
-
       Pad   : String  := From;
       Index : constant Natural := ada.strings.Fixed.Index (Pad, "T");
    begin
@@ -54,7 +52,6 @@ is
    function to_int_Array (From : in String) return int_Array
    is
       use ada.Strings.fixed;
-      use type math.Index;
 
       the_Array : int_Array (1 .. 400_000);
       Count     : math.Index              := 0;
@@ -103,8 +100,6 @@ is
 
    function to_float_Array (From : in String) return float_Array
    is
-      use type math.Index;
-
    begin
       if From = ""
       then
@@ -159,8 +154,6 @@ is
 
    function to_Text_array (From : in String) return Text_array
    is
-      use type math.Index;
-
    begin
       if From = ""
       then
@@ -226,8 +219,6 @@ is
 
    function to_Source (From : in Xml.Element) return collada.Library.Source
    is
-      use collada.Library;
-
       the_xml_Id          : constant access xml.Attribute_t := From.Attribute ("id");
       the_xml_float_Array : constant access xml.Element     := From.Child ("float_array");
       the_xml_text_Array  : constant access xml.Element     := From.Child ("Name_array");
@@ -261,7 +252,7 @@ is
 
    function to_Input (From : in xml.Element) return collada.Library.Input_t
    is
-      use collada.Library, collada.Library.geometries;
+      use collada.Library;
 
       the_xml_Semantic : constant access xml.Attribute_t := From.Attribute ("semantic");
       the_xml_Source   : constant access xml.Attribute_t := From.Attribute ("source");
@@ -804,7 +795,7 @@ is
                                  then
                                     declare
                                        use collada.Math;
-                                       the_Data : Vector_4 := Vector_4 (to_Float_array (the_Child.Data));
+                                       the_Data : constant Vector_4 := Vector_4 (to_Float_array (the_Child.Data));
                                     begin
                                        the_Node.add (Transform' (kind  => Rotate,
                                                                  sid   => to_Text  (the_Child.Attribute ("sid").Value),
@@ -821,8 +812,6 @@ is
                                  elsif the_Child.Name = "matrix"
                                  then
                                     declare
-                                       use collada.Math;
-
                                        the_Data      : constant        Matrix_4x4            := to_Matrix (the_Child.Data);   -- Will be column vectors.
                                        the_child_Sid : constant access xml.Attribute_t'Class := the_Child.Attribute ("sid");
                                        the_sid_Text  :                 Text;

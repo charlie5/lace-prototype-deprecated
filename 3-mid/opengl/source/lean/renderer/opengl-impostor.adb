@@ -255,22 +255,22 @@ is
                                                                           Self.Target.Model.Bounds.Ball,
                                                                           0.0);
 
-      target_Centre_proj       :          Vector_4    := target_Centre     * camera_projection_Transform;
-      target_Lower_Left_proj   :          Vector_4    := target_lower_Left * camera_projection_Transform;
+      target_Centre_proj       : constant Vector_4    := target_Centre     * camera_projection_Transform;
+      target_Lower_Left_proj   : constant Vector_4    := target_lower_Left * camera_projection_Transform;
 
-      target_Centre_norm       :          Vector_3    := (target_Centre_proj (1)     / target_Centre_proj (4),
+      target_Centre_norm       : constant Vector_3    := (target_Centre_proj (1)     / target_Centre_proj (4),
                                                           target_Centre_proj (2)     / target_Centre_proj (4),
                                                           target_Centre_proj (3)     / target_Centre_proj (4));
 
-      target_Lower_Left_norm   :          Vector_3    := (target_Lower_Left_proj (1) / target_Lower_Left_proj (4),
+      target_Lower_Left_norm   : constant Vector_3    := (target_Lower_Left_proj (1) / target_Lower_Left_proj (4),
                                                           target_Lower_Left_proj (2) / target_Lower_Left_proj (4),
                                                           target_Lower_Left_proj (3) / target_Lower_Left_proj (4));
 
-      target_Centre_norm_0to1  :          Vector_3    := (target_Centre_norm (1)     * 0.5 + 0.5,
+      target_Centre_norm_0to1  : constant Vector_3    := (target_Centre_norm (1)     * 0.5 + 0.5,
                                                           target_Centre_norm (2)     * 0.5 + 0.5,
                                                           target_Centre_norm (3)     * 0.5 + 0.5);
 
-      target_Lower_Left_norm_0to1 :       Vector_3    := (target_Lower_Left_norm (1) * 0.5 + 0.5,
+      target_Lower_Left_norm_0to1 : constant Vector_3    := (target_Lower_Left_norm (1) * 0.5 + 0.5,
                                                           target_Lower_Left_norm (2) * 0.5 + 0.5,
                                                           target_Lower_Left_norm (3) * 0.5 + 0.5);
 
@@ -313,10 +313,7 @@ is
                                            texture_Pool : in     openGL.texture.Pool_view)
    is
       pragma Unreferenced (the_Camera, texture_Pool);
-
-      use      openGL.Texture,
-               openGL.Visual;
-      use type gl.glBitfield;
+      use openGL.Visual;
 
 --        Width_size     : constant openGL.texture.Size := to_Size (Natural (Self.current_Width_pixels));
 --        Height_size    : constant openGL.texture.Size := to_Size (Natural (Self.current_Height_pixels));

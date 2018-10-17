@@ -147,11 +147,8 @@ is
    procedure set_Image (Self : in out Object;   To          : in openGL.Image;
                                                 use_Mipmaps : in Boolean     := True)
    is
-      use type Real;
-
       check_is_OK : constant Boolean      :=      openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       the_Image   :          openGL.Image renames To;
-
    begin
       declare
          min_Width   : constant Positive := the_Image'Length (2);
@@ -198,8 +195,6 @@ is
    procedure set_Image (Self : in out Object;   To          : in openGL.lucid_Image;
                                                 use_Mipmaps : in Boolean           := True)
    is
-      use type Real;
-
       check_is_OK : constant Boolean  := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
 
       the_Image   :          openGL.lucid_Image renames To;
@@ -476,7 +471,6 @@ is
 
    function Hash (the_Dimensions : in Texture.Dimensions) return ada.Containers.Hash_Type
    is
-      use type GL.GLsizei;
    begin
       return   Ada.Containers.Hash_Type (  the_Dimensions.Width  * 13
                                          + the_Dimensions.Height * 17);

@@ -34,7 +34,6 @@ is
    function new_Primitive (Kind    : in facet_Kind;
                            Indices : in openGL.long_Indices) return Primitive.long_indexed.view
    is
-      use openGL.Buffer.long_indices;
       Self : constant View := new Item;
    begin
       define (Self.all,  Kind, Indices);

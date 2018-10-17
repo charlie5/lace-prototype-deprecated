@@ -13,7 +13,6 @@ is
                       End_1,
                       End_2      : in math.Vector_3 := Origin_3d) return Item
    is
-      use openGL.Geometry.colored;
       Self : Model.arrow.colored.item;
    begin
       Self.Color      := Color;
@@ -68,8 +67,6 @@ is
 
 
       set_Colors :
-      declare
-         use type math.Real;
       begin
          Self.Vertices (1).Color := (primary => Self.Color,  opacity => openGL.Opaque);
          Self.Vertices (2).Color := (primary => Self.Color,  opacity => openGL.Opaque);
@@ -125,7 +122,6 @@ is
 
    procedure set_side_Bits (Self : in out Item)
    is
-      use math.Geometry;
       use linear_Algebra_3d;
 
       End_1           :          Vector_3    renames Self.Vertices (1).Site;
@@ -153,7 +149,6 @@ is
 
    function Site (Self : in  Item;   for_End : in Integer) return math.Vector_3
    is
-      use openGL.Geometry.colored;
    begin
       return Self.Vertices (openGL.Index_t (for_End)).Site;
    end Site;
@@ -162,7 +157,6 @@ is
    procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
                                             for_End : in Integer)
    is
-      use openGL.Geometry.colored;
    begin
       Self.Vertices (openGL.Index_t (for_End)).Site := Now;
       Self.set_side_Bits;

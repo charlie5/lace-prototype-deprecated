@@ -1,10 +1,7 @@
 with
      mmi.World,
      mmi.Camera,
-     mmi.Window,
-
-     physics.Forge;
-
+     mmi.Window;
 
 package mmi.Applet.gui_world
 --

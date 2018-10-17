@@ -36,8 +36,6 @@ is
                          texture_File : in     asset_Name    := null_Asset;
                          Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return openGL.Visual.Grid
    is
-      use type math.Index, openGL.Real;
-
       the_Pixels  :          openGL.io.height_Map_view
                                       := openGL.io.to_height_Map (heights_File);
 
@@ -71,9 +69,7 @@ is
 
       procedure flip (Self : openGL.io.height_Map_view)
       is
-         use type openGL.Index_t;
          Pad : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
-
       begin
          for Row in Self'Range (1)
          loop
@@ -93,8 +89,6 @@ is
       --  Create each grid elements 'heightmap'.
       --
       declare
-         use openGL;
-
          row_First, row_Last,
          col_First, col_Last  : math.Index;   -- Row and col ranges for each sub-matrix.
       begin
@@ -144,7 +138,6 @@ is
                tile_X_Scale := Width (the_heightmap_Grid (Row, Col).all) / total_Width;
 
                declare
-                  use math.Vectors;
                   the_Region       : constant height_Map_view := the_heightmap_Grid (Row, Col);
 
                   Tiling           : constant openGL.texture_Transform_2d
@@ -161,9 +154,9 @@ is
                                                       color_map     => texture_File,
                                                       tiling        => Tiling);
 
-                  the_height_Extents : openGL.Vector_2    :=      openGL.height_Extent (the_Region.all);
-                  the_Visual         : openGL.Visual.view renames the_visual_Grid      (Row, Col);
-                  the_Site           : vector_3;
+                  the_height_Extents : constant openGL.Vector_2    :=      openGL.height_Extent (the_Region.all);
+                  the_Visual         :          openGL.Visual.view renames the_visual_Grid      (Row, Col);
+                  the_Site           :          vector_3;
                begin
                   the_ground_Model.Scale := (Scale (1),
                                              Scale (2),

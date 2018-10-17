@@ -63,8 +63,7 @@ is
    --- Attributes
    --
 
-   use openGL,  openGL.IO,  openGL.IO.wavefront;
-   use type math.Real;
+   use      openGL.IO;
 
 
    function Hash (Self : in io.Vertex) return ada.containers.Hash_Type
@@ -150,8 +149,7 @@ is
 
    procedure build_GL_Geometries (Self : in out Item)
    is
-      use openGL.Geometry,
-          openGL.Palette;
+      use openGL.Geometry;
 
       model_Name : constant String := to_String (Self.Model);
 
@@ -304,8 +302,6 @@ is
          for Each in the_Model.Faces'Range
          loop
             declare
-               use io_vertex_Maps_of_gl_vertex_id;
-
                the_model_Face  :          io.Face     renames the_Model.Faces (Each);
                the_io_Vertices : constant io.Vertices :=      Vertices_of (the_model_Face);
             begin

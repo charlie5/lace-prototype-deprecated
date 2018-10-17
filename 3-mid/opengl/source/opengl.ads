@@ -72,7 +72,6 @@ is
    subtype Real is math.Real;
 
    package real_Functions renames math.Functions;
-   use     real_Functions;
 
    function almost_Zero (X : Real) return Boolean;
 
@@ -326,7 +325,7 @@ private
    pragma Pack (      Indices);
    pragma Pack ( long_Indices);
 
-   pragma assert (GL.GLfloat'Size = Real'Size);
+   pragma Assert (GL.GLfloat'Size = Real'Size);
 
 
    null_Asset    : constant asset_Name := (others => ' ');

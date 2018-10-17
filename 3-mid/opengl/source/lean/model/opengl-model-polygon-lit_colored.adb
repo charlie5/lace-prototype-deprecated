@@ -5,9 +5,6 @@ with
 
 package body openGL.Model.polygon.lit_colored
 is
-   use      openGL;
-   use type math.Real;
-
 
    function new_Polygon (Vertices : in Vector_2_array;
                          Color    : in lucid_Color) return View
@@ -52,8 +49,6 @@ is
 
    begin
       set_Vertices :
-      declare
-         use type math.Real;
       begin
          for Each in 1 .. vertex_Count
          loop

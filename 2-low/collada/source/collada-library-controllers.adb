@@ -114,7 +114,6 @@ is
 
    function bind_Poses_of (Self : in Skin) return Matrix_4x4_array
    is
-      use type math.Index;
       Raw       : constant access float_Array                          := raw_bind_Poses_of (Self);
       First     :                 math.Index                           := 1;
       the_Poses :                 Matrix_4x4_array (1 .. Raw'Length/16);

@@ -72,7 +72,6 @@ is
 
    function Site (Self : in  Item;   for_End : in Integer) return math.Vector_3
    is
-      use openGL.Geometry.colored;
    begin
       return Self.Vertices (openGL.Index_t (for_End)).Site;
    end Site;
@@ -90,8 +89,7 @@ is
    procedure add_1st_Segment (Self : in out Item;   start_Site : in math.Vector_3;
                                                     end_Site   : in math.Vector_3)
    is
-      use openGL.Geometry.colored,
-          site_Vectors;
+      use site_Vectors;
    begin
       pragma assert (Self.Points.Is_Empty);
 
@@ -117,7 +115,6 @@ is
 
    procedure add_Segment     (Self : in out Item;   end_Site   : in math.Vector_3)
    is
-      use openGL.Geometry.colored;
       use type ada.containers.Count_Type;
 
       procedure free is new ada.Unchecked_Deallocation (openGL.geometry.colored.Vertex_array,
@@ -153,7 +150,6 @@ is
    procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
                                             for_End : in Integer)
    is
-      use openGL.Geometry.colored;
    begin
       Self.Vertices (openGL.Index_t (for_End)).Site := Now;
       Self.Points.replace_Element (for_End, Now);
@@ -166,7 +162,6 @@ is
    procedure Color_is (Self : in out Item;   Now     : in openGL.Color;
                                              for_End : in Integer)
    is
-      use openGL.Geometry.colored;
    begin
       Self.Vertices (openGL.Index_t (for_End)).Color := (Now, 255);
       Self.needs_Rebuild := True;
@@ -191,7 +186,8 @@ is
 
    function Angle_in_xz_plane (the_Segment : in Segment) return math.Radians
    is
-      the_Vector : math.Vector_3 := the_Segment.Last - the_Segment.First;
+      use real_Functions;
+      the_Vector : constant math.Vector_3 := the_Segment.Last - the_Segment.First;
    begin
       return arcTan (the_Vector (3) / the_Vector (1));
    end Angle_in_xz_plane;

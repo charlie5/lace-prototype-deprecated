@@ -1,16 +1,10 @@
 with
      openGL.Geometry.lit_colored,
-     openGL.Primitive.indexed,
-     ada.Unchecked_Deallocation;
+     openGL.Primitive.indexed;
 
 
 package body openGL.Model.sphere.lit_colored
 is
-
-   use openGL;
-   use type math.Real;
-
-
    ---------
    --- Forge
    --
@@ -46,9 +40,8 @@ is
    is
       pragma Unreferenced (Textures, Fonts);
 
-      use      openGL.Geometry,
-               openGL.Geometry.lit_colored;
-      use type Real;
+      use openGL.Geometry,
+          openGL.Geometry.lit_colored;
 
       Degrees_360       : constant      := Pi * 2.0;
       Degrees_180       : constant      := Pi;
@@ -77,7 +70,6 @@ is
       declare
          use      linear_Algebra,
                   linear_Algebra_3d;
-         use type math.Real;
 
          north_Pole : constant Site := (0.0,  0.5,  0.0);
          south_Pole : constant Site := (0.0, -0.5,  0.0);

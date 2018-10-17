@@ -3,7 +3,6 @@ with
      openGL.Program,
      openGL.Camera,
      openGL.Palette,
-     openGL.Light.directional,
      openGL.Model.billboard.textured,
      openGL.Font.texture,
      openGL.Server,
@@ -142,8 +141,6 @@ is
 
    procedure update_Impostors_and_draw_Visuals (Self : in out Item;   all_Updates : in camera_updates_Couples)
    is
-      use camera_Maps_of_updates;
-
    begin
       for i in all_Updates'Range
       loop
@@ -414,7 +411,7 @@ is
                                                      perspective_Transform  : in math.Matrix_4x4)
    is
       use openGL.Conversions,
-          math.Algebra.linear.d3, math.Vectors;
+          math.Algebra.linear.d3;
 
       check_is_OK              : constant Boolean                      := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       inverse_view_Transform   : constant openGL.Matrix_3x3            := inverse_Rotation (get_Rotation (view_Transform));
@@ -433,8 +430,7 @@ is
       for i in the_Updates'Range
       loop
          declare
-            use openGL.Texture, openGL.Renderer.lean, openGL.Visual,
-                GL.lean;
+            use openGL.Texture, openGL.Visual;
 
             the_Update               :          impostor_Update renames the_Updates (i);
             the_Impostor             :          impostor.view   renames the_Update.Impostor;
@@ -527,7 +523,7 @@ is
    is
       pragma Unreferenced (to_Surface, camera_world_Transform);
 
-      use math.Algebra.linear.d3, math.Vectors;
+      use math.Algebra.linear.d3;
 
       check_is_OK              : constant Boolean           := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
 
@@ -581,7 +577,7 @@ is
             the_Visual : Visual.view renames the_Visuals (Each);
 
          begin
-            if    Boolean (the_Visual.Model.needs_Rebuild)
+            if    the_Visual.Model.needs_Rebuild
                or (    the_Visual.Model.opaque_Geometries = null
                    and the_Visual.Model. lucid_Geometries = null)
             then

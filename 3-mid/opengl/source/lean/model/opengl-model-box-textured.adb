@@ -38,10 +38,8 @@ is
    is
       pragma Unreferenced (Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.textured,
-          openGL.Texture,
-          math.Geometry;
+      use openGL.Geometry.textured,
+          openGL.Texture;
 
       the_Sites    : constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased  Indices   := (1, 2, 3, 4);

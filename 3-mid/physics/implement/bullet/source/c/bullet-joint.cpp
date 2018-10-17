@@ -182,6 +182,7 @@ extern "C"
     btTypedConstraint*    c_Self = to_bullet_Joint (Self);
     
     1/0; // return c_Self->Extent;
+    return 0;
   }
 
 

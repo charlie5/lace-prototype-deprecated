@@ -131,8 +131,7 @@ is
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
-      use      openGL_Buffer_of_geometry_Vertices;
-      use type Index_t;
+      use openGL_Buffer_of_geometry_Vertices;
    begin
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                   usage => openGL.Buffer.static_Draw));

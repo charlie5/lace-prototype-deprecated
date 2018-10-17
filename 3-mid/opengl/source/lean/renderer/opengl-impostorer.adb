@@ -183,8 +183,7 @@ is
                   end;
 
                   declare
-                     use linear_Algebra_3d,
-                         openGL.Renderer.lean, openGL.Visual;
+                     use openGL.Visual;
 
                      impostor_Target          : Visual.view renames the_Visual;
 

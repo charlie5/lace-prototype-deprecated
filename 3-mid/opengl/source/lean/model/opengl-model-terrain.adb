@@ -112,10 +112,8 @@ is
 
       set_Sites :
       declare
-         use type Real;
-
          vert_Id          :          Index_t  := 0;
-         the_height_Range :          Vector_2 := height_Extent (Heights.all);
+         the_height_Range : constant Vector_2 := height_Extent (Heights.all);
          Middle           : constant Real     := (the_height_Range (1) + the_height_Range (2))  /  2.0;
          flipped_Row      :          Index_t;
       begin
@@ -216,7 +214,6 @@ is
       then
          set_texture_Coords :
          declare
-            use type Real;
             x_Length : constant Real := Real (the_Bounds.Box.upper (1) - the_Bounds.Box.lower (1));
             x_Min    : constant Real := Real (the_Bounds.Box.lower (1));
 
@@ -271,10 +268,6 @@ is
    overriding
    procedure set_Bounds (Self : in out Item)
    is
-      use openGL.Geometry,
-          openGL.Palette,
-          openGL.Geometry.lit_colored_textured;
-
       Heights      :          height_Map_view renames Self.Heights;
 
       row_Count    : constant openGL.Index_t  := Heights'Length (1) - 1;
@@ -288,10 +281,8 @@ is
    begin
       set_Sites :
       declare
-         use type Real;
-
          vert_Id          :          Index_t  := 0;
-         the_height_Range :          Vector_2 := height_Extent (Heights.all);
+         the_height_Range : constant Vector_2 := height_Extent (Heights.all);
          Middle           : constant Real     :=   (the_height_Range (1) + the_height_Range (2))
                                                  / 2.0;
       begin

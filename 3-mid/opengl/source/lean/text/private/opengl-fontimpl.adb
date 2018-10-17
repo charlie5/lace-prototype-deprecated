@@ -376,7 +376,7 @@ is
 
    function x_PPEM (Self : in Item) return openGL.Real
    is
-      use freetype.charMap, freetype_c.Binding;
+      use freetype_c.Binding;
 
       ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'Access;
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
@@ -388,8 +388,7 @@ is
 
    function x_Scale (Self : in Item) return openGL.Real
    is
-      use freetype  .charMap,
-          freetype_c.Binding;
+      use freetype_c.Binding;
 
       ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'Access;
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
@@ -401,8 +400,7 @@ is
 
    function y_Scale (Self : in Item) return openGL.Real
    is
-      use freetype  .charMap,
-          freetype_c.Binding;
+      use freetype_c.Binding;
 
       ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'Access;
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
@@ -417,8 +415,6 @@ is
                                                Spacing  : in Vector_3) return Real
    is
       pragma Unreferenced (len);
-
-      use type Real;
 
       advance : Real    := 0.0;
       ustr    : Integer := 1;

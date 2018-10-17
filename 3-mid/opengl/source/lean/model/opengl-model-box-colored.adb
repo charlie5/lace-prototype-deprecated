@@ -5,11 +5,7 @@ with
 
 package body openGL.Model.box.colored
 is
-   use openGL;
-
    type Geometry_view  is access all openGL.Geometry.colored.item'class;
-
-
 
    ---------
    --- Forge
@@ -73,8 +69,6 @@ is
       --  Front
       --
       declare
-         use openGL.Geometry.colored;
-
          the_Vertices : aliased openGL.Geometry.colored.Vertex_array
            := (1 => (site => the_Sites (left_lower_front),   color => self.Faces (Front).Colors (1)),
                2 => (site => the_Sites (right_lower_front),  color => self.Faces (Front).Colors (2)),

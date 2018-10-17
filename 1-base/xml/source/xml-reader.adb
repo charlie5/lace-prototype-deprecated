@@ -37,7 +37,7 @@ is
                                      AttAdd    : in System.Address)
    is
 
-      use C, S, System, System.Storage_Elements;
+      use S, System, System.Storage_Elements;
 
       procedure Free is new ada.Unchecked_Deallocation (Attributes_t,   Attributes_view);
       function To_CP is new ada.unchecked_Conversion   (System.Address, Char_Ptr_Ptr);
