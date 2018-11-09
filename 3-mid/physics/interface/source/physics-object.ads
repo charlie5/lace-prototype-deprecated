@@ -58,22 +58,24 @@ is
    --- Dynamics
    --
 
-   type Dynamics is
-      record
-         Site : Vector_3;
-      end record;
-
    protected
    type safe_Dynamics
    is
-      procedure set (To : in Dynamics);
-      function  get   return Dynamics;
+      procedure set (To : in Matrix_4x4);
+      function  get   return Matrix_4x4;
+
+      procedure set_Spin (To : in Matrix_3x3);
+      function  get_Spin   return Matrix_3x3;
+
+      procedure set_Site (To : in Vector_3);
+      function  get_Site   return Vector_3;
+
    private
-      Value : Dynamics := (Site => (0.0, 0.0, 0.0));
+      Dynamics : Matrix_4x4 := Identity_4x4;
    end safe_Dynamics;
 
-   procedure update_Dynamics (Self : in out Item)                          is abstract;
-   function     get_Dynamics (Self : in     Item) return Object.Dynamics   is abstract;
+   procedure update_Dynamics (Self : in out Item)                     is abstract;
+   function     get_Dynamics (Self : in     Item) return Matrix_4x4   is abstract;
 
 
    procedure activate       (Self : in out Item;   force_Activation : in Boolean := False)   is abstract;

@@ -213,15 +213,14 @@ is
    overriding
    procedure update_Dynamics (Self : in out Item)
    is
-      Dynamics : physics.Object.Dynamics;
+      Dynamics : constant Matrix_4x4 := Self.Transform;
    begin
-      Dynamics.Site := Self.Site;
       Self.Dynamics.set (Dynamics);
    end update_Dynamics;
 
 
    overriding
-   function get_Dynamics (Self : in Item) return physics.Object.Dynamics
+   function get_Dynamics (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Dynamics.get;

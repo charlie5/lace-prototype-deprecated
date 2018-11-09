@@ -830,17 +830,9 @@ is
             loop
                the_Sprite := Key (Cursor);
                declare
---                    the_Site : Vector_3 := the_Sprite.Solid.Site;
-                  the_Site      : constant Vector_3   := the_Sprite.Solid.get_Dynamics.Site;
-                  the_Transform : Matrix_4x4 := Identity_4x4;
+                  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
                begin
-                  the_Transform (4, 1) := the_Site (1);
-                  the_Transform (4, 2) := the_Site (2);
-                  the_sprite_Transforms.replace_Element (Cursor,   the_Transform);
---                    the_sprite_Transforms.replace_Element (Cursor,   the_Sprite.Solid.Transform);
---                 exception
---                    when Storage_Error    => null;
---                    when Constraint_Error => null;
+                  the_sprite_Transforms.replace_Element (Cursor, the_Transform);
                end;
                next (Cursor);
             end loop;

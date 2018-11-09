@@ -20,6 +20,7 @@ is
    type View is access all Item'Class;
 
 
+   function  new_Object (Shape : in physics.Shape.view) return Object.view;
 
    function  new_Object (Shape        : in     physics.Shape.view;
                          Mass         : in     Real;
@@ -45,7 +46,7 @@ is
    overriding
    procedure update_Dynamics (Self : in out Item);
    overriding
-   function     get_Dynamics (Self : in     Item) return physics.Object.Dynamics;
+   function     get_Dynamics (Self : in     Item) return Matrix_4x4;
 
 
 private
@@ -53,6 +54,9 @@ private
    type Item is new physics.Object.item with
       record
          C         : access bullet_C.Object;
+         Shape     :        physics.Shape.view;
+         Model     :        physics.Model.view;
+         Dynamics  :        physics.Object.safe_Dynamics;
          user_Data : access lace.Any.limited_Item'Class;
       end record;
 

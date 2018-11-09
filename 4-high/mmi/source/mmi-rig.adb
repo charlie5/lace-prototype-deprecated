@@ -1,7 +1,7 @@
 with
      mmi.Forge,
      mmi.Conversions,
-     mmi.physics_Model,
+     physics.Model,
 
      openGL.Model.any,
      opengl.Palette,
@@ -403,14 +403,14 @@ is
          if the_Bone = Self.root_Joint.Name
          then
             declare
-               use mmi.physics_Model;
+               use standard.physics.Model;
 
                Size : constant math.Vector_3 := (0.1, 0.1, 0.1);
 
-               physics_Model : constant mmi.physics_Model.View
-                 := mmi.physics_Model.Forge.new_physics_Model (shape_Info  => (kind         => cube,
-                                                                               half_extents => Size / 2.0),
-                                                               mass        => 1.0);
+               physics_Model : constant standard.physics.Model.View
+                 := standard.physics.Model.Forge.new_physics_Model (shape_Info  => (kind         => cube,
+                                                                                    half_extents => Size / 2.0),
+                                                           mass        => 1.0);
             begin
                new_Sprite := mmi.Sprite.forge.new_Sprite ("Skin Sprite",
                                                           in_World,

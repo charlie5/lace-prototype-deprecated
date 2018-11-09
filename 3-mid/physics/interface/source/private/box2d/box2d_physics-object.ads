@@ -52,7 +52,7 @@ is
    overriding
    procedure update_Dynamics (Self : in out Item);
    overriding
-   function     get_Dynamics (Self : in     Item) return physics.Object.Dynamics;
+   function     get_Dynamics (Self : in     Item) return Matrix_4x4;
 
 
 private

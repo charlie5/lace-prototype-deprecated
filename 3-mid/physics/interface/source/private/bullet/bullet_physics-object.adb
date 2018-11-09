@@ -27,6 +27,17 @@ is
    type Any_limited_view    is access all lace.Any.limited_Item'Class;
 
 
+
+   function new_Object (Shape       : in physics.Shape.view) return Object.view
+   is
+      Self : constant View := new Item;
+   begin
+      Self.Shape := Shape;
+      return Self;
+   end new_Object;
+
+
+   -- old
    function new_Object (Shape        : in physics.Shape.view;
                         Mass         : in Real;
                         at_Site      : in Vector_3;
@@ -95,8 +106,7 @@ is
    function  Model        (Self : in     Item)     return physics.Model.view
    is
    begin
-      raise Program_Error with "TODO 437cob5";
-      return null;
+      return Self.Model;
    end Model;
 
 
@@ -104,7 +114,7 @@ is
    procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
-      raise Program_Error with "TODO 437sdfsdcob5";
+      Self.Model := Now;
    end Model_is;
 
 
@@ -150,12 +160,10 @@ is
 
 
    overriding
-   function get_Dynamics (Self : in     Item) return physics.Object.Dynamics
+   function get_Dynamics (Self : in     Item) return Matrix_4x4
    is
-      Dummy : physics.Object.Dynamics;
    begin
-      raise Program_Error with "TODO: slasdfskjhaslk";
-      return Dummy;
+      return Self.Dynamics.get;
    end get_Dynamics;
 
 
@@ -213,18 +221,34 @@ is
    overriding
    function  Spin         (Self : in     Item)     return math.Matrix_3x3
    is
-      the_Spin : constant c_math_c.Matrix_3x3.item := b3d_Object_Spin (Self.C);
    begin
-      return +the_Spin;
+      if Self.C /= null
+      then
+         declare
+            the_Spin : constant c_math_c.Matrix_3x3.item := b3d_Object_Spin (Self.C);
+         begin
+            return +the_Spin;
+         end;
+      else
+         return Self.Dynamics.get_Spin;
+      end if;
    end Spin;
 
 
    overriding
    procedure Spin_is      (Self : in out Item;   Now : in math.Matrix_3x3)
    is
-      c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
    begin
-      b3d_Object_Spin_is (Self.C, c_Now'Unchecked_Access);
+      Self.Dynamics.set_Spin (Now);
+
+      if Self.C /= null
+      then
+         declare
+            c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
+         begin
+            b3d_Object_Spin_is (Self.C, c_Now'Unchecked_Access);
+         end;
+      end if;
    end Spin_is;
 
 

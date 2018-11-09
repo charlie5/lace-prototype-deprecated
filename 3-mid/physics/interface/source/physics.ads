@@ -1,7 +1,7 @@
 with
      float_Math.Geometry.d2,
-     float_Math.Geometry.d3;
-
+     float_Math.Geometry.d3,
+     float_Math.Algebra.linear.d3;
 
 package Physics
 --
@@ -13,7 +13,8 @@ is
 
    package Math        renames float_Math;
    package Geometry_2D renames math.Geometry.d2;
-   package Geometry_3D renames Math.Geometry.d3;
+   package Geometry_3D renames math.Geometry.d3;
+   package linear_Algebra_3d renames math.Algebra.linear.d3;
 
    type Vector_2_array is array (Positive range <>) of math.Vector_2;
    type Vector_3_array is array (Positive range <>) of math.Vector_3;

@@ -1,5 +1,5 @@
 with
-     mmi.physics_Model,
+     physics.Model,
      Physics,
 
      openGL.Model.terrain,
@@ -44,7 +44,7 @@ is
       use type math.Index, opengl.Real;
 
       the_Pixels  :          opengl.io.height_Map_view
-                                      := opengl.io.to_height_Map (heights_File);
+                                      := opengl.io.to_height_Map (openGL.to_Asset (heights_File));
 
       tile_Width  : constant Positive := 8 * 32 - 1;
       tile_Depth  : constant Positive := 8 * 32 - 1;
@@ -174,18 +174,19 @@ is
 
                   function to_Physics is new ada.Unchecked_Conversion (height_Map_view, Heightfield_view);
 
-                  the_ground_physics_Model : aliased constant  mmi.physics_Model.view
-                    := new mmi.physics_Model.item' (id          => mmi.null_physics_model_Id,
-                                                    scale       => Scale,
-                                                    shape_Info  => (mmi.physics_Model.Heightfield,
-                                                                    Heights      => to_Physics (the_Region),
-                                                                    height_range => (the_height_Range (1),
-                                                                                     the_height_Range (2))),
-                                                    Shape       => null,
-                                                    Mass        => 0.0,
-                                                    Friction    => 0.5,
-                                                    Restitution => 0.5,
-                                                    is_Tangible => True);
+                  the_ground_physics_Model : aliased constant  physics.Model.view
+                    := new physics.Model.item' (id          => physics.null_physics_model_Id,
+                                                site => Origin_3d,
+                                                scale       => Scale,
+                                                shape_Info  => (physics.Model.Heightfield,
+                                                                Heights      => to_Physics (the_Region),
+                                                                height_range => (the_height_Range (1),
+                                                                                 the_height_Range (2))),
+                                                Shape       => null,
+                                                Mass        => 0.0,
+                                                Friction    => 0.5,
+                                                Restitution => 0.5,
+                                                is_Tangible => True);
 
                   the_height_Extents : opengl.Vector_2 :=      opengl.height_Extent (the_Region.all);
                   the_Sprite         : mmi.Sprite.view renames the_sprite_Grid      (Row, Col);

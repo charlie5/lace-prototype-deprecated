@@ -222,8 +222,8 @@ is
                                                        right => (colors => (others => (Colors (6), Opaque)))));
       the_box_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
-                                                                     half_extents => the_box_Model.Scale / 2.0),
-                                                      mass       => Mass);
+                                                                 half_extents => the_box_Model.Scale / 2.0),
+                                                  mass       => Mass);
       the_Box               : constant mmi.Sprite.view
         := mmi.Sprite.forge.new_Sprite ("demo.Box",
                                         in_World,

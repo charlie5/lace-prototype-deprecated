@@ -20,17 +20,47 @@ is
    protected
    body safe_Dynamics
    is
-      procedure set (To : in Dynamics)
+
+      procedure set (To : in Matrix_4x4)
       is
       begin
-         Value := To;
+         Dynamics := To;
       end set;
 
-      function  get   return Dynamics
+      function  get   return Matrix_4x4
       is
       begin
-         return Value;
+         return Dynamics;
       end get;
+
+      procedure set_Spin (To : in Matrix_3x3)
+      is
+         use linear_Algebra_3d;
+      begin
+         set_Rotation (Dynamics, To);
+      end set_Spin;
+
+      function  get_Spin   return Matrix_3x3
+      is
+         use linear_Algebra_3d;
+      begin
+         return get_Rotation (Dynamics);
+      end get_Spin;
+
+      procedure set_Site (To : in Vector_3)
+      is
+         use linear_Algebra_3d;
+      begin
+         set_Translation (Dynamics, To);
+      end set_Site;
+
+      function  get_Site   return Vector_3
+      is
+         use linear_Algebra_3d;
+      begin
+         return get_Translation (Dynamics);
+      end get_Site;
+
    end safe_Dynamics;
 
 
