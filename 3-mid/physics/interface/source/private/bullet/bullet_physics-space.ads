@@ -132,8 +132,8 @@ private
    --
 
    overriding
-   function new_hinge_Joint        (Self : access Item;   Sprite_A,
-                                                          Sprite_B          : in physics.Object.view;
+   function new_hinge_Joint        (Self : access Item;   Object_A,
+                                                          Object_B          : in physics.Object.view;
                                                           Anchor_in_A,
                                                           Anchor_in_B       : in Vector_3;
                                                           pivot_Axis        : in Vector_3;
@@ -141,8 +141,8 @@ private
                                                           high_Limit        : in Real;
                                                           collide_Connected : in Boolean) return physics.Joint.hinge.view;
    overriding
-   function new_hinge_Joint        (Self : access Item;   Sprite_A,
-                                                          Sprite_B          : in physics.Object.view;
+   function new_hinge_Joint        (Self : access Item;   Object_A,
+                                                          Object_B          : in physics.Object.view;
                                                           Frame_A,
                                                           Frame_B           : in Matrix_4x4;
                                                           low_Limit,
@@ -150,27 +150,27 @@ private
                                                           collide_Connected : in Boolean) return physics.Joint.hinge.view;
 
    overriding
-   function new_hinge_Joint        (Self : access Item;   Sprite_A     : in physics.Object.view;
+   function new_hinge_Joint        (Self : access Item;   Object_A     : in physics.Object.view;
                                                           Frame_A      : in Matrix_4x4) return physics.Joint.hinge.view;
 
    overriding
-   function new_DoF6_Joint         (Self : access Item;   Sprite_A,
-                                                          Sprite_B     : in physics.Object.view;
+   function new_DoF6_Joint         (Self : access Item;   Object_A,
+                                                          Object_B     : in physics.Object.view;
                                                           Frame_A,
                                                           Frame_B      : in Matrix_4x4) return physics.Joint.DoF6.view;
    overriding
-   function new_ball_Joint         (Self : access Item;   Sprite_A,
-                                                          Sprite_B     : in physics.Object.view;
+   function new_ball_Joint         (Self : access Item;   Object_A,
+                                                          Object_B     : in physics.Object.view;
                                                           Pivot_in_A,
                                                           Pivot_in_B   : in Vector_3)   return physics.Joint.ball.view;
    overriding
-   function new_slider_Joint       (Self : access Item;   Sprite_A,
-                                                          Sprite_B     : in physics.Object.view;
+   function new_slider_Joint       (Self : access Item;   Object_A,
+                                                          Object_B     : in physics.Object.view;
                                                           Frame_A,
                                                           Frame_B      : in Matrix_4x4) return physics.Joint.slider.view;
    overriding
-   function new_cone_twist_Joint   (Self : access Item;   Sprite_A,
-                                                          Sprite_B     : in physics.Object.view;
+   function new_cone_twist_Joint   (Self : access Item;   Object_A,
+                                                          Object_B     : in physics.Object.view;
                                                           Frame_A,
                                                           Frame_B      : in Matrix_4x4) return physics.Joint.cone_twist.view;
 

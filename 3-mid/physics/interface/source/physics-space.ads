@@ -139,8 +139,8 @@ is
    --  Joints
    --
 
-   function new_hinge_Joint      (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_hinge_Joint      (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Anchor_in_A,
                                                         Anchor_in_B  : in Vector_3;
                                                         pivot_Axis   : in Vector_3;
@@ -148,35 +148,35 @@ is
                                                         high_Limit   : in Real;
                                                         collide_Connected : in Boolean) return Joint.hinge.view   is abstract;
 
-   function new_hinge_Joint      (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_hinge_Joint      (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Frame_A,
                                                         Frame_B      : in Matrix_4x4;
                                                         low_Limit,
                                                         high_Limit   : in Real;
                                                         collide_Connected : in Boolean) return Joint.hinge.view   is abstract;
 
-   function new_hinge_Joint      (Self : access Item;   Sprite_A     : in Object.view;
+   function new_hinge_Joint      (Self : access Item;   Object_A     : in Object.view;
                                                         Frame_A      : in Matrix_4x4)   return Joint.hinge.view   is abstract;
 
 
-   function new_DoF6_Joint       (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_DoF6_Joint       (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Frame_A,
                                                         Frame_B      : in Matrix_4x4)   return Joint.DoF6.view   is abstract;
 
-   function new_ball_Joint       (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_ball_Joint       (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Pivot_in_A,
                                                         Pivot_in_B   : in Vector_3)     return Joint.ball.view   is abstract;
 
-   function new_slider_Joint     (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_slider_Joint     (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Frame_A,
                                                         Frame_B      : in Matrix_4x4)  return Joint.slider.view   is abstract;
 
-   function new_cone_twist_Joint (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in Object.view;
+   function new_cone_twist_Joint (Self : access Item;   Object_A,
+                                                        Object_B     : in Object.view;
                                                         Frame_A,
                                                         Frame_B      : in Matrix_4x4)  return Joint.cone_twist.view   is abstract;
 

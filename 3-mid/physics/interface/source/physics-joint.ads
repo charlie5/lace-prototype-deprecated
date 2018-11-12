@@ -22,8 +22,8 @@ is
 
    procedure destruct    (Self : in out Item)                                      is abstract;
 
-   function  Rigid_A     (Self : in     Item)     return physics.Object.view       is abstract;
-   function  Rigid_B     (Self : in     Item)     return physics.Object.view       is abstract;
+   function  Object_A     (Self : in     Item)     return physics.Object.view       is abstract;
+   function  Object_B     (Self : in     Item)     return physics.Object.view       is abstract;
 
 
    function  Frame_A     (Self : in     Item)     return Matrix_4x4                is abstract;

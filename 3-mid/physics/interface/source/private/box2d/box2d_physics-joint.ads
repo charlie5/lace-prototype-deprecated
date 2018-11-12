@@ -29,31 +29,31 @@ is
    type View is access all Item'Class;
 
 
-   function new_Dof6_Joint       (Sprite_A,   Sprite_B     : in physics.Object.view;
+   function new_Dof6_Joint       (Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4) return physics.Joint.DoF6.view;
 
-   function new_ball_Joint       (Sprite_A,   Sprite_B     : in physics.Object.view;
+   function new_ball_Joint       (Object_A,   Object_B     : in physics.Object.view;
                                   Pivot_in_A, Pivot_in_B   : in Vector_3) return physics.Joint.ball.view;
 
-   function new_slider_Joint     (Sprite_A,   Sprite_B     : in physics.Object.view;
+   function new_slider_Joint     (Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4) return physics.Joint.slider.view;
 
-   function new_cone_twist_Joint (Sprite_A,   Sprite_B     : in physics.Object.view;
+   function new_cone_twist_Joint (Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4) return physics.Joint.cone_twist.view;
 
    function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_Pointer;
-                                  Sprite_A,    Sprite_B    : in physics.Object.view;
+                                  Object_A,    Object_B    : in physics.Object.view;
                                   Anchor_in_A, Anchor_in_B : in Vector_3;
                                   low_Limit,   high_Limit  : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
    function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_Pointer;
-                                  Sprite_A,   Sprite_B     : in physics.Object.view;
+                                  Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4;
                                   low_Limit,  high_Limit   : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
-   function new_hinge_Joint      (Sprite_A                 : in physics.Object.view;
+   function new_hinge_Joint      (Object_A                 : in physics.Object.view;
                                   Frame_A                  : in Matrix_4x4) return physics.Joint.hinge.view;
 
 
@@ -99,9 +99,9 @@ private
 
 
    overriding
-   function  Rigid_A     (Self : in     DoF6)     return physics.Object.view;
+   function  Object_A     (Self : in     DoF6)     return physics.Object.view;
    overriding
-   function  Rigid_B     (Self : in     DoF6)     return physics.Object.view;
+   function  Object_B     (Self : in     DoF6)     return physics.Object.view;
 
 
    overriding
@@ -156,10 +156,10 @@ private
    procedure destruct (Self : in out Slider);
 
    overriding
-   function  Rigid_A     (Self : in     Slider)     return physics.Object.view;
+   function  Object_A     (Self : in     Slider)     return physics.Object.view;
 
    overriding
-   function  Rigid_B     (Self : in     Slider)     return physics.Object.view;
+   function  Object_B     (Self : in     Slider)     return physics.Object.view;
 
 
    overriding
@@ -222,10 +222,10 @@ private
    procedure destruct (Self : in out cone_Twist);
 
    overriding
-   function  Rigid_A     (Self : in     cone_Twist)     return physics.Object.view;
+   function  Object_A     (Self : in     cone_Twist)     return physics.Object.view;
 
    overriding
-   function  Rigid_B     (Self : in     cone_Twist)     return physics.Object.view;
+   function  Object_B     (Self : in     cone_Twist)     return physics.Object.view;
 
 
    overriding
@@ -288,10 +288,10 @@ private
    procedure destruct (Self : in out Ball);
 
    overriding
-   function  Rigid_A     (Self : in     Ball)     return physics.Object.view;
+   function  Object_A     (Self : in     Ball)     return physics.Object.view;
 
    overriding
-   function  Rigid_B     (Self : in     Ball)     return physics.Object.view;
+   function  Object_B     (Self : in     Ball)     return physics.Object.view;
 
 
    overriding
@@ -353,10 +353,10 @@ private
    procedure destruct (Self : in out Hinge);
 
    overriding
-   function  Rigid_A     (Self : in     Hinge)     return physics.Object.view;
+   function  Object_A     (Self : in     Hinge)     return physics.Object.view;
 
    overriding
-   function  Rigid_B     (Self : in     Hinge)     return physics.Object.view;
+   function  Object_B     (Self : in     Hinge)     return physics.Object.view;
 
 
    overriding

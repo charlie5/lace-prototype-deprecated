@@ -35,28 +35,28 @@ is
 
       procedure set_Spin (To : in Matrix_3x3)
       is
-         use linear_Algebra_3d;
+         use linear_Algebra_3D;
       begin
          set_Rotation (Dynamics, To);
       end set_Spin;
 
       function  get_Spin   return Matrix_3x3
       is
-         use linear_Algebra_3d;
+         use linear_Algebra_3D;
       begin
          return get_Rotation (Dynamics);
       end get_Spin;
 
       procedure set_Site (To : in Vector_3)
       is
-         use linear_Algebra_3d;
+         use linear_Algebra_3D;
       begin
          set_Translation (Dynamics, To);
       end set_Site;
 
       function  get_Site   return Vector_3
       is
-         use linear_Algebra_3d;
+         use linear_Algebra_3D;
       begin
          return get_Translation (Dynamics);
       end get_Site;

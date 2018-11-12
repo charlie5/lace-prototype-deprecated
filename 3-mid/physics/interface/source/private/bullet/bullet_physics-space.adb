@@ -268,8 +268,8 @@ is
    --
 
    overriding
-   function new_hinge_Joint (Self : access Item;   Sprite_A,
-                                                   Sprite_B     : in physics.Object.view;
+   function new_hinge_Joint (Self : access Item;   Object_A,
+                                                   Object_B     : in physics.Object.view;
                                                    Anchor_in_A,
                                                    Anchor_in_B  : in Vector_3;
                                                    pivot_Axis   : in Vector_3;
@@ -285,11 +285,11 @@ is
 
 
    overriding
-   function new_hinge_Joint (Self : access Item;   Sprite_A : in physics.Object.view;
+   function new_hinge_Joint (Self : access Item;   Object_A : in physics.Object.view;
                                                    Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Sprite_A, Frame_A);
+      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Object_A, Frame_A);
    begin
       return the_Joint;
    end new_hinge_Joint;
@@ -297,8 +297,8 @@ is
 
 
    overriding
-   function new_hinge_Joint (Self : access Item;   Sprite_A,
-                                                   Sprite_B : in physics.Object.view;
+   function new_hinge_Joint (Self : access Item;   Object_A,
+                                                   Object_B : in physics.Object.view;
                                                    Frame_A,
                                                    Frame_B  : in Matrix_4x4;
                                                    low_Limit,
@@ -306,7 +306,7 @@ is
                                                    collide_Connected : in Boolean) return physics.Joint.hinge.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Sprite_A, Sprite_B,
+      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Object_A, Object_B,
                                                                                              Frame_A,  Frame_B);
    begin
       return the_Joint;
@@ -315,13 +315,13 @@ is
 
 
    overriding
-   function new_DoF6_Joint         (Self : access Item;   Sprite_A,
-                                                          Sprite_B     : in physics.Object.view;
+   function new_DoF6_Joint         (Self : access Item;   Object_A,
+                                                          Object_B     : in physics.Object.view;
                                                           Frame_A,
                                                           Frame_B      : in Matrix_4x4) return physics.Joint.DoF6.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.DoF6.view := bullet_physics.Joint.new_DoF6_Joint (Sprite_A, Sprite_B,
+      the_Joint : constant physics.Joint.DoF6.view := bullet_physics.Joint.new_DoF6_Joint (Object_A, Object_B,
                                                                                            Frame_A,  Frame_B);
    begin
       return the_Joint;
@@ -329,13 +329,13 @@ is
 
 
    overriding
-   function new_ball_Joint (Self : access Item;   Sprite_A,
-                                                  Sprite_B     : in physics.Object.view;
+   function new_ball_Joint (Self : access Item;   Object_A,
+                                                  Object_B     : in physics.Object.view;
                                                   Pivot_in_A,
                                                   Pivot_in_B   : in math.Vector_3) return physics.Joint.ball.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.ball.view := Standard.bullet_physics.Joint.new_ball_Joint (Sprite_A,    Sprite_B,
+      the_Joint : constant physics.Joint.ball.view := Standard.bullet_physics.Joint.new_ball_Joint (Object_A,    Object_B,
                                                                                            Pivot_in_A,  Pivot_in_B);
    begin
       return the_Joint;
@@ -343,13 +343,13 @@ is
 
 
    overriding
-   function new_slider_Joint (Self : access Item;   Sprite_A,
-                                                    Sprite_B     : in physics.Object.view;
+   function new_slider_Joint (Self : access Item;   Object_A,
+                                                    Object_B     : in physics.Object.view;
                                                     Frame_A,
                                                     Frame_B      : in Matrix_4x4) return physics.Joint.slider.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.slider.view := bullet_physics.Joint.new_slider_Joint (Sprite_A, Sprite_B,
+      the_Joint : constant physics.Joint.slider.view := bullet_physics.Joint.new_slider_Joint (Object_A, Object_B,
                                                                                                Frame_A,  Frame_B);
    begin
       return the_Joint;
@@ -357,13 +357,13 @@ is
 
 
    overriding
-   function new_cone_twist_Joint (Self : access Item;   Sprite_A,
-                                                        Sprite_B     : in physics.Object.view;
+   function new_cone_twist_Joint (Self : access Item;   Object_A,
+                                                        Object_B     : in physics.Object.view;
                                                         Frame_A,
                                                         Frame_B      : in Matrix_4x4) return physics.Joint.cone_twist.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.cone_twist.view := bullet_physics.Joint.new_cone_twist_Joint (Sprite_A, Sprite_B,
+      the_Joint : constant physics.Joint.cone_twist.view := bullet_physics.Joint.new_cone_twist_Joint (Object_A, Object_B,
                                                                                                        Frame_A,  Frame_B);
    begin
       return the_Joint;
