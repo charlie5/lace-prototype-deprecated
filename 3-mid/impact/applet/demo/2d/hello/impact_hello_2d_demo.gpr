@@ -1,0 +1,29 @@
+with "impact";
+
+project impact_hello_2d_Demo is
+
+   type Restrictions is
+      ("xgc", "ravenscar");
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_impact_hello_2d_demo.adb");
+   Restrictions : Restrictions := external ("restrictions");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end impact_hello_2d_Demo;
+

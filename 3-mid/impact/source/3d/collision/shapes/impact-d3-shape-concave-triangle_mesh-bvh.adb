@@ -1,0 +1,375 @@
+
+
+
+package body impact.d3.Shape.concave.triangle_mesh.bvh
+is
+
+
+
+   procedure performRaycast (Self : in out Item;   callback             : access impact.d3.triangle_Callback.Item'Class;
+                                                   raySource, rayTarget : in     math.Vector_3)
+   is
+   begin
+      raise Program_Error with "TBD31";
+   end performRaycast;
+
+
+
+
+
+end impact.d3.Shape.concave.triangle_mesh.bvh;
+
+
+--  //#define DISABLE_BVH
+--
+--  #include "BulletCollision/CollisionShapes/impact.d3.Shape.concave.triangle_mesh.bvh.h"
+--  #include "BulletCollision/CollisionShapes/impact.d3.collision.quantized_Bvh.optimized.h"
+--  #include "LinearMath/btSerializer.h"
+--
+--  ///Bvh Concave triangle mesh is a static-triangle mesh shape with Bounding Volume Hierarchy optimization.
+--  ///Uses an interface to access the triangles to allow for sharing graphics/physics triangles.
+--  impact.d3.Shape.concave.triangle_mesh.bvh::impact.d3.Shape.concave.triangle_mesh.bvh(impact.d3.striding_Mesh* meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
+--  :impact.d3.Shape.concave.triangle_mesh(meshInterface),
+--  m_bvh(0),
+--  m_triangleInfoMap(0),
+--  m_useQuantizedAabbCompression(useQuantizedAabbCompression),
+--  m_ownsBvh(false)
+--  {
+--          m_shapeType = TRIANGLE_MESH_SHAPE_PROXYTYPE;
+--          //construct bvh from meshInterface
+--  #ifndef DISABLE_BVH
+--
+--          if (buildBvh)
+--          {
+--                  buildOptimizedBvh();
+--          }
+--
+--  #endif //DISABLE_BVH
+--
+--  }
+--
+--  impact.d3.Shape.concave.triangle_mesh.bvh::impact.d3.Shape.concave.triangle_mesh.bvh(impact.d3.striding_Mesh* meshInterface, bool useQuantizedAabbCompression,const impact.d3.Vector& bvhAabbMin,const impact.d3.Vector& bvhAabbMax,bool buildBvh)
+--  :impact.d3.Shape.concave.triangle_mesh(meshInterface),
+--  m_bvh(0),
+--  m_triangleInfoMap(0),
+--  m_useQuantizedAabbCompression(useQuantizedAabbCompression),
+--  m_ownsBvh(false)
+--  {
+--          m_shapeType = TRIANGLE_MESH_SHAPE_PROXYTYPE;
+--          //construct bvh from meshInterface
+--  #ifndef DISABLE_BVH
+--
+--          if (buildBvh)
+--          {
+--                  void* mem = btAlignedAlloc(sizeof(impact.d3.collision.quantized_Bvh.optimized),16);
+--                  m_bvh = new (mem) impact.d3.collision.quantized_Bvh.optimized();
+--
+--                  m_bvh->build(meshInterface,m_useQuantizedAabbCompression,bvhAabbMin,bvhAabbMax);
+--                  m_ownsBvh = true;
+--          }
+--
+--  #endif //DISABLE_BVH
+--
+--  }
+--
+--  void        impact.d3.Shape.concave.triangle_mesh.bvh::partialRefitTree(const impact.d3.Vector& aabbMin,const impact.d3.Vector& aabbMax)
+--  {
+--          m_bvh->refitPartial( m_meshInterface,aabbMin,aabbMax );
+--
+--          m_localAabbMin.setMin(aabbMin);
+--          m_localAabbMax.setMax(aabbMax);
+--  }
+--
+--
+--  void        impact.d3.Shape.concave.triangle_mesh.bvh::refitTree(const impact.d3.Vector& aabbMin,const impact.d3.Vector& aabbMax)
+--  {
+--          m_bvh->refit( m_meshInterface, aabbMin,aabbMax );
+--
+--          recalcLocalAabb();
+--  }
+--
+--  impact.d3.Shape.concave.triangle_mesh.bvh::~impact.d3.Shape.concave.triangle_mesh.bvh()
+--  {
+--          if (m_ownsBvh)
+--          {
+--                  m_bvh->~impact.d3.collision.quantized_Bvh.optimized();
+--                  btAlignedFree(m_bvh);
+--          }
+--  }
+--
+--  void        impact.d3.Shape.concave.triangle_mesh.bvh::performRaycast (impact.d3.triangle_Callback* callback, const impact.d3.Vector& raySource, const impact.d3.Vector& rayTarget)
+--  {
+--          struct        MyNodeOverlapCallback : public btNodeOverlapCallback
+--          {
+--                  impact.d3.striding_Mesh*        m_meshInterface;
+--                  impact.d3.triangle_Callback* m_callback;
+--
+--                  MyNodeOverlapCallback(impact.d3.triangle_Callback* callback,impact.d3.striding_Mesh* meshInterface)
+--                          :m_meshInterface(meshInterface),
+--                          m_callback(callback)
+--                  {
+--                  }
+--
+--                  virtual void processNode(int nodeSubPart, int nodeTriangleIndex)
+--                  {
+--                          impact.d3.Vector m_triangle[3];
+--                          const unsigned char *vertexbase;
+--                          int numverts;
+--                          PHY_ScalarType type;
+--                          int stride;
+--                          const unsigned char *indexbase;
+--                          int indexstride;
+--                          int numfaces;
+--                          PHY_ScalarType indicestype;
+--
+--                          m_meshInterface->getLockedReadOnlyVertexIndexBase(
+--                                  &vertexbase,
+--                                  numverts,
+--                                  type,
+--                                  stride,
+--                                  &indexbase,
+--                                  indexstride,
+--                                  numfaces,
+--                                  indicestype,
+--                                  nodeSubPart);
+--
+--                          unsigned int* gfxbase = (unsigned int*)(indexbase+nodeTriangleIndex*indexstride);
+--                          btAssert(indicestype==PHY_INTEGER||indicestype==PHY_SHORT);
+--
+--                          const impact.d3.Vector& meshScaling = m_meshInterface->getScaling();
+--                          for (int j=2;j>=0;j--)
+--                          {
+--                                  int graphicsindex = indicestype==PHY_SHORT?((unsigned short*)gfxbase)[j]:gfxbase[j];
+--
+--                                  if (type == PHY_FLOAT)
+--                                  {
+--                                          float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(graphicsbase[0]*meshScaling.getX(),graphicsbase[1]*meshScaling.getY(),graphicsbase[2]*meshScaling.getZ());
+--                                  }
+--                                  else
+--                                  {
+--                                          double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(impact.d3.Scalar(graphicsbase[0])*meshScaling.getX(),impact.d3.Scalar(graphicsbase[1])*meshScaling.getY(),impact.d3.Scalar(graphicsbase[2])*meshScaling.getZ());
+--                                  }
+--                          }
+--
+--                          /* Perform ray vs. triangle collision here */
+--                          m_callback->processTriangle(m_triangle,nodeSubPart,nodeTriangleIndex);
+--                          m_meshInterface->unLockReadOnlyVertexBase(nodeSubPart);
+--                  }
+--          };
+--
+--          MyNodeOverlapCallback        myNodeCallback(callback,m_meshInterface);
+--
+--          m_bvh->reportRayOverlappingNodex(&myNodeCallback,raySource,rayTarget);
+--  }
+--
+--  void        impact.d3.Shape.concave.triangle_mesh.bvh::performConvexcast (impact.d3.triangle_Callback* callback, const impact.d3.Vector& raySource, const impact.d3.Vector& rayTarget, const impact.d3.Vector& aabbMin, const impact.d3.Vector& aabbMax)
+--  {
+--          struct        MyNodeOverlapCallback : public btNodeOverlapCallback
+--          {
+--                  impact.d3.striding_Mesh*        m_meshInterface;
+--                  impact.d3.triangle_Callback* m_callback;
+--
+--                  MyNodeOverlapCallback(impact.d3.triangle_Callback* callback,impact.d3.striding_Mesh* meshInterface)
+--                          :m_meshInterface(meshInterface),
+--                          m_callback(callback)
+--                  {
+--                  }
+--
+--                  virtual void processNode(int nodeSubPart, int nodeTriangleIndex)
+--                  {
+--                          impact.d3.Vector m_triangle[3];
+--                          const unsigned char *vertexbase;
+--                          int numverts;
+--                          PHY_ScalarType type;
+--                          int stride;
+--                          const unsigned char *indexbase;
+--                          int indexstride;
+--                          int numfaces;
+--                          PHY_ScalarType indicestype;
+--
+--                          m_meshInterface->getLockedReadOnlyVertexIndexBase(
+--                                  &vertexbase,
+--                                  numverts,
+--                                  type,
+--                                  stride,
+--                                  &indexbase,
+--                                  indexstride,
+--                                  numfaces,
+--                                  indicestype,
+--                                  nodeSubPart);
+--
+--                          unsigned int* gfxbase = (unsigned int*)(indexbase+nodeTriangleIndex*indexstride);
+--                          btAssert(indicestype==PHY_INTEGER||indicestype==PHY_SHORT);
+--
+--                          const impact.d3.Vector& meshScaling = m_meshInterface->getScaling();
+--                          for (int j=2;j>=0;j--)
+--                          {
+--                                  int graphicsindex = indicestype==PHY_SHORT?((unsigned short*)gfxbase)[j]:gfxbase[j];
+--
+--                                  if (type == PHY_FLOAT)
+--                                  {
+--                                          float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(graphicsbase[0]*meshScaling.getX(),graphicsbase[1]*meshScaling.getY(),graphicsbase[2]*meshScaling.getZ());
+--                                  }
+--                                  else
+--                                  {
+--                                          double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(impact.d3.Scalar(graphicsbase[0])*meshScaling.getX(),impact.d3.Scalar(graphicsbase[1])*meshScaling.getY(),impact.d3.Scalar(graphicsbase[2])*meshScaling.getZ());
+--                                  }
+--                          }
+--
+--                          /* Perform ray vs. triangle collision here */
+--                          m_callback->processTriangle(m_triangle,nodeSubPart,nodeTriangleIndex);
+--                          m_meshInterface->unLockReadOnlyVertexBase(nodeSubPart);
+--                  }
+--          };
+--
+--          MyNodeOverlapCallback        myNodeCallback(callback,m_meshInterface);
+--
+--          m_bvh->reportBoxCastOverlappingNodex (&myNodeCallback, raySource, rayTarget, aabbMin, aabbMax);
+--  }
+--
+--  //perform bvh tree traversal and report overlapping triangles to 'callback'
+--  void        impact.d3.Shape.concave.triangle_mesh.bvh::processAllTriangles(impact.d3.triangle_Callback* callback,const impact.d3.Vector& aabbMin,const impact.d3.Vector& aabbMax) const
+--  {
+--
+--  #ifdef DISABLE_BVH
+--          //brute force traverse all triangles
+--          impact.d3.Shape.concave.triangle_mesh::processAllTriangles(callback,aabbMin,aabbMax);
+--  #else
+--
+--          //first get all the nodes
+--
+--
+--          struct        MyNodeOverlapCallback : public btNodeOverlapCallback
+--          {
+--                  impact.d3.striding_Mesh*        m_meshInterface;
+--                  impact.d3.triangle_Callback*                m_callback;
+--                  impact.d3.Vector                                m_triangle[3];
+--
+--
+--                  MyNodeOverlapCallback(impact.d3.triangle_Callback* callback,impact.d3.striding_Mesh* meshInterface)
+--                          :m_meshInterface(meshInterface),
+--                          m_callback(callback)
+--                  {
+--                  }
+--
+--                  virtual void processNode(int nodeSubPart, int nodeTriangleIndex)
+--                  {
+--                          const unsigned char *vertexbase;
+--                          int numverts;
+--                          PHY_ScalarType type;
+--                          int stride;
+--                          const unsigned char *indexbase;
+--                          int indexstride;
+--                          int numfaces;
+--                          PHY_ScalarType indicestype;
+--
+--
+--                          m_meshInterface->getLockedReadOnlyVertexIndexBase(
+--                                  &vertexbase,
+--                                  numverts,
+--                                  type,
+--                                  stride,
+--                                  &indexbase,
+--                                  indexstride,
+--                                  numfaces,
+--                                  indicestype,
+--                                  nodeSubPart);
+--
+--                          unsigned int* gfxbase = (unsigned int*)(indexbase+nodeTriangleIndex*indexstride);
+--                          btAssert(indicestype==PHY_INTEGER||indicestype==PHY_SHORT||indicestype==PHY_UCHAR);
+--
+--                          const impact.d3.Vector& meshScaling = m_meshInterface->getScaling();
+--                          for (int j=2;j>=0;j--)
+--                          {
+--
+--                                  int graphicsindex = indicestype==PHY_SHORT?((unsigned short*)gfxbase)[j]:indicestype==PHY_INTEGER?gfxbase[j]:((unsigned char*)gfxbase)[j];
+--
+--
+--  #ifdef DEBUG_TRIANGLE_MESH
+--                                  printf("%d ,",graphicsindex);
+--  #endif //DEBUG_TRIANGLE_MESH
+--                                  if (type == PHY_FLOAT)
+--                                  {
+--                                          float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(
+--                                                                                                                                                  graphicsbase[0]*meshScaling.getX(),
+--                                                                                                                                                  graphicsbase[1]*meshScaling.getY(),
+--                                                                                                                                                  graphicsbase[2]*meshScaling.getZ());
+--                                  }
+--                                  else
+--                                  {
+--                                          double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
+--
+--                                          m_triangle[j] = impact.d3.Vector(
+--                                                  impact.d3.Scalar(graphicsbase[0])*meshScaling.getX(),
+--                                                  impact.d3.Scalar(graphicsbase[1])*meshScaling.getY(),
+--                                                  impact.d3.Scalar(graphicsbase[2])*meshScaling.getZ());
+--                                  }
+--  #ifdef DEBUG_TRIANGLE_MESH
+--                                  printf("triangle vertices:%f,%f,%f\n",triangle[j].x(),triangle[j].y(),triangle[j].z());
+--  #endif //DEBUG_TRIANGLE_MESH
+--                          }
+--
+--                          m_callback->processTriangle(m_triangle,nodeSubPart,nodeTriangleIndex);
+--                          m_meshInterface->unLockReadOnlyVertexBase(nodeSubPart);
+--                  }
+--
+--          };
+--
+--          MyNodeOverlapCallback        myNodeCallback(callback,m_meshInterface);
+--
+--          m_bvh->reportAabbOverlappingNodex(&myNodeCallback,aabbMin,aabbMax);
+--
+--
+--  #endif//DISABLE_BVH
+--
+--
+--  }
+--
+--  void   impact.d3.Shape.concave.triangle_mesh.bvh::setLocalScaling(const impact.d3.Vector& scaling)
+--  {
+--     if ((getLocalScaling() -scaling).length2() > SIMD_EPSILON)
+--     {
+--        impact.d3.Shape.concave.triangle_mesh::setLocalScaling(scaling);
+--            buildOptimizedBvh();
+--     }
+--  }
+--
+--  void   impact.d3.Shape.concave.triangle_mesh.bvh::buildOptimizedBvh()
+--  {
+--          if (m_ownsBvh)
+--          {
+--                  m_bvh->~impact.d3.collision.quantized_Bvh.optimized();
+--                  btAlignedFree(m_bvh);
+--          }
+--          ///m_localAabbMin/m_localAabbMax is already re-calculated in impact.d3.Shape.concave.triangle_mesh. We could just scale aabb, but this needs some more work
+--          void* mem = btAlignedAlloc(sizeof(impact.d3.collision.quantized_Bvh.optimized),16);
+--          m_bvh = new(mem) impact.d3.collision.quantized_Bvh.optimized();
+--          //rebuild the bvh...
+--          m_bvh->build(m_meshInterface,m_useQuantizedAabbCompression,m_localAabbMin,m_localAabbMax);
+--          m_ownsBvh = true;
+--  }
+--
+--  void   impact.d3.Shape.concave.triangle_mesh.bvh::setOptimizedBvh(impact.d3.collision.quantized_Bvh.optimized* bvh, const impact.d3.Vector& scaling)
+--  {
+--     btAssert(!m_bvh);
+--     btAssert(!m_ownsBvh);
+--
+--     m_bvh = bvh;
+--     m_ownsBvh = false;
+--     // update the scaling without rebuilding the bvh
+--     if ((getLocalScaling() -scaling).length2() > SIMD_EPSILON)
+--     {
+--        impact.d3.Shape.concave.triangle_mesh::setLocalScaling(scaling);
+--     }
+--  }
+--

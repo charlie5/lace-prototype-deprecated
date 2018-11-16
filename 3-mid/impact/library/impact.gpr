@@ -1,0 +1,48 @@
+with "math",
+     "swig",   -- tbd: remove swig
+     "shared";
+     
+project Impact is
+
+   for Source_Dirs use ("../source",
+                        "../source/2d", 
+                        "../source/2d/collision", 
+                        "../source/2d/collision/shapes", 
+                        "../source/2d/dynamics", 
+                        "../source/2d/dynamics/contacts", 
+                        "../source/2d/dynamics/joints", 
+                        "../source/2d/orbs", 
+                        "../source/2d/orbs/collision", 
+                        "../source/2d/orbs/collision/shapes", 
+                        "../source/2d/orbs/dynamics", 
+                        "../source/2d/orbs/dynamics/contacts", 
+                        "../source/2d/orbs/dynamics/joints", 
+                        "../source/3d", 
+                        "../source/3d/math", 
+                        "../source/3d/collision", 
+                        "../source/3d/collision/broadphase", 
+                        "../source/3d/collision/narrowphase",
+                        "../source/3d/collision/shapes",
+                        "../source/3d/collision/dispatch",
+                        "../source/3d/dynamics",
+                        "../source/3d/dynamics/joints");
+                        
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Library_Name use "impact";
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler renames Shared.Compiler;
+--   package Compiler is
+--      for Default_Switches ("ada") use ("-gnat12");
+--   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+end Impact;
+
