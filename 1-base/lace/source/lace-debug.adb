@@ -14,8 +14,8 @@ is
       Status := feenableexcept (16#02#);
       Status := feenableexcept (16#04#);
       Status := feenableexcept (16#08#);
-      --        Status := feenableexcept (16#10#);     -- underflow
-      --        Status := feenableexcept (16#20#);     -- inexact
+      Status := feenableexcept (16#10#);     -- underflow
+      Status := feenableexcept (16#20#);     -- inexact
    end enable_float_Exceptions;
 
 end lace.Debug;

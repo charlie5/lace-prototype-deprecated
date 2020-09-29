@@ -9,8 +9,8 @@ with
      ada.environment_Variables,
      ada.Text_IO,
 
-     system.OS_Lib,
-     system.Strings;
+     gnat.OS_Lib,
+     gnat.Strings;
 
 
 package body lace.Environ
@@ -19,9 +19,9 @@ is
    use ada.Text_IO;
 
 
-   function Argument_String_To_List (Arg_String : String) return System.OS_Lib.Argument_List_Access
+   function Argument_String_To_List (Arg_String : String) return gnat.OS_Lib.Argument_List_Access
    is
-      use System.OS_Lib;
+      use gnat.OS_Lib;
 
       Max_Args : constant Integer                      := Arg_String'Length;
       New_Argv :          Argument_List (1 .. Max_Args);
@@ -108,7 +108,7 @@ is
 
    function Path_to (the_Command : in String) return String   -- tbd: use os_lib procedure instead !
    is
-      use GNAT.Expect,  System.OS_Lib;
+      use gnat.Expect,  gnat.OS_Lib;
 
       the_Status     : aliased  Integer;
       the_Args       :          Argument_List_Access := Argument_String_To_List (the_Command);
@@ -181,7 +181,7 @@ is
       if pipe_Index = 0
       then
          declare
-            use GNAT.Expect, System.OS_Lib;
+            use GNAT.Expect, gnat.OS_Lib;
 
             function Arguments return String
             is
@@ -221,8 +221,7 @@ is
 
    function Expand (the_File_GLOB : in String) return String
    is
-      use ada.Strings.Fixed;
-      use GNAT.Expect, System.OS_Lib;
+      use GNAT.Expect;
 
       the_Path     : constant String               := "/usr/local/bin/";
       the_FileName : constant String               := "lace_environ_temporary_shell.sh";
@@ -237,7 +236,7 @@ is
 
       declare
          the_Status : aliased  Integer;
-         the_Arg    : constant system.strings.String_access := new String' (the_Path & the_Filename);
+         the_Arg    : constant gnat.strings.String_access := new String' (the_Path & the_Filename);
          the_Output : constant String                       := get_Command_Output (command    => Path_to ("bash"),
                                                                                    arguments  => (1 => the_Arg),
                                                                                    input      => "",
@@ -256,7 +255,7 @@ is
 
 
       the_Status     : aliased  Integer;
-      the_Username   : constant system.strings.String_access := new String' (for_User);
+      the_Username   : constant gnat.strings.String_access := new String' (for_User);
       command_Output : constant String                       := get_Command_Output (command    => "/bin/passwd",
                                                                                     arguments  => (1 => the_Username),
                                                                                     input      => "",
@@ -279,13 +278,13 @@ is
       function command_Output return String
       is
          the_Status     : aliased  Integer;
-         the_Username   : constant system.strings.String_access := new String' (Name);
+         the_Username   : constant gnat.strings.String_access := new String' (Name);
 
-         Arg_1          : constant system.strings.String_access := new String' ("-m");
-         Arg_2          :          system.strings.String_access;
-         Arg_3          :          system.strings.String_access;
-         Arg_4          :          system.strings.String_access;
-         Arg_5          :          system.strings.String_access;
+         Arg_1          : constant gnat.strings.String_access := new String' ("-m");
+         Arg_2          :          gnat.strings.String_access;
+         Arg_3          :          gnat.strings.String_access;
+         Arg_4          :          gnat.strings.String_access;
+         Arg_5          :          gnat.strings.String_access;
 
       begin
          if Super
@@ -330,8 +329,8 @@ is
       use GNAT.Expect;
 
       the_Status     : aliased  Integer;
-      the_Username   : constant system.strings.String_access := new String' (Name);
-      Arg_1          : constant system.strings.String_access := new String' ("-r");
+      the_Username   : constant gnat.strings.String_access := new String' (Name);
+      Arg_1          : constant gnat.strings.String_access := new String' ("-r");
       command_Output : constant String                       := get_Command_Output (command    => "/usr/sbin/userdel",
                                                                                     arguments  => (1 => the_Username,
                                                                                                    2 => Arg_1),
@@ -355,9 +354,9 @@ is
 
       the_Status     : aliased  Integer;
 
-      the_Folder     : constant system.strings.String_access := new String' (Folder);
-      Arg_1          : constant system.strings.String_access := new String' ("-R");
-      Arg_2          : constant system.strings.String_access := new String' (To);
+      the_Folder     : constant gnat.strings.String_access := new String' (Folder);
+      Arg_1          : constant gnat.strings.String_access := new String' ("-R");
+      Arg_2          : constant gnat.strings.String_access := new String' (To);
 
       command_Output : constant String                       := get_Command_Output (command    => "/bin/chmod",
                                                                                     arguments  => (1 => Arg_1,
@@ -382,9 +381,9 @@ is
 
       the_Status     : aliased  Integer;
 
-      the_Folder     : constant system.strings.String_access := new String' (Folder);
-      Arg_1          : constant system.strings.String_access := new String' ("-R");
-      Arg_2          : constant system.strings.String_access := new String' (To);
+      the_Folder     : constant gnat.strings.String_access := new String' (Folder);
+      Arg_1          : constant gnat.strings.String_access := new String' ("-R");
+      Arg_2          : constant gnat.strings.String_access := new String' (To);
 
       command_Output : constant String                       := get_Command_Output (command    => "/bin/chown",
                                                                                     arguments  => (1 => Arg_1,
@@ -412,9 +411,9 @@ is
 
    procedure touch (fileName : in String)
    is
-      use ada.Strings.fixed,  gnat.Expect;
+      use gnat.Expect;
 
-      tar_Filename        : constant system.strings.String_access := new String'(fileName);
+      tar_Filename        : constant gnat.strings.String_access := new String'(fileName);
       the_Status          : aliased  Integer;
       command_Output      : constant String                       := get_Command_Output (command    => "/usr/bin/touch",
                                                                                          arguments  => (1 => tar_Filename),
@@ -451,8 +450,6 @@ is
    procedure save (the_Text      : in String;
                    to_Filename   : in String)
    is
-      use ada.Text_IO;
-
       the_File : File_Type;
    begin
       create (the_File, Out_File, to_Filename);
@@ -469,8 +466,8 @@ is
       if Tail (the_Filename, 7) = ".tar.gz"
       then
          declare
-            tar_Options         : constant system.strings.String_access := new String'("-xf");
-            tar_Filename        : constant system.strings.String_access := new String'(the_Filename);
+            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
+            tar_Filename        : constant gnat.strings.String_access := new String'(the_Filename);
             the_Status          : aliased  Integer;
             command_Output      : constant String                       := get_Command_Output (command    => "tar",
                                                                                                arguments  => (1 => tar_Options,
@@ -490,7 +487,7 @@ is
       elsif Tail (the_Filename, 8) = ".tar.bz2"
       then
          declare
-            bunzip_Filename     : constant system.strings.String_access := new String'(the_Filename);
+            bunzip_Filename     : constant gnat.strings.String_access := new String'(the_Filename);
             the_Status          : aliased Integer;
             command_Output      : constant String                       := get_Command_Output (command    => "bunzip2",
                                                                                                arguments  => (1 => bunzip_Filename),
@@ -507,8 +504,8 @@ is
          end;
 
          declare
-            tar_Options         : constant system.strings.String_access := new String'("-xf");
-            tar_Filename        : constant system.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4));
+            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
+            tar_Filename        : constant gnat.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4));
             the_Status          : aliased  Integer;
             command_Output      : constant String                       := get_Command_Output (command    => "gtar",
                                                                                                arguments  => (1 => tar_Options,
@@ -529,7 +526,7 @@ is
       elsif Tail (the_Filename, 4) = ".tgz"
       then
          declare
-            gunzip_Filename     : constant system.strings.String_access := new String'(the_Filename);
+            gunzip_Filename     : constant gnat.strings.String_access := new String'(the_Filename);
             the_Status          : aliased  Integer;
             command_Output      : constant String                       := get_Command_Output (command    => "gunzip",
                                                                                                arguments  => (1 => gunzip_Filename),
@@ -546,8 +543,8 @@ is
          end;
 
          declare
-            tar_Options         : constant system.strings.String_access := new String'("-xf");
-            tar_Filename        : constant system.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4) & ".tar");
+            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
+            tar_Filename        : constant gnat.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4) & ".tar");
             the_Status          : aliased  Integer;
             command_Output      : constant String                       := get_Command_Output (command    => "gtar",
                                                                                                arguments  => (1 => tar_Options,
@@ -576,8 +573,6 @@ is
 
    procedure link (From, To : in String)
    is
-      use Posix;
-
       Unused : String := Output_of ("ln -s " & From & " " & To);
    begin
       null;
@@ -663,7 +658,7 @@ is
 
    function  home_Folder (user_Name : in String) return String
    is
-      use Posix,  Posix.User_Database,  posix.Process_Identification;
+      use Posix,  Posix.User_Database;
 
       User_in_DB : constant User_Database_Item := Get_User_Database_Item (to_Posix_String (user_Name));
    begin
@@ -694,7 +689,7 @@ is
 
    function to_octal_Mode (Self : in POSIX.Permissions.Permission_Set) return String
    is
-      use posix.process_Identification, posix.permissions;
+      use posix.permissions;
 
       function octal_Permissions (Bit_3, Bit_2, Bit_1 : in Boolean) return String
       is

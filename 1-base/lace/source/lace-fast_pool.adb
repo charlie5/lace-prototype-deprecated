@@ -55,6 +55,7 @@ is
    is
    begin
       Pool.free (Self);
+      Self := null;
    end free;
 
 
