@@ -1,4 +1,3 @@
-
 package body lace.fast_Pool
 is
 
@@ -57,6 +56,5 @@ is
       Pool.free (Self);
       Self := null;
    end free;
-
 
 end lace.fast_Pool;

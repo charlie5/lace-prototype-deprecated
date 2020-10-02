@@ -1,4 +1,3 @@
-
 generic
    type Item is private;
    type View is access all Item;
