@@ -1,95 +1,86 @@
 with
-     posix.User_Database,
-     posix.Process_Identification,
+     posix.user_Database,
+     posix.process_Identification,
 
      gnat.Expect,
+     gnat.OS_Lib,
+     gnat.Strings,
 
      ada.Strings.fixed,
      ada.Directories,
      ada.environment_Variables,
-     ada.Text_IO,
-
-     gnat.OS_Lib,
-     gnat.Strings;
+     ada.Text_IO;
 
 
 package body lace.Environ
 is
-
    use ada.Text_IO;
 
 
-   function Argument_String_To_List (Arg_String : String) return gnat.OS_Lib.Argument_List_Access
+   function argument_String_to_List (Arg_String : String) return gnat.OS_Lib.Argument_List_Access
    is
       use gnat.OS_Lib;
 
       Max_Args : constant Integer                      := Arg_String'Length;
       New_Argv :          Argument_List (1 .. Max_Args);
       New_Argc :          Natural                      := 0;
-      Idx      :          Integer;
-
+      Idx      :          Integer                      := Arg_String'First;
    begin
-      Idx := Arg_String'First;
-
       loop
          exit when Idx > Arg_String'Last;
 
          declare
-            Quoted  : Boolean := False;
-            Backqd  : Boolean := False;
-            Old_Idx : Integer;
-
+            Quoted  :          Boolean := False;
+            Backqd  :          Boolean := False;
+            Old_Idx : constant Integer := Idx;
          begin
-            Old_Idx := Idx;
-
             loop
-               --  An unquoted space is the end of an argument
-
+               --  An unquoted space is the end of an argument.
+               --
                if         not (Backqd or Quoted)
                  and then Arg_String (Idx) = ' '
                then
                   exit;
 
-               --  Start of a quoted string
-
+               --  Start of a quoted string.
+               --
                elsif      not (Backqd or Quoted)
                  and then Arg_String (Idx) = '"'
                then
                   Quoted := True;
 
-               --  End of a quoted string and end of an argument
-
+               --  End of a quoted string and end of an argument.
+               --
                elsif      (Quoted and not Backqd)
                  and then Arg_String (Idx) = '"'
                then
                   Idx := Idx + 1;
                   exit;
 
-               --  Following character is backquoted
-
+               --  Following character is backquoted.
+               --
                elsif Arg_String (Idx) = '\'
                then
                   Backqd := True;
 
-               --  Turn off backquoting after advancing one character
-
+               --  Turn off backquoting after advancing one character.
+               --
                elsif Backqd
                then
                   Backqd := False;
-
                end if;
 
                Idx := Idx + 1;
                exit when Idx > Arg_String'Last;
             end loop;
 
-            --  Found an argument
-
+            --  Found an argument.
+            --
             New_Argc            := New_Argc + 1;
             New_Argv (New_Argc) := new String'(Arg_String (Old_Idx .. Idx - 1));
 
-            --  Skip extraneous spaces
-
+            --  Skip extraneous spaces.
+            --
             while      Idx             <= Arg_String'Last
               and then Arg_String (Idx) = ' '
             loop
@@ -98,90 +89,84 @@ is
          end;
       end loop;
 
-
-      return new Argument_List' (New_Argv (1 .. New_Argc));
-   end Argument_String_To_List;
-
+      return new Argument_List'(New_Argv (1 .. New_Argc));
+   end argument_String_to_List;
 
 
 
-
-   function Path_to (the_Command : in String) return String   -- tbd: use os_lib procedure instead !
+   function Path_to (Command : in String) return String   -- tbd: use os_lib procedure instead !
    is
-      use gnat.Expect,  gnat.OS_Lib;
+      use gnat.Expect,
+          gnat.OS_Lib;
 
-      the_Status     : aliased  Integer;
-      the_Args       :          Argument_List_Access := Argument_String_To_List (the_Command);
-      command_Output : constant String               := get_Command_Output (command    => "/usr/bin/which",
-                                                                            arguments  => the_Args.all,
-                                                                            input      => "",
-                                                                            status     => the_Status'Access,
-                                                                            err_to_out => True);
+      Args : Argument_List_Access := Argument_String_To_List (Command);
+
+      Status : aliased  Integer;
+      Output : constant String := get_Command_Output (command    => "/usr/bin/which",
+                                                      arguments  => Args.all,
+                                                      input      => "",
+                                                      status     => Status'Access,
+                                                      err_to_out => True);
    begin
-      free (the_Args);
-      return command_Output;
+      free (Args);
+      return Output;
    end Path_to;
 
 
 
-
-   function shell_Output_of (the_Command : in String) return String
+   function shell_Output_of (Command : in String) return String
    is
       use ada.Environment_Variables,
-          ada.Strings.Fixed;
+          ada.Strings.fixed;
 
-      the_Path     : constant String               := Current_Folder & "/.lace-bin/";
-      the_FileName : constant String               := "lace_environ_temporary_shell.sh";    -- tbd: Add a unique number here so simultaneous calls don't tread on each other.
-      the_File     :          ada.Text_IO.File_Type;
-
+      Path     : constant String   := Current_Folder & "/.lace-bin/";
+      FileName : constant String   := "lace_environ_temporary_shell.sh";   -- tbd: Add a unique number here so simultaneous calls don't tread on each other.
+      File     :          File_Type;
    begin
-      verify_Folder (the_Path);
+      verify_Folder (Path);
 
-      if Index (Value ("PATH"), the_Path) = 0
+      if Index (Value ("PATH"), Path) = 0
       then
          set ("PATH",
-              the_Path & ":" & Value ("PATH"));
+              Path & ":" & Value ("PATH"));
       end if;
 
-      create   (the_File,  out_File,  the_Path & the_Filename);
-      put_Line (the_File,  the_Command);
-      close    (the_File);
+      create   (File, out_File, Path & Filename);
+      put_Line (File, Command);
+      close    (File);
 
-      change_Mode (the_Path & the_Filename, to => "a+rwx");
+      change_Mode (Path & Filename, to => "a+rwx");
 
-      return Output_of (the_command => the_Filename);
+      return Output_of (command => Filename);
    end shell_Output_of;
 
 
 
-
-
-   function Output_of (the_Command : in String;
-                       Input       : in String := "") return String
+   function Output_of (Command : in String;
+                       Input   : in String := "") return String
    is
-      use ada.Strings.Fixed;
+      use ada.Strings.fixed;
 
-      pipe_Index  : constant Natural := Index (the_Command, "|");
-      the_Status  : aliased  Integer;
-      space_Index : constant Natural := Index (the_Command, " ");
+      pipe_Index  : constant Natural := Index (Command, "|");
+      space_Index : constant Natural := Index (Command, " ");
 
-
-      function Command return String
+      function command_Name return String
       is
       begin
          if space_Index = 0
          then
-            return the_Command;
+            return Command;
          else
-            return the_Command (the_Command'First .. space_Index-1);
+            return Command (Command'First .. space_Index - 1);
          end if;
-      end Command;
+      end command_Name;
 
    begin
       if pipe_Index = 0
       then
          declare
-            use GNAT.Expect, gnat.OS_Lib;
+            use gnat.Expect,
+                gnat.OS_Lib;
 
             function Arguments return String
             is
@@ -190,25 +175,33 @@ is
                then
                   return "";
                else
-                  return the_Command (space_Index+1 .. the_Command'Last);
+                  return Command (space_Index + 1 .. Command'Last);
                end if;
             end Arguments;
 
-            arg_List   :          Argument_List_Access := Argument_String_To_List (Arguments);
-            the_Output : constant String               := get_Command_Output (command    => Path_to (Command),
-                                                                              arguments  => arg_List.all,
-                                                                              input      => Input,
-                                                                              status     => the_Status'Access,
-                                                                              err_to_out => True);
+            arg_List : Argument_List_Access := Argument_String_to_List (Arguments);
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => Path_to (command_Name),
+                                                            arguments  => arg_List.all,
+                                                            input      => Input,
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
             free (arg_List);
-            return the_Output;
+
+            if Status /= 0
+            then
+               raise Error with command_Name & ": (" & Integer'Image (Status) & ") " & Output;
+            end if;
+
+            return Output;
          end;
 
       else
          declare
-            Command_1 : constant String := the_Command (the_Command'First .. pipe_Index-1);
-            Command_2 : constant String := the_Command (pipe_Index+1      .. the_Command'Last);
+            Command_1 : constant String := Command (Command'First  .. pipe_Index - 1);
+            Command_2 : constant String := Command (pipe_Index + 1 .. Command'Last);
          begin
             return Output_of (Command_2, input => Output_of (Command_1));
          end;
@@ -218,184 +211,219 @@ is
 
 
 
-
-   function Expand (the_File_GLOB : in String) return String
+   function Expand (File_GLOB : in String) return String
    is
-      use GNAT.Expect;
+      use gnat.Expect;
 
-      the_Path     : constant String               := "/usr/local/bin/";
-      the_FileName : constant String               := "lace_environ_temporary_shell.sh";
-      the_File     :          ada.Text_IO.File_Type;
+      Path     : constant String := "/usr/local/bin/";
+      FileName : constant String := "lace_environ_temporary_shell.sh";
 
+      File     : File_Type;
    begin
-      create   (the_File,  out_File,  the_Path & the_Filename);
-      put_Line (the_File,  "echo " & the_File_GLOB);
-      close    (the_File);
+      create   (File, out_File, Path & Filename);
+      put_Line (File, "echo " & File_GLOB);
+      close    (File);
 
-      change_Mode (the_Path & the_Filename, to => "a+rwx");
+      change_Mode (Path & Filename, to => "a+rwx");
 
       declare
-         the_Status : aliased  Integer;
-         the_Arg    : constant gnat.strings.String_access := new String' (the_Path & the_Filename);
-         the_Output : constant String                       := get_Command_Output (command    => Path_to ("bash"),
-                                                                                   arguments  => (1 => the_Arg),
-                                                                                   input      => "",
-                                                                                   status     => the_Status'Access,
-                                                                                   err_to_out => True);
+         use gnat.Strings;
+
+         Arg : String_access := new String'(Path & Filename);
+
+         Status : aliased  Integer;
+         Output : constant String := get_Command_Output (command    => Path_to ("bash"),
+                                                         arguments  => (1 => Arg),
+                                                         input      => "",
+                                                         status     => Status'Access,
+                                                         err_to_out => True);
       begin
-         return the_Output;
+         free (Arg);
+
+         if Status /= 0
+         then
+            raise Error with "bash: (" & Integer'Image (Status) & ") " & Output;
+         end if;
+
+         return Output;
       end;
    end Expand;
 
 
 
-   procedure set_Password (for_User : in String)
+   procedure set_Password (User : in String)
    is
-      use GNAT.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
+      Username : String_access := new String' (User);
 
-      the_Status     : aliased  Integer;
-      the_Username   : constant gnat.strings.String_access := new String' (for_User);
-      command_Output : constant String                       := get_Command_Output (command    => "/bin/passwd",
-                                                                                    arguments  => (1 => the_Username),
-                                                                                    input      => "",
-                                                                                    status     => the_Status'Access,
-                                                                                    err_to_out => True);
+      Status   : aliased  Integer;
+      Output   : constant String := get_Command_Output (command    => "/bin/passwd",
+                                                        arguments  => (1 => Username),
+                                                        input      => "",
+                                                        status     => Status'Access,
+                                                        err_to_out => True);
    begin
-      if command_Output (command_Output'First .. command_Output'First + 16) /= "Changing password"
+      free (Username);
+
+      if Status /= 0
       then
-         raise Error with command_Output;
+         raise Error with "passwd: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end set_Password;
 
 
 
-   procedure add_User (Name : in String;   Super : in Boolean := False)
+   procedure add_User (Name  : in String;
+                       Super : in Boolean := False)
    is
-      use GNAT.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
+      Status : aliased Integer;
 
-      function command_Output return String
-      is
-         the_Status     : aliased  Integer;
-         the_Username   : constant gnat.strings.String_access := new String' (Name);
-
-         Arg_1          : constant gnat.strings.String_access := new String' ("-m");
-         Arg_2          :          gnat.strings.String_access;
-         Arg_3          :          gnat.strings.String_access;
-         Arg_4          :          gnat.strings.String_access;
-         Arg_5          :          gnat.strings.String_access;
-
-      begin
-         if Super
-         then
-            Arg_2 :=  new String' ("-G");
-            Arg_3 :=  new String' ("sudo");
-
-            Arg_4 :=  new String' ("-G");
-            Arg_5 :=  new String' ("root");
-
-            return get_Command_Output (command    => "/usr/sbin/useradd",
-                                       arguments  => (1 => the_Username,
-                                                      2 => Arg_1,
-                                                      3 => Arg_2,
-                                                      4 => Arg_3,
-                                                      5 => Arg_4,
-                                                      6 => Arg_5),
-                                       input      => "",
-                                       status     => the_Status'Access,
-                                       err_to_out => True);
-         else
-            return get_Command_Output (command    => "/usr/sbin/useradd",
-                                       arguments  => (1 => the_Username,
-                                                      2 => Arg_1),
-                                       input      => "",
-                                       status     => the_Status'Access,
-                                       err_to_out => True);
-         end if;
-      end command_Output;
-
+      Username : String_access := new String'(Name);
+      Arg_1    : String_access := new String'("-m");
    begin
-      if command_Output /= ""
+      if Super
       then
-         raise Error with command_Output;
+         declare
+            Arg_2 : String_access := new String'("-G");
+            Arg_3 : String_access := new String'("sudo");
+            Arg_4 : String_access := new String'("-G");
+            Arg_5 : String_access := new String'("root");
+
+            Output : constant String := get_Command_Output (command    => "/usr/sbin/useradd",
+                                                            arguments  => (1 => Username,
+                                                                           2 => Arg_1,
+                                                                           3 => Arg_2,
+                                                                           4 => Arg_3,
+                                                                           5 => Arg_4,
+                                                                           6 => Arg_5),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
+         begin
+            free (Username);
+            free (Arg_1);
+            free (Arg_2);
+            free (Arg_3);
+            free (Arg_4);
+            free (Arg_5);
+
+            if Status /= 0
+            then
+               raise Error with "useradd: (" & Integer'Image (Status) & ") " & Output;
+            end if;
+         end;
+      else
+         declare
+            Output : constant String := get_Command_Output (command    => "/usr/sbin/useradd",
+                                                            arguments  => (1 => Username,
+                                                                           2 => Arg_1),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
+         begin
+            free (Username);
+            free (Arg_1);
+
+            if Status /= 0
+            then
+               raise Error with "useradd: (" & Integer'Image (Status) & ") " & Output;
+            end if;
+         end;
       end if;
+
    end add_User;
 
 
 
    procedure rid_User (Name : in String)
    is
-      use GNAT.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
-      the_Status     : aliased  Integer;
-      the_Username   : constant gnat.strings.String_access := new String' (Name);
-      Arg_1          : constant gnat.strings.String_access := new String' ("-r");
-      command_Output : constant String                       := get_Command_Output (command    => "/usr/sbin/userdel",
-                                                                                    arguments  => (1 => the_Username,
-                                                                                                   2 => Arg_1),
-                                                                                    input      => "",
-                                                                                    status     => the_Status'Access,
-                                                                                    err_to_out => True);
+      Username : String_access := new String' (Name);
+      Arg_1    : String_access := new String' ("-r");
+
+      Status   : aliased  Integer;
+      Output   : constant String := get_Command_Output (command    => "/usr/sbin/userdel",
+                                                        arguments  => (1 => Username,
+                                                                       2 => Arg_1),
+                                                        input      => "",
+                                                        status     => Status'Access,
+                                                        err_to_out => True);
    begin
-      if command_Output /= ""
+      free (Username);
+      free (Arg_1);
+
+      if Status /= 0
       then
-         raise Error with command_Output;
+         raise Error with "userdel: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end rid_User;
-
 
 
 
    procedure change_Mode (Folder : in String;
                           To     : in String)
    is
-      use GNAT.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
-      the_Status     : aliased  Integer;
+      the_Folder : String_access := new String'(Folder);
+      Arg_1      : String_access := new String'("-R");
+      Arg_2      : String_access := new String'(To);
 
-      the_Folder     : constant gnat.strings.String_access := new String' (Folder);
-      Arg_1          : constant gnat.strings.String_access := new String' ("-R");
-      Arg_2          : constant gnat.strings.String_access := new String' (To);
-
-      command_Output : constant String                       := get_Command_Output (command    => "/bin/chmod",
-                                                                                    arguments  => (1 => Arg_1,
-                                                                                                   2 => Arg_2,
-                                                                                                   3 => the_Folder),
-                                                                                    input      => "",
-                                                                                    status     => the_Status'Access,
-                                                                                    err_to_out => True);
+      Status : aliased  Integer;
+      Output : constant String := get_Command_Output (command    => "/bin/chmod",
+                                                      arguments  => (1 => Arg_1,
+                                                                     2 => Arg_2,
+                                                                     3 => the_Folder),
+                                                      input      => "",
+                                                      status     => Status'Access,
+                                                      err_to_out => True);
    begin
-      if command_Output /= ""
+      free (the_Folder);
+      free (Arg_1);
+      free (Arg_2);
+
+      if Status /= 0
       then
-         raise Error with command_Output;
+         raise Error with "chmod: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end change_Mode;
 
 
 
-   procedure change_Owner (Folder         : in String;
-                           To             : in String)
+   procedure change_Owner (Folder : in String;
+                           To     : in String)
    is
-      use GNAT.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
-      the_Status     : aliased  Integer;
+      the_Folder : String_access := new String'(Folder);
+      Arg_1      : String_access := new String'("-R");
+      Arg_2      : String_access := new String'(To);
 
-      the_Folder     : constant gnat.strings.String_access := new String' (Folder);
-      Arg_1          : constant gnat.strings.String_access := new String' ("-R");
-      Arg_2          : constant gnat.strings.String_access := new String' (To);
-
-      command_Output : constant String                       := get_Command_Output (command    => "/bin/chown",
-                                                                                    arguments  => (1 => Arg_1,
-                                                                                                   2 => Arg_2,
-                                                                                                   3 => the_Folder),
-                                                                                    input      => "",
-                                                                                    status     => the_Status'Access,
-                                                                                    err_to_out => True);
+      Status : aliased  Integer;
+      Output : constant String := get_Command_Output (command    => "/bin/chown",
+                                                      arguments  => (1 => Arg_1,
+                                                                     2 => Arg_2,
+                                                                     3 => the_Folder),
+                                                      input      => "",
+                                                      status     => Status'Access,
+                                                      err_to_out => True);
    begin
-      if command_Output /= ""
+      free (the_Folder);
+      free (Arg_1);
+      free (Arg_2);
+
+      if Status /= 0
       then
-         raise Error with command_Output;
+         raise Error with "chown: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end change_Owner;
 
@@ -409,23 +437,24 @@ is
 
 
 
-   procedure touch (fileName : in String)
+   procedure touch (Filename : in String)
    is
-      use gnat.Expect;
+      use gnat.Expect,
+          gnat.Strings;
 
-      tar_Filename        : constant gnat.strings.String_access := new String'(fileName);
-      the_Status          : aliased  Integer;
-      command_Output      : constant String                       := get_Command_Output (command    => "/usr/bin/touch",
-                                                                                         arguments  => (1 => tar_Filename),
-                                                                                         input      => "",
-                                                                                         status     => the_Status'Access,
-                                                                                         err_to_out => True);
+      the_Filename :          String_access := new String'(Filename);
+      Status       : aliased  Integer;
+      Output       : constant String        := get_Command_Output (command    => "/usr/bin/touch",
+                                                                   arguments  => (1 => the_Filename),
+                                                                   input      => "",
+                                                                   status     => Status'Access,
+                                                                   err_to_out => True);
    begin
-      if command_Output = ""
+      free (the_Filename);
+
+      if Status /= 0
       then
-         put_Line ("   touch: ok");
-      else
-         put_Line ("   touch: " & command_Output);
+         raise Error with "touch: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end touch;
 
@@ -433,139 +462,144 @@ is
 
    procedure switch_to_User (Named : in String)
    is
-      use Posix,  Posix.User_Database,  posix.Process_Identification;
+      use Posix,
+          posix.User_Database,
+          posix.Process_Identification;
 
-      User_in_DB : constant User_Database_Item := Get_User_Database_Item (to_Posix_String (Named));
-      the_User   : constant User_ID            := User_ID_Of (User_in_DB);
-
+      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (Named));
+      ID         : constant User_ID            := User_ID_of (User_in_DB);
    begin
-      Set_User_ID (the_User);
+      set_User_ID (ID);
    end switch_to_User;
 
 
 
-
-
-
-   procedure save (the_Text      : in String;
-                   to_Filename   : in String)
+   procedure save (the_Text : in String;
+                   Filename : in String)
    is
-      the_File : File_Type;
+      File : File_Type;
    begin
-      create (the_File, Out_File, to_Filename);
-      put    (the_File, the_Text);
-      close  (the_File);
+      create (File, out_File, Filename);
+      put    (File, the_Text);
+      close  (File);
    end save;
 
 
 
-   procedure decompress (the_Filename  : in String)
+   procedure decompress (Filename : in String)
    is
-      use ada.Strings.fixed,  gnat.Expect;
+      use ada.Strings.fixed,
+          gnat.Expect,
+          gnat.Strings;
    begin
-      if Tail (the_Filename, 7) = ".tar.gz"
+      if Tail (Filename, 7) = ".tar.gz"
       then
          declare
-            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
-            tar_Filename        : constant gnat.strings.String_access := new String'(the_Filename);
-            the_Status          : aliased  Integer;
-            command_Output      : constant String                       := get_Command_Output (command    => "tar",
-                                                                                               arguments  => (1 => tar_Options,
-                                                                                                              2 => tar_Filename),
-                                                                                               input      => "",
-                                                                                               status     => the_Status'Access,
-                                                                                               err_to_out => True);
+            tar_Options  : String_access := new String'("-xf");
+            tar_Filename : String_access := new String'(Filename);
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => "tar",
+                                                            arguments  => (1 => tar_Options,
+                                                                           2 => tar_Filename),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
-            if command_Output = ""
+            free (tar_Options);
+            free (tar_Filename);
+
+            if Status /= 0
             then
-               put_Line ("   tar: ok");
-            else
-               put_Line ("   tar: " & command_Output);
+               raise Error with "tar: (" & Integer'Image (Status) & ") " & Output;
             end if;
          end;
 
-      elsif Tail (the_Filename, 8) = ".tar.bz2"
+      elsif Tail (Filename, 8) = ".tar.bz2"
       then
          declare
-            bunzip_Filename     : constant gnat.strings.String_access := new String'(the_Filename);
-            the_Status          : aliased Integer;
-            command_Output      : constant String                       := get_Command_Output (command    => "bunzip2",
-                                                                                               arguments  => (1 => bunzip_Filename),
-                                                                                               input      => "",
-                                                                                               status     => the_Status'Access,
-                                                                                               err_to_out => True);
+            bunzip_Filename : String_access := new String'(Filename);
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => "bunzip2",
+                                                            arguments  => (1 => bunzip_Filename),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
-            if command_Output = ""
+            free (bunzip_Filename);
+
+            if Status /= 0
             then
-               put_Line ("   bunzip: ok");
-            else
-               put_Line ("   bunzip: " & command_Output);
+               raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
             end if;
          end;
 
          declare
-            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
-            tar_Filename        : constant gnat.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4));
-            the_Status          : aliased  Integer;
-            command_Output      : constant String                       := get_Command_Output (command    => "gtar",
-                                                                                               arguments  => (1 => tar_Options,
-                                                                                                              2 => tar_Filename),
-                                                                                               input      => "",
-                                                                                               status     => the_Status'Access,
-                                                                                               err_to_out => True);
+            tar_Options  : String_access := new String'("-xf");
+            tar_Filename : String_access := new String'(Head (Filename, Filename'Length - 4));
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => "gtar",
+                                                            arguments  => (1 => tar_Options,
+                                                                           2 => tar_Filename),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
-            if command_Output = ""
+            free (tar_Options);
+            free (tar_Filename);
+
+            if Status /= 0
             then
-               put_Line ("   gtar: ok");
-            else
-               put_Line ("   gtar: " & command_Output);
+               raise Error with "gtar: (" & Integer'Image (Status) & ") " & Output;
             end if;
          end;
 
-
-      elsif Tail (the_Filename, 4) = ".tgz"
+      elsif Tail (Filename, 4) = ".tgz"
       then
          declare
-            gunzip_Filename     : constant gnat.strings.String_access := new String'(the_Filename);
-            the_Status          : aliased  Integer;
-            command_Output      : constant String                       := get_Command_Output (command    => "gunzip",
-                                                                                               arguments  => (1 => gunzip_Filename),
-                                                                                               input      => "",
-                                                                                               status     => the_Status'Access,
-                                                                                               err_to_out => True);
+            gunzip_Filename : String_access := new String'(Filename);
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => "gunzip",
+                                                            arguments  => (1 => gunzip_Filename),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
-            if command_Output = ""
+            free (gunzip_Filename);
+
+            if Status /= 0
             then
-               put_Line ("   gunzip: ok");
-            else
-               put_Line ("   gunzip: " & command_Output);
+               raise Error with "gunzip: (" & Integer'Image (Status) & ") " & Output;
             end if;
          end;
 
          declare
-            tar_Options         : constant gnat.strings.String_access := new String'("-xf");
-            tar_Filename        : constant gnat.strings.String_access := new String'(Head (the_Filename,  the_Filename'Length - 4) & ".tar");
-            the_Status          : aliased  Integer;
-            command_Output      : constant String                       := get_Command_Output (command    => "gtar",
-                                                                                               arguments  => (1 => tar_Options,
-                                                                                                              2 => tar_Filename),
-                                                                                               input      => "",
-                                                                                               status     => the_Status'Access,
-                                                                                               err_to_out => True);
+            tar_Options  : String_access := new String'("-xf");
+            tar_Filename : String_access := new String'(Head (Filename, Filename'Length - 4) & ".tar");
+
+            Status : aliased  Integer;
+            Output : constant String := get_Command_Output (command    => "gtar",
+                                                            arguments  => (1 => tar_Options,
+                                                                           2 => tar_Filename),
+                                                            input      => "",
+                                                            status     => Status'Access,
+                                                            err_to_out => True);
          begin
-            if command_Output = ""
+            free (tar_Options);
+            free (tar_Filename);
+
+            if Status /= 0
             then
-               put_Line ("   gtar: ok");
-            else
-               put_Line ("   gtar: " & command_Output);
+               raise Error with "gtar: (" & Integer'Image (Status) & ") " & Output;
             end if;
          end;
 
       end if;
 
    end decompress;
-
-
 
 
    --- Paths
@@ -579,18 +613,14 @@ is
    end link;
 
 
-
-
-
    --- Folders
    --
 
-   function  current_Folder return String
+   function current_Folder return String
    is
    begin
-      return ada.Directories.Current_Directory;
+      return ada.Directories.current_Directory;
    end current_Folder;
-
 
 
 
@@ -609,7 +639,7 @@ is
       when not Locked
       is
       begin
-         ada.Directories.Set_Directory (To);
+         ada.Directories.set_Directory (To);
          Locked := True;
       end change;
 
@@ -622,15 +652,15 @@ is
 
 
 
-   procedure goto_Folder (Named     : in String;
-                          Lock      : in Boolean)
+   procedure goto_Folder (Named : in String;
+                          Lock  : in Boolean := False)
    is
    begin
       if Lock
       then
          folder_Lock.change (Named);
       else
-         ada.Directories.Set_Directory (Named);
+         ada.Directories.set_Directory (Named);
       end if;
    end goto_Folder;
 
@@ -644,52 +674,47 @@ is
 
 
 
-
-
-   function  current_User return String
+   function current_User return String
    is
-      use Posix, posix.Process_Identification;
+      use Posix,
+          posix.process_Identification;
    begin
       return to_String (get_Login_Name);
    end current_User;
 
 
 
-
-   function  home_Folder (user_Name : in String) return String
+   function home_Folder (user_Name : in String) return String
    is
-      use Posix,  Posix.User_Database;
+      use Posix,
+          posix.User_Database;
 
-      User_in_DB : constant User_Database_Item := Get_User_Database_Item (to_Posix_String (user_Name));
+      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (user_Name));
    begin
-      return to_String (Initial_Directory_of (User_in_DB));
+      return to_String (initial_Directory_of (User_in_DB));
    end home_Folder;
 
 
 
-
-   procedure remove_Folder (Named        : in String)
+   procedure remove_Folder (Named : in String)
    is
    begin
-      ada.Directories.Delete_Tree (Named);
+      ada.Directories.delete_Tree (Named);
    end remove_Folder;
-
 
 
 
    procedure verify_Folder (Named : in String)
    is
-      use ada.Directories;
    begin
-      create_Path (Named);
+      ada.Directories.create_Path (Named);
    end verify_Folder;
 
 
 
-
-   function to_octal_Mode (Self : in POSIX.Permissions.Permission_Set) return String
+   function to_octal_Mode (Permissions : in posix.Permissions.permission_Set) return String
    is
-      use posix.permissions;
+      use posix.Permissions;
 
       function octal_Permissions (Bit_3, Bit_2, Bit_1 : in Boolean) return String
       is
@@ -719,10 +744,10 @@ is
 
    begin
       return
-          octal_Permissions (self (set_User_ID), self (set_Group_ID), False)
-        & octal_Permissions (self (owner_Read),  self (owner_Write),  self (owner_Execute))
-        & octal_Permissions (self (group_Read),  self (group_Write),  self (group_Execute))
-        & octal_Permissions (self (others_Read), self (others_Write), self (others_Execute));
+          octal_Permissions (Permissions (set_User_ID), Permissions (set_Group_ID), False)
+        & octal_Permissions (Permissions (owner_Read),  Permissions (owner_Write),  Permissions (owner_Execute))
+        & octal_Permissions (Permissions (group_Read),  Permissions (group_Write),  Permissions (group_Execute))
+        & octal_Permissions (Permissions (others_Read), Permissions (others_Write), Permissions (others_Execute));
    end to_octal_Mode;
 
 
