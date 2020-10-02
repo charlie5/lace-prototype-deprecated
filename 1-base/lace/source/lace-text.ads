@@ -12,20 +12,10 @@ is
 
    type Item (Capacity : Natural) is private;
 
-
-   function  Item_input  (Stream : access Ada.Streams.Root_Stream_Type'Class) return Item;
-   procedure Item_output (Stream : access Ada.Streams.Root_Stream_Type'Class;   the_Item : in     Item);
-
-   for Item'input  use Item_input;
-   for Item'output use Item_output;
-
-
    function Image (Self : in Item) return String;
 
 
-
-
-   -- Stock items.
+   -- Stock Items
    --
 
    subtype Item_2   is Item (capacity =>   2);
@@ -61,6 +51,8 @@ is
    subtype Item_512m  is Item (capacity => 512 * 1024 * 1024);
 
 
+   -- Stock Arrays
+   --
 
    type Items_32   is array (Positive range <>) of aliased Item_32;
    type Items_128  is array (Positive range <>) of aliased Item_128;
@@ -71,8 +63,10 @@ is
 
    -- Construction
    --
-   function to_Text (From : in String;   Capacity : in Natural) return Item;
-   function to_Text (From : in String)                          return Item;
+
+   function to_Text (From     : in String)  return Item;
+   function to_Text (From     : in String;
+                     Capacity : in Natural) return Item;
 
    function to_Text_8 (From : in String)    return Item;
    function to_Text_8 (From : in Text.item) return Item;
@@ -101,30 +95,33 @@ is
    function  Length    (Self : in Item) return Natural;
 
    function  Tokens    (Self : in Item;   Delimiter : in Character) return Text.items_1k;
-   function  Hashed    (Self : in Item) return ada.containers.hash_type;
+   function  Hashed    (Self : in Item) return ada.containers.Hash_type;
 
    overriding
    function  "=" (Left, Right : in Item) return Boolean;
-
-
-
-   -- Streams
-   --
-
-   procedure Write (Stream : access ada.streams.Root_Stream_Type'Class;   Self : in Item);
-   for Item'Write use Write;
-
-   procedure Read (Stream : access ada.streams.Root_Stream_Type'Class; Self : out Item);
-   for Item'Read use Read;
-
 
 
 private
 
    type Item (Capacity : Natural) is
       record
-         Length : Natural               := 0;
+         Length : Natural := 0;
          Data   : String (1 .. Capacity);
       end record;
+
+   -- Streams
+   --
+
+   function  Item_input  (Stream : access Ada.Streams.Root_Stream_Type'Class)              return Item;
+   procedure Item_output (Stream : access Ada.Streams.Root_Stream_Type'Class;   the_Item : in     Item);
+
+   procedure read  (Stream : access ada.streams.Root_Stream_Type'Class;   Self :    out Item);
+   procedure write (Stream : access ada.streams.Root_Stream_Type'Class;   Self : in     Item);
+
+   for Item'input  use Item_input;
+   for Item'output use Item_output;
+
+   for Item'write  use write;
+   for Item'read   use read;
 
 end lace.Text;
