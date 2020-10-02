@@ -94,6 +94,12 @@ is
    function to_Text (From     : in String;
                      Capacity : in Natural) return Item;
 
+   function to_Text_2 (From : in String)    return Item;
+   function to_Text_2 (From : in Text.item) return Item;
+
+   function to_Text_4 (From : in String)    return Item;
+   function to_Text_4 (From : in Text.item) return Item;
+
    function to_Text_8 (From : in String)    return Item;
    function to_Text_8 (From : in Text.item) return Item;
 
@@ -108,6 +114,72 @@ is
 
    function to_Text_128 (From : in String)    return Item;
    function to_Text_128 (From : in Text.item) return Item;
+
+   function to_Text_256 (From : in String)    return Item;
+   function to_Text_256 (From : in Text.item) return Item;
+
+   function to_Text_512 (From : in String)    return Item;
+   function to_Text_512 (From : in Text.item) return Item;
+
+   function to_Text_1k (From : in String)    return Item;
+   function to_Text_1k (From : in Text.item) return Item;
+
+   function to_Text_2k (From : in String)    return Item;
+   function to_Text_2k (From : in Text.item) return Item;
+
+   function to_Text_4k (From : in String)    return Item;
+   function to_Text_4k (From : in Text.item) return Item;
+
+   function to_Text_8k (From : in String)    return Item;
+   function to_Text_8k (From : in Text.item) return Item;
+
+   function to_Text_16k (From : in String)    return Item;
+   function to_Text_16k (From : in Text.item) return Item;
+
+   function to_Text_32k (From : in String)    return Item;
+   function to_Text_32k (From : in Text.item) return Item;
+
+   function to_Text_64k (From : in String)    return Item;
+   function to_Text_64k (From : in Text.item) return Item;
+
+   function to_Text_128k (From : in String)    return Item;
+   function to_Text_128k (From : in Text.item) return Item;
+
+   function to_Text_256k (From : in String)    return Item;
+   function to_Text_256k (From : in Text.item) return Item;
+
+   function to_Text_512k (From : in String)    return Item;
+   function to_Text_512k (From : in Text.item) return Item;
+
+   function to_Text_1m (From : in String)    return Item;
+   function to_Text_1m (From : in Text.item) return Item;
+
+   function to_Text_2m (From : in String)    return Item;
+   function to_Text_2m (From : in Text.item) return Item;
+
+   function to_Text_4m (From : in String)    return Item;
+   function to_Text_4m (From : in Text.item) return Item;
+
+   function to_Text_8m (From : in String)    return Item;
+   function to_Text_8m (From : in Text.item) return Item;
+
+   function to_Text_16m (From : in String)    return Item;
+   function to_Text_16m (From : in Text.item) return Item;
+
+   function to_Text_32m (From : in String)    return Item;
+   function to_Text_32m (From : in Text.item) return Item;
+
+   function to_Text_64m (From : in String)    return Item;
+   function to_Text_64m (From : in Text.item) return Item;
+
+   function to_Text_128m (From : in String)    return Item;
+   function to_Text_128m (From : in Text.item) return Item;
+
+   function to_Text_256m (From : in String)    return Item;
+   function to_Text_256m (From : in Text.item) return Item;
+
+   function to_Text_512m (From : in String)    return Item;
+   function to_Text_512m (From : in Text.item) return Item;
 
 
    -- Attributes
