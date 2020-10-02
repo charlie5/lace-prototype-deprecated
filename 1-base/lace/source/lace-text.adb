@@ -38,16 +38,16 @@ is
 
 
    function next_Token (Self : in Item;   Delimiter : in     Character;
-                                          From      : access Positive) return String
+                                          From      : in out Positive) return String
    is
-      Cursor : Positive renames From.all;
+      Cursor : Positive renames From;
    begin
       if Self.Data (Cursor) = Delimiter then
          Cursor := Cursor + 1;
          return "";
       else
          declare
-            First : constant Positive := From.all;
+            First : constant Positive := Cursor;
          begin
             loop
                Cursor := Cursor + 1;
@@ -81,7 +81,7 @@ is
          Count              := Count + 1;
          the_Tokens (Count) := to_Text (next_Token (Self,
                                                     Delimiter,
-                                                    From'access),
+                                                    From),
                                         capacity => 1024);
       end loop;
 
