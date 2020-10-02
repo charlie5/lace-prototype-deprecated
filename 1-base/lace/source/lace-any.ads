@@ -1,4 +1,3 @@
-
 package lace.Any
 --
 --  Provides a base class for 'any' other class.
@@ -8,7 +7,6 @@ package lace.Any
 is
    pragma Pure;
 
-   type Item         is         interface;
+   type         Item is         interface;
    type limited_Item is limited interface;
-
 end lace.Any;

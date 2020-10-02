@@ -1,5 +1,3 @@
-
-
 package Lace
 --
 --  A namespace to contain the 'Lace' family of packages.
@@ -8,5 +6,4 @@ package Lace
 --
 is
    pragma Pure;
-
 end Lace;
