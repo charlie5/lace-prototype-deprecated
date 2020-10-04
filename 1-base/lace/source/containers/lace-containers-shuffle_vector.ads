@@ -1,8 +1,7 @@
 with
-     ada.Containers.Vectors;
+     ada.containers.Vectors;
 
 generic
-   with package Vectors is new ada.Containers.Vectors (<>);
+   with package Vectors is new ada.containers.Vectors (<>);
 
-procedure lace.Containers.shuffle_Vector (the_Vector : in out Vectors.Vector);
-
+procedure lace.containers.shuffle_Vector (the_Vector : in out vectors.Vector);
