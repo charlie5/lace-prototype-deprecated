@@ -1,44 +1,40 @@
 with
      ada.Characters.latin_1,
      ada.Strings.fixed,
-     ada.Strings.Maps;
+     ada.strings.Maps;
 
 
-package body lace.Text.Cursor
+package body lace.text.Cursor
 is
-   use Ada.Strings;
+   use ada.Strings;
+
+   Integer_Numerals : constant maps.character_Set := maps.to_Set ("+-0123456789");
+   Float_Numerals   : constant maps.character_Set := maps.to_Set ("+-0123456789.");
 
 
-   Integer_Numerals : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set ("+-0123456789");
-   Float_Numerals   : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set ("+-0123456789.");
-
-
-   -- Construction
+   -- Forge
    --
 
    function First (Self : in Text_view) return Cursor.item
    is
+      the_Cursor : constant Cursor.item := (Self, 1);
    begin
-      declare
-         the_Cursor : constant Cursor.item := (Self, 1);
-      begin
-         return the_Cursor;
-      end;
+      return the_Cursor;
    end First;
 
 
    -- Attributes
    --
 
-   function At_End (Self : in item) return Boolean
+   function at_End (Self : in Item) return Boolean
    is
    begin
       return Self.Current = 0;
-   end At_End;
+   end at_End;
 
 
 
-   function has_Element (Self : in     Item) return Boolean
+   function has_Element (Self : in Item) return Boolean
    is
    begin
       return not at_End (Self)
@@ -50,80 +46,79 @@ is
    function next_Token (Self : access Item;   Delimiter : in Character) return String
    is
    begin
-      if self.Target.Data (self.Current) = Delimiter
+      if Self.Target.Data (Self.Current) = Delimiter
       then
-         self.Current := self.Current + 1;
+         Self.Current := Self.Current + 1;
          return "";
       else
          declare
-            use Ada.Strings.fixed,  Ada.strings.Maps;
+            use ada.Strings.fixed,
+                ada.strings.Maps;
 
-            First  : Positive := Self.Current;
-            Last   : Natural  := 0;
+            First : Positive := Self.Current;
+            Last  : Natural  := 0;
          begin
-            find_Token (self.Target.Data (First .. self.Target.Length),   to_Set (Delimiter),
+            find_Token (Self.Target.Data (First .. Self.Target.Length),
+                        to_Set (Delimiter),
                         Outside,
-                        First, Last);
+                        First,
+                        Last);
 
-            self.Current := Last + 2;
+            Self.Current := Last + 2;
 
-            return self.Target.Data (First .. Last);
+            return Self.Target.Data (First .. Last);
          end;
       end if;
-
    end next_Token;
 
 
 
-   -- Search begins at current cursor position.
-   -- Advances to the position immediately after Delimiter.
-   -- Sets Iterator to 0 if Delimiter is not found.
-   -- Search is carried out 'Repeat' times.
-
-   procedure Advance (Self      : in out item;
-                      Delimiter : in     String;
-                      Repeat    : in     Positive := 1;
-                      Skip_Delimiter : in     Boolean := True)
+   procedure advance (Self           : in out Item;
+                      Delimiter      : in     String;
+                      Repeat         : in     Positive := 1;
+                      skip_Delimiter : in     Boolean  := True)
    is
    begin
       for Count in 1 .. Repeat
       loop
          declare
-            Delimiter_Position : Natural;
+            delimiter_Position : Natural;
          begin
-            Delimiter_Position := Ada.Strings.Fixed.Index (self.target.data, Delimiter, from => self.Current);
-
-            if Delimiter_Position = 0
+            delimiter_Position := fixed.Index (Self.Target.Data,
+                                               Delimiter,
+                                               from => Self.Current);
+            if delimiter_Position = 0
             then
                Self.Current := 0;
                return;
             else
-               if Skip_Delimiter
+               if skip_Delimiter
                then
-                  Self.Current := Delimiter_Position + Delimiter'Length;
+                  Self.Current := delimiter_Position + Delimiter'Length;
 
                elsif Count = Repeat
                then
-                  Self.Current := Delimiter_Position - 1;
+                  Self.Current := delimiter_Position - 1;
 
                else
-                  Self.Current := Delimiter_Position + Delimiter'Length - 1;
+                  Self.Current := delimiter_Position + Delimiter'Length - 1;
                end if;
             end if;
          end;
       end loop;
 
    exception
-      when Constraint_Error =>
-         raise At_End_Error;
-   end Advance;
+      when constraint_Error =>
+         raise at_end_Error;
+   end advance;
+
 
 
    procedure skip_White (Self : in out Item)
    is
    begin
       while      has_Element (Self)
-        and then (Self.Target.Data (Self.Current) = ' '
+        and then (    Self.Target.Data (Self.Current) = ' '
                   or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.CR
                   or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.LF
                   or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.HT)
@@ -133,91 +128,97 @@ is
    end skip_White;
 
 
-   function next_Token (Self      : access item;
+
+   function next_Token (Self      : access Item;
                         Delimiter : in     String) return String
    is
-      use Ada.Strings.Fixed;
    begin
-      if At_End (Self.all)
+      if at_End (Self.all)
       then
-         raise At_End_Error;
+         raise at_end_Error;
       end if;
 
       declare
-         Delimiter_Position : constant Natural := Index (self.Target.Data, Delimiter, from => self.Current);
+         use ada.Strings.fixed;
+         delimiter_Position : constant Natural := Index (Self.Target.Data, Delimiter, from => Self.Current);
       begin
-         if Delimiter_Position = 0
+         if delimiter_Position = 0
          then
-            return the_Token : constant String := self.Target.Data (self.Current .. self.Target.Length)
+            return the_Token : constant String := Self.Target.Data (Self.Current .. Self.Target.Length)
             do
                Self.Current := 0;
             end return;
          end if;
 
-         return the_Token : constant String := self.Target.Data (self.Current .. Delimiter_Position - 1)
+         return the_Token : constant String := Self.Target.Data (Self.Current .. delimiter_Position - 1)
          do
-            Self.Current := Delimiter_Position + Delimiter'Length;
+            Self.Current := delimiter_Position + Delimiter'Length;
          end return;
       end;
    end next_Token;
 
 
 
-   procedure skip_Token  (Self : access Item;   Delimiter : in Character)
+   procedure skip_Token (Self : access Item;   Delimiter : in Character)
    is
-      ignored_Token : String := self.next_Token (Delimiter);
+      ignored_Token : String := Self.next_Token (Delimiter);
    begin
       null;
    end skip_Token;
 
 
 
-   procedure skip_Token  (Self : access Item;   Delimiter : in String)
+   procedure skip_Token (Self : access Item;   Delimiter : in String)
    is
-      ignored_Token : String := self.next_Token (Delimiter);
+      ignored_Token : String := Self.next_Token (Delimiter);
    begin
       null;
    end skip_Token;
+
 
 
    function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_32
    is
-      the_Tokens : Text.Items_32 (1 .. 1024);
-      Count      : Natural                  := 0;
+      the_Tokens : Text.items_32 (1 .. 1024);
+      Count      : Natural := 0;
    begin
       while Self.has_Element loop
          Count              := Count + 1;
-         the_Tokens (Count) := to_Text (self.next_Token (Delimiter), capacity => 32);
+         the_Tokens (Count) := to_Text (Self.next_Token (Delimiter), capacity => 32);
       end loop;
 
       return the_Tokens (1 .. Count);
    end Tokens;
+
 
 
    function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_1k
    is
-      the_Tokens : Text.Items_1k (1 .. 1024);
-      Count      : Natural                  := 0;
+      the_Tokens : Text.items_1k (1 .. 1024);
+      Count      : Natural := 0;
    begin
-      while Self.has_Element loop
+      while Self.has_Element
+      loop
          Count              := Count + 1;
-         the_Tokens (Count) := to_Text (self.next_Token (Delimiter), capacity => 1024);
+         the_Tokens (Count) := to_Text (Self.next_Token (Delimiter), capacity => 1024);
       end loop;
 
       return the_Tokens (1 .. Count);
    end Tokens;
 
 
+
    function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_8k
    is
-      the_Tokens : Text.Items_8k (1 .. 512);
-      Count      : Natural                  := 0;
+      the_Tokens : Text.items_8k (1 .. 512);
+      Count      : Natural := 0;
    begin
-      while Self.has_Element loop
-         Count              := Count + 1;
+      while Self.has_Element
+      loop
+         Count := Count + 1;
 
          declare
-            Next : constant String := self.next_Token (Delimiter);
+            Next : constant String := Self.next_Token (Delimiter);
          begin
             the_Tokens (Count) := to_Text (Next, capacity => 8 * 1024);
          end;
@@ -227,15 +228,16 @@ is
    end Tokens;
 
 
-   function Get_Integer (Self : access item) return Integer
-   is
-      use Ada.Strings.Fixed;
 
-      Text  : String (1 .. self.Length);
+   function get_Integer (Self : access Item) return Integer
+   is
+      use ada.Strings.fixed;
+
+      Text  : String (1 .. Self.Length);
       First : Positive;
       Last  : Natural;
    begin
-      Text := self.target.Data (self.Current .. self.target.Length);
+      Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
       if Last = 0 then
@@ -249,15 +251,15 @@ is
 
 
 
-   function get_Real (Self : access item) return long_Float
+   function get_Real (Self : access Item) return long_Float
    is
-      use Ada.Strings.Fixed;
+      use ada.Strings.fixed;
 
-      Text  : String (1 .. self.Length);
+      Text  : String (1 .. Self.Length);
       First : Positive;
       Last  : Natural;
    begin
-      Text := self.target.Data (self.Current .. self.target.Length);
+      Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, float_Numerals, Inside, First, Last);
 
       if Last = 0 then
@@ -274,12 +276,12 @@ is
    function Length (Self : in Item) return Natural
    is
    begin
-      return self.Target.Length - self.Current + 1;
+      return Self.Target.Length - Self.Current + 1;
    end Length;
 
 
 
-   function Peek (Self : in item;   Length : in Natural) return String
+   function Peek (Self : in Item;   Length : in Natural) return String
    is
       Last : Natural := Self.Current + Length - 1;
    begin
@@ -290,8 +292,7 @@ is
 
       Last := Natural'Min (Last, Self.Target.Length);
 
-      return self.Target.Data (Self.Current .. Last);
+      return Self.Target.Data (Self.Current .. Last);
    end Peek;
 
-end lace.Text.Cursor;
-
+end lace.text.Cursor;
