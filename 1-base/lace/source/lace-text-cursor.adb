@@ -43,7 +43,7 @@ is
 
 
 
-   function next_Token (Self : access Item;   Delimiter : in Character) return String
+   function next_Token (Self : in out Item;   Delimiter : in Character) return String
    is
    begin
       if Self.Target.Data (Self.Current) = Delimiter
@@ -129,11 +129,11 @@ is
 
 
 
-   function next_Token (Self      : access Item;
+   function next_Token (Self      : in out Item;
                         Delimiter : in     String) return String
    is
    begin
-      if at_End (Self.all)
+      if at_End (Self)
       then
          raise at_end_Error;
       end if;
@@ -159,7 +159,7 @@ is
 
 
 
-   procedure skip_Token (Self : access Item;   Delimiter : in Character)
+   procedure skip_Token (Self : in out Item;   Delimiter : in Character)
    is
       ignored_Token : String := Self.next_Token (Delimiter);
    begin
@@ -168,7 +168,7 @@ is
 
 
 
-   procedure skip_Token (Self : access Item;   Delimiter : in String)
+   procedure skip_Token (Self : in out Item;   Delimiter : in String)
    is
       ignored_Token : String := Self.next_Token (Delimiter);
    begin
@@ -177,7 +177,7 @@ is
 
 
 
-   function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_32
+   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_32
    is
       the_Tokens : Text.items_32 (1 .. 1024);
       Count      : Natural := 0;
@@ -192,7 +192,7 @@ is
 
 
 
-   function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_1k
+   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_1k
    is
       the_Tokens : Text.items_1k (1 .. 1024);
       Count      : Natural := 0;
@@ -208,7 +208,7 @@ is
 
 
 
-   function Tokens (Self : access Item;   Delimiter : in Character) return Text.items_8k
+   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_8k
    is
       the_Tokens : Text.items_8k (1 .. 512);
       Count      : Natural := 0;
@@ -229,7 +229,7 @@ is
 
 
 
-   function get_Integer (Self : access Item) return Integer
+   function get_Integer (Self : in out Item) return Integer
    is
       use ada.Strings.fixed;
 
@@ -251,7 +251,7 @@ is
 
 
 
-   function get_Real (Self : access Item) return long_Float
+   function get_Real (Self : in out Item) return long_Float
    is
       use ada.Strings.fixed;
 
