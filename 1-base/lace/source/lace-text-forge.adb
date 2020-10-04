@@ -4,7 +4,7 @@ with
      ada.Text_IO;
 
 
-package body lace.Text.Forge
+package body lace.Text.forge
 is
    -- Files
    --
@@ -420,4 +420,4 @@ is
    end to_Text_512m;
 
 
-end lace.Text.Forge;
+end lace.Text.forge;

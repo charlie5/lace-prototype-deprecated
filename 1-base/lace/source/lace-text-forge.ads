@@ -1,10 +1,9 @@
 
-package lace.Text.Forge
+package lace.Text.forge
 --
 -- Provides constructors for Text.
 --
 is
-
    -- Files
    --
 
@@ -12,6 +11,7 @@ is
 
    function to_String (Filename : in forge.Filename) return String;
    function to_Text   (Filename : in forge.Filename) return Item;
+
 
    -- Stock Items
    --
@@ -103,4 +103,4 @@ is
    function to_Text_512m (From : in String)    return Item_512m;
    function to_Text_512m (From : in Text.item) return Item_512m;
 
-end lace.Text.Forge;
+end lace.Text.forge;
