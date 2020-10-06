@@ -1,14 +1,10 @@
 with
      lace.event.Logger,
-     lace.event_Conversions,
+     lace.Event_conversions,
      ada.unchecked_Deallocation;
-
-
 
 package body lace.make_Subject
 is
-
-
    procedure destroy (Self : in out Item)
    is
    begin
@@ -16,9 +12,6 @@ is
    end destroy;
 
 
-
-
-   ---------------
    --- Attributes
    --
 
@@ -29,14 +22,13 @@ is
    begin
       Self.safe_Observers.add (the_Observer, of_Kind);
 
-      if subject.Logger /= null then
+      if subject.Logger /= null
+      then
          subject.Logger.log_Connection (the_Observer,
                                         Subject.view (Self),
                                         of_Kind);
       end if;
    end register;
-
-
 
 
    overriding
@@ -45,25 +37,23 @@ is
 
    is
    begin
-      self.safe_Observers.rid (the_Observer, of_Kind);
+      Self.safe_Observers.rid (the_Observer, of_Kind);
 
-      if subject.Logger /= null then
+      if subject.Logger /= null
+      then
          subject.Logger.log_disconnection (the_Observer,
-                                           Self'Unchecked_Access,
+                                           Self'unchecked_Access,
                                            of_Kind);
       end if;
    end deregister;
 
 
-
-
-   overriding function  Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
+   overriding
+   function Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
    is
    begin
-      return self.safe_Observers.fetch_Observers (of_Kind);
+      return Self.safe_Observers.fetch_Observers (of_Kind);
    end Observers;
-
-
 
 
    overriding
@@ -74,15 +64,8 @@ is
    end observer_Count;
 
 
-
-
-
-
-
-   ---------------
    --- Operations
    --
-
 
    overriding
    procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
@@ -91,11 +74,13 @@ is
       my_Observers : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
 
    begin
-      for Each in my_Observers'Range loop
+      for Each in my_Observers'Range
+      loop
          my_Observers (Each).receive (the_Event,
                                       from_subject => Subject.item'Class (Self.all).Name);
 
-         if subject.Logger /= null then
+         if subject.Logger /= null
+         then
             subject.Logger.log_Emit (Subject.view (Self),
                                      my_Observers (Each),
                                      the_Event);
@@ -104,13 +89,7 @@ is
    end emit;
 
 
-
-
-
-
-
-   -------------------
-   --- safe_Observers
+   --- Safe Observers
    --
 
    protected
@@ -137,16 +116,17 @@ is
       end destruct;
 
 
-
       procedure add (the_Observer : in Observer.view;
                      of_Kind      : in event.Kind)
       is
-         use event_Observer_Vectors,  event_kind_Maps_of_event_observers;
+         use event_Observer_Vectors,
+             event_kind_Maps_of_event_observers;
 
          the_event_Observer_Cursor : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
-         the_event_Observers       : event_observer_Vector_view;
+         the_event_Observers       :          event_observer_Vector_view;
       begin
-         if not has_Element (the_event_Observer_Cursor) then
+         if not has_Element (the_event_Observer_Cursor)
+         then
             the_event_Observers := new event_observer_Vector;
             the_Observers.insert (of_Kind,
                                   the_event_Observers);
@@ -158,8 +138,6 @@ is
       end add;
 
 
-
-
       procedure rid (the_Observer : in Observer.view;
                      of_Kind      : in event.Kind)
       is
@@ -169,29 +147,26 @@ is
       end rid;
 
 
-
-
       function fetch_Observers (of_Kind : in event.Kind) return subject.Observer_views
       is
       begin
-         if the_Observers.Contains (of_Kind) then
+         if the_Observers.Contains (of_Kind)
+         then
             declare
                the_event_Observers : constant event_observer_Vector_view := the_Observers.Element (of_Kind);
                my_Observers        : subject.Observer_views (1 .. Integer (the_event_Observers.Length));
             begin
-               for Each in my_Observers'Range loop
+               for Each in my_Observers'Range
+               loop
                   my_Observers (Each) := the_event_Observers.Element (Each);
                end loop;
 
                return my_Observers;
             end;
-
          else
             return (1 .. 0 => <>);
          end if;
       end fetch_Observers;
-
-
 
 
       function observer_Count return Natural
@@ -200,7 +175,6 @@ is
 
          Cursor : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
          Count  : Natural                                   := 0;
-
       begin
          while has_Element (Cursor)
          loop
@@ -211,9 +185,7 @@ is
          return Count;
       end observer_Count;
 
-
    end safe_Observers;
-
 
 
 end lace.make_Subject;

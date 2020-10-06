@@ -1,7 +1,6 @@
 with
      ada.Tags;
 
-
 package body lace.Response
 is
 
@@ -12,4 +11,3 @@ is
    end Name;
 
 end lace.Response;
-

@@ -1,7 +1,6 @@
 package body lace.Observer.deferred
 is
 
-
    package body Forge
    is
 
@@ -9,24 +8,21 @@ is
       is
       begin
          return Self : constant Item := (my_Deferred.item
-                                         with name => new String' (Name))
+                                         with name => new String'(Name))
          do
             null;
          end return;
       end to_Observer;
 
 
-
       function new_Observer (Name : in String) return View
       is
-         Self : constant View := new Item;
+         Self : constant View := new Item'(to_Observer (Name));
       begin
-         Self.Name := new String' (Name);
          return Self;
       end new_Observer;
 
    end Forge;
-
 
 
    overriding

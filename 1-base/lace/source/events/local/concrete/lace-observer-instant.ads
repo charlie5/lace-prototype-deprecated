@@ -3,19 +3,15 @@ with
      lace.make_Observer,
      lace.Any;
 
-
 package lace.Observer.instant
 --
 --  Provides a concrete local event Observer.
 --
 is
-
-   type Item is limited new Any.limited_Item
+   type Item is limited new Any.limited_item
                         and Observer   .item with private;
 
    type View is access all Item'Class;
-
-
 
 
    package Forge
@@ -24,10 +20,8 @@ is
    end Forge;
 
 
-
    overriding
    function Name (Self : in Item) return String;
-
 
 
 

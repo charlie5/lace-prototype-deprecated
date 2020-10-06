@@ -2,27 +2,13 @@ with
      lace.Observer,
      lace.Subject,
      lace.Response,
-     lace.Event.Logger;
+     lace.event.Logger;
 
-
-package lace.event.Utility.local
+package lace.Event.utility.local
 --
 --  Provides convenience subprograms for working with events.
 --
 is
-
---     ----------------
---     --- Event Kinds
---     --
---
---     function to_Kind (From     : in ada.Tags.Tag) return lace.Event.Kind;
---     function Name_of (the_Kind : in event.Kind)   return String;
-
-
-
-
-
-   -----------
    --- Events
    --
 
@@ -30,10 +16,6 @@ is
    function Kind_of (the_Event : in Event.item'Class) return event.Kind;
 
 
-
-
-
-   ----------------
    --- Connections
    --
 
@@ -47,18 +29,12 @@ is
                          for_Response  : in lace.Response.view;
                          to_event_Kind : in event.Kind);
 
-
-
-
-   ------------
    --- Logging
    --
-
 
    procedure use_text_Logger (log_Filename : in String);
    --
    --  Requests activation of the default text file logger.
-
 
 
    function  Logger return access lace.event.Logger.item'Class;
@@ -67,18 +43,11 @@ is
    --  Returns null, if no Logger is in use.
 
 
-
-
-
-
-   ----------------
    --- Termination
    --
 
    procedure close;
    --
    --  Ensures any registered event logger is destroyed.
-
-
 
 end lace.event.Utility.local;

@@ -3,18 +3,15 @@ with
      lace.make_Observer.deferred,
      lace.Any;
 
-
 package lace.Observer.deferred
 --
---  Provides a concrete local event Observer.
+--  Provides a concrete local event observer.
 --
 is
-
-   type Item is limited new Any.limited_Item
+   type Item is limited new Any.limited_item
                         and Observer   .item with private;
 
    type View is access all Item'Class;
-
 
 
    package Forge
@@ -24,10 +21,8 @@ is
    end Forge;
 
 
-
    overriding
    function Name (Self : in Item) return String;
-
 
 
 
@@ -42,5 +37,3 @@ private
       end record;
 
 end lace.Observer.deferred;
-
-

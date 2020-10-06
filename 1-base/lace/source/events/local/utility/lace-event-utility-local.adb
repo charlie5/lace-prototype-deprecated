@@ -1,44 +1,17 @@
 with
      lace.event.Logger.text,
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body lace.event.Utility.local
 is
-
---     ----------------
---     --- Event Kinds
---     --
---
---     function to_Kind (From : in ada.Tags.Tag) return lace.Event.Kind
---     is
---        use lace.event_Conversions;
---     begin
---        return to_event_Kind (From);
---     end to_Kind;
---
---
---
---     function Name_of (the_Kind : in event.Kind) return String
---     is
---        use lace.event_Conversions,  ada.Tags;
---     begin
---        return expanded_Name (to_Tag (the_Kind));
---     end Name_of;
-
-
-
-   -----------
    --- Events
    --
-
 
    function Kind_of (the_Event : in Event.item'Class) return event.Kind
    is
    begin
       return to_Kind (the_Event'Tag);
    end Kind_of;
-
 
 
    function Name_of (the_Event : in Event.item'Class) return String
@@ -48,8 +21,6 @@ is
    end Name_of;
 
 
-
-   ----------------
    --- Connections
    --
 
@@ -84,23 +55,20 @@ is
    end disconnect;
 
 
-
-   ------------
    --- Logging
    --
 
-   the_event_Logger : event.logger.text.view;
+   the_event_Logger : event.Logger.text.view;
 
 
    procedure use_text_Logger (log_Filename : in String)
    is
    begin
-      the_event_Logger := new event.Logger.text.item' (event.Logger.text.to_Logger (log_Filename));
+      the_event_Logger := new event.Logger.text.item'(event.Logger.text.to_Logger (log_Filename));
 
       lace.Subject .Logger_is (the_event_Logger);
       lace.Observer.Logger_is (the_event_Logger);
    end use_text_Logger;
-
 
 
    function Logger return access lace.event.Logger.item'Class
@@ -110,8 +78,6 @@ is
    end Logger;
 
 
-
-   ----------------
    --- Termination
    --
 
@@ -119,9 +85,10 @@ is
    is
       use type event.Logger.text.view;
    begin
-      if the_event_Logger /= null then
+      if the_event_Logger /= null
+      then
          declare
-            procedure deallocate is new ada.Unchecked_Deallocation (event.Logger.text.item'Class,
+            procedure deallocate is new ada.unchecked_Deallocation (event.Logger.text.item'Class,
                                                                     event.Logger.text.view);
          begin
             the_event_Logger.destruct;

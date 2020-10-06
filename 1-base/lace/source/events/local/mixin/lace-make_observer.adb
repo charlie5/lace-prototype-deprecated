@@ -1,15 +1,12 @@
-with lace.event.Logger,
-     lace.event_Conversions,
+with
+     lace.event.Logger,
+     lace.Event_conversions,
 
      ada.unchecked_Conversion,
      ada.unchecked_Deallocation;
 
-
-
 package body lace.make_Observer
 is
-
-
    procedure destroy (Self : in out Item)
    is
       use subject_Maps_of_event_responses;
@@ -20,8 +17,6 @@ is
       Cursor  : subject_Maps_of_event_responses.Cursor := Self.subject_Responses.First;
       the_Map : event_response_Map_view;
    begin
---        put_Line ("KKK ******** 555555555555");
-
       while has_Element (Cursor)
       loop
          the_Map := Element (Cursor);
@@ -32,66 +27,66 @@ is
    end destroy;
 
 
-
-
-
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in String)
    is
       use event_response_Maps,
           subject_Maps_of_event_responses,
-          lace.event_Conversions,
+          lace.Event_conversions,
           ada.Containers;
 
       use type lace.Observer.view;
 
-      the_Responses :          event_response_Map         renames Self.subject_Responses.Element (from_Subject).all;
-      the_Response  : constant event_response_Maps.Cursor :=      the_Responses.find (to_event_Kind (the_Event'Tag));
-
-      my_Name       : constant String                     :=      Observer.Item'Class (Self.all).Name;
+      the_Responses :          event_response_Map    renames Self.subject_Responses.Element (from_Subject).all;
+      the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
+      my_Name       : constant String                     := Observer.item'Class (Self.all).Name;
 
    begin
-      if has_Element (the_Response) then
+      if has_Element (the_Response)
+      then
          Element (the_Response).respond (the_Event);
 
-         if Observer.Logger /= null then
-            Observer.Logger.log_Response (Element (the_Response),  Observer.view (Self),  the_Event,  from_Subject);
+         if observer.Logger /= null
+         then
+            observer.Logger.log_Response (Element (the_Response),
+                                          Observer.view (Self),
+                                          the_Event,
+                                          from_Subject);
          end if;
 
 
-      elsif Self.relay_Target /= null then
+      elsif Self.relay_Target /= null
+      then
          --  Self.relay_Target.notify (the_Event, from_Subject_Name);
 
-         if Observer.Logger /= null then
-            Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+         if observer.Logger /= null
+         then
+            observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
          else
-            raise Program_Error with   "Event relaying is currently disabled";
+            raise program_Error with "Event relaying is currently disabled.";
          end if;
 
-
       else
-         if Observer.Logger /= null then
-            Observer.Logger.log ("[Warning] ~ Observer "             & my_Name & " has no response !");
-            Observer.Logger.log ("            count of responses =>" & Count_type'Image (the_Responses.Length));
+         if observer.Logger /= null
+         then
+            observer.Logger.log ("[Warning] ~ Observer "             & my_Name & " has no response !");
+            observer.Logger.log ("            count of responses =>" & Count_type'Image (the_Responses.Length));
          else
-            raise Program_Error with   "Observer " & my_Name & " has no response !";
+            raise Program_Error with "Observer " & my_Name & " has no response !";
          end if;
       end if;
 
-
    exception
       when Constraint_Error =>
-         if Observer.Logger /= null then
-            Observer.Logger.log (my_Name & " has no responses for events from " & from_Subject);
+         if Observer.Logger /= null
+         then
+            observer.Logger.log (my_Name & " has no responses for events from " & from_Subject);
          else
-            raise Program_Error with    my_Name & " has no responses for events from " & from_Subject;
+            raise Program_Error with my_Name & " has no responses for events from " & from_Subject;
          end if;
 
    end receive;
-
-
-
 
 
    overriding
@@ -108,18 +103,14 @@ is
 
       Self.subject_Responses.Element (from_Subject).insert (to_Kind,
                                                             the_Response);
-
       if observer.Logger /= null
       then
-         Observer.Logger.log_new_Response (the_Response,
-                                           Observer.Item'Class (Self.all),
+         observer.Logger.log_new_Response (the_Response,
+                                           Observer.item'Class (Self.all),
                                            to_Kind,
                                            from_Subject);
       end if;
    end add;
-
-
-
 
 
    overriding
@@ -130,13 +121,14 @@ is
    begin
       Self.subject_Responses.Element (from_Subject).delete (to_Kind);
 
-      if observer.Logger /= null then
-         Observer.Logger.log_rid_Response (the_Response,  Observer.Item'Class (Self.all),  to_Kind,  from_Subject);
+      if observer.Logger /= null
+      then
+         observer.Logger.log_rid_Response (the_Response,
+                                           Observer.item'Class (Self.all),
+                                           to_Kind,
+                                           from_Subject);
       end if;
    end rid;
-
-
-
 
 
    overriding
@@ -147,19 +139,12 @@ is
    end respond;
 
 
-
-
-
    overriding
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view)
    is
    begin
-      self.relay_Target := To;
+      Self.relay_Target := To;
    end relay_responseless_Events;
-
-
-
-
 
 
    --  Support
@@ -171,7 +156,6 @@ is
    begin
       return Converted (Self);
    end to_Hash;
-
 
 
 end lace.make_Observer;

@@ -1,7 +1,5 @@
-
 package body lace.Observer.instant
 is
-
 
    package body Forge
    is
@@ -10,12 +8,11 @@ is
       is
          Self : constant View := new Item;
       begin
-         Self.Name := new String' (Name);
+         Self.Name := new String'(Name);
          return Self;
       end new_Observer;
 
    end Forge;
-
 
 
    overriding
@@ -24,6 +21,5 @@ is
    begin
       return Self.Name.all;
    end Name;
-
 
 end lace.Observer.instant;
