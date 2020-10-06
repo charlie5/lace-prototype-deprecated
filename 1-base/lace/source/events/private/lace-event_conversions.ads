@@ -1,17 +1,16 @@
-with lace.Event,
+with
+     lace.Event,
      ada.Tags,
      ada.unchecked_Conversion;
 
-
-
 private
-package lace.event_Conversions
+package lace.Event_conversions
 --
 --  Provides conversions required by the lace event system.
 --
 is
 
-   function to_event_Kind is new ada.Unchecked_Conversion (ada.Tags.Tag,    lace.Event.Kind);
-   function to_Tag        is new ada.Unchecked_Conversion (lace.Event.Kind, ada.Tags.Tag);
+   function to_event_Kind is new ada.unchecked_Conversion (ada.tags.Tag,    lace.event.Kind);
+   function to_Tag        is new ada.unchecked_Conversion (lace.event.Kind, ada.tags.Tag);
 
-end lace.event_Conversions;
+end lace.Event_conversions;
