@@ -1,15 +1,12 @@
 with
      lace.event_Conversions;
 
-
-package body lace.Event.Utility
+package body lace.Event.utility
 is
-
-   ----------------
    --- Event Kinds
    --
 
-   function to_Kind (From : in ada.Tags.Tag) return lace.Event.Kind
+   function to_Kind (From : in ada.tags.Tag) return lace.event.Kind
    is
       use lace.event_Conversions;
    begin
@@ -17,18 +14,15 @@ is
    end to_Kind;
 
 
-
-   function Name_of (the_Kind : in event.Kind) return String
+   function Name_of (Kind : in event.Kind) return String
    is
       use lace.event_Conversions,
           ada.Tags;
    begin
-      return expanded_Name (to_Tag (the_Kind));
+      return expanded_Name (to_Tag (Kind));
    end Name_of;
 
 
-
-   -----------
    --- Events
    --
 
@@ -39,7 +33,6 @@ is
    end Kind_of;
 
 
-
    function Name_of (the_Event : in Event.item'Class) return String
    is
    begin
@@ -47,4 +40,4 @@ is
    end Name_of;
 
 
-end lace.Event.Utility;
+end lace.Event.utility;

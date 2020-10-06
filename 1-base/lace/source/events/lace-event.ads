@@ -2,14 +2,12 @@ private
 with
      System;
 
-
 package lace.Event
 --
---  The base class for all derived Event class types.
+--  The base class for all derived Event types.
 --
 is
    pragma Pure;
-
 
 
    type Item is tagged null record;
@@ -29,8 +27,6 @@ is
    --
    --  Maps to the 'ada.tags.Tag_type' value of each derived
    --  event class (see 'Conversions' section in 'lace.event.Utility').
-
-
 
 
 
