@@ -1,27 +1,21 @@
-with lace.Event;
-
-
+with
+     lace.Event;
 
 package lace.remote.Response
 --
---  Provides a base class for all derived event 'response' classes.
+--  Provides a base class for all derived remote event 'response' classes.
 --
 is
    pragma Remote_Types;
-
 
    type Item is abstract tagged limited private;
    type View is access all Item'class;
 
 
-
-
    --- Attributes
    --
 
-   function  Name (Self : in Item) return String;
-
-
+   function Name (Self : in Item) return String;
 
 
    --- Operations
@@ -29,8 +23,6 @@ is
 
    procedure respond (Self : in out Item;   to_Event : in Event.item'Class)
    is abstract;
-
-
 
 
 

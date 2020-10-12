@@ -1,10 +1,8 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body lace.remote.Subject_and_deferred_Observer
 is
-
 
    package body Forge
    is
@@ -14,7 +12,7 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new String' (Name);
+            Self.Name := new String'(Name);
          end return;
       end to_Subject_and_Observer;
 
@@ -22,11 +20,10 @@ is
       function new_Subject_and_Observer (Name : in String) return View
       is
       begin
-         return new Item' (to_Subject_and_Observer (Name));
+         return new Item'(to_Subject_and_Observer (Name));
       end new_Subject_and_Observer;
 
    end Forge;
-
 
 
    overriding
@@ -40,10 +37,8 @@ is
       Deferred.destroy (Deferred.item (Self));
       Subject .destroy (Subject .item (Self));
 
---        put_Line ("Deallocating " & the_Name.all);
       deallocate (the_Name);
    end destroy;
-
 
 
    overriding
@@ -52,6 +47,5 @@ is
    begin
       return Self.Name.all;
    end Name;
-
 
 end lace.remote.Subject_and_deferred_Observer;

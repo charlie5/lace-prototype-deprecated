@@ -1,21 +1,16 @@
-with -- lace.Observer,
+with
      lace.remote.make_Observer.deferred,
      lace.Any;
 
-
-
 package lace.remote.Observer.deferred
 --
---  Provides a concrete local event Observer.
+--  Provides a concrete deferred remote event Observer.
 --
 is
-
-   type Item is limited new Any.limited_Item
+   type Item is limited new Any.limited_item
                         and remote.Observer.item with private;
 
    type View is access all Item'Class;
-
-
 
 
    package Forge
@@ -25,12 +20,8 @@ is
    end Forge;
 
 
-
-
    overriding
    function Name (Self : in Item) return String;
-
-
 
 
 

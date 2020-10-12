@@ -1,6 +1,5 @@
-with ada.Tags;
-
-
+with
+     ada.Tags;
 
 package body lace.remote.Response
 is

@@ -1,7 +1,5 @@
-
 package body lace.remote.Subject_and_instant_Observer
 is
-
 
    package body Forge
    is
@@ -11,13 +9,11 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new String' (Name);
+            Self.Name := new String'(Name);
          end return;
       end to_Subject_and_Observer;
 
    end Forge;
-
-
 
 
    overriding
@@ -26,6 +22,5 @@ is
    begin
       return Self.Name.all;
    end Name;
-
 
 end lace.remote.Subject_and_instant_Observer;

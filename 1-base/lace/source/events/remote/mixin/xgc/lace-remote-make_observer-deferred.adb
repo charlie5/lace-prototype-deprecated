@@ -1,12 +1,11 @@
-with lace.event.remote.Logger,
-     lace.event_Conversions;
-with ada.unchecked_Deallocation;
---  with Ada.Text_IO; use Ada.Text_IO;
-
+with
+     lace.remote.event.Logger,
+     lace.Event_conversions;
+with
+     ada.unchecked_Deallocation;
 
 package body lace.remote.make_Observer.deferred
 is
-
 
    overriding
    procedure destroy (Self : in out Item)
@@ -25,7 +24,6 @@ is
       loop
          the_Events := Element (Cursor);
          free (the_Events);
---           put_Line ("KKK 555555555555");
 
          next (Cursor);
       end loop;
@@ -34,15 +32,13 @@ is
    end destroy;
 
 
-
-
-
    overriding
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
-                                            from_Subject : in String)
+   procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
+                      from_Subject : in String)
    is
    begin
-      if not Self.pending_Events.contains (from_Subject) then
+      if not Self.pending_Events.contains (from_Subject)
+      then
          Self.pending_Events.insert (from_Subject,
                                      new safe_Events);
       end if;
@@ -51,72 +47,70 @@ is
    end receive;
 
 
-
-
-
    overriding
    procedure respond (Self : access Item)
    is
       use event_Vectors;
 
-      my_Name : constant String := Observer.Item'Class (Self.all).Name;
+      my_Name : constant String := Observer.item'Class (Self.all).Name;
 
 
       --- actuate
       --
-      procedure actuate (the_Responses     : in     event_response_Map;
-                         the_Events        : in     event_Vector;
-                         from_Subject_Name : in     String)
+      procedure actuate (the_Responses     : in event_response_Map;
+                         the_Events        : in event_Vector;
+                         from_Subject_Name : in String)
       is
-         Cursor : event_Vectors.Cursor;
-
+         Cursor : event_Vectors.Cursor := the_Events.First;
       begin
-         Cursor := the_Events.First;
-
-         while has_Element (Cursor) loop
+         while has_Element (Cursor)
+         loop
             declare
-               use event_response_Maps,  event_Conversions,  Ada.Containers;
+               use event_response_Maps,
+                   event_Conversions,
+                   ada.Containers;
                use type Observer.view;
 
-               the_Event : constant Event.item'Class           := Element (Cursor);
+               the_Event : constant lace.Event.item'Class           := Element (Cursor);
                Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
-
             begin
-               if has_Element (Response) then
+               if has_Element (Response)
+               then
                   Element (Response).respond (the_Event);
 
-                  if Observer.Logger /= null then
-                     Observer.Logger.log_Response (Element (Response),
+                  if observer.Logger /= null
+                  then
+                     observer.Logger.log_Response (Element (Response),
                                                    Observer.view (Self),
                                                    the_Event,
                                                    from_Subject_Name);
                   end if;
 
+               elsif Self.relay_Target /= null
+               then
+                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- tbd: Renable relayed events.
 
-               elsif Self.relay_Target /= null then
-                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);
-
-                  if Observer.Logger /= null then
-                     Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+                  if observer.Logger /= null
+                  then
+                     observer.Logger.log ("[Warning] ~ Relayed events are currently disabled");
                   else
-                     raise Program_Error with   "Event relaying is currently disabled";
+                     raise program_Error with "Event relaying is currently disabled";
                   end if;
 
-
                else
-                  if Observer.Logger /= null then
-                     Observer.Logger.log ("[Warning] ~ Observer "
+                  if observer.Logger /= null
+                  then
+                     observer.Logger.log ("[Warning] ~ Observer "
                                           & my_Name
-                                          & " has no response !");
-                     Observer.Logger.log ("            count of responses =>"
+                                          & " has no response.");
+                     observer.Logger.log ("            Count of responses =>"
                                           & Count_type'Image (the_Responses.Length));
                   else
-                     raise Program_Error with   "Observer " & my_Name & " has no response !";
+                     raise Program_Error with "Observer " & my_Name & " has no response";
                   end if;
                end if;
 
             end;
-
 
             next (Cursor);
          end loop;
@@ -128,31 +122,30 @@ is
       Cursor : subject_Maps_of_safe_events.Cursor := Self.pending_Events.First;
 
    begin
-
       while has_Element (Cursor)
       loop
          declare
             use subject_Maps_of_event_responses;
 
             subject_Name : constant String      := Key (Cursor);
-            the_Events   : event_Vector;
-
+            the_Events   :          event_Vector;
          begin
             Self.pending_Events.Element (subject_Name).fetch (the_Events);
 
-            if Self.subject_Responses.contains (subject_Name) then
+            if Self.subject_Responses.contains (subject_Name)
+            then
                actuate (Self.subject_Responses.Element (subject_Name).all,
-                        the_Events, -- Self.pending_Events   .Element (subject_Name).all,
+                        the_Events,
                         subject_Name);
             else
-               if Observer.Logger /= null then
-                  Observer.Logger.log (my_Name & " has no responses for events from " & subject_Name);
+               if observer.Logger /= null
+               then
+                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name);
                else
-                  raise Program_Error with    my_Name & " has no responses for events from '" & subject_Name & "'";
+                  raise program_Error with my_Name & " has no responses for events from " & subject_Name;
                end if;
             end if;
          end;
-
 
          next (Cursor);
       end loop;
@@ -160,14 +153,10 @@ is
    end respond;
 
 
-
-
-
    protected
    body safe_Events
    is
-
-      procedure add (the_Event : in Event.Item'Class)
+      procedure add (the_Event : in lace.Event.item'Class)
       is
       begin
          the_Events.append (the_Event);
@@ -180,8 +169,6 @@ is
          all_Events := the_Events;
          the_Events.clear;
       end fetch;
-
    end safe_Events;
-
 
 end lace.remote.make_Observer.deferred;

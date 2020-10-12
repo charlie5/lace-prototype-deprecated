@@ -1,33 +1,27 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body lace.remote.Subject.local
 is
-
-
    package body Forge
    is
-      function  to_Subject (Name : in String) return Item
+      function to_Subject (Name : in String) return Item
       is
       begin
          return Self : Item
          do
-            Self.Name := new String' (Name);
+            Self.Name := new String'(Name);
          end return;
       end to_Subject;
 
 
-
       function new_Subject (Name : in String) return View
       is
-         Self : constant View := new Item;
+         Self : constant View := new Item'(to_Subject (Name));
       begin
-         Self.Name := new String' (Name);
          return Self;
       end new_Subject;
    end Forge;
-
 
 
    overriding
@@ -40,13 +34,11 @@ is
    end destroy;
 
 
-
    overriding
    function Name (Self : in Item) return String
    is
    begin
       return Self.Name.all;
    end Name;
-
 
 end lace.remote.Subject.local;

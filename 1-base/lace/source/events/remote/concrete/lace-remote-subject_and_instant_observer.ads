@@ -5,22 +5,16 @@ with
      lace.Subject,
      lace.Observer;
 
-
-
 package lace.remote.Subject_and_instant_Observer
 --
---  Provides a concrete type for a combined event Subject and instant Observer.
+--  Provides a concrete type for a combined event Subject and an instant Observer.
 --
 is
-
-
-   type Item is limited new lace.Any.limited_Item
-                        and lace.Subject    .Item
-                        and lace.Observer   .Item with private;
+   type Item is limited new lace.Any.limited_item
+                        and lace.Subject    .item
+                        and lace.Observer   .item with private;
 
    type View is access all Item'Class;
-
-
 
 
    package Forge
@@ -29,24 +23,20 @@ is
    end Forge;
 
 
-
    overriding
    function Name (Self : in Item) return String;
 
 
 
-
-
 private
 
-   package Subject  is new make_Subject      (Any.limited_Item);
-   package Observer is new make_Observer     (Subject    .Item);
+   package Subject  is new make_Subject      (Any.limited_item);
+   package Observer is new make_Observer     (Subject    .item);
 
 
    type Item is limited new Observer.item with
       record
          Name : access String;
       end record;
-
 
 end lace.remote.Subject_and_instant_Observer;
