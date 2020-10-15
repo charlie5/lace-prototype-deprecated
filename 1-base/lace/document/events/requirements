@@ -3,16 +3,12 @@ System Requirements
 ~~~~~~~~~~~~~~~~~~~
 
 
-
 Overview
 ~~~~~~~~
 
    - Allow applet entities to communicate and operate by means of 'event/response' and 'subject/observer' objects.
    - Subjects and Observers may be remotely distributed.
    - Both lossy (unguaranteed) and lossless (guaranteed) event communication must be catered for.
-   
-
-   
    
 
 Objects
@@ -23,17 +19,11 @@ Events:
    - Varied event kinds are required.
    - Each variant may contain specific data related to the nature of the event.
    
-      
-
-
 Responses:
 
    - Varied Response kinds are required.
    - Each variant may contain specific data useful for performing the response.
    - Each Response may perform a unique program operation.
-   
-
-
 
 Subjects:
 
@@ -41,10 +31,8 @@ Subjects:
    - Must be able to emit an Event.
    - Must notify all Observers (registered for the Event kind) when an Event is emitted.
 
-
-
 Observers:
 
    - Able to be configured with a Response to a specific Event (from a specific Subject).
-   - When notified of an Event, the configured response if performed.
+   - When notified of an Event, the configured response is performed.
    - Must be able to respond to events in a task-safe fashion.
