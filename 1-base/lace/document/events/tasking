@@ -16,8 +16,6 @@ Deferred:
 
 
 
-
-
 ~~~~~~~~~~~~~
 Typical Cases
 ~~~~~~~~~~~~~
@@ -50,7 +48,6 @@ Typical Cases
 
 
 
-
    Multi Task
    ~~~~~~~~~~
 
@@ -73,7 +70,4 @@ Typical Cases
 
    - For a multi task application, care must be taken to ensure that response actions are task safe.
    - Using the 'deferred' method may simplify (or eliminate) concurrency protection issues.   (tbd: add examples)
-
-
-
 
