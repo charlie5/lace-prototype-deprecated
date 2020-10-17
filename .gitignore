@@ -26,6 +26,7 @@ bin
 # Binaries
 launch_simple_instant_events_demo
 launch_simple_deferred_events_demo
+launch_simple_chat_client
 
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
