@@ -1,32 +1,26 @@
-with "lace";
+with
+     "lace",
+     "lace_shared";
 
-project Simple_Chat is
+project simple_Chat
+is
+   for Create_Missing_Dirs use "True";
 
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_simple_chat_client.adb");
+   for Object_Dir  use "build";
+   for Exec_Dir    use ".";
+   for Main        use ("launch_simple_chat_client.adb");
+   for Source_Dirs use (".", "source");
 
    package Dsa is
       for Configuration_File use "simple_chat.dsa";
    end Dsa;
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnat12");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
    package Linker is
       for Default_Switches ("ada") use ("-g");
    end Linker;
 
-   for Source_Dirs use (".", "source");
-
-end Simple_Chat;
-
+end simple_Chat;
