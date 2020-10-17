@@ -12,6 +12,8 @@ auto.cgpr
 
 # Build folders
 build
+**/dsa/x86_64-unknown-linux-gnu
+bin
 
 # Library files
 *.a
