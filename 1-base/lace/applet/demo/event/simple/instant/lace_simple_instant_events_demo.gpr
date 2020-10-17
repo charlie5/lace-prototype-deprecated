@@ -7,6 +7,8 @@ is
     type Restrictions is ("xgc", "ravenscar");
     Restrictions : Restrictions := external ("restrictions");
 
+    for Create_Missing_Dirs use "True";
+
     for Object_Dir  use "build";
     for Exec_Dir    use ".";
     for Source_Dirs use (".", "../../simple");
