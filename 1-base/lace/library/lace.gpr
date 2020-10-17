@@ -2,15 +2,14 @@ with
    "florist",
    "lace_shared";
 
-project Lace is
-
+project Lace
+is
    type Restrictions is ("xgc", "ravenscar");
    the_Restrictions : Restrictions := external ("restrictions", "xgc");
 
-
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Library_Dir use "lib";
+   for Object_Dir      use "build";
+   for Exec_Dir        use ".";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
    for Source_Dirs use (".",
@@ -32,11 +31,7 @@ project Lace is
                         "../source/events/private",
                         "../source/strings");
 
-   package Compiler renames lace_Shared.Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
 end Lace;
-

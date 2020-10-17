@@ -1,9 +1,6 @@
 abstract 
-project lace_Shared is
-
-   for Source_Files use ();
-
-
+project Lace_shared
+is
    -- Scenario Variables
    --
 
@@ -59,6 +56,7 @@ project lace_Shared is
 
    -- Modify options to cater for the build mode.
    --
+   
    case Build_Mode 
    is
       when "debug" =>
@@ -74,7 +72,8 @@ project lace_Shared is
             when "Windows_NT"  =>
                Compiler_Options := Compiler_Options & "-fno-inline"
                                                     & "-gnatVcdeimoprst";
---                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give false positives on a scalar product for collision detection
+--                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give  
+                                                                            -- false positives on a scalar product for collision detection
             when "MacOSX" =>
                null;
          end case;
@@ -113,6 +112,7 @@ project lace_Shared is
 
    -- Modify options to cater for the operating system.
    --
+   
    case OS
    is
       when "MacOSX" =>
@@ -128,16 +128,15 @@ project lace_Shared is
    end case;
 
 
-
    -- Define the packages.
    --
 
    package Ide is
       case OS
       is
-         when "Linux"      =>   for Default_Switches ("adacontrol") use ("-Ftgnat_short");
-         when "Windows_NT" =>   for Default_Switches ("adacontrol") use ("-F", "gnat_short");
-         when "MacOSX"     =>   for Default_Switches ("adacontrol") use ();
+         when "Linux"      => for Default_Switches ("adacontrol") use ("-Ftgnat_short");
+         when "Windows_NT" => for Default_Switches ("adacontrol") use ("-F", "gnat_short");
+         when "MacOSX"     => for Default_Switches ("adacontrol") use ();
       end case;
    end Ide;
 
@@ -147,9 +146,9 @@ project lace_Shared is
 
       case Build_Mode 
       is
-         when "debug" =>   for Global_Configuration_Pragmas use "debug.pra";
-         when "fast"  =>   null;
-         when "small" =>   null;
+         when "debug" => for Global_Configuration_Pragmas use "debug.pra";
+         when "fast"  => null;
+         when "small" => null;
       end case;
    end Builder;
 
@@ -163,4 +162,4 @@ project lace_Shared is
       for Default_Switches ("ada") use Binder_Options;
    end Binder;
 
-end lace_Shared;
+end Lace_shared;
