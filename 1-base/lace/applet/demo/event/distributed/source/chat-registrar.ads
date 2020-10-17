@@ -2,8 +2,6 @@ with
      chat.Client,
      lace.remote.Subject;
 
-
-
 package chat.Registrar
 --
 -- A singleton providing the central chat registrar.
@@ -26,11 +24,10 @@ is
 
 
 
-
 private
 
-   Clients   : chat.Client.remotes (1..5);
-   Subjects  : lace.remote.Subject.views   (1..5);
+   Clients  : chat.Client.remotes (1..5);
+   Subjects : lace.remote.Subject.views (1..5);
 
 end chat.Registrar;
 

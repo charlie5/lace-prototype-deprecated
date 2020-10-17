@@ -118,5 +118,4 @@ is
       end if;
    end close;
 
-
 end lace.remote.Event.utility;

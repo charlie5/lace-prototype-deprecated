@@ -1,12 +1,8 @@
 package body chat.Registrar
 is
-
-   ------------
-   --- Clients
+   -- Clients
    --
-
    use type Client.remote;
-
 
 
    procedure register (the_Client : in Client.remote)
@@ -14,15 +10,12 @@ is
    begin
       for i in Clients'Range
       loop
-         if Clients (i) = null  then
+         if Clients (i) = null then
             Clients (i) := the_Client;
             return;
          end if;
       end loop;
    end register;
-
-
-
 
 
    procedure deregister (the_Client : in Client.remote)
@@ -36,11 +29,8 @@ is
          end if;
       end loop;
 
-      raise Program_Error with "unknown Client";
-   end;
-
-
-
+      raise Program_Error with "Unknown Client";
+   end deregister;
 
 
    function all_Clients return chat.Client.remotes
@@ -58,19 +48,12 @@ is
       end loop;
 
       return Result (1..Count);
-   end;
+   end all_Clients;
 
 
-
-
-
-   -------------
-   --- Subjects
+   -- Subjects
    --
-
    use type lace.remote.Subject.view;
-
-
 
    procedure register (the_Client : in lace.remote.Subject.view)
    is
@@ -85,9 +68,6 @@ is
    end register;
 
 
-
-
-
    procedure deregister (the_Client : in lace.remote.Subject.view)
    is
    begin
@@ -99,11 +79,8 @@ is
          end if;
       end loop;
 
-      raise Program_Error with "unknown Subject";
-   end;
-
-
-
+      raise Program_Error with "Unknown Subject";
+   end deregister;
 
 
    function all_Subjects return lace.remote.Subject.views
@@ -121,9 +98,7 @@ is
       end loop;
 
       return Result (1..Count);
-   end;
-
-
+   end all_Subjects;
 
 
    task      keep_Alive;
@@ -133,7 +108,6 @@ is
       loop
          delay 1.0;
       end loop;
-   end;
-
+   end keep_Alive;
 
 end chat.Registrar;

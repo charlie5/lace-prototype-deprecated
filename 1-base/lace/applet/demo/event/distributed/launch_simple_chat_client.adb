@@ -4,11 +4,10 @@ with
 
      lace.remote.Observer,
      lace.remote.Subject,
-     lace.Event.remote.Utility,
+     lace.remote.Event.utility,
 
      ada.command_Line,
-     ada.text_IO;
-
+     ada.Text_IO;
 
 
 procedure launch_simple_chat_Client
@@ -24,7 +23,7 @@ begin
    --
    if ada.command_Line.argument_Count /= 1
    then
-      ada.text_IO.put_Line ("Usage:   $ ./launch_simple_chat_Client  <nickname>");
+      ada.Text_IO.put_Line ("Usage:   $ ./launch_simple_chat_Client  <nickname>");
       return;
    end if;
 
@@ -35,80 +34,72 @@ begin
       use chat.Client.local;
       use type lace.remote.Subject.view;
 
-      client_Name : String                 := ada.command_Line.Argument (1);
-      the_Client  : chat.Client.local.view := new_Client (client_Name);
-
+      client_Name : constant String                 := ada.command_Line.Argument (1);
+      the_Client  : constant chat.Client.local.view := new_Client (client_Name);
    begin
-      ----------
-      --- Setup
+      -- Setup
       --
 
-      --- Register our client with the Registrar.
+      -- Register our client with the Registrar.
       --
       chat.Registrar.register (chat.Client.remote       (the_Client));
       chat.Registrar.register (lace.remote.Subject.view (the_Client));
-
 
       declare
          use type chat.Client.remote;
 
          procedure broadcast (the_Text : in String)
          is
-            the_Message : chat.client.Message := (client_Name'Length + 2     + the_Text'Length,
-                                                  client_Name        & ": "  & the_Text);
+            the_Message : constant chat.client.Message := (client_Name'Length + 2 + the_Text'Length,
+                                                           client_Name & ": "  & the_Text);
          begin
             the_Client.emit (the_Message);
          end broadcast;
 
-         Peers             : chat.Client.remotes       := chat.Registrar.all_Clients;
-         Peers_as_subjects : lace.remote.Subject.views := chat.Registrar.all_Subjects;
+         Peers             : constant chat.Client.remotes       := chat.Registrar.all_Clients;
+         Peers_as_subjects : constant lace.remote.Subject.views := chat.Registrar.all_Subjects;
 
       begin
-         --- Register our client with all other clients.
+         -- Register our client with all other clients.
          --
 
          for i in Peers'Range
          loop
             if chat.Client.remote (the_Client) /= Peers (i)
             then
-               Peers (i).register_Client  (lace.remote.Subject.view (the_Client));      -- Register our client with every other client.
+               Peers (i).register_Client  (lace.remote.Subject.view (the_Client));   -- Register our client with every other client.
             end if;
          end loop;
-
 
          for i in Peers_as_subjects'Range
          loop
             if lace.remote.Subject.view (the_Client) /= Peers_as_subjects (i)
             then
-               the_Client.register_Client (Peers_as_subjects (i));                      -- Register every other client with our client.
+               the_Client.register_Client (Peers_as_subjects (i));   -- Register every other client with our client.
             end if;
          end loop;
 
 
-         --------------
-         --- Main loop
+         -- Main loop
          --
          loop
             declare
-               chat_Msg : String := Ada.Text_IO.get_Line;
+               chat_Msg : constant String := ada.Text_IO.get_Line;
             begin
                exit when chat_Msg = "end";
                broadcast (chat_Msg);
             end;
          end loop;
 
-
-         -------------
-         --- Shutdown
+         -- Shutdown
          --
 
-         chat.Registrar.deregister (chat.Client.remote        (the_Client));
-         chat.Registrar.deregister (lace.remote.Subject.view  (the_Client));
-
+         chat.Registrar.deregister (chat.Client.remote       (the_Client));
+         chat.Registrar.deregister (lace.remote.Subject.view (the_Client));
 
          declare
-            use lace.event.remote.Utility;
-            Peers : chat.Client.remotes := chat.Registrar.all_Clients;
+            use lace.remote.Event.utility;
+            Peers : constant chat.Client.remotes := chat.Registrar.all_Clients;
          begin
             for i in Peers'range
             loop
@@ -118,7 +109,6 @@ begin
                end if;
             end loop;
          end;
-
       end;
    end;
 
