@@ -1,7 +1,6 @@
 with
      lace.Event;
 
-
 package lace_demo_Events
 --
 -- Provides a simple derived lace 'event'.

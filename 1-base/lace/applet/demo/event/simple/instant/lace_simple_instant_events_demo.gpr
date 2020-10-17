@@ -1,35 +1,24 @@
-with "lace";
+with 
+     "lace",
+     "lace_shared";
 
-project Lace_Simple_Instant_Events_Demo is
+project lace_simple_instant_Events_Demo
+is
+    type Restrictions is ("xgc", "ravenscar");
+    Restrictions : Restrictions := external ("restrictions");
 
-   type Restrictions is
-      ("xgc", "ravenscar");
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_simple_instant_events_demo.adb");
-   Restrictions : Restrictions := external ("restrictions");
+    for Object_Dir  use "build";
+    for Exec_Dir    use ".";
+    for Source_Dirs use (".", "../../simple");
+    for Main        use ("launch_simple_instant_events_demo.adb");
 
-   package Ide is
-      for Documentation_Dir use ".";
-   end Ide;
-
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+    package Ide      renames Lace_shared.Ide;
+    package Builder  renames Lace_shared.Builder;
+    package Compiler renames Lace_shared.Compiler;
+    package Binder   renames Lace_shared.Binder;
 
    package Linker is
       for Default_Switches ("ada") use ("-g");
    end Linker;
 
-   for Source_Dirs use (".", "../../simple");
-
-end Lace_Simple_Instant_Events_Demo;
-
+end lace_simple_instant_Events_Demo;
