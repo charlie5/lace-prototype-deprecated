@@ -9,17 +9,16 @@ with
      ada.command_Line,
      ada.Text_IO;
 
-
 procedure launch_simple_chat_Client
 --
 -- Starts a chat client.
 --
 -- note: This demo is complicated by what seems a problem with interface conversions with RACW (see interface_test).
---       To work around the problem, a client into is treated 'separately' as a chat.Client and a lace.Subject.
+--       To work around the problem, a client is treated 'separately' as a chat.Client and a lace.Subject.
 --
 is
 begin
-   --- Usage
+   -- Usage
    --
    if ada.command_Line.argument_Count /= 1
    then
@@ -40,7 +39,7 @@ begin
       -- Setup
       --
 
-      -- Register our client with the Registrar.
+      -- Register our client with the registrar.
       --
       chat.Registrar.register (chat.Client.remote       (the_Client));
       chat.Registrar.register (lace.remote.Subject.view (the_Client));
@@ -51,7 +50,7 @@ begin
          procedure broadcast (the_Text : in String)
          is
             the_Message : constant chat.client.Message := (client_Name'Length + 2 + the_Text'Length,
-                                                           client_Name & ": "  & the_Text);
+                                                           client_Name & ": " & the_Text);
          begin
             the_Client.emit (the_Message);
          end broadcast;
@@ -67,7 +66,7 @@ begin
          loop
             if chat.Client.remote (the_Client) /= Peers (i)
             then
-               Peers (i).register_Client  (lace.remote.Subject.view (the_Client));   -- Register our client with every other client.
+               Peers (i).register_Client (lace.remote.Subject.view (the_Client));   -- Register our client with every other client.
             end if;
          end loop;
 
@@ -79,15 +78,14 @@ begin
             end if;
          end loop;
 
-
          -- Main loop
          --
          loop
             declare
-               chat_Msg : constant String := ada.Text_IO.get_Line;
+               chat_Message : constant String := ada.Text_IO.get_Line;
             begin
-               exit when chat_Msg = "end";
-               broadcast (chat_Msg);
+               exit when chat_Message = "end";
+               broadcast (chat_Message);
             end;
          end loop;
 
@@ -101,7 +99,7 @@ begin
             use lace.remote.Event.utility;
             Peers : constant chat.Client.remotes := chat.Registrar.all_Clients;
          begin
-            for i in Peers'range
+            for i in Peers'Range
             loop
                if chat.Client.remote (the_Client) /= Peers (i)
                then

@@ -8,7 +8,7 @@ package chat.Registrar
 -- Limited to a maximum of 5 chat clients running at once.
 --
 is
-   pragma remote_call_Interface;
+   pragma remote_Call_interface;
 
 
    procedure   register (the_Client : in Client.remote);
@@ -34,5 +34,5 @@ end chat.Registrar;
 
 --- Notes:
 --
--- - An additional container for Subjects is required to work-around what appears to be
---   a bug in interface conversions when applies to RACW's (see interface_test).
+-- - An additional container for subjects is required to work-around what appears to be
+--   a bug in interface conversions when applied to RACW's (see interface_test).

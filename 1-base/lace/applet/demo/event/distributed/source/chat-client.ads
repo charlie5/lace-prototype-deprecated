@@ -1,6 +1,5 @@
 with
      lace.Event,
-     lace.remote.Response,
      lace.remote.Subject,
      lace.remote.Observer;
 
@@ -19,8 +18,8 @@ is
    type Remotes is array (Positive range <>) of Remote;
 
 
-   procedure   register_Client (Self : in out Item;   Other_Client : lace.remote.Subject .view) is abstract;
-   procedure deregister_Client (Self : in out Item;   Other_Client : lace.remote.Observer.view) is abstract;
+   procedure   register_Client (Self : in out Item;   other_Client : lace.remote.Subject .view) is abstract;
+   procedure deregister_Client (Self : in out Item;   other_Client : lace.remote.Observer.view) is abstract;
 
 
    type Message (Length : Natural) is new lace.Event.item with
