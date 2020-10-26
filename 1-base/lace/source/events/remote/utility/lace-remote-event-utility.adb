@@ -3,6 +3,7 @@ with
      lace.Event_conversions,
      ada.Tags,
      ada.unchecked_Deallocation;
+with ada.Text_IO; use ada.Text_IO;
 
 package body lace.remote.Event.utility
 is
@@ -52,12 +53,15 @@ is
                       to_Event_Kind : in lace.Event.Kind)
    is
    begin
+      put_line ("c1");
       the_Observer.add (with_Response,
                         to_Event_Kind,
                         to_Subject.Name);
 
+      put_line ("c2");
       to_Subject.register (the_Observer,
                            to_Event_Kind);
+      put_line ("c3");
    end connect;
 
 

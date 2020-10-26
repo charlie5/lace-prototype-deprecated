@@ -35,15 +35,17 @@ is
    --
 
    overriding
-   procedure   register_Client (Self : in out Item;   Other : lace.remote.Subject.view);
+   procedure register_Client (Self : in out Item;   Other : lace.remote.Subject.view);
 
    overriding
    procedure deregister_Client (Self : in out Item;   Other : lace.remote.Observer.view);
 
+   overriding
+   procedure register_Client (Self : in out Item;   other_Client : lace.remote.Observer.view);
+
 
    -- Responses
    --
-
    type Show is new lace.remote.Response.item with null record;
 
 

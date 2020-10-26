@@ -44,9 +44,10 @@ is
 
       if subject.Logger /= null
       then
-         subject.Logger.log_Connection (the_Observer,
-                                        Subject.view (Self),
-                                        of_Kind);
+         null;
+         --  subject.Logger.log_Connection (the_Observer,
+         --                                 Subject.view (Self),
+         --                                 of_Kind);
       end if;
    end register;
 
@@ -184,6 +185,5 @@ is
       end observer_Count;
 
    end safe_Observers;
-
 
 end lace.remote.make_Subject;

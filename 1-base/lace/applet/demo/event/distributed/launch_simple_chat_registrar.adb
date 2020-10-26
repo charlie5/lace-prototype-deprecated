@@ -4,11 +4,11 @@ with
 
 procedure launch_simple_chat_Registrar
 --
--- Launches the chat registrar for 60 seconds.
+-- Launches the chat registrar for 10 minutes.
 --
 is
 begin
-   for i in 1 .. 60
+   for i in 1 .. 600
    loop
       delay 1.0;
    end loop;

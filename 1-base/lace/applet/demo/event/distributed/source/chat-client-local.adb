@@ -2,6 +2,7 @@ with
      lace.event       .Utility,
      lace.remote.Event.Utility,
      ada.Text_IO;
+use ada.Text_IO;
 
 package body chat.Client.local
 is
@@ -52,10 +53,9 @@ is
       use lace.event       .Utility,
           lace.remote.Event.utility;
    begin
-      connect (lace.remote.Observer.view' (Self'unchecked_Access),
-               Other,
-               the_Response'unchecked_Access,
-               to_Kind (chat.Client.Message'Tag));
+      Self.add (the_Response'Access,
+                to_Kind (chat.Client.Message'Tag),
+                Other.Name);
    end register_Client;
 
 
@@ -72,6 +72,21 @@ is
                 to_Kind (chat.Client.Message'Tag),
                 Other.Name);
    end deregister_Client;
+
+
+   overriding
+   procedure   register_Client (Self : in out Item;   other_Client : lace.remote.Observer.view)
+   is
+      use lace.event       .Utility,
+          lace.remote.Event.utility;
+   begin
+      Self.add (the_Response'Access,
+                to_Kind (chat.Client.Message'Tag),
+                other_Client.Name);
+
+      Self.register (other_Client,
+                     to_Kind (chat.Client.Message'Tag));
+   end register_Client;
 
 
    -- Responses
