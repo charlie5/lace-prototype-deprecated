@@ -45,9 +45,9 @@ is
       if subject.Logger /= null
       then
          null;
-         --  subject.Logger.log_Connection (the_Observer,
-         --                                 Subject.view (Self),
-         --                                 of_Kind);
+         subject.Logger.log_Connection (the_Observer,
+                                        Subject.view (Self),
+                                        of_Kind);
       end if;
    end register;
 

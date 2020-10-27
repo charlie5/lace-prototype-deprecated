@@ -37,7 +37,7 @@ is
    is
    begin
       put_Line (Self.File,   "log Connection => "
-                           & From.Name & " observes " & To.Name
+                           --  & From.Name & " observes " & To.Name
                            & "   for event kind " & Name_of (for_Kind));
       new_Line (Self.File);
    end log_Connection;
