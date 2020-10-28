@@ -4,7 +4,7 @@ with lace.Event,
 
 private
 with ada.containers.Vectors,
-     ada.containers.hashed_Maps,
+     ada.containers.indefinite_hashed_Maps,
      ada.unchecked_Conversion;
 
 
@@ -65,10 +65,10 @@ private
    function to_Hash is new ada.unchecked_Conversion (event.Kind, ada.containers.Hash_type);
    use type event.Kind;
 
-   package event_kind_Maps_of_event_observers is new ada.containers.hashed_Maps (event.Kind,
-                                                                                 event_Observer_Vector_view,
-                                                                                 to_Hash,
-                                                                                 "=");
+   package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,
+                                                                                            event_Observer_Vector_view,
+                                                                                            to_Hash,
+                                                                                            "=");
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
 
 

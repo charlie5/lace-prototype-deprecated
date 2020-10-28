@@ -4,7 +4,6 @@ with lace.Event,
 
 private
 with ada.Containers.indefinite_hashed_Maps,
-     ada.Containers.hashed_Maps,
      ada.strings.Hash;
 
 
@@ -62,10 +61,10 @@ private
    use type Response.view;
    function to_Hash (Self : in event.Kind) return ada.containers.Hash_type;
 
-   package event_response_Maps     is new ada.containers.hashed_Maps (key_type        => event.Kind,
-                                                                      element_type    => Response.view,
-                                                                      hash            => to_Hash,
-                                                                      equivalent_keys => "=");
+   package event_response_Maps     is new ada.containers.indefinite_hashed_Maps (key_type        => event.Kind,
+                                                                                 element_type    => Response.view,
+                                                                                 hash            => to_Hash,
+                                                                                 equivalent_keys => "=");
    subtype event_response_Map      is event_response_maps.Map;
    type    event_response_Map_view is access all event_response_Map;
 
