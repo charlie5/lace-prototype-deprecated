@@ -6,7 +6,6 @@ with
 private
 with
      ada.containers.indefinite_hashed_Maps,
-     ada.containers.hashed_Maps,
      ada.strings.Hash;
 
 generic
@@ -64,7 +63,7 @@ private
    use type Response.view;
    function to_Hash (Self : in event.Kind) return ada.containers.Hash_type;
 
-   package event_response_Maps     is new ada.containers.hashed_Maps (key_type        => event.Kind,
+   package event_response_Maps     is new ada.containers.indefinite_hashed_Maps (key_type        => event.Kind,
                                                                       element_type    => Response.view,
                                                                       hash            => to_Hash,
                                                                       equivalent_keys => "=");

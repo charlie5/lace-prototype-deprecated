@@ -1,18 +1,16 @@
 with
-     lace.event       .Utility,
-     lace.remote.Event.Utility,
+     lace.Event.utility,
      ada.Text_IO;
-use ada.Text_IO;
 
 package body chat.Client.local
 is
    -- Globals
    --
 
-   the_Response : aliased chat.client.local.Show;
+   the_Response : aliased chat.Client.local.show;
 
 
-   --- Forge
+   -- Forge
    --
 
    function to_Client (Name : in String) return Item
@@ -50,8 +48,7 @@ is
    overriding
    procedure register_Client (Self : in out Item;   Other : lace.remote.Subject.view)
    is
-      use lace.event       .Utility,
-          lace.remote.Event.utility;
+      use lace.Event.utility;
    begin
       Self.add (the_Response'Access,
                 to_Kind (chat.Client.Message'Tag),
@@ -62,8 +59,7 @@ is
    overriding
    procedure deregister_Client (Self : in out Item;   Other : lace.remote.Observer.view)
    is
-      use lace.Event       .utility,
-          lace.remote.Event.utility;
+      use lace.Event.utility;
    begin
       Self.deregister (Other,
                        to_Kind (chat.Client.Message'Tag));
@@ -77,8 +73,7 @@ is
    overriding
    procedure   register_Client (Self : in out Item;   other_Client : lace.remote.Observer.view)
    is
-      use lace.event       .Utility,
-          lace.remote.Event.utility;
+      use lace.Event.utility;
    begin
       Self.add (the_Response'Access,
                 to_Kind (chat.Client.Message'Tag),

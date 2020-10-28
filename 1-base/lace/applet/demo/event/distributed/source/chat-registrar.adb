@@ -1,17 +1,12 @@
-with ada.Text_IO;
-
 package body chat.Registrar
 is
    -- Clients
    --
    use type Client.remote;
 
-   use ada.Text_IO;
-
    procedure register (the_Client : in Client.remote)
    is
    begin
-      put_Line ("Register a client.");
       for i in Clients'Range
       loop
          if Clients (i) = null then
@@ -46,8 +41,6 @@ is
       loop
          if Clients (i) /= null
          then
-            put_Line ("all Clinets " & Clients (i).Name);
-
             Count          := Count + 1;
             Result (Count) := Clients (i);
          end if;
@@ -141,7 +134,6 @@ is
 
    function all_Observers return lace.remote.Observer.views
    is
-      use type lace.remote.Observer.view;
       Count  : Natural := 0;
       Result : lace.remote.Observer.views (1..5);
    begin

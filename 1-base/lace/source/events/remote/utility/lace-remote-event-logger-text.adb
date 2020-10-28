@@ -1,5 +1,6 @@
 with
-     lace.Event.utility;
+     lace.Event.utility,
+     ada.strings.Hash;
 
 package body lace.remote.Event.Logger.text
 is
@@ -37,9 +38,8 @@ is
    is
    begin
       put_Line (Self.File,   "log Connection => "
-                           --  & From.Name & " observes " & To.Name
+                           & From.Name & " observes " & To.Name
                            & "   for event kind " & Name_of (for_Kind));
-      new_Line (Self.File);
    end log_Connection;
 
 
@@ -152,13 +152,8 @@ is
 
    function Hash (Item : in lace.Event.Kind) return Ada.Containers.Hash_Type
    is
-      Result : Ada.Containers.Hash_Type;
-      for Result'Address use Item'Address;
-
-      pragma Assert (Item'Size >= Result'Size, "Defective hash function.");
    begin
-      return Result;
+      return ada.Strings.Hash (String (Item));
    end Hash;
-
 
 end lace.remote.event.Logger.text;

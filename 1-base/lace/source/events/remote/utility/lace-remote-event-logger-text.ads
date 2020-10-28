@@ -6,7 +6,7 @@ with
 private
 with
      ada.Text_IO,
-     ada.Containers.hashed_Sets;
+     ada.Containers.indefinite_hashed_Sets;
 
 package lace.remote.Event.Logger.text
 --
@@ -86,9 +86,9 @@ private
    use type lace.Event.Kind;
    function Hash (Item : in lace.Event.Kind) return ada.Containers.Hash_Type;
 
-   package event_kind_Sets is new ada.Containers.hashed_Sets (lace.Event.Kind,
-                                                              Hash,
-                                                              "=");
+   package event_kind_Sets is new ada.Containers.indefinite_hashed_Sets (lace.Event.Kind,
+                                                                         Hash,
+                                                                         "=");
    subtype event_kind_Set  is event_kind_Sets.Set;
 
 

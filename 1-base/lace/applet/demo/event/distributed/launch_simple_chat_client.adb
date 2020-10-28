@@ -18,7 +18,6 @@ procedure launch_simple_chat_Client
 --       To work around the problem, a client is treated 'separately' as a chat.Client and a lace.Subject.
 --
 is
-   use ada.Text_IO;
 begin
    -- Usage
    --
@@ -110,7 +109,6 @@ begin
          chat.Registrar.deregister (lace.remote.Subject.view (the_Client));
 
          declare
-            use lace.remote.Event.utility;
             Peers : constant chat.Client.remotes := chat.Registrar.all_Clients;
          begin
             for i in Peers'Range

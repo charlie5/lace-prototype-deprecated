@@ -1,6 +1,6 @@
 with
-     chat.Registrar,   -- This 'pulls in' the registrar.
-     ada.Text_IO;
+     chat.Registrar;   -- This 'pulls in' the registrar.
+pragma Unreferenced (chat.Registrar);
 
 procedure launch_simple_chat_Registrar
 --

@@ -6,7 +6,7 @@ with
 private
 with
      ada.containers.Vectors,
-     ada.containers.hashed_Maps,
+     ada.containers.indefinite_hashed_Maps,
      ada.unchecked_Conversion;
 
 generic
@@ -69,7 +69,7 @@ private
    function to_Hash is new ada.unchecked_Conversion (event.Kind,  ada.containers.Hash_type);
    use type event.Kind;
 
-   package event_kind_Maps_of_event_observers is new ada.Containers.hashed_Maps (event.Kind,
+   package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (event.Kind,
                                                                                  event_Observer_Vector_view,
                                                                                  to_Hash,
                                                                                  "=");
