@@ -40,8 +40,8 @@ is
    overriding
    procedure deregister_Client (Self : in out Item;   Other : lace.remote.Observer.view);
 
-   overriding
-   procedure register_Client (Self : in out Item;   other_Client : lace.remote.Observer.view);
+   --  overriding
+   --  procedure register_Client (Self : in out Item;   other_Client : lace.remote.Observer.view);
 
 
    -- Responses
