@@ -57,9 +57,9 @@ begin
             the_Client.emit (the_Message);
          end broadcast;
 
-         Peers              : constant chat.Client.views          := chat.Registrar.all_Clients;
+         Peers              : constant chat.Client         .views := chat.Registrar.all_Clients;
          Peers_as_subjects  : constant lace.remote.Subject .views := chat.Registrar.all_Subjects;
-         Peers_as_observers : constant lace.Remote.Observer.Views := chat.Registrar.all_Observers;
+         Peers_as_observers : constant lace.remote.Observer.views := chat.Registrar.all_Observers;
 
          use lace.Event.utility;
       begin
@@ -69,26 +69,14 @@ begin
          loop
             if chat.Client.view (the_Client) /= Peers (i)
             then
-               Peers (i).register_Client (lace.remote.Observer.view'(the_Client.all'Access));   -- Register our client as a subject with every other client.
-            end if;
-         end loop;
-
-         for i in Peers_as_observers'Range
-         loop
-            if lace.remote.Observer.view (the_Client) /= Peers_as_observers (i)
-            then
                the_Client.register (Peers_as_observers (i),
                                     to_Kind (chat.Client.Message'Tag));
-            end if;
-         end loop;
 
-         for i in Peers_as_subjects'Range
-         loop
-            if lace.remote.Subject.view (the_Client) /= Peers_as_subjects (i)
-            then
-               the_Client.register_Client (Peers_as_subjects (i));   -- Register every other client with our client.
+               Peers (i).register_Client (lace.Remote.Subject.view (the_Client));
+
                Peers_as_subjects (i).register (lace.remote.Observer.view (the_Client),
                                                to_Kind (chat.Client.Message'Tag));
+               the_Client.register_Client (Peers_as_subjects (i));
             end if;
          end loop;
 
