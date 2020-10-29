@@ -41,12 +41,12 @@ begin
 
       -- Register our client with the registrar.
       --
-      chat.Registrar.register (chat.Client.remote        (the_Client));
+      chat.Registrar.register (chat.Client.view          (the_Client));
       chat.Registrar.register (lace.remote.Subject .view (the_Client));
       chat.Registrar.register (lace.remote.Observer.view (the_Client));
 
       declare
-         use type chat.Client.remote,
+         use type chat.Client.view,
                   lace.Remote.Observer.view;
 
          procedure broadcast (the_Text : in String)
@@ -57,7 +57,7 @@ begin
             the_Client.emit (the_Message);
          end broadcast;
 
-         Peers              : constant chat.Client.remotes        := chat.Registrar.all_Clients;
+         Peers              : constant chat.Client.views          := chat.Registrar.all_Clients;
          Peers_as_subjects  : constant lace.remote.Subject .views := chat.Registrar.all_Subjects;
          Peers_as_observers : constant lace.Remote.Observer.Views := chat.Registrar.all_Observers;
 
@@ -67,7 +67,7 @@ begin
          --
          for i in Peers'Range
          loop
-            if chat.Client.remote (the_Client) /= Peers (i)
+            if chat.Client.view (the_Client) /= Peers (i)
             then
                Peers (i).register_Client (lace.remote.Observer.view'(the_Client.all'Access));   -- Register our client as a subject with every other client.
             end if;
@@ -75,7 +75,7 @@ begin
 
          for i in Peers_as_observers'Range
          loop
-            if lace.Remote.Observer.view (the_Client) /= Peers_as_observers (i)
+            if lace.remote.Observer.view (the_Client) /= Peers_as_observers (i)
             then
                the_Client.register (Peers_as_observers (i),
                                     to_Kind (chat.Client.Message'Tag));
@@ -105,15 +105,15 @@ begin
 
          -- Shutdown
          --
-         chat.Registrar.deregister (chat.Client.remote       (the_Client));
+         chat.Registrar.deregister (chat.Client.view         (the_Client));
          chat.Registrar.deregister (lace.remote.Subject.view (the_Client));
 
          declare
-            Peers : constant chat.Client.remotes := chat.Registrar.all_Clients;
+            Peers : constant chat.Client.views := chat.Registrar.all_Clients;
          begin
             for i in Peers'Range
             loop
-               if chat.Client.remote (the_Client) /= Peers (i)
+               if chat.Client.view (the_Client) /= Peers (i)
                then
                   Peers (i).deregister_Client (lace.remote.Observer.view (the_Client));   -- Deregister our client with every other client.
                end if;

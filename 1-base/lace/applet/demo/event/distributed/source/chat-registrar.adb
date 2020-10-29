@@ -2,9 +2,9 @@ package body chat.Registrar
 is
    -- Clients
    --
-   use type Client.remote;
+   use type Client.view;
 
-   procedure register (the_Client : in Client.remote)
+   procedure register (the_Client : in Client.view)
    is
    begin
       for i in Clients'Range
@@ -17,7 +17,7 @@ is
    end register;
 
 
-   procedure deregister (the_Client : in Client.remote)
+   procedure deregister (the_Client : in Client.view)
    is
    begin
       for i in Clients'Range
@@ -32,10 +32,10 @@ is
    end deregister;
 
 
-   function all_Clients return chat.Client.remotes
+   function all_Clients return chat.Client.views
    is
       Count  : Natural := 0;
-      Result : chat.Client.remotes (1..5);
+      Result : chat.Client.views (1..5);
    begin
       for i in Clients'Range
       loop

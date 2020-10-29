@@ -12,10 +12,10 @@ is
    pragma remote_Call_interface;
 
 
-   procedure   register (the_Client : in Client.remote);
-   procedure deregister (the_Client : in Client.remote);
+   procedure   register (the_Client : in Client.view);
+   procedure deregister (the_Client : in Client.view);
 
-   function  all_Clients return chat.Client.remotes;
+   function  all_Clients return chat.Client.views;
 
 
    procedure   register (the_Client : in lace.remote.Subject.view);
@@ -31,7 +31,7 @@ is
 
 private
 
-   Clients   : chat.Client.remotes (1..5);
+   Clients   : chat.Client         .views (1..5);
    Subjects  : lace.remote.Subject .views (1..5);
    Observers : lace.remote.Observer.views (1..5);
 
