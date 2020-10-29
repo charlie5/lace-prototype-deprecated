@@ -36,7 +36,7 @@ is
    --  Returns null, if no Logger is in use.
 
 
-   --- Termination
+   -- Termination
    --
 
    procedure close;

@@ -1,9 +1,7 @@
 package body lace.remote.Observer.instant
 is
-
    package body Forge
    is
-
       function new_Observer (Name : in String) return View
       is
          Self : constant View := new Item;

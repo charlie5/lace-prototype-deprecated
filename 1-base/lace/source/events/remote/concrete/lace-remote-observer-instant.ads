@@ -26,9 +26,9 @@ is
 
 private
 
-   package my_Observer is new lace.remote.make_Observer (Any.limited_item);
+   package Observer is new lace.remote.make_Observer (Any.limited_item);
 
-   type Item is limited new my_Observer.item with
+   type Item is limited new Observer.item with
       record
          Name : access String;
       end record;

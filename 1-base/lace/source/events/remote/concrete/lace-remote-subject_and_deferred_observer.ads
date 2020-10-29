@@ -25,7 +25,6 @@ is
 
    procedure destroy (Self : in out Item);
 
-
    overriding
    function Name (Self : in Item) return String;
 

@@ -6,7 +6,7 @@ with
 private
 with
      ada.Text_IO,
-     ada.containers.hashed_Sets;
+     ada.containers.indefinite_hashed_Sets;
 
 package lace.event.Logger.text
 --
@@ -17,7 +17,7 @@ is
    type View is access all item'Class;
 
 
-   --- Forge
+   -- Forge
    --
 
    function  to_Logger (Name : in String) return Item;
@@ -26,7 +26,7 @@ is
    procedure destruct  (Self : in out Item);
 
 
-   --- Logging of event consfiguration.
+   -- Logging of event consfiguration.
    --
 
    overriding
@@ -48,11 +48,11 @@ is
                                                       to_Kind      : in event.Kind;
                                                       from_Subject : in String);
 
-   --- Logging of event transmission.
+   -- Logging of event transmission.
    --
 
    overriding
-   procedure log_Emit     (Self : in out Item;   From         : in Subject.view;
+   procedure log_Emit     (Self : in out Item;   From         : in Subject .view;
                                                  To           : in Observer.view;
                                                  the_Event    : in Event.item'Class);
    overriding
@@ -64,15 +64,14 @@ is
                                                  of_Observer  : in Observer.view;
                                                  to_Event     : in Event.item'Class;
                                                  from_Subject : in String);
-
-   --- Logging of miscellaneous messages.
+   -- Logging of miscellaneous messages.
    --
 
    overriding
    procedure log (Self : in out Item;   any_Message : in String);
 
 
-   --- Log filtering
+   -- Log Filtering
    --
 
    overriding
@@ -82,9 +81,7 @@ is
 
 private
 
-   function Hash (Item : in Event.Kind) return ada.containers.Hash_type;
-
-   package event_kind_Sets is new ada.containers.hashed_Sets (event.Kind, Hash, "=");
+   package event_kind_Sets is new ada.containers.indefinite_hashed_Sets (event.Kind, event.Hash, "=");
    subtype event_kind_Set  is     event_kind_sets.Set;
 
    type Item is limited new Logger.item with

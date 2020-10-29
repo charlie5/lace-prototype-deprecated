@@ -1,6 +1,6 @@
 with
      lace.remote.event.Logger,
-     lace.event_Conversions,
+     lace.Event_conversions,
      ada.unchecked_Deallocation;
 
 package body lace.remote.make_Subject
@@ -13,7 +13,7 @@ is
    end destroy;
 
 
-   --- Attributes
+   -- Attributes
    --
 
    overriding
@@ -32,7 +32,7 @@ is
    end observer_Count;
 
 
-   --- Operations
+   -- Operations
    --
 
    overriding
@@ -44,8 +44,7 @@ is
 
       if subject.Logger /= null
       then
-         null;
-         subject.Logger.log_Connection (the_Observer,
+         subject.Logger.log_connection (the_Observer,
                                         Subject.view (Self),
                                         of_Kind);
       end if;
@@ -71,7 +70,7 @@ is
    overriding
    procedure emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
    is
-      use lace.event_Conversions;
+      use lace.Event_conversions;
       my_Observers : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
    begin
       for Each in my_Observers'Range
@@ -88,13 +87,12 @@ is
    end emit;
 
 
-   --- Safe Observers
+   -- Safe Observers
    --
 
    protected
    body safe_Observers
    is
-
       procedure destruct
       is
          use event_kind_Maps_of_event_observers;
@@ -103,7 +101,7 @@ is
                                                            event_Observer_Vector_view);
 
          Cursor                    : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
-         the_event_observer_Vector : event_Observer_Vector_view;
+         the_event_Observer_Vector : event_Observer_Vector_view;
       begin
          while has_Element (Cursor)
          loop

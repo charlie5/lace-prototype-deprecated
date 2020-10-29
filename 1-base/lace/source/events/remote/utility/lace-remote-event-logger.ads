@@ -15,7 +15,7 @@ is
    -- Operations
    --
 
-   procedure destruct (Self : in out Item)   is null;
+   procedure destruct (Self : in out Item) is null;
 
 
    -- Logging of event consfiguration.
@@ -23,21 +23,21 @@ is
 
    procedure log_Connection    (Self : in out Item;   From     : in lace.remote.Observer.view;
                                                       To       : in lace.remote.Subject .view;
-                                                      for_Kind : in lace.Event.Kind) is abstract;
+                                                      for_Kind : in lace.event.Kind) is abstract;
 
    procedure log_Disconnection (Self : in out Item;   From     : in lace.remote.Observer.view;
                                                       To       : in lace.remote.Subject .view;
-                                                      for_Kind : in lace.Event.Kind) is abstract;
+                                                      for_Kind : in lace.event.Kind) is abstract;
 
 
    procedure log_new_Response  (Self : in out Item;   the_Response : in lace.remote.Response.view;
                                                       of_Observer  : in lace.remote.Observer.item'Class;
-                                                      to_Kind      : in lace.Event.Kind;
+                                                      to_Kind      : in lace.event.Kind;
                                                       from_Subject : in String) is abstract;
 
    procedure log_rid_Response  (Self : in out Item;   the_Response : in lace.remote.Response.view;
                                                       of_Observer  : in lace.remote.Observer.item'Class;
-                                                      to_Kind      : in lace.Event.Kind;
+                                                      to_Kind      : in lace.event.Kind;
                                                       from_Subject : in String) is abstract;
    -- Logging of event transmission.
    --
@@ -60,7 +60,7 @@ is
    procedure log (Self : in out Item;   Message : in String) is abstract;
 
 
-   --- Log filtering
+   -- Log filtering.
    --
 
    procedure ignore (Self : in out Item;   Kind : in lace.Event.Kind) is abstract;

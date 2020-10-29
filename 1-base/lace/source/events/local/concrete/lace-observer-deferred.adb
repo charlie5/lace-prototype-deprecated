@@ -1,9 +1,7 @@
 package body lace.Observer.deferred
 is
-
    package body Forge
    is
-
       function to_Observer (Name : in String) return Item
       is
       begin
@@ -31,6 +29,5 @@ is
    begin
       return Self.Name.all;
    end Name;
-
 
 end lace.Observer.deferred;

@@ -10,12 +10,12 @@ is
    type View is access all Item'class;
 
 
-   --- Attributes
+   -- Attributes
    --
    function Name (Self : in Item) return String;
 
 
-   --- Operations
+   -- Operations
    --
    procedure respond (Self : in out Item;   to_Event : in Event.item'Class)
    is abstract;

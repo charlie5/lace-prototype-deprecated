@@ -1,10 +1,9 @@
 with
-     lace.Event.utility,
-     ada.strings.Hash;
+     lace.Event.utility;
 
 package body lace.remote.Event.Logger.text
 is
-   use lace.event.Utility,
+   use lace.Event.utility,
        ada.Text_IO;
 
    -- Forge
@@ -28,35 +27,35 @@ is
    end destruct;
 
 
-   --- Operations
+   -- Operations
    --
 
    overriding
    procedure log_Connection (Self : in out Item;   From     : in lace.remote.Observer.view;
-                                                   To       : in lace.remote.Subject.view;
-                                                   for_Kind : in lace.Event.Kind)
+                                                   To       : in lace.remote.Subject .view;
+                                                   for_Kind : in lace.event.Kind)
    is
    begin
       put_Line (Self.File,   "log Connection => "
                            & From.Name & " observes " & To.Name
-                           & "   for event kind " & Name_of (for_Kind));
+                           & " for event kind " & Name_of (for_Kind));
    end log_Connection;
 
 
    overriding
    procedure log_Disconnection (Self : in out Item;   From     : in lace.remote.Observer.view;
                                                       To       : in lace.remote.Subject.view;
-                                                      for_Kind : in lace.Event.Kind)
+                                                      for_Kind : in lace.event.Kind)
    is
    begin
       put_Line (Self.File,  "log Disconnection => "
                            & From.Name & " no longer observes " & To.Name
-                           & "   for event kind " & Name_of (for_Kind));
+                           & " for event kind " & Name_of (for_Kind));
    end log_Disconnection;
 
 
    overriding
-   procedure log_Emit (Self : in out Item;   From      : in lace.remote.Subject.view;
+   procedure log_Emit (Self : in out Item;   From      : in lace.remote.Subject .view;
                                              To        : in lace.remote.Observer.view;
                                              the_Event : in lace.Event.item'Class)
    is
@@ -68,7 +67,7 @@ is
 
       put_Line (Self.File,   "log Emit => "
                            & From.Name & " sends " & Name_of (Kind_of (the_Event))
-                           & "   to "  & To.Name);
+                           & " to "    & To.Name);
    end log_Emit;
 
 
@@ -80,14 +79,14 @@ is
    begin
       put_Line (Self.File,  "log_Relay => "
                            & From.Name & " relays " & Name_of (Kind_of (the_Event))
-                           & "   to "  & To.Name);
+                           & " to "    & To.Name);
    end log_Relay;
 
 
    overriding
    procedure log_new_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
                                                      of_Observer  : in lace.remote.Observer.item'Class;
-                                                     to_Kind      : in lace.Event.Kind;
+                                                     to_Kind      : in lace.event.Kind;
                                                      from_Subject : in String)
    is
    begin
@@ -95,14 +94,14 @@ is
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind)
                            & " from "        & from_Subject
-                           & "   with "      & the_Response.Name);
+                           & " with "        & the_Response.Name);
    end log_new_Response;
 
 
    overriding
    procedure log_rid_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
                                                      of_Observer  : in lace.remote.Observer.item'Class;
-                                                     to_Kind      : in lace.Event.Kind;
+                                                     to_Kind      : in lace.event.Kind;
                                                      from_Subject : in String)
    is
    begin
@@ -110,7 +109,7 @@ is
                            & of_Observer.Name
                            & " no longer responds to " & Name_of (to_Kind)
                            & " from "                  & from_Subject
-                           & "   with "                & the_Response.Name);
+                           & " with "                  & the_Response.Name);
    end log_rid_Response;
 
 
@@ -130,7 +129,7 @@ is
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind (to_Event'Tag))
                            & " from "        & from_Subject
-                           & "   with "      & the_Response.Name);
+                           & " with "        & the_Response.Name);
    end log_Response;
 
 
@@ -143,17 +142,11 @@ is
 
 
    overriding
-   procedure ignore (Self : in out Item;   Kind : in lace.Event.Kind)
+   procedure ignore (Self : in out Item;   Kind : in lace.event.Kind)
    is
    begin
       Self.Ignored.insert (Kind);
    end ignore;
 
-
-   function Hash (Item : in lace.Event.Kind) return Ada.Containers.Hash_Type
-   is
-   begin
-      return ada.Strings.Hash (String (Item));
-   end Hash;
 
 end lace.remote.event.Logger.text;

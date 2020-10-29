@@ -30,7 +30,7 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
-                      from_Subject : in String)
+                                            from_Subject : in String)
    is
       use event_response_Maps,
           subject_Maps_of_event_responses,
@@ -64,7 +64,7 @@ is
          then
             observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
          else
-            raise Program_Error with "Event relaying is currently disabled";
+            raise program_Error with "Event relaying is currently disabled";
          end if;
 
       else
@@ -73,13 +73,13 @@ is
             observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response.");
             observer.Logger.log ("            count of responses =>" & Count_type'Image (the_Responses.Length));
          else
-            raise Program_Error with "Observer " & my_Name & " has no response.";
+            raise program_Error with "Observer " & my_Name & " has no response.";
          end if;
       end if;
 
    exception
       when constraint_Error =>
-         if Observer.Logger /= null
+         if observer.Logger /= null
          then
             observer.Logger.log (my_Name & " has no responses for events from " & from_Subject);
          else
@@ -145,12 +145,5 @@ is
       Self.relay_Target := To;
    end relay_responseless_Events;
 
-
-   function to_Hash (Self : in lace.event.Kind) return ada.containers.Hash_type
-   is
-      function Converted is new ada.unchecked_Conversion (lace.event.Kind, ada.containers.Hash_type);
-   begin
-      return Converted (Self);
-   end to_Hash;
 
 end lace.remote.make_Observer;

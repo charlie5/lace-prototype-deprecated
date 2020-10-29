@@ -27,7 +27,7 @@ is
    procedure destroy (Self : in out Item);
 
 
-   --- Responses
+   -- Responses
    --
 
    overriding
@@ -42,13 +42,12 @@ is
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view);
 
 
-   --- Operations
+   -- Operations
    --
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in String);
-
    overriding
    procedure respond (Self : access Item);
 
@@ -56,22 +55,20 @@ is
 
 private
 
-   --- event response Maps
+   -- event response Maps
    --
-
    use type event.Kind;
    use type Response.view;
-   function to_Hash (Self : in event.Kind) return ada.containers.Hash_type;
 
    package event_response_Maps     is new ada.containers.indefinite_hashed_Maps (key_type        => event.Kind,
-                                                                      element_type    => Response.view,
-                                                                      hash            => to_Hash,
-                                                                      equivalent_keys => "=");
+                                                                                 element_type    => Response.view,
+                                                                                 hash            => event.Hash,
+                                                                                 equivalent_keys => "=");
    subtype event_response_Map      is event_response_maps.Map;
    type    event_response_Map_view is access all event_response_Map;
 
 
-   --- subject Maps of event responses
+   -- subject Maps of event responses
    --
 
    package subject_Maps_of_event_responses
@@ -82,9 +79,8 @@ private
    subtype subject_Map_of_event_responses is subject_Maps_of_event_responses.Map;
 
 
-   --- Observer Item
+   -- Observer Item
    --
-
    type Item is abstract limited new T
                                  and Observer.item
    with

@@ -1,9 +1,9 @@
 package body lace.remote.Subject
 is
-   the_Logger : access remote.Event.Logger.item'Class;
+   the_Logger : access remote.event.Logger.item'Class;
 
 
-   procedure Logger_is (Now : access remote.Event.Logger.item'Class)
+   procedure Logger_is (Now : access remote.event.Logger.item'Class)
    is
    begin
       the_Logger := Now;

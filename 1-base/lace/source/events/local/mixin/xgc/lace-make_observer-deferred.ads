@@ -5,7 +5,7 @@ private
 with
      ada.containers.indefinite_Vectors,
      ada.containers.indefinite_hashed_Maps,
-     ada.Strings.hash;
+     ada.strings.Hash;
 
 
 generic
@@ -16,9 +16,6 @@ package lace.make_Observer.deferred
 --  Makes a user class T into a deferred event Observer.
 --
 is
-   --- Observer Item
-   --
-
    type Item is abstract limited new T with private;
    type View is access all Item'Class;
 
@@ -28,58 +25,55 @@ is
    procedure destroy (Self : in out Item);
 
 
-   --- Operations
+   -- Operations
    --
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in String);
-
    overriding
    procedure respond (Self : access Item);
 
 
 
 private
-   --- event_Vectors
+   -- event_Vectors
    --
-
    use type Event.item;
 
-   package event_Vectors     is new ada.containers.indefinite_Vectors (Positive,  Event.item'Class);
-   subtype event_Vector      is event_vectors.Vector;
-   type    event_Vector_view is access all event_Vector;
+   package Event_Vectors     is new ada.containers.indefinite_Vectors (Positive, Event.item'Class);
+   subtype Event_Vector      is Event_Vectors.Vector;
+   type    Event_Vector_view is access all event_Vector;
 
 
-   --- safe_Events
+   -- safe_Events
    --
-
    protected
    type safe_Events
    is
       procedure add   (the_Event  : in     Event.item'Class);
-      procedure fetch (all_Events :    out event_Vector);
-
+      procedure fetch (all_Events :    out Event_Vector);
    private
       the_Events : event_Vector;
    end safe_Events;
 
-
    type safe_Events_view is access all safe_Events;
 
 
-   --- subject_Maps_of_safe_events
+   -- subject_Maps_of_safe_events
    --
-
    use type event_Vector;
    package subject_Maps_of_safe_events
-     is new ada.containers.indefinite_hashed_Maps (key_type        => String,   -- Subject Name,
+     is new ada.containers.indefinite_hashed_Maps (key_type        => String,
                                                    element_type    => safe_Events_view,
-                                                   hash            => Ada.Strings.Hash,
+                                                   hash            => ada.strings.Hash,
                                                    equivalent_keys => "=");
    subtype subject_Map_of_safe_events
      is subject_Maps_of_safe_events.Map;
 
+
+   -- subject_events_Pairs
+   --
    type String_view is access all String;
 
    type subject_events_Pair is
@@ -91,6 +85,8 @@ private
    type subject_events_Pairs is array (Positive range <>) of subject_events_Pair;
 
 
+   -- safe_subject_Map_of_safe_events
+   --
    protected
    type safe_subject_Map_of_safe_events
    is
@@ -106,13 +102,11 @@ private
    end safe_subject_Map_of_safe_events;
 
 
-   --- Observer Item
+   -- Observer Item
    --
-
    type Item is abstract limited new T with
       record
          pending_Events : safe_subject_Map_of_safe_events;
       end record;
-
 
 end lace.make_Observer.deferred;

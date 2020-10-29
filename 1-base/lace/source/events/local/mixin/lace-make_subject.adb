@@ -11,8 +11,26 @@ is
       Self.safe_Observers.destruct;
    end destroy;
 
+   -- Attributes
+   --
 
-   --- Attributes
+   overriding
+   function Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
+   is
+   begin
+      return Self.safe_Observers.fetch_Observers (of_Kind);
+   end Observers;
+
+
+   overriding
+   function observer_Count (Self : in Item) return Natural
+   is
+   begin
+      return Self.safe_Observers.observer_Count;
+   end observer_Count;
+
+
+   -- Operations
    --
 
    overriding
@@ -49,28 +67,9 @@ is
 
 
    overriding
-   function Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
-   is
-   begin
-      return Self.safe_Observers.fetch_Observers (of_Kind);
-   end Observers;
-
-
-   overriding
-   function observer_Count (Self : in Item) return Natural
-   is
-   begin
-      return Self.safe_Observers.observer_Count;
-   end observer_Count;
-
-
-   --- Operations
-   --
-
-   overriding
    procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
    is
-      use lace.event_Conversions;
+      use lace.Event_conversions;
       my_Observers : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
 
    begin
@@ -89,27 +88,26 @@ is
    end emit;
 
 
-   --- Safe Observers
+   -- Safe Observers
    --
 
    protected
    body safe_Observers
    is
-
       procedure destruct
       is
          use event_kind_Maps_of_event_observers;
 
-         procedure free is new ada.unchecked_Deallocation (event_observer_Vector,
-                                                           event_observer_Vector_view);
+         procedure free is new ada.unchecked_Deallocation (event_Observer_vector,
+                                                           event_Observer_vector_view);
 
          Cursor                    : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
-         the_event_observer_Vector : event_observer_Vector_view;
+         the_event_Observer_vector : event_Observer_vector_view;
       begin
          while has_Element (Cursor)
          loop
-            the_event_observer_Vector := Element (Cursor);
-            free (the_event_observer_Vector);
+            the_event_Observer_vector := Element (Cursor);
+            free (the_event_Observer_vector);
 
             next (Cursor);
          end loop;
@@ -119,31 +117,31 @@ is
       procedure add (the_Observer : in Observer.view;
                      of_Kind      : in event.Kind)
       is
-         use event_Observer_Vectors,
+         use event_Observer_vectors,
              event_kind_Maps_of_event_observers;
 
-         the_event_Observer_Cursor : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
-         the_event_Observers       :          event_observer_Vector_view;
+         Cursor    : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
+         Observers :          event_Observer_vector_view;
       begin
-         if not has_Element (the_event_Observer_Cursor)
+         if not has_Element (Cursor)
          then
-            the_event_Observers := new event_observer_Vector;
+            Observers := new event_Observer_vector;
             the_Observers.insert (of_Kind,
-                                  the_event_Observers);
+                                  Observers);
          else
-            the_event_Observers := Element (the_event_Observer_Cursor);
+            Observers := Element (Cursor);
          end if;
 
-         the_event_Observers.append (the_Observer);
+         Observers.append (the_Observer);
       end add;
 
 
       procedure rid (the_Observer : in Observer.view;
                      of_Kind      : in event.Kind)
       is
-         the_event_Observers : event_observer_Vector renames the_Observers.Element (of_Kind).all;
+         Observers : event_Observer_vector renames the_Observers.Element (of_Kind).all;
       begin
-         the_event_Observers.delete (the_event_Observers.find_Index (the_Observer));
+         Observers.delete (Observers.find_Index (the_Observer));
       end rid;
 
 
@@ -153,8 +151,8 @@ is
          if the_Observers.Contains (of_Kind)
          then
             declare
-               the_event_Observers : constant event_observer_Vector_view := the_Observers.Element (of_Kind);
-               my_Observers        : subject.Observer_views (1 .. Integer (the_event_Observers.Length));
+               the_event_Observers : constant event_Observer_vector_view := the_Observers.Element (of_Kind);
+               my_Observers        :          subject.Observer_views (1 .. Natural (the_event_Observers.Length));
             begin
                for Each in my_Observers'Range
                loop
@@ -174,7 +172,7 @@ is
          use event_kind_Maps_of_event_observers;
 
          Cursor : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
-         Count  : Natural                                   := 0;
+         Count  : Natural := 0;
       begin
          while has_Element (Cursor)
          loop

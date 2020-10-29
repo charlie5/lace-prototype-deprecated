@@ -29,7 +29,7 @@ is
    is
       procedure free is new ada.unchecked_Deallocation (String, String_view);
    begin
-      Subject.destroy (Subject.item (Self));
+      Subject.destroy (Subject.item (Self));   -- Destroy base class.
       free (Self.Name);
    end destroy;
 

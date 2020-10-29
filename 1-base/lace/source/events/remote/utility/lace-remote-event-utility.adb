@@ -1,48 +1,9 @@
 with
      lace.remote.Event.Logger.text,
-     lace.Event_conversions,
-     ada.Tags,
      ada.unchecked_Deallocation;
 
 package body lace.remote.Event.utility
 is
-   -- Event Kinds
-   --
-
-   function to_Kind (From : in ada.Tags.Tag) return lace.Event.Kind
-   is
-      use lace.Event_conversions;
-   begin
-      return to_event_Kind (From);
-   end to_Kind;
-
-
-   function Name_of (the_Kind : in lace.Event.Kind) return String
-   is
-      use lace.Event_conversions,
-          ada.Tags;
-   begin
-      return expanded_Name (to_Tag (the_Kind));
-   end Name_of;
-
-
-   -- Events
-   --
-
-   function Kind_of (the_Event : in lace.Event.item'Class) return lace.Event.Kind
-   is
-   begin
-      return to_Kind (the_Event'Tag);
-   end Kind_of;
-
-
-   function Name_of (the_Event : in lace.Event.item'Class) return String
-   is
-   begin
-      return Name_of (Kind_of (the_Event));
-   end Name_of;
-
-
    -- Connections
    --
 
@@ -64,7 +25,7 @@ is
    procedure disconnect (the_Observer  : in lace.remote.Observer.view;
                          from_Subject  : in lace.remote.Subject .view;
                          for_Response  : in lace.remote.Response.view;
-                         to_Event_Kind : in lace.Event.Kind)
+                         to_Event_Kind : in lace.event.Kind)
    is
    begin
       the_Observer.rid (for_Response,

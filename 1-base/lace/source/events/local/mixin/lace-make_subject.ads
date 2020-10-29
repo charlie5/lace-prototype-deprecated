@@ -20,59 +20,51 @@ is
                                  and Subject.item with private;
    type View is access all Item'Class;
 
-
    procedure destroy (Self : in out Item);
 
 
-   --- Attributes
+   -- Attributes
    --
-
-   overriding
-   procedure register   (Self : access Item;   the_Observer  : in Observer.view;
-                                               of_Kind       : in event.Kind);
-   overriding
-   procedure deregister (Self : in out Item;   the_Observer  : in Observer.view;
-                                               of_Kind       : in event.Kind);
 
    overriding
    function  Observers      (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views;
    overriding
    function  observer_Count (Self : in Item) return Natural;
 
-
-   --- Operations
+   -- Operations
    --
 
    overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event);
+   procedure   register (Self : access Item;   the_Observer  : in Observer.view;
+                                               of_Kind       : in event.Kind);
+   overriding
+   procedure deregister (Self : in out Item;   the_Observer  : in Observer.view;
+                                               of_Kind       : in event.Kind);
+   overriding
+   procedure emit       (Self : access Item;   the_Event     : in Event.item'Class := event.null_Event);
 
 
 
 private
-   --- event_Observer_Vectors
+   -- event_Observer_vectors
    --
-
    use type Observer.view;
 
-   package event_Observer_Vectors     is new ada.containers.Vectors (Positive, Observer.view);
-   subtype event_Observer_Vector      is event_Observer_Vectors.Vector;
-   type    event_Observer_Vector_view is access all event_Observer_Vector;
+   package event_Observer_vectors     is new ada.containers.Vectors (Positive, Observer.view);
+   subtype event_Observer_vector      is event_Observer_vectors.Vector;
+   type    event_Observer_vector_view is access all event_Observer_vector;
 
-
-   --- event_kind_Maps_of_event_observers
+   -- event_kind_Maps_of_event_observers
    --
-
-   function to_Hash is new ada.unchecked_Conversion (event.Kind, ada.containers.Hash_type);
    use type event.Kind;
 
    package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,
                                                                                             event_Observer_Vector_view,
-                                                                                            to_Hash,
+                                                                                            event.Hash,
                                                                                             "=");
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
 
-
-   --- Safe Observers
+   -- Safe Observers
    --
 
    protected
@@ -94,7 +86,7 @@ private
    end safe_Observers;
 
 
-   --- Subject Item
+   -- Subject Item
    --
 
    type Item is abstract limited new T

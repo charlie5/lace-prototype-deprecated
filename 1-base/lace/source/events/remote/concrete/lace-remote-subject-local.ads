@@ -8,7 +8,7 @@ package lace.remote.Subject.local
 --
 is
    type Item is limited new Any.limited_item
-                        and Subject    .Item with private;
+                        and Subject.Item with private;
 
    type View is access all Item'Class;
 
@@ -20,7 +20,6 @@ is
    end Forge;
 
    procedure destroy (Self : in out Item);
-
 
    overriding
    function Name (Self : in Item) return String;

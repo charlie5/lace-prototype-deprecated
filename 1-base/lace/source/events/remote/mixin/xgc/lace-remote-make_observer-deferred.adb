@@ -6,7 +6,6 @@ with
 
 package body lace.remote.make_Observer.deferred
 is
-
    overriding
    procedure destroy (Self : in out Item)
    is
@@ -34,7 +33,7 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
-                      from_Subject : in String)
+                                            from_Subject : in String)
    is
    begin
       if not Self.pending_Events.contains (from_Subject)
@@ -54,8 +53,7 @@ is
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
-
-      --- actuate
+      -- actuate
       --
       procedure actuate (the_Responses     : in event_response_Map;
                          the_Events        : in event_Vector;
@@ -67,11 +65,11 @@ is
          loop
             declare
                use event_response_Maps,
-                   event_Conversions,
+                   Event_conversions,
                    ada.Containers;
                use type Observer.view;
 
-               the_Event : constant lace.Event.item'Class           := Element (Cursor);
+               the_Event : constant lace.Event.item'Class      := Element (Cursor);
                Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
             begin
                if has_Element (Response)
@@ -88,7 +86,7 @@ is
 
                elsif Self.relay_Target /= null
                then
-                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- tbd: Renable relayed events.
+                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- tbd: Re-enable relayed events.
 
                   if observer.Logger /= null
                   then
@@ -109,14 +107,11 @@ is
                      raise Program_Error with "Observer " & my_Name & " has no response";
                   end if;
                end if;
-
             end;
 
             next (Cursor);
          end loop;
-
       end actuate;
-
 
       use subject_Maps_of_safe_events;
       Cursor : subject_Maps_of_safe_events.Cursor := Self.pending_Events.First;

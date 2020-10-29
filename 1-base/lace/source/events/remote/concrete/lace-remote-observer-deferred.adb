@@ -30,7 +30,6 @@ is
       return Self.Name.all;
    end Name;
 
-
 end lace.remote.Observer.deferred;
 
 

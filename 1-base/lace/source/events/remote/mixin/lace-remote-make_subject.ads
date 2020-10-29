@@ -28,7 +28,7 @@ is
    procedure destroy (Self : in out Item);
 
 
-   --- Attributes
+   -- Attributes
    --
 
    overriding
@@ -37,11 +37,11 @@ is
    function observer_Count (Self : in Item) return Natural;
 
 
-   --- Operations
+   -- Operations
    --
 
    overriding
-   procedure register   (Self : access Item;   the_Observer  : in Observer.view;
+   procedure   register (Self : access Item;   the_Observer  : in Observer.view;
                                                of_Kind       : in event.Kind);
    overriding
    procedure deregister (Self : in out Item;   the_Observer  : in Observer.view;
@@ -53,9 +53,8 @@ is
 
 private
 
-   --- Event Observer Vectors
+   -- Event Observer Vectors
    --
-
    use type Observer.view;
 
    package event_Observer_Vectors     is new ada.containers.Vectors (Positive,  Observer.view);
@@ -63,20 +62,19 @@ private
    type    event_Observer_Vector_view is access all event_Observer_Vector;
 
 
-   --- event kind Maps of event observers
+   -- event kind Maps of event observers
    --
-
    function to_Hash is new ada.unchecked_Conversion (event.Kind,  ada.containers.Hash_type);
    use type event.Kind;
 
-   package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (event.Kind,
-                                                                                 event_Observer_Vector_view,
-                                                                                 to_Hash,
-                                                                                 "=");
+   package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,
+                                                                                            event_Observer_Vector_view,
+                                                                                            to_Hash,
+                                                                                            "=");
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
 
 
-   --- safe Observers
+   -- safe Observers
    --
 
    protected
@@ -99,9 +97,8 @@ private
    end safe_Observers;
 
 
-   --- Subject item
+   -- Subject item
    --
-
    type Item is abstract limited new T
                                  and Subject.item
    with

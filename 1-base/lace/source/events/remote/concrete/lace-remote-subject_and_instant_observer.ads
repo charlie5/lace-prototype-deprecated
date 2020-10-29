@@ -30,9 +30,8 @@ is
 
 private
 
-   package Subject  is new make_Subject      (Any.limited_item);
-   package Observer is new make_Observer     (Subject    .item);
-
+   package Subject  is new make_Subject  (Any.limited_item);
+   package Observer is new make_Observer (Subject    .item);
 
    type Item is limited new Observer.item with
       record

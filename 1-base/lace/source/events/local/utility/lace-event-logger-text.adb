@@ -6,8 +6,7 @@ is
    use lace.Event.utility,
        ada.Text_IO;
 
-
-   --- Forge
+   -- Forge
    --
 
    function to_Logger (Name : in String) return Item
@@ -27,6 +26,9 @@ is
       close (Self.File);
    end destruct;
 
+
+   -- Operations
+   --
 
    overriding
    procedure log_Connection (Self : in out Item;   From     : in Observer.view;
@@ -92,7 +94,7 @@ is
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind)
                            & " from "        & from_Subject
-                           & "   with "      & the_Response.Name);
+                           & " with "        & the_Response.Name);
    end log_new_Response;
 
 
@@ -107,7 +109,7 @@ is
                            & of_Observer.Name
                            & " no longer responds to " & Name_of (to_Kind)
                            & " from "                  & from_Subject
-                           & "   with "                & the_Response.Name);
+                           & " with "                  & the_Response.Name);
    end log_rid_Response;
 
 
@@ -127,7 +129,7 @@ is
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind (to_Event'Tag))
                            & " from "        & from_Subject
-                           & "   with "      & the_Response.Name);
+                           & " with "        & the_Response.Name);
    end log_Response;
 
 
@@ -145,18 +147,5 @@ is
    begin
       Self.Ignored.insert (the_Kind);
    end ignore;
-
-
-
-   function Hash (Item : in Event.Kind) return ada.containers.Hash_type
-   is
-      Result : ada.containers.Hash_type;
-      for Result'Address use Item'Address;
-
-      pragma Assert (Item'Size >= Result'Size, "Defective hash function.");
-   begin
-      return Result;
-   end Hash;
-
 
 end lace.event.Logger.text;

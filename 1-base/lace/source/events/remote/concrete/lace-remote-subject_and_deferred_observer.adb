@@ -3,10 +3,8 @@ with
 
 package body lace.remote.Subject_and_deferred_Observer
 is
-
    package body Forge
    is
-
       function to_Subject_and_Observer (Name : in String) return Item
       is
       begin
@@ -34,7 +32,7 @@ is
 
       the_Name : String_view := Self.Name;
    begin
-      Deferred.destroy (Deferred.item (Self));
+      Deferred.destroy (Deferred.item (Self));   -- Destroy base classes.
       Subject .destroy (Subject .item (Self));
 
       deallocate (the_Name);

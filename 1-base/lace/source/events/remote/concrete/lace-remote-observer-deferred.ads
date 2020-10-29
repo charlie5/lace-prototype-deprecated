@@ -27,10 +27,10 @@ is
 
 private
 
-   package my_Observer is new lace.remote.make_Observer (Any.limited_item);
-   package my_Deferred is new my_Observer.deferred (my_Observer.item);
+   package Observer is new lace.remote.make_Observer (Any.limited_item);
+   package Deferred is new Observer.deferred (Observer.item);
 
-   type Item is limited new my_Deferred.item with
+   type Item is limited new Deferred.item with
       record
          Name : access String;
       end record;

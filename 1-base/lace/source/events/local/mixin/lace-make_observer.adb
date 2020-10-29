@@ -70,22 +70,21 @@ is
       else
          if observer.Logger /= null
          then
-            observer.Logger.log ("[Warning] ~ Observer "             & my_Name & " has no response !");
-            observer.Logger.log ("            count of responses =>" & Count_type'Image (the_Responses.Length));
+            observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response !");
+            observer.Logger.log ("count of responses =>" & Count_type'Image (the_Responses.Length));
          else
-            raise Program_Error with "Observer " & my_Name & " has no response !";
+            raise program_Error with "Observer " & my_Name & " has no response !";
          end if;
       end if;
 
    exception
       when Constraint_Error =>
-         if Observer.Logger /= null
+         if observer.Logger /= null
          then
             observer.Logger.log (my_Name & " has no responses for events from " & from_Subject);
          else
             raise Program_Error with my_Name & " has no responses for events from " & from_Subject;
          end if;
-
    end receive;
 
 
@@ -145,17 +144,5 @@ is
    begin
       Self.relay_Target := To;
    end relay_responseless_Events;
-
-
-   --  Support
-   --
-
-   function to_Hash (Self : in event.Kind) return ada.containers.Hash_type
-   is
-      function Converted is new ada.unchecked_Conversion (event.Kind, ada.containers.Hash_type);
-   begin
-      return Converted (Self);
-   end to_Hash;
-
 
 end lace.make_Observer;

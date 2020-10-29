@@ -9,27 +9,27 @@ package lace.Event.utility.local
 --  Provides convenience subprograms for working with events.
 --
 is
-   --- Events
+   -- Events
    --
 
    function Name_of (the_Event : in Event.item'Class) return String;
    function Kind_of (the_Event : in Event.item'Class) return event.Kind;
 
 
-   --- Connections
+   -- Connections
    --
 
    procedure connect    (the_Observer  : in lace.Observer.view;
-                         to_Subject    : in lace.Subject.view;
+                         to_Subject    : in lace.Subject .view;
                          with_Response : in lace.Response.view;
                          to_event_Kind : in event.Kind);
 
    procedure disconnect (the_Observer  : in lace.Observer.view;
-                         from_Subject  : in lace.Subject.view;
+                         from_Subject  : in lace.Subject .view;
                          for_Response  : in lace.Response.view;
                          to_event_Kind : in event.Kind);
 
-   --- Logging
+   -- Logging
    --
 
    procedure use_text_Logger (log_Filename : in String);
@@ -43,7 +43,7 @@ is
    --  Returns null, if no Logger is in use.
 
 
-   --- Termination
+   -- Termination
    --
 
    procedure close;

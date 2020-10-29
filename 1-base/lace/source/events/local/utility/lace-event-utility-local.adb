@@ -4,7 +4,7 @@ with
 
 package body lace.event.Utility.local
 is
-   --- Events
+   -- Events
    --
 
    function Kind_of (the_Event : in Event.item'Class) return event.Kind
@@ -21,11 +21,11 @@ is
    end Name_of;
 
 
-   --- Connections
+   -- Connections
    --
 
    procedure connect (the_Observer  : in lace.Observer.view;
-                      to_Subject    : in lace.Subject.view;
+                      to_Subject    : in lace.Subject .view;
                       with_Response : in lace.Response.view;
                       to_event_Kind : in event.Kind)
    is
@@ -39,9 +39,8 @@ is
    end connect;
 
 
-
    procedure disconnect (the_Observer  : in lace.Observer.view;
-                         from_Subject  : in lace.Subject.view;
+                         from_Subject  : in lace.Subject .view;
                          for_Response  : in lace.Response.view;
                          to_event_Kind : in event.Kind)
    is
@@ -55,7 +54,7 @@ is
    end disconnect;
 
 
-   --- Logging
+   -- Logging
    --
 
    the_event_Logger : event.Logger.text.view;
@@ -78,7 +77,7 @@ is
    end Logger;
 
 
-   --- Termination
+   -- Termination
    --
 
    procedure close

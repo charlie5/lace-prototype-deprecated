@@ -1,6 +1,5 @@
 package body lace.Subject_and_instant_Observer
 is
-
    package body Forge
    is
       function to_Subject_and_Observer (Name : in String) return Item

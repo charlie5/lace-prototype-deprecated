@@ -5,7 +5,7 @@ with
 
 package body lace.make_Observer.deferred
 is
-   procedure free is new ada.Unchecked_Deallocation (String, String_view);
+   procedure free is new ada.unchecked_Deallocation (String, String_view);
 
    overriding
    procedure destroy (Self : in out Item)
@@ -28,15 +28,15 @@ is
    overriding
    procedure respond (Self : access Item)
    is
-      use event_Vectors;
+      use Event_vectors;
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
       procedure actuate (the_Responses     : in event_response_Map;
-                         the_Events        : in event_Vector;
+                         the_Events        : in Event_vector;
                          from_Subject_Name : in String)
       is
-         Cursor : event_Vectors.Cursor;
+         Cursor : Event_vectors.Cursor;
       begin
          Cursor := the_Events.First;
 
@@ -105,7 +105,7 @@ is
             use subject_Maps_of_event_responses;
 
             subject_Name : String_view       := the_subject_Events (i).Subject;
-            the_Events   : event_Vector renames the_subject_Events (i).Events;
+            the_Events   : Event_vector renames the_subject_Events (i).Events;
 
          begin
             if Self.subject_Responses.contains (subject_Name.all)
@@ -138,8 +138,7 @@ is
          the_Events.append (the_Event);
       end add;
 
-
-      procedure fetch (all_Events : out event_Vector)
+      procedure fetch (all_Events : out Event_vector)
       is
       begin
          all_Events := the_Events;
@@ -172,13 +171,13 @@ is
          use subject_Maps_of_safe_events;
 
          Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
-         Index  : Natural                            := 0;
+         Index  : Natural := 0;
 
       begin
          while has_Element (Cursor)
          loop
             declare
-               the_Events : event_Vector;
+               the_Events : Event_vector;
             begin
                Element (Cursor).fetch (the_Events);
 

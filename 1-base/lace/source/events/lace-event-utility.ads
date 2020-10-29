@@ -6,7 +6,7 @@ package lace.Event.utility
 --  Provides convenience subprograms for working with events.
 --
 is
-   --- Event Kinds
+   -- Event Kinds
    --
 
    function Name_of (Kind : in event.Kind)   return String;
@@ -15,7 +15,7 @@ is
    function "+"     (From : in ada.tags.Tag) return event.Kind
                      renames to_Kind;
 
-   --- Events
+   -- Events
    --
 
    function Name_of (the_Event : in Event.item'Class) return String;
