@@ -4,7 +4,7 @@ with
 package chat.Registrar
 --
 -- A singleton providing the central chat registrar.
--- Limited to a maximum of 5 chat clients running at once.
+-- Limited to a maximum of 5_000 chat clients running at once.
 --
 is
    pragma remote_Call_interface;
