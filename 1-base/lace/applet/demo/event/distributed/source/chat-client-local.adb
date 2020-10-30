@@ -82,6 +82,22 @@ is
    end deregister_Client;
 
 
+   overriding
+   procedure Registrar_has_shutdown  (Self : in out Item)
+   is
+   begin
+      ada.Text_IO.put_Line ("The Registrar has shutdown. Press <Enter> to exit.");
+      Self.Registrar_has_shutdown := True;
+   end Registrar_has_shutdown;
+
+
+   function Registrar_has_shutdown (Self : in Item) return Boolean
+   is
+   begin
+      return Self.Registrar_has_shutdown;
+   end Registrar_has_shutdown;
+
+
    -- Responses
    --
 

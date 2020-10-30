@@ -2,7 +2,6 @@ with
      chat.Registrar,
      chat.Client.local,
 
-     lace.remote.Observer,
      lace.remote.Event.utility,
 
      ada.command_Line,
@@ -65,26 +64,32 @@ begin
             declare
                chat_Message : constant String := ada.Text_IO.get_Line;
             begin
-               exit when chat_Message = "q";
+               exit
+                 when chat_Message = "q"
+                 or   the_Client.Registrar_has_shutdown;
+
                broadcast (chat_Message);
             end;
          end loop;
 
          -- Shutdown
          --
-         chat.Registrar.deregister (the_Client.all'Access);
+         if not the_Client.Registrar_has_shutdown
+         then
+            chat.Registrar.deregister (the_Client.all'Access);
 
-         declare
-            Peers : constant chat.Client.views := chat.Registrar.all_Clients;
-         begin
-            for i in Peers'Range
-            loop
-               if the_Client.all'Access /= Peers (i)
-               then
-                  Peers (i).deregister_Client (the_Client.all'Access);   -- Deregister our client with every other client.
-               end if;
-            end loop;
-         end;
+            declare
+               Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+            begin
+               for i in Peers'Range
+               loop
+                  if the_Client.all'Access /= Peers (i)
+                  then
+                     Peers (i).deregister_Client (the_Client.all'Access);   -- Deregister our client with every other client.
+                  end if;
+               end loop;
+            end;
+         end if;
       end;
    end;
 

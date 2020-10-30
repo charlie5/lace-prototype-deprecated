@@ -23,7 +23,6 @@ is
 
    function new_Client (Name : in String) return View;
 
-
    -- Attributes
    --
 
@@ -42,6 +41,9 @@ is
    overriding
    procedure deregister_Client (Self : in out Item;   Other : lace.remote.Observer.view);
 
+   overriding
+   procedure Registrar_has_shutdown (Self : in out Item);
+   function  Registrar_has_shutdown (Self : in     Item) return Boolean;
 
    -- Responses
    --
@@ -63,7 +65,8 @@ private
    type Item is limited new Subject    .item
                         and chat.Client.item with
       record
-         Name : access String;
+            Name                   : access String;
+            Registrar_has_shutdown :        Boolean := False;
       end record;
 
 end chat.Client.local;

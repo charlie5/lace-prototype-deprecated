@@ -18,6 +18,8 @@ is
    type Views is array (Positive range <>) of View;
 
 
+   procedure Registrar_has_shutdown (Self : in out Item) is abstract;
+
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view) is abstract;
    procedure deregister_Client (Self : in out Item;   other_Client : in lace.remote.Observer.view) is abstract;
 

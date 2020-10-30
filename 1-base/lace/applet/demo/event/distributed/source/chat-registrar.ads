@@ -14,6 +14,7 @@ is
 
    function  all_Clients return chat.Client.views;
 
+   procedure shutdown;
 
 private
 

@@ -2,8 +2,6 @@ with
      chat.Registrar,   -- This 'pulls in' the registrar.
      ada.Text_IO;
 
-pragma Unreferenced (chat.Registrar);
-
 procedure launch_simple_chat_Registrar
 --
 -- Launches the chat registrar.
@@ -17,4 +15,7 @@ begin
          exit when Command = "q";
       end;
    end loop;
+
+   chat.Registrar.shutdown;
+
 end launch_simple_chat_Registrar;
