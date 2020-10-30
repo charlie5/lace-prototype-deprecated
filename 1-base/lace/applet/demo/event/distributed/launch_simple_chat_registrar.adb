@@ -1,15 +1,20 @@
 with
-     chat.Registrar;   -- This 'pulls in' the registrar.
+     chat.Registrar,   -- This 'pulls in' the registrar.
+     ada.Text_IO;
+
 pragma Unreferenced (chat.Registrar);
 
 procedure launch_simple_chat_Registrar
 --
--- Launches the chat registrar for 10 minutes.
+-- Launches the chat registrar.
 --
 is
 begin
-   for i in 1 .. 600
    loop
-      delay 1.0;
+      declare
+         Command : constant String := ada.Text_IO.get_Line;
+      begin
+         exit when Command = "q";
+      end;
    end loop;
 end launch_simple_chat_Registrar;
