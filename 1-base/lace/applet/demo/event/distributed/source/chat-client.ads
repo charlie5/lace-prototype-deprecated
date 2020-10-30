@@ -15,7 +15,7 @@ is
              and lace.remote.Observer.item;
 
    type View  is access all Item'Class;
-   type Views is array (Positive range <>) of view;
+   type Views is array (Positive range <>) of View;
 
 
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view) is abstract;

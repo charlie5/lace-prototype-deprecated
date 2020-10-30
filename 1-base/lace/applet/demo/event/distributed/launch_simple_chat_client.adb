@@ -52,7 +52,7 @@ begin
       begin
          for i in Peers'Range
          loop
-            if chat.Client.view (the_Client) /= Peers (i)
+            if the_Client.all'Access /= Peers (i)
             then
                Peers (i) .register_Client (the_Client.all'Access);   -- Register our client with all other clients.
                the_Client.register_Client (Peers (i));               -- Register all other clients with our client.
@@ -79,9 +79,9 @@ begin
          begin
             for i in Peers'Range
             loop
-               if chat.Client.view (the_Client) /= Peers (i)
+               if the_Client.all'Access /= Peers (i)
                then
-                  Peers (i).deregister_Client (lace.remote.Observer.view (the_Client));   -- Deregister our client with every other client.
+                  Peers (i).deregister_Client (the_Client.all'Access);   -- Deregister our client with every other client.
                end if;
             end loop;
          end;

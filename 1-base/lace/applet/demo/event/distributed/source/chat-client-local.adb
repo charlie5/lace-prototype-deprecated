@@ -55,7 +55,7 @@ is
    --
 
    overriding
-   procedure register_Client (Self : in out Item;   other_Client : Client.view)
+   procedure register_Client (Self : in out Item;   other_Client : in Client.view)
    is
       use lace.Event.utility;
    begin
@@ -69,7 +69,7 @@ is
 
 
    overriding
-   procedure deregister_Client (Self : in out Item;   Other : lace.remote.Observer.view)
+   procedure deregister_Client (Self : in out Item;   Other : in lace.remote.Observer.view)
    is
       use lace.Event.utility;
    begin
