@@ -16,5 +16,15 @@ is
 
 
 private
-   Clients : chat.Client.views (1..5);
+
+   protected safe_Clients
+   is
+      procedure add (the_Client : in Client.view);
+      procedure Rid (the_Client : in Client.view);
+
+      function  all_Clients return Client.views;
+   private
+      Clients : chat.Client.views (1..5_000);
+   end safe_Clients;
+
 end chat.Registrar;
