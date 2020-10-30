@@ -1,5 +1,3 @@
-with ada.Text_IO;
-
 package body chat.Registrar
 is
    use type Client.view;
