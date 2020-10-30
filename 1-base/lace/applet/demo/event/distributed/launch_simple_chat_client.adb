@@ -2,9 +2,7 @@ with
      chat.Registrar,
      chat.Client.local,
 
-     lace.Event.utility,
      lace.remote.Observer,
-     lace.remote.Subject,
      lace.remote.Event.utility,
 
      ada.command_Line,
@@ -15,7 +13,7 @@ procedure launch_simple_chat_Client
 -- Starts a chat client.
 --
 -- note: This demo is complicated by what seems a problem with interface conversions with RACW (see interface_test).
---       To work around the problem, a client is treated 'separately' as a chat.Client and a lace.Subject.
+--       To work around the problem, a client is treated 'separately' as a chat.Client and a lace.Observer.
 --
 is
 begin
@@ -31,24 +29,15 @@ begin
 
    declare
       use chat.Client.local;
-      use type lace.remote.Subject.view;
 
       client_Name : constant String                 := ada.command_Line.Argument (1);
       the_Client  : constant chat.Client.local.view := new_Client (client_Name);
    begin
       -- Setup
       --
-
-      -- Register our client with the registrar.
-      --
-      chat.Registrar.register (chat.Client.view          (the_Client));
-      chat.Registrar.register (lace.remote.Subject .view (the_Client));
-      chat.Registrar.register (lace.remote.Observer.view (the_Client));
+      chat.Registrar.register (the_Client.all'Access);   -- Register our client with the registrar.
 
       declare
-         use type chat.Client.view,
-                  lace.Remote.Observer.view;
-
          procedure broadcast (the_Text : in String)
          is
             the_Message : constant chat.client.Message := (client_Name'Length + 2 + the_Text'Length,
@@ -57,26 +46,16 @@ begin
             the_Client.emit (the_Message);
          end broadcast;
 
-         Peers              : constant chat.Client         .views := chat.Registrar.all_Clients;
-         Peers_as_subjects  : constant lace.remote.Subject .views := chat.Registrar.all_Subjects;
-         Peers_as_observers : constant lace.remote.Observer.views := chat.Registrar.all_Observers;
+         Peers : constant chat.Client.views := chat.Registrar.all_Clients;
 
-         use lace.Event.utility;
+         use type chat.Client.view;
       begin
-         -- Register our client with all other clients.
-         --
          for i in Peers'Range
          loop
             if chat.Client.view (the_Client) /= Peers (i)
             then
-               the_Client.register (Peers_as_observers (i),
-                                    to_Kind (chat.Client.Message'Tag));
-
-               Peers (i).register_Client (lace.Remote.Subject.view (the_Client));
-
-               Peers_as_subjects (i).register (lace.remote.Observer.view (the_Client),
-                                               to_Kind (chat.Client.Message'Tag));
-               the_Client.register_Client (Peers_as_subjects (i));
+               Peers (i) .register_Client (the_Client.all'Access);   -- Register our client with all other clients.
+               the_Client.register_Client (Peers (i));               -- Register all other clients with our client.
             end if;
          end loop;
 
@@ -93,8 +72,7 @@ begin
 
          -- Shutdown
          --
-         chat.Registrar.deregister (chat.Client.view         (the_Client));
-         chat.Registrar.deregister (lace.remote.Subject.view (the_Client));
+         chat.Registrar.deregister (the_Client.all'Access);
 
          declare
             Peers : constant chat.Client.views := chat.Registrar.all_Clients;

@@ -1,4 +1,5 @@
 with
+     lace.remote.Observer,
      lace.Event.utility,
      ada.Text_IO;
 
@@ -42,17 +43,28 @@ is
    end Name;
 
 
-   --- Operations
+   overriding
+   function as_Observer (Self : access Item) return lace.remote.Observer.view
+   is
+   begin
+      return Self;
+   end as_Observer;
+
+
+   -- Operations
    --
 
    overriding
-   procedure register_Client (Self : in out Item;   Other : lace.remote.Subject.view)
+   procedure register_Client (Self : in out Item;   other_Client : Client.view)
    is
       use lace.Event.utility;
    begin
+      Self.register (other_Client.as_Observer,
+                     to_Kind (chat.Client.Message'Tag));
+
       Self.add (the_Response'Access,
                 to_Kind (chat.Client.Message'Tag),
-                Other.Name);
+                other_Client.Name);
    end register_Client;
 
 
