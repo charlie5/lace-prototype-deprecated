@@ -3,6 +3,8 @@ is
    use type Client.view;
 
 
+   -- Protection against race conditions.
+   --
    protected body safe_Clients
    is
       procedure add (the_Client : in Client.view)
