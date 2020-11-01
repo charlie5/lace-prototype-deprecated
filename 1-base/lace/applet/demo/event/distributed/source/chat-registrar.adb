@@ -76,25 +76,6 @@ is
    end all_Clients;
 
 
-   task keep_Alive
-   is
-      entry die;
-   end keep_Alive;
-
-   task body keep_Alive
-   is
-   begin
-      loop
-         select
-            accept die;
-            exit;
-         or
-            delay 1.0;
-         end select;
-      end loop;
-   end keep_Alive;
-
-
    procedure shutdown
    is
       all_Clients : constant Client.views := chat.Registrar.all_Clients;
@@ -103,8 +84,6 @@ is
       loop
          Each.Registrar_has_shutdown;
       end loop;
-
-      keep_Alive.die;
    end shutdown;
 
 end chat.Registrar;
