@@ -16,10 +16,11 @@ is
 
    function to_Client (Name : in String) return Item
    is
+      use ada.Strings.unbounded;
    begin
       return Self : Item
       do
-         Self.Name := new String'(Name);
+         Self.Name := to_unbounded_String (Name);
       end return;
    end to_Client;
 
@@ -38,8 +39,9 @@ is
    overriding
    function Name (Self : in Item) return String
    is
+      use ada.Strings.unbounded;
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 

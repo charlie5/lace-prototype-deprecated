@@ -1,6 +1,7 @@
 with
      lace.remote.Response,
-     lace.Any;
+     lace.Any,
+     ada.Strings.unbounded;
 
 private
 with
@@ -65,8 +66,8 @@ private
    type Item is limited new Subject    .item
                         and chat.Client.item with
       record
-            Name                   : access String;
-            Registrar_has_shutdown :        Boolean := False;
+            Name                   : ada.Strings.unbounded.unbounded_String;
+            Registrar_has_shutdown : Boolean := False;
       end record;
 
 end chat.Client.local;
