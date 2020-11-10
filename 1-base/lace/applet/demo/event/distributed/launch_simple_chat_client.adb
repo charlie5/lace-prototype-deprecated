@@ -11,9 +11,6 @@ procedure launch_simple_chat_Client
 --
 -- Starts a chat client.
 --
--- note: This demo is complicated by what seems a problem with interface conversions with RACW (see interface_test).
---       To work around the problem, a client is treated 'separately' as a chat.Client and a lace.Observer.
---
 is
 begin
    -- Usage
