@@ -74,19 +74,19 @@ is
 
 
    overriding
-   procedure deregister_Client (Self : in out Item;   Other : in lace.remote.Observer.view)
+   procedure deregister_Client (Self : in out Item;   other_Client : in lace.remote.Observer.view)
    is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.deregister (Other,
+      Self.deregister (other_Client,
                        to_Kind (chat.Client.Message'Tag));
 
       Self.rid (the_Response'unchecked_Access,
                 to_Kind (chat.Client.Message'Tag),
-                Other.Name);
+                other_Client.Name);
 
-      put_Line (Other.Name & " leaves.");
+      put_Line (other_Client.Name & " leaves.");
    end deregister_Client;
 
 
