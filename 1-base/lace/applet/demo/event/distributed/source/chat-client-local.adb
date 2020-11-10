@@ -59,7 +59,8 @@ is
    overriding
    procedure register_Client (Self : in out Item;   other_Client : in Client.view)
    is
-      use lace.Event.utility;
+      use lace.Event.utility,
+          ada.Text_IO;
    begin
       Self.register (other_Client.as_Observer,
                      to_Kind (chat.Client.Message'Tag));
@@ -67,13 +68,16 @@ is
       Self.add (the_Response'Access,
                 to_Kind (chat.Client.Message'Tag),
                 other_Client.Name);
+
+      put_Line (other_Client.Name & " is here.");
    end register_Client;
 
 
    overriding
    procedure deregister_Client (Self : in out Item;   Other : in lace.remote.Observer.view)
    is
-      use lace.Event.utility;
+      use lace.Event.utility,
+          ada.Text_IO;
    begin
       Self.deregister (Other,
                        to_Kind (chat.Client.Message'Tag));
@@ -81,6 +85,8 @@ is
       Self.rid (the_Response'unchecked_Access,
                 to_Kind (chat.Client.Message'Tag),
                 Other.Name);
+
+      put_Line (Other.Name & " leaves.");
    end deregister_Client;
 
 
