@@ -74,12 +74,12 @@ is
 
 
    overriding
-   procedure deregister_Client (Self : in out Item;   other_Client : in lace.remote.Observer.view)
+   procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
    is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.deregister (other_Client,
+      Self.deregister (other_Client.as_Observer,
                        to_Kind (chat.Client.Message'Tag));
 
       Self.rid (the_Response'unchecked_Access,
