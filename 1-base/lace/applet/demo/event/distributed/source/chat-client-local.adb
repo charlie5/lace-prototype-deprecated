@@ -76,18 +76,29 @@ is
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
    is
+   begin
+      Self.rid_Client (other_Client.Name,
+                       other_Client.as_Observer);
+   end deregister_Client;
+
+
+   overriding
+   procedure rid_Client (Self : in out Item;   other_Client_Name     : in String;
+                                               other_Client_Observer : in lace.remote.Observer.view)
+   is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.deregister (other_Client.as_Observer,
+      Self.deregister (other_Client_Observer,
                        to_Kind (chat.Client.Message'Tag));
 
       Self.rid (the_Response'unchecked_Access,
                 to_Kind (chat.Client.Message'Tag),
-                other_Client.Name);
+                other_Client_Name);
 
-      put_Line (other_Client.Name & " leaves.");
-   end deregister_Client;
+      put_Line (other_Client_Name & " leaves.");
+   end rid_Client;
+
 
 
    overriding

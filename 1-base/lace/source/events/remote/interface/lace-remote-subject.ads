@@ -47,6 +47,13 @@ is
    --
 
    procedure emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event) is abstract;
+   --
+   -- Communication errors are ignored.
+
+   function  emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
+                   return Observer_views is abstract;
+   --
+   -- Observers who cannot be communicated with are returned.
 
 
    -- Logging

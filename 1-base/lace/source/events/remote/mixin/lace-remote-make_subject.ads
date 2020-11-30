@@ -41,14 +41,17 @@ is
    --
 
    overriding
-   procedure   register (Self : access Item;   the_Observer  : in Observer.view;
-                                               of_Kind       : in event.Kind);
+   procedure   register (Self : access Item;   the_Observer : in Observer.view;
+                                               of_Kind      : in event.Kind);
    overriding
-   procedure deregister (Self : in out Item;   the_Observer  : in Observer.view;
-                                               of_Kind       : in event.Kind);
+   procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
+                                               of_Kind      : in event.Kind);
    overriding
-   procedure emit       (Self : access Item;   the_Event     : in Event.item'Class := event.null_Event);
+   procedure emit       (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event);
 
+   overriding
+   function  emit       (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event)
+                         return subject.Observer_views;
 
 
 private

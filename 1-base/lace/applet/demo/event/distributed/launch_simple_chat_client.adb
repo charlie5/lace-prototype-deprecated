@@ -42,18 +42,20 @@ begin
             the_Client.emit (the_Message);
          end broadcast;
 
-         Peers : constant chat.Client.views := chat.Registrar.all_Clients;
-
          use type chat.Client.view;
       begin
-         for i in Peers'Range
-         loop
-            if the_Client.all'Access /= Peers (i)
-            then
-               Peers (i) .register_Client (the_Client.all'Access);   -- Register our client with all other clients.
-               the_Client.register_Client (Peers (i));               -- Register all other clients with our client.
-            end if;
-         end loop;
+         declare
+            Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+         begin
+            for i in Peers'Range
+            loop
+               if the_Client.all'Access /= Peers (i)
+               then
+                  Peers (i) .register_Client (the_Client.all'Access);   -- Register our client with all other clients.
+                  the_Client.register_Client (Peers (i));               -- Register all other clients with our client.
+               end if;
+            end loop;
+         end;
 
          -- Main loop
          --

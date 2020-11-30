@@ -1,5 +1,7 @@
 with
-     lace.Event.utility;
+     lace.Event.utility,
+     system.RPC,
+     ada.unchecked_Conversion;
 
 package body lace.remote.Event.Logger.text
 is
@@ -47,9 +49,22 @@ is
                                                       To       : in lace.remote.Subject.view;
                                                       for_Kind : in lace.event.Kind)
    is
+      function From_Name return String
+      is
+         function to_Integer is new ada.unchecked_Conversion (lace.remote.Observer.view,
+                                                              long_Integer);
+      begin
+         return From.Name;
+      exception
+         when system.RPC.Communication_Error =>
+            return "dead Observer (" & long_Integer'Image (to_Integer (From)) & ")";
+      end From_Name;
+
    begin
-      put_Line (Self.File,  "log Disconnection => "
-                           & From.Name & " no longer observes " & To.Name
+      put_Line (Self.File,   "log Disconnection => "
+                           & From_Name
+                           & " no longer observes "
+                           & To.Name
                            & " for event kind " & Name_of (for_Kind));
    end log_Disconnection;
 

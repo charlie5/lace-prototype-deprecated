@@ -1,6 +1,7 @@
 with
      lace.remote.event.Logger,
      lace.Event_conversions,
+     system.RPC,
      ada.unchecked_Deallocation;
 
 package body lace.remote.make_Subject
@@ -84,6 +85,37 @@ is
                                      the_Event);
          end if;
       end loop;
+   end emit;
+
+
+   overriding
+   function emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
+                  return subject.Observer_views
+   is
+      use lace.Event_conversions;
+      my_Observers  : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
+      bad_Observers :          subject.Observer_views (my_Observers'Range);
+      bad_Count     :          Natural := 0;
+   begin
+      for Each in my_Observers'Range
+      loop
+         begin
+            my_Observers (Each).receive (the_Event,
+                                         from_subject => Subject.item'Class (Self.all).Name);
+            if subject.Logger /= null
+            then
+               subject.Logger.log_Emit (Subject.view (Self),
+                                        my_Observers (Each),
+                                        the_Event);
+            end if;
+         exception
+            when system.RPC.Communication_Error =>
+               bad_Count                 := bad_Count + 1;
+               bad_Observers (bad_Count) := my_Observers (Each);
+         end;
+      end loop;
+
+      return bad_Observers (1 .. bad_Count);
    end emit;
 
 
