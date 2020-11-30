@@ -4,24 +4,25 @@ with
 
      lace.remote.Event.utility,
 
+     ada.Characters.latin_1,
      ada.command_Line,
-     ada.Text_IO;
+     ada.Text_IO,
+     ada.Exceptions;
 
 procedure launch_simple_chat_Client
 --
 -- Starts a chat client.
 --
 is
+   use ada.Text_IO;
 begin
    -- Usage
    --
    if ada.command_Line.argument_Count /= 1
    then
-      ada.Text_IO.put_Line ("Usage:   $ ./launch_simple_chat_Client  <nickname>");
+      put_Line ("Usage:   $ ./launch_simple_chat_Client  <nickname>");
       return;
    end if;
-
-   lace.remote.event.Utility.use_text_Logger ("events");
 
    declare
       use chat.Client.local;
@@ -31,7 +32,15 @@ begin
    begin
       -- Setup
       --
-      chat.Registrar.register (the_Client.all'Access);   -- Register our client with the registrar.
+      begin
+         chat.Registrar.register (the_Client.all'Access);   -- Register our client with the registrar.
+      exception
+         when chat.Registrar.Name_already_used =>
+            put_Line (client_Name & " is already in use.");
+            return;
+      end;
+
+      lace.remote.event.Utility.use_text_Logger ("events");
 
       declare
          procedure broadcast (the_Text : in String)
@@ -61,7 +70,7 @@ begin
          --
          loop
             declare
-               chat_Message : constant String := ada.Text_IO.get_Line;
+               chat_Message : constant String := get_Line;
             begin
                exit
                  when chat_Message = "q"
@@ -93,4 +102,16 @@ begin
    end;
 
    lace.remote.event.Utility.close;
+
+exception
+   when E : others =>
+      lace.remote.event.Utility.close;
+      new_Line;
+      put_Line ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      put_Line ("Unhandled exception, aborting. Please report the following to developer.");
+      put_Line ("________________________________________________________________________");
+      put_Line (ada.Exceptions.exception_Information (E));
+      put (ada.Characters.latin_1.ESC & "[1A");   -- Move cursor up.
+      put_Line ("________________________________________________________________________");
+      new_Line;
 end launch_simple_chat_Client;

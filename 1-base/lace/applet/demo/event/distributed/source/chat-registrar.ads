@@ -9,6 +9,8 @@ package chat.Registrar
 is
    pragma remote_Call_interface;
 
+   Name_already_used : exception;
+
    procedure   register (the_Client : in Client.view);
    procedure deregister (the_Client : in Client.view);
 

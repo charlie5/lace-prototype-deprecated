@@ -93,7 +93,17 @@ is
 
    procedure register (the_Client : in Client.view)
    is
+      Name     : constant String            := the_Client.Name;
+      all_Info : constant client_Info_array := safe_Clients.all_client_Info;
    begin
+      for Each of all_Info
+      loop
+         if Each.Name = Name
+         then
+            raise Name_already_used;
+         end if;
+      end loop;
+
       safe_Clients.add (the_Client);
    end register;
 
