@@ -1,12 +1,11 @@
 with
-     lace.remote.Response,
-     lace.Any,
-     ada.Strings.unbounded;
+     lace.Any;
 
 private
 with
      lace.remote.make_Subject,
-     lace.remote.make_Observer;
+     lace.remote.make_Observer,
+     ada.Strings.unbounded;
 
 package chat.Client.local
 --
@@ -21,12 +20,12 @@ is
 
    -- Forge
    --
+   function to_Client (Name : in String) return Item;
+   --  function new_Client (Name : in String) return View;
 
-   function new_Client (Name : in String) return View;
 
    -- Attributes
    --
-
    overriding
    function Name (Self : in Item) return String;
 
@@ -36,6 +35,7 @@ is
 
    -- Operations
    --
+   procedure start (the_Client : in out chat.Client.local.item);
 
    overriding
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view);
@@ -46,17 +46,6 @@ is
                                                       other_Client_Observer : in lace.remote.Observer.view);
    overriding
    procedure Registrar_has_shutdown (Self : in out Item);
-   function  Registrar_has_shutdown (Self : in     Item) return Boolean;
-
-   -- Responses
-   --
-   type Show is new lace.remote.Response.item with null record;
-
-   overriding
-   procedure respond (Self : in out Show;   to_Event : in lace.Event.item'Class);
-   --
-   -- Response is to display the chat message on the users console.
-
 
 
 private
@@ -64,10 +53,12 @@ private
    package Observer is new lace.remote.make_Observer (lace.Any.limited_item);
    package Subject  is new lace.remote.make_Subject  (Observer        .item);
 
+   use ada.Strings.unbounded;
+
    type Item is limited new Subject    .item
                         and chat.Client.item with
       record
-            Name                   : ada.Strings.unbounded.unbounded_String;
+            Name                   : unbounded_String;
             Registrar_has_shutdown : Boolean := False;
       end record;
 

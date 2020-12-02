@@ -1,22 +1,38 @@
 with
+     chat.Registrar,
+
+     lace.remote.Response,
      lace.remote.Observer,
-     lace.Event.utility,
+     lace.remote.Event.Utility,
+     lace.Event.Utility,
+
      ada.Text_IO;
 
 package body chat.Client.local
 is
-   -- Globals
+   -- Responses
    --
+   type Show is new lace.remote.Response.item with null record;
+
+   -- Response is to display the chat message on the users console.
+   --
+   overriding
+   procedure respond (Self : in out Show;   to_Event : in lace.Event.item'Class)
+   is
+      pragma Unreferenced (Self);
+      use ada.Text_IO;
+      the_Message : constant Message := Message (to_Event);
+   begin
+      put_Line (the_Message.Text (1 .. the_Message.Length));
+   end respond;
 
    the_Response : aliased chat.Client.local.show;
 
 
    -- Forge
    --
-
    function to_Client (Name : in String) return Item
    is
-      use ada.Strings.unbounded;
    begin
       return Self : Item
       do
@@ -25,21 +41,14 @@ is
    end to_Client;
 
 
-   function new_Client (Name : in String) return View
-   is
-      Self : constant View := new Item'(to_Client (Name));
-   begin
-      return Self;
-   end new_Client;
-
-
    -- Attributes
    --
+   function "+" (From : in unbounded_String) return String
+                 renames to_String;
 
    overriding
    function Name (Self : in Item) return String
    is
-      use ada.Strings.unbounded;
    begin
       return to_String (Self.Name);
    end Name;
@@ -110,23 +119,80 @@ is
    end Registrar_has_shutdown;
 
 
-   function Registrar_has_shutdown (Self : in Item) return Boolean
-   is
-   begin
-      return Self.Registrar_has_shutdown;
-   end Registrar_has_shutdown;
-
-
-   -- Responses
-   --
-
-   overriding
-   procedure respond (Self : in out Show;   to_Event : in lace.Event.item'Class)
+   procedure start (the_Client : in out chat.Client.local.item)
    is
       use ada.Text_IO;
-      the_Message : constant Message := Message (to_Event);
    begin
-      put_Line (the_Message.Text (1 .. the_Message.Length));
-   end respond;
+      -- Setup
+      --
+      begin
+         chat.Registrar.register (the_Client'unchecked_Access);   -- Register our client with the registrar.
+      exception
+         when chat.Registrar.Name_already_used =>
+            put_Line (+the_Client.Name & " is already in use.");
+            return;
+      end;
+
+      lace.remote.event.Utility.use_text_Logger ("events");
+
+      declare
+         procedure broadcast (the_Text : in String)
+         is
+            the_Message : constant chat.client.Message := (Length (the_Client.Name) + 2 + the_Text'Length,
+                                                           +the_Client.Name & ": " & the_Text);
+         begin
+            the_Client.emit (the_Message);
+         end broadcast;
+
+      begin
+         declare
+            Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+         begin
+            for i in Peers'Range
+            loop
+               if the_Client'unchecked_Access /= Peers (i)
+               then
+                  Peers (i) .register_Client (the_Client'unchecked_Access);   -- Register our client with all other clients.
+                  the_Client.register_Client (Peers (i));                     -- Register all other clients with our client.
+               end if;
+            end loop;
+         end;
+
+         -- Main loop
+         --
+         loop
+            declare
+               chat_Message : constant String := get_Line;
+            begin
+               exit
+                 when chat_Message = "q"
+                 or   the_Client.Registrar_has_shutdown;
+
+               broadcast (chat_Message);
+            end;
+         end loop;
+
+         -- Shutdown
+         --
+         if not the_Client.Registrar_has_shutdown
+         then
+            chat.Registrar.deregister (the_Client'unchecked_Access);
+
+            declare
+               Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+            begin
+               for i in Peers'Range
+               loop
+                  if the_Client'unchecked_Access /= Peers (i)
+                  then
+                     Peers (i).deregister_Client (the_Client'unchecked_Access);   -- Deregister our client with every other client.
+                  end if;
+               end loop;
+            end;
+         end if;
+      end;
+
+      lace.remote.event.Utility.close;
+   end start;
 
 end chat.Client.local;

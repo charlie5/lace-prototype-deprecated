@@ -12,9 +12,6 @@ is
    use type Client.view;
 
 
-   -- Protection against race conditions.
-   --
-
    type client_Info is
          record
             View        : Client.view;
@@ -26,6 +23,9 @@ is
 
    max_Clients : constant := 5_000;
 
+
+   -- Protection against race conditions.
+   --
    protected safe_Clients
    is
       procedure add (the_Client : in Client.view);
