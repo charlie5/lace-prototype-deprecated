@@ -199,78 +199,75 @@ is
       check_Registrar_lives.start (Self'unchecked_Access);
 
       declare
-         procedure broadcast (the_Text : in String)
-         is
-            the_Message : constant chat.client.Message := (Length (Self.Name) + 2 + the_Text'Length,
-                                                           +Self.Name & ": " & the_Text);
-         begin
-            Self.emit (the_Message);
-         end broadcast;
-
+         Peers : constant chat.Client.views := chat.Registrar.all_Clients;
       begin
-         declare
-            Peers : constant chat.Client.views := chat.Registrar.all_Clients;
-         begin
-            for i in Peers'Range
-            loop
-               if Self'unchecked_Access /= Peers (i)
-               then
-                  Peers (i) .register_Client (Self'unchecked_Access);   -- Register our client with all other clients.
-                  Self.register_Client (Peers (i));                     -- Register all other clients with our client.
-               end if;
-            end loop;
-         end;
-
-         -- Main loop
-         --
+         for i in Peers'Range
          loop
-            declare
-               chat_Message : constant String := get_Line;
-            begin
-               exit
-                 when chat_Message = "q"
-                 or   Self.Registrar_has_shutdown
-                 or   Self.Registrar_is_dead;
-               broadcast (chat_Message);
-            end;
-         end loop;
-
-         -- Shutdown
-         --
-         if    not Self.Registrar_has_shutdown
-           and not Self.Registrar_is_dead
-         then
-            begin
-               chat.Registrar.deregister (Self'unchecked_Access);
-            exception
-               when system.RPC.Communication_Error =>
-                  Self.Registrar_is_dead := True;
-            end;
-
-            if not Self.Registrar_is_dead
+            if Self'unchecked_Access /= Peers (i)
             then
-               declare
-                  Peers : constant chat.Client.views := chat.Registrar.all_Clients;
-               begin
-                  for i in Peers'Range
-                  loop
-                     if Self'unchecked_Access /= Peers (i)
-                     then
-                        begin
-                           Peers (i).deregister_Client (Self'unchecked_Access);   -- Deregister our client with every other client.
-                        exception
-                           when system.RPC.Communication_Error =>
-                              null;   -- Peer is dead, so do nothing.
-                        end;
-                     end if;
-                  end loop;
-               end;
+               Peers (i) .register_Client (Self'unchecked_Access);   -- Register our client with all other clients.
+               Self.register_Client (Peers (i));                     -- Register all other clients with our client.
             end if;
-         end if;
+         end loop;
       end;
 
-      check_Registrar_lives.halt;
+      -- Main loop
+      --
+      loop
+         declare
+            procedure broadcast (the_Text : in String)
+            is
+               the_Message : constant chat.client.Message := (Length (Self.Name) + 2 + the_Text'Length,
+                                                              +Self.Name & ": " & the_Text);
+            begin
+               Self.emit (the_Message);
+            end broadcast;
 
+            chat_Message : constant String := get_Line;
+         begin
+            exit
+              when chat_Message = "q"
+              or   Self.Registrar_has_shutdown
+              or   Self.Registrar_is_dead;
+
+            broadcast (chat_Message);
+         end;
+      end loop;
+
+      -- Shutdown
+      --
+      if    not Self.Registrar_has_shutdown
+        and not Self.Registrar_is_dead
+      then
+         begin
+            chat.Registrar.deregister (Self'unchecked_Access);
+         exception
+            when system.RPC.Communication_Error =>
+               Self.Registrar_is_dead := True;
+         end;
+
+         if not Self.Registrar_is_dead
+         then
+            declare
+               Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+            begin
+               for i in Peers'Range
+               loop
+                  if Self'unchecked_Access /= Peers (i)
+                  then
+                     begin
+                        Peers (i).deregister_Client (Self'unchecked_Access);   -- Deregister our client with every other client.
+                     exception
+                        when system.RPC.Communication_Error =>
+                           null;   -- Peer is dead, so do nothing.
+                     end;
+                  end if;
+               end loop;
+            end;
+         end if;
+      end if;
+
+      check_Registrar_lives.halt;
       lace.remote.event.Utility.close;
    end start;
 
