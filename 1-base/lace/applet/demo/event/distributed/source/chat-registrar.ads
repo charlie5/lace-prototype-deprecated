@@ -15,6 +15,7 @@ is
    procedure deregister (the_Client : in Client.view);
 
    function  all_Clients return chat.Client.views;
+   procedure ping;
 
    procedure shutdown;
 

@@ -3,8 +3,6 @@ with
 
      lace.remote.Event.utility,
 
-     system.RPC,
-
      ada.Characters.latin_1,
      ada.command_Line,
      ada.Text_IO,

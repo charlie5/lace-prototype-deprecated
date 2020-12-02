@@ -129,7 +129,6 @@ is
    end rid_Client;
 
 
-
    overriding
    procedure Registrar_has_shutdown  (Self : in out Item)
    is
@@ -137,6 +136,48 @@ is
       ada.Text_IO.put_Line ("The Registrar has shutdown. Press <Enter> to exit.");
       Self.Registrar_has_shutdown := True;
    end Registrar_has_shutdown;
+
+
+   task check_Registrar_lives
+   is
+      entry start (Self : in chat.Client.local.view);
+      entry halt;
+   end check_Registrar_lives;
+
+   task body check_Registrar_lives
+   is
+      Done : Boolean := False;
+      Self : chat.Client.local.view;
+   begin
+      loop
+         select
+            accept start (Self : in chat.Client.local.view)
+            do
+               check_Registrar_lives.Self := Self;
+            end start;
+         or
+            accept halt
+            do
+               Done := True;
+            end halt;
+         or
+            delay 15.0;
+         end select;
+
+         exit when Done;
+
+         declare
+            use ada.Text_IO;
+         begin
+            chat.Registrar.ping;
+         exception
+            when system.RPC.Communication_Error =>
+               put_Line ("The Registrar has died. Press <Enter> to exit.");
+               Self.Registrar_is_dead := True;
+         end;
+      end loop;
+   end check_Registrar_lives;
+
 
 
    procedure start (Self : in out chat.Client.local.item)
@@ -154,6 +195,8 @@ is
       end;
 
       lace.remote.event.Utility.use_text_Logger ("events");
+
+      check_Registrar_lives.start (Self'unchecked_Access);
 
       declare
          procedure broadcast (the_Text : in String)
@@ -186,14 +229,16 @@ is
             begin
                exit
                  when chat_Message = "q"
-                 or   Self.Registrar_has_shutdown;
+                 or   Self.Registrar_has_shutdown
+                 or   Self.Registrar_is_dead;
                broadcast (chat_Message);
             end;
          end loop;
 
          -- Shutdown
          --
-         if not Self.Registrar_has_shutdown
+         if    not Self.Registrar_has_shutdown
+           and not Self.Registrar_is_dead
          then
             begin
                chat.Registrar.deregister (Self'unchecked_Access);
@@ -223,6 +268,8 @@ is
             end if;
          end if;
       end;
+
+      check_Registrar_lives.halt;
 
       lace.remote.event.Utility.close;
    end start;

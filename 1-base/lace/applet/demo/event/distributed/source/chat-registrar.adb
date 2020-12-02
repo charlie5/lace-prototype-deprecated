@@ -223,4 +223,7 @@ is
       check_Client_lives.halt;
    end shutdown;
 
+
+   procedure ping is null;
+
 end chat.Registrar;
