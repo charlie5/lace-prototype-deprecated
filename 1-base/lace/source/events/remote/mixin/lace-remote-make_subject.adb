@@ -76,14 +76,24 @@ is
    begin
       for Each in my_Observers'Range
       loop
-         my_Observers (Each).receive (the_Event,
-                                      from_subject => Subject.item'Class (Self.all).Name);
-         if subject.Logger /= null
-         then
-            subject.Logger.log_Emit (Subject.view (Self),
-                                     my_Observers (Each),
-                                     the_Event);
-         end if;
+         begin
+            my_Observers (Each).receive (the_Event,
+                                         from_subject => Subject.item'Class (Self.all).Name);
+            if subject.Logger /= null
+            then
+               subject.Logger.log_Emit (Subject.view (Self),
+                                        my_Observers (Each),
+                                        the_Event);
+            end if;
+         exception
+            when system.RPC.Communication_Error =>
+               if subject.Logger /= null
+               then
+                  subject.Logger.log_Emit (Subject.view (Self),
+                                           my_Observers (Each),
+                                           the_Event);
+               end if;
+         end;
       end loop;
    end emit;
 

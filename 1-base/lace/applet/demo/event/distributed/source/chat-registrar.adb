@@ -11,6 +11,26 @@ is
    use ada.Strings.unbounded;
    use type Client.view;
 
+   procedure Last_Chance_Handler (Msg  : in system.Address;
+                                  Line : in Integer);
+
+   pragma Export (C, Last_Chance_Handler,
+                  "__gnat_last_chance_handler");
+
+   procedure Last_Chance_Handler (Msg  : in System.Address;
+                                  Line : in Integer)
+   is
+      pragma Unreferenced (Msg, Line);
+      use ada.Text_IO;
+   begin
+      put_Line ("Unable to start the Registrar.");
+      put_Line ("Please ensure the po_cos_naming server is running.");
+      put_Line ("Press Ctrl-C to quit.");
+
+      delay Duration'Last;
+   end Last_Chance_Handler;
+
+
 
    type client_Info is
          record
@@ -145,7 +165,7 @@ is
                Done := True;
             end halt;
          or
-            delay 5.0;
+            delay 50.0;
          end select;
 
          exit when Done;

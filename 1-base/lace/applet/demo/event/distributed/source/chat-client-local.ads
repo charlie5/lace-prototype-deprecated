@@ -60,6 +60,7 @@ private
       record
             Name                   : unbounded_String;
             Registrar_has_shutdown : Boolean := False;
+            Registrar_is_dead      : Boolean := False;
       end record;
 
 end chat.Client.local;

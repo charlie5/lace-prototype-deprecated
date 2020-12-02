@@ -49,6 +49,7 @@ is
                                                       To       : in lace.remote.Subject.view;
                                                       for_Kind : in lace.event.Kind)
    is
+
       function From_Name return String
       is
          function to_Integer is new ada.unchecked_Conversion (lace.remote.Observer.view,
@@ -74,6 +75,18 @@ is
                                              To        : in lace.remote.Observer.view;
                                              the_Event : in lace.Event.item'Class)
    is
+
+      function To_Name return String
+      is
+         function to_Integer is new ada.unchecked_Conversion (lace.remote.Observer.view,
+                                                              long_Integer);
+      begin
+         return To.Name;
+      exception
+         when system.RPC.Communication_Error =>
+            return "dead Observer (" & long_Integer'Image (to_Integer (To)) & ")";
+      end To_Name;
+
    begin
       if Self.Ignored.contains (to_Kind (the_Event'Tag))
       then
@@ -82,7 +95,7 @@ is
 
       put_Line (Self.File,   "log Emit => "
                            & From.Name & " sends " & Name_of (Kind_of (the_Event))
-                           & " to "    & To.Name);
+                           & " to "    & To_Name);
    end log_Emit;
 
 

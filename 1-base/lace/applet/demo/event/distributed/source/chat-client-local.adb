@@ -6,10 +6,30 @@ with
      lace.remote.Event.Utility,
      lace.Event.Utility,
 
+     system.RPC,
      ada.Text_IO;
 
 package body chat.Client.local
 is
+
+   procedure Last_Chance_Handler (Msg  : in system.Address;
+                                  Line : in Integer);
+
+   pragma Export (C, Last_Chance_Handler,
+                  "__gnat_last_chance_handler");
+
+   procedure Last_Chance_Handler (Msg  : in System.Address;
+                                  Line : in Integer)
+   is
+      pragma Unreferenced (Msg, Line);
+      use ada.Text_IO;
+   begin
+      put_Line ("The Registar is not running.");
+      put_Line ("Press Ctrl-C to quit.");
+      delay Duration'Last;
+   end Last_Chance_Handler;
+
+
    -- Responses
    --
    type Show is new lace.remote.Response.item with null record;
@@ -167,7 +187,6 @@ is
                exit
                  when chat_Message = "q"
                  or   the_Client.Registrar_has_shutdown;
-
                broadcast (chat_Message);
             end;
          end loop;
@@ -176,19 +195,32 @@ is
          --
          if not the_Client.Registrar_has_shutdown
          then
-            chat.Registrar.deregister (the_Client'unchecked_Access);
-
-            declare
-               Peers : constant chat.Client.views := chat.Registrar.all_Clients;
             begin
-               for i in Peers'Range
-               loop
-                  if the_Client'unchecked_Access /= Peers (i)
-                  then
-                     Peers (i).deregister_Client (the_Client'unchecked_Access);   -- Deregister our client with every other client.
-                  end if;
-               end loop;
+               chat.Registrar.deregister (the_Client'unchecked_Access);
+            exception
+               when system.RPC.Communication_Error =>
+                  the_Client.Registrar_is_dead := True;
             end;
+
+            if not the_Client.Registrar_is_dead
+            then
+               declare
+                  Peers : constant chat.Client.views := chat.Registrar.all_Clients;
+               begin
+                  for i in Peers'Range
+                  loop
+                     if the_Client'unchecked_Access /= Peers (i)
+                     then
+                        begin
+                           Peers (i).deregister_Client (the_Client'unchecked_Access);   -- Deregister our client with every other client.
+                        exception
+                           when system.RPC.Communication_Error =>
+                              null;   -- Peer is dead, so do nothing.
+                        end;
+                     end if;
+                  end loop;
+               end;
+            end if;
          end if;
       end;
 
