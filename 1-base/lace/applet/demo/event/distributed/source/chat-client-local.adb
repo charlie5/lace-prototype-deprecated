@@ -139,17 +139,17 @@ is
    end Registrar_has_shutdown;
 
 
-   procedure start (the_Client : in out chat.Client.local.item)
+   procedure start (Self : in out chat.Client.local.item)
    is
       use ada.Text_IO;
    begin
       -- Setup
       --
       begin
-         chat.Registrar.register (the_Client'unchecked_Access);   -- Register our client with the registrar.
+         chat.Registrar.register (Self'unchecked_Access);   -- Register our client with the registrar.
       exception
          when chat.Registrar.Name_already_used =>
-            put_Line (+the_Client.Name & " is already in use.");
+            put_Line (+Self.Name & " is already in use.");
             return;
       end;
 
@@ -158,10 +158,10 @@ is
       declare
          procedure broadcast (the_Text : in String)
          is
-            the_Message : constant chat.client.Message := (Length (the_Client.Name) + 2 + the_Text'Length,
-                                                           +the_Client.Name & ": " & the_Text);
+            the_Message : constant chat.client.Message := (Length (Self.Name) + 2 + the_Text'Length,
+                                                           +Self.Name & ": " & the_Text);
          begin
-            the_Client.emit (the_Message);
+            Self.emit (the_Message);
          end broadcast;
 
       begin
@@ -170,10 +170,10 @@ is
          begin
             for i in Peers'Range
             loop
-               if the_Client'unchecked_Access /= Peers (i)
+               if Self'unchecked_Access /= Peers (i)
                then
-                  Peers (i) .register_Client (the_Client'unchecked_Access);   -- Register our client with all other clients.
-                  the_Client.register_Client (Peers (i));                     -- Register all other clients with our client.
+                  Peers (i) .register_Client (Self'unchecked_Access);   -- Register our client with all other clients.
+                  Self.register_Client (Peers (i));                     -- Register all other clients with our client.
                end if;
             end loop;
          end;
@@ -186,33 +186,33 @@ is
             begin
                exit
                  when chat_Message = "q"
-                 or   the_Client.Registrar_has_shutdown;
+                 or   Self.Registrar_has_shutdown;
                broadcast (chat_Message);
             end;
          end loop;
 
          -- Shutdown
          --
-         if not the_Client.Registrar_has_shutdown
+         if not Self.Registrar_has_shutdown
          then
             begin
-               chat.Registrar.deregister (the_Client'unchecked_Access);
+               chat.Registrar.deregister (Self'unchecked_Access);
             exception
                when system.RPC.Communication_Error =>
-                  the_Client.Registrar_is_dead := True;
+                  Self.Registrar_is_dead := True;
             end;
 
-            if not the_Client.Registrar_is_dead
+            if not Self.Registrar_is_dead
             then
                declare
                   Peers : constant chat.Client.views := chat.Registrar.all_Clients;
                begin
                   for i in Peers'Range
                   loop
-                     if the_Client'unchecked_Access /= Peers (i)
+                     if Self'unchecked_Access /= Peers (i)
                      then
                         begin
-                           Peers (i).deregister_Client (the_Client'unchecked_Access);   -- Deregister our client with every other client.
+                           Peers (i).deregister_Client (Self'unchecked_Access);   -- Deregister our client with every other client.
                         exception
                            when system.RPC.Communication_Error =>
                               null;   -- Peer is dead, so do nothing.

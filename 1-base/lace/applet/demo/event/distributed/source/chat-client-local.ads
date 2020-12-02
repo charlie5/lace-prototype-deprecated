@@ -35,7 +35,7 @@ is
 
    -- Operations
    --
-   procedure start (the_Client : in out chat.Client.local.item);
+   procedure start (Self : in out chat.Client.local.item);
 
    overriding
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view);
