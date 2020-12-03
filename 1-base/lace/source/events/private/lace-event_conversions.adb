@@ -1,12 +1,13 @@
 package body lace.Event_conversions
 is
-   function to_event_Kind (From : ada.tags.Tag) return lace.event.Kind
+   function to_event_Kind (From : in ada.tags.Tag) return lace.event.Kind
    is
    begin
       return event.Kind (ada.tags.external_Tag (From));
    end to_event_Kind;
 
-   function to_Tag (From : lace.event.Kind) return ada.tags.Tag
+
+   function to_Tag (From : in lace.event.Kind) return ada.tags.Tag
    is
    begin
       return ada.tags.internal_Tag (String (From));
