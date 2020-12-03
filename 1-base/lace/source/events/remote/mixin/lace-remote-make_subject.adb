@@ -1,6 +1,6 @@
 with
      lace.remote.event.Logger,
-     lace.Event_conversions,
+     lace.Event.utility,
      system.RPC,
      ada.unchecked_Deallocation;
 
@@ -71,8 +71,8 @@ is
    overriding
    procedure emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
    is
-      use lace.Event_conversions;
-      my_Observers : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
+      use lace.Event.utility;
+      my_Observers : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
    begin
       for Each in my_Observers'Range
       loop
@@ -102,8 +102,8 @@ is
    function emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
                   return subject.Observer_views
    is
-      use lace.Event_conversions;
-      my_Observers  : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
+      use lace.Event.utility;
+      my_Observers  : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
       bad_Observers :          subject.Observer_views (my_Observers'Range);
       bad_Count     :          Natural := 0;
    begin

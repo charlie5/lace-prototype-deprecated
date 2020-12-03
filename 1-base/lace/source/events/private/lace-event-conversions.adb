@@ -1,4 +1,4 @@
-package body lace.Event_conversions
+package body lace.Event.conversions
 is
    function to_event_Kind (From : in ada.tags.Tag) return lace.event.Kind
    is
@@ -13,4 +13,4 @@ is
       return ada.tags.internal_Tag (String (From));
    end to_Tag;
 
-end lace.Event_conversions;
+end lace.Event.conversions;

@@ -1,5 +1,5 @@
 with
-     lace.Event_conversions;
+     lace.Event.conversions;
 
 package body lace.Event.utility
 is
@@ -8,7 +8,7 @@ is
 
    function to_Kind (From : in ada.tags.Tag) return lace.event.Kind
    is
-      use lace.Event_conversions;
+      use lace.Event.conversions;
    begin
       return to_event_Kind (From);
    end to_Kind;

@@ -1,6 +1,6 @@
 with
      lace.remote.Event.Logger,
-     lace.Event_conversions,
+     lace.Event.utility,
 
      ada.unchecked_Conversion,
      ada.unchecked_Deallocation;
@@ -34,13 +34,13 @@ is
    is
       use event_response_Maps,
           subject_Maps_of_event_responses,
-          lace.Event_conversions,
+          lace.Event.utility,
           ada.Containers;
 
       use type lace.remote.Observer.view;
 
       the_Responses :          event_response_Map    renames Self.subject_Responses.Element (from_Subject).all;
-      the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
+      the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
 
       my_Name       : constant String := Observer.item'Class (Self.all).Name;
    begin
