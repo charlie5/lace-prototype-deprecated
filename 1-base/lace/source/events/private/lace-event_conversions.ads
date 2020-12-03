@@ -1,7 +1,6 @@
 with
      lace.Event,
-     ada.Tags,
-     ada.unchecked_Conversion;
+     ada.Tags;
 
 private
 package lace.Event_conversions
