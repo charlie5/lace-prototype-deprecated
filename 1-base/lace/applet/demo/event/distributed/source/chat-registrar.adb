@@ -165,7 +165,7 @@ is
                Done := True;
             end halt;
          or
-            delay 50.0;
+            delay 60.0;
          end select;
 
          exit when Done;
@@ -201,8 +201,6 @@ is
                   for i in 1 .. dead_Count
                   loop
                      put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
-                     --  Each.rid_Client (+Dead (i).Name,
-                     --                    Dead (i).as_Observer);
                      Each.deregister_Client (Dead (i).View);
                   end loop;
                end loop;
@@ -218,7 +216,12 @@ is
    begin
       for Each of all_Clients
       loop
-         Each.Registrar_has_shutdown;
+         begin
+            Each.Registrar_has_shutdown;
+         exception
+            when system.RPC.Communication_Error =>
+               null;   -- Client has died. No action needed since we are shutting down.
+         end;
       end loop;
 
       check_Client_lives.halt;

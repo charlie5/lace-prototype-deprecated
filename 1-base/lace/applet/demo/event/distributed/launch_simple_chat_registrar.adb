@@ -17,5 +17,6 @@ begin
       end;
    end loop;
 
+   put_Line ("Shutting down.");
    chat.Registrar.shutdown;
 end launch_simple_chat_Registrar;
