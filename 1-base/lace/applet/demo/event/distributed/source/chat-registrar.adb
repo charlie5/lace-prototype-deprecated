@@ -201,8 +201,9 @@ is
                   for i in 1 .. dead_Count
                   loop
                      put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
-                     Each.rid_Client (+Dead (i).Name,
-                                       Dead (i).as_Observer);
+                     --  Each.rid_Client (+Dead (i).Name,
+                     --                    Dead (i).as_Observer);
+                     Each.deregister_Client (Dead (i).View);
                   end loop;
                end loop;
             end;

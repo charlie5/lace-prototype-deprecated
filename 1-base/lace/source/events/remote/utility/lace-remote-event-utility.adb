@@ -22,18 +22,37 @@ is
    end connect;
 
 
-   procedure disconnect (the_Observer  : in lace.remote.Observer.view;
-                         from_Subject  : in lace.remote.Subject .view;
+   -- *** ToDo => The following may be useful as a non-remote utility. ***
+   --
+   --
+   --  procedure disconnect (the_Observer  : in lace.remote.Observer.view;
+   --                        from_Subject  : in lace.remote.Subject .view;
+   --                        for_Response  : in lace.remote.Response.view;
+   --                        to_Event_Kind : in lace.event.Kind)
+   --  is
+   --  begin
+   --     the_Observer.rid (for_Response,
+   --                       to_Event_Kind,
+   --                       from_Subject.Name);
+   --
+   --     from_Subject.deregister (the_Observer,
+   --                              to_Event_Kind);
+   --  end disconnect;
+
+
+   procedure disconnect (Observer_1    : in lace.remote.Observer.view;
+                         Subject_1     : in lace.remote.Subject .view;
+                         Observer_2    : in lace.remote.Observer.view;
                          for_Response  : in lace.remote.Response.view;
-                         to_Event_Kind : in lace.event.Kind)
+                         to_Event_Kind : in lace.Event.Kind)
    is
    begin
-      the_Observer.rid (for_Response,
-                        to_Event_Kind,
-                        from_Subject.Name);
+      Observer_1.rid (for_Response,
+                      to_Event_Kind,
+                      Observer_2.Name);
 
-      from_Subject.deregister (the_Observer,
-                               to_Event_Kind);
+      Subject_1.deregister (Observer_2,
+                            to_Event_Kind);
    end disconnect;
 
 

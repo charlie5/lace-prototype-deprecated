@@ -32,6 +32,9 @@ is
    overriding
    function as_Observer (Self : access Item) return lace.remote.Observer.view;
 
+   overriding
+   function as_Subject  (Self : access Item) return lace.remote.Subject.view;
+
 
    -- Operations
    --
@@ -41,9 +44,7 @@ is
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view);
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client : in Client.view);
-   overriding
-   procedure        rid_Client (Self : in out Item;   other_Client_Name     : in String;
-                                                      other_Client_Observer : in lace.remote.Observer.view);
+
    overriding
    procedure Registrar_has_shutdown (Self : in out Item);
 

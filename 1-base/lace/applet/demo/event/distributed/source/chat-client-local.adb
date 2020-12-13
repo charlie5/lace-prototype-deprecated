@@ -3,8 +3,8 @@ with
 
      lace.remote.Response,
      lace.remote.Observer,
-     lace.remote.Event.Utility,
-     lace.Event.Utility,
+     lace.remote.Event.utility,
+     lace.Event.utility,
 
      system.RPC,
      ada.Text_IO;
@@ -82,6 +82,14 @@ is
    end as_Observer;
 
 
+   overriding
+   function as_Subject  (Self : access Item) return lace.remote.Subject.view
+   is
+   begin
+      return Self;
+   end as_Subject;
+
+
    -- Operations
    --
 
@@ -91,13 +99,10 @@ is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.register (other_Client.as_Observer,
-                     to_Kind (chat.Client.Message'Tag));
-
-      Self.add (the_Response'Access,
-                to_Kind (chat.Client.Message'Tag),
-                other_Client.Name);
-
+      lace.remote.Event.utility.connect (the_Observer  => Self'unchecked_Access,
+                                         to_Subject    => other_Client.as_Subject,
+                                         with_Response => the_Response'Access,
+                                         to_Event_Kind => to_Kind (chat.Client.Message'Tag));
       put_Line (other_Client.Name & " is here.");
    end register_Client;
 
@@ -105,28 +110,16 @@ is
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
    is
-   begin
-      Self.rid_Client (other_Client.Name,
-                       other_Client.as_Observer);
-   end deregister_Client;
-
-
-   overriding
-   procedure rid_Client (Self : in out Item;   other_Client_Name     : in String;
-                                               other_Client_Observer : in lace.remote.Observer.view)
-   is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.deregister (other_Client_Observer,
-                       to_Kind (chat.Client.Message'Tag));
-
-      Self.rid (the_Response'unchecked_Access,
-                to_Kind (chat.Client.Message'Tag),
-                other_Client_Name);
-
-      put_Line (other_Client_Name & " leaves.");
-   end rid_Client;
+      lace.remote.Event.utility.disconnect (Subject_1     => Self.as_Subject,
+                                            Observer_1    => Self.as_Observer,
+                                            Observer_2    => other_Client.as_Observer,
+                                            for_Response  => the_Response'Access,
+                                            to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+      put_Line (other_Client.Name & " leaves.");
+   end deregister_Client;
 
 
    overriding

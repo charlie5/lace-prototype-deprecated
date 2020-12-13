@@ -18,8 +18,9 @@ is
                          with_Response : in lace.remote.Response.view;
                          to_Event_Kind : in lace.Event.Kind);
 
-   procedure disconnect (the_Observer  : in lace.remote.Observer.view;
-                         from_Subject  : in lace.remote.Subject .view;
+   procedure disconnect (Observer_1    : in lace.remote.Observer.view;
+                         Subject_1     : in lace.remote.Subject .view;
+                         Observer_2    : in lace.remote.Observer.view;
                          for_Response  : in lace.remote.Response.view;
                          to_Event_Kind : in lace.Event.Kind);
    -- Logging
