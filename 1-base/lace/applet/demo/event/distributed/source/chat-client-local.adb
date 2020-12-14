@@ -179,8 +179,13 @@ is
          loop
             if Self'unchecked_Access /= Peers (i)
             then
-               Peers (i) .register_Client (Self'unchecked_Access);   -- Register our client with all other clients.
-               Self.register_Client (Peers (i));                     -- Register all other clients with our client.
+               begin
+                  Peers (i).register_Client (Self'unchecked_Access);    -- Register our client with all other clients.
+                  Self.register_Client (Peers (i));                     -- Register all other clients with our client.
+               exception
+                  when system.RPC.communication_Error =>
+                     null;     -- Peer (i) has died, so ignore it and do nothing.
+               end;
             end if;
          end loop;
       end;
