@@ -11,25 +11,6 @@ with
 
 package body chat.Client.local
 is
-
-   procedure Last_Chance_Handler (Msg  : in system.Address;
-                                  Line : in Integer);
-
-   pragma Export (C, Last_Chance_Handler,
-                  "__gnat_last_chance_handler");
-
-   procedure Last_Chance_Handler (Msg  : in System.Address;
-                                  Line : in Integer)
-   is
-      pragma Unreferenced (Msg, Line);
-      use ada.Text_IO;
-   begin
-      put_Line ("The Registar is not running.");
-      put_Line ("Press Ctrl-C to quit.");
-      delay Duration'Last;
-   end Last_Chance_Handler;
-
-
    -- Responses
    --
    type Show is new lace.remote.Response.item with null record;
@@ -263,5 +244,25 @@ is
       check_Registrar_lives.halt;
       lace.remote.event.Utility.close;
    end start;
+
+
+   procedure Last_Chance_Handler (Msg  : in system.Address;
+                                  Line : in Integer);
+
+   pragma Export (C, Last_Chance_Handler,
+                  "__gnat_last_chance_handler");
+
+   procedure Last_Chance_Handler (Msg  : in System.Address;
+                                  Line : in Integer)
+   is
+      pragma Unreferenced (Msg, Line);
+      use ada.Text_IO;
+   begin
+      put_Line ("The Registar is not running.");
+      put_Line ("Press Ctrl-C to quit.");
+      check_Registrar_lives.halt;
+      delay Duration'Last;
+   end Last_Chance_Handler;
+
 
 end chat.Client.local;
