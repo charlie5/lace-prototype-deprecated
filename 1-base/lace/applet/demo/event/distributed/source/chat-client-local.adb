@@ -165,6 +165,7 @@ is
       exception
          when chat.Registrar.Name_already_used =>
             put_Line (+Self.Name & " is already in use.");
+            check_Registrar_lives.halt;
             return;
       end;
 
