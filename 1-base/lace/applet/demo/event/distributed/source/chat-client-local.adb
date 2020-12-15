@@ -74,39 +74,121 @@ is
    -- Operations
    --
 
+   --  overriding
+   --  procedure register_Client (Self : in out Item;   other_Client : in Client.view)
+   --  is
+   --     use lace.Event.utility,
+   --         ada.Text_IO;
+   --  begin
+   --     lace.remote.Event.utility.connect (the_Observer  => Self'unchecked_Access,
+   --                                        to_Subject    => other_Client.as_Subject,
+   --                                        with_Response => the_Response'Access,
+   --                                        to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+   --     put_Line (other_Client.Name & " is here.");
+   --  end register_Client;
+   --
+   --
+   --  overriding
+   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
+   --  is
+   --     use lace.Event.utility,
+   --         ada.Text_IO;
+   --  begin
+   --     lace.remote.Event.utility.disconnect (the_Observer  => Self.as_Observer,
+   --                                           from_Subject  => other_Client.as_Subject,
+   --                                           for_Response  => the_Response'Access,
+   --                                           to_Event_Kind => to_Kind (chat.Client.Message'Tag),
+   --                                           Subject_Name  => other_Client.as_Subject.Name);
+   --
+   --     --  lace.remote.Event.utility.disconnect_1 (Subject_1     => Self.as_Subject,
+   --     --                                        Observer_1    => Self.as_Observer,
+   --     --                                        Observer_2    => other_Client.as_Observer,
+   --     --                                        for_Response  => the_Response'Access,
+   --     --                                        to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+   --     put_Line (other_Client.Name & " leaves.");
+   --  end deregister_Client;
+   --
+
+
    overriding
    procedure register_Client (Self : in out Item;   other_Client : in Client.view)
    is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      lace.remote.Event.utility.connect (the_Observer  => Self'unchecked_Access,
-                                         to_Subject    => other_Client.as_Subject,
-                                         with_Response => the_Response'Access,
-                                         to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+      Self.register (other_Client.as_Observer,
+                     to_Kind (chat.Client.Message'Tag));
+
+      Self.add (the_Response'Access,
+                to_Kind (chat.Client.Message'Tag),
+                other_Client.Name);
+
       put_Line (other_Client.Name & " is here.");
    end register_Client;
 
 
    overriding
-   procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
+   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
+                                                      other_Client_Name        : in String)
    is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      lace.remote.Event.utility.disconnect (the_Observer  => Self.as_Observer,
-                                            from_Subject  => other_Client.as_Subject,
-                                            for_Response  => the_Response'Access,
-                                            to_Event_Kind => to_Kind (chat.Client.Message'Tag),
-                                            Subject_Name  => other_Client.as_Subject.Name);
+      --  Self.rid_Client (other_Client.Name,
+      --                   other_Client.as_Observer);
+      put_Line ("C1");
 
-      --  lace.remote.Event.utility.disconnect_1 (Subject_1     => Self.as_Subject,
-      --                                        Observer_1    => Self.as_Observer,
-      --                                        Observer_2    => other_Client.as_Observer,
-      --                                        for_Response  => the_Response'Access,
-      --                                        to_Event_Kind => to_Kind (chat.Client.Message'Tag));
-      put_Line (other_Client.Name & " leaves.");
+      Self.deregister (other_Client_as_Observer,
+                       to_Kind (chat.Client.Message'Tag));
+      put_Line ("C2");
+
+      Self.rid (the_Response'unchecked_Access,
+                to_Kind (chat.Client.Message'Tag),
+                other_Client_Name);
+
+      put_Line (other_Client_Name & " leaves.");
    end deregister_Client;
+
+
+
+   --  overriding
+   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
+   --  is
+   --     use lace.Event.utility,
+   --         ada.Text_IO;
+   --  begin
+   --     --  Self.rid_Client (other_Client.Name,
+   --     --                   other_Client.as_Observer);
+   --
+   --     Self.deregister (other_Client.as_Observer,
+   --                      to_Kind (chat.Client.Message'Tag));
+   --
+   --     Self.rid (the_Response'unchecked_Access,
+   --               to_Kind (chat.Client.Message'Tag),
+   --               other_Client.Name);
+   --
+   --     put_Line (other_Client.Name & " leaves.");
+   --  end deregister_Client;
+   --
+
+   --  overriding
+   --  procedure rid_Client (Self : in out Item;   other_Client_Name     : in String;
+   --                                              other_Client_Observer : in lace.remote.Observer.view)
+   --  is
+   --     use lace.Event.utility,
+   --         ada.Text_IO;
+   --  begin
+   --     Self.deregister (other_Client_Observer,
+   --                      to_Kind (chat.Client.Message'Tag));
+   --
+   --     Self.rid (the_Response'unchecked_Access,
+   --               to_Kind (chat.Client.Message'Tag),
+   --               other_Client_Name);
+   --
+   --     put_Line (other_Client_Name & " leaves.");
+   --  end rid_Client;
+
+
 
 
    overriding
@@ -242,7 +324,8 @@ is
                   if Self'unchecked_Access /= Peers (i)
                   then
                      begin
-                        Peers (i).deregister_Client (Self'unchecked_Access);   -- Deregister our client with every other client.
+                        Peers (i).deregister_Client ( Self'unchecked_Access,   -- Deregister our client with every other client.
+                                                     +Self.Name);
                      exception
                         when system.RPC.Communication_Error =>
                            null;   -- Peer is dead, so do nothing.

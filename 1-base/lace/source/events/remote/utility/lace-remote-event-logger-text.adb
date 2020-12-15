@@ -57,7 +57,8 @@ is
       begin
          return From.Name;
       exception
-         when system.RPC.Communication_Error =>
+         when system.RPC.Communication_Error
+            | Storage_Error =>
             return "dead Observer (" & long_Integer'Image (to_Integer (From)) & ")";
       end From_Name;
 

@@ -186,7 +186,8 @@ is
                begin
                   Each.View.ping;
                exception
-                  when system.RPC.Communication_Error =>
+                  when system.RPC.Communication_Error
+                     | Storage_Error =>
                      put_Line (+Each.Name & " has died.");
                      deregister (Each.View);
                      dead_Count        := dead_Count + 1;
@@ -202,8 +203,8 @@ is
                   for i in 1 .. dead_Count
                   loop
                      put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
-                     Each.deregister_Client (Dead (i).View);
-                     put_Line ("Ridded " & (+Dead (i).Name) & " from " & Each.Name);
+                     Each.deregister_Client ( Dead (i).as_Observer,
+                                             +Dead (i).Name);
                   end loop;
                end loop;
             end;
