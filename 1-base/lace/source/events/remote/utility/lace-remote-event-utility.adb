@@ -1,6 +1,7 @@
 with
      lace.remote.Event.Logger.text,
-     ada.unchecked_Deallocation;
+     ada.unchecked_Deallocation,
+     system.RPC;
 
 package body lace.remote.Event.utility
 is
@@ -25,22 +26,33 @@ is
    -- *** ToDo => The following may be useful as a non-remote utility. ***
    --
    --
-   --  procedure disconnect (the_Observer  : in lace.remote.Observer.view;
-   --                        from_Subject  : in lace.remote.Subject .view;
-   --                        for_Response  : in lace.remote.Response.view;
-   --                        to_Event_Kind : in lace.event.Kind)
-   --  is
-   --  begin
-   --     the_Observer.rid (for_Response,
-   --                       to_Event_Kind,
-   --                       from_Subject.Name);
-   --
-   --     from_Subject.deregister (the_Observer,
-   --                              to_Event_Kind);
-   --  end disconnect;
+   procedure disconnect (the_Observer  : in lace.remote.Observer.view;
+                         from_Subject  : in lace.remote.Subject .view;
+                         for_Response  : in lace.remote.Response.view;
+                         to_Event_Kind : in lace.event.Kind;
+                         Subject_Name  : in String)
+   is
+   begin
+      begin
+         the_Observer.rid (for_Response,
+                           to_Event_Kind,
+                           Subject_Name);
+      exception
+         when Storage_Error =>
+            null;   -- The observer is dead.
+      end;
+
+      begin
+         from_Subject.deregister (the_Observer,
+                                  to_Event_Kind);
+      exception
+         when system.RPC.Communication_Error =>
+            null;   -- The subject is dead.
+      end;
+   end disconnect;
 
 
-   procedure disconnect (Observer_1    : in lace.remote.Observer.view;
+   procedure disconnect_1 (Observer_1    : in lace.remote.Observer.view;
                          Subject_1     : in lace.remote.Subject .view;
                          Observer_2    : in lace.remote.Observer.view;
                          for_Response  : in lace.remote.Response.view;
@@ -53,7 +65,7 @@ is
 
       Subject_1.deregister (Observer_2,
                             to_Event_Kind);
-   end disconnect;
+   end disconnect_1;
 
 
    -- Logging

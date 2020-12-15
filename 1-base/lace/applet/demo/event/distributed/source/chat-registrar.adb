@@ -3,6 +3,7 @@ with
 
      system.RPC,
 
+     ada.Exceptions,
      ada.Strings.unbounded,
      ada.Text_IO;
 
@@ -49,7 +50,7 @@ is
    protected safe_Clients
    is
       procedure add (the_Client : in Client.view);
-      procedure Rid (the_Client : in Client.view);
+      procedure rid (the_Client : in Client.view);
 
       function  all_client_Info return client_Info_array;
    private
@@ -156,6 +157,7 @@ is
 
    task body check_Client_lives
    is
+      use ada.Text_IO;
       Done : Boolean := False;
    begin
       loop
@@ -165,13 +167,12 @@ is
                Done := True;
             end halt;
          or
-            delay 60.0;
+            delay 15.0;
          end select;
 
          exit when Done;
 
          declare
-            use ada.Text_IO;
             all_Info    : constant client_Info_array := safe_Clients.all_client_Info;
 
             Dead        : client_Info_array (all_Info'Range);
@@ -202,11 +203,19 @@ is
                   loop
                      put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
                      Each.deregister_Client (Dead (i).View);
+                     put_Line ("Ridded " & (+Dead (i).Name) & " from " & Each.Name);
                   end loop;
                end loop;
             end;
          end;
       end loop;
+
+   exception
+      when E : others =>
+         new_Line;
+         put_Line ("Error in check_Client_lives task.");
+         new_Line;
+         put_Line (ada.Exceptions.exception_Information (E));
    end check_Client_lives;
 
 

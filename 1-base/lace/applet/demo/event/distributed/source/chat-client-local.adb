@@ -94,11 +94,17 @@ is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      lace.remote.Event.utility.disconnect (Subject_1     => Self.as_Subject,
-                                            Observer_1    => Self.as_Observer,
-                                            Observer_2    => other_Client.as_Observer,
+      lace.remote.Event.utility.disconnect (the_Observer  => Self.as_Observer,
+                                            from_Subject  => other_Client.as_Subject,
                                             for_Response  => the_Response'Access,
-                                            to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+                                            to_Event_Kind => to_Kind (chat.Client.Message'Tag),
+                                            Subject_Name  => other_Client.as_Subject.Name);
+
+      --  lace.remote.Event.utility.disconnect_1 (Subject_1     => Self.as_Subject,
+      --                                        Observer_1    => Self.as_Observer,
+      --                                        Observer_2    => other_Client.as_Observer,
+      --                                        for_Response  => the_Response'Access,
+      --                                        to_Event_Kind => to_Kind (chat.Client.Message'Tag));
       put_Line (other_Client.Name & " leaves.");
    end deregister_Client;
 
