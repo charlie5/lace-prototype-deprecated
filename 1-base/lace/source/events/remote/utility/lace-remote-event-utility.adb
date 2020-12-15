@@ -52,22 +52,6 @@ is
    end disconnect;
 
 
-   procedure disconnect_1 (Observer_1    : in lace.remote.Observer.view;
-                         Subject_1     : in lace.remote.Subject .view;
-                         Observer_2    : in lace.remote.Observer.view;
-                         for_Response  : in lace.remote.Response.view;
-                         to_Event_Kind : in lace.Event.Kind)
-   is
-   begin
-      Observer_1.rid (for_Response,
-                      to_Event_Kind,
-                      Observer_2.Name);
-
-      Subject_1.deregister (Observer_2,
-                            to_Event_Kind);
-   end disconnect_1;
-
-
    -- Logging
    --
 
