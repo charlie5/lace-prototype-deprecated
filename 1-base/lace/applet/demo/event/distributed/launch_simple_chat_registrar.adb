@@ -1,5 +1,5 @@
 with
-     chat.Registrar,   -- This 'pulls in' the registrar singleton.
+     chat.Registrar,
      ada.Exceptions,
      ada.Characters.latin_1,
      ada.Text_IO;
