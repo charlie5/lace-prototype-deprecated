@@ -7,6 +7,7 @@ with
      lace.Event.utility,
 
      system.RPC,
+     ada.Exceptions,
      ada.Text_IO;
 
 package body chat.Client.local
@@ -151,6 +152,7 @@ is
 
    task body check_Registrar_lives
    is
+      use ada.Text_IO;
       Done : Boolean := False;
       Self : chat.Client.local.view;
    begin
@@ -171,8 +173,6 @@ is
 
          exit when Done;
 
-         declare
-            use ada.Text_IO;
          begin
             chat.Registrar.ping;
          exception
@@ -181,6 +181,13 @@ is
                Self.Registrar_is_dead := True;
          end;
       end loop;
+
+   exception
+      when E : others =>
+         new_Line;
+         put_Line ("Error in check_Registrar_lives task.");
+         new_Line;
+         put_Line (ada.Exceptions.exception_Information (E));
    end check_Registrar_lives;
 
 
