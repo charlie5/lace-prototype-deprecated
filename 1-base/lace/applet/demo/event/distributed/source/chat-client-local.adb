@@ -303,7 +303,7 @@ is
       pragma Unreferenced (Msg, Line);
       use ada.Text_IO;
    begin
-      put_Line ("The Registar is not running.");
+      put_Line ("The Registrar is not running.");
       put_Line ("Press Ctrl-C to quit.");
       check_Registrar_lives.halt;
       delay Duration'Last;
