@@ -1,0 +1,18 @@
+Edit /etc/hosts to force usage of 127.0.0.1 by po_cos_naming.
+
+For instance, given ...
+
+/etc/hostname
+foo
+
+/etc/hosts
+       127.0.0.1       localhost
+       192.168.1.10    foo.mydomain.org       foo
+
+... change to ...
+
+/etc/hosts
+       127.0.0.1       localhost
+#       192.168.1.10    foo.mydomain.org       foo
+
+
