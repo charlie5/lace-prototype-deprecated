@@ -124,8 +124,13 @@ is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      Self.deregister (other_Client_as_Observer,
-                       to_Kind (chat.Client.Message'Tag));
+      begin
+         Self.deregister (other_Client_as_Observer,
+                          to_Kind (chat.Client.Message'Tag));
+      exception
+         when constraint_Error =>
+            raise unknown_Client with "Other client not known. Deregister is not required.";
+      end;
 
       Self.rid (the_Response'unchecked_Access,
                 to_Kind (chat.Client.Message'Tag),

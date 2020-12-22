@@ -202,9 +202,15 @@ is
                loop
                   for i in 1 .. dead_Count
                   loop
-                     put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
-                     Each.deregister_Client ( Dead (i).as_Observer,
-                                             +Dead (i).Name);
+                     begin
+                        put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
+                        Each.deregister_Client ( Dead (i).as_Observer,
+                                                 +Dead (i).Name);
+                        --  Each.deregister_Client (Dead (i).View);
+                     exception
+                        when chat.Client.unknown_Client =>
+                           put_Line ("Deregister of " & (+Dead (i).Name) & " from " & Each.Name & " is not needed.");
+                     end;
                   end loop;
                end loop;
             end;

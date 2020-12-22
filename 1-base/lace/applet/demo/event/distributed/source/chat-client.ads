@@ -27,6 +27,8 @@ is
 
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
                                                       other_Client_Name        : in String) is abstract;
+   --
+   -- Raises unknown_Client exception when the other_Client is unknown.
 
 
 
@@ -38,5 +40,7 @@ is
       record
          Text : String (1..Length);
       end record;
+
+   unknown_Client : exception;
 
 end chat.Client;
