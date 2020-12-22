@@ -86,7 +86,8 @@ is
                                         the_Event);
             end if;
          exception
-            when system.RPC.Communication_Error =>
+            when system.RPC.Communication_Error
+               | Storage_Error =>
                if subject.Logger /= null
                then
                   subject.Logger.log_Emit (Subject.view (Self),
@@ -119,7 +120,8 @@ is
                                         the_Event);
             end if;
          exception
-            when system.RPC.Communication_Error =>
+            when system.RPC.Communication_Error
+               | Storage_Error =>
                bad_Count                 := bad_Count + 1;
                bad_Observers (bad_Count) := my_Observers (Each);
          end;

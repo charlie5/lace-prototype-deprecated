@@ -227,7 +227,8 @@ is
                   Peers (i).register_Client (Self'unchecked_Access);    -- Register our client with all other clients.
                   Self.register_Client (Peers (i));                     -- Register all other clients with our client.
                exception
-                  when system.RPC.communication_Error =>
+                  when system.RPC.Communication_Error
+                     | Storage_Error =>
                      null;     -- Peer (i) has died, so ignore it and do nothing.
                end;
             end if;
@@ -282,7 +283,8 @@ is
                         Peers (i).deregister_Client ( Self'unchecked_Access,   -- Deregister our client with every other client.
                                                      +Self.Name);
                      exception
-                        when system.RPC.Communication_Error =>
+                        when system.RPC.Communication_Error
+                           | Storage_Error =>
                            null;   -- Peer is dead, so do nothing.
                      end;
                   end if;

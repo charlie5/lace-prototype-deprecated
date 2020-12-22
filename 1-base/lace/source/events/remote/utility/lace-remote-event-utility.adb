@@ -46,7 +46,8 @@ is
          from_Subject.deregister (the_Observer,
                                   to_Event_Kind);
       exception
-         when system.RPC.Communication_Error =>
+            when system.RPC.Communication_Error
+               | Storage_Error =>
             null;   -- The subject is dead.
       end;
    end disconnect;
