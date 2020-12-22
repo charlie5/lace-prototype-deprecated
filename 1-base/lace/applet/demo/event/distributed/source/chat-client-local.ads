@@ -45,6 +45,7 @@ is
 
    --  overriding
    --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view);
+
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
                                                       other_Client_Name        : in String);
