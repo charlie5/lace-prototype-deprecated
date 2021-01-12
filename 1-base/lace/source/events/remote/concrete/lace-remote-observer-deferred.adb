@@ -3,18 +3,18 @@ is
 
    package body Forge
    is
-      function to_Observer (Name : in String) return Item
+      function to_Observer (Name : in observer_Name) return Item
       is
       begin
-         return Self : constant Item := (my_Deferred.item
-                                         with name => new String'(Name))
+         return Self : constant Item := (Deferred.item
+                                         with name => new observer_Name'(Name))
          do
             null;
          end return;
       end to_Observer;
 
 
-      function new_Observer (Name : in String) return View
+      function new_Observer (Name : in observer_Name) return View
       is
          Self : constant View := new Item'(to_Observer (Name));
       begin
@@ -24,7 +24,7 @@ is
 
 
    overriding
-   function Name (Self : in Item) return String
+   function Name (Self : in Item) return observer_Name
    is
    begin
       return Self.Name.all;

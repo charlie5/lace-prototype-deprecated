@@ -5,17 +5,17 @@ package body lace.remote.Subject.local
 is
    package body Forge
    is
-      function to_Subject (Name : in String) return Item
+      function to_Subject (Name : in subject_Name) return Item
       is
       begin
          return Self : Item
          do
-            Self.Name := new String'(Name);
+            Self.Name := new subject_Name'(Name);
          end return;
       end to_Subject;
 
 
-      function new_Subject (Name : in String) return View
+      function new_Subject (Name : in subject_Name) return View
       is
          Self : constant View := new Item'(to_Subject (Name));
       begin
@@ -27,7 +27,7 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-      procedure free is new ada.unchecked_Deallocation (String, String_view);
+      procedure free is new ada.unchecked_Deallocation (subject_Name, Name_view);
    begin
       Subject.destroy (Subject.item (Self));   -- Destroy base class.
       free (Self.Name);
@@ -35,7 +35,7 @@ is
 
 
    overriding
-   function Name (Self : in Item) return String
+   function Name (Self : in Item) return subject_Name
    is
    begin
       return Self.Name.all;

@@ -1,6 +1,6 @@
 with
      lace.remote.event.Logger,
-     lace.Event_conversions;
+     lace.Event.utility;
 with
      ada.unchecked_Deallocation;
 
@@ -65,12 +65,12 @@ is
          loop
             declare
                use event_response_Maps,
-                   Event_conversions,
+                   lace.Event.utility,
                    ada.Containers;
                use type Observer.view;
 
                the_Event : constant lace.Event.item'Class      := Element (Cursor);
-               Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
+               Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
             begin
                if has_Element (Response)
                then

@@ -4,4 +4,8 @@ package lace.Remote
 --
 is
    pragma Pure;
+
+   subtype subject_Name  is String;
+   subtype observer_Name is String;
+
 end lace.Remote;

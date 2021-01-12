@@ -15,26 +15,26 @@ is
 
    package Forge
    is
-      function  to_Subject (Name : in String) return Item;
-      function new_Subject (Name : in String) return View;
+      function  to_Subject (Name : in subject_Name) return Item;
+      function new_Subject (Name : in subject_Name) return View;
    end Forge;
 
    procedure destroy (Self : in out Item);
 
    overriding
-   function Name (Self : in Item) return String;
+   function Name (Self : in Item) return subject_Name;
 
 
 
 private
 
-   type String_view is access all String;
+   type Name_view is access all subject_Name;
 
    package Subject is new make_Subject (Any.limited_item);
 
    type Item is limited new Subject.item with
       record
-         Name : String_view;
+         Name : Name_view;
       end record;
 
 end lace.remote.Subject.local;

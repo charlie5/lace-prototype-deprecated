@@ -15,13 +15,13 @@ is
 
    package Forge
    is
-      function to_Observer  (Name : in String) return Item;
-      function new_Observer (Name : in String) return View;
+      function to_Observer  (Name : in observer_Name) return Item;
+      function new_Observer (Name : in observer_Name) return View;
    end Forge;
 
 
    overriding
-   function Name (Self : in Item) return String;
+   function Name (Self : in Item) return observer_Name;
 
 
 
@@ -32,7 +32,7 @@ private
 
    type Item is limited new Deferred.item with
       record
-         Name : access String;
+         Name : access observer_Name;
       end record;
 
 end lace.remote.Observer.deferred;

@@ -27,7 +27,7 @@ is
    -- Attributes
    --
 
-   function Name (Self : in Item) return String is abstract;
+   function Name (Self : in Item) return subject_Name is abstract;
 
 
    -- Observers
