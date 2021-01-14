@@ -12,25 +12,24 @@ is
    use ada.Strings.unbounded;
    use type Client.view;
 
-   procedure Last_Chance_Handler (Msg  : in system.Address;
+   procedure last_chance_Handler (Msg  : in system.Address;
                                   Line : in Integer);
 
-   pragma Export (C, Last_Chance_Handler,
+   pragma Export (C, last_chance_Handler,
                   "__gnat_last_chance_handler");
 
-   procedure Last_Chance_Handler (Msg  : in System.Address;
+   procedure last_chance_Handler (Msg  : in System.Address;
                                   Line : in Integer)
    is
       pragma Unreferenced (Msg, Line);
       use ada.Text_IO;
    begin
       put_Line ("Unable to start the Registrar.");
-      put_Line ("Please ensure the po_cos_naming server is running.");
+      put_Line ("Please ensure the 'po_cos_naming' server is running.");
       put_Line ("Press Ctrl-C to quit.");
 
       delay Duration'Last;
-   end Last_Chance_Handler;
-
+   end last_chance_Handler;
 
 
    type client_Info is
@@ -47,6 +46,7 @@ is
 
    -- Protection against race conditions.
    --
+
    protected safe_Clients
    is
       procedure add (the_Client : in Client.view);
@@ -54,7 +54,7 @@ is
 
       function  all_client_Info return client_Info_array;
    private
-      Clients : client_Info_array (1..max_Clients);
+      Clients : client_Info_array (1 .. max_Clients);
    end safe_Clients;
 
 
@@ -88,7 +88,7 @@ is
             end if;
          end loop;
 
-         raise Program_Error with "Unknown Client";
+         raise Program_Error with "Unknown client";
       end rid;
 
 
@@ -186,10 +186,11 @@ is
                begin
                   Each.View.ping;
                exception
-                  when system.RPC.Communication_Error
-                     | Storage_Error =>
+                  when system.RPC.communication_Error
+                     | storage_Error =>
                      put_Line (+Each.Name & " has died.");
                      deregister (Each.View);
+
                      dead_Count        := dead_Count + 1;
                      Dead (dead_Count) := Each;
                end;
@@ -205,8 +206,7 @@ is
                      begin
                         put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
                         Each.deregister_Client ( Dead (i).as_Observer,
-                                                 +Dead (i).Name);
-                        --  Each.deregister_Client (Dead (i).View);
+                                                +Dead (i).Name);
                      exception
                         when chat.Client.unknown_Client =>
                            put_Line ("Deregister of " & (+Dead (i).Name) & " from " & Each.Name & " is not needed.");
@@ -235,7 +235,7 @@ is
          begin
             Each.Registrar_has_shutdown;
          exception
-            when system.RPC.Communication_Error =>
+            when system.RPC.communication_Error =>
                null;   -- Client has died. No action needed since we are shutting down.
          end;
       end loop;

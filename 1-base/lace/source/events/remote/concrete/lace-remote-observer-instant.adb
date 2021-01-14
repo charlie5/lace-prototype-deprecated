@@ -6,7 +6,7 @@ is
       is
          Self : constant View := new Item;
       begin
-         Self.Name := new observer_Name'(Name);
+         Self.Name := new observer_Name' (Name);
          return Self;
       end new_Observer;
 

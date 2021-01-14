@@ -25,7 +25,6 @@ is
    function Name (Self : in Item) return subject_Name;
 
 
-
 private
 
    type Name_view is access all subject_Name;

@@ -3,7 +3,7 @@ with
      lace.remote.Observer,
      lace.remote.Subject,
      lace.remote.Response,
-     lace.remote.Event.Logger;
+     lace.remote.event.Logger;
 
 package lace.remote.Event.utility
 --
@@ -16,13 +16,13 @@ is
    procedure connect    (the_Observer  : in lace.remote.Observer.view;
                          to_Subject    : in lace.remote.Subject .view;
                          with_Response : in lace.remote.Response.view;
-                         to_Event_Kind : in lace.Event.Kind);
+                         to_Event_Kind : in lace.event.Kind);
 
    procedure disconnect (the_Observer  : in lace.remote.Observer.view;
                          from_Subject  : in lace.remote.Subject .view;
                          for_Response  : in lace.remote.Response.view;
                          to_Event_Kind : in lace.event.Kind;
-                         Subject_Name  : in String);
+                         subject_Name  : in String);
    -- Logging
    --
 
@@ -31,7 +31,7 @@ is
    --  Requests activation of the default text file logger.
 
 
-   function Logger return access lace.remote.Event.Logger.item'Class;
+   function Logger return access lace.remote.event.Logger.item'Class;
    --
    --  Returns the Logger currently in use.
    --  Returns null, if no Logger is in use.

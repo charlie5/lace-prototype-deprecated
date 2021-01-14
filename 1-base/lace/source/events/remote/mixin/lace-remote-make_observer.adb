@@ -43,6 +43,7 @@ is
       the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
 
       my_Name       : constant String := Observer.item'Class (Self.all).Name;
+
    begin
       if has_Element (the_Response)
       then
@@ -58,7 +59,7 @@ is
 
       elsif Self.relay_Target /= null
       then
-         --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- tbd: Re-enable event relays.
+         --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable event relays.
 
          if observer.Logger /= null
          then

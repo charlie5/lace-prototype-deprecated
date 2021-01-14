@@ -15,14 +15,13 @@ is
 
    package Forge
    is
-      function to_Observer  (Name : in observer_Name) return Item;
+      function  to_Observer (Name : in observer_Name) return Item;
       function new_Observer (Name : in observer_Name) return View;
    end Forge;
 
 
    overriding
    function Name (Self : in Item) return observer_Name;
-
 
 
 private

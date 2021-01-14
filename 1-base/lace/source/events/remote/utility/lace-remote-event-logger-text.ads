@@ -8,7 +8,7 @@ with
      ada.Text_IO,
      ada.containers.indefinite_hashed_Sets;
 
-package lace.remote.Event.Logger.text
+package lace.remote.event.Logger.text
 --
 --  Provides a logger which logs to a text file.
 --
@@ -56,12 +56,10 @@ is
    procedure log_Emit     (Self : in out Item;   From        : in lace.remote.Subject .view;
                                                  To          : in lace.remote.Observer.view;
                                                  the_Event   : in lace.Event.item'Class);
-
    overriding
    procedure log_Relay    (Self : in out Item;   From        : in lace.remote.Observer.view;
                                                  To          : in lace.remote.Observer.view;
                                                  the_Event   : in lace.Event.item'Class);
-
    overriding
    procedure log_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
                                                  of_Observer  : in lace.remote.Observer.view;
@@ -75,15 +73,14 @@ is
    -- Log filtering
    --
    overriding
-   procedure ignore (Self : in out Item;   Kind : in lace.Event.Kind);
-
+   procedure ignore (Self : in out Item;   Kind : in lace.event.Kind);
 
 
 private
 
    use type lace.event.Kind;
 
-   package event_kind_Sets is new ada.Containers.indefinite_hashed_Sets (lace.event.Kind,
+   package event_kind_Sets is new ada.containers.indefinite_hashed_Sets (lace.event.Kind,
                                                                          lace.event.Hash,
                                                                          "=");
    subtype event_kind_Set  is event_kind_Sets.Set;
@@ -95,4 +92,4 @@ private
          Ignored : event_kind_Set;
       end record;
 
-end lace.remote.Event.Logger.text;
+end lace.remote.event.Logger.text;

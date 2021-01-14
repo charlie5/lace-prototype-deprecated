@@ -57,7 +57,7 @@ is
       --
       procedure actuate (the_Responses     : in event_response_Map;
                          the_Events        : in event_Vector;
-                         from_Subject_Name : in String)
+                         from_subject_Name : in String)
       is
          Cursor : event_Vectors.Cursor := the_Events.First;
       begin
@@ -81,12 +81,12 @@ is
                      observer.Logger.log_Response (Element (Response),
                                                    Observer.view (Self),
                                                    the_Event,
-                                                   from_Subject_Name);
+                                                   from_subject_Name);
                   end if;
 
                elsif Self.relay_Target /= null
                then
-                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- tbd: Re-enable relayed events.
+                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
 
                   if observer.Logger /= null
                   then
@@ -104,7 +104,7 @@ is
                      observer.Logger.log ("            Count of responses =>"
                                           & Count_type'Image (the_Responses.Length));
                   else
-                     raise Program_Error with "Observer " & my_Name & " has no response";
+                     raise program_Error with "Observer " & my_Name & " has no response";
                   end if;
                end if;
             end;

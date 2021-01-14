@@ -10,14 +10,14 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new subject_Name'(Name);
+            Self.Name := new subject_Name' (Name);
          end return;
       end to_Subject;
 
 
       function new_Subject (Name : in subject_Name) return View
       is
-         Self : constant View := new Item'(to_Subject (Name));
+         Self : constant View := new Item' (to_Subject (Name));
       begin
          return Self;
       end new_Subject;

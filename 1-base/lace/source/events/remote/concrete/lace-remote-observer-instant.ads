@@ -23,7 +23,6 @@ is
    function Name (Self : in Item) return observer_Name;
 
 
-
 private
 
    package Observer is new lace.remote.make_Observer (Any.limited_item);

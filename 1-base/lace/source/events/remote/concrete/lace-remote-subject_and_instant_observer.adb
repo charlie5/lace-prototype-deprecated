@@ -8,7 +8,7 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new String'(Name);
+            Self.Name := new String' (Name);
          end return;
       end to_Subject_and_Observer;
 

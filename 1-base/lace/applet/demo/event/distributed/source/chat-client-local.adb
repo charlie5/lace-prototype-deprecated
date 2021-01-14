@@ -12,6 +12,11 @@ with
 
 package body chat.Client.local
 is
+   -- Utility
+   --
+   function "+" (From : in unbounded_String) return String
+                 renames to_String;
+
    -- Responses
    --
    type Show is new lace.remote.Response.item with null record;
@@ -45,9 +50,6 @@ is
 
    -- Attributes
    --
-   function "+" (From : in unbounded_String) return String
-                 renames to_String;
-
    overriding
    function Name (Self : in Item) return String
    is
@@ -89,42 +91,6 @@ is
    end register_Client;
 
 
-   --  overriding
-   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
-   --  is
-   --     use lace.Event.utility,
-   --         ada.Text_IO;
-   --  begin
-   --     lace.remote.Event.utility.disconnect (the_Observer  => Self.as_Observer,
-   --                                           from_Subject  => other_Client.as_Subject,
-   --                                           for_Response  => the_Response'Access,
-   --                                           to_Event_Kind => to_Kind (chat.Client.Message'Tag),
-   --                                           Subject_Name  => other_Client.Name);
-   --     put_Line (other_Client.Name & " leaves.");
-   --
-   --  exception
-   --     when constraint_Error =>
-   --        raise unknown_Client with "Other client not known. Deregister is not required.";
-   --  end deregister_Client;
-
-
-   --  overriding
-   --  procedure register_Client (Self : in out Item;   other_Client : in Client.view)
-   --  is
-   --     use lace.Event.utility,
-   --         ada.Text_IO;
-   --  begin
-   --     Self.register (other_Client.as_Observer,
-   --                    to_Kind (chat.Client.Message'Tag));
-   --
-   --     Self.add (the_Response'Access,
-   --               to_Kind (chat.Client.Message'Tag),
-   --               other_Client.Name);
-   --
-   --     put_Line (other_Client.Name & " is here.");
-   --  end register_Client;
-
-
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
                                                       other_Client_Name        : in String)
@@ -148,34 +114,14 @@ is
    end deregister_Client;
 
 
-
-   --  overriding
-   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view)
-   --  is
-   --     use lace.Event.utility,
-   --         ada.Text_IO;
-   --  begin
-   --     Self.deregister (other_Client.as_Observer,
-   --                      to_Kind (chat.Client.Message'Tag));
-   --
-   --     Self.rid (the_Response'unchecked_Access,
-   --               to_Kind (chat.Client.Message'Tag),
-   --               other_Client.Name);
-   --
-   --     put_Line (other_Client.Name & " leaves.");
-   --  end deregister_Client;
-
-
-
-
    overriding
    procedure Registrar_has_shutdown  (Self : in out Item)
    is
+      use ada.Text_IO;
    begin
-      ada.Text_IO.put_Line ("The Registrar has shutdown. Press <Enter> to exit.");
+      put_Line ("The Registrar has shutdown. Press <Enter> to exit.");
       Self.Registrar_has_shutdown := True;
    end Registrar_has_shutdown;
-
 
 
    task check_Registrar_lives
@@ -210,7 +156,7 @@ is
          begin
             chat.Registrar.ping;
          exception
-            when system.RPC.Communication_Error =>
+            when system.RPC.communication_Error =>
                put_Line ("The Registrar has died. Press <Enter> to exit.");
                Self.Registrar_is_dead := True;
          end;
@@ -221,9 +167,8 @@ is
          new_Line;
          put_Line ("Error in check_Registrar_lives task.");
          new_Line;
-         put_Line (ada.Exceptions.exception_Information (E));
+         put_Line (ada.exceptions.exception_Information (E));
    end check_Registrar_lives;
-
 
 
    procedure start (Self : in out chat.Client.local.item)
@@ -241,7 +186,7 @@ is
             return;
       end;
 
-      lace.remote.event.Utility.use_text_Logger ("events");
+      lace.remote.Event.Utility.use_text_Logger ("events");
 
       check_Registrar_lives.start (Self'unchecked_Access);
 
@@ -254,10 +199,10 @@ is
             then
                begin
                   Peers (i).register_Client (Self'unchecked_Access);    -- Register our client with all other clients.
-                  Self.register_Client (Peers (i));                     -- Register all other clients with our client.
+                  Self     .register_Client (Peers (i));                -- Register all other clients with our client.
                exception
-                  when system.RPC.Communication_Error
-                     | Storage_Error =>
+                  when system.RPC.communication_Error
+                     | storage_Error =>
                      null;     -- Peer (i) has died, so ignore it and do nothing.
                end;
             end if;
@@ -270,7 +215,7 @@ is
          declare
             procedure broadcast (the_Text : in String)
             is
-               the_Message : constant chat.client.Message := (Length (Self.Name) + 2 + the_Text'Length,
+               the_Message : constant chat.Client.Message := (Length (Self.Name) + 2 + the_Text'Length,
                                                               +Self.Name & ": " & the_Text);
             begin
                Self.emit (the_Message);
@@ -295,7 +240,7 @@ is
          begin
             chat.Registrar.deregister (Self'unchecked_Access);
          exception
-            when system.RPC.Communication_Error =>
+            when system.RPC.communication_Error =>
                Self.Registrar_is_dead := True;
          end;
 
@@ -311,10 +256,9 @@ is
                      begin
                         Peers (i).deregister_Client ( Self'unchecked_Access,   -- Deregister our client with every other client.
                                                      +Self.Name);
-                        --  Peers (i).deregister_Client ( Self'unchecked_Access);   -- Deregister our client with every other client.
                      exception
-                        when system.RPC.Communication_Error
-                           | Storage_Error =>
+                        when system.RPC.communication_Error
+                           | storage_Error =>
                            null;   -- Peer is dead, so do nothing.
                      end;
                   end if;
@@ -324,17 +268,17 @@ is
       end if;
 
       check_Registrar_lives.halt;
-      lace.remote.event.Utility.close;
+      lace.remote.Event.Utility.close;
    end start;
 
 
-   procedure Last_Chance_Handler (Msg  : in system.Address;
+   procedure last_chance_Handler (Msg  : in system.Address;
                                   Line : in Integer);
 
-   pragma Export (C, Last_Chance_Handler,
+   pragma Export (C, last_chance_Handler,
                   "__gnat_last_chance_handler");
 
-   procedure Last_Chance_Handler (Msg  : in System.Address;
+   procedure last_chance_Handler (Msg  : in System.Address;
                                   Line : in Integer)
    is
       pragma Unreferenced (Msg, Line);
@@ -344,7 +288,7 @@ is
       put_Line ("Press Ctrl-C to quit.");
       check_Registrar_lives.halt;
       delay Duration'Last;
-   end Last_Chance_Handler;
+   end last_chance_Handler;
 
 
 end chat.Client.local;

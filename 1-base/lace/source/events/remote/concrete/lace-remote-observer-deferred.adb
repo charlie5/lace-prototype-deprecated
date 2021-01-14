@@ -16,7 +16,7 @@ is
 
       function new_Observer (Name : in observer_Name) return View
       is
-         Self : constant View := new Item'(to_Observer (Name));
+         Self : constant View := new Item' (to_Observer (Name));
       begin
          return Self;
       end new_Observer;

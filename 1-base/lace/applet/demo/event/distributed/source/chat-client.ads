@@ -23,13 +23,10 @@ is
 
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view) is abstract;
 
-   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view) is abstract;
-
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
                                                       other_Client_Name        : in String) is abstract;
    --
    -- Raises unknown_Client exception when the other_Client is unknown.
-
 
 
    function  as_Observer (Self : access Item) return lace.remote.Observer.view is abstract;

@@ -52,7 +52,6 @@ is
    procedure respond (Self : access Item);
 
 
-
 private
 
    -- event response Maps

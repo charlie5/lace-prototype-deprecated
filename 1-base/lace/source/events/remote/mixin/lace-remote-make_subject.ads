@@ -47,11 +47,10 @@ is
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in event.Kind);
    overriding
-   procedure emit       (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event);
-
+   function  emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
+                   return subject.Observer_views;
    overriding
-   function  emit       (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event)
-                         return subject.Observer_views;
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event);
 
 
 private
@@ -60,14 +59,14 @@ private
    --
    use type Observer.view;
 
-   package event_Observer_Vectors     is new ada.containers.Vectors (Positive,  Observer.view);
+   package event_Observer_Vectors     is new ada.containers.Vectors (Positive, Observer.view);
    subtype event_Observer_Vector      is event_Observer_Vectors.Vector;
    type    event_Observer_Vector_view is access all event_Observer_Vector;
 
 
    -- event kind Maps of event observers
    --
-   function to_Hash is new ada.unchecked_Conversion (event.Kind,  ada.containers.Hash_type);
+   function to_Hash is new ada.unchecked_Conversion (event.Kind, ada.containers.Hash_type);
    use type event.Kind;
 
    package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,

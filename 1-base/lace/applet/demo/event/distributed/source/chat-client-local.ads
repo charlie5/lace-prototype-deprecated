@@ -10,6 +10,7 @@ with
 package chat.Client.local
 --
 -- Provides a local client.
+-- Names must be unique.
 --
 is
    type Item is limited new lace.Any.limited_item
@@ -21,7 +22,6 @@ is
    -- Forge
    --
    function to_Client (Name : in String) return Item;
-   --  function new_Client (Name : in String) return View;
 
 
    -- Attributes
@@ -43,13 +43,9 @@ is
    overriding
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view);
 
-   --  overriding
-   --  procedure deregister_Client (Self : in out Item;   other_Client : in Client.view);
-
    overriding
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
                                                       other_Client_Name        : in String);
-
    overriding
    procedure Registrar_has_shutdown (Self : in out Item);
 

@@ -10,7 +10,7 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new String'(Name);
+            Self.Name := new String' (Name);
          end return;
       end to_Subject_and_Observer;
 
@@ -18,7 +18,7 @@ is
       function new_Subject_and_Observer (Name : in String) return View
       is
       begin
-         return new Item'(to_Subject_and_Observer (Name));
+         return new Item' (to_Subject_and_Observer (Name));
       end new_Subject_and_Observer;
 
    end Forge;

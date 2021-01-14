@@ -63,7 +63,7 @@ is
    -- Log filtering.
    --
 
-   procedure ignore (Self : in out Item;   Kind : in lace.Event.Kind) is abstract;
+   procedure ignore (Self : in out Item;   Kind : in lace.event.Kind) is abstract;
 
 
 end lace.remote.Event.Logger;

@@ -1,5 +1,5 @@
 with
-     lace.remote.Event.Logger.text,
+     lace.remote.event.Logger.text,
      ada.unchecked_Deallocation,
      system.RPC;
 
@@ -11,7 +11,7 @@ is
    procedure connect (the_Observer  : in lace.remote.Observer.view;
                       to_Subject    : in lace.remote.Subject .view;
                       with_Response : in lace.remote.Response.view;
-                      to_Event_Kind : in lace.Event.Kind)
+                      to_Event_Kind : in lace.event.Kind)
    is
    begin
       the_Observer.add (with_Response,
@@ -56,20 +56,20 @@ is
    -- Logging
    --
 
-   the_Logger : lace.remote.Event.logger.text.view;
+   the_Logger : lace.remote.event.Logger.text.view;
 
 
    procedure use_text_Logger (log_Filename : in String)
    is
    begin
-      the_Logger := new Event.Logger.text.item'(Event.Logger.text.to_Logger (log_Filename));
+      the_Logger := new event.Logger.text.item' (event.Logger.text.to_Logger (log_Filename));
 
       lace.remote.Subject .Logger_is (the_Logger);
       lace.remote.Observer.Logger_is (the_Logger);
    end use_text_Logger;
 
 
-   function Logger return access lace.remote.Event.Logger.item'Class
+   function Logger return access lace.remote.event.Logger.item'Class
    is
    begin
       return the_Logger;
@@ -81,13 +81,13 @@ is
 
    procedure close
    is
-      use type lace.remote.Event.Logger.text.view;
+      use type lace.remote.event.Logger.text.view;
    begin
       if the_Logger /= null
       then
          declare
-            procedure deallocate is new ada.unchecked_Deallocation (Event.Logger.text.item'Class,
-                                                                    Event.Logger.text.view);
+            procedure deallocate is new ada.unchecked_Deallocation (event.Logger.text.item'Class,
+                                                                    event.Logger.text.view);
          begin
             the_Logger.destruct;
             deallocate (the_Logger);

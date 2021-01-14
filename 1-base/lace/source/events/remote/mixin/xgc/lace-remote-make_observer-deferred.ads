@@ -20,7 +20,7 @@ is
    type Item is abstract limited new T with private;
    type View is access all Item'Class;
 
-   --   pragma Asynchronous (View);        -- tbd: Needed for lossy events.
+   --   pragma Asynchronous (View);        -- todo: Needed for lossy events.
 
    overriding
    procedure destroy (Self : in out Item);
@@ -34,7 +34,6 @@ is
                                             from_Subject : in String);
    overriding
    procedure respond (Self : access Item);
-
 
 
 private
@@ -64,7 +63,6 @@ private
 
    -- subject Maps of safe events
    --
-
    use type event_Vector;
    package subject_Maps_of_safe_events
    is new ada.containers.indefinite_hashed_Maps (key_type        => String,

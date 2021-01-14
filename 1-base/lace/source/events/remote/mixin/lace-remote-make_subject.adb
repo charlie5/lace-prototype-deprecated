@@ -1,5 +1,5 @@
 with
-     lace.remote.event.Logger,
+     lace.remote.Event.Logger,
      lace.Event.utility,
      system.RPC,
      ada.unchecked_Deallocation;
@@ -86,8 +86,8 @@ is
                                         the_Event);
             end if;
          exception
-            when system.RPC.Communication_Error
-               | Storage_Error =>
+            when system.RPC.communication_Error
+               | storage_Error =>
                if subject.Logger /= null
                then
                   subject.Logger.log_Emit (Subject.view (Self),
@@ -120,8 +120,8 @@ is
                                         the_Event);
             end if;
          exception
-            when system.RPC.Communication_Error
-               | Storage_Error =>
+            when system.RPC.communication_Error
+               | storage_Error =>
                bad_Count                 := bad_Count + 1;
                bad_Observers (bad_Count) := my_Observers (Each);
          end;

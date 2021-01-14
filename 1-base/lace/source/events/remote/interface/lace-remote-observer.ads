@@ -4,7 +4,7 @@ with
 
 limited
 with
-     lace.remote.event.Logger;
+     lace.remote.Event.Logger;
 
 package lace.remote.Observer
 --
@@ -55,6 +55,6 @@ is
    --
 
    procedure Logger_is (Now : access lace.remote.Event.Logger.item'Class);
-   function  Logger    return access lace.remote.event.Logger.item'Class;
+   function  Logger    return access lace.remote.Event.Logger.item'Class;
 
 end lace.remote.Observer;

@@ -27,7 +27,6 @@ is
    function Name (Self : in Item) return String;
 
 
-
 private
 
    package Subject  is new make_Subject  (Any.limited_item);

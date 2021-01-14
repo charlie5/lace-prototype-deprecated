@@ -25,7 +25,6 @@ is
    is abstract;
 
 
-
 private
 
    type Item is abstract tagged limited null record;
