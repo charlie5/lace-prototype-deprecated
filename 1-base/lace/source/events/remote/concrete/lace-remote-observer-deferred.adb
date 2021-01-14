@@ -7,7 +7,7 @@ is
       is
       begin
          return Self : constant Item := (Deferred.item
-                                         with name => new observer_Name'(Name))
+                                         with name => to_unbounded_String (Name))
          do
             null;
          end return;
@@ -27,7 +27,7 @@ is
    function Name (Self : in Item) return observer_Name
    is
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 end lace.remote.Observer.deferred;

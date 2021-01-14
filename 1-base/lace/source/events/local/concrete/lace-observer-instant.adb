@@ -6,7 +6,7 @@ is
       is
          Self : constant View := new Item;
       begin
-         Self.Name := new String'(Name);
+         Self.Name := to_unbounded_String (Name);
          return Self;
       end new_Observer;
 
@@ -17,7 +17,7 @@ is
    function Name (Self : in Item) return String
    is
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 end lace.Observer.instant;

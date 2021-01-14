@@ -1,6 +1,6 @@
 with
      lace.event.Logger,
-     lace.Event_conversions,
+     lace.Event.utility,
      ada.unchecked_Deallocation;
 
 package body lace.make_Subject
@@ -69,8 +69,8 @@ is
    overriding
    procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
    is
-      use lace.Event_conversions;
-      my_Observers : constant subject.Observer_views := Self.Observers (to_event_Kind (the_Event'Tag));
+      use lace.Event.utility;
+      my_Observers : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
 
    begin
       for Each in my_Observers'Range

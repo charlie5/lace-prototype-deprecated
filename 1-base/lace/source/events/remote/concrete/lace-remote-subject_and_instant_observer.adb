@@ -8,7 +8,7 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new String' (Name);
+            Self.Name := to_unbounded_String (Name);
          end return;
       end to_Subject_and_Observer;
 
@@ -19,7 +19,7 @@ is
    function Name (Self : in Item) return String
    is
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 end lace.remote.Subject_and_instant_Observer;

@@ -3,6 +3,10 @@ with
      lace.make_Observer.deferred,
      lace.Any;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.Observer.deferred
 --
 --  Provides a concrete local event observer.
@@ -25,15 +29,15 @@ is
    function Name (Self : in Item) return String;
 
 
-
 private
+   use ada.Strings.unbounded;
 
    package Observer is new lace.make_Observer (Any.limited_item);
    package Deferred is new Observer.deferred  (Observer.item);
 
    type Item is limited new Deferred.item with
       record
-         Name : access String;
+         Name : unbounded_String;
       end record;
 
 end lace.Observer.deferred;

@@ -2,6 +2,10 @@ with
      lace.remote.make_Observer.deferred,
      lace.Any;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.remote.Observer.deferred
 --
 --  Provides a concrete deferred remote event Observer.
@@ -25,13 +29,14 @@ is
 
 
 private
+   use ada.Strings.unbounded;
 
    package Observer is new lace.remote.make_Observer (Any.limited_item);
    package Deferred is new Observer.deferred (Observer.item);
 
    type Item is limited new Deferred.item with
       record
-         Name : access observer_Name;
+         Name : unbounded_String;
       end record;
 
 end lace.remote.Observer.deferred;

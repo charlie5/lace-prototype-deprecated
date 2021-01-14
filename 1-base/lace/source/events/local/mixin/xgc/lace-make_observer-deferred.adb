@@ -1,6 +1,6 @@
 with
      lace.event.Logger,
-     lace.Event_conversions,
+     lace.Event.utility,
      ada.unchecked_Deallocation;
 
 package body lace.make_Observer.deferred
@@ -44,12 +44,12 @@ is
          loop
             declare
                use event_response_Maps,
-                   Event_conversions,
+                   lace.Event.utility,
                    ada.Containers;
                use type Observer.view;
 
                the_Event : constant Event.item'Class           := Element (Cursor);
-               Response  : constant event_response_Maps.Cursor := the_Responses.find (to_event_Kind (the_Event'Tag));
+               Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
             begin
                if has_Element (Response)
                then

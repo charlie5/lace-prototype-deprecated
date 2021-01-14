@@ -5,8 +5,8 @@ is
       function to_Observer (Name : in String) return Item
       is
       begin
-         return Self : constant Item := (my_Deferred.item
-                                         with name => new String'(Name))
+         return Self : constant Item := (Deferred.item
+                                         with name => to_unbounded_String (Name))
          do
             null;
          end return;
@@ -27,7 +27,7 @@ is
    function Name (Self : in Item) return String
    is
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 end lace.Observer.deferred;

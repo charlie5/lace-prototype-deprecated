@@ -3,6 +3,10 @@ with
      lace.make_Observer,
      lace.Any;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.Observer.instant
 --
 --  Provides a concrete local event Observer.
@@ -24,14 +28,14 @@ is
    function Name (Self : in Item) return String;
 
 
-
 private
+   use ada.Strings.unbounded;
 
    package Observer is new make_Observer (Any.limited_item);
 
    type Item is limited new Observer.item with
       record
-         Name : access String;
+         Name : unbounded_String;
       end record;
 
 end lace.Observer.instant;

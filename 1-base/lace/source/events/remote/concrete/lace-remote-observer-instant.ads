@@ -2,6 +2,10 @@ with
      lace.remote.make_Observer,
      lace.Any;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.remote.Observer.instant
 --
 --  Provides a concrete instant remote event Observer.
@@ -24,12 +28,13 @@ is
 
 
 private
+   use ada.Strings.unbounded;
 
    package Observer is new lace.remote.make_Observer (Any.limited_item);
 
    type Item is limited new Observer.item with
       record
-         Name : access observer_Name;
+         Name : unbounded_String;
       end record;
 
 end lace.remote.Observer.instant;

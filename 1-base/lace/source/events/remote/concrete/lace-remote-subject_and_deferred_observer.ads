@@ -5,6 +5,10 @@ with
      lace.remote.make_Observer.deferred,
      lace.Any;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.remote.Subject_and_deferred_Observer
 --
 --  Provides a concrete type for a combined event Subject and a deferred Observer.
@@ -30,6 +34,7 @@ is
 
 
 private
+   use ada.Strings.unbounded;
 
    package Subject  is new make_Subject      (Any.limited_item);
    package Observer is new make_Observer     (Subject    .item);
@@ -37,7 +42,7 @@ private
 
    type Item is limited new Deferred.item with
       record
-         Name : access String;
+         Name : unbounded_String;
       end record;
 
 end lace.remote.Subject_and_deferred_Observer;

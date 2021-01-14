@@ -5,6 +5,10 @@ with
      lace.Subject,
      lace.Observer;
 
+private
+with
+     ada.Strings.unbounded;
+
 package lace.remote.Subject_and_instant_Observer
 --
 --  Provides a concrete type for a combined event Subject and an instant Observer.
@@ -28,13 +32,14 @@ is
 
 
 private
+   use ada.Strings.unbounded;
 
    package Subject  is new make_Subject  (Any.limited_item);
    package Observer is new make_Observer (Subject    .item);
 
    type Item is limited new Observer.item with
       record
-         Name : access String;
+         Name : unbounded_String;
       end record;
 
 end lace.remote.Subject_and_instant_Observer;
