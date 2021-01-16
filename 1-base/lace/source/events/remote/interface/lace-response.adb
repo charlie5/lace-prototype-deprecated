@@ -1,7 +1,7 @@
 with
      ada.Tags;
 
-package body lace.remote.Response
+package body lace.Response
 is
 
    function Name (Self : in Item) return String
@@ -10,5 +10,5 @@ is
       return ada.Tags.expanded_Name (Item'Class (Self)'Tag);
    end Name;
 
-end lace.remote.Response;
+end lace.Response;
 

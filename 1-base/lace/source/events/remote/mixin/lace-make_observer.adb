@@ -1,11 +1,11 @@
 with
-     lace.remote.Event.Logger,
+     lace.Event.Logger,
      lace.Event.utility,
 
      ada.unchecked_Conversion,
      ada.unchecked_Deallocation;
 
-package body lace.remote.make_Observer
+package body lace.make_Observer
 is
 
    procedure destroy (Self : in out Item)
@@ -37,7 +37,7 @@ is
           lace.Event.utility,
           ada.Containers;
 
-      use type lace.remote.Observer.view;
+      use type lace.Observer.view;
 
       the_Responses :          event_response_Map    renames Self.subject_Responses.Element (from_Subject).all;
       the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
@@ -147,4 +147,4 @@ is
    end relay_responseless_Events;
 
 
-end lace.remote.make_Observer;
+end lace.make_Observer;

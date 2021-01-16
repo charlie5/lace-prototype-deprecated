@@ -1,4 +1,4 @@
-package body lace.remote.Subject_and_deferred_Observer
+package body lace.Subject_and_deferred_Observer
 is
    package body Forge
    is
@@ -37,4 +37,4 @@ is
       return to_String (Self.Name);
    end Name;
 
-end lace.remote.Subject_and_deferred_Observer;
+end lace.Subject_and_deferred_Observer;

@@ -1,14 +1,14 @@
 with
-     lace.remote.Observer,
-     lace.remote.Subject,
-     lace.remote.Response;
+     lace.Observer,
+     lace.Subject,
+     lace.Response;
 
 private
 with
      ada.Text_IO,
      ada.containers.indefinite_hashed_Sets;
 
-package lace.remote.event.Logger.text
+package lace.event.Logger.text
 --
 --  Provides a logger which logs to a text file.
 --
@@ -32,37 +32,37 @@ is
    --
 
    overriding
-   procedure log_Connection    (Self : in out Item;   From         : in lace.remote.Observer.view;
-                                                      To           : in lace.remote.Subject .view;
+   procedure log_Connection    (Self : in out Item;   From         : in lace.Observer.view;
+                                                      To           : in lace.Subject .view;
                                                       for_Kind     : in lace.event.Kind);
    overriding
-   procedure log_Disconnection (Self : in out Item;   From         : in lace.remote.Observer.view;
-                                                      To           : in lace.remote.Subject .view;
+   procedure log_Disconnection (Self : in out Item;   From         : in lace.Observer.view;
+                                                      To           : in lace.Subject .view;
                                                       for_Kind     : in lace.event.Kind);
    overriding
-   procedure log_new_Response  (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                      of_Observer  : in lace.remote.Observer.item'Class;
+   procedure log_new_Response  (Self : in out Item;   the_Response : in lace.Response.view;
+                                                      of_Observer  : in lace.Observer.item'Class;
                                                       to_Kind      : in lace.event.Kind;
                                                       from_Subject : in String);
    overriding
-   procedure log_rid_Response  (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                      of_Observer  : in lace.remote.Observer.item'Class;
+   procedure log_rid_Response  (Self : in out Item;   the_Response : in lace.Response.view;
+                                                      of_Observer  : in lace.Observer.item'Class;
                                                       to_Kind      : in lace.event.Kind;
                                                       from_Subject : in String);
    -- Logging of event transmission.
    --
 
    overriding
-   procedure log_Emit     (Self : in out Item;   From        : in lace.remote.Subject .view;
-                                                 To          : in lace.remote.Observer.view;
+   procedure log_Emit     (Self : in out Item;   From        : in lace.Subject .view;
+                                                 To          : in lace.Observer.view;
                                                  the_Event   : in lace.Event.item'Class);
    overriding
-   procedure log_Relay    (Self : in out Item;   From        : in lace.remote.Observer.view;
-                                                 To          : in lace.remote.Observer.view;
+   procedure log_Relay    (Self : in out Item;   From        : in lace.Observer.view;
+                                                 To          : in lace.Observer.view;
                                                  the_Event   : in lace.Event.item'Class);
    overriding
-   procedure log_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                 of_Observer  : in lace.remote.Observer.view;
+   procedure log_Response (Self : in out Item;   the_Response : in lace.Response.view;
+                                                 of_Observer  : in lace.Observer.view;
                                                  to_Event     : in lace.Event.item'Class;
                                                  from_Subject : in String);
    -- Logging of miscellaneous messages.
@@ -92,4 +92,4 @@ private
          Ignored : event_kind_Set;
       end record;
 
-end lace.remote.event.Logger.text;
+end lace.event.Logger.text;

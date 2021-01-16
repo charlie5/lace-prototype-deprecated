@@ -1,7 +1,7 @@
 with
      chat.Client.local,
 
-     lace.remote.Event.utility,
+     lace.Event.utility_r,
 
      ada.Characters.latin_1,
      ada.command_Line,
@@ -34,7 +34,7 @@ begin
 
 exception
    when E : others =>
-      lace.remote.event.Utility.close;
+      lace.event.Utility_r.close;
       new_Line;
       put_Line ("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
       put_Line ("Unhandled exception, aborting. Please report the following to developer.");

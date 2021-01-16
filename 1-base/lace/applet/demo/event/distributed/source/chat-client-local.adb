@@ -1,9 +1,9 @@
 with
      chat.Registrar,
 
-     lace.remote.Response,
-     lace.remote.Observer,
-     lace.remote.Event.utility,
+     lace.Response,
+     lace.Observer,
+     lace.Event.utility_r,
      lace.Event.utility,
 
      system.RPC,
@@ -19,7 +19,7 @@ is
 
    -- Responses
    --
-   type Show is new lace.remote.Response.item with null record;
+   type Show is new lace.Response.item with null record;
 
    -- Response is to display the chat message on the users console.
    --
@@ -59,7 +59,7 @@ is
 
 
    overriding
-   function as_Observer (Self : access Item) return lace.remote.Observer.view
+   function as_Observer (Self : access Item) return lace.Observer.view
    is
    begin
       return Self;
@@ -67,7 +67,7 @@ is
 
 
    overriding
-   function as_Subject  (Self : access Item) return lace.remote.Subject.view
+   function as_Subject  (Self : access Item) return lace.Subject.view
    is
    begin
       return Self;
@@ -83,7 +83,7 @@ is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      lace.remote.Event.utility.connect (the_Observer  => Self'unchecked_Access,
+      lace.Event.utility_r.connect (the_Observer  => Self'unchecked_Access,
                                          to_Subject    => other_Client.as_Subject,
                                          with_Response => the_Response'Access,
                                          to_Event_Kind => to_Kind (chat.Client.Message'Tag));
@@ -92,7 +92,7 @@ is
 
 
    overriding
-   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
+   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.Observer.view;
                                                       other_Client_Name        : in String)
    is
       use lace.Event.utility,
@@ -186,7 +186,7 @@ is
             return;
       end;
 
-      lace.remote.Event.Utility.use_text_Logger ("events");
+      lace.Event.Utility_r.use_text_Logger ("events");
 
       check_Registrar_lives.start (Self'unchecked_Access);
 
@@ -268,7 +268,7 @@ is
       end if;
 
       check_Registrar_lives.halt;
-      lace.remote.Event.Utility.close;
+      lace.Event.Utility_r.close;
    end start;
 
 

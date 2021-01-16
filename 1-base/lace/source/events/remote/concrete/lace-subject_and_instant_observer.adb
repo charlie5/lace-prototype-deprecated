@@ -1,4 +1,4 @@
-package body lace.remote.Subject_and_instant_Observer
+package body lace.Subject_and_instant_Observer
 is
 
    package body Forge
@@ -22,4 +22,4 @@ is
       return to_String (Self.Name);
    end Name;
 
-end lace.remote.Subject_and_instant_Observer;
+end lace.Subject_and_instant_Observer;

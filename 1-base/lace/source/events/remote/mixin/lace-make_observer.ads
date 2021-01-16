@@ -1,7 +1,7 @@
 with
      lace.Event,
-     lace.remote.Response,
-     lace.remote.Observer;
+     lace.Response,
+     lace.Observer;
 
 private
 with
@@ -11,7 +11,7 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.remote.make_Observer
+package lace.make_Observer
 --
 --  Makes a user class T into an event Observer.
 --
@@ -33,11 +33,11 @@ is
    overriding
    procedure add (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in subject_Name);
+                                        from_Subject : in event.subject_Name);
    overriding
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in subject_Name);
+                                        from_Subject : in event.subject_Name);
    overriding
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view);
 
@@ -47,7 +47,7 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
-                                            from_Subject : in subject_Name);
+                                            from_Subject : in event.subject_Name);
    overriding
    procedure respond (Self : access Item);
 
@@ -71,7 +71,7 @@ private
    --
 
    package subject_Maps_of_event_responses
-   is new ada.containers.indefinite_hashed_Maps (key_type        => subject_Name,
+   is new ada.containers.indefinite_hashed_Maps (key_type        => event.subject_Name,
                                                  element_type    => event_response_Map_view,
                                                  hash            => ada.strings.Hash,
                                                  equivalent_keys => "=");
@@ -88,4 +88,4 @@ private
          relay_Target      : Observer.view;
       end record;
 
-end lace.remote.make_Observer;
+end lace.make_Observer;

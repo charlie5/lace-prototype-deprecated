@@ -8,11 +8,11 @@ with
      ada.strings.Hash;
 
 generic
-   type T is abstract new lace.remote.make_Observer.item with private;
+   type T is abstract new lace.make_Observer.item with private;
 
-package lace.remote.make_Observer.deferred
+package lace.make_Observer.deferred
 --
---  Makes a user class T into a remote deferred event Observer.
+--  Makes a user class T into a deferred event Observer.
 --
 is
    pragma remote_Types;
@@ -79,4 +79,4 @@ private
          pending_Events : subject_Map_of_safe_events;
       end record;
 
-end lace.remote.make_Observer.deferred;
+end lace.make_Observer.deferred;

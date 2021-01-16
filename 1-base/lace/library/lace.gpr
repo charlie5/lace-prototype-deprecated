@@ -24,12 +24,6 @@ is
                         "../source/events/remote/mixin",
                         "../source/events/remote/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/remote/utility",
-                        "../source/events/local",
-                        "../source/events/local/concrete",
-                        "../source/events/local/interface",
-                        "../source/events/local/mixin",
-                        "../source/events/local/mixin/" & external ("restrictions", "xgc"),
-                        "../source/events/local/utility",
                         "../source/events/private",
                         "../source/strings");
 

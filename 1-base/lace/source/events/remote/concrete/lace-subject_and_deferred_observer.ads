@@ -1,22 +1,22 @@
 with
-     lace.remote.Subject,
-     lace.remote.Observer,
-     lace.remote.make_Subject,
-     lace.remote.make_Observer.deferred,
+     lace.Subject,
+     lace.Observer,
+     lace.make_Subject,
+     lace.make_Observer.deferred,
      lace.Any;
 
 private
 with
      ada.Strings.unbounded;
 
-package lace.remote.Subject_and_deferred_Observer
+package lace.Subject_and_deferred_Observer
 --
 --  Provides a concrete type for a combined event Subject and a deferred Observer.
 --
 is
    type Item is limited new lace.Any.    limited_item
-                        and lace.remote.Subject. item
-                        and lace.remote.Observer.item with private;
+                        and lace.Subject. item
+                        and lace.Observer.item with private;
 
    type View is access all Item'Class;
 
@@ -45,4 +45,4 @@ private
          Name : unbounded_String;
       end record;
 
-end lace.remote.Subject_and_deferred_Observer;
+end lace.Subject_and_deferred_Observer;

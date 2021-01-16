@@ -1,16 +1,16 @@
 with
-     lace.remote.event.Logger.text,
+     lace.event.Logger.text,
      ada.unchecked_Deallocation,
      system.RPC;
 
-package body lace.remote.Event.utility
+package body lace.Event.utility_r
 is
    -- Connections
    --
 
-   procedure connect (the_Observer  : in lace.remote.Observer.view;
-                      to_Subject    : in lace.remote.Subject .view;
-                      with_Response : in lace.remote.Response.view;
+   procedure connect (the_Observer  : in lace.Observer.view;
+                      to_Subject    : in lace.Subject .view;
+                      with_Response : in lace.Response.view;
                       to_Event_Kind : in lace.event.Kind)
    is
    begin
@@ -26,9 +26,9 @@ is
    -- *** ToDo => The following may be useful as a non-remote utility. ***
    --
    --
-   procedure disconnect (the_Observer  : in lace.remote.Observer.view;
-                         from_Subject  : in lace.remote.Subject .view;
-                         for_Response  : in lace.remote.Response.view;
+   procedure disconnect (the_Observer  : in lace.Observer.view;
+                         from_Subject  : in lace.Subject .view;
+                         for_Response  : in lace.Response.view;
                          to_Event_Kind : in lace.event.Kind;
                          Subject_Name  : in String)
    is
@@ -56,7 +56,7 @@ is
    -- Logging
    --
 
-   the_Logger : lace.remote.event.Logger.text.view;
+   the_Logger : lace.event.Logger.text.view;
 
 
    procedure use_text_Logger (log_Filename : in String)
@@ -64,12 +64,12 @@ is
    begin
       the_Logger := new event.Logger.text.item' (event.Logger.text.to_Logger (log_Filename));
 
-      lace.remote.Subject .Logger_is (the_Logger);
-      lace.remote.Observer.Logger_is (the_Logger);
+      lace.Subject .Logger_is (the_Logger);
+      lace.Observer.Logger_is (the_Logger);
    end use_text_Logger;
 
 
-   function Logger return access lace.remote.event.Logger.item'Class
+   function Logger return access lace.event.Logger.item'Class
    is
    begin
       return the_Logger;
@@ -81,7 +81,7 @@ is
 
    procedure close
    is
-      use type lace.remote.event.Logger.text.view;
+      use type lace.event.Logger.text.view;
    begin
       if the_Logger /= null
       then
@@ -95,4 +95,4 @@ is
       end if;
    end close;
 
-end lace.remote.Event.utility;
+end lace.Event.utility_r;

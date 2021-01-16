@@ -1,9 +1,9 @@
 with
      lace.Event;
 
-package lace.remote.Response
+package lace.Response
 --
---  Provides a base class for all derived remote event 'response' classes.
+--  Provides a base class for all derived event 'response' classes.
 --
 is
    pragma remote_Types;
@@ -29,4 +29,4 @@ private
 
    type Item is abstract tagged limited null record;
 
-end lace.remote.Response;
+end lace.Response;

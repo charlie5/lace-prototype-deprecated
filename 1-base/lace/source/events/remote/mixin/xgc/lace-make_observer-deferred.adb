@@ -1,10 +1,10 @@
 with
-     lace.remote.event.Logger,
+     lace.event.Logger,
      lace.Event.utility;
 with
      ada.unchecked_Deallocation;
 
-package body lace.remote.make_Observer.deferred
+package body lace.make_Observer.deferred
 is
    overriding
    procedure destroy (Self : in out Item)
@@ -166,4 +166,4 @@ is
       end fetch;
    end safe_Events;
 
-end lace.remote.make_Observer.deferred;
+end lace.make_Observer.deferred;

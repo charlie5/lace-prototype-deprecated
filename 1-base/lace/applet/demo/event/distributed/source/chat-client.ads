@@ -1,7 +1,7 @@
 with
      lace.Event,
-     lace.remote.Subject,
-     lace.remote.Observer;
+     lace.Subject,
+     lace.Observer;
 
 package chat.Client
 --
@@ -11,8 +11,8 @@ is
    pragma remote_Types;
 
    type Item is  limited interface
-             and lace.remote.Subject .item
-             and lace.remote.Observer.item;
+             and lace.Subject .item
+             and lace.Observer.item;
 
    type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
@@ -23,14 +23,14 @@ is
 
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view) is abstract;
 
-   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
+   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.Observer.view;
                                                       other_Client_Name        : in String) is abstract;
    --
    -- Raises unknown_Client exception when the other_Client is unknown.
 
 
-   function  as_Observer (Self : access Item) return lace.remote.Observer.view is abstract;
-   function  as_Subject  (Self : access Item) return lace.remote.Subject .view is abstract;
+   function  as_Observer (Self : access Item) return lace.Observer.view is abstract;
+   function  as_Subject  (Self : access Item) return lace.Subject .view is abstract;
 
 
    type Message (Length : Natural) is new lace.Event.item with

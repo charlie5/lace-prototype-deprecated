@@ -1,10 +1,10 @@
 with
-     lace.remote.Event.Logger,
+     lace.Event.Logger,
      lace.Event.utility,
      system.RPC,
      ada.unchecked_Deallocation;
 
-package body lace.remote.make_Subject
+package body lace.make_Subject
 is
 
    procedure destroy (Self : in out Item)
@@ -228,4 +228,4 @@ is
 
    end safe_Observers;
 
-end lace.remote.make_Subject;
+end lace.make_Subject;

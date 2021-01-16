@@ -3,8 +3,8 @@ with
 
 private
 with
-     lace.remote.make_Subject,
-     lace.remote.make_Observer,
+     lace.make_Subject,
+     lace.make_Observer,
      ada.Strings.unbounded;
 
 package chat.Client.local
@@ -30,10 +30,10 @@ is
    function Name (Self : in Item) return String;
 
    overriding
-   function as_Observer (Self : access Item) return lace.remote.Observer.view;
+   function as_Observer (Self : access Item) return lace.Observer.view;
 
    overriding
-   function as_Subject  (Self : access Item) return lace.remote.Subject.view;
+   function as_Subject  (Self : access Item) return lace.Subject.view;
 
 
    -- Operations
@@ -44,7 +44,7 @@ is
    procedure   register_Client (Self : in out Item;   other_Client : in Client.view);
 
    overriding
-   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.remote.Observer.view;
+   procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.Observer.view;
                                                       other_Client_Name        : in String);
    overriding
    procedure Registrar_has_shutdown (Self : in out Item);
@@ -52,8 +52,8 @@ is
 
 private
 
-   package Observer is new lace.remote.make_Observer (lace.Any.limited_item);
-   package Subject  is new lace.remote.make_Subject  (Observer        .item);
+   package Observer is new lace.make_Observer (lace.Any.limited_item);
+   package Subject  is new lace.make_Subject  (Observer        .item);
 
    use ada.Strings.unbounded;
 

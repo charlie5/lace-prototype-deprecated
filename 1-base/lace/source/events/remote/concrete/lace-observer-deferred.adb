@@ -1,9 +1,9 @@
-package body lace.remote.Observer.deferred
+package body lace.Observer.deferred
 is
 
    package body Forge
    is
-      function to_Observer (Name : in observer_Name) return Item
+      function to_Observer (Name : in event.observer_Name) return Item
       is
       begin
          return Self : constant Item := (Deferred.item
@@ -14,7 +14,7 @@ is
       end to_Observer;
 
 
-      function new_Observer (Name : in observer_Name) return View
+      function new_Observer (Name : in event.observer_Name) return View
       is
          Self : constant View := new Item' (to_Observer (Name));
       begin
@@ -24,13 +24,13 @@ is
 
 
    overriding
-   function Name (Self : in Item) return observer_Name
+   function Name (Self : in Item) return event.observer_Name
    is
    begin
       return to_String (Self.Name);
    end Name;
 
-end lace.remote.Observer.deferred;
+end lace.Observer.deferred;
 
 
 

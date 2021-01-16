@@ -1,12 +1,12 @@
 with
      lace.Event,
-     lace.remote.Response;
+     lace.Response;
 
 limited
 with
-     lace.remote.Event.Logger;
+     lace.Event.Logger;
 
-package lace.remote.Observer
+package lace.Observer
 --
 --  Provides an interface for an event Observer.
 --
@@ -21,7 +21,7 @@ is
    -- Attributes
    --
 
-   function Name (Self : in Item) return observer_Name is abstract;
+   function Name (Self : in Item) return event.observer_Name is abstract;
 
 
    -- Responses
@@ -29,11 +29,11 @@ is
 
    procedure add (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in lace.event.Kind;
-                                        from_Subject : in subject_Name) is abstract;
+                                        from_Subject : in event.subject_Name) is abstract;
 
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in lace.event.Kind;
-                                        from_Subject : in subject_Name) is abstract;
+                                        from_Subject : in event.subject_Name) is abstract;
 
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view) is abstract;
 
@@ -42,7 +42,7 @@ is
    --
 
    procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
-                                            from_Subject : in subject_Name) is abstract;
+                                            from_Subject : in event.subject_Name) is abstract;
    --
    -- Accepts an Event from a Subject.
 
@@ -54,7 +54,7 @@ is
    --- Logging
    --
 
-   procedure Logger_is (Now : access lace.remote.Event.Logger.item'Class);
-   function  Logger    return access lace.remote.Event.Logger.item'Class;
+   procedure Logger_is (Now : access lace.Event.Logger.item'Class);
+   function  Logger    return access lace.Event.Logger.item'Class;
 
-end lace.remote.Observer;
+end lace.Observer;

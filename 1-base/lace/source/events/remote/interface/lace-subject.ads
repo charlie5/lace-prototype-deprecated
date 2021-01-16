@@ -1,12 +1,12 @@
 with
      lace.Event,
-     lace.remote.Observer;
+     lace.Observer;
 
 limited
 with
-     lace.remote.Event.Logger;
+     lace.Event.Logger;
 
-package lace.remote.Subject
+package lace.Subject
 --
 --  Provides an interface for an event Subject.
 --
@@ -27,7 +27,7 @@ is
    -- Attributes
    --
 
-   function Name (Self : in Item) return subject_Name is abstract;
+   function Name (Self : in Item) return event.subject_Name is abstract;
 
 
    -- Observers
@@ -59,7 +59,7 @@ is
    -- Logging
    --
 
-   procedure Logger_is (Now : access remote.Event.Logger.item'Class);
-   function  Logger    return access remote.Event.Logger.item'Class;
+   procedure Logger_is (Now : access Event.Logger.item'Class);
+   function  Logger    return access Event.Logger.item'Class;
 
-end lace.remote.Subject;
+end lace.Subject;

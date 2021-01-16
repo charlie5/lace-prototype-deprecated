@@ -1,7 +1,7 @@
 with
      lace.Event,
-     lace.remote.Subject,
-     lace.remote.Observer;
+     lace.Subject,
+     lace.Observer;
 
 private
 with
@@ -12,9 +12,9 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.remote.make_Subject
+package lace.make_Subject
 --
---  Makes a user class T into a remote event Subject.
+--  Makes a user class T into an event Subject.
 --
 is
    pragma remote_Types;
@@ -108,4 +108,4 @@ private
          safe_Observers : make_Subject.safe_Observers;
       end record;
 
-end lace.remote.make_Subject;
+end lace.make_Subject;

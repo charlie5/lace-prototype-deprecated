@@ -1,8 +1,8 @@
 with
-     lace.remote.make_Subject,
+     lace.make_Subject,
      lace.Any;
 
-package lace.remote.Subject.local
+package lace.Subject.local
 --
 --  Provides a concrete local event Subject.
 --
@@ -15,19 +15,19 @@ is
 
    package Forge
    is
-      function  to_Subject (Name : in subject_Name) return Item;
-      function new_Subject (Name : in subject_Name) return View;
+      function  to_Subject (Name : in event.subject_Name) return Item;
+      function new_Subject (Name : in event.subject_Name) return View;
    end Forge;
 
    procedure destroy (Self : in out Item);
 
    overriding
-   function Name (Self : in Item) return subject_Name;
+   function Name (Self : in Item) return event.subject_Name;
 
 
 private
 
-   type Name_view is access all subject_Name;
+   type Name_view is access all event.subject_Name;
 
    package Subject is new make_Subject (Any.limited_item);
 
@@ -36,4 +36,4 @@ private
          Name : Name_view;
       end record;
 
-end lace.remote.Subject.local;
+end lace.Subject.local;

@@ -8,6 +8,9 @@ package lace.Event
 is
    pragma Pure;
 
+   subtype subject_Name  is String;
+   subtype observer_Name is String;
+
 
    type Item is tagged null record;
 

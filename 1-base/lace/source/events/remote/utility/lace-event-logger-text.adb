@@ -3,7 +3,7 @@ with
      system.RPC,
      ada.unchecked_Conversion;
 
-package body lace.remote.Event.Logger.text
+package body lace.Event.Logger.text
 is
    use lace.Event.utility,
        ada.Text_IO;
@@ -33,8 +33,8 @@ is
    --
 
    overriding
-   procedure log_Connection (Self : in out Item;   From     : in lace.remote.Observer.view;
-                                                   To       : in lace.remote.Subject .view;
+   procedure log_Connection (Self : in out Item;   From     : in lace.Observer.view;
+                                                   To       : in lace.Subject .view;
                                                    for_Kind : in lace.event.Kind)
    is
    begin
@@ -45,14 +45,14 @@ is
 
 
    overriding
-   procedure log_Disconnection (Self : in out Item;   From     : in lace.remote.Observer.view;
-                                                      To       : in lace.remote.Subject.view;
+   procedure log_Disconnection (Self : in out Item;   From     : in lace.Observer.view;
+                                                      To       : in lace.Subject.view;
                                                       for_Kind : in lace.event.Kind)
    is
 
       function from_Name return String
       is
-         function to_Integer is new ada.unchecked_Conversion (lace.remote.Observer.view,
+         function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
                                                               long_Integer);
       begin
          return From.Name;
@@ -72,14 +72,14 @@ is
 
 
    overriding
-   procedure log_Emit (Self : in out Item;   From      : in lace.remote.Subject .view;
-                                             To        : in lace.remote.Observer.view;
+   procedure log_Emit (Self : in out Item;   From      : in lace.Subject .view;
+                                             To        : in lace.Observer.view;
                                              the_Event : in lace.Event.item'Class)
    is
 
       function to_Name return String
       is
-         function to_Integer is new ada.unchecked_Conversion (lace.remote.Observer.view,
+         function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
                                                               long_Integer);
       begin
          return To.Name;
@@ -102,8 +102,8 @@ is
 
 
    overriding
-   procedure log_Relay (Self : in out Item;   From      : in lace.remote.Observer.view;
-                                              To        : in lace.remote.Observer.view;
+   procedure log_Relay (Self : in out Item;   From      : in lace.Observer.view;
+                                              To        : in lace.Observer.view;
                                               the_Event : in lace.Event.item'Class)
    is
    begin
@@ -114,8 +114,8 @@ is
 
 
    overriding
-   procedure log_new_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                     of_Observer  : in lace.remote.Observer.item'Class;
+   procedure log_new_Response (Self : in out Item;   the_Response : in lace.Response.view;
+                                                     of_Observer  : in lace.Observer.item'Class;
                                                      to_Kind      : in lace.event.Kind;
                                                      from_Subject : in String)
    is
@@ -129,8 +129,8 @@ is
 
 
    overriding
-   procedure log_rid_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                     of_Observer  : in lace.remote.Observer.item'Class;
+   procedure log_rid_Response (Self : in out Item;   the_Response : in lace.Response.view;
+                                                     of_Observer  : in lace.Observer.item'Class;
                                                      to_Kind      : in lace.event.Kind;
                                                      from_Subject : in String)
    is
@@ -144,8 +144,8 @@ is
 
 
    overriding
-   procedure log_Response (Self : in out Item;   the_Response : in lace.remote.Response.view;
-                                                 of_Observer  : in lace.remote.Observer.view;
+   procedure log_Response (Self : in out Item;   the_Response : in lace.Response.view;
+                                                 of_Observer  : in lace.Observer.view;
                                                  to_Event     : in lace.Event.item'Class;
                                                  from_Subject : in String)
    is
@@ -179,4 +179,4 @@ is
    end ignore;
 
 
-end lace.remote.event.Logger.text;
+end lace.event.Logger.text;

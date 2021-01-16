@@ -1,5 +1,5 @@
 with
-     lace.remote.Observer,
+     lace.Observer,
 
      system.RPC,
 
@@ -36,7 +36,7 @@ is
          record
             View        : Client.view;
             Name        : unbounded_String;
-            as_Observer : lace.remote.Observer.view;
+            as_Observer : lace.Observer.view;
          end record;
 
    type client_Info_array is array (Positive range <>) of client_Info;

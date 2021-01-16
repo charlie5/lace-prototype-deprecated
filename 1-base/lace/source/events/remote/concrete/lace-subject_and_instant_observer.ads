@@ -9,7 +9,7 @@ private
 with
      ada.Strings.unbounded;
 
-package lace.remote.Subject_and_instant_Observer
+package lace.Subject_and_instant_Observer
 --
 --  Provides a concrete type for a combined event Subject and an instant Observer.
 --
@@ -42,4 +42,4 @@ private
          Name : unbounded_String;
       end record;
 
-end lace.remote.Subject_and_instant_Observer;
+end lace.Subject_and_instant_Observer;
