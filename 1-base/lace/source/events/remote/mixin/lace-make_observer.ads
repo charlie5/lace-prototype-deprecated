@@ -5,7 +5,7 @@ with
 
 private
 with
-     ada.containers.indefinite_hashed_Maps,
+     ada.Containers.indefinite_hashed_Maps,
      ada.strings.Hash;
 
 generic
@@ -20,7 +20,6 @@ is
 
    type Item is abstract limited new T
                                  and Observer.item with private;
-
    type View is access all Item'Class;
    --   pragma Asynchronous (View);        -- tbd: Needed for lossy events.
 
@@ -33,11 +32,11 @@ is
    overriding
    procedure add (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in event.subject_Name);
+                                        from_Subject : in Event.subject_Name);
    overriding
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in event.subject_Name);
+                                        from_Subject : in Event.subject_Name);
    overriding
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view);
 
@@ -47,14 +46,14 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
-                                            from_Subject : in event.subject_Name);
+                                            from_Subject : in Event.subject_Name);
    overriding
    procedure respond (Self : access Item);
 
 
 private
 
-   -- event response Maps
+   -- Event response maps
    --
    use type event.Kind;
    use type Response.view;
@@ -67,11 +66,11 @@ private
    type    event_response_Map_view is access all event_response_Map;
 
 
-   -- subject Maps of event responses
+   -- Subject maps of event responses
    --
 
    package subject_Maps_of_event_responses
-   is new ada.containers.indefinite_hashed_Maps (key_type        => event.subject_Name,
+   is new ada.containers.indefinite_hashed_Maps (key_type        => Event.subject_Name,
                                                  element_type    => event_response_Map_view,
                                                  hash            => ada.strings.Hash,
                                                  equivalent_keys => "=");

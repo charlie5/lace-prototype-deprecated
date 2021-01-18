@@ -3,7 +3,6 @@ with
 
      lace.Response,
      lace.Observer,
-     lace.Event.utility_r,
      lace.Event.utility,
 
      system.RPC,
@@ -83,10 +82,10 @@ is
       use lace.Event.utility,
           ada.Text_IO;
    begin
-      lace.Event.utility_r.connect (the_Observer  => Self'unchecked_Access,
-                                         to_Subject    => other_Client.as_Subject,
-                                         with_Response => the_Response'Access,
-                                         to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+      lace.Event.utility.connect (the_Observer  => Self'unchecked_Access,
+                                  to_Subject    => other_Client.as_Subject,
+                                  with_Response => the_Response'Access,
+                                  to_Event_Kind => to_Kind (chat.Client.Message'Tag));
       put_Line (other_Client.Name & " is here.");
    end register_Client;
 
@@ -186,7 +185,7 @@ is
             return;
       end;
 
-      lace.Event.Utility_r.use_text_Logger ("events");
+      lace.Event.utility.use_text_Logger ("events");
 
       check_Registrar_lives.start (Self'unchecked_Access);
 
@@ -268,7 +267,7 @@ is
       end if;
 
       check_Registrar_lives.halt;
-      lace.Event.Utility_r.close;
+      lace.Event.utility.close;
    end start;
 
 

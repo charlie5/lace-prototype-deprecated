@@ -5,9 +5,8 @@ with
 
 private
 with
-     ada.containers.Vectors,
-     ada.containers.indefinite_hashed_Maps,
-     ada.unchecked_Conversion;
+     ada.Containers.Vectors,
+     ada.Containers.indefinite_hashed_Maps;
 
 generic
    type T is abstract tagged limited private;
@@ -22,7 +21,6 @@ is
 
    type Item is abstract limited new T
                                  and Subject.item with private;
-
    type View is access all Item'Class;
 
    procedure destroy (Self : in out Item);
@@ -46,37 +44,37 @@ is
    overriding
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in event.Kind);
+
+   overriding
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event);
+
    overriding
    function  emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
                    return subject.Observer_views;
-   overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event);
 
 
 private
 
-   -- Event Observer Vectors
+   -- Event observer vectors
    --
    use type Observer.view;
 
-   package event_Observer_Vectors     is new ada.containers.Vectors (Positive, Observer.view);
+   package event_Observer_Vectors     is new ada.Containers.Vectors (Positive, Observer.view);
    subtype event_Observer_Vector      is event_Observer_Vectors.Vector;
    type    event_Observer_Vector_view is access all event_Observer_Vector;
 
 
-   -- event kind Maps of event observers
+   -- Event kind Maps of event observers
    --
-   function to_Hash is new ada.unchecked_Conversion (event.Kind, ada.containers.Hash_type);
    use type event.Kind;
-
    package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,
                                                                                             event_Observer_Vector_view,
-                                                                                            to_Hash,
+                                                                                            Event.Hash,
                                                                                             "=");
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
 
 
-   -- safe Observers
+   -- Safe observers
    --
 
    protected
@@ -91,7 +89,6 @@ private
                      of_Kind      : in event.Kind);
 
       function  fetch_Observers (of_Kind : in event.Kind) return subject.Observer_views;
-
       function  observer_Count return Natural;
 
    private

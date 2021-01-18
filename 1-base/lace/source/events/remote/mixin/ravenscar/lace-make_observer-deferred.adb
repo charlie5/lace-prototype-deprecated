@@ -5,7 +5,7 @@ with lace.event.Logger,
 
 
 
-package body lace.remote.make_Observer.deferred
+package body lace.make_Observer.deferred
 is
 
 

@@ -29,8 +29,8 @@ is
 
 
    overriding
-   procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
-                                            from_Subject : in String)
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+                                            from_Subject : in Event.subject_Name)
    is
       use event_response_Maps,
           subject_Maps_of_event_responses,
@@ -42,7 +42,7 @@ is
       the_Responses :          event_response_Map    renames Self.subject_Responses.Element (from_Subject).all;
       the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
 
-      my_Name       : constant String := Observer.item'Class (Self.all).Name;
+      my_Name : constant String := Observer.item'Class (Self.all).Name;
 
    begin
       if has_Element (the_Response)
@@ -65,7 +65,7 @@ is
          then
             observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
          else
-            raise program_Error with "Event relaying is currently disabled";
+            raise program_Error with "Event relaying is currently disabled.";
          end if;
 
       else
@@ -91,7 +91,7 @@ is
 
    overriding
    procedure add (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in lace.event.Kind;
+                                        to_Kind      : in event.Kind;
                                         from_Subject : in String)
    is
    begin
@@ -115,7 +115,7 @@ is
 
    overriding
    procedure rid (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in lace.event.Kind;
+                                        to_Kind      : in event.Kind;
                                         from_Subject : in String)
    is
    begin
@@ -145,6 +145,5 @@ is
    begin
       Self.relay_Target := To;
    end relay_responseless_Events;
-
 
 end lace.make_Observer;

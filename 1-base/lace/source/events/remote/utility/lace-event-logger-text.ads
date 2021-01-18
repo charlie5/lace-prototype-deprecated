@@ -19,7 +19,7 @@ is
    -- Forge
    --
 
-   function  to_Logger (Name : in     String) return Item;
+   function  to_Logger (Name : in String) return Item;
 
    overriding
    procedure destruct  (Self : in out Item);
@@ -32,39 +32,39 @@ is
    --
 
    overriding
-   procedure log_Connection    (Self : in out Item;   From         : in lace.Observer.view;
-                                                      To           : in lace.Subject .view;
-                                                      for_Kind     : in lace.event.Kind);
+   procedure log_Connection    (Self : in out Item;   From         : in Observer.view;
+                                                      To           : in Subject .view;
+                                                      for_Kind     : in Event.Kind);
    overriding
-   procedure log_Disconnection (Self : in out Item;   From         : in lace.Observer.view;
-                                                      To           : in lace.Subject .view;
-                                                      for_Kind     : in lace.event.Kind);
+   procedure log_Disconnection (Self : in out Item;   From         : in Observer.view;
+                                                      To           : in Subject .view;
+                                                      for_Kind     : in Event.Kind);
    overriding
-   procedure log_new_Response  (Self : in out Item;   the_Response : in lace.Response.view;
-                                                      of_Observer  : in lace.Observer.item'Class;
-                                                      to_Kind      : in lace.event.Kind;
-                                                      from_Subject : in String);
+   procedure log_new_Response  (Self : in out Item;   the_Response : in Response.view;
+                                                      of_Observer  : in Observer.item'Class;
+                                                      to_Kind      : in Event.Kind;
+                                                      from_Subject : in subject_Name);
    overriding
-   procedure log_rid_Response  (Self : in out Item;   the_Response : in lace.Response.view;
-                                                      of_Observer  : in lace.Observer.item'Class;
-                                                      to_Kind      : in lace.event.Kind;
-                                                      from_Subject : in String);
+   procedure log_rid_Response  (Self : in out Item;   the_Response : in Response.view;
+                                                      of_Observer  : in Observer.item'Class;
+                                                      to_Kind      : in Event.Kind;
+                                                      from_Subject : in subject_Name);
    -- Logging of event transmission.
    --
 
    overriding
-   procedure log_Emit     (Self : in out Item;   From        : in lace.Subject .view;
-                                                 To          : in lace.Observer.view;
-                                                 the_Event   : in lace.Event.item'Class);
+   procedure log_Emit     (Self : in out Item;   From         : in Subject .view;
+                                                 To           : in Observer.view;
+                                                 the_Event    : in Event.item'Class);
    overriding
-   procedure log_Relay    (Self : in out Item;   From        : in lace.Observer.view;
-                                                 To          : in lace.Observer.view;
-                                                 the_Event   : in lace.Event.item'Class);
+   procedure log_Relay    (Self : in out Item;   From         : in Observer.view;
+                                                 To           : in Observer.view;
+                                                 the_Event    : in Event.item'Class);
    overriding
-   procedure log_Response (Self : in out Item;   the_Response : in lace.Response.view;
-                                                 of_Observer  : in lace.Observer.view;
-                                                 to_Event     : in lace.Event.item'Class;
-                                                 from_Subject : in String);
+   procedure log_Response (Self : in out Item;   the_Response : in Response.view;
+                                                 of_Observer  : in Observer.view;
+                                                 to_Event     : in Event.item'Class;
+                                                 from_Subject : in subject_Name);
    -- Logging of miscellaneous messages.
    --
    overriding
@@ -73,15 +73,13 @@ is
    -- Log filtering
    --
    overriding
-   procedure ignore (Self : in out Item;   Kind : in lace.event.Kind);
+   procedure ignore (Self : in out Item;   Kind : in Event.Kind);
 
 
 private
 
-   use type lace.event.Kind;
-
-   package event_kind_Sets is new ada.containers.indefinite_hashed_Sets (lace.event.Kind,
-                                                                         lace.event.Hash,
+   package event_kind_Sets is new ada.containers.indefinite_hashed_Sets (Event.Kind,
+                                                                         Event.Hash,
                                                                          "=");
    subtype event_kind_Set  is event_kind_Sets.Set;
 

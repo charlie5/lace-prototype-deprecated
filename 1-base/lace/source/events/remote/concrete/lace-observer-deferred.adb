@@ -31,6 +31,3 @@ is
    end Name;
 
 end lace.Observer.deferred;
-
-
-

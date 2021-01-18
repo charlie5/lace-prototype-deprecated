@@ -33,24 +33,24 @@ is
    -- Observers
    --
 
-   procedure register       (Self : access Item;   the_Observer : in Observer.view;
-                                                   of_Kind      : in lace.event.Kind) is abstract;
+   procedure register   (Self : access Item;   the_Observer : in Observer.view;
+                                               of_Kind      : in event.Kind) is abstract;
 
-   procedure deregister     (Self : in out Item;   the_Observer : in Observer.view;
-                                                   of_Kind      : in lace.event.Kind) is abstract;
+   procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
+                                               of_Kind      : in event.Kind) is abstract;
 
-   function  Observers      (Self : in     Item;   of_Kind : in lace.event.Kind) return Observer_views is abstract;
-   function  observer_Count (Self : in     Item) return Natural is abstract;
+   function  Observers      (Self : in Item;   of_Kind : in event.Kind) return Observer_views is abstract;
+   function  observer_Count (Self : in Item) return Natural is abstract;
 
 
    -- Operations
    --
 
-   procedure emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event) is abstract;
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event) is abstract;
    --
    -- Communication errors are ignored.
 
-   function  emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
+   function  emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
                    return Observer_views is abstract;
    --
    -- Observers who cannot be communicated with are returned.

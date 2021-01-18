@@ -8,7 +8,7 @@ package lace.Subject.local
 --
 is
    type Item is limited new Any.limited_item
-                        and Subject.Item with private;
+                        and Subject    .item with private;
 
    type View is access all Item'Class;
 

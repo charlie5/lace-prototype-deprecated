@@ -14,9 +14,9 @@ package lace.Subject_and_deferred_Observer
 --  Provides a concrete type for a combined event Subject and a deferred Observer.
 --
 is
-   type Item is limited new lace.Any.    limited_item
-                        and lace.Subject. item
-                        and lace.Observer.item with private;
+   type Item is limited new lace.Any.limited_item
+                        and lace.Subject    .item
+                        and lace.Observer   .item with private;
 
    type View is access all Item'Class;
 
@@ -28,6 +28,7 @@ is
    end Forge;
 
    procedure destroy (Self : in out Item);
+   procedure free    (Self : in out View);
 
    overriding
    function Name (Self : in Item) return String;

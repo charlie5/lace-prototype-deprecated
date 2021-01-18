@@ -1,3 +1,6 @@
+with
+     ada.unchecked_Deallocation;
+
 package body lace.Subject_and_deferred_Observer
 is
    package body Forge
@@ -28,6 +31,15 @@ is
       Deferred.destroy (Deferred.item (Self));   -- Destroy base classes.
       Subject .destroy (Subject .item (Self));
    end destroy;
+
+
+   procedure free (Self : in out View)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
+   begin
+      Self.destroy;
+      deallocate (Self);
+   end free;
 
 
    overriding

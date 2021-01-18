@@ -28,20 +28,21 @@ is
    --
 
    procedure add (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in lace.event.Kind;
+                                        to_Kind      : in event.Kind;
                                         from_Subject : in event.subject_Name) is abstract;
 
    procedure rid (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in lace.event.Kind;
+                                        to_Kind      : in event.Kind;
                                         from_Subject : in event.subject_Name) is abstract;
 
-   procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view) is abstract;
+   procedure relay_responseless_Events
+                 (Self : in out Item;   To : in Observer.view) is abstract;
 
 
    -- Operations
    --
 
-   procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
                                             from_Subject : in event.subject_Name) is abstract;
    --
    -- Accepts an Event from a Subject.
@@ -51,10 +52,10 @@ is
    -- Performs the Response for (and then removes) each pending Event.
 
 
-   --- Logging
+   -- Logging
    --
 
-   procedure Logger_is (Now : access lace.Event.Logger.item'Class);
-   function  Logger    return access lace.Event.Logger.item'Class;
+   procedure Logger_is (Now : access Event.Logger.item'Class);
+   function  Logger    return access Event.Logger.item'Class;
 
 end lace.Observer;

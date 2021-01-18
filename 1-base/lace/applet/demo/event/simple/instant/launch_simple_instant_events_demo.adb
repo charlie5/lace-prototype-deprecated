@@ -6,7 +6,7 @@ with
      lace.Subject .local,
 
      lace.Response,
-     lace.event.Utility.local,
+     lace.Event.utility,
 
      ada.Text_IO,
      ada.Strings.unbounded,
@@ -58,15 +58,15 @@ is
    Now : ada.real_Time.Time := ada.real_Time.Clock;
 
 begin
-   event.Utility.local.use_text_Logger (log_filename => "events_demo");   -- Enable simple text file event logging.
+   event.Utility.use_text_Logger (log_filename => "events_demo");   -- Enable simple text file event logging.
 
 
    the_Subject := lace_demo_Keyboard.as_event_Subject;                    -- Get a reference to the keyboard as an event subject.
 
-   event.Utility.local.connect (the_observer  => Observer.view (the_Observer),   -- Setup our response to a keyboard event.
-                                to_subject    => Subject .view (the_Subject),
-                                with_response => the_Response'unchecked_Access,
-                                to_event_kind => to_Kind (keyboard_Event'Tag));
+   event.Utility.connect (the_observer  => Observer.view (the_Observer),   -- Setup our response to a keyboard event.
+                          to_subject    => Subject .view (the_Subject),
+                          with_response => the_Response'unchecked_Access,
+                          to_event_kind => to_Kind (keyboard_Event'Tag));
    lace_demo_Keyboard.start;
 
    for Each in 1 .. 5
@@ -76,5 +76,5 @@ begin
    end loop;
 
    lace_demo_Keyboard.stop;
-   event.Utility.local.close;            -- Ensure event logging is closed (ie saved to log file).
+   event.Utility.close;            -- Ensure event logging is closed (ie saved to log file).
 end launch_simple_instant_events_Demo;

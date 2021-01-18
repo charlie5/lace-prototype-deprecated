@@ -8,11 +8,11 @@ with
 
 package lace.Observer.instant
 --
---  Provides a concrete instant event Observer.
+--  Provides a concrete instant event observer.
 --
 is
    type Item is limited new Any.limited_item
-                        and Observer.item with private;
+                        and Observer   .item with private;
 
    type View is access all Item'Class;
 
@@ -30,7 +30,7 @@ is
 private
    use ada.Strings.unbounded;
 
-   package Observer is new lace.make_Observer (Any.limited_item);
+   package Observer is new make_Observer (Any.limited_item);
 
    type Item is limited new Observer.item with
       record

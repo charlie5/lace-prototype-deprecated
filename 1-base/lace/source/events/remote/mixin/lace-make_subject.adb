@@ -18,7 +18,7 @@ is
    --
 
    overriding
-   function Observers (Self : in Item;   of_Kind : in lace.event.Kind) return subject.Observer_views
+   function Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
    is
    begin
       return Self.safe_Observers.fetch_Observers (of_Kind);
@@ -38,14 +38,14 @@ is
 
    overriding
    procedure register (Self : access Item;   the_Observer : in Observer.view;
-                                             of_Kind      : in lace.event.Kind)
+                                             of_Kind      : in event.Kind)
    is
    begin
       Self.safe_Observers.add (the_Observer, of_Kind);
 
       if subject.Logger /= null
       then
-         subject.Logger.log_connection (the_Observer,
+         subject.Logger.log_Connection (the_Observer,
                                         Subject.view (Self),
                                         of_Kind);
       end if;
@@ -54,7 +54,7 @@ is
 
    overriding
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
-                                               of_Kind      : in lace.event.Kind)
+                                               of_Kind      : in event.Kind)
    is
    begin
       Self.safe_Observers.rid (the_Observer, of_Kind);
@@ -69,7 +69,7 @@ is
 
 
    overriding
-   procedure emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
    is
       use lace.Event.utility;
       my_Observers : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
@@ -100,7 +100,7 @@ is
 
 
    overriding
-   function emit (Self : access Item;   the_Event : in lace.Event.item'Class := lace.event.null_Event)
+   function emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
                   return subject.Observer_views
    is
       use lace.Event.utility;
@@ -158,7 +158,7 @@ is
 
 
       procedure add (the_Observer : in Observer.view;
-                     of_Kind      : in lace.event.Kind)
+                     of_Kind      : in event.Kind)
       is
          use event_Observer_Vectors,
              event_kind_Maps_of_event_observers;
@@ -180,7 +180,7 @@ is
 
 
       procedure rid (the_Observer : in Observer.view;
-                     of_Kind      : in lace.event.Kind)
+                     of_Kind      : in event.Kind)
       is
          the_event_Observers : event_Observer_Vector renames the_Observers.Element (of_Kind).all;
       begin
@@ -188,14 +188,14 @@ is
       end rid;
 
 
-      function fetch_Observers (of_Kind : in lace.event.Kind) return subject.Observer_views
+      function fetch_Observers (of_Kind : in event.Kind) return subject.Observer_views
       is
       begin
          if the_Observers.Contains (of_Kind)
          then
             declare
                the_event_Observers : constant event_Observer_Vector_view := the_Observers.Element (of_Kind);
-               my_Observers        :          subject.Observer_views (1 .. Integer (the_event_Observers.Length));
+               my_Observers        :          subject.Observer_views (1 .. Natural (the_event_Observers.Length));
             begin
                for Each in my_Observers'Range
                loop
@@ -215,7 +215,7 @@ is
          use event_kind_Maps_of_event_observers;
 
          Cursor : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
-         Count  : Natural                                   := 0;
+         Count  : Natural := 0;
       begin
          while has_Element (Cursor)
          loop

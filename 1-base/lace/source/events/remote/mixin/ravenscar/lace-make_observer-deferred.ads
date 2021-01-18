@@ -16,7 +16,7 @@ with ada.Containers.indefinite_Vectors,
 generic
    type T is abstract new lace.make_Observer.item with private;
 
-package lace.remote.make_Observer.deferred
+package lace.make_Observer.deferred
 --
 -- Makes a user class T into a deferred event Observer.
 --

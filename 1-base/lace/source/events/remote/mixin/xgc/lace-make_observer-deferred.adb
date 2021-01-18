@@ -1,75 +1,52 @@
 with
-     lace.event.Logger,
-     lace.Event.utility;
-with
+     lace.Event.Logger,
+     lace.Event.utility,
      ada.unchecked_Deallocation;
 
 package body lace.make_Observer.deferred
 is
+   procedure free is new ada.unchecked_Deallocation (String, String_view);
+
    overriding
    procedure destroy (Self : in out Item)
    is
-      use subject_Maps_of_safe_events;
-
-      procedure free is new ada.unchecked_Deallocation (safe_Events,
-                                                        safe_Events_view);
-
-      Cursor     : subject_Maps_of_safe_events.Cursor := Self.pending_Events.First;
-      the_Events : safe_Events_view;
    begin
       make_Observer.destroy (make_Observer.item (Self));   -- Destroy base class.
-
-      while has_Element (Cursor)
-      loop
-         the_Events := Element (Cursor);
-         free (the_Events);
-
-         next (Cursor);
-      end loop;
-
-      Self.pending_Events.clear;
+      Self.pending_Events.free;
    end destroy;
 
 
    overriding
-   procedure receive (Self : access Item;   the_Event    : in lace.Event.item'Class := lace.event.null_Event;
-                                            from_Subject : in String)
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+                                            from_Subject : in Event.subject_Name)
    is
    begin
-      if not Self.pending_Events.contains (from_Subject)
-      then
-         Self.pending_Events.insert (from_Subject,
-                                     new safe_Events);
-      end if;
-
-      Self.pending_Events.Element (from_Subject).add (the_Event);
+      Self.pending_Events.add (the_Event, from_Subject);
    end receive;
 
 
    overriding
    procedure respond (Self : access Item)
    is
-      use event_Vectors;
+      use Event_Vectors;
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
-      -- actuate
-      --
       procedure actuate (the_Responses     : in event_response_Map;
-                         the_Events        : in event_Vector;
-                         from_subject_Name : in String)
+                         the_Events        : in Event_Vector;
+                         from_subject_Name : in Event.subject_Name)
       is
-         Cursor : event_Vectors.Cursor := the_Events.First;
+         Cursor : Event_Vectors.Cursor := the_Events.First;
       begin
          while has_Element (Cursor)
          loop
             declare
                use event_response_Maps,
-                   lace.Event.utility,
+                   Event.utility,
                    ada.Containers;
                use type Observer.view;
 
-               the_Event : constant lace.Event.item'Class      := Element (Cursor);
+               the_Event : constant Event.item'Class           := Element (Cursor);
                Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
             begin
                if has_Element (Response)
@@ -90,7 +67,7 @@ is
 
                   if observer.Logger /= null
                   then
-                     observer.Logger.log ("[Warning] ~ Relayed events are currently disabled");
+                     observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
                   else
                      raise program_Error with "Event relaying is currently disabled";
                   end if;
@@ -104,7 +81,7 @@ is
                      observer.Logger.log ("            Count of responses =>"
                                           & Count_type'Image (the_Responses.Length));
                   else
-                     raise program_Error with "Observer " & my_Name & " has no response";
+                     raise program_Error with "Observer " & my_Name & " has no response.";
                   end if;
                end if;
             end;
@@ -113,36 +90,37 @@ is
          end loop;
       end actuate;
 
-      use subject_Maps_of_safe_events;
-      Cursor : subject_Maps_of_safe_events.Cursor := Self.pending_Events.First;
+      the_subject_Events : subject_events_Pairs (1 .. 1_000);
+      Count              : Natural;
 
    begin
-      while has_Element (Cursor)
+      Self.pending_Events.fetch (the_subject_Events, Count);
+
+      for i in 1 .. Count
       loop
          declare
             use subject_Maps_of_event_responses;
 
-            subject_Name : constant String      := Key (Cursor);
-            the_Events   :          event_Vector;
-         begin
-            Self.pending_Events.Element (subject_Name).fetch (the_Events);
+            subject_Name : String_view       := the_subject_Events (i).Subject;
+            the_Events   : Event_vector renames the_subject_Events (i).Events;
 
-            if Self.subject_Responses.contains (subject_Name)
+         begin
+            if Self.subject_Responses.contains (subject_Name.all)
             then
-               actuate (Self.subject_Responses.Element (subject_Name).all,
+               actuate (Self.subject_Responses.Element (subject_Name.all).all,
                         the_Events,
-                        subject_Name);
+                        subject_Name.all);
             else
                if observer.Logger /= null
                then
-                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name);
+                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name.all);
                else
-                  raise program_Error with my_Name & " has no responses for events from " & subject_Name;
+                  raise program_Error with my_Name & " has no responses for events from '" & subject_Name.all & "'";
                end if;
             end if;
-         end;
 
-         next (Cursor);
+            free (subject_Name);
+         end;
       end loop;
 
    end respond;
@@ -151,19 +129,87 @@ is
    protected
    body safe_Events
    is
-      procedure add (the_Event : in lace.Event.item'Class)
+      procedure add (the_Event : in Event.item'Class)
       is
       begin
          the_Events.append (the_Event);
       end add;
 
 
-      procedure fetch (all_Events : out event_Vector)
+      procedure fetch (all_Events : out Event_Vector)
       is
       begin
          all_Events := the_Events;
          the_Events.clear;
       end fetch;
    end safe_Events;
+
+
+   protected
+   body safe_subject_Map_of_safe_events
+   is
+      procedure add (the_Event    : in Event.item'Class;
+                     from_Subject : in String)
+      is
+      begin
+         if not the_Map.contains (from_Subject)
+         then
+            the_Map.insert (from_Subject,
+                            new safe_Events);
+         end if;
+
+         the_Map.Element (from_Subject).add (the_Event);
+      end add;
+
+
+      procedure fetch (all_Events : out subject_events_Pairs;
+                       Count      : out Natural)
+      is
+         use subject_Maps_of_safe_events;
+
+         Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
+         Index  : Natural := 0;
+
+      begin
+         while has_Element (Cursor)
+         loop
+            declare
+               the_Events : Event_vector;
+            begin
+               Element (Cursor).fetch (the_Events);
+
+               Index              := Index + 1;
+               all_Events (Index) := (subject => new String'(Key (Cursor)),
+                                      events  => the_Events);
+            end;
+
+            next (Cursor);
+         end loop;
+
+         Count := Index;
+      end fetch;
+
+
+      procedure free
+      is
+         use subject_Maps_of_safe_events;
+
+         procedure free is new ada.unchecked_Deallocation (safe_Events,
+                                                           safe_Events_view);
+
+         Cursor     : subject_Maps_of_safe_events.Cursor := the_Map.First;
+         the_Events : safe_Events_view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Events := Element (Cursor);
+            free (the_Events);
+
+            next (Cursor);
+         end loop;
+      end free;
+
+   end safe_subject_Map_of_safe_events;
+
 
 end lace.make_Observer.deferred;

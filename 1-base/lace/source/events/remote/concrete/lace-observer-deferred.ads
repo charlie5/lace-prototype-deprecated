@@ -8,11 +8,11 @@ with
 
 package lace.Observer.deferred
 --
---  Provides a concrete deferred event Observer.
+--  Provides a concrete deferred event observer.
 --
 is
    type Item is limited new Any.limited_item
-                        and Observer.item with private;
+                        and Observer   .item with private;
 
    type View is access all Item'Class;
 
@@ -32,7 +32,7 @@ private
    use ada.Strings.unbounded;
 
    package Observer is new lace.make_Observer (Any.limited_item);
-   package Deferred is new Observer.deferred (Observer.item);
+   package Deferred is new Observer.deferred  (Observer.item);
 
    type Item is limited new Deferred.item with
       record
@@ -40,5 +40,3 @@ private
       end record;
 
 end lace.Observer.deferred;
-
-

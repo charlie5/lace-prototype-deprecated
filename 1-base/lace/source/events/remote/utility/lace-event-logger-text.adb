@@ -33,9 +33,9 @@ is
    --
 
    overriding
-   procedure log_Connection (Self : in out Item;   From     : in lace.Observer.view;
-                                                   To       : in lace.Subject .view;
-                                                   for_Kind : in lace.event.Kind)
+   procedure log_Connection (Self : in out Item;   From     : in Observer.view;
+                                                   To       : in Subject .view;
+                                                   for_Kind : in event.Kind)
    is
    begin
       put_Line (Self.File,   "log Connection => "
@@ -72,9 +72,9 @@ is
 
 
    overriding
-   procedure log_Emit (Self : in out Item;   From      : in lace.Subject .view;
-                                             To        : in lace.Observer.view;
-                                             the_Event : in lace.Event.item'Class)
+   procedure log_Emit (Self : in out Item;   From      : in Subject .view;
+                                             To        : in Observer.view;
+                                             the_Event : in Event.item'Class)
    is
 
       function to_Name return String
@@ -102,22 +102,22 @@ is
 
 
    overriding
-   procedure log_Relay (Self : in out Item;   From      : in lace.Observer.view;
-                                              To        : in lace.Observer.view;
-                                              the_Event : in lace.Event.item'Class)
+   procedure log_Relay (Self : in out Item;   From      : in Observer.view;
+                                              To        : in Observer.view;
+                                              the_Event : in Event.item'Class)
    is
    begin
-      put_Line (Self.File,  "log_Relay => "
+      put_Line (Self.File,  "log Relay => "
                            & From.Name & " relays " & Name_of (Kind_of (the_Event))
                            & " to "    & To.Name);
    end log_Relay;
 
 
    overriding
-   procedure log_new_Response (Self : in out Item;   the_Response : in lace.Response.view;
-                                                     of_Observer  : in lace.Observer.item'Class;
-                                                     to_Kind      : in lace.event.Kind;
-                                                     from_Subject : in String)
+   procedure log_new_Response (Self : in out Item;   the_Response : in Response.view;
+                                                     of_Observer  : in Observer.item'Class;
+                                                     to_Kind      : in Event.Kind;
+                                                     from_Subject : in subject_Name)
    is
    begin
       put_Line (Self.File,   "log new Response => "
@@ -129,10 +129,10 @@ is
 
 
    overriding
-   procedure log_rid_Response (Self : in out Item;   the_Response : in lace.Response.view;
-                                                     of_Observer  : in lace.Observer.item'Class;
-                                                     to_Kind      : in lace.event.Kind;
-                                                     from_Subject : in String)
+   procedure log_rid_Response (Self : in out Item;   the_Response : in Response.view;
+                                                     of_Observer  : in Observer.item'Class;
+                                                     to_Kind      : in Event.Kind;
+                                                     from_Subject : in subject_Name)
    is
    begin
       put_Line (Self.File,   "log rid Response => "
@@ -144,10 +144,10 @@ is
 
 
    overriding
-   procedure log_Response (Self : in out Item;   the_Response : in lace.Response.view;
-                                                 of_Observer  : in lace.Observer.view;
-                                                 to_Event     : in lace.Event.item'Class;
-                                                 from_Subject : in String)
+   procedure log_Response (Self : in out Item;   the_Response : in Response.view;
+                                                 of_Observer  : in Observer.view;
+                                                 to_Event     : in Event.item'Class;
+                                                 from_Subject : in subject_Name)
    is
    begin
       if Self.Ignored.contains (to_Kind (to_Event'Tag))
@@ -167,16 +167,15 @@ is
    procedure log (Self : in out Item;   Message : in String)
    is
    begin
-      put_Line (Self.File,  Message);
+      put_Line (Self.File, Message);
    end log;
 
 
    overriding
-   procedure ignore (Self : in out Item;   Kind : in lace.event.Kind)
+   procedure ignore (Self : in out Item;   Kind : in Event.Kind)
    is
    begin
       Self.Ignored.insert (Kind);
    end ignore;
-
 
 end lace.event.Logger.text;
