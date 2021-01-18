@@ -1,5 +1,5 @@
-Lace - a Work in Progress
-=========================
+Lace
+====
 
 - Provides a set of general Ada components intended to ease the development of game, sim and GUI Ada applications.
 - Components range from low-level 'events' and 'math' to high-level 'user interface' (ala GTK and QT).
