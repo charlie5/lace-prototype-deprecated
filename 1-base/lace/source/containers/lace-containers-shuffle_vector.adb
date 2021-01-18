@@ -2,7 +2,7 @@ with
      ada.numerics.discrete_Random;
 
 
-procedure lace.containers.shuffle_Vector (the_Vector : in out vectors.Vector)
+procedure lace.Containers.shuffle_Vector (the_Vector : in out vectors.Vector)
 is
    use type vectors.Index_type;
 begin

@@ -8,7 +8,7 @@ package lace.Event
 is
    pragma Pure;
 
-   subtype subject_Name  is String;
+   subtype  subject_Name is String;
    subtype observer_Name is String;
 
 
@@ -29,7 +29,7 @@ is
    --  Maps to the extended name of 'ada.tags.Tag_type' value of each derived
    --  event class (see 'Conversions' section in 'lace.Event.utility').
 
-   function Hash (the_Kind : in Kind) return ada.containers.Hash_type;
+   function Hash (the_Kind : in Kind) return ada.Containers.Hash_type;
 
 private
    null_Event : constant Event.item := (others => <>);

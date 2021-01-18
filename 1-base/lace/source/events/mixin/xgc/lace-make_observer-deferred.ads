@@ -3,8 +3,8 @@ with
 
 private
 with
-     ada.containers.indefinite_Vectors,
-     ada.containers.indefinite_hashed_Maps,
+     ada.Containers.indefinite_Vectors,
+     ada.Containers.indefinite_hashed_Maps,
      ada.strings.Hash;
 
 generic

@@ -58,7 +58,7 @@ private
    use type event.Kind;
    use type Response.view;
 
-   package event_response_Maps     is new ada.containers.indefinite_hashed_Maps (key_type        => event.Kind,
+   package event_response_Maps     is new ada.Containers.indefinite_hashed_Maps (key_type        => event.Kind,
                                                                                  element_type    => Response.view,
                                                                                  hash            => event.Hash,
                                                                                  equivalent_keys => "=");
@@ -70,7 +70,7 @@ private
    --
 
    package subject_Maps_of_event_responses
-   is new ada.containers.indefinite_hashed_Maps (key_type        => Event.subject_Name,
+   is new ada.Containers.indefinite_hashed_Maps (key_type        => Event.subject_Name,
                                                  element_type    => event_response_Map_view,
                                                  hash            => ada.strings.Hash,
                                                  equivalent_keys => "=");

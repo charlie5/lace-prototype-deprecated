@@ -1,12 +1,12 @@
 with
-     ada.strings.Hash;
+     ada.Strings.Hash;
 
 package body lace.Event
 is
-   function Hash (the_Kind : in Kind) return ada.containers.Hash_type
+   function Hash (the_Kind : in Kind) return ada.Containers.Hash_type
    is
    begin
-      return ada.strings.Hash (String (the_Kind));
+      return ada.Strings.Hash (String (the_Kind));
    end Hash;
 
 end lace.Event;

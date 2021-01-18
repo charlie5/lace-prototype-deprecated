@@ -67,7 +67,7 @@ private
    -- Event kind Maps of event observers
    --
    use type event.Kind;
-   package event_kind_Maps_of_event_observers is new ada.containers.indefinite_hashed_Maps (event.Kind,
+   package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (event.Kind,
                                                                                             event_Observer_Vector_view,
                                                                                             Event.Hash,
                                                                                             "=");

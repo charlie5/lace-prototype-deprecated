@@ -6,7 +6,7 @@ with
 private
 with
      ada.Text_IO,
-     ada.containers.indefinite_hashed_Sets;
+     ada.Containers.indefinite_hashed_Sets;
 
 package lace.event.Logger.text
 --
@@ -78,7 +78,7 @@ is
 
 private
 
-   package event_kind_Sets is new ada.containers.indefinite_hashed_Sets (Event.Kind,
+   package event_kind_Sets is new ada.Containers.indefinite_hashed_Sets (Event.Kind,
                                                                          Event.Hash,
                                                                          "=");
    subtype event_kind_Set  is event_kind_Sets.Set;

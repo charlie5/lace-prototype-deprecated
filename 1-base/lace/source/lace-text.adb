@@ -126,7 +126,7 @@ is
 
 
 
-   function Hashed (Self : in Item) return ada.containers.Hash_type
+   function Hashed (Self : in Item) return ada.Containers.Hash_type
    is
    begin
       return ada.strings.Hash (Self.Data (1 .. Self.Length));
