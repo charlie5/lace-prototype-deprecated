@@ -18,12 +18,12 @@ is
                         "../source",
                         "../source/containers",
                         "../source/events",
-                        "../source/events/remote",
-                        "../source/events/remote/concrete",
-                        "../source/events/remote/interface",
-                        "../source/events/remote/mixin",
-                        "../source/events/remote/mixin/" & external ("restrictions", "xgc"),
-                        "../source/events/remote/utility",
+                        "../source/events",
+                        "../source/events/concrete",
+                        "../source/events/interface",
+                        "../source/events/mixin",
+                        "../source/events/mixin/" & external ("restrictions", "xgc"),
+                        "../source/events/utility",
                         "../source/events/private",
                         "../source/strings");
 
