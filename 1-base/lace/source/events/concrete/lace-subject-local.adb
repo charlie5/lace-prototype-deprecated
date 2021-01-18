@@ -1,6 +1,3 @@
-with
-     ada.unchecked_Deallocation;
-
 package body lace.Subject.local
 is
    package body Forge
@@ -10,7 +7,7 @@ is
       begin
          return Self : Item
          do
-            Self.Name := new event.subject_Name' (Name);
+            Self.Name := to_unbounded_String (Name);
          end return;
       end to_Subject;
 
@@ -27,10 +24,8 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-      procedure free is new ada.unchecked_Deallocation (event.subject_Name, Name_view);
    begin
       Subject.destroy (Subject.item (Self));   -- Destroy base class.
-      free (Self.Name);
    end destroy;
 
 
@@ -38,7 +33,7 @@ is
    function Name (Self : in Item) return event.subject_Name
    is
    begin
-      return Self.Name.all;
+      return to_String (Self.Name);
    end Name;
 
 end lace.Subject.local;

@@ -1,6 +1,9 @@
 with
      lace.make_Subject,
      lace.Any;
+private
+with
+     ada.Strings.unbounded;
 
 package lace.Subject.local
 --
@@ -27,13 +30,13 @@ is
 
 private
 
-   type Name_view is access all event.subject_Name;
+   use ada.Strings.unbounded;
 
    package Subject is new make_Subject (Any.limited_item);
 
    type Item is limited new Subject.item with
       record
-         Name : Name_view;
+         Name : unbounded_String;
       end record;
 
 end lace.Subject.local;
