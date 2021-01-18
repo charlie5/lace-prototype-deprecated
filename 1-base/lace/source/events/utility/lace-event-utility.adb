@@ -43,10 +43,10 @@ is
    -- Connections
    --
 
-   procedure connect (the_Observer  : in lace.Observer.view;
-                      to_Subject    : in lace.Subject .view;
-                      with_Response : in lace.Response.view;
-                      to_Event_Kind : in lace.event.Kind)
+   procedure connect (the_Observer  : in Observer.view;
+                      to_Subject    : in Subject .view;
+                      with_Response : in Response.view;
+                      to_Event_Kind : in event.Kind)
    is
    begin
       the_Observer.add (with_Response,
@@ -58,13 +58,10 @@ is
    end connect;
 
 
-   -- *** ToDo => The following may be useful as a non-remote utility. ***
-   --
-   --
-   procedure disconnect (the_Observer  : in lace.Observer.view;
-                         from_Subject  : in lace.Subject .view;
-                         for_Response  : in lace.Response.view;
-                         to_Event_Kind : in lace.event.Kind;
+   procedure disconnect (the_Observer  : in Observer.view;
+                         from_Subject  : in Subject .view;
+                         for_Response  : in Response.view;
+                         to_Event_Kind : in event.Kind;
                          Subject_Name  : in String)
    is
    begin
@@ -73,7 +70,7 @@ is
                            to_Event_Kind,
                            Subject_Name);
       exception
-         when Storage_Error =>
+         when storage_Error =>
             null;   -- The observer is dead.
       end;
 
@@ -81,8 +78,8 @@ is
          from_Subject.deregister (the_Observer,
                                   to_Event_Kind);
       exception
-            when system.RPC.Communication_Error
-               | Storage_Error =>
+            when system.RPC.communication_Error
+               | storage_Error =>
             null;   -- The subject is dead.
       end;
    end disconnect;
@@ -91,7 +88,7 @@ is
    -- Logging
    --
 
-   the_Logger : lace.event.Logger.text.view;
+   the_Logger : event.Logger.text.view;
 
 
    procedure use_text_Logger (log_Filename : in String)
@@ -116,7 +113,7 @@ is
 
    procedure close
    is
-      use type lace.event.Logger.text.view;
+      use type event.Logger.text.view;
    begin
       if the_Logger /= null
       then

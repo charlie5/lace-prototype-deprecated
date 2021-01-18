@@ -6,7 +6,7 @@ with
 private
 with
      ada.Containers.indefinite_hashed_Maps,
-     ada.strings.Hash;
+     ada.Strings.Hash;
 
 generic
    type T is abstract tagged limited private;
@@ -62,7 +62,7 @@ private
                                                                                  element_type    => Response.view,
                                                                                  hash            => event.Hash,
                                                                                  equivalent_keys => "=");
-   subtype event_response_Map      is event_response_maps.Map;
+   subtype event_response_Map      is event_response_Maps.Map;
    type    event_response_Map_view is access all event_response_Map;
 
 

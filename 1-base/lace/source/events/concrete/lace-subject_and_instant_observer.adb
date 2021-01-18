@@ -11,7 +11,6 @@ is
             Self.Name := to_unbounded_String (Name);
          end return;
       end to_Subject_and_Observer;
-
    end Forge;
 
 

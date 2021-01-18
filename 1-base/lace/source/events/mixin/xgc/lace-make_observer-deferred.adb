@@ -69,7 +69,7 @@ is
                   then
                      observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
                   else
-                     raise program_Error with "Event relaying is currently disabled";
+                     raise program_Error with "Event relaying is currently disabled.";
                   end if;
 
                else
@@ -90,7 +90,7 @@ is
          end loop;
       end actuate;
 
-      the_subject_Events : subject_events_Pairs (1 .. 1_000);
+      the_subject_Events : subject_events_Pairs (1 .. 5_000);
       Count              : Natural;
 
    begin
@@ -113,9 +113,9 @@ is
             else
                if observer.Logger /= null
                then
-                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name.all);
+                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name.all & ".");
                else
-                  raise program_Error with my_Name & " has no responses for events from '" & subject_Name.all & "'";
+                  raise program_Error with my_Name & " has no responses for events from '" & subject_Name.all & "'.";
                end if;
             end if;
 
@@ -179,7 +179,7 @@ is
                Element (Cursor).fetch (the_Events);
 
                Index              := Index + 1;
-               all_Events (Index) := (subject => new String'(Key (Cursor)),
+               all_Events (Index) := (subject => new String' (Key (Cursor)),
                                       events  => the_Events);
             end;
 
@@ -194,8 +194,8 @@ is
       is
          use subject_Maps_of_safe_events;
 
-         procedure free is new ada.unchecked_Deallocation (safe_Events,
-                                                           safe_Events_view);
+         procedure deallocate is new ada.unchecked_Deallocation (safe_Events,
+                                                                 safe_Events_view);
 
          Cursor     : subject_Maps_of_safe_events.Cursor := the_Map.First;
          the_Events : safe_Events_view;
@@ -203,7 +203,7 @@ is
          while has_Element (Cursor)
          loop
             the_Events := Element (Cursor);
-            free (the_Events);
+            deallocate (the_Events);
 
             next (Cursor);
          end loop;

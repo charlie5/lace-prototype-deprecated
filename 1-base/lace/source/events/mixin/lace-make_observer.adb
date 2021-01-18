@@ -82,9 +82,9 @@ is
       when constraint_Error =>
          if observer.Logger /= null
          then
-            observer.Logger.log (my_Name & " has no responses for events from " & from_Subject);
+            observer.Logger.log (my_Name & " has no responses for events from " & from_Subject & ".");
          else
-            raise Program_Error with my_Name & " has no responses for events from " & from_Subject;
+            raise Program_Error with my_Name & " has no responses for events from " & from_Subject & ".";
          end if;
    end receive;
 
@@ -92,7 +92,7 @@ is
    overriding
    procedure add (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in String)
+                                        from_Subject : in Event.subject_Name)
    is
    begin
       if not Self.subject_Responses.contains (from_Subject)
@@ -116,7 +116,7 @@ is
    overriding
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in event.Kind;
-                                        from_Subject : in String)
+                                        from_Subject : in Event.subject_Name)
    is
    begin
       Self.subject_Responses.Element (from_Subject).delete (to_Kind);

@@ -29,15 +29,15 @@ is
    -- Connections
    --
 
-   procedure connect    (the_Observer  : in lace.Observer.view;
-                         to_Subject    : in lace.Subject .view;
-                         with_Response : in lace.Response.view;
-                         to_Event_Kind : in lace.event.Kind);
+   procedure connect    (the_Observer  : in Observer.view;
+                         to_Subject    : in Subject .view;
+                         with_Response : in Response.view;
+                         to_Event_Kind : in event.Kind);
 
-   procedure disconnect (the_Observer  : in lace.Observer.view;
-                         from_Subject  : in lace.Subject .view;
-                         for_Response  : in lace.Response.view;
-                         to_Event_Kind : in lace.event.Kind;
+   procedure disconnect (the_Observer  : in Observer.view;
+                         from_Subject  : in Subject .view;
+                         for_Response  : in Response.view;
+                         to_Event_Kind : in event.Kind;
                          subject_Name  : in String);
    -- Logging
    --

@@ -5,7 +5,7 @@ private
 with
      ada.Containers.indefinite_Vectors,
      ada.Containers.indefinite_hashed_Maps,
-     ada.strings.Hash;
+     ada.Strings.Hash;
 
 generic
    type T is abstract new lace.make_Observer.item with private;
@@ -43,7 +43,7 @@ private
    use type Event.item;
 
    package event_Vectors     is new ada.Containers.indefinite_Vectors (Positive, Event.item'Class);
-   subtype event_Vector      is event_vectors.Vector;
+   subtype event_Vector      is event_Vectors.Vector;
    type    event_Vector_view is access all event_Vector;
 
 
@@ -61,7 +61,7 @@ private
    type safe_Events_view is access all safe_Events;
 
 
-   -- subject Maps of safe events
+   -- Subject Maps of safe Events
    --
    use type event_Vector;
    package subject_Maps_of_safe_events
@@ -71,7 +71,8 @@ private
                                                  equivalent_keys => "=");
    subtype subject_Map_of_safe_events is subject_Maps_of_safe_events.Map;
 
-   -- subject_events_Pairs
+
+   -- Subject Events Pairs
    --
    type String_view is access all String;
 

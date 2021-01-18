@@ -85,6 +85,7 @@ is
                                         my_Observers (Each),
                                         the_Event);
             end if;
+
          exception
             when system.RPC.communication_Error
                | storage_Error =>
@@ -119,6 +120,7 @@ is
                                         my_Observers (Each),
                                         the_Event);
             end if;
+
          exception
             when system.RPC.communication_Error
                | storage_Error =>
@@ -227,5 +229,6 @@ is
       end observer_Count;
 
    end safe_Observers;
+
 
 end lace.make_Subject;

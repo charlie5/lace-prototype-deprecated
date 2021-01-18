@@ -35,24 +35,24 @@ is
    overriding
    procedure log_Connection (Self : in out Item;   From     : in Observer.view;
                                                    To       : in Subject .view;
-                                                   for_Kind : in event.Kind)
+                                                   for_Kind : in Event.Kind)
    is
    begin
       put_Line (Self.File,   "log Connection => "
                            & From.Name & " observes " & To.Name
-                           & " for event kind " & Name_of (for_Kind));
+                           & " for event kind " & Name_of (for_Kind) & ".");
    end log_Connection;
 
 
    overriding
-   procedure log_Disconnection (Self : in out Item;   From     : in lace.Observer.view;
-                                                      To       : in lace.Subject.view;
-                                                      for_Kind : in lace.event.Kind)
+   procedure log_Disconnection (Self : in out Item;   From     : in Observer.view;
+                                                      To       : in Subject.view;
+                                                      for_Kind : in Event.Kind)
    is
 
       function from_Name return String
       is
-         function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
+         function to_Integer is new ada.unchecked_Conversion (Observer.view,
                                                               long_Integer);
       begin
          return From.Name;
@@ -67,7 +67,7 @@ is
                            & from_Name
                            & " no longer observes "
                            & To.Name
-                           & " for event kind " & Name_of (for_Kind));
+                           & " for event kind " & Name_of (for_Kind) & ".");
    end log_Disconnection;
 
 
@@ -97,7 +97,7 @@ is
 
       put_Line (Self.File,   "log Emit => "
                            & From.Name & " sends " & Name_of (Kind_of (the_Event))
-                           & " to "    & to_Name);
+                           & " to "    & to_Name & ".");
    end log_Emit;
 
 
@@ -109,7 +109,7 @@ is
    begin
       put_Line (Self.File,  "log Relay => "
                            & From.Name & " relays " & Name_of (Kind_of (the_Event))
-                           & " to "    & To.Name);
+                           & " to "    & To.Name & ".");
    end log_Relay;
 
 
@@ -139,7 +139,7 @@ is
                            & of_Observer.Name
                            & " no longer responds to " & Name_of (to_Kind)
                            & " from "                  & from_Subject
-                           & " with "                  & the_Response.Name);
+                           & " with "                  & the_Response.Name & ".");
    end log_rid_Response;
 
 
@@ -159,7 +159,7 @@ is
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind (to_Event'Tag))
                            & " from "        & from_Subject
-                           & " with "        & the_Response.Name);
+                           & " with "        & the_Response.Name & ".");
    end log_Response;
 
 
