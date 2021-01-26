@@ -77,11 +77,13 @@ is
                   then
                      observer.Logger.log ("[Warning] ~ Observer "
                                           & my_Name
-                                          & " has no response.");
+                                          & " has no response to " & Name_of (the_Event)
+                                          & " from " & from_subject_Name & ".");
                      observer.Logger.log ("            Count of responses =>"
                                           & Count_type'Image (the_Responses.Length));
                   else
-                     raise program_Error with "Observer " & my_Name & " has no response.";
+                     raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
+                                            & " from " & from_subject_Name & ".";
                   end if;
                end if;
             end;
