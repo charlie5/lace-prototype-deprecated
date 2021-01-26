@@ -77,14 +77,51 @@ private
    subtype subject_Map_of_event_responses is subject_Maps_of_event_responses.Map;
 
 
+   protected
+   type safe_Responses
+   is
+      procedure destroy;
+
+      -- Responses
+      --
+
+      procedure add (Self         : access Item'Class;
+                     the_Response : in     Response.view;
+                     to_Kind      : in     event.Kind;
+                     from_Subject : in     Event.subject_Name);
+
+      procedure rid (Self         : access Item'Class;
+                     the_Response : in     Response.view;
+                     to_Kind      : in     event.Kind;
+                     from_Subject : in     Event.subject_Name);
+
+      procedure relay_responseless_Events (To : in Observer.view);
+
+      function  relay_Target return Observer.view;
+
+      function  Contains (Subject : in Event.subject_Name) return Boolean;
+      function  Element  (Subject : in Event.subject_Name) return event_response_Map;
+
+      -- Operations
+      --
+
+      procedure receive (Self         : access Item'Class;
+                         the_Event    : in     Event.item'Class := event.null_Event;
+                         from_Subject : in     Event.subject_Name);
+
+   private
+      my_Responses : subject_Map_of_event_responses;
+      my_relay_Target : Observer.view;
+   end safe_Responses;
+
+
    -- Observer Item
    --
    type Item is abstract limited new T
                                  and Observer.item
    with
       record
-         subject_Responses : subject_Map_of_event_responses;
-         relay_Target      : Observer.view;
+         Responses : safe_Responses;
       end record;
 
 end lace.make_Observer;

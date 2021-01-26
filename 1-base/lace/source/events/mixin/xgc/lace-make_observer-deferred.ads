@@ -101,6 +101,7 @@ private
       the_Map : subject_Map_of_safe_events;
    end safe_subject_Map_of_safe_events;
 
+
    -- Observer Item
    --
    type Item is abstract limited new T with

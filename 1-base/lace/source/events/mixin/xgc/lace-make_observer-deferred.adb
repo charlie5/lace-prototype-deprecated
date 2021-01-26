@@ -61,7 +61,7 @@ is
                                                    from_subject_Name);
                   end if;
 
-               elsif Self.relay_Target /= null
+               elsif Self.Responses.relay_Target /= null
                then
                   --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
 
@@ -99,15 +99,12 @@ is
       for i in 1 .. Count
       loop
          declare
-            use subject_Maps_of_event_responses;
-
             subject_Name : String_view       := the_subject_Events (i).Subject;
             the_Events   : Event_vector renames the_subject_Events (i).Events;
-
          begin
-            if Self.subject_Responses.contains (subject_Name.all)
+            if Self.Responses.Contains (subject_Name.all)
             then
-               actuate (Self.subject_Responses.Element (subject_Name.all).all,
+               actuate (Self.Responses.Element (subject_Name.all),
                         the_Events,
                         subject_Name.all);
             else
