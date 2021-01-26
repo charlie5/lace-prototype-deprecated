@@ -1,6 +1,5 @@
 with
      lace.Event.Logger.text,
-     lace.Event.conversions,
      ada.unchecked_Deallocation,
      system.RPC;
 
@@ -9,11 +8,11 @@ is
    -- Event Kinds
    --
 
-   function to_Kind (From : in ada.tags.Tag) return lace.event.Kind
+   function to_Kind (From : in ada.Tags.Tag) return lace.event.Kind
    is
-      use lace.Event.conversions;
+      --  use lace.Event.conversions;
    begin
-      return to_event_Kind (From);
+      return event.Kind (ada.Tags.external_Tag (From));  -- to_event_Kind (From);
    end to_Kind;
 
 

@@ -24,7 +24,6 @@ is
                         "../source/events/mixin",
                         "../source/events/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/utility",
-                        "../source/events/private",
                         "../source/strings");
 
    package Compiler renames Lace_shared.Compiler;

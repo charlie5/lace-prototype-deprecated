@@ -15,8 +15,8 @@ is
 
    function Name_of (Kind : in event.Kind)   return String;
 
-   function to_Kind (From : in ada.tags.Tag) return event.Kind;
-   function "+"     (From : in ada.tags.Tag) return event.Kind
+   function to_Kind (From : in ada.Tags.Tag) return event.Kind;
+   function "+"     (From : in ada.Tags.Tag) return event.Kind
                      renames to_Kind;
 
    -- Events
