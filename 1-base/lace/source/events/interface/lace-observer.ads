@@ -17,6 +17,10 @@ is
    type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
 
+   type fast_View  is access all Item'class;
+   type fast_Views is array (Positive range <>) of fast_View;
+   pragma Asynchronous (fast_View);
+
 
    -- Attributes
    --

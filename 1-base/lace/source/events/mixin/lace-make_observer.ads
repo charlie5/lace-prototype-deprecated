@@ -21,7 +21,7 @@ is
    type Item is abstract limited new T
                                  and Observer.item with private;
    type View is access all Item'Class;
-   --   pragma Asynchronous (View);        -- tbd: Needed for lossy events.
+
 
    procedure destroy (Self : in out Item);
 

@@ -26,7 +26,7 @@ is
    --
    --  Each derived event class will have its own Kind.
    --
-   --  Maps to the extended name of 'ada.tags.Tag_type' value of each derived
+   --  Maps to the extended name of 'ada.Tags.Tag_type' value of each derived
    --  event class (see 'Conversions' section in 'lace.Event.utility').
 
    function Hash (the_Kind : in Kind) return ada.Containers.Hash_type;

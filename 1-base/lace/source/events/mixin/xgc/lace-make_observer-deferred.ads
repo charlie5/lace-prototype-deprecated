@@ -20,7 +20,6 @@ is
    type Item is abstract limited new T with private;
    type View is access all Item'Class;
 
-   --   pragma Asynchronous (View);        -- todo: Needed for lossy events.
 
    overriding
    procedure destroy (Self : in out Item);
