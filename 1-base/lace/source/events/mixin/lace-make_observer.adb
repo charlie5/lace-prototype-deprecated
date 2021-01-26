@@ -71,10 +71,12 @@ is
       else
          if observer.Logger /= null
          then
-            observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response.");
+            observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response to " & Name_of (the_Event)
+                                 & " from " & from_Subject & ".");
             observer.Logger.log ("            count of responses =>" & Count_type'Image (the_Responses.Length));
          else
-            raise program_Error with "Observer " & my_Name & " has no response.";
+            raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
+                                 & " from " & from_Subject & ".";
          end if;
       end if;
 
