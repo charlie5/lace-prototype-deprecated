@@ -1,4 +1,5 @@
 with
+     lace.Strings.fixed,
      ada.Strings.hash;
 
 package body lace.Text
@@ -6,20 +7,24 @@ is
    -- Construction
    --
 
-   function to_Text (From : in String) return Item
+   function to_Text (From : in String;
+                    Trim  : in Boolean := False) return Item
    is
    begin
-      return to_Text (From, capacity => From'Length);
+      return to_Text (From, capacity => From'Length, trim => Trim);
    end to_Text;
 
 
    function to_Text (From     : in String;
-                     Capacity : in Natural) return Item
+                     Capacity : in Natural;
+                     Trim     : in Boolean := False) return Item
    is
-      Self : Item (Capacity);
+      the_String : constant String := (if Trim then lace.Strings.fixed.Trim (From, ada.Strings.Both) else From);
+      Self       : Item (Capacity);
    begin
-      Self.Data (1 .. From'Length) := From;
-      Self.Length                  := From'Length;
+      Self.Length                  := the_String'Length;
+      Self.Data (1 .. Self.Length) := the_String;
+
       return Self;
    end to_Text;
 
@@ -90,7 +95,8 @@ is
 
 
 
-   function Tokens (Self : in Item;   Delimiter : in Character) return Text.items_1k
+   function Tokens (Self : in Item;   Delimiter : in Character;
+                                      Trim      : in Boolean := False) return Text.items_1k
    is
       the_Tokens : Text.items_1k (1 .. 2 * 1024);
       Count      : Natural := 0;
@@ -103,7 +109,8 @@ is
          the_Tokens (Count) := to_Text (next_Token (Self,
                                                     Delimiter,
                                                     From),
-                                        capacity => 1024);
+                                        capacity => 1024,
+                                        trim     => Trim);
       end loop;
 
       if         Self.Length > 0

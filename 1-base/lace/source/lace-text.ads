@@ -90,20 +90,26 @@ is
    -- Construction
    --
 
-   function to_Text (From     : in String)  return Item;
    function to_Text (From     : in String;
-                     Capacity : in Natural) return Item;
+                     Trim     : in Boolean := False) return Item;
+
+   function to_Text (From     : in String;
+                     Capacity : in Natural;
+                     Trim     : in Boolean := False) return Item;
 
    -- Attributes
    --
 
-   function  to_String (Self : in     Item)     return String;
    procedure String_is (Self : in out Item;   Now : in String);
+   function  to_String (Self : in     Item)     return String;
+   function  "+"       (Self : in     Item)     return String
+     renames to_String;
 
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
 
-   function  Tokens    (Self : in Item;   Delimiter : in Character) return Text.items_1k;
+   function  Tokens    (Self : in Item;   Delimiter : in Character;
+                                          Trim      : in Boolean := False) return Text.items_1k;
    function  Hashed    (Self : in Item) return ada.Containers.Hash_type;
 
    overriding
