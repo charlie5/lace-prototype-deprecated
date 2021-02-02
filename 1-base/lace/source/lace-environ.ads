@@ -57,7 +57,8 @@ is
    --- Files
    --
    procedure save          (the_Text : in String;
-                            Filename : in String);
+                            Filename : in String;
+                            Binary   : in Boolean := False);
 
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;

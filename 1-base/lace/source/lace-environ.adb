@@ -9,6 +9,7 @@ with
      ada.Strings.fixed,
      ada.Directories,
      ada.environment_Variables,
+     ada.Direct_IO,
      ada.Text_IO;
 
 
@@ -475,13 +476,31 @@ is
 
 
    procedure save (the_Text : in String;
-                   Filename : in String)
+                   Filename : in String;
+                   Binary   : in Boolean := False)
    is
-      File : File_Type;
    begin
-      create (File, out_File, Filename);
-      put    (File, the_Text);
-      close  (File);
+      if Binary
+      then
+         declare
+            type binary_String is new String (the_Text'Range);
+            package Binary_IO is new ada.Direct_IO (binary_String);
+            use Binary_IO;
+            File : Binary_IO.File_Type;
+         begin
+            create (File, out_File, Filename);
+            write  (File, binary_String (the_Text));
+            close  (File);
+         end;
+      else
+         declare
+            File : File_Type;
+         begin
+            create (File, out_File, Filename);
+            put    (File, the_Text);
+            close  (File);
+         end;
+      end if;
    end save;
 
 
