@@ -511,23 +511,21 @@ is
           gnat.Expect,
           gnat.Strings;
    begin
-      if Tail (Filename, 7) = ".tar.gz"
+      if   Tail (Filename, 7) = ".tar.gz"
+        or Tail (Filename, 4) = ".tgz"
       then
          declare
-            tar_Options  : String_access := new String'("-xf");
-            tar_Filename : String_access := new String'(Filename);
+            tar_Options  : aliased String := (if Tail (Filename, 4) = ".tgz" then "-xzvf" else "-xf");
+            tar_Filename : aliased String := Filename;
 
             Status : aliased  Integer;
             Output : constant String := get_Command_Output (command    => "tar",
-                                                            arguments  => (1 => tar_Options,
-                                                                           2 => tar_Filename),
+                                                            arguments  => (1 => tar_Options 'unchecked_Access,
+                                                                           2 => tar_Filename'unchecked_Access),
                                                             input      => "",
                                                             status     => Status'Access,
                                                             err_to_out => True);
          begin
-            free (tar_Options);
-            free (tar_Filename);
-
             if Status /= 0
             then
                raise Error with "tar: (" & Integer'Image (Status) & ") " & Output;
@@ -537,17 +535,15 @@ is
       elsif Tail (Filename, 8) = ".tar.bz2"
       then
          declare
-            bunzip_Filename : String_access := new String'(Filename);
+            bunzip_Filename : aliased String := Filename;
 
             Status : aliased  Integer;
             Output : constant String := get_Command_Output (command    => "bunzip2",
-                                                            arguments  => (1 => bunzip_Filename),
+                                                            arguments  => (1 => bunzip_Filename'unchecked_Access),
                                                             input      => "",
                                                             status     => Status'Access,
                                                             err_to_out => True);
          begin
-            free (bunzip_Filename);
-
             if Status /= 0
             then
                raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
@@ -555,61 +551,17 @@ is
          end;
 
          declare
-            tar_Options  : String_access := new String'("-xf");
-            tar_Filename : String_access := new String'(Head (Filename, Filename'Length - 4));
+            tar_Options  : aliased String := "-xf";
+            tar_Filename : aliased String := Head (Filename, Filename'Length - 4);
 
             Status : aliased  Integer;
             Output : constant String := get_Command_Output (command    => "gtar",
-                                                            arguments  => (1 => tar_Options,
-                                                                           2 => tar_Filename),
+                                                            arguments  => (1 => tar_Options 'unchecked_Access,
+                                                                           2 => tar_Filename'unchecked_Access),
                                                             input      => "",
                                                             status     => Status'Access,
                                                             err_to_out => True);
          begin
-            free (tar_Options);
-            free (tar_Filename);
-
-            if Status /= 0
-            then
-               raise Error with "gtar: (" & Integer'Image (Status) & ") " & Output;
-            end if;
-         end;
-
-      elsif Tail (Filename, 4) = ".tgz"
-      then
-         declare
-            gunzip_Filename : String_access := new String'(Filename);
-
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => "gunzip",
-                                                            arguments  => (1 => gunzip_Filename),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            free (gunzip_Filename);
-
-            if Status /= 0
-            then
-               raise Error with "gunzip: (" & Integer'Image (Status) & ") " & Output;
-            end if;
-         end;
-
-         declare
-            tar_Options  : String_access := new String'("-xf");
-            tar_Filename : String_access := new String'(Head (Filename, Filename'Length - 4) & ".tar");
-
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => "gtar",
-                                                            arguments  => (1 => tar_Options,
-                                                                           2 => tar_Filename),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            free (tar_Options);
-            free (tar_Filename);
-
             if Status /= 0
             then
                raise Error with "gtar: (" & Integer'Image (Status) & ") " & Output;
