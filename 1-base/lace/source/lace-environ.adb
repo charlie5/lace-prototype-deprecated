@@ -568,6 +568,8 @@ is
             end if;
          end;
 
+      else
+         raise Error with "Unknown compression kind of '" & Filename & "'";
       end if;
 
    end decompress;
