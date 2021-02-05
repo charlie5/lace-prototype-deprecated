@@ -6,11 +6,14 @@ with
      gnat.OS_Lib,
      gnat.Strings,
 
+     Shell,
+
      ada.Strings.fixed,
      ada.Directories,
      ada.environment_Variables,
      ada.Direct_IO,
-     ada.Text_IO;
+     ada.Text_IO,
+     ada.Exceptions;
 
 
 package body lace.Environ
@@ -210,6 +213,27 @@ is
 
    end Output_of;
 
+
+   procedure run (command_Line : in String;
+                  Input        : in String := "")
+   is
+   begin
+      Shell.run (command_Line, Input);
+   exception
+      when E : Shell.command_Error =>
+         raise Error with ada.Exceptions.Exception_Message (E);
+   end run;
+
+
+   function run (command_Line : in String;
+                 Input        : in String := "") return String
+   is
+   begin
+      return Shell.Output_of (command_Line, Input);
+   exception
+      when E : Shell.command_Error =>
+         raise Error with ada.Exceptions.Exception_Message (E);
+   end run;
 
 
    function Expand (File_GLOB : in String) return String

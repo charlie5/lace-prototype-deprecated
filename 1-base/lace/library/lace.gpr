@@ -1,6 +1,7 @@
 with 
    "florist",
-   "lace_shared";
+   "lace_shared",
+   "ashell";
 
 project Lace
 is

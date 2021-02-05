@@ -15,6 +15,17 @@ is
    function       Output_of (Command : in String;
                              Input   : in String := "") return String;
 
+   procedure run (command_Line : in String;
+                  Input        : in String := "");
+   --
+   -- Discards any output. Error is raised when the command fails.
+
+   function  run (command_Line : in String;
+                  Input        : in String := "") return String;
+   --
+   -- Returns any output. Error is raised when the command fails.
+
+
    --- Users
    --
    procedure add_User       (Name  : in String;
