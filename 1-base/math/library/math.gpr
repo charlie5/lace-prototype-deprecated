@@ -27,7 +27,7 @@ project Math is
    end Binder;
 
    package Builder is
-      for Default_Switches ("ada") use ("-lpthread", "-x");
+      for Default_Switches ("ada") use ("-x");
    end Builder;
 
 end Math;
