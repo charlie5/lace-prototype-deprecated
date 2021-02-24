@@ -6,7 +6,7 @@ with
      gnat.OS_Lib,
      gnat.Strings,
 
-     Shell,
+     Shell.Commands,
 
      ada.Strings.fixed,
      ada.Directories,
@@ -217,10 +217,11 @@ is
    procedure run (command_Line : in String;
                   Input        : in String := "")
    is
+      use Shell;
    begin
-      Shell.run (command_Line, Input);
+      Commands.run (command_Line, +Input);
    exception
-      when E : Shell.command_Error =>
+      when E : Commands.command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
    end run;
 
@@ -228,12 +229,30 @@ is
    function run (command_Line : in String;
                  Input        : in String := "") return String
    is
+      use Shell,
+          Shell.Commands;
+      Results : constant Command_Results := run (command_Line, +Input);
    begin
-      return Shell.Output_of (command_Line, Input);
+      return +Output_of (Results);
    exception
-      when E : Shell.command_Error =>
+      when E : Commands.command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
    end run;
+
+
+   function  run (command_Line : in String;
+                  Input        : in String := "") return ada.Streams.Stream_Element_Array
+   is
+      use Shell,
+          Shell.Commands;
+      the_Command : Command := to_Command (command_Line);
+   begin
+      return Output_of (run (The_Command, +Input));
+   exception
+      when E : command_Error =>
+         raise Error with ada.Exceptions.Exception_Message (E);
+   end run;
+
 
 
    function Expand (File_GLOB : in String) return String
@@ -527,6 +546,19 @@ is
       end if;
    end save;
 
+
+   procedure save (the_Text : in Ada.Streams.Stream_Element_Array;
+                   Filename : in String)
+   is
+      type Element_Array is new Ada.Streams.Stream_Element_Array (the_Text'Range);
+      package Binary_IO is new ada.Direct_IO (Element_Array);
+      use Binary_IO;
+      File : Binary_IO.File_Type;
+   begin
+      create (File, out_File, Filename);
+      write  (File, Element_Array (the_Text));
+      close  (File);
+   end save;
 
 
    procedure decompress (Filename : in String)

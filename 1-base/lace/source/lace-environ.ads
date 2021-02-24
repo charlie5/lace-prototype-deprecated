@@ -1,5 +1,6 @@
 with
-     posix.Permissions;
+     posix.Permissions,
+     ada.Streams;
 
 package lace.Environ
 --
@@ -25,6 +26,10 @@ is
    --
    -- Returns any output. Error is raised when the command fails.
 
+   function  run (command_Line : in String;
+                  Input        : in String := "") return ada.Streams.Stream_Element_Array;
+   --
+   -- Returns any output. Error is raised when the command fails.
 
    --- Users
    --
@@ -70,6 +75,9 @@ is
    procedure save          (the_Text : in String;
                             Filename : in String;
                             Binary   : in Boolean := False);
+
+   procedure save          (the_Text : in Ada.Streams.Stream_Element_Array;
+                            Filename : in String);
 
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
