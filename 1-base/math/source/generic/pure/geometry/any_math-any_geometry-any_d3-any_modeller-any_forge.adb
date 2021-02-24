@@ -359,13 +359,13 @@ is
       begin
          while has_Element (Cursor)
          loop
-            the_Value := get_Integer (Cursor'Access);
+            the_Value := get_Integer (Cursor);
             exit when the_Value = 360;
 
             the_Longitude := longitude (the_Value);
-            the_Latitude  := latitude  (get_Integer (Cursor'access));
+            the_Latitude  := latitude  (get_Integer (Cursor));
 
-            the_Distance  := Real  (get_Real (Cursor'Access)); -- * 0.1; --1.0;
+            the_Distance  := Real  (get_Real (Cursor)); -- * 0.1; --1.0;
 
             skip_White (Cursor);
 
