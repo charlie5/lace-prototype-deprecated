@@ -8,6 +8,9 @@ package lace.Environ
 --
 is
 
+   subtype Data is ada.Streams.Stream_Element_Array;
+
+
    --- OS Commands
    --
    function Path_to         (Command : in String)       return String;
@@ -27,7 +30,7 @@ is
    -- Returns any output. Error is raised when the command fails.
 
    function  run (command_Line : in String;
-                  Input        : in String := "") return ada.Streams.Stream_Element_Array;
+                  Input        : in String := "") return Data;
    --
    -- Returns any output. Error is raised when the command fails.
 
@@ -76,7 +79,7 @@ is
                             Filename : in String;
                             Binary   : in Boolean := False);
 
-   procedure save          (the_Text : in Ada.Streams.Stream_Element_Array;
+   procedure save          (the_Data : in Data;
                             Filename : in String);
 
    procedure touch         (Filename    : in String);

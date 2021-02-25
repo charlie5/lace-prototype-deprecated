@@ -241,7 +241,7 @@ is
 
 
    function  run (command_Line : in String;
-                  Input        : in String := "") return ada.Streams.Stream_Element_Array
+                  Input        : in String := "") return Data
    is
       use Shell,
           Shell.Commands;
@@ -547,16 +547,16 @@ is
    end save;
 
 
-   procedure save (the_Text : in Ada.Streams.Stream_Element_Array;
+   procedure save (the_Data : in Data;
                    Filename : in String)
    is
-      type Element_Array is new Ada.Streams.Stream_Element_Array (the_Text'Range);
-      package Binary_IO is new ada.Direct_IO (Element_Array);
+      type Element_Array is new Data (the_Data'Range);
+      package Binary_IO  is new ada.Direct_IO (Element_Array);
       use Binary_IO;
       File : Binary_IO.File_Type;
    begin
       create (File, out_File, Filename);
-      write  (File, Element_Array (the_Text));
+      write  (File, Element_Array (the_Data));
       close  (File);
    end save;
 
