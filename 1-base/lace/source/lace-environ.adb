@@ -565,7 +565,7 @@ is
    is
    begin
       ada.Directories.delete_File (Named);
-   end;
+   end rid_File;
 
 
    procedure decompress (Filename : in String)
@@ -732,11 +732,11 @@ is
 
 
 
-   procedure remove_Folder (Named : in String)
+   procedure rid_Folder (Named : in String)
    is
    begin
       ada.Directories.delete_Tree (Named);
-   end remove_Folder;
+   end rid_Folder;
 
 
 

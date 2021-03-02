@@ -61,7 +61,7 @@ is
                             Lock   : in Boolean := False);  -- Blocks further folder changes until 'unlock_Folder' is called.
    procedure unlock_Folder;
 
-   procedure remove_Folder (Named  : in String);
+   procedure    rid_Folder (Named  : in String);
    procedure verify_Folder (Named  : in String);
 
    procedure change_Mode   (Folder : in String;
