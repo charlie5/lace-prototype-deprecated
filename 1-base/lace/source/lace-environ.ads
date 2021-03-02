@@ -82,6 +82,8 @@ is
    procedure save          (the_Data : in Data;
                             Filename : in String);
 
+   procedure rid_File      (Named  : in String);
+
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
    function  Expand        (File_GLOB   : in String) return String;
