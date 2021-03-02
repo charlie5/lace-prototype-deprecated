@@ -561,6 +561,16 @@ is
    end save;
 
 
+   procedure move_File (Named : in String;   To : in String)
+   is
+   begin
+      --  ada.Directories.rename (Named, To);   -- This appears not to work when using full paths.
+
+      ada.Directories.copy_File (Named, To);
+      rid_File (Named);
+   end move_File;
+
+
    procedure rid_File (Named  : in String)
    is
    begin
