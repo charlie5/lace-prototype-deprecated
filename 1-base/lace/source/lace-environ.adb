@@ -687,7 +687,6 @@ is
    end folder_Lock;
 
 
-
    procedure goto_Folder (Named : in String;
                           Lock  : in Boolean := False)
    is
@@ -709,6 +708,34 @@ is
    end unlock_Folder;
 
 
+   procedure push_Folder (Context     : in out Environ.Context;
+                          goto_Folder : in     String)
+   is
+   begin
+      Context.folder_Stack.append (current_Folder);
+      Environ.goto_Folder (goto_Folder);
+   end push_Folder;
+
+
+   procedure pop_Folder (Context : in out Environ.Context)
+   is
+   begin
+      if Context.folder_Stack.is_Empty
+      then
+         raise Error with "'pop_Folder': No prior folder exists.";
+      end if;
+
+      declare
+         prior_Folder : constant String := Context.folder_Stack.last_Element;
+      begin
+         Context.folder_Stack.delete_Last;
+         goto_Folder (prior_Folder);
+      end;
+   end pop_Folder;
+
+
+   --- Users
+   --
 
    function current_User return String
    is

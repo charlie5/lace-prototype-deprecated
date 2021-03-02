@@ -2,6 +2,10 @@ with
      posix.Permissions,
      ada.Streams;
 
+private
+with
+     ada.Containers.indefinite_Vectors;
+
 package lace.Environ
 --
 -- A singleton which models an operating system environment.
@@ -9,6 +13,8 @@ package lace.Environ
 is
 
    subtype Data is ada.Streams.Stream_Element_Array;
+
+   type Context is limited private;
 
 
    --- OS Commands
@@ -61,6 +67,10 @@ is
                             Lock   : in Boolean := False);  -- Blocks further folder changes until 'unlock_Folder' is called.
    procedure unlock_Folder;
 
+   procedure   push_Folder (Context     : in out Environ.Context;
+                            goto_Folder : in     String);
+   procedure    pop_Folder (Context     : in out Environ.Context);
+
    procedure    rid_Folder (Named  : in String);
    procedure verify_Folder (Named  : in String);
    --
@@ -95,5 +105,19 @@ is
    --- Exceptions
    --
    Error : exception;
+
+
+
+private
+
+   use ada.Containers;
+
+   package String_Vectors is new indefinite_Vectors (Positive, String);
+   subtype String_Vector  is String_Vectors.Vector;
+
+   type Context is limited
+      record
+         folder_Stack : String_Vector;
+      end record;
 
 end lace.Environ;
