@@ -63,6 +63,8 @@ is
 
    procedure    rid_Folder (Named  : in String);
    procedure verify_Folder (Named  : in String);
+   --
+   -- Ensure that the folder exists.
 
    procedure change_Mode   (Folder : in String;
                             To     : in String);
