@@ -561,6 +561,13 @@ is
    end save;
 
 
+   procedure rid_File (Named  : in String)
+   is
+   begin
+      ada.Directories.delete_File (Named);
+   end;
+
+
    procedure decompress (Filename : in String)
    is
       use ada.Strings.fixed,
