@@ -240,8 +240,8 @@ is
    end run;
 
 
-   function  run (command_Line : in String;
-                  Input        : in String := "") return Data
+   function run (command_Line : in String;
+                 Input        : in String := "") return Data
    is
       use Shell,
           Shell.Commands;
@@ -576,6 +576,13 @@ is
    begin
       ada.Directories.delete_File (Named);
    end rid_File;
+
+
+   procedure compress (Filename : in String)
+   is
+   begin
+      null;
+   end compress;
 
 
    procedure decompress (Filename : in String)

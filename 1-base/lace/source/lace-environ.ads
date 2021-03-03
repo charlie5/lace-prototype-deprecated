@@ -40,6 +40,7 @@ is
    --
    -- Returns any output. Error is raised when the command fails.
 
+
    --- Users
    --
    procedure add_User       (Name  : in String;
@@ -87,20 +88,22 @@ is
 
    --- Files
    --
-   procedure save          (the_Text : in String;
-                            Filename : in String;
-                            Binary   : in Boolean := False);
+   procedure save (the_Text : in String;
+                   Filename : in String;
+                   Binary   : in Boolean := False);
 
-   procedure save          (the_Data : in Data;
-                            Filename : in String);
+   procedure save (the_Data : in Data;
+                   Filename : in String);
 
    procedure move_File     (Named    : in String;   To : in String);
-   procedure rid_File      (Named    : in String);
+   procedure  rid_File     (Named    : in String);
 
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
    function  Expand        (File_GLOB   : in String) return String;
-   procedure decompress    (Filename    : in String);
+
+   procedure   compress    (Filename : in String);
+   procedure decompress    (Filename : in String);
 
 
    --- Exceptions
