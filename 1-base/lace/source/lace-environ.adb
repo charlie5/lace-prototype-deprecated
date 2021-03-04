@@ -732,6 +732,22 @@ is
    end decompress;
 
 
+   function format_Suffix (Format : Environ.Format) return String
+   is
+   begin
+      case Format
+      is
+         when Tar     =>   return ".tar";
+         when Tar_Bz2 =>   return ".tar.bz2";
+         when Tar_Gz  =>   return ".tar.gz";
+         when Tar_Xz  =>   return ".tar.xz";
+         when Bz2     =>   return ".bz2";
+         when Gz      =>   return ".gz";
+         when Xz      =>   return ".xz";
+      end case;
+   end format_Suffix;
+
+
    --- Paths
    --
 

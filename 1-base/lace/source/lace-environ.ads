@@ -115,6 +115,7 @@ is
                          the_Level  : in Level  := 6);
    procedure decompress (Filename   : in String);
 
+   function  format_Suffix (Format : Environ.Format) return String;
 
    --- Exceptions
    --
