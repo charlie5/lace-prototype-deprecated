@@ -571,7 +571,8 @@ is
    procedure move_File (Named : in String;   To : in String)
    is
    begin
-      --  ada.Directories.rename (Named, To);   -- This appears not to work when using full paths.
+      -- 'Ada.Directories.Rename' fails when the file is moved across a device.
+      -- For instance     Rename ("/tmp/a_file", "/home/user/a_file");
 
       ada.Directories.copy_File (Named, To);
       rid_File (Named);
