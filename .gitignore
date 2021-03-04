@@ -36,3 +36,5 @@ launch_simple_chat_registrar
 **/assets/mmi
 
 old-events
+
+test_environ_compression
