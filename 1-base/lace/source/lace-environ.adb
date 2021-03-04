@@ -214,7 +214,7 @@ is
    end Output_of;
 
 
-   procedure run (command_Line : in String;
+   procedure run_OS (command_Line : in String;
                   Input        : in String := "")
    is
       use Shell;
@@ -223,10 +223,10 @@ is
    exception
       when E : Commands.command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
-   end run;
+   end run_OS;
 
 
-   function run (command_Line : in String;
+   function run_OS (command_Line : in String;
                  Input        : in String := "") return String
    is
       use Shell,
@@ -237,10 +237,10 @@ is
    exception
       when E : Commands.command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
-   end run;
+   end run_OS;
 
 
-   function run (command_Line : in String;
+   function run_OS (command_Line : in String;
                  Input        : in String := "") return Data
    is
       use Shell,
@@ -251,7 +251,7 @@ is
    exception
       when E : command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
-   end run;
+   end run_OS;
 
 
 

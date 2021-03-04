@@ -25,18 +25,18 @@ is
    function       Output_of (Command : in String;
                              Input   : in String := "") return String;
 
-   procedure run (command_Line : in String;
-                  Input        : in String := "");
+   procedure run_OS (command_Line : in String;
+                     Input        : in String := "");
    --
    -- Discards any output. Error is raised when the command fails.
 
-   function  run (command_Line : in String;
-                  Input        : in String := "") return String;
+   function  run_OS (command_Line : in String;
+                     Input        : in String := "") return String;
    --
    -- Returns any output. Error is raised when the command fails.
 
-   function  run (command_Line : in String;
-                  Input        : in String := "") return Data;
+   function  run_OS (command_Line : in String;
+                     Input        : in String := "") return Data;
    --
    -- Returns any output. Error is raised when the command fails.
 
