@@ -590,12 +590,23 @@ is
       use ada.Strings.fixed,
           gnat.Expect,
           gnat.Strings;
+
+      is_Tar     : constant Boolean :=    Tail (Filename, 4) = ".tar";
+      is_Tar_Bz2 : constant Boolean :=    Tail (Filename, 8) = ".tar.bz2";
+      is_Tar_Gz  : constant Boolean :=    Tail (Filename, 7) = ".tar.gz"
+                                       or Tail (Filename, 4) = ".tgz";
+      is_Bz2     : constant Boolean :=    Tail (Filename, 4) = ".bz2";
+
    begin
-      if   Tail (Filename, 7) = ".tar.gz"
-        or Tail (Filename, 4) = ".tgz"
+      if   is_Tar
+        or is_Tar_Bz2
+        or is_Tar_Gz
       then
          declare
-            tar_Options  : aliased String := (if Tail (Filename, 4) = ".tgz" then "-xzvf" else "-xf");
+            tar_Options  : aliased String := (if    is_Tar     then "-xf"
+                                              elsif is_Tar_Bz2 then "-xjf"
+                                              elsif is_Tar_Gz  then "-xzf"
+                                              else  raise program_Error);
             tar_Filename : aliased String := Filename;
 
             Status : aliased  Integer;
@@ -612,7 +623,7 @@ is
             end if;
          end;
 
-      elsif Tail (Filename, 8) = ".tar.bz2"
+      elsif is_Bz2
       then
          declare
             bunzip_Filename : aliased String := Filename;
@@ -630,23 +641,6 @@ is
             end if;
          end;
 
-         declare
-            tar_Options  : aliased String := "-xf";
-            tar_Filename : aliased String := Head (Filename, Filename'Length - 4);
-
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => "gtar",
-                                                            arguments  => (1 => tar_Options 'unchecked_Access,
-                                                                           2 => tar_Filename'unchecked_Access),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            if Status /= 0
-            then
-               raise Error with "gtar: (" & Integer'Image (Status) & ") " & Output;
-            end if;
-         end;
 
       else
          raise Error with "Unknown compression kind of '" & Filename & "'";
