@@ -568,6 +568,13 @@ is
    end save;
 
 
+   procedure copy_File (Named : in String;   To : in String)
+   is
+   begin
+      ada.Directories.copy_File (Named, To);
+   end copy_File;
+
+
    procedure move_File (Named : in String;   To : in String)
    is
    begin
@@ -575,7 +582,7 @@ is
       -- For instance     Rename ("/tmp/a_file", "/home/user/a_file");
 
       ada.Directories.copy_File (Named, To);
-      rid_File (Named);
+      rid_File  (Named);
    end move_File;
 
 
