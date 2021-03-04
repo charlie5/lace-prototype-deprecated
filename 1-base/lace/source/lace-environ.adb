@@ -635,8 +635,8 @@ is
 
 
    procedure compress (Path       : in String;
-                       the_Format : in Format := Xz;
-                       the_Level  : in Level  := 6)
+                       the_Format : in compress_Format := Xz;
+                       the_Level  : in compress_Level  := 6)
    is
       function level_Flag return String
       is
@@ -644,7 +644,7 @@ is
              ada.Strings.fixed;
       begin
          return " -"
-              & Trim (Level'Image (the_Level),
+              & Trim (compress_Level'Image (the_Level),
                       Left)
               & " ";
       end level_Flag;
@@ -712,7 +712,7 @@ is
    is
       use ada.Strings.fixed;
 
-      the_Format : constant Format := (if    Tail (Filename, 4) = ".tar"     then Tar
+      the_Format : constant compress_Format := (if    Tail (Filename, 4) = ".tar"     then Tar
                                        elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
                                        elsif Tail (Filename, 7) = ".tar.gz"
                                           or Tail (Filename, 4) = ".tgz"     then Tar_Gz
@@ -775,7 +775,7 @@ is
    end decompress;
 
 
-   function format_Suffix (Format : Environ.Format) return String
+   function format_Suffix (Format : Environ.compress_Format) return String
    is
    begin
       case Format
