@@ -534,9 +534,9 @@ is
       then
          declare
             type binary_String is new String (the_Text'Range);
-            package Binary_IO is new ada.Direct_IO (binary_String);
-            use Binary_IO;
-            File : Binary_IO.File_Type;
+            package Binary_IO  is new ada.Direct_IO (binary_String);
+            use     Binary_IO;
+            File :  File_Type;
          begin
             create (File, out_File, Filename);
             write  (File, binary_String (the_Text));
@@ -559,13 +559,54 @@ is
    is
       type Element_Array is new Data (the_Data'Range);
       package Binary_IO  is new ada.Direct_IO (Element_Array);
-      use Binary_IO;
-      File : Binary_IO.File_Type;
+      use     Binary_IO;
+      File :  File_Type;
    begin
       create (File, out_File, Filename);
       write  (File, Element_Array (the_Data));
       close  (File);
    end save;
+
+
+   function load (Filename : in String) return String
+   is
+      Size : constant ada.Directories.File_Size := ada.Directories.Size (Filename);
+
+      type my_String is new String (1 .. Natural (Size));
+
+      package String_IO is new ada.Direct_IO (my_String);
+      use     String_IO;
+
+      File   : File_Type;
+      Result : my_String;
+   begin
+      open  (File, in_File, Filename);
+      read  (File, Result);
+      close (File);
+
+      return String (Result);
+   end load;
+
+
+   function load (Filename : in String) return Data
+   is
+      use ada.Streams;
+      Size : constant ada.Directories.File_Size := ada.Directories.Size (Filename);
+
+      type Element_Array is new Data (0 .. Stream_Element_Offset (Size) - 1);
+
+      package Binary_IO  is new ada.Direct_IO (Element_Array);
+      use     Binary_IO;
+
+      File   : Binary_IO.File_Type;
+      Result : Element_Array;
+   begin
+      open  (File, out_File, Filename);
+      read  (File, Result);
+      close (File);
+
+      return Data (Result);
+   end load;
 
 
    procedure copy_File (Named : in String;   To : in String)

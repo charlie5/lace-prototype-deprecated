@@ -96,6 +96,9 @@ is
    procedure save (the_Data : in Data;
                    Filename : in String);
 
+   function  load (Filename : in String) return String;
+   function  load (Filename : in String) return Data;
+
    procedure copy_File     (Named    : in String;   To : in String);
    procedure move_File     (Named    : in String;   To : in String);
    procedure  rid_File     (Named    : in String);
