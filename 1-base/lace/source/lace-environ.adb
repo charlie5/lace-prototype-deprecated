@@ -215,7 +215,7 @@ is
 
 
    procedure run_OS (command_Line : in String;
-                  Input        : in String := "")
+                     Input        : in String := "")
    is
       use Shell;
    begin
@@ -227,13 +227,21 @@ is
 
 
    function run_OS (command_Line : in String;
-                 Input        : in String := "") return String
+                    Input        : in String  := "";
+                    add_Errors   : in Boolean := True) return String
    is
       use Shell,
           Shell.Commands;
       Results : constant Command_Results := run (command_Line, +Input);
+      Output  : constant String          := +Output_of (Results);
    begin
-      return +Output_of (Results);
+      if add_Errors
+      then
+         return Output & (+Errors_of (Results));
+      else
+         return Output;
+      end if;
+
    exception
       when E : Commands.command_Error =>
          raise Error with ada.Exceptions.Exception_Message (E);
@@ -241,7 +249,7 @@ is
 
 
    function run_OS (command_Line : in String;
-                 Input        : in String := "") return Data
+                    Input        : in String := "") return Data
    is
       use Shell,
           Shell.Commands;
@@ -292,7 +300,6 @@ is
          return Output;
       end;
    end Expand;
-
 
 
    procedure set_Password (User : in String)
@@ -578,7 +585,8 @@ is
    end rid_File;
 
 
-   procedure compress (Filename : in String)
+   procedure compress (Path   : in String;
+                       Format : in String := "")
    is
    begin
       null;
@@ -591,12 +599,13 @@ is
           gnat.Expect,
           gnat.Strings;
 
-      type Format is (Tar, Tar_Bz2, Tar_Gz, Bz2);
+      type Format is (Tar, Tar_Bz2, Tar_Gz, Bz2, Gz, Xz);
 
       the_Format : constant Format := (if    Tail (Filename, 4) = ".tar"     then Tar
                                        elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
                                        elsif Tail (Filename, 7) = ".tar.gz"
-                                       or Tail (Filename, 4) = ".tgz"     then Tar_Gz
+                                          or Tail (Filename, 4) = ".tgz"     then Tar_Gz
+                                       elsif Tail (Filename, 3) = ".gz"      then Gz
                                        elsif Tail (Filename, 4) = ".bz2"     then Bz2
                                        else  raise program_Error);
    begin
@@ -626,6 +635,16 @@ is
                end if;
             end;
 
+         when Gz =>
+            declare
+               Output : constant String := run_OS ("gunzip --force --keep --rsyncable " & Filename);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "gunzip error: " & Output;
+               end if;
+            end;
+
          when Bz2 =>
             declare
                bunzip_Filename : aliased String := Filename;
@@ -640,6 +659,16 @@ is
                if Status /= 0
                then
                   raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
+               end if;
+            end;
+
+         when Xz =>
+            declare
+               Output : constant String := run_OS ("xz --force --keep --rsyncable " & Filename);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "xz error: " & Output;
                end if;
             end;
       end case;
