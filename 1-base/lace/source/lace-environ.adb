@@ -661,7 +661,9 @@ is
                                                 when Tar_Gz  => "-czf",
                                                 when Tar_Xz  => "-cJf",
                                                 when others  => raise program_Error);
-               Output  : constant String := run_OS ("tar " & Options & " " & Path);
+               Output  : constant String := run_OS ("tar " & Options
+                                                    & " "  & Path & format_Suffix (the_Format)
+                                                    & " "  & Path);
             begin
                if Output /= ""
                then
