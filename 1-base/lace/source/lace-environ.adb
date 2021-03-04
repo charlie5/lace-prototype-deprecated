@@ -591,60 +591,58 @@ is
           gnat.Expect,
           gnat.Strings;
 
-      is_Tar     : constant Boolean :=    Tail (Filename, 4) = ".tar";
-      is_Tar_Bz2 : constant Boolean :=    Tail (Filename, 8) = ".tar.bz2";
-      is_Tar_Gz  : constant Boolean :=    Tail (Filename, 7) = ".tar.gz"
-                                       or Tail (Filename, 4) = ".tgz";
-      is_Bz2     : constant Boolean :=    Tail (Filename, 4) = ".bz2";
+      type Format is (Tar, Tar_Bz2, Tar_Gz, Bz2);
 
+      the_Format : constant Format := (if    Tail (Filename, 4) = ".tar"     then Tar
+                                       elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
+                                       elsif Tail (Filename, 7) = ".tar.gz"
+                                       or Tail (Filename, 4) = ".tgz"     then Tar_Gz
+                                       elsif Tail (Filename, 4) = ".bz2"     then Bz2
+                                       else  raise program_Error);
    begin
-      if   is_Tar
-        or is_Tar_Bz2
-        or is_Tar_Gz
-      then
-         declare
-            tar_Options  : aliased String := (if    is_Tar     then "-xf"
-                                              elsif is_Tar_Bz2 then "-xjf"
-                                              elsif is_Tar_Gz  then "-xzf"
-                                              else  raise program_Error);
-            tar_Filename : aliased String := Filename;
+      case the_Format
+      is
+         when Tar |Tar_Bz2 | Tar_Gz =>
+            declare
+               tar_Options  : aliased String := (case the_Format
+                                                 is
+                                                 when Tar     => "-xf",
+                                                 when Tar_Bz2 => "-xjf",
+                                                 when Tar_Gz  => "-xzf",
+                                                 when others  => raise program_Error);
+               tar_Filename : aliased String := Filename;
 
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => "tar",
-                                                            arguments  => (1 => tar_Options 'unchecked_Access,
-                                                                           2 => tar_Filename'unchecked_Access),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            if Status /= 0
-            then
-               raise Error with "tar: (" & Integer'Image (Status) & ") " & Output;
-            end if;
-         end;
+               Status : aliased  Integer;
+               Output : constant String := get_Command_Output (command    => "tar",
+                                                               arguments  => (1 => tar_Options 'unchecked_Access,
+                                                                              2 => tar_Filename'unchecked_Access),
+                                                               input      => "",
+                                                               status     => Status'Access,
+                                                               err_to_out => True);
+            begin
+               if Status /= 0
+               then
+                  raise Error with "tar: (" & Integer'Image (Status) & ") " & Output;
+               end if;
+            end;
 
-      elsif is_Bz2
-      then
-         declare
-            bunzip_Filename : aliased String := Filename;
+         when Bz2 =>
+            declare
+               bunzip_Filename : aliased String := Filename;
 
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => "bunzip2",
-                                                            arguments  => (1 => bunzip_Filename'unchecked_Access),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            if Status /= 0
-            then
-               raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
-            end if;
-         end;
-
-
-      else
-         raise Error with "Unknown compression kind of '" & Filename & "'";
-      end if;
+               Status : aliased  Integer;
+               Output : constant String := get_Command_Output (command    => "bunzip2",
+                                                               arguments  => (1 => bunzip_Filename'unchecked_Access),
+                                                               input      => "",
+                                                               status     => Status'Access,
+                                                               err_to_out => True);
+            begin
+               if Status /= 0
+               then
+                  raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
+               end if;
+            end;
+      end case;
 
    end decompress;
 
