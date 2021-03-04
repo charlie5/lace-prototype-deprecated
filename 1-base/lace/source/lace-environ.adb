@@ -261,7 +261,6 @@ is
    end run_OS;
 
 
-
    function Expand (File_GLOB : in String) return String
    is
       use gnat.Expect,
@@ -573,7 +572,7 @@ is
    is
       Size : constant ada.Directories.File_Size := ada.Directories.Size (Filename);
 
-      type my_String is new String (1 .. Natural (Size));
+      type my_String is new String (1 .. Natural (Size) - 1);
 
       package String_IO is new ada.Direct_IO (my_String);
       use     String_IO;
