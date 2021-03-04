@@ -654,7 +654,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --force --keep --rsyncable " & Path);
+               Output : constant String := run_OS ("xz --force --keep --threads=0 " & Path);
             begin
                if Output /= ""
                then
