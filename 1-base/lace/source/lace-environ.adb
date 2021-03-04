@@ -609,7 +609,7 @@ is
                                        elsif Tail (Filename, 3) = ".gz"      then Gz
                                        elsif Tail (Filename, 4) = ".bz2"     then Bz2
                                        elsif Tail (Filename, 3) = ".xz"      then Xz
-                                       else  raise program_Error);
+                                       else  raise Error with "Unknown decompress format: " & Filename);
    begin
       case the_Format
       is
