@@ -640,7 +640,7 @@ is
 
          when Gz =>
             declare
-               Output : constant String := run_OS ("gunzip --force --keep --rsyncable " & Filename);
+               Output : constant String := run_OS ("gunzip --force --keep " & Filename);
             begin
                if Output /= ""
                then
@@ -667,7 +667,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --force --keep --rsyncable " & Filename);
+               Output : constant String := run_OS ("xz --force --keep " & Filename);
             begin
                if Output /= ""
                then
