@@ -762,7 +762,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --force --keep " & Filename);
+               Output : constant String := run_OS ("xz --decompress --force --keep " & Filename);
             begin
                if Output /= ""
                then
