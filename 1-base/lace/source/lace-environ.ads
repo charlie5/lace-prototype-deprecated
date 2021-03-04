@@ -31,14 +31,15 @@ is
    -- Discards any output. Error is raised when the command fails.
 
    function  run_OS (command_Line : in String;
-                     Input        : in String := "") return String;
+                     Input        : in String := "") return Data;
    --
    -- Returns any output. Error is raised when the command fails.
 
    function  run_OS (command_Line : in String;
-                     Input        : in String := "") return Data;
+                     Input        : in String  := "";
+                     add_Errors   : in Boolean := True) return String;
    --
-   -- Returns any output. Error is raised when the command fails.
+   -- Returns any output. Error output is appended if add_Errors is true.
 
 
    --- Users
@@ -102,8 +103,16 @@ is
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
    function  Expand        (File_GLOB   : in String) return String;
 
-   procedure   compress    (Filename : in String);
-   procedure decompress    (Filename : in String);
+
+   --- Compression
+   --
+   type Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
+   type Level  is range 1 .. 9;                                 -- Higher levels result in higher compression.
+
+   procedure   compress (Path       : in String;          -- Folder or file name.
+                         the_Format : in Format := Xz;    -- Null derives format from Path suffix.
+                         the_Level  : in Level  := 6);
+   procedure decompress (Filename   : in String);
 
 
    --- Exceptions

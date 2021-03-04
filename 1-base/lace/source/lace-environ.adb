@@ -585,21 +585,81 @@ is
    end rid_File;
 
 
-   procedure compress (Path   : in String;
-                       Format : in String := "")
+   procedure compress (Path       : in String;
+                       the_Format : in Format := Xz;
+                       the_Level  : in Level  := 6)
    is
+      function level_Flag return String
+      is
+         use ada.Strings,
+             ada.Strings.fixed;
+      begin
+         return " -"
+              & Trim (Level'Image (the_Level),
+                      Left)
+              & " ";
+      end level_Flag;
+
    begin
-      null;
+      case the_Format
+      is
+         when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
+            declare
+               Options : constant String := (case the_Format
+                                             is
+                                                when Tar     => "-cf",
+                                                when Tar_Bz2 => "-cjf",
+                                                when Tar_Gz  => "-czf",
+                                                when Tar_Xz  => "-cJf",
+                                                when others  => raise program_Error);
+               Output  : constant String := run_OS ("tar " & Options & " " & Path);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "tar: " & Output;
+               end if;
+            end;
+
+         when Gz =>
+            declare
+               Output : constant String := run_OS (  "gzip --force --keep --rsyncable"
+                                                   & level_Flag
+                                                   & " " & Path);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "gunzip error: " & Output;
+               end if;
+            end;
+
+         when Bz2 =>
+            declare
+               Output : constant String := run_OS ("bzip2 --force --keep"
+                                                   & level_Flag
+                                                   & " " & Path);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "bzip2: " & Output;
+               end if;
+            end;
+
+         when Xz =>
+            declare
+               Output : constant String := run_OS ("xz --force --keep --rsyncable " & Path);
+            begin
+               if Output /= ""
+               then
+                  raise Error with "xz error: " & Output;
+               end if;
+            end;
+      end case;
    end compress;
 
 
    procedure decompress (Filename : in String)
    is
-      use ada.Strings.fixed,
-          gnat.Expect,
-          gnat.Strings;
-
-      type Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
+      use ada.Strings.fixed;
 
       the_Format : constant Format := (if    Tail (Filename, 4) = ".tar"     then Tar
                                        elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
@@ -615,26 +675,18 @@ is
       is
          when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
             declare
-               tar_Options  : aliased String := (case the_Format
-                                                 is
-                                                 when Tar     => "-xf",
-                                                 when Tar_Bz2 => "-xjf",
-                                                 when Tar_Gz  => "-xzf",
-                                                 when Tar_Xz  => "-xJf",
-                                                 when others  => raise program_Error);
-               tar_Filename : aliased String := Filename;
-
-               Status : aliased  Integer;
-               Output : constant String := get_Command_Output (command    => "tar",
-                                                               arguments  => (1 => tar_Options 'unchecked_Access,
-                                                                              2 => tar_Filename'unchecked_Access),
-                                                               input      => "",
-                                                               status     => Status'Access,
-                                                               err_to_out => True);
+               Options : aliased constant String := (case the_Format
+                                                     is
+                                                        when Tar     => "-xf",
+                                                        when Tar_Bz2 => "-xjf",
+                                                        when Tar_Gz  => "-xzf",
+                                                        when Tar_Xz  => "-xJf",
+                                                        when others  => raise program_Error);
+               Output  : constant String := run_OS ("tar " & Options & " " & Filename);
             begin
-               if Status /= 0
+               if Output /= ""
                then
-                  raise Error with "tar: (" & Integer'Image (Status) & ") " & Output;
+                  raise Error with "tar: " & Output;
                end if;
             end;
 
@@ -644,24 +696,17 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "gunzip error: " & Output;
+                  raise Error with "gunzip: " & Output;
                end if;
             end;
 
          when Bz2 =>
             declare
-               bunzip_Filename : aliased String := Filename;
-
-               Status : aliased  Integer;
-               Output : constant String := get_Command_Output (command    => "bunzip2",
-                                                               arguments  => (1 => bunzip_Filename'unchecked_Access),
-                                                               input      => "",
-                                                               status     => Status'Access,
-                                                               err_to_out => True);
+               Output : constant String := run_OS ("bunzip2 --force --keep " & Filename);
             begin
-               if Status /= 0
+               if Output /= ""
                then
-                  raise Error with "bunzip2: (" & Integer'Image (Status) & ") " & Output;
+                  raise Error with "bunzip2: " & Output;
                end if;
             end;
 
