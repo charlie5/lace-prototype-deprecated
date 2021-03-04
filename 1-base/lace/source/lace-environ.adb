@@ -599,25 +599,28 @@ is
           gnat.Expect,
           gnat.Strings;
 
-      type Format is (Tar, Tar_Bz2, Tar_Gz, Bz2, Gz, Xz);
+      type Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
 
       the_Format : constant Format := (if    Tail (Filename, 4) = ".tar"     then Tar
                                        elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
                                        elsif Tail (Filename, 7) = ".tar.gz"
                                           or Tail (Filename, 4) = ".tgz"     then Tar_Gz
+                                       elsif Tail (Filename, 7) = ".tar.xz"  then Tar_Xz
                                        elsif Tail (Filename, 3) = ".gz"      then Gz
                                        elsif Tail (Filename, 4) = ".bz2"     then Bz2
+                                       elsif Tail (Filename, 3) = ".xz"      then Xz
                                        else  raise program_Error);
    begin
       case the_Format
       is
-         when Tar |Tar_Bz2 | Tar_Gz =>
+         when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
             declare
                tar_Options  : aliased String := (case the_Format
                                                  is
                                                  when Tar     => "-xf",
                                                  when Tar_Bz2 => "-xjf",
                                                  when Tar_Gz  => "-xzf",
+                                                 when Tar_Xz  => "-xJf",
                                                  when others  => raise program_Error);
                tar_Filename : aliased String := Filename;
 
