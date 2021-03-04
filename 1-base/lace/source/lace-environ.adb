@@ -18,8 +18,6 @@ with
 
 package body lace.Environ
 is
-   use ada.Text_IO;
-
 
    function argument_String_to_List (Arg_String : String) return gnat.OS_Lib.Argument_List_Access
    is
@@ -121,7 +119,8 @@ is
    function shell_Output_of (Command : in String) return String
    is
       use ada.Environment_Variables,
-          ada.Strings.fixed;
+          ada.Strings.fixed,
+          ada.Text_IO;
 
       Path     : constant String   := Current_Folder & "/.lace-bin/";
       FileName : constant String   := "lace_environ_temporary_shell.sh";   -- tbd: Add a unique number here so simultaneous calls don't tread on each other.
@@ -265,7 +264,8 @@ is
 
    function Expand (File_GLOB : in String) return String
    is
-      use gnat.Expect;
+      use gnat.Expect,
+          ada.Text_IO;
 
       Path     : constant String := "/usr/local/bin/";
       FileName : constant String := "lace_environ_temporary_shell.sh";
@@ -544,6 +544,7 @@ is
          end;
       else
          declare
+            use ada.Text_IO;
             File : File_Type;
          begin
             create (File, out_File, Filename);
