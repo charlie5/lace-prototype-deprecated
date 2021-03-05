@@ -667,7 +667,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "tar: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -679,7 +679,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "gunzip error: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -691,7 +691,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "bzip2: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -701,7 +701,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "xz error: " & Output;
+                  raise Error with Output;
                end if;
             end;
       end case;
@@ -737,7 +737,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "tar: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -747,7 +747,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "gunzip: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -757,7 +757,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "bunzip2: " & Output;
+                  raise Error with Output;
                end if;
             end;
 
@@ -767,7 +767,7 @@ is
             begin
                if Output /= ""
                then
-                  raise Error with "xz error: " & Output;
+                  raise Error with Output;
                end if;
             end;
       end case;
