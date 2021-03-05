@@ -7,6 +7,7 @@ with
      gnat.Strings,
 
      Shell.Commands,
+     lace.Text,
 
      ada.Strings.fixed,
      ada.Directories,
@@ -626,6 +627,25 @@ is
       ada.Directories.copy_File (Named, To);
       rid_File  (Named);
    end move_File;
+
+
+   procedure move_Files (Named : in String;   To : in String)
+   is
+      use lace.Text,
+          ada.Strings.fixed;
+
+      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+                                                                        else Named);
+      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+   begin
+      for Each of file_List
+      loop
+         if +Each /= To   -- Don't move a directory to a subdirectory of itself.
+         then
+            move_File (+Each, To & "/" & (+Each));
+         end if;
+      end loop;
+   end move_Files;
 
 
    procedure rid_File (Named  : in String)
