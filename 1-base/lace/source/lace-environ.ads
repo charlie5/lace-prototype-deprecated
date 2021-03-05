@@ -113,8 +113,10 @@ is
 
    --- Compression
    --
-   type compress_Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
-   type compress_Level  is range 1 .. 9;                          -- Higher levels result in higher compression.
+   type           compress_Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
+   subtype folder_compress_Format is compress_Format range Tar .. Tar_Xz;
+
+   type compress_Level is range 1 .. 9;                           -- Higher levels result in higher compression.
 
    procedure   compress (Path       : in String;                  -- Folder or file name.
                          the_Format : in compress_Format := Xz;
