@@ -74,6 +74,9 @@ is
    procedure    pop_Folder (Context     : in out Environ.Context);
 
    procedure    rid_Folder (Named  : in String);
+   procedure   copy_Folder (Named  : in String;   To : in String);
+   procedure   move_Folder (Named  : in String;   To : in String);
+   procedure rename_Folder (Named  : in String;   To : in String);
    procedure verify_Folder (Named  : in String);
    --
    -- Ensure that the folder exists.
@@ -85,6 +88,7 @@ is
                             To     : in String);
 
    function  Exists        (Folder : in String) return Boolean;
+   function  is_Folder     (Folder : in String) return Boolean;
 
 
    --- Files
@@ -123,7 +127,7 @@ is
                          the_Level  : in compress_Level  := 6);
    procedure decompress (Filename   : in String);
 
-   function  format_Suffix (Format : Environ.compress_Format) return String;
+   function  format_Suffix (Format : compress_Format) return String;
 
    --- Exceptions
    --

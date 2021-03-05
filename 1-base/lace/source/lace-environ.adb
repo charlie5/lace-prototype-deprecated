@@ -488,6 +488,13 @@ is
    end Exists;
 
 
+   function is_Folder (Folder : in String) return Boolean
+   is
+      use ada.Directories;
+   begin
+      return Kind (Folder) = Directory;
+   end is_Folder;
+
 
    procedure touch (Filename : in String)
    is
@@ -642,7 +649,12 @@ is
       loop
          if +Each /= To   -- Don't move a directory to a subdirectory of itself.
          then
-            move_File (+Each, To & "/" & (+Each));
+            if is_Folder (+Each)
+            then
+               move_Folder (+Each, To);
+            else
+               move_File (+Each, To & "/" & (+Each));
+            end if;
          end if;
       end loop;
    end move_Files;
@@ -939,6 +951,26 @@ is
       ada.Directories.delete_Tree (Named);
    end rid_Folder;
 
+
+   procedure copy_Folder (Named  : in String;   To : in String)
+   is
+   begin
+      run_OS ("cp -fr " & Named & " " & To);
+   end copy_Folder;
+
+
+   procedure move_Folder (Named  : in String;   To : in String)
+   is
+   begin
+      run_OS ("mv " & Named & " " & To);
+   end move_Folder;
+
+
+   procedure rename_Folder (Named  : in String;   To : in String)
+   is
+   begin
+      ada.Directories.rename (Named, To);
+   end rename_Folder;
 
 
    procedure verify_Folder (Named : in String)
