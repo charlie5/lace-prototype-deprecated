@@ -261,18 +261,18 @@ is
    end run_OS;
 
 
-   function Expand (File_GLOB : in String) return String
+   function Expand_GLOB (GLOB : in String) return String
    is
       use gnat.Expect,
           ada.Text_IO;
 
-      Path     : constant String := "/usr/local/bin/";
+      Path     : constant String := "/tmp/";
       FileName : constant String := "lace_environ_temporary_shell.sh";
 
       File     : File_Type;
    begin
       create   (File, out_File, Path & Filename);
-      put_Line (File, "echo " & File_GLOB);
+      put_Line (File, "echo " & GLOB);
       close    (File);
 
       change_Mode (Path & Filename, to => "a+rwx");
@@ -289,16 +289,17 @@ is
                                                          status     => Status'Access,
                                                          err_to_out => True);
       begin
-         free (Arg);
+         rid_File (Arg.all);
+         free     (Arg);
 
          if Status /= 0
          then
-            raise Error with "bash: (" & Integer'Image (Status) & ") " & Output;
+            raise Error with "bash error: (" & Integer'Image (Status) & ") " & Output;
          end if;
 
          return Output;
       end;
-   end Expand;
+   end Expand_GLOB;
 
 
    procedure set_Password (User : in String)
