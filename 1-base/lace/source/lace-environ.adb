@@ -656,7 +656,7 @@ is
 
 
    procedure compress (Path       : in String;
-                       the_Format : in compress_Format := Xz;
+                       the_Format : in compress_Format := Tar_Xz;
                        the_Level  : in compress_Level  := 6)
    is
       function level_Flag return String

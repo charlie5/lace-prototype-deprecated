@@ -119,7 +119,7 @@ is
    type compress_Level is range 1 .. 9;                           -- Higher levels result in higher compression.
 
    procedure   compress (Path       : in String;                  -- Folder or file name.
-                         the_Format : in compress_Format := Xz;
+                         the_Format : in compress_Format := Tar_Xz;
                          the_Level  : in compress_Level  := 6);
    procedure decompress (Filename   : in String);
 
