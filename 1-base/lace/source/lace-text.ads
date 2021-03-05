@@ -108,8 +108,8 @@ is
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
 
-   function  Tokens    (Self : in Item;   Delimiter : in Character;
-                                          Trim      : in Boolean := False) return Text.items_1k;
+   function  Tokens    (Self : in Item;   Delimiter : in Character := ' ';
+                                          Trim      : in Boolean   := False) return Text.items_1k;
    function  Hashed    (Self : in Item) return ada.Containers.Hash_type;
 
    overriding

@@ -95,8 +95,8 @@ is
 
 
 
-   function Tokens (Self : in Item;   Delimiter : in Character;
-                                      Trim      : in Boolean := False) return Text.items_1k
+   function Tokens (Self : in Item;   Delimiter : in Character := ' ';
+                                      Trim      : in Boolean   := False) return Text.items_1k
    is
       the_Tokens : Text.items_1k (1 .. 2 * 1024);
       Count      : Natural := 0;
