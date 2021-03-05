@@ -262,7 +262,7 @@ is
    end run_OS;
 
 
-   function Expand_GLOB (GLOB : in String) return String
+   function expand_GLOB (GLOB : in String) return String
    is
       use gnat.Expect,
           ada.Text_IO;
@@ -281,7 +281,7 @@ is
       declare
          use gnat.Strings;
 
-         Arg : String_access := new String'(Path & Filename);
+         Arg    : String_access   := new String'(Path & Filename);
 
          Status : aliased  Integer;
          Output : constant String := get_Command_Output (command    => Path_to ("bash"),
@@ -300,7 +300,7 @@ is
 
          return Output;
       end;
-   end Expand_GLOB;
+   end expand_GLOB;
 
 
    procedure set_Password (User : in String)

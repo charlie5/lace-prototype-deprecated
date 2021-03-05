@@ -108,7 +108,7 @@ is
 
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
-   function  Expand        (File_GLOB   : in String) return String;
+   function  expand_GLOB   (GLOB        : in String) return String;
 
 
    --- Compression
