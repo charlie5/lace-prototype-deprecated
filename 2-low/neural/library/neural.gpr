@@ -1,0 +1,27 @@
+with "fann";
+with "math";
+
+project Neural is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Library_Name use "neural";
+--   for Library_Dir use "lib";
+--   for Library_Ali_Dir use "objects";
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-lpthread");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-fstack-check", "-g", "-gnata", "-gnat05");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   for Source_Dirs use (".", "../source", "../source/private");
+
+end Neural;
+
