@@ -271,23 +271,27 @@ is
    end start;
 
 
-   procedure last_chance_Handler (Msg  : in system.Address;
-                                  Line : in Integer);
+   -- 'last_chance_Handler' is commented out to avoid multiple definitions
+   --  of link symbols in 'build_All' test procedure (Tier 5).
+   --
 
-   pragma Export (C, last_chance_Handler,
-                  "__gnat_last_chance_handler");
-
-   procedure last_chance_Handler (Msg  : in System.Address;
-                                  Line : in Integer)
-   is
-      pragma Unreferenced (Msg, Line);
-      use ada.Text_IO;
-   begin
-      put_Line ("The Registrar is not running.");
-      put_Line ("Press Ctrl-C to quit.");
-      check_Registrar_lives.halt;
-      delay Duration'Last;
-   end last_chance_Handler;
+   --  procedure last_chance_Handler (Msg  : in system.Address;
+   --                                 Line : in Integer);
+   --
+   --  pragma Export (C, last_chance_Handler,
+   --                 "__gnat_last_chance_handler");
+   --
+   --  procedure last_chance_Handler (Msg  : in System.Address;
+   --                                 Line : in Integer)
+   --  is
+   --     pragma Unreferenced (Msg, Line);
+   --     use ada.Text_IO;
+   --  begin
+   --     put_Line ("The Registrar is not running.");
+   --     put_Line ("Press Ctrl-C to quit.");
+   --     check_Registrar_lives.halt;
+   --     delay Duration'Last;
+   --  end last_chance_Handler;
 
 
 end chat.Client.local;
