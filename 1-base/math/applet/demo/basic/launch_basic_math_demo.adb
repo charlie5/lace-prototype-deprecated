@@ -1,5 +1,3 @@
-pragma Profile (Ravenscar);
-
 with
      short_Math,
      float_Math.Geometry,
