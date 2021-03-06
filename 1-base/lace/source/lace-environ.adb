@@ -1,6 +1,8 @@
 with
      posix.user_Database,
      posix.process_Identification,
+     posix.file_Status,
+     posix.Calendar,
 
      gnat.Expect,
      gnat.OS_Lib,
@@ -531,6 +533,19 @@ is
 
       return Empty;
    end is_Empty;
+
+
+   function modification_Time (Folder : in String) return ada.Calendar.Time
+   is
+      use POSIX,
+          POSIX.Calendar,
+          POSIX.File_Status;
+
+      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (Folder));
+      Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
+   begin
+      return to_Time (Time);
+   end modification_Time;
 
 
    procedure touch (Filename : in String)
