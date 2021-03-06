@@ -81,14 +81,17 @@ is
    --
    -- Ensure that the folder exists.
 
-   procedure change_Mode   (Folder : in String;
-                            To     : in String);
+   procedure change_Mode  (Folder : in String;
+                           To     : in String);
 
-   procedure change_Owner  (Folder : in String;
-                            To     : in String);
+   procedure change_Owner (Folder : in String;
+                           To     : in String);
 
-   function  Exists        (Folder : in String) return Boolean;
-   function  is_Folder     (Folder : in String) return Boolean;
+   function  Exists    (Folder : in String) return Boolean;
+   function  is_Folder (Folder : in String) return Boolean;
+   function  is_Empty  (Folder : in String) return Boolean;
+
+   function  contents_Count (Folder : in String;   Recurse : in Boolean := False) return Natural;
 
 
    --- Files

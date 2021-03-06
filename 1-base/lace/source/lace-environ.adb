@@ -6,7 +6,9 @@ with
      gnat.OS_Lib,
      gnat.Strings,
 
-     Shell.Commands,
+     shell.Commands,
+     shell.Directory_Iteration,
+
      lace.Text,
 
      ada.Strings.fixed,
@@ -494,6 +496,41 @@ is
    begin
       return Kind (Folder) = Directory;
    end is_Folder;
+
+
+   function contents_Count (Folder : in String;   Recurse : in Boolean := False) return Natural
+   is
+      use Shell.Directory_Iteration;
+
+      Count : Natural := 0;
+   begin
+      for Each of To_Directory (Folder, Recurse)
+      loop
+         Count := Count + 1;
+      end loop;
+
+      return Count;
+   end contents_Count;
+
+
+   function is_Empty (Folder : in String) return Boolean
+   is
+      use ada.Directories;
+
+      Searcher : Search_Type;
+      Empty    : Boolean    := True;
+   begin
+      start_Search (Searcher, Folder, "");
+
+      if more_Entries (Searcher)
+      then
+         Empty := False;
+      end if;
+
+      end_Search (Searcher);
+
+      return Empty;
+   end is_Empty;
 
 
    procedure touch (Filename : in String)
