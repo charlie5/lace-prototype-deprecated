@@ -49,6 +49,16 @@ launch_opengl_model
 launch_drop_ball_on_box
 launch_hello_mmi
 launch_text_sprite_demo
+launch_impact_hello_3d_demo
+launch_camera_demo
+launch_render_lighting
+launch_render_capsules
+launch_crunch
+launch_render_models
+launch_hello_physics_interface_demo
+launch_test_engine
+
+HelloWorld*
 
 *-old
 build_all
