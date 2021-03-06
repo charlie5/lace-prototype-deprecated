@@ -1,9 +1,8 @@
 with 
-     "../lace_demo",
      "lace",
      "lace_shared";
 
-project lace_simple_deferred_Events_Demo
+project lace_Demo
 is
     type Restrictions is ("xgc", "ravenscar");
     Restrictions : Restrictions := external ("restrictions");
@@ -11,9 +10,7 @@ is
     for Create_Missing_Dirs use "True";
 
     for Object_Dir  use "build";
-    for Exec_Dir    use ".";
     for Source_Dirs use (".");
-    for Main        use ("launch_simple_deferred_events_demo.adb");
 
     package Ide      renames Lace_shared.Ide;
     package Builder  renames Lace_shared.Builder;
@@ -24,4 +21,4 @@ is
       for Default_Switches ("ada") use ("-g");
    end Linker;
 
-end lace_simple_deferred_Events_Demo;
+end lace_Demo;
