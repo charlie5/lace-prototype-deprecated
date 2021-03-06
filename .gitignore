@@ -31,6 +31,12 @@ launch_simple_chat_registrar
 launch_outline
 deer.dae
 
+2-low/neural/source/attic
+2-low/neural/source/attic2
+2-low/neural/implement
+2-low/neural/applet/test/learn_linear/velocity.net
+launch_learn_linear
+
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
 
