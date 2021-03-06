@@ -8,8 +8,6 @@ procedure launch_strings_Demo
 -- Displays a string message in a Pure unit.
 --
 is
-   pragma Pure;
-
    use ada.Text_IO;
 
    package Text is new lace.Strings.Bounded.Generic_Bounded_Length (Max => 64);
