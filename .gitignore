@@ -37,11 +37,22 @@ deer.dae
 2-low/neural/applet/test/learn_linear/velocity.net
 launch_learn_linear
 
+3-mid/impact/contrib
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
 
 **/assets/opengl
 **/assets/mmi
+
+launch_pong
+launch_opengl_model
+launch_drop_ball_on_box
+launch_hello_mmi
+launch_text_sprite_demo
+
+*-old
+build_all
+
 
 old-events
 
