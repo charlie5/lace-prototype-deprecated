@@ -1,9 +1,6 @@
-pragma Profile (Ravenscar);
-
 with
      float_Math.Geometry.d3.Modeller.Forge,
      ada.text_IO;
-
 
 procedure launch_basic_geometry_Demo
 --
