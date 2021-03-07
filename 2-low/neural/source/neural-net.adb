@@ -439,8 +439,8 @@ is
       for Epoch in 1 .. Max_Epochs
       loop
          Self.Epoch              := Epoch;
---           self.Training_RMS_Error := Signals (fann_train_epoch (self.Fann, self.training_Set.Fann));
-         self.Training_RMS_Error := Signal (fann_train_epoch_irpropm_parallel (self.Fann, self.training_Set.Fann, 13));
+         self.Training_RMS_Error := Signal (fann_train_epoch (self.Fann, self.training_Set.Fann));
+--           self.Training_RMS_Error := Signal (fann_train_epoch_irpropm_parallel (self.Fann, self.training_Set.Fann, 13));
 
 --           self.Test_RMS_Error := 1.0;
 
