@@ -1,27 +1,25 @@
-with "fann";
-with "math";
+with 
+     "fann",
+     "math",
+     "lace_shared";
 
-project Neural is
+project Neural
+is
+   type Restrictions is ("xgc", "ravenscar");
+   the_Restrictions : Restrictions := external ("restrictions", "xgc");
 
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Library_Name use "neural";
---   for Library_Dir use "lib";
---   for Library_Ali_Dir use "objects";
+   for Create_Missing_Dirs use "True";
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g", "-lpthread");
-   end Builder;
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
 
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-fstack-check", "-g", "-gnata", "-gnat05");
-   end Compiler;
+   for Source_Dirs use ("../source",
+                        "../source/private");
 
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
-   for Source_Dirs use (".", "../source", "../source/private");
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
 end Neural;
 
