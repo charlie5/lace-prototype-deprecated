@@ -49,7 +49,7 @@ begin
       --
       if Training
       then
-         lace.Environ.remove_Folder ("./velocity.net");
+         lace.Environ.rid_Folder ("./velocity.net");
       end if;
 
       the_Net.define ("velocity");
