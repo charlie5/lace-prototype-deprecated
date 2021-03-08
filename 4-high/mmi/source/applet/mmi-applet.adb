@@ -9,7 +9,7 @@ with
      openGL.Renderer.lean.forge,
 
      lace.Any,
-     lace.event.Utility.local,
+     lace.Event.utility,
 
      ada.Unchecked_Conversion,
      ada.Unchecked_Deallocation,
@@ -170,7 +170,7 @@ is
       free (Self.Window);
 
       Self. local_Subject_and_Observer         .destroy;
-      lace.remote.Subject_and_deferred_Observer.destroy (lace.remote.Subject_and_deferred_Observer.Item (Self));   -- Destroy base class.
+      lace.Subject_and_deferred_Observer.destroy (lace.Subject_and_deferred_Observer.Item (Self));   -- Destroy base class.
    end destroy;
 
 
@@ -199,7 +199,7 @@ is
       begin
          mmi.Applet.global_Window := use_Window;
 
-         return Self : Item := (lace.remote.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
+         return Self : Item := (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
                                 local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
                                 others                     => <>)
          do
@@ -212,7 +212,7 @@ is
       function new_Applet (Name       : in String;
                            use_Window : in mmi.Window.view) return View
       is
-         Self : constant View := new Item' (lace.remote.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
+         Self : constant View := new Item' (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
                                             local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
                                             others                     => <>);
       begin
@@ -724,15 +724,15 @@ is
       Self.key_press_Response  .Applet := mmi.Applet.view (Self);
       Self.key_release_Response.Applet := mmi.Applet.view (Self);
 
-      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
-                                        lace.Subject .view (Self.Keyboard),
-                                        Self.key_press_Response  'Unchecked_Access,
-                                        to_Kind (mmi.Keyboard.key_press_Event'Tag));
+      lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                  lace.Subject .view (Self.Keyboard),
+                                  Self.key_press_Response  'Unchecked_Access,
+                                  to_Kind (mmi.Keyboard.key_press_Event'Tag));
 
-      lace.Event.utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
-                                        lace.Subject .view (Self.Keyboard),
-                                        Self.key_release_Response'Unchecked_Access,
-                                        to_Kind (mmi.Keyboard.key_release_Event'Tag));
+      lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                  lace.Subject .view (Self.Keyboard),
+                                  Self.key_release_Response'Unchecked_Access,
+                                  to_Kind (mmi.Keyboard.key_release_Event'Tag));
    end enable_simple_Dolly;
 
 
@@ -983,10 +983,10 @@ is
 
       if detect_Motion
       then
-         lace.Event.Utility.local.connect (lace.Observer.view (Self.local_Subject_and_Observer),
-                                           lace.Subject.view  (Self.Mouse),
-                                           Self.mouse_motion_Response'unchecked_Access,
-                                           to_Kind (mmi.Mouse.motion_Event'Tag));
+         lace.Event.Utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+                                     lace.Subject.view  (Self.Mouse),
+                                     Self.mouse_motion_Response'unchecked_Access,
+                                     to_Kind (mmi.Mouse.motion_Event'Tag));
       end if;
 
       Self.mouse_click_raycast_Response.Applet := Self.all'unchecked_Access;

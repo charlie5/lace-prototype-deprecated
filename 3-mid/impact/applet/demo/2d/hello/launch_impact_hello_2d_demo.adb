@@ -33,7 +33,7 @@ is
    --
    gravity       : b2Vec2     := (0.0, -10.0);
    doSleep       : Boolean    := True;                                           -- Do we want to let bodies sleep ?
-   world         : World_view := new b2World' (to_b2World (gravity, doSleep));   -- Construct a world object, which will hold and simulate the rigid bodies.
+   world         : World_view := new b2World' (to_b2World (gravity));   -- Construct a world object, which will hold and simulate the rigid bodies.
 
 
    --- static Terrain

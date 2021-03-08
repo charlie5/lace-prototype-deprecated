@@ -1,5 +1,5 @@
 with "opengl", "lumen";
-with "box2d_thin_c"; -- This is required to avoid an Ubuntu bug with shared libraries.
+-- with "box2d_thin_c"; -- This is required to avoid an Ubuntu bug with shared libraries.
 
 project Core_Test is
 

@@ -156,8 +156,8 @@ is
 
 
    overriding
-   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in physics.Heightfield;
-                                                          Scale        : in Vector_3)            return physics.Shape .view
+   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
+                                                          Scale        : in     Vector_3)            return physics.Shape .view
    is
       pragma Unreferenced (Self);
    begin
@@ -554,7 +554,7 @@ is
       the_c_Joint : constant Joint_Pointer := box2d_physics.Joint.view (the_Joint).C;
    begin
       b2d_Space_add_Joint (Self.C, the_c_Joint);
-      set_b2d_user_Data   (box2d_physics.Joint.view (the_Joint));
+      --  set_b2d_user_Data   (box2d_physics.Joint.view (the_Joint));
    end add;
 
 

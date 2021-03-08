@@ -126,8 +126,8 @@ is
    function         new_cone_Shape (Self : access Item;   Radius       : in Real     :=  0.5;
                                                           Height       : in Real     := 1.0)             return Shape .view   is abstract;
    function     new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return Shape .view   is abstract;
-   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in physics.Heightfield;
-                                                          Scale        : in Vector_3)                    return Shape .view   is abstract;
+   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
+                                                          Scale        : in     Vector_3)                return Shape .view   is abstract;
    function  new_multisphere_Shape (Self : access Item;   Sites        : in physics.vector_3_array;
                                                           Radii        : in math.Vector)                 return Shape .view   is abstract;
    function        new_plane_Shape (Self : access Item;   Normal       : in Vector_3 := (0.0, 1.0, 0.0);

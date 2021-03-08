@@ -60,7 +60,7 @@ is
    procedure free (the_Joint : in out physics.Joint.view);
 
 
-   procedure set_b2d_user_Data (Self : in View);
+   --  procedure set_b2d_user_Data (Self : in View);
 
 
 

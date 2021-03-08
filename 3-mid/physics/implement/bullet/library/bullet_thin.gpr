@@ -1,5 +1,6 @@
 with "bullet_thin_cxx";
-with "../../c_math/library/c_math_thin";
+--with "../../c_math/library/c_math_thin";
+with "c_math_thin";
 with "swig";
 with "math";
 
@@ -12,11 +13,11 @@ project Bullet_thin is
    for Library_Ali_Dir use "objects";
 
    package Builder is
-      for Default_Switches ("ada") use ("-g", "-lpthread");
+      for Default_Switches ("ada") use ("-g");
    end Builder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-fstack-check", "-g", "-gnata", "-gnat05");
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
    end Compiler;
 
    package Binder is

@@ -3,7 +3,7 @@
 #include "box2d-conversions.h"
 #include "box2d-object-private.h"
 
-#include <Box2D.h>
+#include <box2d/box2d.h>
 #include <stdio.h>
 
 
@@ -176,7 +176,7 @@ b2d_Joint_set_local_Anchor (Joint*   Self,   bool        is_Anchor_A,
 {
   b2JointDef*            b2_Self           = (b2JointDef*)         Self;
   b2RevoluteJointDef*    b2_revolute_Self  = (b2RevoluteJointDef*) b2_Self;
-  b2Joint*               b2_Joint          = (b2Joint*)            b2_revolute_Self->userData;
+  b2Joint*               b2_Joint          = (b2Joint*)            b2_revolute_Self->userData.pointer;
   my_b2RevoluteJoint*    b2_revolute_Joint = static_cast <my_b2RevoluteJoint*> (b2_Joint);
 
   if (is_Anchor_A)
@@ -193,7 +193,7 @@ Vector_3
 b2d_Joint_reaction_Force  (Joint*   Self)
 {
   b2JointDef*            b2_Self   = (b2JointDef*) Self;
-  b2Joint*               b2_Joint  = (b2Joint*)    b2_Self->userData;
+  b2Joint*               b2_Joint  = (b2Joint*)    b2_Self->userData.pointer;
   b2Vec2                 the_Force = b2_Joint->GetReactionForce (1.0 / 60.0);
 
   return {the_Force.x, the_Force.y, 0.0};
@@ -205,7 +205,7 @@ Real
 b2d_Joint_reaction_Torque (Joint*   Self)
 {
   b2JointDef*            b2_Self  = (b2JointDef*) Self;
-  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData;
+  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
 
   return b2_Joint->GetReactionTorque (1.0 / 60.0);
 }
@@ -216,20 +216,20 @@ void*
 b2d_Joint_user_Data      (Joint*   Self)
 {
   b2JointDef*            b2_Self  = (b2JointDef*) Self;
-  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData;
+  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
 
-  return b2_Joint->GetUserData();
+  return (void*) b2_Joint->GetUserData().pointer;
 }
 
 
-void
-b2d_Joint_user_Data_is   (Joint*   Self,   void*   Now)
-{
-  b2JointDef*            b2_Self  = (b2JointDef*) Self;
-  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData;
+//void
+//b2d_Joint_user_Data_is   (Joint*   Self,   void*   Now)
+//{
+//  b2JointDef*            b2_Self  = (b2JointDef*) Self;
+//  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
 
-  return b2_Joint->SetUserData (Now);
-}
+//  return b2_Joint->SetUserData (Now);
+//}
 
 
 
@@ -312,7 +312,7 @@ b2d_Joint_hinge_Limits_are (Joint*   Self,   Real   Low,
                                              Real   High)
 {
   b2JointDef*            b2_Self  = (b2JointDef*) Self;
-  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData;
+  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
   b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
 
   if (b2_Hinge)

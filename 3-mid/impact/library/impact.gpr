@@ -1,6 +1,6 @@
 with "math",
      "swig",   -- tbd: remove swig
-     "shared";
+     "lace_shared";
      
 project Impact is
 

@@ -165,20 +165,20 @@ is
    --- Heightfield
    --
    function new_heightfield_Shape (Width,
-                                   Depth        : in              Positive;
-                                   Heights      : access constant Real;
+                                   Depth        : in  Positive;
+                                   Heights      : in  c_math_c.Pointers.Real_Pointer;
                                    min_Height,
-                                   max_Height   : in              Real;
-                                   Scale        : in              Vector_3)    return physics.Shape.view
+                                   max_Height   : in  Real;
+                                   Scale        : in  Vector_3) return physics.Shape.view
    is
-      function to_real_Pointer is new ada.unchecked_Conversion (physics.Forge.Real_view,
-                                                                c_math_c.pointers.real_Pointer);
+      use c_math_c.Pointers;
+
       Self    : constant access Heightfield            := new Heightfield;
       c_Scale : aliased         c_math_c.Vector_3.item := +Scale;
    begin
       Self.C := b3d_new_Heightfield (+Width,
                                      +Depth,
-                                     to_real_Pointer (Heights),
+                                     c_math_c.Pointers.Real_Pointer (Heights),
                                      c_math_c.Real (min_Height),
                                      c_math_c.Real (max_Height),
                                      c_Scale'Unchecked_Access);

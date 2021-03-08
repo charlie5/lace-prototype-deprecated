@@ -1,33 +1,24 @@
-with "impact";
+with
+     "impact",
+     "lace_shared";
 
-project Sphere_Sphere_Collision_Test is
+project Sphere_Sphere_Collision_Test
+is
+   type Restrictions is ("xgc", "ravenscar");
+   the_Restrictions : Restrictions := external ("restrictions", "xgc");
 
-   type Restrictions is
-      ("xgc", "ravenscar");
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_sphere_sphere_collision_test.adb");
-   Restrictions : Restrictions := external ("restrictions");
+   for Create_Missing_Dirs use "True";
 
-   package Builder is
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
 
-      case Restrictions is
+   for Source_Dirs use (".");
+   for Main        use ("launch_sphere_sphere_collision_test.adb");
 
-         when "xgc" =>
-            for Default_Switches ("ada") use ("-g", "-j13");
-
-         when "ravenscar" =>
-            for Default_Switches ("ada") use ("-g");
-      end case;
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnat12");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
    package Linker is
       for Default_Switches ("ada") use ("-g");

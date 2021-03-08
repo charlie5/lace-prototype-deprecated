@@ -10,7 +10,7 @@ with
 
      float_math.Algebra.linear.d3,
 
-     lace.remote.Response,
+     lace.Response,
      lace.Event.utility,
 
      ada.Calendar,
@@ -89,8 +89,8 @@ is
          free (Self.Commands);
       end;
 
-      lace.remote.Subject_and_deferred_Observer.destroy (lace.remote.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
-      lace.       Subject_and_deferred_Observer.free    (Self.local_Subject_and_deferred_Observer);
+      lace.Subject_and_deferred_Observer.destroy (lace.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
+      lace.Subject_and_deferred_Observer.free    (Self.local_Subject_and_deferred_Observer);
    end destroy;
 
 
@@ -104,7 +104,7 @@ is
                           space_Kind : in     standard.physics.space_Kind;
                          Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.item
       is
-         use lace.remote.Subject_and_deferred_Observer.forge;
+         use lace.Subject_and_deferred_Observer.forge;
       begin
          return Self : mmi.World.item := (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
                                           with others => <>)
@@ -120,7 +120,7 @@ is
                           space_Kind : in     Standard.physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.view
       is
-         use lace.remote.Subject_and_deferred_Observer.forge;
+         use lace.Subject_and_deferred_Observer.forge;
 
          Self : constant mmi.World.view
            := new mmi.World.item' (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
@@ -203,7 +203,7 @@ is
    --  'create_new_Sprite' Response
    --
 
-   type create_new_Sprite is new lace.remote.Response.item with
+   type create_new_Sprite is new lace.Response.item with
       record
          World          :        mmi.World.view;
          Models         : access id_Maps_of_model        .Map;
@@ -1443,7 +1443,7 @@ is
    --  new_model_Response
    --
 
-   type new_model_Response is new lace.remote.response.item with
+   type new_model_Response is new lace.response.item with
       record
          World : mmi.World.view;
       end record;
@@ -1480,7 +1480,7 @@ is
 
    --  my_new_sprite_Response
    --
-   type my_new_sprite_Response is new lace.remote.Response.item with
+   type my_new_sprite_Response is new lace.Response.item with
       record
          World          :        mmi.World.view;
          Models         : access id_Maps_of_model.Map;
@@ -1989,7 +1989,7 @@ is
 
    overriding
    procedure register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                             Mirror_as_observer : in lace.remote.Observer.view)
+                                             Mirror_as_observer : in lace.Observer.view)
    is
    begin
       Self.Mirrors.append (the_Mirror);

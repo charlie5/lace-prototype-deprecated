@@ -34,10 +34,10 @@ begin
       --  The Models.
       --
       the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-        := openGL.Model.capsule.lit_colored_textured.forge.new_Capsule (radius => 0.5,
-                                                                        height => 2.0,
-                                                                        color  => (White, Opaque),
-                                                                        image  => the_Texture);
+        := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
+                                                                  height => 2.0,
+                                                                  color  => (White, Opaque),
+                                                                  image  => the_Texture);
       --  The Visuals.
       --
       use openGL.Visual.Forge;

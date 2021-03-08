@@ -1509,25 +1509,25 @@ DllExport void* SWIGSTDCALL Ada_b2d_Joint_user_Data (
 
 
 
-DllExport void SWIGSTDCALL Ada_b2d_Joint_user_Data_is (
-  void * jarg1
-  ,
-  
-  void* jarg2
-  )
-{
-  Joint *arg1 = (Joint *) 0 ;
-  void *arg2 = (void *) 0 ;
-  
-  arg1 = (Joint *)jarg1; 
-  
-  arg2 = (void *)jarg2; 
-  
-  b2d_Joint_user_Data_is(arg1,arg2);
-  
-  
-}
-
+// DllExport void SWIGSTDCALL Ada_b2d_Joint_user_Data_is (
+//   void * jarg1
+//   ,
+// 
+//   void* jarg2
+//   )
+// {
+//   Joint *arg1 = (Joint *) 0 ;
+//   void *arg2 = (void *) 0 ;
+// 
+//   arg1 = (Joint *)jarg1;
+// 
+//   arg2 = (void *)jarg2;
+// 
+//   b2d_Joint_user_Data_is(arg1,arg2);
+// 
+// 
+// }
+// 
 
 
 DllExport void * SWIGSTDCALL Ada_b2d_Joint_Object_A (

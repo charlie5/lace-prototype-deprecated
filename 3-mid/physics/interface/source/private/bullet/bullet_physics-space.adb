@@ -4,6 +4,8 @@ with
 
      c_math_c.Vector_3,
      c_math_c.Conversion,
+     c_math_c.Pointers,
+
 
      bullet_physics.Shape,
      bullet_physics.Joint,
@@ -127,8 +129,8 @@ is
 
 
    overriding
-   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in physics.Heightfield;
-                                                          Scale        : in Vector_3)            return physics.Shape .view
+   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
+                                                          Scale        : in     Vector_3)            return physics.Shape .view
    is
       pragma Unreferenced (Self);
 
@@ -151,9 +153,10 @@ is
 
       the_height_Extent : constant Vector_2 := height_Extent (Heightfield);
 
+      function Convert is new ada.unchecked_Conversion (physics.Space.Real_view, c_math_c.Pointers.Real_Pointer);
       the_Heightfield : constant physics.Shape .view := bullet_physics.Shape.new_heightfield_Shape (Heightfield'Length (1),
                                                                                                Heightfield'Length (2),
-                                                                                               Heightfield (1, 1)'Unchecked_Access,
+                                                                                               Convert (Heightfield (1, 1)'Unchecked_Access),
                                                                                                the_height_Extent (1),
                                                                                                the_height_Extent (2),
                                                                                                Scale);

@@ -1,7 +1,7 @@
 #include "box2d-shape.h"
 #include "box2d-space.h"
 
-#include <Box2D.h>
+#include <box2d/box2d.h>
 
 
 

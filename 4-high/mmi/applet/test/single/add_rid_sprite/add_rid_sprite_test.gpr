@@ -1,8 +1,9 @@
 with "lumen_mmi";
 --with "sdl_mmi";
-with "sim";
+--with "sim";
 
-project Add_Rid_Sprite_Test is
+project add_rid_Sprite_Test
+is
 
    for Object_Dir use "build";
    for Exec_Dir use ".";
@@ -30,7 +31,7 @@ project Add_Rid_Sprite_Test is
    end Binder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata");
    end Compiler;
 
    package Linker is
@@ -71,5 +72,5 @@ project Add_Rid_Sprite_Test is
       end case;
    end Linker;
 
-end Add_Rid_Sprite_Test;
+end add_rid_Sprite_Test;
 

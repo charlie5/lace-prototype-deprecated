@@ -34,10 +34,10 @@ begin
                                                                 texture => the_Texture);
 
       the_colored_billboard_Model : constant openGL.Model.billboard.colored_textured.view
-        := openGL.Model.billboard.colored_textured.forge.new_Billboard (scale   => (1.0, 1.0, 1.0),
-                                                                        plane   => Billboard.xy,
-                                                                        color   => (Palette.Green, Opaque),
-                                                                        texture => the_Texture);
+        := openGL.Model.billboard.colored_textured.new_Billboard (scale   => (1.0, 1.0, 1.0),
+                                                                  plane   => Billboard.xy,
+                                                                  color   => (Palette.Green, Opaque),
+                                                                  texture => the_Texture);
       --  The Sprites.
       --
       use openGL.Visual.Forge;

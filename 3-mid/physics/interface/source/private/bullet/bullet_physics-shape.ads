@@ -1,6 +1,8 @@
 with
      physics.Shape,
 
+     c_math_c.Pointers,
+
      bullet_c.Pointers,
      bullet_c;
 
@@ -48,7 +50,7 @@ is
    function new_cylinder_Shape       (half_Extents : in     Vector_3)    return physics.Shape.view;
    function new_heightfield_Shape    (Width,
                                       Depth        : in     Positive;
-                                      Heights      : access constant Real;
+                                      Heights      : in     c_math_c.Pointers.Real_Pointer;
                                       min_Height,
                                       max_Height   : in     Real;
                                       Scale        : in     Vector_3)    return physics.Shape.view;

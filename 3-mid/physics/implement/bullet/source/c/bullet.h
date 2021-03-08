@@ -3,9 +3,6 @@
 
 #include "c_math.h"
 
-
-/// Provides a simple C interface to the Bullet3D C++ library.
-//
-
+// Provides a simple C interface to the Bullet3D C++ library.
 
 #endif

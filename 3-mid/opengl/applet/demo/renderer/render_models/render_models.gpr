@@ -2,7 +2,7 @@ with
      "opengl_demo",
      "lace_shared"; 
 
-with "box2d_thin_c";   -- This is required to avoid an Ubuntu bug with shared libraries.
+-- with "box2d_thin_c";   -- This is required to avoid an Ubuntu bug with shared libraries.
 
      
 

@@ -1,76 +1,38 @@
-with "bullet_c";
+with
+    "../../../../3-mid/physics/implement/impact/contrib/bullet-2.79/library/bullet_c";
 
-project Sphere_Sphere_Collision_C_Test is
+project Sphere_Sphere_Collision_C_Test
+is
+   type Restrictions is ("xgc", "ravenscar");
+   the_Restrictions : Restrictions := external ("restrictions", "xgc");
 
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_sphere_sphere_collision_c_test.cpp");
-   type Restrictions is
-      ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("restrictions");
+   for Languages use ("C++");
+   
+   for Create_Missing_Dirs use "True";
 
-   case Restrictions is
+   for Exec_Dir        use ".";
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
 
-      when "xgc" =>
-         for Languages use ("C++");
-
-      when "ravenscar" =>
-
-   end case;
-
-   package Builder is
-
-      case Restrictions is
-
-         when "xgc" =>
-            for Default_Switches ("ada") use ("-g", "-j13");
-
-         when "ravenscar" =>
-            for Default_Switches ("ada") use ("-g");
-      end case;
-   end Builder;
+   for Source_Dirs use (".");
+   for Main        use ("launch_sphere_sphere_collision_c_test.cpp");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnat12");
-
-      case Restrictions is
-
-         when "xgc" =>
-            for Default_Switches ("c++") use ("-g");
-
-         when "ravenscar" =>
-
-      end case;
+      for Default_Switches ("c++") use ("-g");
    end Compiler;
 
    package Binder is
-      for Default_Switches ("ada") use ("-E");
+      for Default_Switches ("c++") use ("-E");
    end Binder;
 
    package Linker is
-      for Default_Switches ("ada") use ("-g");
-
-      case Restrictions is
-
-         when "xgc" =>
-            for Default_Switches ("c++") use ("-g");
-
-         when "ravenscar" =>
-
-      end case;
+      for Default_Switches ("c++") use ("-g");
    end Linker;
 
    package Naming is
-
-      case Restrictions is
-
-         when "xgc" =>
-            for Spec_Suffix ("c++") use ".h";
-            for Body_Suffix ("c++") use ".cpp";
-
-         when "ravenscar" =>
-
-      end case;
+      for Spec_Suffix ("c++") use ".h";
+      for Body_Suffix ("c++") use ".cpp";
    end Naming;
 
 end Sphere_Sphere_Collision_C_Test;

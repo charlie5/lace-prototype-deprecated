@@ -16,7 +16,7 @@ package box2d_Physics.Object
 is
    use Math;
 
-   type Item is new physics.Object.item with private;
+   type Item is limited new physics.Object.item with private;
    type View is access all Item'Class;
 
    function new_Object (Shape : in physics.Shape.view) return Object.view;
@@ -57,7 +57,7 @@ is
 
 private
 
-   type Item is new physics.Object.item with
+   type Item is limited new physics.Object.item with
       record
          C         : access box2d_C.Object;
          Shape     :        physics.Shape.view;

@@ -1,6 +1,6 @@
 #include "box2d-object.h"
 #include "box2d-object-private.h"
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 #include <cmath>
 
 #include <stdio.h>
@@ -223,7 +223,7 @@ void
 b2d_Object_Spin_is (Object*   Self,   Matrix_3x3*   Now)
 {
   b2Vec2    Pos   = b2Vec2 (Now->m20, Now->m21);
-  float32   Angle = atan2  (Now->m10, Now->m00);
+  float     Angle = atan2  (Now->m10, Now->m00);
 
 
   if (Self->body)
@@ -307,7 +307,7 @@ void
 b2d_Object_Transform_is (Object*   Self,   Matrix_4x4*   Now)
 {
   b2Vec2    Pos   = b2Vec2 (Now->m30, Now->m31);
-  float32    Angle = atan2  (Now->m10, Now->m00);
+  float     Angle = atan2  (Now->m10, Now->m00);
 
   if (Self->body)
     {

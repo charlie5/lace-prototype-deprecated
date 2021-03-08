@@ -26,13 +26,13 @@ is
 
 
 
-   procedure set_b2d_user_Data (Self : in View)
-   is
-      function to_void_ptr is new ada.Unchecked_Conversion (Any_limited_view, Swig.void_ptr);
-      Self_as_any : constant Any_limited_view := Any_limited_view (Self);
-   begin
-      b2d_Joint_user_Data_is (Self.C, to_void_ptr (Self_as_any));
-   end set_b2d_user_Data;
+   --  procedure set_b2d_user_Data (Self : in View)
+   --  is
+   --     function to_void_ptr is new ada.Unchecked_Conversion (Any_limited_view, Swig.void_ptr);
+   --     Self_as_any : constant Any_limited_view := Any_limited_view (Self);
+   --  begin
+   --     b2d_Joint_user_Data_is (Self.C, to_void_ptr (Self_as_any));
+   --  end set_b2d_user_Data;
 
 
 

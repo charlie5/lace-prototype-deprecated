@@ -32,7 +32,7 @@ is
    begin
       accept start
       do
-         the_World        := mmi.World.forge.new_World ("server", 1, physics.Forge.Bullet, null);
+         the_World        := mmi.World.forge.new_World ("server", 1, physics.Bullet, null);
          the_server_World := the_World.all'Access;
       end;
       the_World.start;

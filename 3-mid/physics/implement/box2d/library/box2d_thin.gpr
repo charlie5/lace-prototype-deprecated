@@ -1,5 +1,6 @@
 with "box2d_thin_cxx";
 with "../../c_math/library/c_math_thin";
+--with "../../c_math/library/c_math_thin_c";
 with "swig";
 with "math";
 
@@ -13,7 +14,7 @@ project Box2d_thin is
    for Library_Ali_Dir use "objects";
 
    package Builder is
-      for Default_Switches ("ada") use ("-g", "-lpthread");
+      for Default_Switches ("ada") use ("-g");
    end Builder;
 
    package Compiler is

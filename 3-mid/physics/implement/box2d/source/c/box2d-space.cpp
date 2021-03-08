@@ -1,7 +1,7 @@
 #include "box2d-space.h"
 #include "box2d-conversions.h"
 
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 #include "box2d-object-private.h"
 
 #include <stdio.h>
@@ -42,11 +42,12 @@ public:
   
   b2Fixture*   Nearest;
   
-  float32 
-  ReportFixture (b2Fixture*      fixture, 
+  float 
+  ReportFixture
+    (b2Fixture*      fixture, 
 		 const b2Vec2&   point, 
 		 const b2Vec2&   normal, 
-		 float32          fraction)
+		 float           fraction)
   {
     Nearest = fixture;
     
@@ -68,9 +69,9 @@ struct ContactPoint
 	b2Vec2          normal;
 	b2Vec2          position;
 	b2PointState    state;
-	float32         normalImpulse;
-	float32         tangentImpulse;
-	float32         separation;
+	float           normalImpulse;
+	float           tangentImpulse;
+	float           separation;
 };
 
 
@@ -188,8 +189,8 @@ b2d_space_Contact       (Space*   Self,   int   contact_Id)
 
   b2d_Contact         the_Contact;
 
-  the_Contact.Object_A = (Object*) (body1->GetUserData());
-  the_Contact.Object_B = (Object*) (body2->GetUserData());
+  the_Contact.Object_A = (Object*) (body1->GetUserData().pointer);
+  the_Contact.Object_B = (Object*) (body2->GetUserData().pointer);
 
   the_Contact.Site.x = point->position.x;
   the_Contact.Site.y = point->position.y;
@@ -248,7 +249,7 @@ b2d_Space_add_Object (Space*   Self,    Object*   the_Object)
   b2World*   the_World = (b2World*)Self;
 
   the_Object->body = the_World->CreateBody (&the_Object->bodyDef);
-  the_Object->body->SetUserData (the_Object);
+  // the_Object->body->SetUserData (the_Object);
 
   the_Object->body->CreateFixture (&the_Object->fixtureDef);
 }
@@ -279,8 +280,8 @@ b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
       b2RevoluteJointDef*    revolute_Def = static_cast <b2RevoluteJointDef*> (jointDef);
       b2RevoluteJoint*       the_Joint;
 
-      the_Joint          = (b2RevoluteJoint*) the_World->CreateJoint (revolute_Def);
-      jointDef->userData = (void*) dynamic_cast <b2Joint*> (the_Joint);
+      the_Joint                  = (b2RevoluteJoint*) the_World->CreateJoint (revolute_Def);
+      jointDef->userData.pointer = (uintptr_t) dynamic_cast <b2Joint*> (the_Joint);
     }
   else
     {
@@ -295,10 +296,10 @@ b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
   b2World*           the_World     = (b2World*)    Self;
 
   b2JointDef*        the_Joint_Def = (b2JointDef*) the_Joint;
-  b2Joint*           b2d_Joint     = (b2Joint*)    the_Joint_Def->userData;
+  b2Joint*           b2d_Joint     = (b2Joint*)    the_Joint_Def->userData.pointer;
 
-  Object*            Object_A      = (Object*)     the_Joint_Def->bodyA->GetUserData();
-  Object*            Object_B      = (Object*)     the_Joint_Def->bodyB->GetUserData();
+  Object*            Object_A      = (Object*)     the_Joint_Def->bodyA->GetUserData().pointer;
+  Object*            Object_B      = (Object*)     the_Joint_Def->bodyB->GetUserData().pointer;
 
 
   the_World->DestroyJoint (b2d_Joint);
@@ -311,7 +312,7 @@ b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
 void*
 b2d_b2Joint_user_Data (b2Joint*   the_Joint)
 {
-  return the_Joint->GetUserData();  
+  return (void*) the_Joint->GetUserData().pointer;  
 }
 
 
@@ -364,7 +365,7 @@ b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
   if (the_Callback.Nearest == 0)
     the_Collision.near_Object = 0;
   else
-    the_Collision.near_Object  = (Object*) (the_Callback.Nearest->GetBody()->GetUserData());
+    the_Collision.near_Object  = (Object*) (the_Callback.Nearest->GetBody()->GetUserData().pointer);
   
   the_Collision.hit_Fraction = 0.0;
   the_Collision.Normal_world = Vector_3 (0.0, 0.0, 0.0);

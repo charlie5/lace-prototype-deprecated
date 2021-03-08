@@ -39,8 +39,8 @@ begin
 
       texture_File     : constant String             := "assets/kidwelly-terrain-texture-255x255.png";
 
-      the_terrain_Grid : constant openGL.Visual.Grid := openGL.Terrain.new_Terrain (heights_File => heights_File,
-                                                                                    texture_File => texture_File,
+      the_terrain_Grid : constant openGL.Visual.Grid := openGL.Terrain.new_Terrain (heights_File => to_Asset (heights_File),
+                                                                                    texture_File => to_Asset (texture_File),
                                                                                     Scale        => (1.0, 20.0, 1.0));
       num_Sprites      : constant Positive           :=   the_terrain_Grid'Length (1)
                                                         * the_terrain_Grid'Length (2);

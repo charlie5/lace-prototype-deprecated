@@ -35,7 +35,7 @@ begin
       --  The Models.
       --
       the_box_1_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box
+        := openGL.Model.box.colored.new_Box
              (Size => (1.0, 2.0, 1.0),
               faces => (front => (colors => (others => (Blue,     Opaque))),
                         rear  => (colors => (others => (Blue,     Opaque))),
@@ -45,7 +45,7 @@ begin
                         right => (colors => (others => (Red,      Opaque)))));
 
       the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.forge.new_Box
+        := openGL.Model.box.lit_colored_textured.new_Box
              (Size => (1.0, 2.0, 1.0),
               faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
                         rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
@@ -55,7 +55,7 @@ begin
                         right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
 
       the_box_3_Model : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.forge.new_Box
+        := openGL.Model.box.textured.new_Box
              (Size => (1.0, 2.0, 1.0),
               faces => (front => (texture_name   => the_Texture),
                         rear  => (texture_name   => the_Texture),

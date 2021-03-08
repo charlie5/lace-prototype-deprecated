@@ -1,6 +1,8 @@
 with
      "bullet_thin", 
      "box2d_thin", 
+--     "../../implement/c_math/library/c_math_thin",
+     "c_math_thin",
      "lace_shared";
 
 project Physics is

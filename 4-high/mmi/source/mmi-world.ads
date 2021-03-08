@@ -12,8 +12,6 @@ with
      lace.Event,
      lace.Observer,
      lace.Subject,
-     lace.remote.Observer,
-     lace.remote.Subject_and_deferred_Observer,
      lace.Subject_and_deferred_Observer,
      lace.Any,
 
@@ -35,7 +33,7 @@ is
    use Math;
 
 
-   type Item  is limited new lace.remote.Subject_and_deferred_Observer.item
+   type Item  is limited new lace.Subject_and_deferred_Observer.item
                          and mmi.remote.World.item
    with private;
 
@@ -251,7 +249,7 @@ is
 
    overriding
    procedure   register         (Self : access Item;   the_Mirror         : in remote.World.view;
-                                                       Mirror_as_observer : in lace.remote.Observer.view);
+                                                       Mirror_as_observer : in lace.Observer.view);
    overriding
    procedure deregister         (Self : access Item;   the_Mirror         : in remote.World.view);
 
@@ -560,8 +558,8 @@ private
 
    -- TODO: refactor into two subclasses 'local' and 'mirror'.
 
-   type Item is limited new lace.remote.Subject_and_deferred_Observer.item
-                        and mmi.remote.World                         .item with
+   type Item is limited new lace.Subject_and_deferred_Observer.item
+                        and mmi.remote.World                  .item with
       record
          local_Subject_and_deferred_Observer :     lace.Subject_and_deferred_Observer.view;
 

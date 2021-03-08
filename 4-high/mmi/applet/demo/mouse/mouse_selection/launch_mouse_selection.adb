@@ -10,8 +10,8 @@ with
      Physics,
      float_Math,
      lace.Response,
-     lace.event       .Utility,
-     lace.event.remote.Utility,
+     lace.Event.utility,
+     
      Ada.Calendar,
      Ada.Text_IO,
      Ada.Exceptions;
@@ -25,12 +25,11 @@ procedure launch_mouse_Selection
 -- handle mouse clicks on the sprite.
 --
 is
-   use lace.event       .Utility,
-       lace.event.remote.Utility,
+   use lace.Event.utility,
        ada.Text_IO;
 begin
-   lace.Event.remote.Utility.use_text_Logger ("event.log");
-   lace.Event.remote.Utility.Logger.ignore (to_Kind (mmi.Mouse.motion_Event'Tag));
+   lace.Event.utility.use_text_Logger ("event.log");
+   lace.Event.utility.Logger.ignore (to_Kind (mmi.Mouse.motion_Event'Tag));
 
    declare
       use mmi.Applet,
@@ -107,11 +106,11 @@ begin
       the_Applet.destroy;
    end;
 
-   lace.Event.remote.Utility.close;
+   lace.Event.utility.close;
 
 exception
    when E : others =>
-      lace.Event.remote.Utility.close;
+      lace.Event.utility.close;
 
       put_Line ("Exception detected in 'launch_mouse_Selection' ...");
       put_Line (ada.Exceptions.Exception_Information (E));

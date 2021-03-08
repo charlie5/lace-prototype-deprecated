@@ -235,9 +235,9 @@ is
                                                               t => (0.0, 1.0));
       the_ground_Model : constant access openGL.Model.terrain.item
         := new openGL.Model.terrain.item' (openGL.Model.item with
---                                             heights_asset => heights_File,
---                                             row           => 1,
---                                             col           => 1,
+                                           heights_asset => heights_File,
+                                           row           => 1,
+                                           col           => 1,
                                            heights       => the_Region.all'Access,
                                            color_map     => texture_File,
                                            tiling        => Tiling);

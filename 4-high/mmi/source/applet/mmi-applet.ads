@@ -12,11 +12,10 @@ with
      opengl.Font,
 
      lace.Event,
-     lace.       Response,
-     lace.       Subject,
-     lace.       Observer,
-     lace.       Subject_and_deferred_Observer,
-     lace.remote.Subject_and_deferred_Observer,
+     lace.Response,
+     lace.Subject,
+     lace.Observer,
+     lace.Subject_and_deferred_Observer,
 
      ada.containers.Vectors;
 
@@ -27,7 +26,7 @@ package mmi.Applet
 --
 is
 
-   type Item is limited new lace.remote.Subject_and_deferred_Observer.item with private;
+   type Item is limited new lace.Subject_and_deferred_Observer.item with private;
    type View is access all Item'Class;
 
 
@@ -242,7 +241,7 @@ private
 
    -- Applet Item
    --
-   type Item is limited new lace.remote.Subject_and_deferred_Observer.item with
+   type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
          local_Subject_and_Observer   :         lace.Subject_and_deferred_Observer.view := new lace.Subject_and_deferred_Observer.item;
 

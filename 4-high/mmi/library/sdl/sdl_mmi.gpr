@@ -1,86 +1,18 @@
-with "mmi";
-with "sdlada";
+with
+     "mmi",
+     "sdlada",
+     "lace_shared";
 
-project sdl_MMI is
+project SDL_MMI
+is
 
-   type Gtkada_Kind_Type is
-      ("static", "relocatable");
-   type Os_Kind is
-      ("linux-gnu", "linux-x86_64-pc-linux-gnu", "solaris2.11");
-   type Build_Kind is
-      ("release", "develop");
-   Build : Build_Kind := external ("BUILD_KIND", "release");
-   for Source_Dirs use ("../../source/platform/sdl");
-   for Object_Dir use "build";
-   for Library_Dir use "lib";
+   for Source_Dirs     use ("../../source/platform/sdl");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   OSTYPE : Os_Kind := external ("OSTYPE");
-   LIBRARY_TYPE : Gtkada_Kind_Type := external ("LIBRARY_TYPE");
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
+   package Builder  renames lace_Shared.Builder;
+   package Compiler renames lace_Shared.Compiler;
+   package Binder   renames lace_Shared.Binder;
 
-   package Compiler is
-
-      case Build is
-
-         when "release" =>
-
-            case OSTYPE is
-
-               when "linux-gnu" =>
-
-                  case LIBRARY_TYPE is
-
-                     when "static" =>
-                        for Default_Switches ("ada") use ("-g", "-gnat12", "-O2", "-gnatVn");
-
-                     when "relocatable" =>
-                        for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-                  end case;
-
-               when "linux-x86_64-pc-linux-gnu" =>
-                  for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-
-               when "solaris2.11" =>
-                  for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-            end case;
-
-         when "develop" =>
-            for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-      end case;
-   end Compiler;
-
-   package Binder is
-
-      case Build is
-
-         when "release" =>
-
-            case OSTYPE is
-
-               when "linux-gnu" =>
-
-                  case LIBRARY_TYPE is
-
-                     when "static" =>
-
-                     when "relocatable" =>
-                        for Default_Switches ("ada") use ("-E");
-                  end case;
-
-               when "linux-x86_64-pc-linux-gnu" =>
-                  for Default_Switches ("ada") use ("-E");
-
-               when "solaris2.11" =>
-                  for Default_Switches ("ada") use ("-E");
-            end case;
-
-         when "develop" =>
-            for Default_Switches ("ada") use ("-E");
-      end case;
-   end Binder;
-
-end sdl_MMI;
-
+end SDL_MMI;

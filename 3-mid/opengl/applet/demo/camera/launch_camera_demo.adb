@@ -54,13 +54,13 @@ begin
       --  The Models.
       --
       the_box_Model_1 : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.forge.new_Box (scale => (0.5, 0.5, 0.5),
-                                                   faces => (front => (colors => (others => (Blue,            Opaque))),
-                                                             rear  => (colors => (others => (light_Blue,      Opaque))),
-                                                             upper => (colors => (others => (Green,           Opaque))),
-                                                             lower => (colors => (others => (forest_Green,    Opaque))),
-                                                             left  => (colors => (others => (Dark_Red,        Opaque))),
-                                                             right => (colors => (others => (Red,             Opaque)))));
+        := openGL.Model.box.colored.new_Box (size  => (0.5, 0.5, 0.5),
+                                             faces => (front => (colors => (others => (Blue,            Opaque))),
+                                                       rear  => (colors => (others => (light_Blue,      Opaque))),
+                                                       upper => (colors => (others => (Green,           Opaque))),
+                                                       lower => (colors => (others => (forest_Green,    Opaque))),
+                                                       left  => (colors => (others => (Dark_Red,        Opaque))),
+                                                       right => (colors => (others => (Red,             Opaque)))));
 
       the_Sprite     : constant openGL.Visual.view
         := openGL.Visual.Forge.new_Visual (the_box_Model_1.all'Access);
@@ -77,7 +77,7 @@ begin
 
          --  Render all sprites.
          --
-         Demo.Camera.render (the_Sprites => (1 => the_Sprite));
+         Demo.Camera.render (the_Visuals => (1 => the_Sprite));
 
          while not Demo.Camera.cull_Completed
          loop

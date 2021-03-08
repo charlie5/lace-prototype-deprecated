@@ -51,12 +51,11 @@ begin
       --
 
       the_text_Model : constant openGL.Model.Text.lit_colored_textured.view
-        := openGL.Model.Text.lit_colored_textured.forge.new_Text (scale => (1.0, 1.0, 1.0),
-                                                                  text     => "Howdy",
-                                                                  Font     => the_font_Id,
-                                                                  Color    => (Red, Opaque),
-                                                                  Centered => False);
-
+        := openGL.Model.Text.lit_colored_textured.new_Text (scale => (1.0, 1.0, 1.0),
+                                                            text     => "Howdy",
+                                                            Font     => the_font_Id,
+                                                            Color    => (Red, Opaque),
+                                                            Centered => False);
 
       --  The Sprites.
       --

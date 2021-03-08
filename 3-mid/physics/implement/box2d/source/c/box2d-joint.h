@@ -1,5 +1,5 @@
 #ifndef C_BOX2D_JOINT_H
-#define C_BOX2D_Joint_H
+#define C_BOX2D_JOINT_H
 
 #include "box2d.h"
 #include "box2d-object.h"

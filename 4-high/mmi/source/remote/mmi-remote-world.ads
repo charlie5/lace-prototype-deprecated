@@ -2,8 +2,8 @@ with
      physics.remote.Model,
      openGL .remote_Model,
 
-     lace.remote.Observer,
-     lace.remote.Subject,
+     lace.Observer,
+     lace.Subject,
      lace.Event,
 
      ada.unchecked_Conversion,
@@ -23,8 +23,8 @@ is
 
 
    type Item is  limited interface
-             and lace.remote.Subject .item
-             and lace.remote.Observer.item;
+             and lace.Subject .item
+             and lace.Observer.item;
 
    type View is access all Item'Class;
 
@@ -40,8 +40,8 @@ is
    --
 
    procedure   register (Self : access Item;   the_Mirror         : in World.view;
-                                               Mirror_as_observer : in lace.remote.Observer.view)   is abstract;
-   procedure deregister (Self : access Item;   the_Mirror         : in World.view)                  is abstract;
+                                               Mirror_as_observer : in lace.Observer.view)   is abstract;
+   procedure deregister (Self : access Item;   the_Mirror         : in World.view)           is abstract;
 
 
 

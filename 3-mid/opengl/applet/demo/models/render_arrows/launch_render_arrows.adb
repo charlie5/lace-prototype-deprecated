@@ -25,11 +25,11 @@ begin
       --  The Models.
       --
       the_arrow_Model         : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.Forge.new_Arrow (End_2 => (0.0, 5.0, 0.0));
+        := openGL.Model.arrow.colored.new_Arrow (End_2 => (0.0, 5.0, 0.0));
 
       the_spinner_arrow_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.Forge.new_Arrow (End_1 => (0.0, -2.5, 0.0),
-                                                       End_2 => (0.0,  2.5, 0.0));
+        := openGL.Model.arrow.colored.new_Arrow (End_1 => (0.0, -2.5, 0.0),
+                                                 End_2 => (0.0,  2.5, 0.0));
       --  The Sprites.
       --
       use openGL.Visual.Forge;

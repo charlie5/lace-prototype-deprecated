@@ -96,8 +96,8 @@ private
    function    new_cylinder_Shape  (Self : access Item;   half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return physics.Shape .view;
 
    overriding
-   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in physics.Heightfield;
-                                                          Scale        : in Vector_3)                    return physics.Shape .view;
+   function  new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
+                                                          Scale        : in     Vector_3)                return physics.Shape .view;
    overriding
    function  new_multisphere_Shape (Self : access Item;   Sites        : in physics.vector_3_array;
                                                           Radii        : in math.Vector)                 return physics.Shape .view;

@@ -16,7 +16,7 @@ package bullet_Physics.Object
 is
    use Math;
 
-   type Item is new physics.Object.item with private;
+   type Item is limited new physics.Object.item with private;
    type View is access all Item'Class;
 
 
@@ -51,7 +51,7 @@ is
 
 private
 
-   type Item is new physics.Object.item with
+   type Item is limited new physics.Object.item with
       record
          C         : access bullet_C.Object;
          Shape     :        physics.Shape.view;

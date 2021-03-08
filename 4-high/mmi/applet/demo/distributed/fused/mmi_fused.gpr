@@ -1,6 +1,9 @@
-with "lumen_mmi";
+with
+     "lumen_mmi",
+     "../mmi_demo";
 
-project MMI_Fused is
+project MMI_Fused
+is
 
    type Profile is
       ("safe", "lean", "desk");
@@ -10,7 +13,7 @@ project MMI_Fused is
       ("xgc", "ravenscar");
    type Os_Type is
       ("Windows_NT", "Linux", "MacOSX");
-   for Source_Dirs use (".", "../../distributed");
+   for Source_Dirs use (".");
    for Object_Dir use "build";
    for Exec_Dir use ".";
    for Main use ("launch_mmi_fused.adb");

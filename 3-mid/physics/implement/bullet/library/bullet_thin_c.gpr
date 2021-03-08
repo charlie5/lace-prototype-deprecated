@@ -15,7 +15,7 @@ project Bullet_Thin_C is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-lpthread", "-I/usr/include/bullet", "-I/usr/local/include/bullet");
+      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/bullet", "-I/usr/local/include/bullet");
    end Compiler;
 
    package Linker is

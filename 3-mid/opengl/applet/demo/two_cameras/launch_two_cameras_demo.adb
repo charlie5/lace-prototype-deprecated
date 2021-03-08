@@ -51,29 +51,29 @@ begin
       --  The Models.
       --
       the_box_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.forge.new_Box
-             (scale         => (0.5, 0.5, 0.5),
+        := openGL.Model.box.lit_colored_textured.new_Box
+             (size          => (0.5, 0.5, 0.5),
               faces         => (front => (colors         => (others => (White,     Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object),
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
+                                          --  texture_object => Texture.null_Object),
                                 rear  => (colors         => (others => (Blue,     Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object),
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
+                                          --  texture_object => Texture.null_Object),
                                 upper => (colors         => (others => (Green,    Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object),
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
+                                          --  texture_object => Texture.null_Object),
                                 lower => (colors         => (others => (Green,    Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object),
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
+                                          --  texture_object => Texture.null_Object),
                                 left  => (colors         => (others => (Dark_Red, Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object),
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
+                                          --  texture_object => Texture.null_Object),
                                 right => (colors         => (others => (Red,      Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"),
-                                          texture_object => Texture.null_Object)));
+                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"))));
+                                          --  texture_object => Texture.null_Object)));
 
       the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
-        := openGL.Model.sphere.lit_colored_textured.forge.new_sphere (radius => 0.5);
+        := openGL.Model.sphere.lit_colored_textured.new_sphere (radius => 0.5);
 
       --  The Sprites.
       --
