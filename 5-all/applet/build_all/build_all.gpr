@@ -1,0 +1,126 @@
+with 
+     "../../../1-base/lace/applet/demo/event/distributed/simple_chat",
+     "../../../1-base/lace/applet/demo/event/simple/deferred/lace_simple_deferred_events_demo",
+     "../../../1-base/lace/applet/demo/event/simple/instant/lace_simple_instant_events_demo",
+     "../../../1-base/lace/applet/demo/event/simple/lace_demo",
+
+     "../../../1-base/lace/applet/demo/strings/strings_demo",
+
+     "../../../1-base/math/applet/demo/basic/basic_math_demo",
+     "../../../1-base/math/applet/demo/geometry/basic_geometry_demo",
+     "../../../1-base/math/applet/test/suite/math_testsuite",
+     "math",
+     
+     "../../../1-base/xml/applet/demo/outline/outline", 
+     "../../../1-base/xml/applet/demo/tree/xml_tree", 
+     "../../../1-base/xml/applet/demo/write/write",
+     "xml",
+     
+     "../../../2-low/collada/applet/parse_box/parse_box",
+     "collada",
+
+     "../../../2-low/neural/applet/test/learn_linear/learn_linear",
+     "neural",
+     
+     "../../../3-mid/impact/applet/demo/2d/hello/impact_hello_2d_demo",
+     "../../../3-mid/impact/applet/demo/2d/orbs/orbs_hello_demo",
+     "../../../3-mid/impact/applet/demo/3d/hello/impact_hello_3d_demo",
+     "../../../3-mid/impact/applet/test/other/box_box_collision/box_box_collision_test",
+     "../../../3-mid/impact/applet/test/other/rigid_body_spin/launch_rigid_body_spin_test",
+     "../../../3-mid/impact/applet/test/other/sphere_sphere_collision/sphere_sphere_collision_test",
+     "impact",
+     
+     "../../../3-mid/opengl/applet/demo/camera/camera_demo",
+     "../../../3-mid/opengl/applet/demo/core/core_test",
+     "../../../3-mid/opengl/applet/demo/culler/large_terrain/large_terrain_demo",
+     "../../../3-mid/opengl/applet/demo/culler/many_boxes/many_boxes_demo",
+     "../../../3-mid/opengl/applet/demo/lights/render_lighting/render_lighting",
+     "../../../3-mid/opengl/applet/demo/models/model_scaling/model_scaling",
+     "../../../3-mid/opengl/applet/demo/models/render_arrows/render_arrows",
+     "../../../3-mid/opengl/applet/demo/models/render_billboards/render_billboards",
+     "../../../3-mid/opengl/applet/demo/models/render_boxes/render_boxes",
+     "../../../3-mid/opengl/applet/demo/models/render_capsules/render_capsules",
+     "../../../3-mid/opengl/applet/demo/renderer/render_models/render_models",
+     "../../../3-mid/opengl/applet/demo/renderer/render_screenshot/render_screenshot",
+     "../../../3-mid/opengl/applet/demo/renderer/render_text/render_text",
+     "../../../3-mid/opengl/applet/demo/two_cameras/two_cameras_demo",
+--     "../../../3-mid/opengl/applet/test/suite/egl/linkage/egl_linkage_test",
+     "opengl",
+     "opengl_core",
+     "opengl_demo",
+     "../../../3-mid/opengl/private/freetype/applet/test/linkage/freetype_linkage_test",
+     "../../../3-mid/opengl/private/gid/gid",
+--     "../../../3-mid/opengl/private/gl/applet/test/linkage/linkage_test",
+     
+     "box2d_thin",
+     "box2d_thin_cxx",
+     "box2d_thin_c",
+     
+     "bullet_thin",
+     "bullet_thin_cxx",
+     "bullet_thin_c",
+     
+--     "../../../3-mid/physics/implement/c_math/library/c_math_thin",
+--     "../../../3-mid/physics/implement/c_math/library/c_math_thin_cxx",
+--     "../../../3-mid/physics/implement/c_math/library/c_math_thin_c",
+     "c_math_thin",
+     "c_math_thin_cxx",
+     "c_math_thin_c",
+     
+     -- TODO: resolve dual physics impact.
+     
+     "../../../3-mid/physics/implement/vox/applet/test_2d/test_2d",
+     "../../../3-mid/physics/implement/vox/library/vox",
+     
+     "../../../3-mid/physics/interface/applet/demo/hello/hello_physics_demo",
+     "../../../3-mid/physics/interface/applet/demo/test_engine/test_engine",
+     "physics",
+     
+     "../../../4-high/mmi/applet/demo/distributed/dsa/demo_dsa",
+     "../../../4-high/mmi/applet/demo/distributed/fused/mmi_fused",
+     "../../../4-high/mmi/applet/demo/game/box2d_test/mmi_box2d_test",
+     "../../../4-high/mmi/applet/demo/game/pong/pong",
+     "../../../4-high/mmi/applet/demo/hello_mmi/hello_lumen_mmi",
+     "../../../4-high/mmi/applet/demo/models/opengl_model/opengl_model",
+     "../../../4-high/mmi/applet/demo/mouse/mouse_motion/mouse_motion",
+     "../../../4-high/mmi/applet/demo/mouse/mouse_selection/mouse_selection",
+     "../../../4-high/mmi/applet/demo/skinning/rig/rig_demo",
+     "../../../4-high/mmi/applet/demo/sprite/chains_2d/chains_2d",
+     "../../../4-high/mmi/applet/demo/sprite/drop_ball_on_box/drop_ball_on_box",
+     "../../../4-high/mmi/applet/demo/sprite/drop_box_on_box/drop_box_on_box",
+     "../../../4-high/mmi/applet/demo/sprite/hinged_box/hinged_box",
+     "../../../4-high/mmi/applet/demo/sprite/mixed_joints/mixed_joints",
+     "../../../4-high/mmi/applet/demo/sprite/mixed_joints_2d/mixed_joints_2d",
+     "../../../4-high/mmi/applet/demo/sprite/mixed_shapes/mixed_shapes",
+     "../../../4-high/mmi/applet/demo/sprite/text/text_sprite_demo",
+     "../../../4-high/mmi/applet/test/single/add_rid_sprite/add_rid_sprite_test",
+     "../../../4-high/mmi/applet/tute/pong/1-basic_applet_window/pong_tute",
+     "lumen_mmi",
+--     "sdl_mmi",
+     "mmi",
+     
+     "lace",
+     "lace_shared";
+
+project build_All
+is
+    type Restrictions is ("xgc", "ravenscar");
+    Restrictions : Restrictions := external ("restrictions");
+
+    for Create_Missing_Dirs use "True";
+
+    for Object_Dir  use "build";
+    for Exec_Dir    use ".";
+    for Source_Dirs use (".");
+    for Main        use ("build_all.adb");
+
+    package Ide      renames Lace_shared.Ide;
+    package Builder  renames Lace_shared.Builder;
+    package Compiler renames Lace_shared.Compiler;
+    package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lfann", "-lfloatfann");
+   end Linker;
+
+end build_All;
