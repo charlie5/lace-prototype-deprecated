@@ -76,7 +76,7 @@ with
 
      ada.Text_IO;
 
-procedure build_All
+procedure build_all_Lace
 --
 -- Pulls in all applets and libraries for global checking, reference finding and refactoring.
 --
@@ -149,4 +149,4 @@ begin
    launch_add_rid_Sprite_Test;
    launch_pong_Tute;
 
-end build_All;
+end build_all_Lace;

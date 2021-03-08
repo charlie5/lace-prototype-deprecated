@@ -102,7 +102,7 @@ with
      "lace",
      "lace_shared";
 
-project build_All
+project build_all_Lace
 is
     type Restrictions is ("xgc", "ravenscar");
     Restrictions : Restrictions := external ("restrictions");
@@ -112,7 +112,7 @@ is
     for Object_Dir  use "build";
     for Exec_Dir    use ".";
     for Source_Dirs use (".");
-    for Main        use ("build_all.adb");
+    for Main        use ("build_all_lace.adb");
 
     package Ide      renames Lace_shared.Ide;
     package Builder  renames Lace_shared.Builder;
@@ -123,4 +123,4 @@ is
       for Default_Switches ("ada") use ("-g", "-lfann", "-lfloatfann");
    end Linker;
 
-end build_All;
+end build_all_Lace;
