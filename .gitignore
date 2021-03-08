@@ -1,49 +1,45 @@
-# Object file
+## Gnat build artifacts
 *.o
-
-# Ada Library Information
 *.ali
-
-# Gnat build artifacts
 *-loc.xml
 gnatinspect.db
 *~
 auto.cgpr
+*.stderr
+*.stdout
+*.a
+*.log
 
-# Build folders
+
+## Build folders
 build
 **/dsa/x86_64-unknown-linux-gnu
 bin
 
-# Library files
-*.a
 
-*.log
-
-*.stderr
-*.stdout
-
-# Binaries
-launch_simple_instant_events_demo
-launch_simple_deferred_events_demo
-launch_simple_chat_client
-launch_simple_chat_registrar
-launch_outline
-deer.dae
-
+## Source
 2-low/neural/source/attic
 2-low/neural/source/attic2
 2-low/neural/implement
 2-low/neural/applet/test/learn_linear/velocity.net
-launch_learn_linear
 
 3-mid/impact/contrib
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
 
+
+## Assets
 **/assets/opengl
 **/assets/mmi
 
+
+## Binaries
+launch_simple_instant_events_demo
+launch_simple_deferred_events_demo
+launch_simple_chat_client
+launch_simple_chat_registrar
+launch_outline
+launch_learn_linear
 launch_pong
 launch_opengl_model
 launch_drop_ball_on_box
@@ -57,13 +53,10 @@ launch_crunch
 launch_render_models
 launch_hello_physics_interface_demo
 launch_test_engine
-
+test_environ_compression
 HelloWorld*
 
+
+## Old Code
 *-old
-build_all
-
-
 old-events
-
-test_environ_compression
