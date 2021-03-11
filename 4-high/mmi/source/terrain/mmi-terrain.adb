@@ -40,8 +40,7 @@ is
                          texture_File : in     String        := "";
                          Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access mmi.Sprite.Grid
    is
-      use      Math;
-      use type math.Index, opengl.Real;
+      use Math;
 
       the_Pixels  :          opengl.io.height_Map_view
                                       := opengl.io.to_height_Map (openGL.to_Asset (heights_File));
@@ -152,7 +151,6 @@ is
                tile_X_Scale := Width (the_heightmap_Grid (Row, Col).all) / total_Width;
 
                declare
-                  use math.Vectors;
                   the_Region       : constant height_Map_view := the_heightmap_Grid (Row, Col);
 
                   the_height_Range : constant opengl.Vector_2 := openGL.height_Extent (the_Region.all);
@@ -188,8 +186,8 @@ is
                                                 Restitution => 0.5,
                                                 is_Tangible => True);
 
-                  the_height_Extents : opengl.Vector_2 :=      opengl.height_Extent (the_Region.all);
-                  the_Sprite         : mmi.Sprite.view renames the_sprite_Grid      (Row, Col);
+                  the_height_Extents : constant opengl.Vector_2 := opengl.height_Extent (the_Region.all);
+                  the_Sprite         : mmi.Sprite.view     renames the_sprite_Grid      (Row, Col);
                   the_Site           : vector_3;
                begin
                   the_ground_Model.Scale := (Scale (1),

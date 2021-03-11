@@ -1,8 +1,6 @@
 with ada.unchecked_Deallocation;
 with Ada.Sequential_IO;
 with Ada.Text_IO;
-with Ada.Strings.Fixed;
-
 
 
 package body Neural.Forge
@@ -31,8 +29,8 @@ is
 
    function Creation (From : in Pattern) return Pattern
    is
-      Self : Pattern := (Inputs  => new Signals'(From.Inputs.all),
-                         Outputs => new Signals'(From.Outputs.all));
+      Self : constant Pattern := (Inputs  => new Signals'(From.Inputs.all),
+                                  Outputs => new Signals'(From.Outputs.all));
    begin
       return Self;
    end Creation;
@@ -59,13 +57,13 @@ is
       open (the_File, in_File, From_File_Named & ".bounds");
 
       declare
-         Num_Patterns : Natural               := Integer'Value (get_Line (the_File));
-         Num_Inputs   : Positive              := Integer'Value (get_Line (the_File));
-         Num_Outputs  : Positive              := Integer'Value (get_Line (the_File));
+         Num_Patterns : constant Natural               := Integer'Value (get_Line (the_File));
+         Num_Inputs   : constant Positive              := Integer'Value (get_Line (the_File));
+         Num_Outputs  : constant Positive              := Integer'Value (get_Line (the_File));
 
          Signals_File : signal_io.File_Type;
 
-         The_Creation : neural.Set.Patterns_view := new Patterns (1 .. Num_Patterns);
+         The_Creation : constant neural.Set.Patterns_view := new Patterns (1 .. Num_Patterns);
       begin
          open (Signals_File, In_File, From_File_Named & ".signals");
 
@@ -127,8 +125,6 @@ is
    is
       use Signal_IO;
       use Ada.Text_IO;
-      use Ada.Strings.Fixed;
-      use Ada.Strings;
 
       Bounds_File  : Ada.Text_IO.File_Type;
       Signals_File : Signal_IO.File_Type;

@@ -4,10 +4,7 @@ with
      c_math_c.Vector_2,
      c_math_c.Vector_3,
      c_math_c.Conversion,
-     c_math_c.Pointers,
      c_math_c.Triangle,
-
-     physics.Forge,
 
      ada.unchecked_Deallocation,
      ada.Unchecked_Conversion,
@@ -178,7 +175,7 @@ is
    begin
       Self.C := b3d_new_Heightfield (+Width,
                                      +Depth,
-                                     c_math_c.Pointers.Real_Pointer (Heights),
+                                     Heights,
                                      c_math_c.Real (min_Height),
                                      c_math_c.Real (max_Height),
                                      c_Scale'Unchecked_Access);

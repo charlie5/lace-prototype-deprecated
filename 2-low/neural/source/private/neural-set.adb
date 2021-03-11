@@ -1,16 +1,13 @@
-
 with neural.Privvy;
 with fann_c.Binding;
 with Interfaces.C;
 with Fann_C.Pointers;
-with Ada.Text_IO; use Ada.Text_IO;
 
-
-package body Neural.Set is
-
-
-   use neural.Privvy, fann_c.Binding, Interfaces;
-
+package body Neural.Set
+is
+   use neural.Privvy,
+       fann_c.Binding,
+       Interfaces;
 
 
    function to_Set (the_Patterns : in Patterns_view) return Set

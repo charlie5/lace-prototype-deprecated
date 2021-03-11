@@ -324,9 +324,6 @@ is
                                      Y         : in Integer;
                                      Button    : in std_Lumen.Window.Button_Enum;
                                      Modifiers : in Events.Modifier_Set) is
-
-      use type std_Lumen.Window.Button_Enum;
-
    begin  -- Button_Handler
       the_Window.Mouse.emit_button_release_Event (mmi.mouse.button_Id (std_Lumen.Window.Button_Enum'Pos (Button) + 1),
                                                   the_Window.Keyboard.Modifiers,

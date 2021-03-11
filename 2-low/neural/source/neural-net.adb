@@ -4,24 +4,14 @@ with fann_c.Binding;   use fann_c.Binding;
 with neural.Privvy;    use neural.Privvy;
 with neural.Forge;     use neural.Forge;
 
-with ada.Numerics.Discrete_Random;
-
 with Interfaces.C;  use Interfaces.C;
 
 
-with Ada.Strings.Fixed;
-with Ada.Exceptions;  use Ada.Exceptions;
-with ada.Directories; use ada.Directories;
 with Ada.Text_Io;     use Ada.Text_IO;
-with ada.Direct_IO;
 with Ada.IO_Exceptions;
 
-with System;          use System;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with fann_c.Pointers; use fann_c.Pointers;
-
-
-
 
 
 package body Neural.Net
@@ -54,7 +44,7 @@ is
    function Folder_For (Self : in Item) return String
    is
 --        use Environ;
-      The_Folder : String := "./" & Self.Name.all & "/"; -- & ".net/";
+      The_Folder : constant String := "./" & Self.Name.all & "/"; -- & ".net/";
    begin
 --        Verify_Folder (The_Folder);
       return The_Folder;
@@ -155,8 +145,6 @@ is
       Self.Name := new String' (Name);
 
       declare
-         use Math, ada.text_IO;
-
          subtype nn_Real is math.Real;
       begin
 --           put_line ("Opening " &  net_Filename_for (Self));
@@ -219,7 +207,6 @@ is
    procedure Store (Self : in Item)
    is
       use Set;
-      use Ada.Text_IO;
 
       The_File : File_Type;
       Status   : c.int;
@@ -269,9 +256,9 @@ is
    is
       use Set;
 
-      All_Patterns          : Patterns (1 .. Now'length) := Now;
-      Num_Training_Patterns : Natural                    := All_Patterns'Length * 2 / 3;
-      Num_Test_Patterns     : Natural                    := All_Patterns'Length - Num_Training_Patterns;
+      All_Patterns          : constant Patterns (1 .. Now'length) := Now;
+      Num_Training_Patterns : constant Natural                    := All_Patterns'Length * 2 / 3;
+      Num_Test_Patterns     : constant Natural                    := All_Patterns'Length - Num_Training_Patterns;
 
       Status : C.int;
    begin
@@ -321,7 +308,7 @@ is
                         data => self.training_Set.Fann);
 
       declare
-         use fann_c, fann_c.Pointers, Interfaces;
+         use fann_c;
 
          type my_array is array (c.int range <>) of aliased fann_type;
 
@@ -332,7 +319,7 @@ is
 --         kkk : array (1 .. Num_Training_Patterns) of fann_type;
 --         for kkk'Address use Self.training_Set.Fann.input.all'Address;
 
-         kkk : my_array (1 .. c.int (Num_Training_Patterns)) := Pointers.Value (Pointers.pointer (Self.training_Set.Fann.input.all),
+         kkk : constant my_array (1 .. c.int (Num_Training_Patterns)) := Pointers.Value (Pointers.pointer (Self.training_Set.Fann.input.all),
                                                                                 c.ptrdiff_t (Num_Training_Patterns));
       begin
 
@@ -371,8 +358,7 @@ is
 
    procedure report_training_Status (Self : not null access Neural.Net.Item)
    is
-      use Neural.Net, Math;
-      use type Neural.Signal;
+      use Math;
    begin
       Put (Name (Self.all) & " epoch: " & Integer'Image (Epoch (Self.all)));
       Put ("    Training RMS error: "    & Image (math.Real (training_RMS_Error (Self.all))));
@@ -388,8 +374,6 @@ is
 
    procedure store_best_Epoch (Self    : access Neural.Net.Item)
    is
-      use Neural.Net;
-      use type Neural.Signal;
    begin
 --        if        Epoch (Self.all) > 100
 --          and then test_RMS_Error (Self.all) <= min_test_RMS_Error (Self.all)
@@ -419,8 +403,6 @@ is
                                           Client_Continue  : in Client_Continue_Test      := null)
    is
       use Neural.Set;
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
 
       Training_Patterns : Patterns_view := Self.Training_Patterns;
       Test_Patterns     : Patterns_view := Self.Test_Patterns;
@@ -486,7 +468,6 @@ is
    function Response (Self : in Item;
                          To   : in     Neural.Pattern) return Signals
    is
-      use Neural.Set;
       use fann_c;
 
       The_Pattern  : Pattern renames To;
@@ -514,7 +495,7 @@ is
 
       declare
          use neural.Privvy.fann_type_Pointers;
-         the_Output_array : fann_c.fann_type_array := Value (the_Output.all'Access, c.ptrdiff_t (self.Num_Output_Neurons));
+         the_Output_array : constant fann_c.fann_type_array := Value (the_Output.all'Access, c.ptrdiff_t (self.Num_Output_Neurons));
       begin
          for Each in the_Response'Range
          loop

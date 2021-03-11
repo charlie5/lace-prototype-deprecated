@@ -7,6 +7,6 @@ package body Neural
 --
 is
 
-   procedure dummy is begin null; end;   -- placeholder for future subprograms.
+   procedure dummy is begin null; end dummy;   -- placeholder for future subprograms.
 
 end Neural;

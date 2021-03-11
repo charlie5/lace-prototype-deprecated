@@ -20,7 +20,6 @@ is
 
    function to_GL (Self : in Real) return opengl.Real
    is
-      use type math.Real;
    begin
       return opengl.Real (Self);
 
@@ -71,9 +70,9 @@ is
    function to_Math (Self : in opengl.Vector_3) return math.Vector_3
    is
    begin
-      return (math.Real (Self (1)),
-              math.Real (Self (2)),
-              math.Real (Self (3)));
+      return (Self (1),
+              Self (2),
+              Self (3));
    end to_Math;
 
 

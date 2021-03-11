@@ -31,8 +31,6 @@ is
    is
       pragma Unreferenced (Desired);
 
-      use openGL.Screen;
-
 --        num_fb_configs : aliased C.int := 0;
 --        visual_Id      : aliased C.int;
       unused         :         C.int;     pragma Unreferenced (unused);

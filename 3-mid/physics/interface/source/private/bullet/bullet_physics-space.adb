@@ -14,10 +14,7 @@ with
      Swig,
      lace.Any,
      Interfaces.C,
-     ada.Unchecked_Conversion,
-     physics.Model;
-
-
+     ada.Unchecked_Conversion;
 
 package body bullet_Physics.Space
 is

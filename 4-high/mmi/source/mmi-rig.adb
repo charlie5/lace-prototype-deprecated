@@ -13,14 +13,12 @@ with
      collada.Library.controllers,
      collada.Library.animations,
 
-     ada.Strings.unbounded,
-     ada.Text_IO;
+     ada.Strings.unbounded;
 
 
 package body mmi.Rig
 is
-   use math.Algebra.linear.d3,
-       ada.Text_IO;
+   use math.Algebra.linear.d3;
 
 
    -----------
@@ -47,7 +45,6 @@ is
 
    function to_Math (From : in collada.Matrix_4x4) return math.Matrix_4x4
    is
-      use type math.Real;
    begin
       return (1 => (From (1, 1),  From (1, 2),  From (1, 3),  From (1, 4)),
               2 => (From (2, 1),  From (2, 2),  From (2, 3),  From (2, 4)),
@@ -147,7 +144,7 @@ is
    procedure define_global_Transform_for (Self : in out Item'Class;   the_Joint : in     collada.Library.visual_scenes.Node_view;
                                                                       Slot      : in out Positive)
    is
-      use collada.Library, Math;
+      use collada.Library;
 
       which_Joint          : constant scene_joint_Id      := the_Joint.Id;
       child_Joints         : constant visual_scenes.Nodes := the_Joint.Children;
@@ -329,9 +326,8 @@ is
                                            is_Kinematic : in     Boolean                := False;
                                            bone_Details : in     bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map)
    is
-      use collada.Document,       collada.Library,   collada.Library.visual_scenes,
-          math.Vectors,
-          ada.Strings.unbounded,  ada.Strings;
+      use collada.Document, collada.Library, collada.Library.visual_scenes,
+          ada.Strings.unbounded, ada.Strings;
 
       type any_Model_view is access all openGL.Model.any.item;
 
@@ -468,7 +464,6 @@ is
       procedure create_Bone_for (the_Joint : in visual_scenes.Node_view;   Parent : in bone_Id)
       is
          use      bone_id_Maps_of_details, Math;
-         use type math.Real;
 
          which_Joint      : constant scene_joint_Id      := the_Joint.Id;
          child_Joints     : constant visual_scenes.Nodes := the_Joint.Children;
@@ -571,11 +566,8 @@ is
       -- Set the joint slots.
       --
       declare
-         use Math;
-
          the_Skin        : constant controllers.Skin   := the_Document.libraries.controllers.Contents (1).Skin;
          the_joint_Names : constant collada.Text_array := joint_Names_of (the_Skin);
-
       begin
          for Each in 1 .. Integer (the_joint_Names'Length)
          loop
@@ -993,7 +985,7 @@ is
    is
    begin
       return Self.bone_Sprites;
-   end;
+   end bone_Sprites;
 
 
 

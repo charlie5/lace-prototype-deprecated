@@ -899,8 +899,7 @@ is
    overriding
    procedure respond (Self : in out mouse_motion_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use world_Vectors,
-          mmi.Mouse;
+      use world_Vectors;
 
       the_Event      : mmi.mouse.motion_Event renames mmi.mouse.motion_Event (to_Event);
       Cursor         : world_Vectors.Cursor   :=      Self.Applet.Worlds.First;

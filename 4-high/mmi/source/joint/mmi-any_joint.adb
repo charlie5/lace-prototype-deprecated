@@ -1,13 +1,11 @@
 with
      physics.Object,
-     float_Math.Algebra.linear.d3,
-     interfaces.C;
+     float_Math.Algebra.linear.d3;
 
 
 package body mmi.any_Joint
 is
-   use Math,
-       Interfaces;
+   use Math;
 
    package std_Physics renames Standard.Physics;
 
@@ -155,7 +153,6 @@ is
    overriding
    function low_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
    is
-      use type Math.Real;
    begin
       case for_Degree
       is
@@ -172,7 +169,6 @@ is
    procedure low_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
                                                  Now        : in Math.Real)
    is
-      use type Math.Real;
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
@@ -181,7 +177,6 @@ is
    overriding
    function high_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
    is
-      use type Math.Real;
    begin
       case for_Degree
       is
@@ -198,7 +193,6 @@ is
    procedure high_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
                                                   Now        : in Math.Real)
    is
-      use type Math.Real;
    begin
       Self.Physics.upper_Limit_is (Now, for_Degree);
    end high_Bound_is;

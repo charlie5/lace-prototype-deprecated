@@ -80,8 +80,6 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
-      use math.Vectors;
-
       Speed           :          Real       renames Self.Speed;
       the_sprite_Site : constant math.Vector_3   := Self.Sprite.Site;
 
