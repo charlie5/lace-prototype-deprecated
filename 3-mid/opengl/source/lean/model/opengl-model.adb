@@ -216,4 +216,11 @@ is
       return Boolean (Self.needs_Rebuild);
    end needs_Rebuild;
 
+
+   procedure needs_Rebuild (Self : in out Item)
+   is
+   begin
+      Self.needs_Rebuild := True;
+   end needs_Rebuild;
+
 end openGL.Model;

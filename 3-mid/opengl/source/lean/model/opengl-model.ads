@@ -58,6 +58,7 @@ is
 
 
    function  needs_Rebuild    (Self : in     Item) return Boolean;
+   procedure needs_Rebuild    (Self : in out Item);
 
 
    -------------
