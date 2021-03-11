@@ -67,7 +67,7 @@ The cBound ada bindings project is also required:
 `$ git clone https://github.com/charlie5/cBound.git`
 
 
-Adding the following lines to ~/.bashrc (or equivalent) will set the ADA_PROJECT_PATH for all gnat project files:
+Adding the following lines to ~/.bashrc (or equivalent) will set the GPR_PROJECT_PATH for all gnat project files:
 
 ```bash
 export opengl_profile=desk
@@ -77,7 +77,7 @@ export OS=Linux
 export FLORIST_BUILD=default
 
 export LUMEN=/path/to/lumen
-ADA_PROJECT_PATH=$LUMEN:$ADA_PROJECT_PATH
+GPR_PROJECT_PATH=$LUMEN:$GPR_PROJECT_PATH
 
 export CBOUND=/path/to/cBound
 source $CBOUND/cbound-gpr_paths.sh
