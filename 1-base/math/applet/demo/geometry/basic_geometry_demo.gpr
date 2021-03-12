@@ -1,10 +1,11 @@
-with "math";
+with
+     "math";
 
-project Basic_geometry_Demo is
-
+project basic_geometry_Demo
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_basic_geometry_demo.adb");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_basic_geometry_demo.adb");
 
    package Builder is
       for Default_Switches ("ada") use ("-g");
@@ -22,5 +23,4 @@ project Basic_geometry_Demo is
       for Default_Switches ("ada") use ("-g");
    end Linker;
 
-end Basic_geometry_Demo;
-
+end basic_geometry_Demo;

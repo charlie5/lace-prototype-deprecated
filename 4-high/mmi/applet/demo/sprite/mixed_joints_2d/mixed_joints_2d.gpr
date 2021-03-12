@@ -4,15 +4,15 @@ with
 
 project mixed_Joints_2D
 is
-
    for Object_Dir use "build";
    for Exec_Dir   use ".";
    for Main       use ("launch_mixed_joints_2d.adb");
    for Languages  use ("Ada");
 
-   package Builder  renames lace_Shared.Builder;
-   package Compiler renames lace_Shared.Compiler;
-   package Binder   renames lace_Shared.Binder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
 end mixed_Joints_2D;
-

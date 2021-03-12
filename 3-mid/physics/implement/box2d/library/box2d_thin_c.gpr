@@ -1,18 +1,24 @@
-with "../../c_math/library/c_math_thin_c";
+with
+     "../../c_math/library/c_math_thin_c",
+     "lace_shared";
 
-project Box2d_Thin_C is
-
-   for Languages use ("C++");
-   for Source_Dirs use ("../source/c");
-   for Object_Dir use "build";
-   for Library_Name use "box2d_thin_c";
-   for Library_Dir use "lib";
+project Box2d_Thin_C
+is
+   for Languages       use ("C++");
+   for Source_Dirs     use ("../source/c");
+   for Object_Dir      use "build";
+   for Library_Name    use "box2d_thin_c";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";
       for Body_Suffix ("c++") use ".cpp";
    end Naming;
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Binder   renames Lace_shared.Binder;
 
    package Compiler is
       for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/box2d", "-I/usr/local/include/box2d");
@@ -23,4 +29,3 @@ project Box2d_Thin_C is
    end Linker;
 
 end Box2d_Thin_C;
-

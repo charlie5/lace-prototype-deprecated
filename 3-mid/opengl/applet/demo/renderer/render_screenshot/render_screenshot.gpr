@@ -2,95 +2,16 @@ with
      "opengl_demo",
      "lace_shared"; 
 
---with "box2d_thin_c";   -- This is required to avoid an Ubuntu bug with shared libraries.
-
-     
-
-project Render_Screenshot is
-
+project render_Screenshot
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_render_screenshot.adb");
-   type Os_Type is
-      ("Windows_NT", "Linux", "MacOSX");
-   Os : Os_Type := external ("OS");
-   type Profile is
-      ("safe", "lean", "desk");
-   Opengl_Profile : Profile := external ("opengl_profile");
-   type Platform is
-      ("egl", "glx");
-   Opengl_Platform : Platform := external ("opengl_platform");
-   type Restrictions is
-      ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("restrictions");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_render_screenshot.adb");
 
-   package Builder is
-      for Default_Switches ("ada") use ("-k", "-g", "-j13");
-   end Builder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
-   package Compiler renames lace_Shared.Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
-   package Linker is
-
-      case Os is
-
-         when "Windows_NT" =>
-            for Default_Switches ("ada") use ("-g");
-
-         when "Linux" =>
-
-            case Opengl_Profile is
-
-               when "safe" =>
-                  for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
-
-               when "lean" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-                        for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
-
-                     when "glx" =>
-
-                        case Restrictions is
-
-                           when "xgc" =>
-                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lm", "-lexpat");
-
-                           when "ravenscar" =>
-                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
-                        end case;
-                  end case;
-
-               when "desk" =>
-
-                  case Restrictions is
-
-                     when "xgc" =>
-
-                        case Opengl_Platform is
-
-                           when "egl" =>
-                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
-
-                           when "glx" =>
-                              for Default_Switches ("ada") use ("-g", "-lX11", "-lGL", "-lexpat");
-                        end case;
-
-                     when "ravenscar" =>
-                        for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
-                  end case;
-            end case;
-
-         when "MacOSX" =>
-            for Default_Switches ("ada") use ("-g");
-      end case;
-   end Linker;
-
-end Render_Screenshot;
-
+end render_Screenshot;

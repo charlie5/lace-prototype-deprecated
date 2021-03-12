@@ -1,27 +1,20 @@
-with "c_math_thin_cxx";
-with "swig";
-with "math";
-
-project c_Math_thin is
-
-   for Languages use ("Ada");
-   for Source_Dirs use ("../source", "../source/thin");
-   for Object_Dir use "build";
---   for Exec_Dir use ".";
-   for Library_Dir use "lib";
+with
+     "c_math_thin_cxx",
+     "swig",
+     "math",
+     "lace_shared";
+     
+project c_Math_thin 
+is
+   for Languages       use ("Ada");
+   for Source_Dirs     use ("../source", "../source/thin");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
 end c_Math_thin;
-

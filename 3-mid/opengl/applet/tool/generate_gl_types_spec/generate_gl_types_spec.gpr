@@ -1,24 +1,16 @@
-project Generate_Gl_Types_Spec is
+with
+     "lace_shared";
 
+project generate_Gl_Types_Spec
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("generate_gl_types_spec.adb");
+   for Exec_Dir   use ".";
+   for Main       use ("generate_gl_types_spec.adb");
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g", "-j13");
-   end Builder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat12");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
-   package Linker is
-      for Default_Switches ("ada") use ("-g");
-   end Linker;
-
-end Generate_Gl_Types_Spec;
-
+end generate_Gl_Types_Spec;

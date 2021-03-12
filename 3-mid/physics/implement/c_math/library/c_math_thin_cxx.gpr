@@ -1,7 +1,9 @@
-with "c_math_thin_c";
+with
+     "c_math_thin_c",
+     "lace_shared";
 
-project c_Math_Thin_Cxx is
-
+project c_Math_Thin_Cxx
+is
    for Languages       use ("C++");
    for Source_Dirs     use ("../source/thin");
    for Object_Dir      use "build";
@@ -18,5 +20,8 @@ project c_Math_Thin_Cxx is
       for Default_Switches ("c++") use ("-g", "-fPIC", "-I.");
    end Compiler;
 
-end c_Math_Thin_Cxx;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Binder   renames Lace_shared.Binder;
 
+end c_Math_Thin_Cxx;

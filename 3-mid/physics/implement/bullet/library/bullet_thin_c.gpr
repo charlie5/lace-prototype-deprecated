@@ -1,13 +1,18 @@
-with "../../c_math/library/c_math_thin_c";
+with
+     "../../c_math/library/c_math_thin_c",
+     "lace_shared";
 
-project Bullet_Thin_C is
-
-   for Languages use ("C++");
-   for Source_Dirs use ("../source/c");
-   for Object_Dir use "build";
-   for Library_Name use "bullet_thin_c";
-   for Library_Dir use "lib";
+project Bullet_Thin_C
+is
+   for Languages       use ("C++");
+   for Source_Dirs     use ("../source/c");
+   for Object_Dir      use "build";
+   for Library_Name    use "bullet_thin_c";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";
@@ -15,12 +20,17 @@ project Bullet_Thin_C is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/bullet", "-I/usr/local/include/bullet");
+      for Default_Switches ("c++") use ("-g",
+                                        "-I../../../c_math/source/c",
+                                        "-I/usr/include/bullet",
+                                        "-I/usr/local/include/bullet");
    end Compiler;
 
    package Linker is
-      for Linker_Options use ("-lBulletSoftBody", "-lBulletDynamics", "-lBulletCollision", "-lLinearMath");
+      for Linker_Options use ("-lBulletSoftBody",
+                              "-lBulletDynamics",
+                              "-lBulletCollision",
+                              "-lLinearMath");
    end Linker;
 
 end Bullet_Thin_C;
-

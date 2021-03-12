@@ -5,12 +5,10 @@ with
      "lace_shared";
 
 library
-project Opengl is
-
-   type Profile is
-      ("safe", "lean", "desk");
+project Opengl
+is
+   type Profile is ("safe", "lean", "desk");
    The_Profile : Profile := external ("opengl_profile", "lean");
-
 
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
@@ -49,8 +47,7 @@ project Opengl is
 
 
    package Builder renames Lace_shared.Builder;
-
-   package Binder renames Lace_shared.Binder;
+   package Binder  renames Lace_shared.Binder;
 
    package Compiler is
       for Default_Switches ("ada")           use Lace_shared.Compiler_Options;
@@ -58,4 +55,3 @@ project Opengl is
    end Compiler;
 
 end Opengl;
-

@@ -5,9 +5,6 @@ with
 
 project Neural
 is
-   type Restrictions is ("xgc", "ravenscar");
-   the_Restrictions : Restrictions := external ("restrictions", "xgc");
-
    for Create_Missing_Dirs use "True";
 
    for Object_Dir      use "build";
@@ -17,9 +14,9 @@ is
    for Source_Dirs use ("../source",
                         "../source/private");
 
+   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
 
 end Neural;
-

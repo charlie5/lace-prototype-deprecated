@@ -1,10 +1,10 @@
 with "lace";
 
-project Strings_Demo is
-
+project Strings_Demo
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_strings_demo.adb");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_strings_demo.adb");
 
    package Builder is
       for Default_Switches ("ada") use ("-g");
@@ -23,4 +23,3 @@ project Strings_Demo is
    end Linker;
 
 end Strings_Demo;
-

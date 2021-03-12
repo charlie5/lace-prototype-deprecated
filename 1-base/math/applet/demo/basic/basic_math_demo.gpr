@@ -1,10 +1,11 @@
-with "math";
+with
+     "math";
 
-project Basic_Math_Demo is
-
+project Basic_Math_Demo
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_basic_math_demo.adb");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_basic_math_demo.adb");
 
    package Builder is
       for Default_Switches ("ada") use ("-g");
@@ -23,4 +24,3 @@ project Basic_Math_Demo is
    end Linker;
 
 end Basic_Math_Demo;
-

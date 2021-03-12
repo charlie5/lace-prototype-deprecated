@@ -1,27 +1,17 @@
 with 
-     "../../../library/freetype";
+     "../../../library/freetype",
+     "lace_shared";
 
-project freetype_linkage_Test is
-
+project freetype_linkage_Test
+is
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_freetype_linkage_test.adb");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_freetype_linkage_test.adb");
 
-   package Builder is
-      for Default_Switches ("ada") use ("-j13", "-k");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-gnatVn", "-fstack-check", "-g", "-gnata", "-gnat12");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
-   package Linker is
-      for Default_Switches ("ada") use ("-g");
-   end Linker;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
 end freetype_linkage_Test;
-

@@ -1,76 +1,22 @@
-with "lumen_mmi";
---with "sdl_mmi";
---with "sim";
+with
+     "lumen_mmi",
+     "lace_shared";
 
 project add_rid_Sprite_Test
 is
-
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_add_rid_sprite_test.adb");
-   for Languages use ("Ada");
-   type Os_Type is
-      ("Windows_NT", "Linux", "MacOSX");
-   Os : Os_Type := external ("OS");
-   type Restrictions is
-      ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("restrictions");
-   type Platform is
-      ("egl", "glx");
-   Opengl_Platform : Platform := external ("opengl_platform");
-   type Profile is
-      ("safe", "lean", "desk");
-   Opengl_Profile : Profile := external ("opengl_profile");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_add_rid_sprite_test.adb");
+   for Languages  use ("Ada");
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata");
-   end Compiler;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
    package Linker is
-
-      case Os is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-
-                           when "desk" =>
-                              for Default_Switches ("ada") use ("-lGL", "-lX11", "-lexpat", "-g");
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
+      for Default_Switches ("ada") use ("-lGL", "-lX11", "-lexpat", "-g");
    end Linker;
 
 end add_rid_Sprite_Test;
-

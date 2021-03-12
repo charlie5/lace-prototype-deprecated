@@ -10,4 +10,3 @@ project GID is
    for Object_Dir use "obj_debug";
 
 end GID;
-

@@ -4,15 +4,15 @@ with
 
 project Mouse_selection
 is
-
    for Object_Dir use "build";
    for Exec_Dir   use ".";
    for Main       use ("launch_mouse_selection.adb");
    for Languages  use ("Ada");
 
-   package Builder  renames lace_Shared.Builder;
-   package Compiler renames lace_Shared.Compiler;
-   package Binder   renames lace_Shared.Binder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+   package Linker   renames Lace_shared.Linker;
 
 end Mouse_selection;
-

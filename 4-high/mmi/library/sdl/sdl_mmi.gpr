@@ -11,8 +11,8 @@ is
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
-   package Builder  renames lace_Shared.Builder;
-   package Compiler renames lace_Shared.Compiler;
-   package Binder   renames lace_Shared.Binder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
 
 end SDL_MMI;

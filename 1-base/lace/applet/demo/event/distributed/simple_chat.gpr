@@ -10,7 +10,8 @@ is
    for Exec_Dir    use ".";
    for Main        use ("launch_simple_chat_client.adb",
                         "launch_simple_chat_registrar.adb");
-   for Source_Dirs use (".", "source");
+   for Source_Dirs use (".",
+                        "source");
 
    package Dsa is
       for Configuration_File use "simple_chat.dsa";

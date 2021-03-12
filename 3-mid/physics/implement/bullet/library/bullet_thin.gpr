@@ -1,28 +1,21 @@
-with "bullet_thin_cxx";
---with "../../c_math/library/c_math_thin";
-with "c_math_thin";
-with "swig";
-with "math";
+with
+     "bullet_thin_cxx",
+     "c_math_thin",
+     "swig",
+     "math",
+     "lace_shared";
 
-project Bullet_thin is
-
-   for Languages use ("Ada");
-   for Source_Dirs use ("../source/thin");
-   for Object_Dir use "build";
-   for Library_Dir use "lib";
+project Bullet_thin
+is
+   for Languages       use ("Ada");
+   for Source_Dirs     use ("../source/thin");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata", "-gnat05");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
 end Bullet_thin;
-

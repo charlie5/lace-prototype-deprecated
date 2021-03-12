@@ -3,8 +3,8 @@ with
      "math",
      "lace_shared";
 
-project Math_Testsuite is
-
+project Math_Testsuite
+is
    for Object_Dir use "build";
    for Exec_Dir   use ".";
    for Main       use ("launch_math_testsuite.adb");
@@ -19,4 +19,3 @@ project Math_Testsuite is
    end Linker;
 
 end Math_Testsuite;
-

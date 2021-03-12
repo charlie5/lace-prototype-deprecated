@@ -4,9 +4,6 @@ with
 
 project Impact_Hello_3D_Demo
 is
-   type Restrictions is ("xgc", "ravenscar");
-   the_Restrictions : Restrictions := external ("restrictions", "xgc");
-
    for Create_Missing_Dirs use "True";
 
    for Object_Dir      use "build";
@@ -16,12 +13,10 @@ is
    for Source_Dirs use (".");
    for Main        use ("launch_impact_hello_3d_demo.adb");
 
+   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
-
-   package Linker is
-      for Default_Switches ("ada") use ("-g");
-   end Linker;
+   package Linker   renames Lace_shared.Linker;
 
 end Impact_Hello_3D_Demo;
