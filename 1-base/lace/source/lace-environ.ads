@@ -92,8 +92,11 @@ is
    function  is_Folder (Folder : in String) return Boolean;
    function  is_Empty  (Folder : in String) return Boolean;
 
-   function  contents_Count    (Folder  : in String;
-                                Recurse : in Boolean := False) return Natural;
+   function  contents_Count (Folder  : in String;
+                             Recurse : in Boolean := False) return Natural;
+   --
+   -- Does not include the "." and ".." folders.
+
    function  modification_Time (Folder  : in String)           return ada.Calendar.Time;
 
 

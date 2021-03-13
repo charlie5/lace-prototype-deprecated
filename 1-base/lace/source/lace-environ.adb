@@ -502,13 +502,17 @@ is
 
    function contents_Count (Folder : in String;   Recurse : in Boolean := False) return Natural
    is
-      use Shell.Directory_Iteration;
+      use Shell.Directory_Iteration,
+          Ada.Directories;
 
       Count : Natural := 0;
    begin
       for Each of To_Directory (Folder, Recurse)
       loop
-         Count := Count + 1;
+         if Simple_Name (Each) = "'"
+         then
+            Count := Count + 1;
+         end if;
       end loop;
 
       return Count;
@@ -524,10 +528,12 @@ is
    begin
       start_Search (Searcher, Folder, "");
 
-      if more_Entries (Searcher)
-      then
-         Empty := False;
-      end if;
+      loop
+         if more_Entries (Searcher)
+         then
+            Empty := False;
+         end if;
+      end loop;
 
       end_Search (Searcher);
 
