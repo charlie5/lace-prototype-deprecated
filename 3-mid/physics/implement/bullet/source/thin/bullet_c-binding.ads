@@ -11,7 +11,6 @@ with c_math_c.Vector_2;
 with c_math_c.Vector_3;
 with Interfaces.C;
 with Swig;
-with Interfaces.C;
 
 package bullet_c.Binding is
 

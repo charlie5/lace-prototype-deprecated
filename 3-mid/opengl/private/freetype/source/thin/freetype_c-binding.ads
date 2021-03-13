@@ -12,9 +12,7 @@ with
      freetype_c.Pointers,
 
      interfaces.c.Pointers,
-     interfaces.c.Strings,
-
-     System;
+     interfaces.c.Strings;
 
 
 package freetype_c.Binding
@@ -22,7 +20,7 @@ package freetype_c.Binding
 --  Provides the Freetype library functions.
 --
 is
-   use Interfaces,
+   use
        freetype_c.Pointers;
 
 

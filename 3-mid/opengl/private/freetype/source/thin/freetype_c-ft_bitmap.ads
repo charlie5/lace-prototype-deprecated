@@ -1,9 +1,8 @@
-package freetype_c.FT_Bitmap 
+package freetype_c.FT_Bitmap
 is
-   use Interfaces;
-   
-   
-   type Item is 
+
+
+   type Item is
       record
          rows         : aliased c.int;
          width        : aliased c.int;

@@ -12,7 +12,6 @@ with c_math_c.Vector_2;
 with c_math_c.Vector_3;
 with interfaces.c;
 with swig;
-with interfaces.C;
 
 
 

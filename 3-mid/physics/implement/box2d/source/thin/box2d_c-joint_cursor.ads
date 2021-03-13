@@ -7,9 +7,9 @@ with interfaces.C;
 package box2d_c.joint_Cursor is
 
    -- Item
-   -- 
+   --
 
-type Item is 
+type Item is
       record
          Joint : access box2d_c.b2Joint;
       end record;
@@ -17,23 +17,23 @@ type Item is
 
 
    -- Items
-   -- 
+   --
    type Items is array (interfaces.C.Size_t range <>) of aliased box2d_c.joint_Cursor.Item;
 
 
 
    -- Pointer
-   -- 
+   --
    type Pointer is access all box2d_c.joint_Cursor.Item;
 
    -- Pointers
-   -- 
+   --
    type Pointers is array (interfaces.C.Size_t range <>) of aliased box2d_c.joint_Cursor.Pointer;
 
 
 
    -- Pointer_Pointer
-   -- 
+   --
    type Pointer_Pointer is access all box2d_c.joint_Cursor.Pointer;
 
 

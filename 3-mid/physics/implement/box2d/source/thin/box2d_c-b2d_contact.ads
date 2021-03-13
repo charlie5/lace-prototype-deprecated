@@ -8,9 +8,9 @@ with interfaces.C;
 package box2d_c.b2d_Contact is
 
    -- Item
-   -- 
+   --
 
-type Item is 
+type Item is
       record
          Object_A : access box2d_c.Object;
          Object_B : access box2d_c.Object;
@@ -20,23 +20,23 @@ type Item is
 
 
    -- Items
-   -- 
+   --
    type Items is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_Contact.Item;
 
 
 
    -- Pointer
-   -- 
+   --
    type Pointer is access all box2d_c.b2d_Contact.Item;
 
    -- Pointers
-   -- 
+   --
    type Pointers is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_Contact.Pointer;
 
 
 
    -- Pointer_Pointer
-   -- 
+   --
    type Pointer_Pointer is access all box2d_c.b2d_Contact.Pointer;
 
 

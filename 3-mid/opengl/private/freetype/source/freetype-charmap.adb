@@ -29,8 +29,7 @@ is
    function to_charMap (parent_Face : access Face.item'Class) return freetype.charMap.item
    is
       use      freetype_c.Binding;
-      use type FT_int,
-               FT_CharMapRec.item;
+      use type FT_int;
 
       Self : freetype.charMap.item;
 

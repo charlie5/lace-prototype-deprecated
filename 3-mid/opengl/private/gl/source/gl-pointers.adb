@@ -20,7 +20,7 @@ is
    is
    begin
       return conversions.To_Pointer (From);
-   end;
+   end to_GLvoid_access;
 
 
 
@@ -30,7 +30,7 @@ is
       function Convert is new ada.unchecked_Conversion (unsigned_char_access, GLvoid_access);
    begin
       return Convert (unsigned_char_access (From));
-   end;
+   end to_GLvoid_access;
 
 
 
@@ -39,7 +39,7 @@ is
       function Convert is new ada.unchecked_Conversion (C.Strings.chars_ptr, GLchar_access);
    begin
       return Convert (From);
-   end;
+   end to_GLchar_access;
 
 
 
@@ -48,6 +48,6 @@ is
       function Convert is new ada.unchecked_Conversion (chars_ptr_access, GLchar_Pointer_access);
    begin
       return Convert (From (From'First)'unchecked_Access);
-   end;
+   end to_GLchar_Pointer_access;
 
 end GL.Pointers;

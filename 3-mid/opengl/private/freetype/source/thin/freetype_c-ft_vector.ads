@@ -1,8 +1,7 @@
-package freetype_c.FT_Vector 
+package freetype_c.FT_Vector
 is
-   use Interfaces;
 
-   type Item is 
+   type Item is
       record
          x : aliased FT_Pos;
          y : aliased FT_Pos;

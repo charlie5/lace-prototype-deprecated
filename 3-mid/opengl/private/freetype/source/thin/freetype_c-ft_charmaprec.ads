@@ -1,8 +1,7 @@
-package freetype_c.FT_CharMapRec 
+package freetype_c.FT_CharMapRec
 is
-   use Interfaces;
 
-   type Item is 
+   type Item is
       record
          face        : access  FT_FaceRec;
          encoding    : aliased FT_Encoding;

@@ -1,6 +1,5 @@
-package freetype_c.Pointers 
+package freetype_c.Pointers
 is
-   use Interfaces;
 
    type FT_UShort_Pointer       is access all FT_UShort;
    type FT_Int_Pointer          is access all FT_Int;
@@ -21,8 +20,8 @@ is
    type FT_FaceRec_Pointer      is access all FT_FaceRec;
    type FT_Kerning_Mode_Pointer is access all FT_Kerning_Mode;
    type FT_SizeRec_Pointer      is access all FT_SizeRec;
-   
-   
+
+
    type FT_UShort_Pointer_array       is array (C.Size_t range <>) of aliased FT_UShort_Pointer;
    type FT_Int_Pointer_array          is array (C.Size_t range <>) of aliased FT_Int_Pointer;
    type FT_UInt_Pointer_array         is array (C.Size_t range <>) of aliased FT_UInt_Pointer;

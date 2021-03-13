@@ -1,9 +1,8 @@
 with
      freetype_c.Pointers;
 
-package freetype_c.FT_Library 
+package freetype_c.FT_Library
 is
-   use Interfaces;
 
    subtype Item       is Pointers.FT_LibraryRec_Pointer;
    type    Item_array is array (C.Size_t range <>) of aliased FT_Library.Item;

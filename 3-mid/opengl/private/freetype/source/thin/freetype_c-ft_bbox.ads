@@ -1,8 +1,7 @@
-package freetype_c.FT_BBox 
+package freetype_c.FT_BBox
 is
-   use Interfaces;
-      
-   type Item is 
+
+   type Item is
       record
          xMin : aliased FT_Pos;
          yMin : aliased FT_Pos;

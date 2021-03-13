@@ -1,8 +1,7 @@
-package freetype_c.FT_Size_Metrics 
+package freetype_c.FT_Size_Metrics
 is
-   use Interfaces;
 
-   type Item is 
+   type Item is
       record
          x_ppem      : aliased FT_UShort;
          y_ppem      : aliased FT_UShort;

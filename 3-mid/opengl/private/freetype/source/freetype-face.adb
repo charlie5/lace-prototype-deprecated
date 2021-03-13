@@ -13,8 +13,6 @@ with
 
 package body freetype.Face
 is
-   use Freetype_C,
-       Interfaces;
 
 
    -----------
