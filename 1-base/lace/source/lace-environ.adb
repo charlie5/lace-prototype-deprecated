@@ -509,10 +509,14 @@ is
    begin
       for Each of To_Directory (Folder, Recurse)
       loop
-         if Simple_Name (Each) = "'"
-         then
-            Count := Count + 1;
-         end if;
+         declare
+            Name : constant String := Simple_Name (Each);
+         begin
+            if not (Name = "." or Name = "..")
+            then
+               Count := Count + 1;
+            end if;
+         end;
       end loop;
 
       return Count;
@@ -521,23 +525,8 @@ is
 
    function is_Empty (Folder : in String) return Boolean
    is
-      use ada.Directories;
-
-      Searcher : Search_Type;
-      Empty    : Boolean    := True;
    begin
-      start_Search (Searcher, Folder, "");
-
-      loop
-         if more_Entries (Searcher)
-         then
-            Empty := False;
-         end if;
-      end loop;
-
-      end_Search (Searcher);
-
-      return Empty;
+      return contents_Count (Folder) = 0;
    end is_Empty;
 
 
