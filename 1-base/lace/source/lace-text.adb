@@ -1,5 +1,7 @@
 with
      lace.Strings.fixed,
+     ada.Characters.Latin_1,
+     ada.Characters.handling,
      ada.Strings.hash;
 
 package body lace.Text
@@ -94,11 +96,18 @@ is
    end next_Token;
 
 
+   function Lines (Self : in Item) return Text.items_1k
+   is
+      use ada.Characters.Latin_1;
+   begin
+      return Tokens (Self, LF);
+   end Lines;
+
 
    function Tokens (Self : in Item;   Delimiter : in Character := ' ';
                                       Trim      : in Boolean   := False) return Text.items_1k
    is
-      the_Tokens : Text.items_1k (1 .. 2 * 1024);
+      the_Tokens : Text.items_1k (1 .. 4 * 1024);
       Count      : Natural := 0;
 
       From : aliased Positive := 1;
@@ -150,6 +159,91 @@ is
 
       return to_String (Left) = to_String (Right);
    end "=";
+
+
+   function to_Lowercase (Self : in Item) return Item
+   is
+      use ada.Characters.handling;
+      Result : Item := Self;
+   begin
+      for i in 1 .. Self.Length
+      loop
+         Result.Data (i) := to_Lower (Self.Data (i));
+      end loop;
+
+      return Result;
+   end to_Lowercase;
+
+
+   function mono_Spaced (Self : in Item) return Item
+   is
+      Result : Item (Self.Capacity);
+      Prior  : Character := 'a';
+      Length : Natural   := 0;
+   begin
+      for i in 1 .. Self.Length
+      loop
+         if    Self.Data (i) = ' '
+           and Prior = ' '
+         then
+            null;
+         else
+            Length               := Length + 1;
+            Result.Data (Length) := Self.Data (i);
+            Prior                := Self.Data (i);
+         end if;
+      end loop;
+
+      Result.Length := Length;
+      return Result;
+   end mono_Spaced;
+
+
+   procedure replace (Self : in out Item;   Pattern : in String;
+                                            By      : in String)
+   is
+      Result : Item (Self.Capacity);
+
+      Cursor : Positive := 1;
+      First  : Natural  := 1;
+      Last   : Natural;
+   begin
+      loop
+         Last := First + Pattern'Length - 1;
+
+         if Last > Self.Length
+         then
+            Last := Self.Length;
+         end if;
+
+         if Self.Data (First .. Last) = Pattern
+         then
+            Result.Data (Cursor .. Cursor + By'Length - 1) := By;
+            Cursor := Cursor + By'Length;
+            First  := Last + 1;
+         else
+            Result.Data (Cursor) := Self.Data (First);
+            Cursor := Cursor + 1;
+            First  := First  + 1;
+         end if;
+
+         exit when First > Self.Length;
+      end loop;
+
+      Self.Length                  := Cursor - 1;
+      Self.Data (1 .. Self.Length) := Result.Data (1 .. Self.Length);
+   end replace;
+
+
+   function replace (Self : in Item;   Pattern : in String;
+                                       By      : in String) return Item
+   is
+      Text : lace.Text.item := Self;
+   begin
+      replace (Text, Pattern, By);
+      return Text;
+   end Replace;
+
 
 
    -- Streams
