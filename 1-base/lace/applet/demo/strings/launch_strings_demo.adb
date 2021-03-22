@@ -2,7 +2,6 @@ with
      lace.Strings.bounded,
      ada.Text_IO;
 
-
 procedure launch_strings_Demo
 --
 -- Displays a string message in a Pure unit.
@@ -16,6 +15,6 @@ is
    the_String : bounded_String := to_bounded_String ("Howdy ...");
 
 begin
-   append  (the_String, " doody !");
+   append   (the_String, " doody !");
    put_Line (to_String (the_String));
 end launch_strings_Demo;
