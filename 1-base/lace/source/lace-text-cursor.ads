@@ -9,7 +9,7 @@ is
    -- Forge
    --
 
-   type Text_view is access all lace.Text.item;
+   type Text_view is access constant lace.Text.item;
 
    function First (Self : in Text_view) return Cursor.item;
 
