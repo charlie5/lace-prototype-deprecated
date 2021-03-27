@@ -672,6 +672,28 @@ is
    end copy_File;
 
 
+   procedure copy_Files (Named : in String;   To : in String)
+   is
+      use lace.Text,
+          ada.Directories,
+          ada.Strings.fixed;
+
+      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+                                                                        else Named);
+      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+   begin
+      for Each of file_List
+      loop
+         if is_Folder (+Each)
+         then
+            copy_Folder (+Each, To);
+         else
+            Environ.copy_File (+Each, To & "/" & simple_Name (+Each));
+         end if;
+      end loop;
+   end copy_Files;
+
+
    procedure move_File (Named : in String;   To : in String)
    is
    begin
@@ -706,6 +728,19 @@ is
          end if;
       end loop;
    end move_Files;
+
+
+   procedure append_File (Named : in String;   To : in String)
+   is
+      use ada.Text_IO;
+
+      Data   : constant String   := load (Named);
+      Target :          File_type;
+   begin
+      open  (Target, append_File, name => To);
+      put   (Target, Data);
+      close (Target);
+   end append_File;
 
 
    procedure rid_File (Named  : in String)

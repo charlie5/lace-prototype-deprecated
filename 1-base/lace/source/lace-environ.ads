@@ -113,11 +113,14 @@ is
    function  load (Filename : in String) return Data;
 
    procedure copy_File  (Named : in String;   To : in String);
+   procedure copy_Files (Named : in String;   To : in String);
    procedure  rid_File  (Named : in String);
    procedure move_File  (Named : in String;   To : in String);
    procedure move_Files (Named : in String;   To : in String);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
+
+   procedure append_File (Named : in String;   To : in String);
 
    procedure touch         (Filename    : in String);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
