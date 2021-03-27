@@ -686,6 +686,7 @@ is
    procedure move_Files (Named : in String;   To : in String)
    is
       use lace.Text,
+          ada.Directories,
           ada.Strings.fixed;
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
@@ -700,7 +701,7 @@ is
             then
                move_Folder (+Each, To);
             else
-               move_File (+Each, To & "/" & (+Each));
+               move_File (+Each, To & "/" & simple_Name (+Each));
             end if;
          end if;
       end loop;
