@@ -26,6 +26,12 @@ is
    function       Output_of (Command : in String;
                              Input   : in String := "") return String;
 
+   -- 'run_OS'
+   --
+   --  Any command which generates output or error data greater than the capacity of a pipe
+   --  (often 1 MiB on linux) will block forever. In this case, consider using the 'Start'
+   --  procedures in aShell and periodically read the output and/or error pipes.
+
    procedure run_OS (command_Line : in String;
                      Input        : in String := "");
    --
