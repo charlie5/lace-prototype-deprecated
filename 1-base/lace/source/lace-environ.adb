@@ -751,6 +751,22 @@ is
    end rid_File;
 
 
+   procedure rid_Files (Named : in String)
+   is
+      use lace.Text,
+          ada.Strings.fixed;
+
+      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+                                                                        else Named);
+      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+   begin
+      for Each of file_List
+      loop
+         rid_File (+Each);
+      end loop;
+   end rid_Files;
+
+
    procedure compress (Path       : in String;
                        the_Format : in compress_Format := Tar_Xz;
                        the_Level  : in compress_Level  := 6)
