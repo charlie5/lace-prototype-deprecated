@@ -1,15 +1,11 @@
 with
-     ada.Characters.Latin_1;
-
+     ada.Characters.latin_1;
 
 package body any_Math
 is
-
    use ada.Containers;
 
-
-   ------------
-   --  Integers
+   -- Integers
    --
 
    procedure increment (Self : in out Integer;   By : in Integer := 1)
@@ -19,13 +15,11 @@ is
    end increment;
 
 
-
    procedure decrement (Self : in out Integer;   By : in Integer := 1)
    is
    begin
       Self := Self - By;
    end decrement;
-
 
 
    procedure swap (Left, Right : in out Integer)
@@ -37,17 +31,13 @@ is
    end swap;
 
 
-
-   ------------
-   --  Counters
+   -- Counters
    --
-
-   procedure increment (Self : in out ada.containers.Count_type;   By : in ada.containers.Count_type := 1)
+   procedure increment (Self : in out Count_type;   By : in Count_type := 1)
    is
    begin
       Self := Self + By;
    end increment;
-
 
 
    procedure decrement (Self : in out ada.containers.Count_type;   By : in ada.containers.Count_type := 1)
@@ -57,8 +47,6 @@ is
    end decrement;
 
 
-
-   ---------
    --  Reals
    --
 
@@ -82,13 +70,11 @@ is
    end almost_Zero;
 
 
-
    function Clamped (Self : in Real;   Low, High : in Real) return Real
    is
    begin
       return Real'Max (Low,  Real'Min (Self, High));
    end Clamped;
-
 
 
    procedure clamp (Self : in out Real;   Low, High : in Real)
@@ -98,19 +84,13 @@ is
    end clamp;
 
 
-
-
-   ----------
-   --  Angles
+   -- Angles
    --
-
    function to_Radians (Self : in Degrees) return Radians
    is
    begin
       return Radians (Self) * Pi / 180.0;
    end to_Radians;
-
-
 
 
    function to_Degrees (Self : in Radians) return Degrees
@@ -120,17 +100,14 @@ is
    end to_Degrees;
 
 
-
-
-   -----------
-   --  Vectors
+   -- Vectors
    --
-
    function Sum (Self : in Vector) return Real
    is
       the_Sum : Real := 0.0;
    begin
-      for Each in Self'Range loop
+      for Each in Self'Range
+      loop
          the_Sum := the_Sum + Self (Each);
       end loop;
 
@@ -138,13 +115,11 @@ is
    end Sum;
 
 
-
    function Average (Self : in Vector) return Real
    is
    begin
       return Sum (Self) / Real (Self'Length);
    end Average;
-
 
 
    function Max (Self : in Vector) return Real
@@ -160,7 +135,6 @@ is
    end Max;
 
 
-
    function Min (Self : in Vector) return Real
    is
       the_Min : Real := Self (Self'First);
@@ -174,11 +148,8 @@ is
    end Min;
 
 
-
-   ------------
-   --  Matrices
+   -- Matrices
    --
-
    function Row (Self : in Matrix_2x2;   row_Id : in Index) return Vector_2
    is
    begin
@@ -187,14 +158,12 @@ is
    end Row;
 
 
-
    function Col (Self : in Matrix_2x2;   col_Id : in Index) return Vector_2
    is
    begin
       return (Self (1, col_Id),
               Self (2, col_Id));
    end Col;
-
 
 
    function Row (Self : in Matrix_3x3;   row_Id : in Index) return Vector_3
@@ -206,7 +175,6 @@ is
    end Row;
 
 
-
    function Col (Self : in Matrix_3x3;   col_Id : in Index) return Vector_3
    is
    begin
@@ -214,7 +182,6 @@ is
               Self (2, col_Id),
               Self (3, col_Id));
    end Col;
-
 
 
    function Row (Self : in Matrix_4x4;   row_Id : in Index) return Vector_4
@@ -227,7 +194,6 @@ is
    end Row;
 
 
-
    function Col (Self : in Matrix_4x4;   col_Id : in Index) return Vector_4
    is
    begin
@@ -236,7 +202,6 @@ is
               Self (3, col_Id),
               Self (4, col_Id));
    end Col;
-
 
 
    function to_Vector_16 (Self : in Matrix_4x4) return Vector_16
@@ -249,7 +214,6 @@ is
    end to_Vector_16;
 
 
-
    function to_Matrix_4x4 (Self : in Vector_16)  return Matrix_4x4
    is
    begin
@@ -260,19 +224,14 @@ is
    end to_Matrix_4x4;
 
 
-
-
-   ----------------
-   --  Quaternions
+   -- Quaternions
    --
-
    function to_Quaternion (From : in Vector_4) return Quaternion
    is
    begin
       return (From (1),
               (Vector_3 (From (2 .. 4))));
    end to_Quaternion;
-
 
 
    function to_Vector (From : in Quaternion) return Vector_4
@@ -282,8 +241,7 @@ is
    end to_Vector;
 
 
-
-   function "*" (Left : in Quaternion;   Right : in Real)       return Quaternion
+   function "*" (Left : in Quaternion;   Right : in Real) return Quaternion
    is
    begin
       return (Left.R * Right,
@@ -291,7 +249,7 @@ is
    end "*";
 
 
-   function "*" (Left : in Real;         Right : in Quaternion) return Quaternion
+   function "*" (Left : in Real;   Right : in Quaternion) return Quaternion
    is
    begin
       return (Right.R * Left,
@@ -299,13 +257,12 @@ is
    end "*";
 
 
-   function "/" (Left : in Quaternion;   Right : in Real)       return Quaternion
+   function "/" (Left : in Quaternion;   Right : in Real) return Quaternion
    is
    begin
       return (Left.R / Right,
               (Left.V / Right));
    end "/";
-
 
 
    function "+" (Left, Right : in Quaternion) return Quaternion
@@ -324,21 +281,16 @@ is
    end "-";
 
 
-
-   function Image (Self : in     Quaternion;   Precision : in Natural := 5) return String
+   function Image (Self : in Quaternion;   Precision : in Natural := 5) return String
    is
    begin
-      return "(R => " & Image (Self.R, Precision)
-          & ", V => " & Image (Self.V, Precision) & ")";
+      return "(R => "  & Image (Self.R, Precision)
+           & ", V => " & Image (Self.V, Precision)  & ")";
    end Image;
 
 
-
-
-   -----------
    --  Images
    --
-
 
    --  Real Image
    --
@@ -380,11 +332,9 @@ is
    end Image;
 
 
-
-
    --  Vector Image
    --
-   function Image (Self : in Vector;      Precision : in Natural := 5) return String
+   function Image (Self : in Vector;   Precision : in Natural := 5) return String
    is
       the_Image : String (1 .. 1 * 1024 * 1024);   -- Handles one megabyte string, excess is truncated.
       Count     : Standard.Natural := 0;
@@ -399,7 +349,8 @@ is
    begin
       add ("(");
 
-      for Each in self'Range loop
+      for Each in self'Range
+      loop
          if Each /= self'First then
             add (", ");
          end if;
@@ -408,15 +359,12 @@ is
       end loop;
 
       add (")");
-
-
       return the_Image (1 .. Count);
 
    exception
       when others =>
          return the_Image (1 .. Count);
    end Image;
-
 
 
    function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3
@@ -426,10 +374,8 @@ is
    end to_Vector_3;
 
 
-
-   --- Vector_2
+   -- Vector_2
    --
-
    function to_Vector_2 (Self : in Vector_3) return Vector_2
    is
    begin
@@ -455,7 +401,6 @@ is
    end "-";
 
 
-
    overriding
    function "*" (Left : in Real;   Right : in Vector_2) return Vector_2
    is
@@ -465,9 +410,8 @@ is
    end "*";
 
 
-
    overriding
-   function "*" (Left : in Vector_2;     Right : in Real) return Vector_2
+   function "*" (Left : in Vector_2;   Right : in Real) return Vector_2
    is
    begin
       return (Left (1) * Right,
@@ -476,7 +420,7 @@ is
 
 
    overriding
-   function "/" (Left : in Vector_2;     Right : in Real) return Vector_2
+   function "/" (Left : in Vector_2;   Right : in Real) return Vector_2
    is
    begin
       return (Left (1) / Right,
@@ -484,24 +428,20 @@ is
    end "/";
 
 
-
-   function Image (Self : in Vector_2;      Precision : in Natural := 5) return String
+   function Image (Self : in Vector_2;   Precision : in Natural := 5) return String
    is
    begin
       return Image (Vector (Self), Precision);
    end Image;
 
 
-
-   --- Vector_3
+   -- Vector_3
    --
-
-   function Image (Self : in Vector_3;      Precision : in Natural := 5) return String
+   function Image (Self : in Vector_3;   Precision : in Natural := 5) return String
    is
    begin
       return Image (Vector (Self), Precision);
    end Image;
-
 
 
    overriding
@@ -514,7 +454,6 @@ is
    end "*";
 
 
-
    function "*" (Left : in Vector_3;   Right : in Vector_3) return Vector_3
    is
    begin
@@ -522,7 +461,6 @@ is
               2 => Left (3) * Right (1)  -  Left (1) * Right (3),
               3 => Left (1) * Right (2)  -  Left (2) * Right (1));
    end "*";
-
 
 
    overriding
@@ -535,7 +473,6 @@ is
    end "+";
 
 
-
    overriding
    function "-" (L, R : in Vector_3) return Vector_3
    is
@@ -545,9 +482,9 @@ is
               L (3) - R (3));
    exception
       when Constraint_Error =>
-         raise Constraint_Error with "constraint_Error in any_math ""-"" (L, R : Vector_3) ... " & Image (L) & "   " & Image (R);
+         raise Constraint_Error with "any_math ""-"" (L, R : Vector_3) => "
+                                    & Image (L) & "   " & Image (R);
    end "-";
-
 
 
    overriding
@@ -558,9 +495,8 @@ is
    end "-";
 
 
-
    overriding
-   function "*" (Left : in Vector_3;     Right : in Real) return Vector_3
+   function "*" (Left : in Vector_3;   Right : in Real) return Vector_3
    is
    begin
       return (Left (1) * Right,
@@ -570,7 +506,7 @@ is
 
 
    overriding
-   function "/" (Left : in Vector_3;     Right : in Real) return Vector_3
+   function "/" (Left : in Vector_3;   Right : in Real) return Vector_3
    is
    begin
       return (Left (1) / Right,
@@ -579,13 +515,11 @@ is
    end "/";
 
 
-
-   function "/" (Left : in Real;         Right : in Vector_3) return Vector_3
+   function "/" (Left : in Real;   Right : in Vector_3) return Vector_3
    is
    begin
       return Right / Left;
    end "/";
-
 
 
    overriding
@@ -597,18 +531,17 @@ is
    end "abs";
 
 
-
-
-   --  Matrix
+   -- Matrix
    --
-
    function Image (Self : Matrix) return String
    is
       the_Image : String (1 .. 1024);
       Last      : Standard.Natural := 0;
    begin
-      for Row in Self'Range (1) loop
-         for Col in Self'Range (2) loop
+      for Row in Self'Range (1)
+      loop
+         for Col in Self'Range (2)
+         loop
             declare
                Element : constant String := Real'Image (Self (Row, Col));
             begin
@@ -619,7 +552,8 @@ is
                Last := Last + Element'Length - 1;
             end;
          end loop;
-         Last := Last + 1;
+
+         Last             := Last + 1;
          the_Image (Last) := ada.Characters.Latin_1.LF;
       end loop;
 
@@ -627,18 +561,14 @@ is
    end Image;
 
 
-
-
-   --- Matrix_2x2
+   -- Matrix_2x2
    --
-
    overriding
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2
    is
    begin
       return Matrix_2x2 (Vectors.Transpose (Matrix (Self)));
    end Transpose;
-
 
 
    function "*" (Left : in Matrix_2x2;   Right : in Vector_2) return Vector_2
@@ -657,8 +587,7 @@ is
    end "*";
 
 
-
-   function "*" (Left : in Vector_2;     Right : in Matrix_2x2) return Vector_2
+   function "*" (Left : in Vector_2;   Right : in Matrix_2x2) return Vector_2
    is
       use Vectors;
    begin
@@ -667,11 +596,8 @@ is
    end "*";
 
 
-
-
-   --- Matrix_3x3
+   -- Matrix_3x3
    --
-
    overriding
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3
    is
@@ -680,11 +606,8 @@ is
    end Transpose;
 
 
-
    function "*" (Left : in Matrix_3x3;   Right : in Vector_3) return Vector_3
    is
---        pragma Suppress (All_Checks);   -- For speed.
-
       A : Matrix_3x3 renames Left;
       B : Vector_3   renames Right;
    begin
@@ -694,11 +617,8 @@ is
    end "*";
 
 
-
-   function "*" (Left : in Vector_3;     Right : in Matrix_3x3) return Vector_3
+   function "*" (Left : in Vector_3;   Right : in Matrix_3x3) return Vector_3
    is
---        pragma Suppress (All_Checks);   -- For speed.
-
       A : Matrix_3x3 renames Right;
       B : Vector_3   renames Left;
    begin
@@ -708,12 +628,8 @@ is
    end "*";
 
 
-
-
-
-   --- Matrix_4x4
+   -- Matrix_4x4
    --
-
    overriding
    function Transpose (Self : in Matrix_4x4) return Matrix_4x4
    is
@@ -722,11 +638,8 @@ is
    end Transpose;
 
 
-
    function "*" (Left : in Matrix_4x4;   Right : in Vector_4) return Vector_4
    is
---        pragma Suppress (All_Checks);   -- For speed.
-
       A : Matrix_4x4 renames Left;
       B : Vector_4   renames Right;
    begin
@@ -737,11 +650,8 @@ is
    end "*";
 
 
-
-   function "*" (Left : in Vector_4;     Right : in Matrix_4x4) return Vector_4
+   function "*" (Left : in Vector_4;   Right : in Matrix_4x4) return Vector_4
    is
---        pragma Suppress (All_Checks);   -- For speed.
-
       A : Matrix_4x4 renames Right;
       B : Vector_4   renames Left;
    begin
@@ -750,7 +660,6 @@ is
               (a(1,3)*b(1) + a(2,3)*b(2) + a(3,3)*b(3) + a(4,3)*b(4)),
               (a(1,4)*b(1) + a(2,4)*b(2) + a(3,4)*b(3) + a(4,4)*b(4)));
    end "*";
-
 
 
    function "*" (Left : in Matrix_4x4;   Right : in Vector_3) return Vector_3
@@ -762,7 +671,6 @@ is
    end "*";
 
 
-
    function "*" (Left : in Vector_3;   Right : in Matrix_4x4) return Vector_4
    is
       V : Vector_4 := Vector_4 (Left & 1.0);
@@ -770,7 +678,6 @@ is
       V := V * Right;
       return V;
    end "*";
-
 
 
    function "*" (Left : in Matrix_4x4;   Right : in Vector_3) return Vector_4
@@ -782,12 +689,9 @@ is
    end "*";
 
 
-
    overriding
    function "*" (Left : in Matrix_4x4; Right : in Matrix_4x4) return Matrix_4x4
    is
---        pragma Suppress (All_Checks);   -- For speed.
-
       A : Matrix_4x4 renames Left;
       B : Matrix_4x4 renames Right;
    begin
@@ -796,6 +700,5 @@ is
               (a(3,1)*b(1,1) + a(3,2)*b(2,1) + a(3,3)*b(3,1) + a(3,4)*b(4,1),  a(3,1)*b(1,2) + a(3,2)*b(2,2) + a(3,3)*b(3,2) + a(3,4)*b(4,2),  a(3,1)*b(1,3) + a(3,2)*b(2,3) + a(3,3)*b(3,3) + a(3,4)*b(4,3),  a(3,1)*b(1,4) + a(3,2)*b(2,4) + a(3,3)*b(3,4) + a(3,4)*b(4,4)),
               (a(4,1)*b(1,1) + a(4,2)*b(2,1) + a(4,3)*b(3,1) + a(4,4)*b(4,1),  a(4,1)*b(1,2) + a(4,2)*b(2,2) + a(4,3)*b(3,2) + a(4,4)*b(4,2),  a(4,1)*b(1,3) + a(4,2)*b(2,3) + a(4,3)*b(3,3) + a(4,4)*b(4,3),  a(4,1)*b(1,4) + a(4,2)*b(2,4) + a(4,3)*b(3,4) + a(4,4)*b(4,4)));
    end "*";
-
 
 end any_Math;
