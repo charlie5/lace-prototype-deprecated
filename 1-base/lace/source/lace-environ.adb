@@ -18,6 +18,7 @@ with
      ada.environment_Variables,
      ada.Direct_IO,
      ada.Text_IO,
+     ada.IO_Exceptions,
      ada.Exceptions;
 
 
@@ -1032,6 +1033,9 @@ is
    is
    begin
       ada.Directories.delete_Tree (Named);
+   exception
+      when ada.IO_Exceptions.name_Error =>
+         null;
    end rid_Folder;
 
 
