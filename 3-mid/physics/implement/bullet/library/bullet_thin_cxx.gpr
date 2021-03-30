@@ -2,14 +2,15 @@ with
      "bullet_thin_c",
      "lace_shared";
 
+library
 project Bullet_Thin_Cxx
 is
-   for Languages       use ("C++");
+   for Languages       use ("c++");
    for Source_Dirs     use ("../source/thin");
    for Object_Dir      use "build";
-   for Library_Name    use "bullet_thin_cxx";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+   for Library_Name    use "bullet_thin_cxx";
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";

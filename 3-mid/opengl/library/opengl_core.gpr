@@ -5,14 +5,16 @@ with
      "lace_shared";
      
 library
-project Opengl_Core is
+project Opengl_Core
+is
+   type Platform is ("egl", "glx", "osmesa");
+   The_Platform : Platform := external ("opengl_platform", "egl");
+
+   for Create_Missing_Dirs use "True";
 
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
    for Library_Name use "opengl_core";
-
-   type Platform is ("egl", "glx", "osmesa");
-   The_Platform : Platform := external ("opengl_platform", "egl");
 
 
    case The_Platform is 
@@ -40,4 +42,3 @@ project Opengl_Core is
    package Binder renames Lace_shared.Binder;
 
 end Opengl_Core;
-

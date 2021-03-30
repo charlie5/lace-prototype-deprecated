@@ -3,12 +3,16 @@ with
      "lumen",
      "lace_shared";
 
+library
 project Lumen_MMI
 is
+   for Create_Missing_Dirs use "True";
+
    for Source_Dirs     use ("../../source/platform/lumen");
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+   for Library_Name    use "Lumen_MMI";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

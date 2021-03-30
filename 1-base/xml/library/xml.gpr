@@ -1,10 +1,16 @@
 with 
      "lace_shared";
 
+library
 project Xml
 is
-   for Source_Dirs use ("../source");
-   for Object_Dir  use "build";
+   for Create_Missing_Dirs use "True";
+
+   for Source_Dirs     use ("../source");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+   for Library_Name    use "Xml";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

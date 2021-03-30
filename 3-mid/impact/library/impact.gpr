@@ -2,9 +2,12 @@ with
      "math",
      "swig",   -- todo: remove swig
      "lace_shared";
-     
+
+library
 project Impact
 is
+   for Create_Missing_Dirs use "True";
+
    for Source_Dirs use ("../source",
                         "../source/2d", 
                         "../source/2d/collision", 
@@ -29,12 +32,11 @@ is
                         "../source/3d/dynamics/joints");
                         
    for Object_Dir   use "build";
+   for Library_Dir  use "lib";
    for Library_Name use "Impact";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
-   package Binder   renames Lace_shared.Binder;
-   package Linker   renames Lace_shared.Linker;
 
 end Impact;

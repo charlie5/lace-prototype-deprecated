@@ -3,13 +3,16 @@ with
      "sdlada",
      "lace_shared";
 
+library
 project SDL_MMI
 is
+   for Create_Missing_Dirs use "True";
 
    for Source_Dirs     use ("../../source/platform/sdl");
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+   for Library_Name    use "SDL_MMI";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

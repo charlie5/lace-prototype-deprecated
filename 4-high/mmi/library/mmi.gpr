@@ -5,12 +5,15 @@ with
      "physics", 
      "lace_shared";
 
+library
 project MMI
 is
+   for Create_Missing_Dirs use "True";
 
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+   for Library_Name    use "MMI";
 
    for Source_Dirs     use ("../source",
                             "../source/remote",

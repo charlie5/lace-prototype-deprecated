@@ -3,6 +3,7 @@ with
    "lace_shared",
    "ashell";
 
+library
 project Lace
 is
    type Restrictions is ("xgc", "ravenscar");
@@ -14,6 +15,7 @@ is
    for Exec_Dir        use ".";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
+   for Library_Name    use "Lace";
 
    for Source_Dirs use (".",
                         "../source",
@@ -27,6 +29,7 @@ is
                         "../source/events/utility",
                         "../source/strings");
 
+   package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
 

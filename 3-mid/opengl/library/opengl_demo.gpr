@@ -3,15 +3,17 @@ with
      "lumen",
      "lace_shared";
 
-
+library
 project openGL_Demo
 is
+   for Create_Missing_Dirs use "True";
 
-   for Source_Dirs use ("../source/demo");
-   for Object_Dir  use "build";
+   for Source_Dirs  use ("../source/demo");
+   for Object_Dir   use "build";
+   for Library_Dir  use "lib";
+   for Library_Name use "openGL_Demo";
 
    package Builder renames Lace_shared.Builder;
-
 
    package Compiler is
       for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
