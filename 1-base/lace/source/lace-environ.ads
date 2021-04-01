@@ -75,7 +75,12 @@ is
 
    procedure   push_Folder (Context     : in out Environ.Context;
                             goto_Folder : in     String);
+   --
+   -- Store the current folder and move to the 'goto_Folder'.
+
    procedure    pop_Folder (Context     : in out Environ.Context);
+   --
+   -- Return to the previously pushed folder.
 
    procedure    rid_Folder (Named  : in String);
    procedure   copy_Folder (Named  : in String;   To : in String);
