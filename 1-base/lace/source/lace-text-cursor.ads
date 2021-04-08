@@ -23,12 +23,12 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
-   function  next_Token  (Self : in out item;   Delimiter : in String) return String;
+   function  next_Token  (Self : in out item;   Delimiter : in String := " ") return String;
 
-   procedure skip_Token  (Self : in out Item;   Delimiter : in String);
+   procedure skip_Token  (Self : in out Item;   Delimiter : in String := " ");
    procedure skip_White  (Self : in out Item);
 
-   procedure advance     (Self : in out Item;   Delimiter      : in String;
+   procedure advance     (Self : in out Item;   Delimiter      : in String   := " ";
                                                 Repeat         : in Positive := 1;
                                                 skip_Delimiter : in Boolean  := True);
    --

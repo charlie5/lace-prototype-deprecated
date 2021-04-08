@@ -43,10 +43,9 @@ is
 
 
 
-   procedure advance (Self           : in out Item;
-                      Delimiter      : in     String;
-                      Repeat         : in     Positive := 1;
-                      skip_Delimiter : in     Boolean  := True)
+   procedure advance (Self : in out Item;   Delimiter      : in String   := " ";
+                                            Repeat         : in Positive := 1;
+                                            skip_Delimiter : in Boolean  := True)
    is
    begin
       for Count in 1 .. Repeat
@@ -100,7 +99,7 @@ is
 
 
    function next_Token (Self      : in out Item;
-                        Delimiter : in     String) return String
+                        Delimiter : in     String := " ") return String
    is
    begin
       if at_End (Self)
@@ -129,7 +128,7 @@ is
 
 
 
-   procedure skip_Token (Self : in out Item;   Delimiter : in String)
+   procedure skip_Token (Self : in out Item;   Delimiter : in String := " ")
    is
       ignored_Token : String := Self.next_Token (Delimiter);
    begin
