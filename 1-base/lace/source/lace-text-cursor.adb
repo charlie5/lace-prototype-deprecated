@@ -177,7 +177,7 @@ is
 
 
 
-   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_32
+   function Tokens (Self : in out Item;   Delimiter : in String) return Text.items_32
    is
       the_Tokens : Text.items_32 (1 .. 1024);
       Count      : Natural := 0;
@@ -192,7 +192,7 @@ is
 
 
 
-   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_1k
+   function Tokens (Self : in out Item;   Delimiter : in String) return Text.items_1k
    is
       the_Tokens : Text.items_1k (1 .. 1024);
       Count      : Natural := 0;
@@ -208,7 +208,7 @@ is
 
 
 
-   function Tokens (Self : in out Item;   Delimiter : in Character) return Text.items_8k
+   function Tokens (Self : in out Item;   Delimiter : in String) return Text.items_8k
    is
       the_Tokens : Text.items_8k (1 .. 512);
       Count      : Natural := 0;
