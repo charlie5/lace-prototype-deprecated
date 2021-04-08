@@ -23,10 +23,8 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
-   function  next_Token  (Self : in out Item;   Delimiter : in Character) return String;
-   function  next_Token  (Self : in out item;   Delimiter : in String)    return String;
+   function  next_Token  (Self : in out item;   Delimiter : in String) return String;
 
-   procedure skip_Token  (Self : in out Item;   Delimiter : in Character);
    procedure skip_Token  (Self : in out Item;   Delimiter : in String);
    procedure skip_White  (Self : in out Item);
 

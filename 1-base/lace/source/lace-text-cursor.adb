@@ -43,36 +43,6 @@ is
 
 
 
-   function next_Token (Self : in out Item;   Delimiter : in Character) return String
-   is
-   begin
-      if Self.Target.Data (Self.Current) = Delimiter
-      then
-         Self.Current := Self.Current + 1;
-         return "";
-      else
-         declare
-            use ada.Strings.fixed,
-                ada.strings.Maps;
-
-            First : Positive := Self.Current;
-            Last  : Natural  := 0;
-         begin
-            find_Token (Self.Target.Data (First .. Self.Target.Length),
-                        to_Set (Delimiter),
-                        Outside,
-                        First,
-                        Last);
-
-            Self.Current := Last + 2;
-
-            return Self.Target.Data (First .. Last);
-         end;
-      end if;
-   end next_Token;
-
-
-
    procedure advance (Self           : in out Item;
                       Delimiter      : in     String;
                       Repeat         : in     Positive := 1;
@@ -156,15 +126,6 @@ is
          end return;
       end;
    end next_Token;
-
-
-
-   procedure skip_Token (Self : in out Item;   Delimiter : in Character)
-   is
-      ignored_Token : String := Self.next_Token (Delimiter);
-   begin
-      null;
-   end skip_Token;
 
 
 
