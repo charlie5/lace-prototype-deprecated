@@ -1033,7 +1033,7 @@ is
 
 
 
-   function home_Folder (user_Name : in String) return String
+   function home_Folder (user_Name : in String := current_User) return String
    is
       use Posix,
           posix.User_Database;

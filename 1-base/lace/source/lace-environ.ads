@@ -55,8 +55,8 @@ is
    procedure set_Password   (User  : in String);
    procedure switch_to_User (Named : in String);
 
-   function  current_User                           return String;
-   function  home_Folder    (user_Name : in String) return String;
+   function  current_User                                        return String;
+   function  home_Folder (user_Name : in String := current_User) return String;
 
 
    --- Paths
