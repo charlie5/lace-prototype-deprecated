@@ -9,7 +9,7 @@ is
    -- Forge
    --
 
-   function First (Self : access constant Text.item) return Cursor.item;
+   function First (of_Text : access constant Text.item) return Cursor.item;
 
 
    -- Attributes
