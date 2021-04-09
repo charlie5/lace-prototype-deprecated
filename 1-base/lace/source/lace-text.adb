@@ -137,7 +137,10 @@ is
    function Image (Self : in Item) return String
    is
    begin
-      return to_String (Self);
+      return
+        Self.Capacity'Image  & " "  &
+        Self.Length'Image    & " '" &
+        to_String (Self)     & "'";
    end Image;
 
 
