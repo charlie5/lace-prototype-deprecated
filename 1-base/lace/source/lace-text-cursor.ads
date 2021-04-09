@@ -9,9 +9,7 @@ is
    -- Forge
    --
 
-   type Text_view is access constant lace.Text.item;
-
-   function First (Self : in Text_view) return Cursor.item;
+   function First (Self : access Text.item) return Cursor.item;
 
 
    -- Attributes
@@ -66,8 +64,8 @@ private
 
    type Item is tagged
       record
-         Target  : Text_view;
-         Current : Natural  := 0;
+         Target  : access Text.item;
+         Current :        Natural  := 0;
       end record;
 
 end lace.text.Cursor;

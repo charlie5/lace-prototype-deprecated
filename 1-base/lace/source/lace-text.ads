@@ -14,6 +14,8 @@ is
 
    function Image (Self : in Item) return String;
 
+   Error : exception;
+
 
    -- Stock Items
    --

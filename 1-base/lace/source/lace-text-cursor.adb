@@ -15,7 +15,7 @@ is
    -- Forge
    --
 
-   function First (Self : in Text_view) return Cursor.item
+   function First (Self : access Text.item) return Cursor.item
    is
       the_Cursor : constant Cursor.item := (Self, 1);
    begin

@@ -235,6 +235,10 @@ is
 
       Self.Length                  := Cursor - 1;
       Self.Data (1 .. Self.Length) := Result.Data (1 .. Self.Length);
+
+   exception
+      when Constraint_Error =>
+         raise Text.Error with "'replace' fails ~ insufficient capacity";
    end replace;
 
 
