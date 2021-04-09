@@ -2,7 +2,6 @@ with
      ada.Containers,
      ada.Streams;
 
-
 package lace.Text
 --
 -- Models a string of text characters.
@@ -121,12 +120,6 @@ is
 
    function  to_Lowercase (Self : in Item) return Item;
    function  mono_Spaced  (Self : in Item) return Item;
-
-   function  replace (Self : in     Item;   Pattern : in String;
-                                            By      : in String) return Item;
-   procedure replace (Self : in out Item;   Pattern : in String;
-                                            By      : in String);
-
 
 
 private
