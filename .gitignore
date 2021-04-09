@@ -55,6 +55,7 @@ launch_hello_physics_interface_demo
 launch_test_engine
 launch_strings_demo
 test_environ_compression
+test_text_replace
 HelloWorld*
 5-all/applet/build_all/build_all
 
