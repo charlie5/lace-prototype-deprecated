@@ -15,9 +15,9 @@ is
    -- Forge
    --
 
-   function First (Self : access Text.item) return Cursor.item
+   function First (Self : access constant Text.item) return Cursor.item
    is
-      the_Cursor : constant Cursor.item := (Self, 1);
+      the_Cursor : constant Cursor.item := (Self.all'unchecked_Access, 1);
    begin
       return the_Cursor;
    end First;
