@@ -10,7 +10,7 @@ is
    --
 
    function to_Text (From : in String;
-                    Trim  : in Boolean := False) return Item
+                     Trim : in Boolean := False) return Item
    is
    begin
       return to_Text (From, capacity => From'Length, trim => Trim);
