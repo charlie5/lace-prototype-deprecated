@@ -7,41 +7,71 @@ is
    function replace (Self : in Text.item;   Pattern : in String;
                                             By      : in String) return Text.item
    is
-      use lace.Text.Cursor;
-      Cursor     :          Text.Cursor.item := First (Self'Unrestricted_Access);
-      the_Tokens : constant Text.items_1k    := lace.Text.Cursor.Tokens (Cursor, delimiter => Pattern);
-      Size       :          Natural          := 0;
-
+      Tail_matches_Pattern : Boolean := False;
    begin
-      for Each of the_Tokens
-      loop
-         Size := Size + Each.Length;
-      end loop;
+      -- Corner case: Pattern exactly matches Self.
+      --
+      if Self.Data (1 .. Self.Length) = Pattern
+      then
+         declare
+            Result : Text.item (Capacity => Natural'Max (By'Length, Self.Capacity));
+         begin
+            Result.Length                := By'Length;
+            Result.Data (1 .. By'Length) := By;
+            return Result;
+         end;
+      end if;
 
-      Size := Size + (the_Tokens'Length - 1) * By'Length;
+      -- Corner case: Pattern exactly matches tail of Self.
+      --
+      if Self.Data (Self.Length - Pattern'Length + 1 .. Self.Length) = Pattern
+      then
+         Tail_matches_Pattern := True;
+      end if;
 
+      -- General case.
+      --
       declare
-         First  : Positive := 1;
-         Last   : Natural;
-         Result : Text.item (Capacity => Natural'Max (Size, Self.Capacity));
+         use lace.Text.Cursor;
+         Cursor     :          Text.Cursor.item := First (Self'Unrestricted_Access);
+         the_Tokens : constant Text.items_1k    := lace.Text.Cursor.Tokens (Cursor, delimiter => Pattern);
+         Size       :          Natural          := 0;
+
       begin
          for Each of the_Tokens
          loop
-            Last                        := First + Each.Length - 1;
-            Result.Data (First .. Last) := Each.Data (1 .. Each.Length);
-
-            exit when Last = Size;
-
-            First                       := Last  + 1;
-            Last                        := First + By'Length - 1;
-            Result.Data (First .. Last) := By;
-
-            First := Last + 1;
+            Size := Size + Each.Length;
          end loop;
 
-         Result.Length := Size;
+         Size := Size + (the_Tokens'Length - 1) * By'Length;
 
-         return Result;
+         if Tail_matches_Pattern
+         then
+            Size := Size + By'Length;
+         end if;
+
+         declare
+            First  : Positive := 1;
+            Last   : Natural;
+            Result : Text.item (Capacity => Natural'Max (Size, Self.Capacity));
+         begin
+            for Each of the_Tokens
+            loop
+               Last                        := First + Each.Length - 1;
+               Result.Data (First .. Last) := Each.Data (1 .. Each.Length);
+
+               exit when Last = Size;
+
+               First                       := Last  + 1;
+               Last                        := First + By'Length - 1;
+               Result.Data (First .. Last) := By;
+
+               First := Last + 1;
+            end loop;
+
+            Result.Length := Size;
+            return Result;
+         end;
       end;
    end replace;
 
