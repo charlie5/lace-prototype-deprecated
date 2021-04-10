@@ -11,7 +11,7 @@ with
      shell.Commands,
      shell.Directory_Iteration,
 
-     lace.Text,
+     lace.Text.all_Tokens,
 
      ada.Strings.fixed,
      ada.Directories,
@@ -676,6 +676,7 @@ is
    procedure copy_Files (Named : in String;   To : in String)
    is
       use lace.Text,
+          lace.Text.all_Tokens,
           ada.Directories,
           ada.Strings.fixed;
 
@@ -709,6 +710,7 @@ is
    procedure move_Files (Named : in String;   To : in String)
    is
       use lace.Text,
+          lace.Text.all_Tokens,
           ada.Directories,
           ada.Strings.fixed;
 
@@ -754,6 +756,7 @@ is
    procedure rid_Files (Named : in String)
    is
       use lace.Text,
+          lace.Text.all_Tokens,
           ada.Strings.fixed;
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
