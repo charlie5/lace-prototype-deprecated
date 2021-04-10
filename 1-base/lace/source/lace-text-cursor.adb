@@ -3,7 +3,6 @@ with
      ada.Strings.fixed,
      ada.strings.Maps;
 
-
 package body lace.text.Cursor
 is
    use ada.Strings;
@@ -33,14 +32,12 @@ is
    end at_End;
 
 
-
    function has_Element (Self : in Item) return Boolean
    is
    begin
       return not at_End (Self)
         and      Self.Current <= Self.Target.Length;
    end has_Element;
-
 
 
    procedure advance (Self : in out Item;   Delimiter      : in String   := " ";
@@ -82,7 +79,6 @@ is
    end advance;
 
 
-
    procedure skip_White (Self : in out Item)
    is
    begin
@@ -95,7 +91,6 @@ is
          Self.Current := Self.Current + 1;
       end loop;
    end skip_White;
-
 
 
    function next_Token (Self      : in out Item;
@@ -127,66 +122,12 @@ is
    end next_Token;
 
 
-
    procedure skip_Token (Self : in out Item;   Delimiter : in String := " ")
    is
       ignored_Token : String := Self.next_Token (Delimiter);
    begin
       null;
    end skip_Token;
-
-
-
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_32
-   is
-      the_Tokens : Text.items_32 (1 .. 1024);
-      Count      : Natural := 0;
-   begin
-      while Self.has_Element loop
-         Count              := Count + 1;
-         the_Tokens (Count) := to_Text (Self.next_Token (Delimiter), capacity => 32);
-      end loop;
-
-      return the_Tokens (1 .. Count);
-   end Tokens;
-
-
-
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_1k
-   is
-      the_Tokens : Text.items_1k (1 .. 1024);
-      Count      : Natural := 0;
-   begin
-      while Self.has_Element
-      loop
-         Count              := Count + 1;
-         the_Tokens (Count) := to_Text (Self.next_Token (Delimiter), capacity => 1024);
-      end loop;
-
-      return the_Tokens (1 .. Count);
-   end Tokens;
-
-
-
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_8k
-   is
-      the_Tokens : Text.items_8k (1 .. 512);
-      Count      : Natural := 0;
-   begin
-      while Self.has_Element
-      loop
-         Count := Count + 1;
-
-         declare
-            Next : constant String := Self.next_Token (Delimiter);
-         begin
-            the_Tokens (Count) := to_Text (Next, capacity => 8 * 1024);
-         end;
-      end loop;
-
-      return the_Tokens (1 .. Count);
-   end Tokens;
-
 
 
    function get_Integer (Self : in out Item) return Integer
@@ -210,7 +151,6 @@ is
    end get_Integer;
 
 
-
    function get_Real (Self : in out Item) return long_Float
    is
       use ada.Strings.fixed;
@@ -232,13 +172,11 @@ is
    end get_Real;
 
 
-
    function Length (Self : in Item) return Natural
    is
    begin
       return Self.Target.Length - Self.Current + 1;
    end Length;
-
 
 
    function Peek (Self : in Item;   Length : in Natural) return String

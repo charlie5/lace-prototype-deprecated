@@ -21,7 +21,6 @@ with
      ada.IO_Exceptions,
      ada.Exceptions;
 
-
 package body lace.Environ
 is
 
@@ -101,7 +100,6 @@ is
    end argument_String_to_List;
 
 
-
    function Path_to (Command : in String) return String   -- tbd: use os_lib procedure instead !
    is
       use gnat.Expect,
@@ -119,7 +117,6 @@ is
       free (Args);
       return Output;
    end Path_to;
-
 
 
    function shell_Output_of (Command : in String) return String
@@ -148,7 +145,6 @@ is
 
       return Output_of (command => Filename);
    end shell_Output_of;
-
 
 
    function Output_of (Command : in String;
@@ -331,7 +327,6 @@ is
    end set_Password;
 
 
-
    procedure add_User (Name  : in String;
                        Super : in Boolean := False)
    is
@@ -396,7 +391,6 @@ is
    end add_User;
 
 
-
    procedure rid_User (Name : in String)
    is
       use gnat.Expect,
@@ -421,7 +415,6 @@ is
          raise Error with "userdel: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end rid_User;
-
 
 
    procedure change_Mode (Folder : in String;
@@ -454,7 +447,6 @@ is
    end change_Mode;
 
 
-
    procedure change_Owner (Folder : in String;
                            To     : in String)
    is
@@ -483,7 +475,6 @@ is
          raise Error with "chown: (" & Integer'Image (Status) & ") " & Output;
       end if;
    end change_Owner;
-
 
 
    function Exists (Folder : in String) return Boolean
@@ -566,7 +557,6 @@ is
    end touch;
 
 
-
    procedure switch_to_User (Named : in String)
    is
       use Posix,
@@ -578,7 +568,6 @@ is
    begin
       set_User_ID (ID);
    end switch_to_User;
-
 
 
    procedure save (the_Text : in String;
@@ -989,7 +978,6 @@ is
    end goto_Folder;
 
 
-
    procedure unlock_Folder
    is
    begin
@@ -1035,7 +1023,6 @@ is
    end current_User;
 
 
-
    function home_Folder (user_Name : in String := current_User) return String
    is
       use Posix,
@@ -1045,7 +1032,6 @@ is
    begin
       return to_String (initial_Directory_of (User_in_DB));
    end home_Folder;
-
 
 
    procedure rid_Folder (Named : in String)

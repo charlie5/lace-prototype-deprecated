@@ -160,7 +160,6 @@ is
    end Item_input;
 
 
-
    procedure Item_output (Stream   : access Ada.Streams.Root_Stream_Type'Class;
                           the_Item : in     Item)
    is
@@ -171,7 +170,6 @@ is
    end Item_output;
 
 
-
    procedure Write (Stream : access ada.streams.Root_Stream_Type'Class;
                     Self   : in     Item)
    is
@@ -179,7 +177,6 @@ is
       Natural'write (Stream, Self.Length);
       String 'write (Stream, Self.Data (1 .. Self.Length));
    end Write;
-
 
 
    procedure Read (Stream : access ada.streams.Root_Stream_Type'Class;
