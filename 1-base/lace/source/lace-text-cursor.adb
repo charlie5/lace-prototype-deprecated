@@ -94,6 +94,14 @@ is
 
 
    function next_Token (Self      : in out Item;
+                        Delimiter : in     Character := ' ') return String
+   is
+   begin
+      return next_Token (Self, "" & Delimiter);
+   end next_Token;
+
+
+   function next_Token (Self      : in out Item;
                         Delimiter : in     String := " ") return String
    is
    begin
