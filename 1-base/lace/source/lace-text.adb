@@ -1,4 +1,5 @@
 with
+     lace.Text.all_Tokens,
      lace.Strings.fixed,
      ada.Characters.Latin_1,
      ada.Characters.handling,
@@ -71,74 +72,13 @@ is
    end Length;
 
 
-
-   function next_Token (Self : in Item;   Delimiter : in     Character;
-                                          From      : in out Positive) return String
-   is
-      Cursor : Positive renames From;
-   begin
-      if Self.Data (Cursor) = Delimiter then
-         Cursor := Cursor + 1;
-         return "";
-      else
-         declare
-            First : constant Positive := Cursor;
-         begin
-            loop
-               Cursor := Cursor + 1;
-
-               if Self.Data (Cursor) = Delimiter
-               then
-                  Cursor := Cursor + 1;
-                  return Self.Data (First .. Cursor - 2);
-
-               elsif Cursor = Self.Length
-               then
-                  Cursor := Cursor + 1;
-                  return Self.Data (First .. Cursor - 1);
-               end if;
-            end loop;
-         end;
-      end if;
-   end next_Token;
-
-
    function Lines (Self : in Item) return Text.items_1k
    is
-      use ada.Characters.Latin_1;
+      use lace.Text.all_Tokens,
+          ada.Characters.Latin_1;
    begin
       return Tokens (Self, LF);
    end Lines;
-
-
-   function Tokens (Self : in Item;   Delimiter : in Character := ' ';
-                                      Trim      : in Boolean   := False) return Text.items_1k
-   is
-      the_Tokens : Text.items_1k (1 .. 4 * 1024);
-      Count      : Natural := 0;
-
-      From : aliased Positive := 1;
-   begin
-      while From <= Self.Length
-      loop
-         Count              := Count + 1;
-         the_Tokens (Count) := to_Text (next_Token (Self,
-                                                    Delimiter,
-                                                    From),
-                                        capacity => 1024,
-                                        trim     => Trim);
-      end loop;
-
-      if         Self.Length > 0
-        and then Self.Data (Self.Length) = Delimiter
-      then                                                      -- Handle case where final character is the delimiter.
-         Count              := Count + 1;
-         the_Tokens (Count) := to_Text ("", capacity => 1024);  -- Add an empty token.
-      end if;
-
-      return the_Tokens (1 .. Count);
-   end Tokens;
-
 
 
    function Image (Self : in Item) return String
@@ -149,7 +89,6 @@ is
         Self.Length'Image    & " '" &
         to_String (Self)     & "'";
    end Image;
-
 
 
    function Hashed (Self : in Item) return ada.Containers.Hash_type
