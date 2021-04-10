@@ -1,7 +1,5 @@
 package lace.Text.all_Lines
 is
-   pragma Pure;
-
    function Lines (Self : in Item) return Text.items_2;
    function Lines (Self : in Item) return Text.items_4;
    function Lines (Self : in Item) return Text.items_8;

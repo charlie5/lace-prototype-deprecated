@@ -35,9 +35,9 @@ is
    -- Sets Iterator to 0 if Delimiter is not found.
    -- Search is carried out 'Repeat' times.
 
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_32;
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_1k;
-   function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_8k;
+   --  function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_32;
+   --  function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_1k;
+   --  function Tokens (Self : in out Item;   Delimiter : in String := " ") return Text.items_8k;
 
 
    function get_Integer (Self : in out Item) return Integer;
