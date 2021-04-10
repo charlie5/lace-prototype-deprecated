@@ -4,10 +4,11 @@ with
 package body lace.Text.utility
 is
 
-   function replace (Self : access constant Text.item;   Pattern : in String;
-                                                         By      : in String) return Text.item
+   function replace (Self : in Text.item;   Pattern : in String;
+                                            By      : in String) return Text.item
    is
-      Tail_matches_Pattern : Boolean := False;
+      mySelf               : aliased Text.item := Self;
+      Tail_matches_Pattern :         Boolean   := False;
    begin
       -- Corner case: Pattern exactly matches Self.
       --
@@ -33,7 +34,7 @@ is
       --
       declare
          use lace.Text.Cursor;
-         Cursor     :          Text.Cursor.item := First (Self);
+         Cursor     :          Text.Cursor.item := First (mySelf'Access);
          the_Tokens : constant Text.items_1k    := lace.Text.Cursor.Tokens (Cursor, delimiter => Pattern);
          Size       :          Natural          := 0;
 
