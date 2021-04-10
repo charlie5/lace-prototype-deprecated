@@ -74,9 +74,9 @@ is
    is
    begin
       return
-        "(Capacity =>" & Self.Capacity'Image  & ", " &
-        "Length =>"    & Self.Length  'Image  & ", " &
-        "Data => '"    & to_String (Self)     & "')";
+        "(Capacity =>"  & Self.Capacity'Image  & "," &
+        " Length =>"    & Self.Length  'Image  & "," &
+        " Data => '"    & to_String (Self)     & "')";
    end Image;
 
 
