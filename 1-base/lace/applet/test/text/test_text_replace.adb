@@ -17,8 +17,8 @@ begin
    --
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN>");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "");
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN>");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "");
    begin
       if Final /= ""
       then
@@ -28,8 +28,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN>");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN>");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "Linux"
       then
@@ -39,8 +39,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("123<TOKEN>456");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("123<TOKEN>456");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "123Linux456"
       then
@@ -50,8 +50,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("123<TOKEN>");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("123<TOKEN>");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "123Linux"
       then
@@ -61,8 +61,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN>456");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN>456");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "Linux456"
       then
@@ -72,8 +72,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN>123<TOKEN>");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN>123<TOKEN>");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "Linux123Linux"
       then
@@ -83,8 +83,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN><TOKEN>");
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Linux");
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN><TOKEN>");
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Linux");
    begin
       if Final /= "LinuxLinux"
       then
@@ -94,8 +94,8 @@ begin
    end;
 
    declare
-      Initial : aliased  lace.Text.item :=  to_Text ("<TOKEN>", capacity => 64);
-      Final   : constant String         := +replace (Initial'Access, "<TOKEN>", "Longish String") with Unreferenced;
+      Initial : aliased constant lace.Text.item :=  to_Text ("<TOKEN>", capacity => 64);
+      Final   :         constant String         := +replace (Initial, "<TOKEN>", "Longish String") with Unreferenced;
    begin
       put_Line ("No capacity error raised, as expected.");
    end;
