@@ -31,6 +31,13 @@ is
    end to_Text;
 
 
+   function "+" (From : in String) return Item
+   is
+   begin
+      return to_Text (From);
+   end "+";
+
+
    -- Attributes
    --
 

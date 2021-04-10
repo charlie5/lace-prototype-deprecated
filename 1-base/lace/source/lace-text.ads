@@ -98,6 +98,9 @@ is
                      Capacity : in Natural;
                      Trim     : in Boolean := False) return Item;
 
+   function "+"     (From     : in String) return Item;
+
+
    -- Attributes
    --
 
