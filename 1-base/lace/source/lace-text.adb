@@ -1,7 +1,5 @@
 with
-     lace.Text.all_Tokens,
      lace.Strings.fixed,
-     ada.Characters.Latin_1,
      ada.Characters.handling,
      ada.Strings.hash;
 
@@ -70,15 +68,6 @@ is
    begin
       return Self.Length;
    end Length;
-
-
-   function Lines (Self : in Item) return Text.items_1k
-   is
-      use lace.Text.all_Tokens,
-          ada.Characters.Latin_1;
-   begin
-      return Tokens (Self, LF);
-   end Lines;
 
 
    function Image (Self : in Item) return String

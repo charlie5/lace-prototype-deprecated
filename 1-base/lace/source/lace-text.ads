@@ -111,7 +111,6 @@ is
 
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
-   function  Lines     (Self : in Item) return Text.items_1k;
    function  Hashed    (Self : in Item) return ada.Containers.Hash_type;
 
    overriding
