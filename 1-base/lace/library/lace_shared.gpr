@@ -61,7 +61,8 @@ is
    is
       when "debug" =>
          Binder_Options   := Binder_Options   & "-Es";
-         Compiler_Options := Compiler_Options & "-gnato"
+         Compiler_Options := Compiler_Options & "-O0"
+                                              & "-gnato"
                                               & "-fstack-check"
                                               & "-g";
          case OS
