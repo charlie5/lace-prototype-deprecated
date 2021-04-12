@@ -117,38 +117,38 @@ is
    --
    type File is new String;
 
-   --  function "+" (File : in Environ.File) return String;
-   --  function "+" (From : in String)       return File;
+   function "+" (File : in Environ.File) return String;
+   function "+" (From : in String)       return File;
 
    procedure save (the_Text : in String;
-                   Filename : in String;
+                   Filename : in File;
                    Binary   : in Boolean := False);
 
    procedure save (the_Data : in Data;
-                   Filename : in String);
+                   Filename : in File);
 
-   function  load (Filename : in String) return String;
-   function  load (Filename : in String) return Data;
+   function  load (Filename : in File) return String;
+   function  load (Filename : in File) return Data;
 
-   procedure copy_File  (Named : in String;   To : in String);
+   procedure copy_File  (Named : in File;     To : in File);
    procedure copy_Files (Named : in String;   To : in Folder);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
-   procedure move_File  (Named : in String;   To : in String);
+   procedure move_File  (Named : in File;     To : in File);
    procedure move_Files (Named : in String;   To : in Folder);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
-   procedure  rid_File  (Named : in String);
+   procedure  rid_File  (Named : in File);
    procedure  rid_Files (Named : in String);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
 
-   procedure append_File (Named : in String;   To : in String);
+   procedure append_File (Named : in File;   To : in File);
 
-   procedure touch         (Filename    : in String);
+   procedure touch         (Filename    : in File);
    function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
    function  expand_GLOB   (GLOB        : in String) return String;
 
@@ -163,7 +163,7 @@ is
    procedure   compress (Path       : in String;                  -- Folder or file name.
                          the_Format : in compress_Format := Tar_Xz;
                          the_Level  : in compress_Level  := 6);
-   procedure decompress (Filename   : in String);
+   procedure decompress (Filename   : in File);
 
    function  format_Suffix (Format : compress_Format) return String;
 

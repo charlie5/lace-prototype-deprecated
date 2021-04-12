@@ -511,8 +511,25 @@ is
    end switch_to_User;
 
 
+   --- Files
+   --
+
+   function "+" (File : in Environ.File) return String
+   is
+   begin
+      return String (File);
+   end "+";
+
+
+   function "+" (From : in String) return File
+   is
+   begin
+      return File (From);
+   end "+";
+
+
    procedure save (the_Text : in String;
-                   Filename : in String;
+                   Filename : in File;
                    Binary   : in Boolean := False)
    is
    begin
@@ -524,7 +541,7 @@ is
             use     Binary_IO;
             File :  File_Type;
          begin
-            create (File, out_File, Filename);
+            create (File, out_File, +Filename);
             write  (File, binary_String (the_Text));
             close  (File);
          end;
@@ -533,7 +550,7 @@ is
             use ada.Text_IO;
             File : File_Type;
          begin
-            create (File, out_File, Filename);
+            create (File, out_File, +Filename);
             put    (File, the_Text);
             close  (File);
          end;
@@ -542,24 +559,24 @@ is
 
 
    procedure save (the_Data : in Data;
-                   Filename : in String)
+                   Filename : in File)
    is
       type Element_Array is new Data (the_Data'Range);
       package Binary_IO  is new ada.Direct_IO (Element_Array);
       use     Binary_IO;
       File :  File_Type;
    begin
-      create (File, out_File, Filename);
+      create (File, out_File, +Filename);
       write  (File, Element_Array (the_Data));
       close  (File);
    end save;
 
 
-   function load (Filename : in String) return String
+   function load (Filename : in File) return String
    is
    begin
       declare
-         Size : constant ada.Directories.File_Size := ada.Directories.Size (Filename);
+         Size : constant ada.Directories.File_Size := ada.Directories.Size (+Filename);
 
          type my_String is new String (1 .. Natural (Size) - 1);
 
@@ -569,7 +586,7 @@ is
          File   : File_Type;
          Result : my_String;
       begin
-         open  (File, in_File, Filename);
+         open  (File, in_File, +Filename);
          read  (File, Result);
          close (File);
 
@@ -578,16 +595,16 @@ is
 
    exception
       when ada.IO_Exceptions.Name_Error =>
-         raise Error with "Cannot load missing file: '" & Filename & "'";
+         raise Error with "Cannot load missing file: '" & (+Filename) & "'";
    end load;
 
 
-   function load (Filename : in String) return Data
+   function load (Filename : in File) return Data
    is
    begin
       declare
          use ada.Streams;
-         Size : constant ada.Directories.File_Size := ada.Directories.Size (Filename);
+         Size : constant ada.Directories.File_Size := ada.Directories.Size (+Filename);
 
          type Element_Array is new Data (0 .. Stream_Element_Offset (Size) - 1);
 
@@ -597,7 +614,7 @@ is
          File   : Binary_IO.File_Type;
          Result : Element_Array;
       begin
-         open  (File, out_File, Filename);
+         open  (File, out_File, +Filename);
          read  (File, Result);
          close (File);
 
@@ -606,14 +623,14 @@ is
 
    exception
       when ada.IO_Exceptions.Name_Error =>
-         raise Error with "Cannot load missing file: '" & Filename & "'";
+         raise Error with "Cannot load missing file: '" & (+Filename) & "'";
    end load;
 
 
-   procedure copy_File (Named : in String;   To : in String)
+   procedure copy_File (Named : in File;   To : in File)
    is
    begin
-      ada.Directories.copy_File (Named, To);
+      ada.Directories.copy_File (+Named, +To);
    end copy_File;
 
 
@@ -636,20 +653,21 @@ is
          then
             copy_Folder (+(+Each), To);
          else
-            Environ.copy_File (+Each, +To & "/" & simple_Name (+Each));
+            Environ.copy_File (File (+Each),
+                               File (+To & "/" & simple_Name (+Each)));
          end if;
       end loop;
    end copy_Files;
 
 
-   procedure move_File (Named : in String;   To : in String)
+   procedure move_File (Named : in File;   To : in File)
    is
    begin
       -- 'Ada.Directories.Rename' fails when the file is moved across a device.
       -- For instance     Rename ("/tmp/a_file", "/home/user/a_file");
 
-      ada.Directories.copy_File (Named, To);
-      rid_File  (Named);
+      ada.Directories.copy_File (+Named, +To);
+      rid_File (Named);
    end move_File;
 
 
@@ -672,30 +690,31 @@ is
             then
                move_Folder (+(+Each), To);
             else
-               move_File (+Each, +To & "/" & simple_Name (+Each));
+               move_File (File (+Each),
+                          File (+To & "/" & simple_Name (+Each)));
             end if;
          end if;
       end loop;
    end move_Files;
 
 
-   procedure append_File (Named : in String;   To : in String)
+   procedure append_File (Named : in File;   To : in File)
    is
       use ada.Text_IO;
 
       Data   : constant String   := load (Named);
       Target :          File_type;
    begin
-      open  (Target, append_File, name => To);
+      open  (Target, append_File, name => +To);
       put   (Target, Data);
       close (Target);
    end append_File;
 
 
-   procedure rid_File (Named  : in String)
+   procedure rid_File (Named  : in File)
    is
    begin
-      ada.Directories.delete_File (Named);
+      ada.Directories.delete_File (+Named);
    end rid_File;
 
 
@@ -711,7 +730,7 @@ is
    begin
       for Each of file_List
       loop
-         rid_File (+Each);
+         rid_File (File (+Each));
       end loop;
    end rid_Files;
 
@@ -790,19 +809,19 @@ is
    end compress;
 
 
-   procedure decompress (Filename : in String)
+   procedure decompress (Filename : in File)
    is
       use ada.Strings.fixed;
 
-      the_Format : constant compress_Format := (if    Tail (Filename, 4) = ".tar"     then Tar
-                                       elsif Tail (Filename, 8) = ".tar.bz2" then Tar_Bz2
-                                       elsif Tail (Filename, 7) = ".tar.gz"
-                                          or Tail (Filename, 4) = ".tgz"     then Tar_Gz
-                                       elsif Tail (Filename, 7) = ".tar.xz"  then Tar_Xz
-                                       elsif Tail (Filename, 3) = ".gz"      then Gz
-                                       elsif Tail (Filename, 4) = ".bz2"     then Bz2
-                                       elsif Tail (Filename, 3) = ".xz"      then Xz
-                                       else  raise Error with "Unknown decompress format: " & Filename);
+      the_Format : constant compress_Format := (if    Tail (+Filename, 4) = ".tar"     then Tar
+                                                elsif Tail (+Filename, 8) = ".tar.bz2" then Tar_Bz2
+                                                elsif Tail (+Filename, 7) = ".tar.gz"
+                                                   or Tail (+Filename, 4) = ".tgz"     then Tar_Gz
+                                                elsif Tail (+Filename, 7) = ".tar.xz"  then Tar_Xz
+                                                elsif Tail (+Filename, 3) = ".gz"      then Gz
+                                                elsif Tail (+Filename, 4) = ".bz2"     then Bz2
+                                                elsif Tail (+Filename, 3) = ".xz"      then Xz
+                                                else  raise Error with "Unknown decompress format: " & (+Filename));
    begin
       case the_Format
       is
@@ -815,7 +834,7 @@ is
                                                         when Tar_Gz  => "-xzf",
                                                         when Tar_Xz  => "-xJf",
                                                         when others  => raise program_Error);
-               Output  : constant String := run_OS ("tar " & Options & " " & Filename);
+               Output  : constant String := run_OS ("tar " & Options & " " & (+Filename));
             begin
                if Output /= ""
                then
@@ -825,7 +844,7 @@ is
 
          when Gz =>
             declare
-               Output : constant String := run_OS ("gunzip --force --keep " & Filename);
+               Output : constant String := run_OS ("gunzip --force --keep " & (+Filename));
             begin
                if Output /= ""
                then
@@ -835,7 +854,7 @@ is
 
          when Bz2 =>
             declare
-               Output : constant String := run_OS ("bunzip2 --force --keep " & Filename);
+               Output : constant String := run_OS ("bunzip2 --force --keep " & (+Filename));
             begin
                if Output /= ""
                then
@@ -845,7 +864,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --decompress --force --keep " & Filename);
+               Output : constant String := run_OS ("xz --decompress --force --keep " & (+Filename));
             begin
                if Output /= ""
                then
