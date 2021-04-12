@@ -265,38 +265,25 @@ is
 
    function expand_GLOB (GLOB : in String) return String
    is
-      use gnat.Expect,
-          ada.Text_IO;
+      use ada.Text_IO;
 
-      Path     : constant String := "/tmp/";
-      FileName : constant String := "lace_environ_temporary_shell.sh";
-
-      File     : File_Type;
+      FileName : constant File     := "/tmp/lace_environ_temporary_shell.sh";
+      File     :          File_Type;
    begin
-      create   (File, out_File, Path & Filename);
+      create   (File, out_File, +Filename);
       put_Line (File, "echo " & GLOB);
       close    (File);
 
-      change_Mode (Folder (Path & Filename), to => "a+rwx");
+      change_Mode (Folder (Filename), to => "a+rwx");
 
       declare
-         use gnat.Strings;
-
-         Arg    : String_access   := new String'(Path & Filename);
-
-         Status : aliased  Integer;
-         Output : constant String := get_Command_Output (command    => Path_to ("bash"),
-                                                         arguments  => (1 => Arg),
-                                                         input      => "",
-                                                         status     => Status'Access,
-                                                         err_to_out => True);
+         Output : constant String := run_OS ("bash " & (+Filename));
       begin
-         rid_File (Arg.all);
-         free     (Arg);
+         rid_File (Filename);
 
-         if Status /= 0
+         if Output /= ""
          then
-            raise Error with "bash error: (" & Integer'Image (Status) & ") " & Output;
+            raise Error with Output;
          end if;
 
          return Output;
