@@ -70,7 +70,7 @@ is
    type Folder is new String;
 
    function "+" (Folder : in Environ.Folder) return String;
-   function "+" (From   : in String)         return Environ.Folder;
+   function "+" (From   : in String)         return Folder;
 
    function current_Folder return Folder;
 
@@ -115,6 +115,11 @@ is
 
    --- Files
    --
+   type File is new String;
+
+   --  function "+" (File : in Environ.File) return String;
+   --  function "+" (From : in String)       return File;
+
    procedure save (the_Text : in String;
                    Filename : in String;
                    Binary   : in Boolean := False);

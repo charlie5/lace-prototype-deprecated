@@ -918,7 +918,7 @@ is
    end "+";
 
 
-   function "+" (From : in String) return Environ.Folder
+   function "+" (From : in String) return Folder
    is
    begin
       return Folder (From);
