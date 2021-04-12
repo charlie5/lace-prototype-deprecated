@@ -67,14 +67,19 @@ is
 
    --- Folders
    --
-   function current_Folder return String;
+   type Folder is new String;
 
-   procedure   goto_Folder (Named  : in String;
+   function "+" (Folder : in Environ.Folder) return String;
+   function "+" (From   : in String)         return Environ.Folder;
+
+   function current_Folder return Folder;
+
+   procedure   goto_Folder (Named  : in Folder;
                             Lock   : in Boolean := False);  -- Blocks further folder changes until 'unlock_Folder' is called.
    procedure unlock_Folder;
 
    procedure   push_Folder (Context     : in out Environ.Context;
-                            goto_Folder : in     String);
+                            goto_Folder : in     Folder);
    --
    -- Store the current folder and move to the 'goto_Folder'.
 
@@ -82,30 +87,30 @@ is
    --
    -- Return to the previously pushed folder.
 
-   procedure    rid_Folder (Named  : in String);
-   procedure   copy_Folder (Named  : in String;   To : in String);
-   procedure   move_Folder (Named  : in String;   To : in String);
-   procedure rename_Folder (Named  : in String;   To : in String);
-   procedure verify_Folder (Named  : in String);
+   procedure    rid_Folder (Named  : in Folder);
+   procedure   copy_Folder (Named  : in Folder;   To : in Folder);
+   procedure   move_Folder (Named  : in Folder;   To : in Folder);
+   procedure rename_Folder (Named  : in Folder;   To : in Folder);
+   procedure verify_Folder (Named  : in Folder);
    --
    -- Ensure that the folder exists.
 
-   procedure change_Mode  (Folder : in String;
+   procedure change_Mode  (Folder : in environ.Folder;
                            To     : in String);
 
-   procedure change_Owner (Folder : in String;
+   procedure change_Owner (Folder : in environ.Folder;
                            To     : in String);
 
-   function  Exists    (Folder : in String) return Boolean;
-   function  is_Folder (Folder : in String) return Boolean;
-   function  is_Empty  (Folder : in String) return Boolean;
+   function  Exists    (Folder : in environ.Folder) return Boolean;
+   function  is_Folder (Folder : in environ.Folder) return Boolean;
+   function  is_Empty  (Folder : in environ.Folder) return Boolean;
 
-   function  contents_Count (Folder  : in String;
+   function  contents_Count (Folder  : in environ.Folder;
                              Recurse : in Boolean := False) return Natural;
    --
    -- Does not include the "." and ".." folders.
 
-   function  modification_Time (Folder  : in String)           return ada.Calendar.Time;
+   function  modification_Time (Folder : in environ.Folder) return ada.Calendar.Time;
 
 
    --- Files
@@ -121,12 +126,12 @@ is
    function  load (Filename : in String) return Data;
 
    procedure copy_File  (Named : in String;   To : in String);
-   procedure copy_Files (Named : in String;   To : in String);
+   procedure copy_Files (Named : in String;   To : in Folder);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
    procedure move_File  (Named : in String;   To : in String);
-   procedure move_Files (Named : in String;   To : in String);
+   procedure move_Files (Named : in String;   To : in Folder);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
@@ -167,12 +172,12 @@ private
 
    use ada.Containers;
 
-   package String_Vectors is new indefinite_Vectors (Positive, String);
-   subtype String_Vector  is String_Vectors.Vector;
+   package Folder_Vectors is new indefinite_Vectors (Positive, Folder);
+   subtype Folder_Vector  is Folder_Vectors.Vector;
 
    type Context is limited
       record
-         folder_Stack : String_Vector;
+         folder_Stack : Folder_Vector;
       end record;
 
 end lace.Environ;

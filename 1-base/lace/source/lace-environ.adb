@@ -125,11 +125,11 @@ is
           ada.Strings.fixed,
           ada.Text_IO;
 
-      Path     : constant String   := Current_Folder & "/.lace-bin/";
+      Path     : constant String   := String (Current_Folder) & "/.lace-bin/";
       FileName : constant String   := "lace_environ_temporary_shell.sh";   -- tbd: Add a unique number here so simultaneous calls don't tread on each other.
       File     :          File_Type;
    begin
-      verify_Folder (Path);
+      verify_Folder (Folder (Path));
 
       if Index (Value ("PATH"), Path) = 0
       then
@@ -141,7 +141,7 @@ is
       put_Line (File, Command);
       close    (File);
 
-      change_Mode (Path & Filename, to => "a+rwx");
+      change_Mode (Folder (Path & Filename), to => "a+rwx");
 
       return Output_of (command => Filename);
    end shell_Output_of;
@@ -277,7 +277,7 @@ is
       put_Line (File, "echo " & GLOB);
       close    (File);
 
-      change_Mode (Path & Filename, to => "a+rwx");
+      change_Mode (Folder (Path & Filename), to => "a+rwx");
 
       declare
          use gnat.Strings;
@@ -417,89 +417,54 @@ is
    end rid_User;
 
 
-   procedure change_Mode (Folder : in String;
+   procedure change_Mode (Folder : in environ.Folder;
                           To     : in String)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      the_Folder : String_access := new String'(Folder);
-      Arg_1      : String_access := new String'("-R");
-      Arg_2      : String_access := new String'(To);
-
-      Status : aliased  Integer;
-      Output : constant String := get_Command_Output (command    => "/bin/chmod",
-                                                      arguments  => (1 => Arg_1,
-                                                                     2 => Arg_2,
-                                                                     3 => the_Folder),
-                                                      input      => "",
-                                                      status     => Status'Access,
-                                                      err_to_out => True);
+      Output : constant String := run_OS ("chmod -R " & To & " " & String (Folder));
    begin
-      free (the_Folder);
-      free (Arg_1);
-      free (Arg_2);
-
-      if Status /= 0
+      if Output /= ""
       then
-         raise Error with "chmod: (" & Integer'Image (Status) & ") " & Output;
+         raise Error with Output;
       end if;
    end change_Mode;
 
 
-   procedure change_Owner (Folder : in String;
+   procedure change_Owner (Folder : in environ.Folder;
                            To     : in String)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      the_Folder : String_access := new String'(Folder);
-      Arg_1      : String_access := new String'("-R");
-      Arg_2      : String_access := new String'(To);
-
-      Status : aliased  Integer;
-      Output : constant String := get_Command_Output (command    => "/bin/chown",
-                                                      arguments  => (1 => Arg_1,
-                                                                     2 => Arg_2,
-                                                                     3 => the_Folder),
-                                                      input      => "",
-                                                      status     => Status'Access,
-                                                      err_to_out => True);
+      Output : constant String := run_OS ("chown -R " & To & " " & String (Folder));
    begin
-      free (the_Folder);
-      free (Arg_1);
-      free (Arg_2);
-
-      if Status /= 0
+      if Output /= ""
       then
-         raise Error with "chown: (" & Integer'Image (Status) & ") " & Output;
+         raise Error with Output;
       end if;
    end change_Owner;
 
 
-   function Exists (Folder : in String) return Boolean
+   function Exists (Folder : in environ.Folder) return Boolean
    is
    begin
-      return ada.Directories.Exists (Folder);
+      return ada.Directories.Exists (+Folder);
    end Exists;
 
 
-   function is_Folder (Folder : in String) return Boolean
+   function is_Folder (Folder : in environ.Folder) return Boolean
    is
       use ada.Directories;
    begin
-      return Kind (Folder) = Directory;
+      return Kind (+Folder) = Directory;
    end is_Folder;
 
 
-   function contents_Count (Folder : in String;   Recurse : in Boolean := False) return Natural
+   function contents_Count (Folder  : in environ.Folder;
+                            Recurse : in Boolean := False) return Natural
    is
       use Shell.Directory_Iteration,
           Ada.Directories;
 
       Count : Natural := 0;
    begin
-      for Each of To_Directory (Folder, Recurse)
+      for Each of To_Directory (+Folder, Recurse)
       loop
          declare
             Name : constant String := Simple_Name (Each);
@@ -515,20 +480,20 @@ is
    end contents_Count;
 
 
-   function is_Empty (Folder : in String) return Boolean
+   function is_Empty (Folder : in environ.Folder) return Boolean
    is
    begin
       return contents_Count (Folder) = 0;
    end is_Empty;
 
 
-   function modification_Time (Folder : in String) return ada.Calendar.Time
+   function modification_Time (Folder : in environ.Folder) return ada.Calendar.Time
    is
       use POSIX,
           POSIX.Calendar,
           POSIX.File_Status;
 
-      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (Folder));
+      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Folder));
       Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
    begin
       return to_Time (Time);
@@ -676,7 +641,7 @@ is
    end copy_File;
 
 
-   procedure copy_Files (Named : in String;   To : in String)
+   procedure copy_Files (Named : in String;   To : in Folder)
    is
       use lace.Text,
           lace.Text.all_Tokens,
@@ -691,11 +656,11 @@ is
 
       for Each of file_List
       loop
-         if is_Folder (+Each)
+         if is_Folder (+(+Each))
          then
-            copy_Folder (+Each, To);
+            copy_Folder (+(+Each), To);
          else
-            Environ.copy_File (+Each, To & "/" & simple_Name (+Each));
+            Environ.copy_File (+Each, +To & "/" & simple_Name (+Each));
          end if;
       end loop;
    end copy_Files;
@@ -712,7 +677,7 @@ is
    end move_File;
 
 
-   procedure move_Files (Named : in String;   To : in String)
+   procedure move_Files (Named : in String;   To : in Folder)
    is
       use lace.Text,
           lace.Text.all_Tokens,
@@ -725,13 +690,13 @@ is
    begin
       for Each of file_List
       loop
-         if +Each /= To   -- Don't move a directory to a subdirectory of itself.
+         if +Each /= +To   -- Don't move a directory to a subdirectory of itself.
          then
-            if is_Folder (+Each)
+            if is_Folder (+(+Each))
             then
-               move_Folder (+Each, To);
+               move_Folder (+(+Each), To);
             else
-               move_File (+Each, To & "/" & simple_Name (+Each));
+               move_File (+Each, +To & "/" & simple_Name (+Each));
             end if;
          end if;
       end loop;
@@ -946,10 +911,24 @@ is
    --- Folders
    --
 
-   function current_Folder return String
+   function "+" (Folder : in Environ.Folder) return String
    is
    begin
-      return ada.Directories.current_Directory;
+      return String (Folder);
+   end "+";
+
+
+   function "+" (From : in String) return Environ.Folder
+   is
+   begin
+      return Folder (From);
+   end "+";
+
+
+   function current_Folder return Folder
+   is
+   begin
+      return +ada.Directories.current_Directory;
    end current_Folder;
 
 
@@ -981,15 +960,15 @@ is
    end folder_Lock;
 
 
-   procedure goto_Folder (Named : in String;
-                          Lock  : in Boolean := False)
+   procedure goto_Folder (Named  : in Folder;
+                          Lock   : in Boolean := False)
    is
    begin
       if Lock
       then
-         folder_Lock.change (Named);
+         folder_Lock.change (+Named);
       else
-         ada.Directories.set_Directory (Named);
+         ada.Directories.set_Directory (+Named);
       end if;
    end goto_Folder;
 
@@ -1002,7 +981,7 @@ is
 
 
    procedure push_Folder (Context     : in out Environ.Context;
-                          goto_Folder : in     String)
+                          goto_Folder : in     Folder)
    is
    begin
       Context.folder_Stack.append (current_Folder);
@@ -1019,7 +998,7 @@ is
       end if;
 
       declare
-         prior_Folder : constant String := Context.folder_Stack.last_Element;
+         prior_Folder : constant Folder := Context.folder_Stack.last_Element;
       begin
          Context.folder_Stack.delete_Last;
          goto_Folder (prior_Folder);
@@ -1050,41 +1029,41 @@ is
    end home_Folder;
 
 
-   procedure rid_Folder (Named : in String)
+   procedure rid_Folder (Named  : in Folder)
    is
    begin
-      ada.Directories.delete_Tree (Named);
+      ada.Directories.delete_Tree (+Named);
    exception
       when ada.IO_Exceptions.name_Error =>
          null;
    end rid_Folder;
 
 
-   procedure copy_Folder (Named  : in String;   To : in String)
+   procedure copy_Folder (Named  : in Folder;   To : in Folder)
    is
    begin
-      run_OS ("cp -fr " & Named & " " & To);
+      run_OS ("cp -fr " & (+Named) & " " & (+To));
    end copy_Folder;
 
 
-   procedure move_Folder (Named  : in String;   To : in String)
+   procedure move_Folder (Named  : in Folder;   To : in Folder)
    is
    begin
-      run_OS ("mv " & Named & " " & To);
+      run_OS ("mv " & (+Named) & " " & (+To));
    end move_Folder;
 
 
-   procedure rename_Folder (Named  : in String;   To : in String)
+   procedure rename_Folder (Named  : in Folder;   To : in Folder)
    is
    begin
-      ada.Directories.rename (Named, To);
+      ada.Directories.rename (+Named, +To);
    end rename_Folder;
 
 
-   procedure verify_Folder (Named : in String)
+   procedure verify_Folder (Named  : in Folder)
    is
    begin
-      ada.Directories.create_Path (Named);
+      ada.Directories.create_Path (+Named);
    end verify_Folder;
 
 
