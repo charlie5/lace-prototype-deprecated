@@ -687,6 +687,8 @@ is
                                                                         else Named);
       file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
    begin
+      verify_Folder (To);
+
       for Each of file_List
       loop
          if is_Folder (+Each)
