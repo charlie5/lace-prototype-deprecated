@@ -487,24 +487,13 @@ is
    end modification_Time;
 
 
-   procedure touch (Filename : in String)
+   procedure touch (Filename : in File)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      the_Filename :          String_access := new String'(Filename);
-      Status       : aliased  Integer;
-      Output       : constant String        := get_Command_Output (command    => "/usr/bin/touch",
-                                                                   arguments  => (1 => the_Filename),
-                                                                   input      => "",
-                                                                   status     => Status'Access,
-                                                                   err_to_out => True);
+      Output : constant String := run_OS ("touch " & (+Filename));
    begin
-      free (the_Filename);
-
-      if Status /= 0
+      if Output /= ""
       then
-         raise Error with "touch: (" & Integer'Image (Status) & ") " & Output;
+         raise Error with Output;
       end if;
    end touch;
 
