@@ -46,19 +46,6 @@ is
    -- Returns any output. Error output is appended if add_Errors is true.
 
 
-   --- Users
-   --
-   procedure add_User       (Name  : in String;
-                             Super : in Boolean := False);
-   procedure rid_User       (Name  : in String);
-
-   procedure set_Password   (User  : in String);
-   procedure switch_to_User (Named : in String);
-
-   function  current_User                                        return String;
-   function  home_Folder (user_Name : in String := current_User) return String;
-
-
    --- Paths
    --
    procedure link (From, To : in String);
@@ -166,6 +153,22 @@ is
    procedure decompress (Filename   : in File);
 
    function  format_Suffix (Format : compress_Format) return String;
+
+
+   --- Users
+   --
+   type User is new String;
+
+   procedure add_User       (Name  : in User;
+                             Super : in Boolean := False);
+   procedure rid_User       (Name  : in User);
+
+   procedure set_Password   (Name  : in User);
+   procedure switch_to_User (Named : in User);
+
+   function  current_User                                      return User;
+   function  home_Folder (user_Name : in User := current_User) return Folder;
+
 
    --- Exceptions
    --

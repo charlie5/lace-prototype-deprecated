@@ -291,115 +291,54 @@ is
    end expand_GLOB;
 
 
-   procedure set_Password (User : in String)
+   --- Users
+   --
+
+   procedure set_Password (Name : in User)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      Username : String_access := new String' (User);
-
-      Status   : aliased  Integer;
-      Output   : constant String := get_Command_Output (command    => "/bin/passwd",
-                                                        arguments  => (1 => Username),
-                                                        input      => "",
-                                                        status     => Status'Access,
-                                                        err_to_out => True);
+      Output : constant String := run_OS ("passwd " & String (Name));
    begin
-      free (Username);
-
-      if Status /= 0
+      if Output /= ""
       then
-         raise Error with "passwd: (" & Integer'Image (Status) & ") " & Output;
+         raise Error with Output;
       end if;
    end set_Password;
 
 
-   procedure add_User (Name  : in String;
+   procedure add_User (Name  : in User;
                        Super : in Boolean := False)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      Status : aliased Integer;
-
-      Username : String_access := new String'(Name);
-      Arg_1    : String_access := new String'("-m");
    begin
       if Super
       then
          declare
-            Arg_2 : String_access := new String'("-G");
-            Arg_3 : String_access := new String'("sudo");
-            Arg_4 : String_access := new String'("-G");
-            Arg_5 : String_access := new String'("root");
-
-            Output : constant String := get_Command_Output (command    => "/usr/sbin/useradd",
-                                                            arguments  => (1 => Username,
-                                                                           2 => Arg_1,
-                                                                           3 => Arg_2,
-                                                                           4 => Arg_3,
-                                                                           5 => Arg_4,
-                                                                           6 => Arg_5),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
+            Output : constant String := run_OS ("useradd " & String (Name) & " -m -G sudo -G root");
          begin
-            free (Username);
-            free (Arg_1);
-            free (Arg_2);
-            free (Arg_3);
-            free (Arg_4);
-            free (Arg_5);
-
-            if Status /= 0
+            if Output /= ""
             then
-               raise Error with "useradd: (" & Integer'Image (Status) & ") " & Output;
+               raise Error with Output;
             end if;
          end;
       else
          declare
-            Output : constant String := get_Command_Output (command    => "/usr/sbin/useradd",
-                                                            arguments  => (1 => Username,
-                                                                           2 => Arg_1),
-                                                            input      => "",
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
+            Output : constant String := run_OS ("useradd " & String (Name) & " -m");
          begin
-            free (Username);
-            free (Arg_1);
-
-            if Status /= 0
+            if Output /= ""
             then
-               raise Error with "useradd: (" & Integer'Image (Status) & ") " & Output;
+               raise Error with Output;
             end if;
          end;
       end if;
-
    end add_User;
 
 
-   procedure rid_User (Name : in String)
+   procedure rid_User (Name : in User)
    is
-      use gnat.Expect,
-          gnat.Strings;
-
-      Username : String_access := new String' (Name);
-      Arg_1    : String_access := new String' ("-r");
-
-      Status   : aliased  Integer;
-      Output   : constant String := get_Command_Output (command    => "/usr/sbin/userdel",
-                                                        arguments  => (1 => Username,
-                                                                       2 => Arg_1),
-                                                        input      => "",
-                                                        status     => Status'Access,
-                                                        err_to_out => True);
+      Output : constant String := run_OS ("userdel -r " & String (Name));
    begin
-      free (Username);
-      free (Arg_1);
-
-      if Status /= 0
+      if Output /= ""
       then
-         raise Error with "userdel: (" & Integer'Image (Status) & ") " & Output;
+         raise Error with Output;
       end if;
    end rid_User;
 
@@ -498,13 +437,13 @@ is
    end touch;
 
 
-   procedure switch_to_User (Named : in String)
+   procedure switch_to_User (Named : in User)
    is
       use Posix,
           posix.User_Database,
           posix.Process_Identification;
 
-      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (Named));
+      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (String (Named)));
       ID         : constant User_ID            := User_ID_of (User_in_DB);
    begin
       set_User_ID (ID);
@@ -1004,23 +943,23 @@ is
    --- Users
    --
 
-   function current_User return String
+   function current_User return User
    is
       use Posix,
           posix.process_Identification;
    begin
-      return to_String (get_Login_Name);
+      return User (to_String (get_Login_Name));
    end current_User;
 
 
-   function home_Folder (user_Name : in String := current_User) return String
+   function home_Folder (user_Name : in User := current_User) return Folder
    is
       use Posix,
           posix.User_Database;
 
-      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (user_Name));
+      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (String (user_Name)));
    begin
-      return to_String (initial_Directory_of (User_in_DB));
+      return Folder (to_String (initial_Directory_of (User_in_DB)));
    end home_Folder;
 
 
