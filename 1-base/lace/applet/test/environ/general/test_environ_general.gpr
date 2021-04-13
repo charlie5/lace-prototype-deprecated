@@ -1,0 +1,19 @@
+with
+     "lace",
+     "lace_shared";
+
+project test_Environ_general
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("test_environ_general.adb");
+
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end test_Environ_general;
