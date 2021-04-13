@@ -879,23 +879,23 @@ is
    end compress;
 
 
-   procedure decompress (Filename : in File)
+   procedure decompress (Name : in File)
    is
    begin
-      check (Filename);
+      check (Name);
 
       declare
          use ada.Strings.fixed;
 
-         the_Format : constant compress_Format := (if    Tail (+Filename, 4) = ".tar"     then Tar
-                                                   elsif Tail (+Filename, 8) = ".tar.bz2" then Tar_Bz2
-                                                   elsif Tail (+Filename, 7) = ".tar.gz"
-                                                      or Tail (+Filename, 4) = ".tgz"     then Tar_Gz
-                                                   elsif Tail (+Filename, 7) = ".tar.xz"  then Tar_Xz
-                                                   elsif Tail (+Filename, 3) = ".gz"      then Gz
-                                                   elsif Tail (+Filename, 4) = ".bz2"     then Bz2
-                                                   elsif Tail (+Filename, 3) = ".xz"      then Xz
-                                                   else  raise Error with "Unknown decompress format: " & (+Filename));
+         the_Format : constant compress_Format := (if    Tail (+Name, 4) = ".tar"     then Tar
+                                                   elsif Tail (+Name, 8) = ".tar.bz2" then Tar_Bz2
+                                                   elsif Tail (+Name, 7) = ".tar.gz"
+                                                      or Tail (+Name, 4) = ".tgz"     then Tar_Gz
+                                                   elsif Tail (+Name, 7) = ".tar.xz"  then Tar_Xz
+                                                   elsif Tail (+Name, 3) = ".gz"      then Gz
+                                                   elsif Tail (+Name, 4) = ".bz2"     then Bz2
+                                                   elsif Tail (+Name, 3) = ".xz"      then Xz
+                                                   else  raise Error with "Unknown decompress format: " & (+Name));
       begin
          case the_Format
          is
@@ -908,7 +908,7 @@ is
                                                         when Tar_Gz  => "-xzf",
                                                         when Tar_Xz  => "-xJf",
                                                         when others  => raise program_Error);
-               Output  : constant String := run_OS ("tar " & Options & " " & (+Filename));
+               Output  : constant String := run_OS ("tar " & Options & " " & (+Name));
             begin
                if Output /= ""
                then
@@ -918,7 +918,7 @@ is
 
          when Gz =>
             declare
-               Output : constant String := run_OS ("gunzip --force --keep " & (+Filename));
+               Output : constant String := run_OS ("gunzip --force --keep " & (+Name));
             begin
                if Output /= ""
                then
@@ -928,7 +928,7 @@ is
 
          when Bz2 =>
             declare
-               Output : constant String := run_OS ("bunzip2 --force --keep " & (+Filename));
+               Output : constant String := run_OS ("bunzip2 --force --keep " & (+Name));
             begin
                if Output /= ""
                then
@@ -938,7 +938,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --decompress --force --keep " & (+Filename));
+               Output : constant String := run_OS ("xz --decompress --force --keep " & (+Name));
             begin
                if Output /= ""
                then

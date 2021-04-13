@@ -146,9 +146,10 @@ is
    procedure   compress (Path       : in environ.Path;
                          the_Format : in compress_Format := Tar_Xz;
                          the_Level  : in compress_Level  := 6);
-   procedure decompress (Filename   : in File);
 
-   function  format_Suffix (Format : compress_Format) return String;
+   procedure decompress (Name       : in File);
+
+   function  format_Suffix (Format  : compress_Format) return String;
 
 
    --- Users
