@@ -804,20 +804,24 @@ is
                        the_Format : in compress_Format := Tar_Xz;
                        the_Level  : in compress_Level  := 6)
    is
-      function level_Flag return String
-      is
-         use ada.Strings,
-             ada.Strings.fixed;
-      begin
-         return " -"
-              & Trim (compress_Level'Image (the_Level),
-                      Left)
-              & " ";
-      end level_Flag;
-
    begin
-      case the_Format
-      is
+      check (Path);
+
+      declare
+         function level_Flag return String
+         is
+            use ada.Strings,
+                ada.Strings.fixed;
+         begin
+            return " -"
+                 & Trim (compress_Level'Image (the_Level),
+                         Left)
+                 & " ";
+         end level_Flag;
+
+      begin
+         case the_Format
+         is
          when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
             declare
                Options : constant String := (case the_Format
@@ -870,26 +874,31 @@ is
                   raise Error with Output;
                end if;
             end;
-      end case;
+         end case;
+      end;
    end compress;
 
 
    procedure decompress (Filename : in File)
    is
-      use ada.Strings.fixed;
-
-      the_Format : constant compress_Format := (if    Tail (+Filename, 4) = ".tar"     then Tar
-                                                elsif Tail (+Filename, 8) = ".tar.bz2" then Tar_Bz2
-                                                elsif Tail (+Filename, 7) = ".tar.gz"
-                                                   or Tail (+Filename, 4) = ".tgz"     then Tar_Gz
-                                                elsif Tail (+Filename, 7) = ".tar.xz"  then Tar_Xz
-                                                elsif Tail (+Filename, 3) = ".gz"      then Gz
-                                                elsif Tail (+Filename, 4) = ".bz2"     then Bz2
-                                                elsif Tail (+Filename, 3) = ".xz"      then Xz
-                                                else  raise Error with "Unknown decompress format: " & (+Filename));
    begin
-      case the_Format
-      is
+      check (Filename);
+
+      declare
+         use ada.Strings.fixed;
+
+         the_Format : constant compress_Format := (if    Tail (+Filename, 4) = ".tar"     then Tar
+                                                   elsif Tail (+Filename, 8) = ".tar.bz2" then Tar_Bz2
+                                                   elsif Tail (+Filename, 7) = ".tar.gz"
+                                                      or Tail (+Filename, 4) = ".tgz"     then Tar_Gz
+                                                   elsif Tail (+Filename, 7) = ".tar.xz"  then Tar_Xz
+                                                   elsif Tail (+Filename, 3) = ".gz"      then Gz
+                                                   elsif Tail (+Filename, 4) = ".bz2"     then Bz2
+                                                   elsif Tail (+Filename, 3) = ".xz"      then Xz
+                                                   else  raise Error with "Unknown decompress format: " & (+Filename));
+      begin
+         case the_Format
+         is
          when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
             declare
                Options : aliased constant String := (case the_Format
@@ -936,7 +945,8 @@ is
                   raise Error with Output;
                end if;
             end;
-      end case;
+         end case;
+      end;
 
    end decompress;
 
