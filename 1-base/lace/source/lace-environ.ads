@@ -47,6 +47,7 @@ is
 
    function  Exists      (Path : in environ.Path) return Boolean;
    function  Parent      (Path : in environ.Path) return Folder;
+   function  Simple      (Path : in environ.Path) return environ.Path;
    function  modify_Time (Path : in environ.Path) return ada.Calendar.Time;
 
    function  is_Folder   (Path : in environ.Path) return Boolean;
