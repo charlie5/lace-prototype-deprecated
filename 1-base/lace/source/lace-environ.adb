@@ -99,6 +99,21 @@ is
    end "+";
 
 
+   procedure check (Path : in environ.Path)
+   is
+   begin
+      if Path = ""
+      then
+         raise Error with "Path is empty.";
+      end if;
+
+      if not Exists (Path)
+      then
+         raise Error with "Path '" & (+Path) & "' does not exist.";
+      end if;
+   end check;
+
+
    procedure link (From, To : in Path)
    is
       Output : constant String := run_OS ("ln -s " & String (From) & " " & String (To));
