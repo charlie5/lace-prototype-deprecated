@@ -64,6 +64,9 @@ is
    function "+" (Folder : in environ.Folder) return String;
    function "+" (From   : in String)         return Folder;
 
+   function "+" (Left : in Folder;   Right : in Folder) return Folder;
+   function "+" (Left : in Folder;   Right : in File)   return File;
+
    function current_Folder return Folder;
 
    procedure   goto_Folder (Named : in Folder;
