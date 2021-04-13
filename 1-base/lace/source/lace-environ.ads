@@ -12,14 +12,154 @@ package lace.Environ
 -- A singleton which models an operating system environment.
 --
 is
+   --- General
+   --
+
+   use posix.Permissions;
+
+   function to_octal_Mode (Permissions : in Permission_Set) return String;
+   function expand_GLOB   (GLOB        : in String)         return String;
 
    subtype Data is ada.Streams.Stream_Element_Array;
 
    type Context is limited private;
 
 
+   --- Paths
+   --
+
+   -- A path can be either a file or a folder.
+
+   type Path is new String;
+
+   function "+" (Path : in environ.Path) return String;
+   function "+" (From : in String)       return Path;
+
+   procedure link (From, To : in Path);
+
+   procedure change_Mode  (Path : in environ.Path;
+                           To   : in String);
+
+   procedure change_Owner (Path : in environ.Path;
+                           To   : in String);
+
+   function  Exists    (Path : in environ.Path) return Boolean;
+   function  is_Folder (Path : in environ.Path) return Boolean;
+
+   function  modification_Time (Path : in environ.Path) return ada.Calendar.Time;
+
+
+   --- Folders
+   --
+
+   type Folder is new String;
+
+   function "+" (Folder : in environ.Folder) return String;
+   function "+" (From   : in String)         return Folder;
+
+   function current_Folder return Folder;
+
+   procedure   goto_Folder (Named : in Folder;
+                            Lock  : in Boolean := False);   -- Blocks further folder changes until 'unlock_Folder' is called.
+   procedure unlock_Folder;
+
+   procedure   push_Folder (Context     : in out environ.Context;
+                            goto_Folder : in     Folder);
+   --
+   -- Store the current folder and move to the 'goto_Folder'.
+
+   procedure    pop_Folder (Context     : in out environ.Context);
+   --
+   -- Return to the previously pushed folder.
+
+   procedure    rid_Folder (Named : in Folder);
+   procedure   copy_Folder (Named : in Folder;   To : in Folder);
+   procedure   move_Folder (Named : in Folder;   To : in Folder);
+   procedure rename_Folder (Named : in Folder;   To : in Folder);
+   procedure verify_Folder (Named : in Folder);
+   --
+   -- Ensure that the folder exists.
+
+   function  is_Empty       (Folder  : in environ.Folder)   return Boolean;
+
+   function  contents_Count (Folder  : in environ.Folder;
+                             Recurse : in Boolean := False) return Natural;
+   --
+   -- Does not include the "." and ".." folders.
+
+
+   --- Files
+   --
+
+   type File is new String;
+
+   function "+" (File : in environ.File) return String;
+   function "+" (From : in String)       return File;
+
+   procedure save (the_Text : in String;
+                   Name     : in File;
+                   Binary   : in Boolean := False);
+
+   procedure save (the_Data : in Data;
+                   Name     : in File);
+
+   function  load (Name : in File) return String;
+   function  load (Name : in File) return Data;
+
+   procedure copy_File  (Named : in File;     To : in File);
+   procedure copy_Files (Named : in String;   To : in Folder);
+   --
+   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
+
+   procedure move_File  (Named : in File;     To : in File);
+   procedure move_Files (Named : in String;   To : in Folder);
+   --
+   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
+
+   procedure  rid_File  (Named : in File);
+   procedure  rid_Files (Named : in String);
+   --
+   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
+
+   procedure append_File (Named : in File;   To : in File);
+   procedure touch       (Named : in File);
+
+
+   --- Compression
+   --
+
+   type           compress_Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
+   subtype folder_compress_Format is compress_Format range Tar .. Tar_Xz;
+
+   type compress_Level is range 1 .. 9;     -- Higher levels result in higher compression.
+
+   procedure   compress (Path       : in environ.Path;
+                         the_Format : in compress_Format := Tar_Xz;
+                         the_Level  : in compress_Level  := 6);
+   procedure decompress (Filename   : in File);
+
+   function  format_Suffix (Format : compress_Format) return String;
+
+
+   --- Users
+   --
+
+   type User is new String;
+
+   procedure add_User (Name  : in User;
+                       Super : in Boolean := False);
+   procedure rid_User (Name  : in User);
+
+   procedure set_Password   (Name  : in User);
+   procedure switch_to_User (Named : in User);
+
+   function  current_User    return User;
+   function  home_Folder (Name : in User := current_User) return Folder;
+
+
    --- OS Commands
    --
+
    function Path_to (Command : in String) return String;
 
    procedure run_OS (command_Line : in String;
@@ -39,139 +179,9 @@ is
    -- Returns any output. Error output is appended if add_Errors is true.
 
 
-   --- Paths
-   --
-   -- A path can be either a file or a folder.
-
-   type Path is new String;
-
-   function "+" (Path : in Environ.Path) return String;
-   function "+" (From : in String)       return Path;
-
-   procedure link (From, To : in Path);
-
-   procedure change_Mode  (Path : in environ.Path;
-                           To   : in String);
-
-   procedure change_Owner (Path : in environ.Path;
-                           To   : in String);
-
-   function  Exists    (Path : in environ.Path) return Boolean;
-   function  is_Folder (Path : in environ.Path) return Boolean;
-
-   function  modification_Time (Path : in environ.Path) return ada.Calendar.Time;
-
-
-   --- Folders
-   --
-   type Folder is new String;
-
-   function "+" (Folder : in Environ.Folder) return String;
-   function "+" (From   : in String)         return Folder;
-
-   function current_Folder return Folder;
-
-   procedure   goto_Folder (Named  : in Folder;
-                            Lock   : in Boolean := False);  -- Blocks further folder changes until 'unlock_Folder' is called.
-   procedure unlock_Folder;
-
-   procedure   push_Folder (Context     : in out Environ.Context;
-                            goto_Folder : in     Folder);
-   --
-   -- Store the current folder and move to the 'goto_Folder'.
-
-   procedure    pop_Folder (Context     : in out Environ.Context);
-   --
-   -- Return to the previously pushed folder.
-
-   procedure    rid_Folder (Named  : in Folder);
-   procedure   copy_Folder (Named  : in Folder;   To : in Folder);
-   procedure   move_Folder (Named  : in Folder;   To : in Folder);
-   procedure rename_Folder (Named  : in Folder;   To : in Folder);
-   procedure verify_Folder (Named  : in Folder);
-   --
-   -- Ensure that the folder exists.
-
-   function  is_Empty  (Folder : in environ.Folder) return Boolean;
-
-   function  contents_Count (Folder  : in environ.Folder;
-                             Recurse : in Boolean := False) return Natural;
-   --
-   -- Does not include the "." and ".." folders.
-
-
-   --- Files
-   --
-   type File is new String;
-
-   function "+" (File : in Environ.File) return String;
-   function "+" (From : in String)       return File;
-
-   procedure save (the_Text : in String;
-                   Filename : in File;
-                   Binary   : in Boolean := False);
-
-   procedure save (the_Data : in Data;
-                   Filename : in File);
-
-   function  load (Filename : in File) return String;
-   function  load (Filename : in File) return Data;
-
-   procedure copy_File  (Named : in File;     To : in File);
-   procedure copy_Files (Named : in String;   To : in Folder);
-   --
-   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
-
-   procedure move_File  (Named : in File;     To : in File);
-   procedure move_Files (Named : in String;   To : in Folder);
-   --
-   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
-
-   procedure  rid_File  (Named : in File);
-   procedure  rid_Files (Named : in String);
-   --
-   -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
-
-
-   procedure append_File (Named : in File;   To : in File);
-
-   procedure touch         (Filename    : in File);
-   function  to_octal_Mode (Permissions : in posix.Permissions.Permission_Set) return String;
-   function  expand_GLOB   (GLOB        : in String) return String;
-
-
-   --- Compression
-   --
-   type           compress_Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
-   subtype folder_compress_Format is compress_Format range Tar .. Tar_Xz;
-
-   type compress_Level is range 1 .. 9;                           -- Higher levels result in higher compression.
-
-   procedure   compress (Path       : in String;                  -- Folder or file name.
-                         the_Format : in compress_Format := Tar_Xz;
-                         the_Level  : in compress_Level  := 6);
-   procedure decompress (Filename   : in File);
-
-   function  format_Suffix (Format : compress_Format) return String;
-
-
-   --- Users
-   --
-   type User is new String;
-
-   procedure add_User       (Name  : in User;
-                             Super : in Boolean := False);
-   procedure rid_User       (Name  : in User);
-
-   procedure set_Password   (Name  : in User);
-   procedure switch_to_User (Named : in User);
-
-   function  current_User                                      return User;
-   function  home_Folder (user_Name : in User := current_User) return Folder;
-
-
    --- Exceptions
    --
+
    Error : exception;
 
 
