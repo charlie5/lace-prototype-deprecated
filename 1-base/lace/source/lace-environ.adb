@@ -329,21 +329,33 @@ is
 
    function "+" (Left : in Folder;   Right : in Folder) return Folder
    is
-      R_Path   : constant Path   := Path (Right);
-      R_Folder : constant Folder := Folder (if is_Absolute (R_Path) then Simple (R_Path)
-                                                                    else R_Path);
    begin
-      return Left & R_Folder;
+      check (Left);
+      check (Right);
+
+      declare
+         R_Path   : constant Path   := Path (Right);
+         R_Folder : constant Folder := Folder (if is_Absolute (R_Path) then Simple (R_Path)
+                                               else R_Path);
+      begin
+         return Left & R_Folder;
+      end;
    end "+";
 
 
    function "+" (Left : in Folder;   Right : in File) return File
    is
-      R_Path : constant Path := Path (Right);
-      R_File : constant File := File (if is_Absolute (R_Path) then Simple (R_Path)
-                                                              else R_Path);
    begin
-      return File (Left) & R_File;
+      check (Left);
+      check (Right);
+
+      declare
+         R_Path : constant Path := Path (Right);
+         R_File : constant File := File (if is_Absolute (R_Path) then Simple (R_Path)
+                                                                 else R_Path);
+      begin
+         return File (Left) & R_File;
+      end;
    end "+";
 
 
@@ -369,6 +381,7 @@ is
       when not Locked
       is
       begin
+         check (To);
          ada.Directories.set_Directory (+To);
          Locked := True;
       end change;
@@ -385,9 +398,11 @@ is
                           Lock   : in Boolean := False)
    is
    begin
+      check (Named);
+
       if Lock
       then
-         folder_Lock.change (+Named);
+         folder_Lock.change (Named);
       else
          ada.Directories.set_Directory (+Named);
       end if;
@@ -405,8 +420,10 @@ is
                           goto_Folder : in     Folder)
    is
    begin
+      check (goto_Folder);
+
       Context.folder_Stack.append (current_Folder);
-      environ.goto_Folder (goto_Folder);
+      environ.goto_Folder         (goto_Folder);
    end push_Folder;
 
 
@@ -435,6 +452,8 @@ is
 
       Count : Natural := 0;
    begin
+      check (Folder);
+
       for Each of To_Directory (+Folder, Recurse)
       loop
          declare
@@ -454,13 +473,15 @@ is
    function is_Empty (Folder : in environ.Folder) return Boolean
    is
    begin
+      check (Folder);
       return contents_Count (Folder) = 0;
    end is_Empty;
 
 
-   procedure rid_Folder (Named  : in Folder)
+   procedure rid_Folder (Named : in Folder)
    is
    begin
+      check (Named);
       ada.Directories.delete_Tree (+Named);
    exception
       when ada.IO_Exceptions.name_Error =>
@@ -468,16 +489,22 @@ is
    end rid_Folder;
 
 
-   procedure copy_Folder (Named  : in Folder;   To : in Folder)
+   procedure copy_Folder (Named : in Folder;   To : in Folder)
    is
    begin
+      check (Named);
+      check (To);
+
       run_OS ("cp -fr " & (+Named) & " " & (+To));
    end copy_Folder;
 
 
-   procedure move_Folder (Named  : in Folder;   To : in Folder)
+   procedure move_Folder (Named : in Folder;   To : in Folder)
    is
    begin
+      check (Named);
+      check (To);
+
       run_OS ("mv " & (+Named) & " " & (+To));
    end move_Folder;
 
@@ -485,6 +512,9 @@ is
    procedure rename_Folder (Named  : in Folder;   To : in Folder)
    is
    begin
+      check (Named);
+      check (To);
+
       ada.Directories.rename (+Named, +To);
    end rename_Folder;
 
@@ -492,6 +522,7 @@ is
    procedure verify_Folder (Named  : in Folder)
    is
    begin
+      check (Named);
       ada.Directories.create_Path (+Named);
    end verify_Folder;
 
