@@ -163,6 +163,23 @@ is
    end rid_User;
 
 
+   --- Paths
+   --
+
+   function "+" (Path : in Environ.Path) return String
+   is
+   begin
+      return String (Path);
+   end "+";
+
+
+   function "+" (From : in String) return Path
+   is
+   begin
+      return Path (From);
+   end "+";
+
+
    procedure change_Mode (Path : in environ.Path;
                           To   : in String)
    is
@@ -187,18 +204,18 @@ is
    end change_Owner;
 
 
-   function Exists (Folder : in environ.Folder) return Boolean
+   function Exists (Path : in environ.Path) return Boolean
    is
    begin
-      return ada.Directories.Exists (+Folder);
+      return ada.Directories.Exists (+Path);
    end Exists;
 
 
-   function is_Folder (Folder : in environ.Folder) return Boolean
+   function is_Folder (Path : in environ.Path) return Boolean
    is
       use ada.Directories;
    begin
-      return Kind (+Folder) = Directory;
+      return Kind (+Path) = Directory;
    end is_Folder;
 
 
@@ -233,13 +250,13 @@ is
    end is_Empty;
 
 
-   function modification_Time (Folder : in environ.Folder) return ada.Calendar.Time
+   function modification_Time (Path : in environ.Path) return ada.Calendar.Time
    is
       use POSIX,
           POSIX.Calendar,
           POSIX.File_Status;
 
-      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Folder));
+      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Path));
       Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
    begin
       return to_Time (Time);
@@ -494,7 +511,7 @@ is
    end rid_Files;
 
 
-   procedure compress (Path       : in String;
+   procedure compress (Path       : in environ.Path;
                        the_Format : in compress_Format := Tar_Xz;
                        the_Level  : in compress_Level  := 6)
    is
@@ -522,8 +539,8 @@ is
                                                 when Tar_Xz  => "-cJf",
                                                 when others  => raise program_Error);
                Output  : constant String := run_OS ("tar " & Options
-                                                    & " "  & Path & format_Suffix (the_Format)
-                                                    & " "  & Path);
+                                                    & " "  & (+Path) & format_Suffix (the_Format)
+                                                    & " "  & (+Path));
             begin
                if Output /= ""
                then
@@ -535,7 +552,7 @@ is
             declare
                Output : constant String := run_OS (  "gzip --force --keep --rsyncable"
                                                    & level_Flag
-                                                   & " " & Path);
+                                                   & " " & (+Path));
             begin
                if Output /= ""
                then
@@ -547,7 +564,7 @@ is
             declare
                Output : constant String := run_OS ("bzip2 --force --keep"
                                                    & level_Flag
-                                                   & " " & Path);
+                                                   & " " & (+Path));
             begin
                if Output /= ""
                then
@@ -557,7 +574,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --force --keep --threads=0 " & Path);
+               Output : constant String := run_OS ("xz --force --keep --threads=0 " & (+Path));
             begin
                if Output /= ""
                then

@@ -41,8 +41,25 @@ is
 
    --- Paths
    --
-   procedure link (From, To : in String);
+   -- A path can be either a file or a folder.
 
+   type Path is new String;
+
+   function "+" (Path : in Environ.Path) return String;
+   function "+" (From : in String)       return Path;
+
+   procedure link (From, To : in Path);
+
+   procedure change_Mode  (Path : in environ.Path;
+                           To   : in String);
+
+   procedure change_Owner (Path : in environ.Path;
+                           To   : in String);
+
+   function  Exists    (Path : in environ.Path) return Boolean;
+   function  is_Folder (Path : in environ.Path) return Boolean;
+
+   function  modification_Time (Path : in environ.Path) return ada.Calendar.Time;
 
 
    --- Folders
@@ -75,22 +92,12 @@ is
    --
    -- Ensure that the folder exists.
 
-   procedure change_Mode  (Folder : in environ.Folder;
-                           To     : in String);
-
-   procedure change_Owner (Folder : in environ.Folder;
-                           To     : in String);
-
-   function  Exists    (Folder : in environ.Folder) return Boolean;
-   function  is_Folder (Folder : in environ.Folder) return Boolean;
    function  is_Empty  (Folder : in environ.Folder) return Boolean;
 
    function  contents_Count (Folder  : in environ.Folder;
                              Recurse : in Boolean := False) return Natural;
    --
    -- Does not include the "." and ".." folders.
-
-   function  modification_Time (Folder : in environ.Folder) return ada.Calendar.Time;
 
 
    --- Files
