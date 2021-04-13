@@ -116,45 +116,63 @@ is
 
    procedure link (From, To : in Path)
    is
-      Output : constant String := run_OS ("ln -s "
-                                          & String (From)
-                                          & " "
-                                          & String (To));
    begin
-      if Output /= ""
-      then
-         raise Error with Output;
-      end if;
+      check (From);
+      check (From);
+
+      declare
+         Output : constant String := run_OS ("ln -s "
+                                             & String (From)
+                                             & " "
+                                             & String (To));
+      begin
+
+         if Output /= ""
+         then
+            raise Error with Output;
+         end if;
+      end;
    end link;
 
 
    procedure change_Mode (Path : in environ.Path;
                           To   : in String)
    is
-      Output : constant String := run_OS ("chmod -R " & To & " " & String (Path));
    begin
-      if Output /= ""
-      then
-         raise Error with Output;
-      end if;
+      check (Path);
+
+      declare
+         Output : constant String := run_OS ("chmod -R " & To & " " & String (Path));
+      begin
+         if Output /= ""
+         then
+            raise Error with Output;
+         end if;
+      end;
    end change_Mode;
 
 
    procedure change_Owner (Path : in environ.Path;
                            To   : in String)
    is
-      Output : constant String := run_OS ("chown -R " & To & " " & String (Path));
    begin
-      if Output /= ""
-      then
-         raise Error with Output;
-      end if;
+      check (Path);
+
+      declare
+         Output : constant String := run_OS ("chown -R " & To & " " & String (Path));
+      begin
+         if Output /= ""
+         then
+            raise Error with Output;
+         end if;
+      end;
    end change_Owner;
 
 
    function Exists (Path : in environ.Path) return Boolean
    is
    begin
+      check (Path);
       return ada.Directories.Exists (+Path);
    end Exists;
 
@@ -163,6 +181,7 @@ is
    is
       use ada.Directories;
    begin
+      check (Path);
       return Kind (+Path) = Directory;
    end is_Folder;
 
@@ -171,6 +190,7 @@ is
    is
       use ada.Directories;
    begin
+      check (Path);
       return Kind (+Path) = Ordinary_File;
    end is_File;
 
@@ -179,6 +199,7 @@ is
    is
       use ada.Directories;
    begin
+      check (Path);
       return Kind (+Path) = Special_File;
    end is_Special;
 
@@ -201,14 +222,19 @@ is
 
    function modify_Time (Path : in environ.Path) return ada.Calendar.Time
    is
-      use POSIX,
-          POSIX.Calendar,
-          POSIX.File_Status;
-
-      the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Path));
-      Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
    begin
-      return to_Time (Time);
+      check (Path);
+
+      declare
+         use POSIX,
+             POSIX.Calendar,
+             POSIX.File_Status;
+
+         the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Path));
+         Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
+      begin
+         return to_Time (Time);
+      end;
    end modify_Time;
 
 
