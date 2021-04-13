@@ -827,10 +827,10 @@ is
    --- OS Commands
    --
 
-   function Path_to (Command : in String) return String
+   function Path_to (Command : in String) return Folder
    is
    begin
-      return run_OS ("which " & Command);
+      return Folder (String'(run_OS ("which " & Command)));
    end Path_to;
 
 

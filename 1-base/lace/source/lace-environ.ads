@@ -162,7 +162,7 @@ is
    --- OS Commands
    --
 
-   function Path_to (Command : in String) return String;
+   function Path_to (Command : in String) return Folder;
 
    procedure run_OS (command_Line : in String;
                      Input        : in String := "");
