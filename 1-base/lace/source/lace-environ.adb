@@ -6,7 +6,6 @@ with
 
      gnat.Expect,
      gnat.OS_Lib,
-     gnat.Strings,
 
      shell.Commands,
      shell.Directory_Iteration,
@@ -141,7 +140,7 @@ is
       put_Line (File, Command);
       close    (File);
 
-      change_Mode (Folder (Path & Filename), to => "a+rwx");
+      change_Mode (environ.Path (Path & Filename), to => "a+rwx");
 
       return Output_of (command => Filename);
    end shell_Output_of;
@@ -274,18 +273,12 @@ is
       put_Line (File, "echo " & GLOB);
       close    (File);
 
-      change_Mode (Folder (Filename), to => "a+rwx");
+      change_Mode (Path (Filename), to => "a+rwx");
 
       declare
          Output : constant String := run_OS ("bash " & (+Filename));
       begin
          rid_File (Filename);
-
-         if Output /= ""
-         then
-            raise Error with Output;
-         end if;
-
          return Output;
       end;
    end expand_GLOB;
@@ -343,10 +336,10 @@ is
    end rid_User;
 
 
-   procedure change_Mode (Folder : in environ.Folder;
-                          To     : in String)
+   procedure change_Mode (Path : in environ.Path;
+                          To   : in String)
    is
-      Output : constant String := run_OS ("chmod -R " & To & " " & String (Folder));
+      Output : constant String := run_OS ("chmod -R " & To & " " & String (Path));
    begin
       if Output /= ""
       then
@@ -355,10 +348,10 @@ is
    end change_Mode;
 
 
-   procedure change_Owner (Folder : in environ.Folder;
-                           To     : in String)
+   procedure change_Owner (Path : in environ.Path;
+                           To   : in String)
    is
-      Output : constant String := run_OS ("chown -R " & To & " " & String (Folder));
+      Output : constant String := run_OS ("chown -R " & To & " " & String (Path));
    begin
       if Output /= ""
       then
@@ -834,11 +827,14 @@ is
    --- Paths
    --
 
-   procedure link (From, To : in String)
+   procedure link (From, To : in Path)
    is
-      Unused : String := Output_of ("ln -s " & From & " " & To);
+      Output : constant String := Output_of ("ln -s " & String (From) & " " & String (To));
    begin
-      null;
+      if Output /= ""
+      then
+         raise Error with Output;
+      end if;
    end link;
 
 
