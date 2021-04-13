@@ -43,8 +43,10 @@ is
    procedure change_Owner (Path : in environ.Path;
                            To   : in String);
 
-   function  Exists    (Path : in environ.Path) return Boolean;
-   function  is_Folder (Path : in environ.Path) return Boolean;
+   function  Exists     (Path : in environ.Path) return Boolean;
+   function  is_Folder  (Path : in environ.Path) return Boolean;
+   function  is_File    (Path : in environ.Path) return Boolean;
+   function  is_Special (Path : in environ.Path) return Boolean;
 
    function  modification_Time (Path : in environ.Path) return ada.Calendar.Time;
 

@@ -149,6 +149,22 @@ is
    end is_Folder;
 
 
+   function is_File (Path : in environ.Path) return Boolean
+   is
+      use ada.Directories;
+   begin
+      return Kind (+Path) = Ordinary_File;
+   end is_File;
+
+
+   function is_Special (Path : in environ.Path) return Boolean
+   is
+      use ada.Directories;
+   begin
+      return Kind (+Path) = Special_File;
+   end is_Special;
+
+
    function modification_Time (Path : in environ.Path) return ada.Calendar.Time
    is
       use POSIX,
