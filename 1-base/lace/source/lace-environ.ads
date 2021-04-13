@@ -24,13 +24,15 @@ is
 
    type Context is limited private;
 
+   type File    is new String;
+   type Folder  is new String;
+   type Path    is new String;
+   --
+   -- A path can be either a file or a folder.
+
 
    --- Paths
    --
-
-   -- A path can be either a file or a folder.
-
-   type Path is new String;
 
    function "+" (Path : in environ.Path) return String;
    function "+" (From : in String)       return Path;
@@ -43,18 +45,17 @@ is
    procedure change_Owner (Path : in environ.Path;
                            To   : in String);
 
-   function  Exists     (Path : in environ.Path) return Boolean;
-   function  is_Folder  (Path : in environ.Path) return Boolean;
-   function  is_File    (Path : in environ.Path) return Boolean;
-   function  is_Special (Path : in environ.Path) return Boolean;
+   function  Exists      (Path : in environ.Path) return Boolean;
+   function  Parent      (Path : in environ.Path) return Folder;
+   function  modify_Time (Path : in environ.Path) return ada.Calendar.Time;
 
-   function  modification_Time (Path : in environ.Path) return ada.Calendar.Time;
+   function  is_Folder   (Path : in environ.Path) return Boolean;
+   function  is_File     (Path : in environ.Path) return Boolean;
+   function  is_Special  (Path : in environ.Path) return Boolean;
 
 
    --- Folders
    --
-
-   type Folder is new String;
 
    function "+" (Folder : in environ.Folder) return String;
    function "+" (From   : in String)         return Folder;
@@ -92,8 +93,6 @@ is
 
    --- Files
    --
-
-   type File is new String;
 
    function "+" (File : in environ.File) return String;
    function "+" (From : in String)       return File;

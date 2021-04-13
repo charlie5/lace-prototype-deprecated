@@ -165,7 +165,7 @@ is
    end is_Special;
 
 
-   function modification_Time (Path : in environ.Path) return ada.Calendar.Time
+   function modify_Time (Path : in environ.Path) return ada.Calendar.Time
    is
       use POSIX,
           POSIX.Calendar,
@@ -175,7 +175,33 @@ is
       Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
    begin
       return to_Time (Time);
-   end modification_Time;
+   end modify_Time;
+
+
+   function Parent (Path : in environ.Path) return Folder
+   is
+   begin
+      if not Exists (Path)
+      then
+         raise Error with "Path '" & (+Path) & "' does not exist.";
+      end if;
+
+      declare
+         use ada.Strings;
+         Index : constant Natural := fixed.Index (+Path, "/", going => Backward);
+      begin
+         if    Index = 0
+         then
+            return "";
+
+         elsif Index = Path'First
+         then
+            return "/";
+         end if;
+
+         return Folder (Path (Path'First .. Index - 1));
+      end;
+   end Parent;
 
 
    --- Folders
