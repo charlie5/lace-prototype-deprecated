@@ -104,7 +104,7 @@ is
    begin
       if Path = ""
       then
-         raise Error with "Path is empty.";
+         raise Error with "No path specified.";
       end if;
 
       if not Exists (Path)
@@ -302,7 +302,7 @@ is
    begin
       if Folder = ""
       then
-         raise Error with "Folder is empty.";
+         raise Error with "No folder specified.";
       end if;
 
       if not Exists (Path (Folder))
@@ -317,7 +317,7 @@ is
    begin
       if File = ""
       then
-         raise Error with "File is empty.";
+         raise Error with "No file specified.";
       end if;
 
       if not Exists (Path (File))
