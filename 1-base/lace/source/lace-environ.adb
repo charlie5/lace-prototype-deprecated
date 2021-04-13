@@ -13,6 +13,8 @@ with
      lace.Text.all_Tokens,
 
      ada.Strings.fixed,
+     ada.Strings.Maps,
+     ada.Characters.latin_1,
      ada.Directories,
      ada.environment_Variables,
      ada.Direct_IO,
@@ -136,14 +138,26 @@ is
    is
       use Shell,
           Shell.Commands;
+
+      function trim_LF (Source : in String) return String
+      is
+         use ada.Strings.fixed,
+             ada.Strings.Maps,
+             ada.Characters;
+
+         LF_Set : constant Character_Set := to_Set (Latin_1.LF);
+      begin
+         return trim (Source, LF_Set, LF_Set);
+      end trim_LF;
+
       Results : constant Command_Results := run (command_Line, +Input);
       Output  : constant String          := +Output_of (Results);
    begin
       if add_Errors
       then
-         return Output & (+Errors_of (Results));
+         return trim_LF (Output & (+Errors_of (Results)));
       else
-         return Output;
+         return trim_LF (Output);
       end if;
 
    exception
