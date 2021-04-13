@@ -180,6 +180,22 @@ is
    end is_Special;
 
 
+   function is_Absolute (Path : in environ.Path) return Boolean
+   is
+   begin
+      check (Path);
+      return Path (Path'First) = '/';
+   end is_Absolute;
+
+
+   function is_Relative (Path : in environ.Path) return Boolean
+   is
+   begin
+      check (Path);
+      return Path (Path'First) /= '/';
+   end is_Relative;
+
+
    function modify_Time (Path : in environ.Path) return ada.Calendar.Time
    is
       use POSIX,
@@ -196,10 +212,7 @@ is
    function Parent (Path : in environ.Path) return Folder
    is
    begin
-      if not Exists (Path)
-      then
-         raise Error with "Path '" & (+Path) & "' does not exist.";
-      end if;
+      check (Path);
 
       declare
          use ada.Strings;
@@ -219,6 +232,25 @@ is
    end Parent;
 
 
+   function Simple (Path : in environ.Path) return environ.Path
+   is
+   begin
+      check (Path);
+
+      declare
+         use ada.Strings;
+         Index : constant Natural := fixed.Index (+Path, "/", going => Backward);
+      begin
+         if    Index = 0
+         then
+            return Path;
+         else
+            return Path (Index + 1 .. Path'Last);
+         end if;
+      end;
+   end Simple;
+
+
    --- Folders
    --
 
@@ -233,6 +265,26 @@ is
    is
    begin
       return Folder (From);
+   end "+";
+
+
+   function "+" (Left : in Folder;   Right : in Folder) return Folder
+   is
+      R_Path   : constant Path   := Path (Right);
+      R_Folder : constant Folder := Folder (if is_Absolute (R_Path) then Simple (R_Path)
+                                                                    else R_Path);
+   begin
+      return Left & R_Folder;
+   end "+";
+
+
+   function "+" (Left : in Folder;   Right : in File) return File
+   is
+      R_Path : constant Path := Path (Right);
+      R_File : constant File := File (if is_Absolute (R_Path) then Simple (R_Path)
+                                                              else R_Path);
+   begin
+      return File (Left) & R_File;
    end "+";
 
 

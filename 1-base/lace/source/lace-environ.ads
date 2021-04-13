@@ -53,6 +53,9 @@ is
    function  is_File     (Path : in environ.Path) return Boolean;
    function  is_Special  (Path : in environ.Path) return Boolean;
 
+   function  is_Absolute (Path : in environ.Path) return Boolean;
+   function  is_Relative (Path : in environ.Path) return Boolean;
+
 
    --- Folders
    --
