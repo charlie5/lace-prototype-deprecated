@@ -104,6 +104,8 @@ is
    function "+" (File : in environ.File) return String;
    function "+" (From : in String)       return File;
 
+   function Extension (File : in environ.File) return String;
+
    procedure save (the_Text : in String;
                    Name     : in File;
                    Binary   : in Boolean := False);

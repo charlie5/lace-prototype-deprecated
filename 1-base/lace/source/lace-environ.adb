@@ -454,6 +454,13 @@ is
    end "+";
 
 
+   function Extension (File : in environ.File) return String
+   is
+   begin
+      return ada.Directories.Extension (String (File));
+   end Extension;
+
+
    procedure save (the_Text : in String;
                    Name     : in File;
                    Binary   : in Boolean := False)
