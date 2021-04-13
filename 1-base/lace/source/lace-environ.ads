@@ -20,14 +20,7 @@ is
 
    --- OS Commands
    --
-   function Path_to         (Command : in String)       return String;
-
-   function shell_Output_of (Command : in String)       return String;
-   function       Output_of (Command : in String;
-                             Input   : in String := "") return String;
-
-   -- 'run_OS'
-   --
+   function Path_to (Command : in String) return String;
 
    procedure run_OS (command_Line : in String;
                      Input        : in String := "");

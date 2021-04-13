@@ -118,102 +118,6 @@ is
    end Path_to;
 
 
-   function shell_Output_of (Command : in String) return String
-   is
-      use ada.Environment_Variables,
-          ada.Strings.fixed,
-          ada.Text_IO;
-
-      Path     : constant String   := String (Current_Folder) & "/.lace-bin/";
-      FileName : constant String   := "lace_environ_temporary_shell.sh";   -- tbd: Add a unique number here so simultaneous calls don't tread on each other.
-      File     :          File_Type;
-   begin
-      verify_Folder (Folder (Path));
-
-      if Index (Value ("PATH"), Path) = 0
-      then
-         set ("PATH",
-              Path & ":" & Value ("PATH"));
-      end if;
-
-      create   (File, out_File, Path & Filename);
-      put_Line (File, Command);
-      close    (File);
-
-      change_Mode (environ.Path (Path & Filename), to => "a+rwx");
-
-      return Output_of (command => Filename);
-   end shell_Output_of;
-
-
-   function Output_of (Command : in String;
-                       Input   : in String := "") return String
-   is
-      use ada.Strings.fixed;
-
-      pipe_Index  : constant Natural := Index (Command, "|");
-      space_Index : constant Natural := Index (Command, " ");
-
-      function command_Name return String
-      is
-      begin
-         if space_Index = 0
-         then
-            return Command;
-         else
-            return Command (Command'First .. space_Index - 1);
-         end if;
-      end command_Name;
-
-   begin
-      if pipe_Index = 0
-      then
-         declare
-            use gnat.Expect,
-                gnat.OS_Lib;
-
-            function Arguments return String
-            is
-            begin
-               if space_Index = 0
-               then
-                  return "";
-               else
-                  return Command (space_Index + 1 .. Command'Last);
-               end if;
-            end Arguments;
-
-            arg_List : Argument_List_Access := Argument_String_to_List (Arguments);
-
-            Status : aliased  Integer;
-            Output : constant String := get_Command_Output (command    => Path_to (command_Name),
-                                                            arguments  => arg_List.all,
-                                                            input      => Input,
-                                                            status     => Status'Access,
-                                                            err_to_out => True);
-         begin
-            free (arg_List);
-
-            if Status /= 0
-            then
-               raise Error with command_Name & ": (" & Integer'Image (Status) & ") " & Output;
-            end if;
-
-            return Output;
-         end;
-
-      else
-         declare
-            Command_1 : constant String := Command (Command'First  .. pipe_Index - 1);
-            Command_2 : constant String := Command (pipe_Index + 1 .. Command'Last);
-         begin
-            return Output_of (Command_2, input => Output_of (Command_1));
-         end;
-      end if;
-
-   end Output_of;
-
-
    procedure run_OS (command_Line : in String;
                      Input        : in String := "")
    is
@@ -829,7 +733,7 @@ is
 
    procedure link (From, To : in Path)
    is
-      Output : constant String := Output_of ("ln -s " & String (From) & " " & String (To));
+      Output : constant String := run_OS ("ln -s " & String (From) & " " & String (To));
    begin
       if Output /= ""
       then
