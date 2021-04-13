@@ -297,6 +297,36 @@ is
    end "+";
 
 
+   procedure check (Folder : in environ.Folder)
+   is
+   begin
+      if Folder = ""
+      then
+         raise Error with "Folder is empty.";
+      end if;
+
+      if not Exists (Path (Folder))
+      then
+         raise Error with "Folder '" & (+Folder) & "' does not exist.";
+      end if;
+   end check;
+
+
+   procedure check (File : in environ.File)
+   is
+   begin
+      if File = ""
+      then
+         raise Error with "File is empty.";
+      end if;
+
+      if not Exists (Path (File))
+      then
+         raise Error with "File '" & (+File) & "' does not exist.";
+      end if;
+   end check;
+
+
    function "+" (Left : in Folder;   Right : in Folder) return Folder
    is
       R_Path   : constant Path   := Path (Right);
