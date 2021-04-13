@@ -4,7 +4,6 @@ with
      posix.file_Status,
      posix.Calendar,
 
-     gnat.Expect,
      gnat.OS_Lib,
 
      shell.Commands,
@@ -101,22 +100,10 @@ is
    end argument_String_to_List;
 
 
-   function Path_to (Command : in String) return String   -- tbd: use os_lib procedure instead !
+   function Path_to (Command : in String) return String
    is
-      use gnat.Expect,
-          gnat.OS_Lib;
-
-      Args : Argument_List_Access := Argument_String_To_List (Command);
-
-      Status : aliased  Integer;
-      Output : constant String := get_Command_Output (command    => "/usr/bin/which",
-                                                      arguments  => Args.all,
-                                                      input      => "",
-                                                      status     => Status'Access,
-                                                      err_to_out => True);
    begin
-      free (Args);
-      return Output;
+      return run_OS ("which " & Command);
    end Path_to;
 
 
