@@ -547,6 +547,7 @@ is
    function Extension (File : in environ.File) return String
    is
    begin
+      check (File);
       return ada.Directories.Extension (String (File));
    end Extension;
 
@@ -556,6 +557,8 @@ is
                    Binary   : in Boolean := False)
    is
    begin
+      check (Name);
+
       if Binary
       then
          declare
@@ -584,20 +587,25 @@ is
    procedure save (the_Data : in Data;
                    Name     : in File)
    is
-      type Element_Array is new Data (the_Data'Range);
-      package Binary_IO  is new ada.Direct_IO (Element_Array);
-      use     Binary_IO;
-      File :  File_Type;
    begin
-      create (File, out_File, +Name);
-      write  (File, Element_Array (the_Data));
-      close  (File);
+      check (Name);
+      declare
+         type Element_Array is new Data (the_Data'Range);
+         package Binary_IO  is new ada.Direct_IO (Element_Array);
+         use     Binary_IO;
+         File :  File_Type;
+      begin
+         create (File, out_File, +Name);
+         write  (File, Element_Array (the_Data));
+         close  (File);
+      end;
    end save;
 
 
    function load (Name : in File) return String
    is
    begin
+      check (Name);
       declare
          Size : constant ada.Directories.File_Size := ada.Directories.Size (+Name);
 
@@ -625,6 +633,7 @@ is
    function load (Name : in File) return Data
    is
    begin
+      check (Name);
       declare
          use ada.Streams;
          Size : constant ada.Directories.File_Size := ada.Directories.Size (+Name);
@@ -653,6 +662,9 @@ is
    procedure copy_File (Named : in File;   To : in File)
    is
    begin
+      check (Named);
+      check (To);
+
       ada.Directories.copy_File (+Named, +To);
    end copy_File;
 
@@ -668,16 +680,16 @@ is
                                                                         else Named);
       file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
    begin
-      verify_Folder (To);
+      check (To);
 
       for Each of file_List
       loop
-         if is_Folder (+(+Each))
+         if is_Folder (Path (+Each))
          then
-            copy_Folder (+(+Each), To);
+            copy_Folder (Folder (+Each), To);
          else
-            Environ.copy_File (File (+Each),
-                               File (+To & "/" & simple_Name (+Each)));
+            copy_File (File (+Each),
+                       File (+To & "/" & simple_Name (+Each)));
          end if;
       end loop;
    end copy_Files;
@@ -686,6 +698,9 @@ is
    procedure move_File (Named : in File;   To : in File)
    is
    begin
+      check (Named);
+      check (To);
+
       -- 'Ada.Directories.Rename' fails when the file is moved across a device.
       -- For instance     Rename ("/tmp/a_file", "/home/user/a_file");
 
@@ -696,47 +711,59 @@ is
 
    procedure move_Files (Named : in String;   To : in Folder)
    is
-      use lace.Text,
-          lace.Text.all_Tokens,
-          ada.Directories,
-          ada.Strings.fixed;
-
-      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
-                                                                        else Named);
-      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
    begin
-      for Each of file_List
-      loop
-         if +Each /= +To   -- Don't move a directory to a subdirectory of itself.
-         then
-            if is_Folder (+(+Each))
+      check (To);
+
+      declare
+         use lace.Text,
+             lace.Text.all_Tokens,
+             ada.Directories,
+             ada.Strings.fixed;
+
+         all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+                                                                           else Named);
+         file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+      begin
+         for Each of file_List
+         loop
+            if +Each /= +To   -- Don't move a directory to a subdirectory of itself.
             then
-               move_Folder (+(+Each), To);
-            else
-               move_File (File (+Each),
-                          File (+To & "/" & simple_Name (+Each)));
+               if is_Folder (Path (+Each))
+               then
+                  move_Folder (Folder (+Each), To);
+               else
+                  move_File (File (+Each),
+                             File (+To & "/" & simple_Name (+Each)));
+               end if;
             end if;
-         end if;
-      end loop;
+         end loop;
+      end;
    end move_Files;
 
 
    procedure append_File (Named : in File;   To : in File)
    is
-      use ada.Text_IO;
-
-      Data   : constant String   := load (Named);
-      Target :          File_type;
    begin
-      open  (Target, append_File, name => +To);
-      put   (Target, Data);
-      close (Target);
+      check (Named);
+      check (To);
+
+      declare
+         use ada.Text_IO;
+
+         Data   : constant String   := load (Named);
+         Target :          File_type;
+      begin
+         open  (Target, append_File, name => +To);
+         put   (Target, Data);
+         close (Target);
+      end;
    end append_File;
 
 
    procedure rid_File (Named : in File)
    is
    begin
+      check (Named);
       ada.Directories.delete_File (+Named);
    end rid_File;
 
@@ -753,6 +780,7 @@ is
    begin
       for Each of file_List
       loop
+         check    (File (+Each));
          rid_File (File (+Each));
       end loop;
    end rid_Files;
