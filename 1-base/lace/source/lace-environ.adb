@@ -4,8 +4,6 @@ with
      posix.file_Status,
      posix.Calendar,
 
-     gnat.OS_Lib,
-
      shell.Commands,
      shell.Directory_Iteration,
 
@@ -23,82 +21,6 @@ with
 
 package body lace.Environ
 is
-
-   function argument_String_to_List (Arg_String : String) return gnat.OS_Lib.Argument_List_Access
-   is
-      use gnat.OS_Lib;
-
-      Max_Args : constant Integer                      := Arg_String'Length;
-      New_Argv :          Argument_List (1 .. Max_Args);
-      New_Argc :          Natural                      := 0;
-      Idx      :          Integer                      := Arg_String'First;
-   begin
-      loop
-         exit when Idx > Arg_String'Last;
-
-         declare
-            Quoted  :          Boolean := False;
-            Backqd  :          Boolean := False;
-            Old_Idx : constant Integer := Idx;
-         begin
-            loop
-               --  An unquoted space is the end of an argument.
-               --
-               if         not (Backqd or Quoted)
-                 and then Arg_String (Idx) = ' '
-               then
-                  exit;
-
-               --  Start of a quoted string.
-               --
-               elsif      not (Backqd or Quoted)
-                 and then Arg_String (Idx) = '"'
-               then
-                  Quoted := True;
-
-               --  End of a quoted string and end of an argument.
-               --
-               elsif      (Quoted and not Backqd)
-                 and then Arg_String (Idx) = '"'
-               then
-                  Idx := Idx + 1;
-                  exit;
-
-               --  Following character is backquoted.
-               --
-               elsif Arg_String (Idx) = '\'
-               then
-                  Backqd := True;
-
-               --  Turn off backquoting after advancing one character.
-               --
-               elsif Backqd
-               then
-                  Backqd := False;
-               end if;
-
-               Idx := Idx + 1;
-               exit when Idx > Arg_String'Last;
-            end loop;
-
-            --  Found an argument.
-            --
-            New_Argc            := New_Argc + 1;
-            New_Argv (New_Argc) := new String'(Arg_String (Old_Idx .. Idx - 1));
-
-            --  Skip extraneous spaces.
-            --
-            while      Idx             <= Arg_String'Last
-              and then Arg_String (Idx) = ' '
-            loop
-               Idx := Idx + 1;
-            end loop;
-         end;
-      end loop;
-
-      return new Argument_List'(New_Argv (1 .. New_Argc));
-   end argument_String_to_List;
-
 
    function Path_to (Command : in String) return String
    is
