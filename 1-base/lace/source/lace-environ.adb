@@ -326,7 +326,7 @@ is
 
    protected folder_Lock
    is
-      entry change (To : in String);
+      entry change (To : in Folder);
       procedure clear;
    private
       Locked : Boolean := False;
@@ -335,11 +335,11 @@ is
 
    protected body folder_Lock
    is
-      entry change (To : in String)
+      entry change (To : in Folder)
       when not Locked
       is
       begin
-         ada.Directories.set_Directory (To);
+         ada.Directories.set_Directory (+To);
          Locked := True;
       end change;
 
