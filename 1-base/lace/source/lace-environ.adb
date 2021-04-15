@@ -172,7 +172,11 @@ is
    function Exists (Path : in environ.Path) return Boolean
    is
    begin
-      check (Path);
+      if Path = ""
+      then
+         raise Error with "No path specified.";
+      end if;
+
       return ada.Directories.Exists (+Path);
    end Exists;
 
@@ -522,7 +526,11 @@ is
    procedure verify_Folder (Named  : in Folder)
    is
    begin
-      check (Named);
+      if Named = ""
+      then
+         raise Error with "No path specified.";
+      end if;
+
       ada.Directories.create_Path (+Named);
    end verify_Folder;
 
