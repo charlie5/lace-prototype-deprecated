@@ -1121,7 +1121,7 @@ is
    is
       use Shell,
           Shell.Commands;
-      the_Command : Command := to_Command (command_Line);
+      the_Command : Command := Forge.to_Command (command_Line);
    begin
       return Output_of (run (The_Command, +Input));
    exception
