@@ -2,7 +2,7 @@ with
      "lace",
      "lace_shared";
 
-library
+--library
 project Math
 is
    for Create_Missing_Dirs use "True";
@@ -11,7 +11,7 @@ is
    for Exec_Dir        use ".";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "Math";
+--   for Library_Name    use "Math";
 
    for Source_Dirs use ("../source/generic",
                         "../source/generic/pure/algebra",
