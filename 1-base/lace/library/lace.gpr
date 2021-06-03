@@ -3,7 +3,7 @@ with
    "lace_shared",
    "ashell";
 
-library
+--library
 project Lace
 is
    type Restrictions is ("xgc", "ravenscar");
@@ -15,7 +15,7 @@ is
    for Exec_Dir        use ".";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "Lace";
+--   for Library_Name    use "Lace";
 
    for Source_Dirs use (".",
                         "../source",
