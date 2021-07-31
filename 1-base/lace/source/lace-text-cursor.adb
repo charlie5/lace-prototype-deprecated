@@ -40,12 +40,12 @@ is
    end has_Element;
 
 
-   procedure advance (Self : in out Item;   Delimiter      : in String   := " ";
-                                            Repeat         : in Positive := 1;
-                                            skip_Delimiter : in Boolean  := True)
+   procedure advance (Self : in out Item;   Delimiter      : in String  := " ";
+                                            Repeat         : in Natural := 0;
+                                            skip_Delimiter : in Boolean := True)
    is
    begin
-      for Count in 1 .. Repeat
+      for Count in 1 .. Repeat + 1
       loop
          declare
             delimiter_Position : Natural;
@@ -62,7 +62,7 @@ is
                then
                   Self.Current := delimiter_Position + Delimiter'Length;
 
-               elsif Count = Repeat
+               elsif Count = Repeat + 1
                then
                   Self.Current := delimiter_Position - 1;
 
@@ -94,15 +94,16 @@ is
 
 
    function next_Token (Self      : in out Item;
-                        Delimiter : in     Character := ' ') return String
+                        Delimiter : in     Character := ' ';
+                        Trim      : in     Boolean   := False) return String
    is
    begin
-      return next_Token (Self, "" & Delimiter);
+      return next_Token (Self, "" & Delimiter, Trim);
    end next_Token;
 
 
-   function next_Token (Self      : in out Item;
-                        Delimiter : in     String := " ") return String
+   function  next_Token  (Self : in out item;   Delimiter : in String    := " ";
+                                                Trim      : in Boolean   := False) return String
    is
    begin
       if at_End (Self)
@@ -116,13 +117,15 @@ is
       begin
          if delimiter_Position = 0
          then
-            return the_Token : constant String := Self.Target.Data (Self.Current .. Self.Target.Length)
+            return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. Self.Target.Length), Both)
+                                                           else             Self.Target.Data (Self.Current .. Self.Target.Length))
             do
                Self.Current := 0;
             end return;
          end if;
 
-         return the_Token : constant String := Self.Target.Data (Self.Current .. delimiter_Position - 1)
+         return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. delimiter_Position - 1), Both)
+                                                        else             Self.Target.Data (Self.Current .. delimiter_Position - 1))
          do
             Self.Current := delimiter_Position + Delimiter'Length;
          end return;
@@ -187,16 +190,15 @@ is
    end Length;
 
 
-   function Peek (Self : in Item;   Length : in Natural) return String
+   function Peek (Self : in Item;   Length : in Natural := Remaining) return String
    is
-      Last : Natural := Self.Current + Length - 1;
+      Last : constant Natural := (if Length = Natural'Last then Self.Target.Length
+                                                           else Self.Current + Length - 1);
    begin
       if at_End (Self)
       then
          return "";
       end if;
-
-      Last := Natural'Min (Last, Self.Target.Length);
 
       return Self.Target.Data (Self.Current .. Last);
    end Peek;

@@ -21,20 +21,22 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
-   function  next_Token  (Self : in out item;   Delimiter : in Character := ' ') return String;
-   function  next_Token  (Self : in out item;   Delimiter : in String    := " ") return String;
+   function  next_Token  (Self : in out item;   Delimiter : in Character := ' ';
+                                                Trim      : in Boolean   := False) return String;
+   function  next_Token  (Self : in out item;   Delimiter : in String    := " ";
+                                                Trim      : in Boolean   := False) return String;
 
    procedure skip_Token  (Self : in out Item;   Delimiter : in String := " ");
    procedure skip_White  (Self : in out Item);
 
-   procedure advance     (Self : in out Item;   Delimiter      : in String   := " ";
-                                                Repeat         : in Positive := 1;
-                                                skip_Delimiter : in Boolean  := True);
+   procedure advance     (Self : in out Item;   Delimiter      : in String  := " ";
+                                                Repeat         : in Natural := 0;
+                                                skip_Delimiter : in Boolean := True);
    --
    -- Search begins at the cursors current position.
    -- Advances to the position immediately after Delimiter.
    -- Sets Iterator to 0 if Delimiter is not found.
-   -- Search is carried out 'Repeat' times.
+   -- Search is repeated 'Repeat' times.
 
    function get_Integer (Self : in out Item) return Integer;
    --
@@ -48,7 +50,8 @@ is
    -- Cursor is positioned at the next character following the real.
    -- Raises no_data_Error if no legal real exists.
 
-   function Peek (Self : in Item;   Length : in Natural) return String;
+   Remaining : constant Natural;
+   function Peek (Self : in Item;   Length : in Natural := Remaining) return String;
 
 
    at_end_Error  : exception;
@@ -63,5 +66,7 @@ private
          Target  : access constant Text.item;
          Current : Natural  := 0;
       end record;
+
+   Remaining : constant Natural := Natural'Last;
 
 end lace.text.Cursor;
