@@ -9,6 +9,8 @@ auto.cgpr
 *.stdout
 *.a
 *.log
+.clang-format
+.clangd
 
 
 ## Build folders
