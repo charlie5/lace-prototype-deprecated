@@ -573,12 +573,19 @@ is
 
    function load (Self : in File) return String
    is
+      use type ada.Directories.File_Size;
+      Size : ada.Directories.File_Size;
    begin
       check (Self);
-      declare
-         Size : constant ada.Directories.File_Size := ada.Directories.Size (+Self);
+      Size := ada.Directories.Size (+Self);
 
-         type my_String is new String (1 .. Natural (Size) - 1);
+      if Size = 0
+      then
+         return "";
+      end if;
+
+      declare
+         type my_String is new String (1 .. Natural (Size));
 
          package String_IO is new ada.Direct_IO (my_String);
          use     String_IO;
