@@ -1,25 +1,20 @@
 with
      lace.Environ.OS_Commands,
      lace.Text.utility,
---  posix.user_Database,
-     --  posix.process_Identification,
      posix.file_Status,
      posix.Calendar,
 
-     --  shell.Commands,
      shell.Directory_Iteration,
 
      lace.Text.all_Tokens,
 
      ada.Strings.fixed,
-     --  ada.Strings.Maps,
      ada.Characters.handling,
      ada.Directories,
      ada.Direct_IO,
      ada.Tags,
      ada.Text_IO,
      ada.IO_Exceptions;
-     --  ada.Exceptions;
 
 package body lace.Environ.Paths
 is
@@ -275,7 +270,6 @@ is
          end if;
       end;
    end Simple;
-
 
 
    -----------
