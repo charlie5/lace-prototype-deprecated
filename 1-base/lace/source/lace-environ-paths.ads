@@ -72,7 +72,8 @@ is
    function  contents_Count (Self    : in Folder;                              -- Does not include the "." and ".." folders.
                              Recurse : in Boolean := False) return Natural;
 
-   function  Parent (Self : in Path'Class) return Folder;                      -- Returns 'no_Folder' if 'Self' has no parent.
+   function  Parent   (Self : in Path'Class)                     return Folder;     -- Returns 'no_Folder' if 'Self' has no parent.
+   function  Relative (Self : in Folder;   To : in Folder'Class) return Folder;
 
 
    -------------------
@@ -135,6 +136,9 @@ is
    procedure append      (Self : in File;   Text : in String);
    procedure append_File (Self : in File;   To   : in File);
    procedure touch       (Self : in File);
+
+   function  Relative      (Self : in File;   To : in Folder'Class) return File;
+   function  rid_Extension (Self : in File)                         return File;
 
 
    --- Compression

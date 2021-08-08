@@ -1,6 +1,7 @@
 with
      lace.Environ.OS_Commands,
-     --  posix.user_Database,
+     lace.Text.utility,
+--  posix.user_Database,
      --  posix.process_Identification,
      posix.file_Status,
      posix.Calendar,
@@ -460,6 +461,17 @@ is
    end verify_Folder;
 
 
+   function Relative (Self : in Folder;   To : in Folder'Class) return Folder
+   is
+      use lace.Text,
+          lace.Text.utility;
+      Filename        : constant lace.Text.item := to_Text (+Self);
+      relative_Folder : constant lace.Text.item := replace (Filename, pattern => +To & "/",
+                                                                      by      => "");
+   begin
+      return to_Folder (+relative_Folder);
+   end Relative;
+
 
    -------------------
    --- Folder Contexts
@@ -798,6 +810,29 @@ is
          raise Error with Output;
       end if;
    end touch;
+
+
+   function Relative (Self : in File;   To : in Folder'Class) return File
+   is
+      use lace.Text,
+          lace.Text.utility;
+      Filename      : constant lace.Text.item := to_Text (+Self);
+      relative_File : constant lace.Text.item := replace (Filename, pattern => +To & "/",
+                                                                    by      => "");
+   begin
+      return to_File (+relative_File);
+   end Relative;
+
+
+   function rid_Extension (Self : in File) return File
+   is
+      use ada.Directories;
+
+      Parent : constant Folder := Self.Parent;
+      Name   : constant String := base_Name (+Self.Name);
+   begin
+      return Parent + to_File (Name);
+   end rid_Extension;
 
 
 
