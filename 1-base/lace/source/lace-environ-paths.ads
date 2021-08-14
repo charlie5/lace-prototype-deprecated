@@ -66,7 +66,7 @@ is
    procedure   copy_Folder (Self : in Folder;   To : in Folder);
    procedure   move_Folder (Self : in Folder;   To : in Folder);
    procedure rename_Folder (Self : in Folder;   To : in Folder);
-   procedure verify_Folder (Self : in Folder);                                 -- Ensure that the folder exists.
+   procedure ensure_Folder (Self : in Folder);                                 -- Ensure that the folder exists.
 
    function  is_Empty       (Self    : in Folder)           return Boolean;
    function  contents_Count (Self    : in Folder;                              -- Does not include the "." and ".." folders.

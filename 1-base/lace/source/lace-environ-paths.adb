@@ -443,7 +443,7 @@ is
    end rename_Folder;
 
 
-   procedure verify_Folder (Self  : in Folder)
+   procedure ensure_Folder (Self  : in Folder)
    is
    begin
       if Self.Name = ""
@@ -452,7 +452,7 @@ is
       end if;
 
       ada.Directories.create_Path (+Self);
-   end verify_Folder;
+   end ensure_Folder;
 
 
    function Relative (Self : in Folder;   To : in Folder'Class) return Folder
