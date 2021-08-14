@@ -16,7 +16,7 @@ is
       return Self : Font.texture.item
       do
          Self.define (fontImpl.Texture.new_FontImpl_texture (Self'Access,
-                                                             fontFilePath).all'Access);
+                                                             fontFilePath).all'unchecked_Access);
       end return;
    end to_Font_texture;
 
@@ -27,7 +27,7 @@ is
       Self : constant Font.texture.view := new Font.texture.item;
    begin
       Self.define (fontImpl.Texture.new_FontImpl_texture (Self,
-                                                          fontFilePath).all'Access);
+                                                          fontFilePath).all'unchecked_Access);
       return Self;
    end new_Font_texture;
 
@@ -42,7 +42,7 @@ is
       do
          Self.define (fontImpl.Texture.new_FontImpl_texture (Self'Access,
                                                              pBufferBytes,
-                                                             bufferSizeInBytes).all'Access);
+                                                             bufferSizeInBytes).all'unchecked_Access);
       end return;
    end to_Font_texture;
 
@@ -103,7 +103,7 @@ is
          return null;
       end if;
 
-      return myimpl.MakeGlyphImpl (slot).all'Access;
+      return myimpl.MakeGlyphImpl (slot).all'unchecked_Access;
    end MakeGlyph;
 
 

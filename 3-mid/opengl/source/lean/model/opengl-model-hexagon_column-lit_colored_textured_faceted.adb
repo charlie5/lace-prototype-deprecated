@@ -72,7 +72,7 @@ is
          end the_Indices;
 
          the_Geometry  : constant Geometry_view
-           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'Access;
+           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'unchecked_Access;
 
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan,
@@ -93,7 +93,7 @@ is
          the_Indices   : constant Indices := (1, 2, 3, 4);
 
          the_Geometry  : constant Geometry_view
-           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'Access;
+           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'unchecked_Access;
 
          the_Primitive : constant Primitive.view
            := Primitive.indexed.new_Primitive (triangle_Strip,  the_Indices).all'Access;

@@ -18,8 +18,8 @@ is
       the_Bounds :         Bounds;
 
    begin
-      FT_Outline_Get_CBox (FT_GlyphSlot_Get_Outline (glyth_Slot).all'Access,
-                           bbox'Unchecked_Access);
+      FT_Outline_Get_CBox (FT_GlyphSlot_Get_Outline (glyth_Slot).all'unchecked_Access,
+                           bbox'unchecked_Access);
 
       the_Bounds := (ball => <>,
                      box  => (lower => (1 => Real (bbox.xMin) / 64.0,

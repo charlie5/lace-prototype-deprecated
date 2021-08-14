@@ -342,7 +342,7 @@ is
                  := to_lit_textured_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_Geometry_view
-                 := lit_textured.new_Geometry.all'Access;
+                 := lit_textured.new_Geometry.all'unchecked_Access;
             begin
                if not normals_Known
                then
@@ -391,7 +391,7 @@ is
                  := to_lit_textured_skinned_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_skinned_Geometry_view
-                 := lit_textured_skinned.new_Geometry.all'Access;
+                 := lit_textured_skinned.new_Geometry.all'unchecked_Access;
             begin
                my_Geometry.Vertices_are (now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;

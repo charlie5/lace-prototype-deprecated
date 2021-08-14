@@ -902,7 +902,7 @@ is
             next (Cursor);
          end loop;
 
-         if current_Map = Map_1'unchecked_Access
+         if current_Map = Map_1'unrestricted_Access
          then   current_Map := Map_2'unchecked_Access;
          else   current_Map := Map_1'unchecked_Access;
          end if;

@@ -45,7 +45,7 @@ is
          use openGL.Geometry.colored,
              openGL.Primitive;
 
-         the_Geometry  : constant Geometry_view          := openGL.Geometry.colored.new_Geometry.all'Access;
+         the_Geometry  : constant Geometry_view          := openGL.Geometry.colored.new_Geometry.all'unchecked_Access;
          the_Primitive : constant Primitive.indexed.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                              the_Indices).all'Access;
       begin

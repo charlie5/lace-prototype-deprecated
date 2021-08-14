@@ -49,7 +49,7 @@ is
       is
          use openGL.Primitive;
 
-         the_Geometry  : constant Geometry_view  := openGL.Geometry.textured.new_Geometry.all'Access;
+         the_Geometry  : constant Geometry_view  := openGL.Geometry.textured.new_Geometry.all'unchecked_Access;
          the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                      the_Indices).all'Access;
       begin

@@ -46,7 +46,7 @@ is
          end if;
 
          Self.err := FT_Set_Charmap (Self.ftFace,
-                                     FT_Face_Get_charmap_at (Self.ftFace, 0).all'Access);
+                                     FT_Face_Get_charmap_at (Self.ftFace, 0).all'unchecked_Access);
       end if;
 
 

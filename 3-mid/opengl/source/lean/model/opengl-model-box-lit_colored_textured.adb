@@ -46,7 +46,7 @@ is
          use openGL.Primitive;
 
          the_Geometry  : constant Geometry_view  := openGL.Geometry.lit_colored_textured.new_Geometry
-                                                      (texture_is_Alpha => False).all'Access;
+                                                      (texture_is_Alpha => False).all'unchecked_Access;
          the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                      the_Indices).all'Access;
       begin

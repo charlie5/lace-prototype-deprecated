@@ -82,7 +82,7 @@ is
       the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
       the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
 
-      the_Geometry  : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'Access;
+      the_Geometry  : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False).all'unchecked_Access;
       the_Bounds    :          openGL.Bounds := null_Bounds;
 
 
