@@ -1,6 +1,8 @@
 with
      shell.Commands,
 
+     gnat.OS_Lib,
+
      ada.Strings.fixed,
      ada.Strings.Maps,
      ada.Characters.latin_1,
@@ -77,6 +79,20 @@ is
       when E : command_Error =>
          raise Error with Exception_Message (E);
    end run_OS;
+
+
+
+   function Executable_on_Path (Executable : Paths.File) return Boolean
+   is
+      use Paths,
+          gnat.OS_Lib;
+
+      File_Path :          String_Access := Locate_Exec_On_Path (+Executable);
+      Found     : constant Boolean       := File_Path /= null;
+   begin
+      free (File_Path);
+      return Found;
+   end Executable_on_Path;
 
 
 end lace.Environ.OS_Commands;

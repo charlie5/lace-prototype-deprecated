@@ -25,4 +25,9 @@ is
    --
    -- Returns any output. Error output is appended if add_Errors is true.
 
+
+   function Executable_on_Path (Executable : Paths.File) return Boolean;
+   --
+   -- Returns True if the Executable exists on the environment PATH variable.
+
 end lace.Environ.OS_Commands;
