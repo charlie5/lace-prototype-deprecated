@@ -1,12 +1,10 @@
 with
-     ada.Numerics;
+     ada.Numerics.generic_elementary_Functions;
+
 
 
 package body cached_Trigonometry
 is
-   use float_elementary_Functions;
-
-
    sin_Cache       : array (0 .. slot_Count - 1) of Float_Type;
    cos_Cache       : array (0 .. slot_Count - 1) of Float_Type;
 
@@ -60,7 +58,7 @@ is
 
    -- tbd: tan, etc
 
-
+   package float_elementary_Functions is new Ada.Numerics.generic_elementary_Functions (Float_Type);
 
 begin
    for Each in cos_Cache'Range

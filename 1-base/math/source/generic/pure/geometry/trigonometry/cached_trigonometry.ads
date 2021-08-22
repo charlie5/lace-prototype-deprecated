@@ -1,10 +1,5 @@
-with
-     ada.Numerics.Generic_Elementary_Functions;
-
-
 generic
    type Float_Type is digits <>;
-   with package float_elementary_Functions is new Ada.Numerics.Generic_Elementary_Functions (Float_Type);
 
    slot_Count : Standard.Positive;
 
@@ -14,7 +9,6 @@ package cached_Trigonometry
 --
 is
    pragma Optimize (Time);
-
 
    function cos (Angle : in Float_Type) return Float_Type;
    function sin (Angle : in Float_Type) return Float_Type;
