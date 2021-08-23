@@ -1,95 +1,55 @@
-package body any_math.any_Algebra.any_linear.any_d2
+package body any_Math.any_Algebra.any_linear.any_d2
 is
 
+   -----------
+   -- Vector_2
+   --
 
-   function to_translation_Transform (Translation : Vector_2) return Matrix_3x3
-   is
-   begin
-      return ((            1.0,             0.0,  0.0),
-              (            0.0,             1.0,  0.0),
-              (Translation (1), Translation (2),  1.0));
-   end to_translation_Transform;
-
-
-
-   function to_rotation_Transform (Angle : in Radians ) return Matrix_3x3
-   is
-      use Functions;
-   begin
-      return (( cos (Angle),  sin (Angle),  0.0),
-              (-sin (Angle),  cos (Angle),  0.0),
-              (         0.0,          0.0,  1.0));
-   end to_rotation_Transform;
-
-
-
-   function to_rotation_Matrix (Angle : in Radians ) return Matrix_2x2
-   is
-      use Functions;
-   begin
-      return (( cos (Angle),  sin (Angle)),
-              (-sin (Angle),  cos (Angle)));
-   end to_rotation_Matrix;
-
-
-
-   function to_Transform_2d (Rotation    : in Radians;
-                             Translation : in Vector_2) return Transform_2d
-   is
-   begin
-      return (to_rotation_Matrix (Rotation),
-              Translation);
-   end to_Transform_2d;
-
-
-
-   function angle_Between_preNorm (U : in Vector_2;   V : in Vector_2) return Real
+   function Angle_between_pre_Norm (U, V : in Vector_2) return Real
    is
       use Functions, Vectors;
       Val : Real := U * V;   -- Dot product.
    begin
-      if    val < -1.0 then   val := -1.0;   -- Clamp to avoid rounding errors; acos will
+      if    val < -1.0 then   val := -1.0;   -- Clamp to avoid rounding errors. arcCos will
       elsif val >  1.0 then   val :=  1.0;   -- fail with values outside this range.
       end if;
 
       return arcCos (Val);
-   end angle_Between_preNorm;
+   end Angle_between_pre_Norm;
 
 
 
-   function Midpoint (Self, Other : in Vector_2) return Vector_2
+   function Midpoint (From, To : in Vector_2) return Vector_2
    is
    begin
-      return ((Self (1) + Other (1)) * 0.5,
-              (Self (2) + Other (2)) * 0.5);
+      return ((From (1) + To (1)) * 0.5,
+              (From (2) + To (2)) * 0.5);
    end Midpoint;
 
 
 
-   function Distance (Self : in Vector_2;   To : in Vector_2) return Real
+   function Distance (From, To : in Vector_2) return Real
    is
-      Pad : constant Vector_2 := Self - To;
    begin
-      return abs (Pad);
+      return abs (From - To);
    end Distance;
 
 
 
-
-   function Interpolated (v0, v1 : in Vector_2;
-                          rt     : in Real)  return Vector_2
+   function Interpolated (From, To : in Vector_2;
+                          Percent  : in Percentage) return Vector_2
    is
-      s : constant Real := 1.0 - rt;
+      P : constant Real := Percent / 100.0;
+      S : constant Real := 1.0 - P;
    begin
-      return (s * v0 (1) + rt * v1 (1),
-              s * v0 (2) + rt * v1 (2));
+      return (S * From (1) + P * To (1),
+              S * From (2) + P * To (2));
    end Interpolated;
 
 
 
-
-   --------------
-   --- Matrix_2x2
+   -------------
+   -- Matrix_2x2
    --
 
    function to_Matrix (Row_1, Row_2 : in Vector_2) return Matrix_2x2
@@ -100,6 +60,14 @@ is
    end to_Matrix;
 
 
+
+   function to_rotation_Matrix (Angle : in Radians ) return Matrix_2x2
+   is
+      use Functions;
+   begin
+      return (( cos (Angle),  sin (Angle)),
+              (-sin (Angle),  cos (Angle)));
+   end to_rotation_Matrix;
 
 
 
@@ -119,7 +87,7 @@ is
 
 
 
-   function    to_rotation_Transform (Rotation    : in Matrix_2x2) return Matrix_3x3
+   function to_rotation_Transform (Rotation : in Matrix_2x2) return Matrix_3x3
    is
    begin
       return ((Rotation (1, 1), Rotation (1, 2),  0.0),
@@ -130,24 +98,75 @@ is
 
 
    -------------
-   --  Transform
+   -- Transform
    --
 
    function to_Transform_2d (From : in Matrix_3x3) return Transform_2d
    is
    begin
-      return (rotation    => get_Rotation    (From),
-              translation => get_Translation (From));
+      return (Rotation    => get_Rotation    (From),
+              Translation => get_Translation (From));
    end to_Transform_2d;
 
 
 
-
-   function to_Transform    (From : in Transform_2d) return Matrix_3x3
+   function to_Transform (From : in Transform_2d) return Matrix_3x3
    is
    begin
       return to_rotation_Transform (From.Rotation) * to_translation_Transform (From.Translation);
    end to_Transform;
+
+
+
+   function to_translation_Transform (Translation : Vector_2) return Matrix_3x3
+   is
+   begin
+      return ((            1.0,             0.0,  0.0),
+              (            0.0,             1.0,  0.0),
+              (Translation (1), Translation (2),  1.0));
+   end to_translation_Transform;
+
+
+
+   function to_rotation_Transform (Angle : in Radians) return Matrix_3x3
+   is
+      use Functions;
+   begin
+      return (( cos (Angle),  sin (Angle),  0.0),
+              (-sin (Angle),  cos (Angle),  0.0),
+              (         0.0,          0.0,  1.0));
+   end to_rotation_Transform;
+
+
+
+   function to_scale_Transform (Scale : in Vector_2) return Matrix_3x3
+   is
+   begin
+      return ((Scale (1),        0.0,    0.0),
+              (      0.0,  Scale (2),    0.0),
+              (      0.0,        0.0,    1.0));
+   end to_scale_Transform;
+
+
+
+   function to_Transform (Rotation    : in Matrix_2x2;
+                          Translation : in Vector_2) return Matrix_3x3
+   is
+   begin
+      return ((Rotation (1, 1),  Rotation (1, 2),   0.0),
+              (Rotation (2, 1),  Rotation (2, 2),   0.0),
+              (Translation (1),  Translation (2),   1.0));
+   end to_Transform;
+
+
+
+   function to_Transform_2d (Rotation    : in Radians;
+                             Translation : in Vector_2) return Transform_2d
+   is
+   begin
+      return (to_rotation_Matrix (Rotation),
+              Translation);
+   end to_Transform_2d;
 
 
 
@@ -164,7 +183,6 @@ is
    function "*" (Left : in Vector_2;   Right : in Matrix_3x3) return Vector_2
    is
       use Vectors;
-
       Result : constant Vector := Vector (Left & 1.0) * Matrix (Right);
    begin
       return Vector_2 (Result (1 .. 2));
@@ -172,95 +190,64 @@ is
 
 
 
-   function Invert (Self : in Transform_2d) return Transform_2d
+   function Invert (Transform : in Transform_2d) return Transform_2d
    is
-      inv : constant Matrix_2x2 := Transpose (Self.Rotation);
+      inverse_Rotation : constant Matrix_2x2 := Transpose (Transform.Rotation);
    begin
-      return (translation => inv * (-Self.Translation),
-              rotation    => inv);
+      return (Translation => inverse_Rotation * (-Transform.Translation),
+              Rotation    => inverse_Rotation);
    end Invert;
 
 
 
-   function invXform (Self : in Transform_2d;   inVec : Vector_2) return Vector_2
+   function inverse_Transform (Transform : in Transform_2d;   Vector : in Vector_2) return Vector_2
    is
-      v : constant Vector_2 := inVec - Self.Translation;
+      V : constant Vector_2 := Vector - Transform.Translation;
    begin
-      return Transpose (Self.Rotation) * v;
-   end invXform;
+      return Transpose (Transform.Rotation) * V;
+   end inverse_Transform;
 
 
 
-
-   --------------
-   --- Matrix 3x3
-   --
-
-   function to_scale_Transform (Scale : in Vector_2) return Matrix_3x3
+   function get_Rotation (Transform : in Matrix_3x3) return Matrix_2x2
    is
    begin
-      return ((Scale (1),        0.0,    0.0),
-              (      0.0,  Scale (2),    0.0),
-              (      0.0,        0.0,    1.0));
-   end to_scale_Transform;
-
-
-
-   function to_Transform (Rotation    : in Matrix_2x2;
-                          Translation : in Vector_2)   return Matrix_3x3
-   is
-   begin
-      return ((Rotation (1, 1),  Rotation (1, 2),   0.0),
-              (Rotation (2, 1),  Rotation (2, 2),   0.0),
-              (Translation (1),  Translation (2),   1.0));
-   end to_Transform;
-
-
-
-
-   --------------
-   --- Transforms
-   --
-
-   function get_Rotation (Self : in     Matrix_3x3)    return Matrix_2x2
-   is
-   begin
-      return ((Self (1, 1),  Self (1, 2)),
-              (Self (2, 1),  Self (2, 2)));
+      return ((Transform (1, 1),  Transform (1, 2)),
+              (Transform (2, 1),  Transform (2, 2)));
    end get_Rotation;
 
 
 
-   procedure set_Rotation (Self : in out Matrix_3x3;   To : in Matrix_2x2)
+   procedure set_Rotation (Transform : in out Matrix_3x3;   To : in Matrix_2x2)
    is
    begin
-      Self (1, 1) := To (1, 1);
-      Self (1, 2) := To (1, 2);
-      Self (1, 3) := 0.0;
+      Transform (1, 1) := To (1, 1);
+      Transform (1, 2) := To (1, 2);
+      Transform (1, 3) := 0.0;
 
-      Self (2, 1) := To (2, 1);
-      Self (2, 2) := To (2, 2);
-      Self (2, 3) := 0.0;
+      Transform (2, 1) := To (2, 1);
+      Transform (2, 2) := To (2, 2);
+      Transform (2, 3) := 0.0;
    end set_Rotation;
 
 
 
-   function get_Translation (Self : in     Matrix_3x3)    return Vector_2
+   function get_Translation (Transform : in Matrix_3x3) return Vector_2
    is
    begin
-      return (Self (3, 1),
-              Self (3, 2));
+      return (Transform (3, 1),
+              Transform (3, 2));
    end get_Translation;
 
 
 
-   procedure set_Translation (Self : in out Matrix_3x3;   To : in Vector_2)
+   procedure set_Translation (Transform : in out Matrix_3x3;   To : in Vector_2)
    is
    begin
-      Self (3, 1) := To (1);
-      Self (3, 2) := To (2);
-      Self (3, 3) := 1.0;
+      Transform (3, 1) := To (1);
+      Transform (3, 2) := To (2);
+      Transform (3, 3) := 1.0;
    end set_Translation;
 
 
-end any_math.any_Algebra.any_linear.any_d2;
+end any_Math.any_Algebra.any_linear.any_d2;
