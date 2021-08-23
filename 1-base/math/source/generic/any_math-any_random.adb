@@ -22,13 +22,10 @@ is
    function random_Real (Lower : in Real := Real'First;
                          Upper : in Real := Real'Last) return Real
    is
-      base_Roll : Float;
-      the_Roll  : Real;
+      base_Roll : constant Float := Float_random.Random (Real_Generator);
    begin
-      base_Roll := Float_random.Random (Real_Generator);
-      the_Roll  := Real (base_Roll) * (Upper - Lower) + Lower;
-
-      return the_Roll;
+      return   Lower
+             + Real (base_Roll) * (Upper - Lower);
    end random_Real;
 
 
