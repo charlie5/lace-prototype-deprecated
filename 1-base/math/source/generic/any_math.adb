@@ -5,6 +5,7 @@ package body any_Math
 is
    use ada.Containers;
 
+   -----------
    -- Integers
    --
 
@@ -31,8 +32,10 @@ is
    end swap;
 
 
+   -----------
    -- Counters
    --
+
    procedure increment (Self : in out Count_type;   By : in Count_type := 1)
    is
    begin
@@ -40,13 +43,14 @@ is
    end increment;
 
 
-   procedure decrement (Self : in out ada.containers.Count_type;   By : in ada.containers.Count_type := 1)
+   procedure decrement (Self : in out Count_type;   By : in Count_type := 1)
    is
    begin
       Self := Self - By;
    end decrement;
 
 
+   ---------
    --  Reals
    --
 
@@ -73,7 +77,8 @@ is
    function Clamped (Self : in Real;   Low, High : in Real) return Real
    is
    begin
-      return Real'Max (Low,  Real'Min (Self, High));
+      return Real'Max (Low,
+                       Real'Min (Self, High));
    end Clamped;
 
 
@@ -84,8 +89,10 @@ is
    end clamp;
 
 
+   ---------
    -- Angles
    --
+
    function to_Radians (Self : in Degrees) return Radians
    is
    begin
@@ -100,8 +107,10 @@ is
    end to_Degrees;
 
 
+   ----------
    -- Vectors
    --
+
    function Sum (Self : in Vector) return Real
    is
       the_Sum : Real := 0.0;
@@ -124,32 +133,34 @@ is
 
    function Max (Self : in Vector) return Real
    is
-      the_Max : Real := Self (Self'First);
+      Max : Real := Self (Self'First);
    begin
       for i in Self'First + 1 .. Self'Last
       loop
-         the_Max := Real'Max (the_Max, Self (i));
+         Max := Real'Max (Max, Self (i));
       end loop;
 
-      return the_Max;
+      return Max;
    end Max;
 
 
    function Min (Self : in Vector) return Real
    is
-      the_Min : Real := Self (Self'First);
+      Min : Real := Self (Self'First);
    begin
       for i in Self'First + 1 .. Self'Last
       loop
-         the_Min := Real'Min (the_Min, Self (i));
+         Min := Real'Min (Min, Self (i));
       end loop;
 
-      return the_Min;
+      return Min;
    end Min;
 
 
+   -----------
    -- Matrices
    --
+
    function Row (Self : in Matrix_2x2;   row_Id : in Index) return Vector_2
    is
    begin
@@ -224,8 +235,10 @@ is
    end to_Matrix_4x4;
 
 
+   --------------
    -- Quaternions
    --
+
    function to_Quaternion (From : in Vector_4) return Quaternion
    is
    begin
@@ -289,14 +302,14 @@ is
    end Image;
 
 
-   --  Images
+   ---------
+   -- Images
    --
 
-   --  Real Image
+   -- Real Image
    --
    function Image (Self : in Real;   Precision : in Natural := 5) return String
    is
-      --  tbd: use largest possible ranges
       type Fixed_1  is delta  0.1            range -100_000_000_000_000_000.0 .. 100_000_000_000_000_000.0;
       type Fixed_2  is delta  0.01           range  -10_000_000_000_000_000.0 ..  10_000_000_000_000_000.0;
       type Fixed_3  is delta  0.001          range   -1_000_000_000_000_000.0 ..   1_000_000_000_000_000.0;
@@ -310,7 +323,8 @@ is
       type Fixed_11 is delta  0.00000000001  range              -10_000_000.0 ..              10_000_000.0;
       type Fixed_12 is delta  0.000000000001 range               -1_000_000.0 ..               1_000_000.0;
    begin
-      case Precision is
+      case Precision
+      is
          when 0      => return Integer'Image  (Integer  (Self));
          when 1      => return Fixed_1'Image  (Fixed_1  (Self));
          when 2      => return Fixed_2'Image  (Fixed_2  (Self));
@@ -326,13 +340,14 @@ is
          when 12     => return Fixed_12'Image (Fixed_12 (Self));
          when others => return Fixed_12'Image (Fixed_12 (Self));
       end case;
+
    exception
       when Constraint_Error =>
          return Real'Image (Self);
    end Image;
 
 
-   --  Vector Image
+   -- Vector Image
    --
    function Image (Self : in Vector;   Precision : in Natural := 5) return String
    is
@@ -349,13 +364,15 @@ is
    begin
       add ("(");
 
-      for Each in self'Range
+      for Each in Self'Range
       loop
-         if Each /= self'First then
+         if Each /= Self'First
+         then
             add (", ");
          end if;
 
-         add (Image (Self (Each),  Precision));
+         add (Image (Self (Each),
+                     Precision));
       end loop;
 
       add (")");
@@ -367,20 +384,22 @@ is
    end Image;
 
 
-   function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3
-   is
-   begin
-      return Vector_3 (Self & Z);
-   end to_Vector_3;
-
-
+   -----------
    -- Vector_2
    --
+
    function to_Vector_2 (Self : in Vector_3) return Vector_2
    is
    begin
       return Vector_2 (Self (1 .. 2));
    end to_Vector_2;
+
+
+   function Image (Self : in Vector_2;   Precision : in Natural := 5) return String
+   is
+   begin
+      return Image (Vector (Self), Precision);
+   end Image;
 
 
    overriding
@@ -428,15 +447,17 @@ is
    end "/";
 
 
-   function Image (Self : in Vector_2;   Precision : in Natural := 5) return String
-   is
-   begin
-      return Image (Vector (Self), Precision);
-   end Image;
-
-
+   -----------
    -- Vector_3
    --
+
+   function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3
+   is
+   begin
+      return Vector_3 (Self & Z);
+   end to_Vector_3;
+
+
    function Image (Self : in Vector_3;   Precision : in Natural := 5) return String
    is
    begin
@@ -454,7 +475,7 @@ is
    end "*";
 
 
-   function "*" (Left : in Vector_3;   Right : in Vector_3) return Vector_3
+   function "*" (Left, Right : in Vector_3) return Vector_3
    is
    begin
       return (1 => Left (2) * Right (3)  -  Left (3) * Right (2),
@@ -464,26 +485,26 @@ is
 
 
    overriding
-   function "+" (L, R : in Vector_3) return Vector_3
+   function "+" (Left, Right : in Vector_3) return Vector_3
    is
    begin
-      return (L (1) + R (1),
-              L (2) + R (2),
-              L (3) + R (3));
+      return (Left (1) + Right (1),
+              Left (2) + Right (2),
+              Left (3) + Right (3));
    end "+";
 
 
    overriding
-   function "-" (L, R : in Vector_3) return Vector_3
+   function "-" (Left, Right : in Vector_3) return Vector_3
    is
    begin
-      return (L (1) - R (1),
-              L (2) - R (2),
-              L (3) - R (3));
+      return (Left (1) - Right (1),
+              Left (2) - Right (2),
+              Left (3) - Right (3));
    exception
       when Constraint_Error =>
-         raise Constraint_Error with "any_math ""-"" (L, R : Vector_3) => "
-                                    & Image (L) & "   " & Image (R);
+         raise Constraint_Error with "any_math ""-"" (Left, Right : Vector_3) => "
+                                    & Image (Left) & "   " & Image (Right);
    end "-";
 
 
@@ -491,7 +512,9 @@ is
    function "-" (Right : in Vector_3) return Vector_3
    is
    begin
-      return (-Right (1), -Right (2), -Right (3));
+      return (-Right (1),
+              -Right (2),
+              -Right (3));
    end "-";
 
 
@@ -531,12 +554,14 @@ is
    end "abs";
 
 
+   ---------
    -- Matrix
    --
+
    function Image (Self : Matrix) return String
    is
-      the_Image : String (1 .. 1024);
-      Last      : Standard.Natural := 0;
+      Image : String (1 .. 1024);
+      Last  : Natural := 0;
    begin
       for Row in Self'Range (1)
       loop
@@ -545,24 +570,27 @@ is
             declare
                Element : constant String := Real'Image (Self (Row, Col));
             begin
-               Last := Last + 1;
-               the_Image (Last) := ' ';
-               Last := Last + 1;
-               the_Image (Last .. Last + Element'Length - 1) := Element;
-               Last := Last + Element'Length - 1;
+               Last         := Last + 1;
+               Image (Last) := ' ';
+               Last         := Last + 1;
+               Image (Last .. Last + Element'Length - 1)
+                            := Element;
+               Last         := Last + Element'Length - 1;
             end;
          end loop;
 
-         Last             := Last + 1;
-         the_Image (Last) := ada.Characters.Latin_1.LF;
+         Last         := Last + 1;
+         Image (Last) := ada.Characters.Latin_1.LF;
       end loop;
 
-      return the_Image (1 .. Last);
+      return Image (1 .. Last);
    end Image;
 
 
+   -------------
    -- Matrix_2x2
    --
+
    overriding
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2
    is
@@ -573,17 +601,18 @@ is
 
    function "*" (Left : in Matrix_2x2;   Right : in Vector_2) return Vector_2
    is
-      R : Vector_2 := (others => 0.0);
+      Result : Vector_2 := (others => 0.0);
    begin
       for Row in 1 .. 2
       loop
          for Col in 1 .. 2
          loop
-            R  (Row) := R (Row)  +  Left (Row, Col) * Right (Col);
+            Result (Row) := Result (Row) +   Left (Row, Col)
+                                           * Right (Col);
          end loop;
       end loop;
 
-      return R;
+      return Result;
    end "*";
 
 
@@ -596,8 +625,10 @@ is
    end "*";
 
 
+   -------------
    -- Matrix_3x3
    --
+
    overriding
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3
    is
@@ -628,13 +659,15 @@ is
    end "*";
 
 
+   -------------
    -- Matrix_4x4
    --
+
    overriding
    function Transpose (Self : in Matrix_4x4) return Matrix_4x4
    is
    begin
-      return Matrix_4x4 (vectors.Transpose (Matrix (Self)));
+      return Matrix_4x4 (Vectors.Transpose (Matrix (Self)));
    end Transpose;
 
 
@@ -690,7 +723,7 @@ is
 
 
    overriding
-   function "*" (Left : in Matrix_4x4; Right : in Matrix_4x4) return Matrix_4x4
+   function "*" (Left : in Matrix_4x4;   Right : in Matrix_4x4) return Matrix_4x4
    is
       A : Matrix_4x4 renames Left;
       B : Matrix_4x4 renames Right;

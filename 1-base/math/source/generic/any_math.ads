@@ -14,23 +14,25 @@ package any_Math
 is
    pragma Pure;
 
+   ----------
    -- Indices
    --
-   subtype Index   is Standard.Integer;
+   subtype Index   is standard.Integer;
    type    Indices is array (Index range <>) of Index;
 
 
+   -----------
    -- Counters
    --
-   subtype Counter is ada.Containers.Count_type;
+   subtype Counter is ada.Containers.Count_Type;
 
    procedure increment (Self : in out Counter;   By : in Counter := 1);
    procedure decrement (Self : in out Counter;   By : in Counter := 1);
 
 
+   -----------
    -- Integers
    --
-
    procedure increment (Self : in out Integer;   By : in Integer := 1);
    procedure decrement (Self : in out Integer;   By : in Integer := 1);
 
@@ -41,6 +43,7 @@ is
    type Positives is array (Index range <>) of aliased Positive;
 
 
+   --------
    -- Reals
    --
    subtype Real is Real_t;
@@ -53,16 +56,19 @@ is
    function  Image       (Self : in     Real;   Precision : in Natural := 5) return String;
 
 
+   ------------
    -- Functions
    --
-   package Functions is new ada.numerics.generic_elementary_Functions (Real);
+   package Functions is new ada.Numerics.generic_elementary_Functions (Real);
 
 
+   ------------------
    -- Complex Numbers
    --
-   package complex_Reals is new ada.numerics.generic_complex_Types (Real);
+   package complex_Reals is new ada.Numerics.generic_complex_Types (Real);
 
 
+   ---------
    -- Angles
    --
    subtype Radians is     Real;
@@ -72,10 +78,11 @@ is
    function to_Degrees (Self : in Radians) return Degrees;
 
 
+   ----------
    -- Vectors
    --
    package Vectors is new ada.Numerics.generic_real_Arrays (Real'Base);
-   subtype Vector  is Vectors.real_Vector;
+   subtype Vector  is     Vectors.real_Vector;
 
    function Sum     (Self : in Vector) return Real;
    function Average (Self : in Vector) return Real;
@@ -93,9 +100,11 @@ is
    type Vector_16 is new Vector (1 .. 16);
 
 
+   -----------
    -- Vector_2
    --
    function to_Vector_2 (Self : in Vector_3) return Vector_2;
+   function Image       (Self : in Vector_2;   Precision : in Natural := 5) return String;
 
    overriding
    function "+" (Left, Right : in Vector_2) return Vector_2;
@@ -113,12 +122,11 @@ is
    function "/" (Left : in Vector_2;   Right : in Real) return Vector_2;
 
 
+   -----------
    -- Vector_3
    --
    function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3;
-
-   function Image (Self : in Vector_2;   Precision : in Natural := 5) return String;
-   function Image (Self : in Vector_3;   Precision : in Natural := 5) return String;
+   function Image       (Self : in Vector_3;   Precision : in Natural := 5) return String;
 
    overriding
    function "*" (Left : in Real;       Right : in Vector_3) return Vector_3;
@@ -126,19 +134,19 @@ is
    overriding
    function "*" (Left : in Vector_3;   Right : in Real)     return Vector_3;
 
-   function "*" (Left : in Vector_3;   Right : in Vector_3) return Vector_3;   -- Cross product.
+   function "*" (Left, Right : in Vector_3) return Vector_3;   -- Cross product.
 
    overriding
-   function "+" (L, R : in Vector_3) return Vector_3;
+   function "+" (Left, Right : in Vector_3) return Vector_3;
 
    overriding
-   function "-" (L, R : in Vector_3) return Vector_3;
+   function "-" (Left, Right : in Vector_3) return Vector_3;
 
    overriding
-   function "-" (Right : in Vector_3) return Vector_3;
+   function "-" (Right : in Vector_3)       return Vector_3;
 
    overriding
-   function "/" (Left : in Vector_3;   Right : in Real) return Vector_3;
+   function "/" (Left : in Vector_3;   Right : in Real)     return Vector_3;
 
    function "/" (Left : in Real;       Right : in Vector_3) return Vector_3;
 
@@ -146,6 +154,7 @@ is
    function "abs" (Right : in Vector_3) return Vector_3;
 
 
+   -----------
    -- Matrices
    --
 
@@ -163,56 +172,59 @@ is
    function Image (Self : in Matrix) return String;
 
 
+   -------------
    -- Matrix_2x2
    --
    overriding
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2;
 
-   function "*" (Left : in Vector_2;   Right : in Matrix_2x2) return Vector_2;
-   function "*" (Left : in Matrix_2x2; Right : in Vector_2)   return Vector_2;
+   function "*" (Left : in Vector_2;     Right : in Matrix_2x2) return Vector_2;
+   function "*" (Left : in Matrix_2x2;   Right : in Vector_2)   return Vector_2;
 
-   function Row (Self : in Matrix_2x2;   row_Id : in Index) return Vector_2;
-   function Col (Self : in Matrix_2x2;   col_Id : in Index) return Vector_2;
+   function Row (Self : in Matrix_2x2;   row_Id : in Index)     return Vector_2;
+   function Col (Self : in Matrix_2x2;   col_Id : in Index)     return Vector_2;
 
 
+   -------------
    -- Matrix_3x3
    --
    overriding
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3;
 
-   function "*" (Left : in Vector_3;   Right : in Matrix_3x3) return Vector_3;
-   function "*" (Left : in Matrix_3x3; Right : in Vector_3)   return Vector_3;
+   function "*" (Left : in Vector_3;     Right : in Matrix_3x3) return Vector_3;
+   function "*" (Left : in Matrix_3x3;   Right : in Vector_3)   return Vector_3;
 
-   function Row (Self : in Matrix_3x3;   row_Id : in Index) return Vector_3;
-   function Col (Self : in Matrix_3x3;   col_Id : in Index) return Vector_3;
+   function Row (Self : in Matrix_3x3;   row_Id : in Index)     return Vector_3;
+   function Col (Self : in Matrix_3x3;   col_Id : in Index)     return Vector_3;
 
 
+   -------------
    -- Matrix_4x4
    --
    overriding
    function Transpose (Self : in Matrix_4x4) return Matrix_4x4;
 
-   function "*" (Left : in Vector_4;   Right : in Matrix_4x4) return Vector_4;
-   function "*" (Left : in Matrix_4x4; Right : in Vector_4)   return Vector_4;
+   function "*" (Left : in Vector_4;     Right : in Matrix_4x4)  return Vector_4;
+   function "*" (Left : in Matrix_4x4;   Right : in Vector_4)    return Vector_4;
 
-   function "*" (Left : in Matrix_4x4; Right : in Vector_3)   return Vector_3;
+   function "*" (Left : in Matrix_4x4;   Right : in Vector_3)    return Vector_3;
 
-   function "*" (Left : in Vector_3;   Right : in Matrix_4x4) return Vector_4;
-   function "*" (Left : in Matrix_4x4; Right : in Vector_3)   return Vector_4;
+   function "*" (Left : in Vector_3;     Right : in Matrix_4x4)  return Vector_4;
+   function "*" (Left : in Matrix_4x4;   Right : in Vector_3)    return Vector_4;
 
    overriding
-   function "*" (Left : in Matrix_4x4; Right : in Matrix_4x4) return Matrix_4x4;
+   function "*" (Left : in Matrix_4x4;   Right  : in Matrix_4x4) return Matrix_4x4;
 
-   function Row (Self : in Matrix_4x4;   row_Id : in Index) return Vector_4;
-   function Col (Self : in Matrix_4x4;   col_Id : in Index) return Vector_4;
+   function Row (Self : in Matrix_4x4;   row_Id : in Index)      return Vector_4;
+   function Col (Self : in Matrix_4x4;   col_Id : in Index)      return Vector_4;
 
    function to_Vector_16  (Self : in Matrix_4x4) return Vector_16;
    function to_Matrix_4x4 (Self : in Vector_16)  return Matrix_4x4;
 
 
+   --------------
    -- Quaternions
    --
-
    type Quaternion is
       record
          R : Real;       -- Scalar part.
@@ -230,9 +242,10 @@ is
    function "+" (Left, Right : in Quaternion) return Quaternion;
    function "-" (Left, Right : in Quaternion) return Quaternion;
 
-   function Image (Self : in     Quaternion;   Precision : in Natural := 5) return String;
+   function Image (Self : in Quaternion;   Precision : in Natural := 5) return String;
 
 
+   -------------
    -- Transforms
    --
    type Transform_2d is
@@ -251,12 +264,12 @@ is
    null_Transform_3d : constant Transform_3d;   --
 
 
+   ------------
    -- Constants
    --
    Infinity  : constant Real;
    Pi        : constant := ada.numerics.Pi;
-   Phi       : constant
-     := 1.6180339887_4989484820_4586834365_6381177203_0917980576_2862135448_6227052604_6281890244_9707207204_1893911374;
+   Phi       : constant := 1.6180339887_4989484820_4586834365_6381177203_0917980576_2862135448_6227052604_6281890244_9707207204_1893911374;
    --
    --  The 'Golden' ratio.
 
@@ -283,11 +296,11 @@ private
                                           (0.0, 0.0, 1.0, 0.0),
                                           (0.0, 0.0, 0.0, 1.0));
 
-   null_Transform_2d : constant Transform_2d := (translation => (0.0, 0.0),
+   null_Transform_2d : constant Transform_2d := (translation =>  (0.0, 0.0),
                                                  rotation    => ((1.0, 0.0),
                                                                  (0.0, 1.0)));
 
-   null_Transform_3d : constant Transform_3d := (translation => ( 0.0, 0.0, 0.0),
+   null_Transform_3d : constant Transform_3d := (translation =>  (0.0, 0.0, 0.0),
                                                  rotation    => ((1.0, 0.0, 0.0),
                                                                  (0.0, 1.0, 0.0),
                                                                  (0.0, 0.0, 1.0)));
