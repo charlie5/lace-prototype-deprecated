@@ -46,7 +46,8 @@ is
    --------
    -- Reals
    --
-   subtype Real is Real_t;
+   subtype Real       is Real_t;
+   subtype Percentage is Real range 0.0 .. 100.0;
 
    function  almost_Zero (Self : in     Real) return Boolean;
 
