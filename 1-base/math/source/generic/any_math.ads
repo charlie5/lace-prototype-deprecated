@@ -148,8 +148,6 @@ is
    overriding
    function "/" (Left : in Vector_3;   Right : in Real)     return Vector_3;
 
-   function "/" (Left : in Real;       Right : in Vector_3) return Vector_3;
-
    overriding
    function "abs" (Right : in Vector_3) return Vector_3;
 

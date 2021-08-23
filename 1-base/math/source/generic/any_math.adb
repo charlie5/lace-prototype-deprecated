@@ -538,13 +538,6 @@ is
    end "/";
 
 
-   function "/" (Left : in Real;   Right : in Vector_3) return Vector_3
-   is
-   begin
-      return Right / Left;
-   end "/";
-
-
    overriding
    function "abs" (Right : in Vector_3) return Vector_3
    is
