@@ -1,10 +1,10 @@
 with
-     ada.numerics.Float_random;
+     ada.Numerics.Float_random;
 
 
-package body any_math.any_Random
+package body any_Math.any_Random
 is
-   use ada.numerics.Float_random;
+   use ada.Numerics.Float_random;
 
    the_Generator : ada.numerics.Float_random.Generator;
 
@@ -16,9 +16,8 @@ is
    end random_Boolean;
 
 
-
-   function random_Real (Lower : in Real := real'First;
-                         Upper : in Real := real'Last) return Real
+   function random_Real (Lower : in Real := Real'First;
+                         Upper : in Real := Real'Last) return Real
    is
       base_Roll : Float;
       the_Roll  : Real;
@@ -30,7 +29,6 @@ is
    end random_Real;
 
 
-
    function random_Integer (Lower : in Integer := Integer'First;
                             Upper : in Integer := Integer'Last) return Integer
    is
@@ -39,7 +37,6 @@ is
                                      0.0))
              + Lower;
    end random_Integer;
-
 
 
 begin

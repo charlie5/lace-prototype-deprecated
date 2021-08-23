@@ -1,5 +1,5 @@
 generic
-package any_math.any_Random
+package any_Math.any_Random
 is
 
    function random_Real    (Lower : in Real    := Real'First;
@@ -10,4 +10,4 @@ is
 
    function random_Boolean                                      return Boolean;
 
-end any_math.any_Random;
+end any_Math.any_Random;
