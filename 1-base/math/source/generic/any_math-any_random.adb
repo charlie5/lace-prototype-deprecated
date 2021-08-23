@@ -1,12 +1,15 @@
 with
-     ada.Numerics.Float_random;
-
+     ada.Numerics.Float_random,
+     ada.Numerics.Discrete_random;
 
 package body any_Math.any_Random
 is
-   use ada.Numerics.Float_random;
+   use ada.Numerics;
 
-   the_Generator : ada.numerics.Float_random.Generator;
+   package Integer_random is new Discrete_random (Integer);
+
+   Integer_Generator : Integer_random.Generator;
+   Real_Generator    :   Float_random.Generator;
 
 
    function random_Boolean return Boolean
@@ -22,7 +25,7 @@ is
       base_Roll : Float;
       the_Roll  : Real;
    begin
-      base_Roll := ada.numerics.Float_random.Random (the_Generator);
+      base_Roll := Float_random.Random (Real_Generator);
       the_Roll  := Real (base_Roll) * (Upper - Lower) + Lower;
 
       return the_Roll;
@@ -33,12 +36,11 @@ is
                             Upper : in Integer := Integer'Last) return Integer
    is
    begin
-      return Integer (Real'Adjacent (random_Real (0.0, 1.0) * (Real (Upper - Lower + 1))  -  0.5,
-                                     0.0))
-             + Lower;
+      return Integer_random.Random (Integer_Generator, Lower, Upper);
    end random_Integer;
 
 
 begin
-   reset (the_Generator);
+   Integer_random.reset (Integer_Generator);
+   Float_random  .reset (   Real_Generator);
 end any_math.any_Random;
