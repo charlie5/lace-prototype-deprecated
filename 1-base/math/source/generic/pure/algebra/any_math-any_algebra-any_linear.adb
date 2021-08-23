@@ -320,8 +320,34 @@ is
 
 
 
-   function "*" (Self : in     Quaternion;
-                 By   : in     Quaternion) return Quaternion
+   function to_Quaternion (Axis  : in Vector_3;
+                           Angle : in Real) return Quaternion
+   is
+      Result : Quaternion;
+      L      : Real      := Axis * Axis;
+   begin
+      if L > 0.0
+      then
+         declare
+            use Functions;
+            half_Angle : constant Real := Angle * 0.5;
+         begin
+            Result.R := Cos (half_Angle);
+            L        := Sin (half_Angle) * (1.0 / SqRt (L));
+            Result.V := Axis * L;
+         end;
+      else
+         Result.R := L;
+         Result.V := (0.0, 0.0, 0.0);
+      end if;
+
+      return Result;
+   end to_Quaternion;
+
+
+
+   function "*" (Self : in Quaternion;
+                 By   : in Quaternion) return Quaternion
    is
       x    : constant := 1;
       y    : constant := 2;

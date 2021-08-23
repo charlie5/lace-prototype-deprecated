@@ -57,10 +57,18 @@ is
                            axis_Z : in Real;
                            Angle  : in Real) return Quaternion;
    --
-   --  Returns a quaternion defined by a rotation about an axis.
+   -- Returns a quaternion defined by a rotation about an axis.
+   -- (TODO: rid this and use Vector_3 version instead.)
 
 
-   function "*"           (Self : in     Quaternion;   By    : in    Quaternion) return Quaternion;
+   function to_Quaternion (Axis  : in Vector_3;
+                           Angle : in Real) return Quaternion;
+   --
+   -- Returns a quaternion defined by a rotation about an axis.
+
+   function to_Quaternion (Self : in Matrix_3x3) return Quaternion;
+
+   function "*"           (Self : in     Quaternion;   By : in Quaternion) return Quaternion;
    --
    --  Grassmann product.
 
