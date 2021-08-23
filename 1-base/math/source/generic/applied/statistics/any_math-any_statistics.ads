@@ -1,8 +1,8 @@
 generic
-package any_math.any_Statistics
+package any_Math.any_Statistics
 is
 
    pragma Pure;
    pragma Optimize (Time);
 
-end any_math.any_Statistics;
+end any_Math.any_Statistics;

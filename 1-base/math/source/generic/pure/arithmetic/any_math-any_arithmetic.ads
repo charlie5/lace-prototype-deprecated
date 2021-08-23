@@ -1,5 +1,8 @@
 generic
-package any_math.any_Arithmetic
+package any_Math.any_Arithmetic
 is
+
    pragma Pure;
-end any_math.any_Arithmetic;
+   pragma Optimize (Time);
+
+end any_Math.any_Arithmetic;
