@@ -90,6 +90,10 @@ is
    --
    -- Return to the previously pushed folder.
 
+   procedure pop_All     (Context     : in out folder_Context);
+   --
+   -- Return to the initial current folder.
+
 
    ---------
    --- Files

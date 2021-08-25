@@ -499,6 +499,18 @@ is
    end pop_Folder;
 
 
+   procedure pop_All (Context : in out folder_Context)
+   is
+   begin
+      if Context.folder_Stack.is_Empty
+      then
+         raise Error with "'pop_All': No initial folder exists.";
+      end if;
+
+      go_to_Folder (Context.folder_Stack.Element (1));
+      Context.folder_Stack.clear;
+   end pop_All;
+
 
    ---------
    --- Files
