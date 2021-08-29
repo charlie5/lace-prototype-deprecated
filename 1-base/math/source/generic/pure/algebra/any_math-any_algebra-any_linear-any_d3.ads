@@ -12,6 +12,8 @@ is
    function  Midpoint              (Self, Other : in Vector_3)                     return Vector_3;
    function  Interpolated          (v0,   v1    : in Vector_3;   rt : in Real)     return Vector_3;
    function  Angle_between_preNorm (U, V        : in Vector_3)    return Radians;
+   --
+   -- Given that the vectors 'U' and 'V' are already normalized, returns a positive angle between 0 and 180 degrees.
 
    function  Angle                 (Point_1,
                                     Point_2,
