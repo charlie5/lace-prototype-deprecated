@@ -11,7 +11,7 @@ is
    function  Distance              (Self        : in Vector_3;   To : in Vector_3) return Real;
    function  Midpoint              (Self, Other : in Vector_3)                     return Vector_3;
    function  Interpolated          (v0,   v1    : in Vector_3;   rt : in Real)     return Vector_3;
-   function  angle_Between_preNorm (U           : in Vector_3;   V  : in Vector_3) return Real;
+   function  Angle_between_preNorm (U, V        : in Vector_3)    return Radians;
 
    function  Angle                 (Point_1,
                                     Point_2,

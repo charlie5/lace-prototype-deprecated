@@ -24,7 +24,7 @@ is
 
 
 
-   function angle_Between_preNorm (U : in Vector_3;   V : in Vector_3) return Real
+   function angle_Between_preNorm (U : in Vector_3;   V : in Vector_3) return Radians
    is
       use Functions;
       Val : Real := U * V;   -- Dot product.
