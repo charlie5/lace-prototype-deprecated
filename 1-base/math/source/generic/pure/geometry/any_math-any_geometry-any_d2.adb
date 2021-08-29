@@ -1,4 +1,4 @@
-package body any_math.any_Geometry.any_d2
+package body any_Math.any_Geometry.any_d2
 is
 
    ---------
@@ -18,11 +18,11 @@ is
    function to_Polar (Self : in Site) return polar_Site
    is
       use any_Math.complex_Reals;
-      the_Complex : constant Complex := compose_From_Cartesian (Self (1),
+      the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
-      return (angle  => Argument (the_Complex),
-              extent => Modulus  (the_Complex));
+      return (Angle  => Argument (the_Complex),
+              Extent => Modulus  (the_Complex));
    end to_Polar;
 
 
@@ -30,8 +30,8 @@ is
    function to_Site (Self : in polar_Site) return Site
    is
       use any_Math.complex_Reals;
-      the_Complex : constant Complex := compose_from_Polar (modulus  => Self.Extent,
-                                                            argument => Self.Angle);
+      the_Complex : constant Complex := compose_from_Polar (Modulus  => Self.Extent,
+                                                            Argument => Self.Angle);
    begin
       return (the_Complex.Re,
               the_Complex.Im);
@@ -42,7 +42,7 @@ is
    function Angle (Self : in Site) return Radians
    is
       use any_Math.complex_Reals;
-      the_Complex : constant Complex := compose_From_Cartesian (Self (1),
+      the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
       return Argument (the_Complex);
@@ -53,7 +53,7 @@ is
    function Extent (Self : in Site) return Real
    is
       use any_Math.complex_Reals;
-      the_Complex : constant Complex := compose_From_Cartesian (Self (1),
+      the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
       return Modulus (the_Complex);
@@ -70,9 +70,9 @@ is
    is
       use Functions;
    begin
-      return (kind     => anchored_Gradient,
-              anchor   => Anchor,
-              gradient => Tan (Angle));   -- tbd : What about infinite gradient ? ie 90 and 270 degrees ?
+      return (Kind     => anchored_Gradient,
+              Anchor   => Anchor,
+              Gradient => Tan (Angle));   -- TODO: What about infinite gradient ? ie 90 and 270 degrees ?
    end to_Line;
 
 
@@ -81,8 +81,8 @@ is
                      Site_2 : in Site) return Line
    is
    begin
-      return (kind  => two_Points,
-              sites => (Site_1,
+      return (Kind  => two_Points,
+              Sites => (Site_1,
                         Site_2));
    end to_Line;
 
@@ -110,7 +110,7 @@ is
 
    function Gradient (Self : in Line) return Real
    is
-      Run  : constant Real := Self.Sites (2) (1) - Self.Sites (1) (1);
+      Run  : constant Real := Self.Sites (2)(1) - Self.Sites (1)(1);
    begin
       if Run = 0.0
       then
@@ -123,24 +123,24 @@ is
 
 
 
-
    ----------
    --  Bounds
    --
 
    function to_bounding_Box (Self : Sites) return bounding_Box
    is
-      the_Bounds : bounding_Box := null_Bounds;
+      Result : bounding_Box := null_Bounds;
    begin
-      for Each in Self'Range loop
-         the_Bounds.Lower (1) := Real'Min  (the_Bounds.Lower (1),  Self (Each)(1));
-         the_Bounds.Lower (2) := Real'Min  (the_Bounds.Lower (2),  Self (Each)(2));
+      for Each in Self'Range
+      loop
+         Result.Lower (1) := Real'Min  (Result.Lower (1),  Self (Each)(1));
+         Result.Lower (2) := Real'Min  (Result.Lower (2),  Self (Each)(2));
 
-         the_Bounds.Upper (1) := Real'Max  (the_Bounds.Upper (1),  Self (Each)(1));
-         the_Bounds.Upper (2) := Real'Max  (the_Bounds.Upper (2),  Self (Each)(2));
+         Result.Upper (1) := Real'Max  (Result.Upper (1),  Self (Each)(1));
+         Result.Upper (2) := Real'Max  (Result.Upper (2),  Self (Each)(2));
       end loop;
 
-      return the_Bounds;
+      return Result;
    end to_bounding_Box;
 
 
@@ -198,8 +198,8 @@ is
    function Image (Self : bounding_Box) return String
    is
    begin
-      return    "(lower => " & Image (Self.Lower)
-             & ", upper => " & Image (Self.Upper) & ")";
+      return    "(Lower => " & Image (Self.Lower)
+             & ", Upper => " & Image (Self.Upper) & ")";
    end Image;
 
 
@@ -231,7 +231,7 @@ is
            or M1 = M3
            or M2 = M3
          then
-            raise coLinear with
+            raise Colinear with
                 "  G1: " & Image (M1)
               & "  G2: " & Image (M2)
               & "  G3: " & Image (M3);
@@ -253,7 +253,7 @@ is
       B : constant Real := Distance (Self.Vertices (2),  Self.Vertices (3));
       C : constant Real := Distance (Self.Vertices (3),  Self.Vertices (1));
 
-      S : constant Real := (A + B + C) / 2.0;          -- Semi-perimeter.
+      S : constant Real := (A + B + C) / 2.0;                 -- Semi-perimeter.
 
    begin
       return Real (SqRt (S * (S - A) * (S - B) * (S - C)));   -- Herons formula.
@@ -272,23 +272,23 @@ is
 
 
 
-   function prior_Vertex (Self : in Triangle;    To_Vertex : in Positive) return Site
+   function prior_Vertex (Self : in Triangle;    to_Vertex : in Positive) return Site
    is
    begin
-      if To_Vertex = 1
+      if to_Vertex = 1
       then   return Self.Vertices (3);
-      else   return Self.Vertices (To_Vertex - 1);
+      else   return Self.Vertices (to_Vertex - 1);
       end if;
    end prior_Vertex;
 
 
 
-   function next_Vertex (Self : in Triangle;    To_Vertex : in Positive) return Site
+   function next_Vertex (Self : in Triangle;    to_Vertex : in Positive) return Site
    is
    begin
-      if To_Vertex = 3
+      if to_Vertex = 3
       then   return Self.Vertices (1);
-      else   return Self.Vertices (To_Vertex + 1);
+      else   return Self.Vertices (to_Vertex + 1);
       end if;
    end next_Vertex;
 
@@ -298,7 +298,8 @@ is
    is
       use Functions;
 
-      a     : constant Real := Distance (next_Vertex   (Self, to_vertex => at_Vertex),  prior_Vertex (Self, to_vertex => at_Vertex));
+      a     : constant Real := Distance (next_Vertex   (Self, to_vertex => at_Vertex),
+                                         prior_Vertex  (Self, to_vertex => at_Vertex));
       b     : constant Real := Distance (Self.Vertices (at_Vertex),                     next_Vertex  (Self, to_vertex => at_Vertex));
       c     : constant Real := Distance (Self.Vertices (at_Vertex),                     prior_Vertex (Self, to_vertex => at_Vertex));
 
@@ -320,7 +321,7 @@ is
    function Area (Self : Circle) return Real
    is
    begin
-      return Pi * Self.Radius ** 2;
+      return Pi * Self.Radius**2;
    end Area;
 
 
@@ -338,16 +339,16 @@ is
    -- Polygons
    --
 
-   function Centroid (Self : in     Polygon) return Site
+   function Centroid (Self : in Polygon) return Site
    is
       Result : Site := Origin_2d;
    begin
-      for i in 1 .. Self.vertex_Count
+      for i in 1 .. Self.Vertex_Count
       loop
          Result := Result + Self.Vertices (i);
       end loop;
 
-      Result := Result / Real (Self.vertex_Count);
+      Result := Result / Real (Self.Vertex_Count);
       return Result;
    end Centroid;
 
@@ -357,7 +358,7 @@ is
    is
       Center : constant Site := Centroid (Self);
    begin
-      for i in 1 .. Self.vertex_Count
+      for i in 1 .. Self.Vertex_Count
       loop
          Self.Vertices (i) := Self.Vertices (i) - Center;
       end loop;
@@ -365,23 +366,23 @@ is
 
 
 
-   function prior_Vertex (Self : in Polygon;    To_Vertex : in Positive) return Site
+   function prior_Vertex (Self : in Polygon;    to_Vertex : in Positive) return Site
    is
    begin
       if To_Vertex = 1
-      then   return Self.Vertices (Self.vertex_Count);
-      else   return Self.Vertices (To_Vertex - 1);
+      then   return Self.Vertices (Self.Vertex_Count);
+      else   return Self.Vertices (to_Vertex - 1);
       end if;
    end prior_Vertex;
 
 
 
-   function next_Vertex (Self : in Polygon;    To_Vertex : in Positive) return Site
+   function next_Vertex (Self : in Polygon;    to_Vertex : in Positive) return Site
    is
    begin
-      if To_Vertex = Self.vertex_Count
+      if to_Vertex = Self.Vertex_Count
       then   return Self.Vertices (1);
-      else   return Self.Vertices (To_Vertex + 1);
+      else   return Self.Vertices (to_Vertex + 1);
       end if;
    end next_Vertex;
 
@@ -390,7 +391,7 @@ is
    function is_Triangle (Self : in Polygon) return Boolean
    is
    begin
-      return Self.vertex_Count = 3;
+      return Self.Vertex_Count = 3;
    end is_Triangle;
 
 
@@ -401,11 +402,9 @@ is
       j : constant Site := Self.Vertices (1);
       k : constant Site := Self.Vertices (1);
 
-      z :          Real;
+      z : Real :=    (j (1) - i (1))
+                   * (k (2) - j (2));
    begin
-      z :=   (j (1) - i (1))
-           * (k (2) - j (2));
-
       z := z -   (j (2) - i (2))
                * (k (1) - j (1));
 
@@ -425,7 +424,7 @@ is
          return True;     -- All triangles are convex.
       end if;
 
-      for i in 1 .. Self.vertex_Count
+      for i in 1 .. Self.Vertex_Count
       loop
          declare
             k0 : constant Site := Self.Vertices (i);
@@ -434,7 +433,7 @@ is
             function get_k1 return Site
             is
             begin
-               if i = Self.vertex_Count
+               if i = Self.Vertex_Count
                then   return Self.Vertices (1);
                else   return Self.Vertices (i + 1);
                end if;
@@ -446,8 +445,8 @@ is
             function get_k2 return Site
             is
             begin
-               if    i = Self.vertex_Count - 1 then   return Self.Vertices (1);
-               elsif i = Self.vertex_Count     then   return Self.Vertices (2);
+               if    i = Self.Vertex_Count - 1 then   return Self.Vertices (1);
+               elsif i = Self.Vertex_Count     then   return Self.Vertices (2);
                else                                   return Self.Vertices (i + 2);
                end if;
             end get_k2;
@@ -466,10 +465,10 @@ is
                return dx1 * dy2  -  dy1 * dx2;
             end get_Crossproduct;
 
-            the_Crossproduct : constant Real := get_Crossproduct;
+            Crossproduct : constant Real := get_Crossproduct;
 
          begin
-            if the_Crossproduct > 0.0
+            if Crossproduct > 0.0
             then
                if negative_Found
                then
@@ -478,7 +477,7 @@ is
 
                positive_Found := True;
 
-            elsif the_Crossproduct < 0.0
+            elsif Crossproduct < 0.0
             then
                if positive_Found
                then
@@ -499,9 +498,9 @@ is
    is
       Result : Real := 0.0;
    begin
-      for i in 2 .. Self.vertex_Count - 1
+      for i in 2 .. Self.Vertex_Count - 1
       loop
-         Result := Result + Area (Triangle' (vertices => (Self.Vertices (1),
+         Result := Result + Area (Triangle' (Vertices => (Self.Vertices (1),
                                                           Self.Vertices (i),
                                                           Self.Vertices (i + 1))));
       end loop;
@@ -514,9 +513,9 @@ is
    function Perimeter (Self : Polygon) return Real
    is
       Result : Real := Distance (Self.Vertices (1),
-                                 Self.Vertices (Self.vertex_Count));
+                                 Self.Vertices (Self.Vertex_Count));
    begin
-      for i in 1 .. Self.vertex_Count - 1
+      for i in 1 .. Self.Vertex_Count - 1
       loop
          Result := Result + Distance (Self.Vertices (i),
                                       Self.Vertices (i + 1));
@@ -541,8 +540,8 @@ is
    function Image (Self : in Polygon) return String
    is
    begin
-      return "Polygon image (tbd)";
+      return "Polygon image (TODO)";
    end Image;
 
 
-end any_math.any_Geometry.any_d2;
+end any_Math.any_Geometry.any_d2;

@@ -1,11 +1,11 @@
 with
-     any_math.any_Algebra.any_linear;
+     any_Math.any_Algebra.any_linear;
 
 
 generic
-   with package linear_Algebra_2D is new any_math.any_Algebra.any_linear;
+   with package linear_Algebra_2D is new any_Math.any_Algebra.any_linear;
 
-package any_math.any_Geometry.any_d2
+package any_Math.any_Geometry.any_d2
 --
 --  Provides a namespace and core types for 2D geometry.
 --
@@ -28,7 +28,7 @@ is
 
    -- Polar
    --
-   type polar_Site is -- complex_Reals.Complex;                -- 2D polar coordinates.
+   type polar_Site is                                         -- 2D polar coordinates.
       record
          Angle  : Radians;
          Extent : Real;
@@ -58,6 +58,7 @@ is
    function Y_of     (Self   : in Line;   X : in Real) return Real;
 
    function Gradient (Self   : in Line) return Real;
+
 
 
    ----------
@@ -91,7 +92,6 @@ is
 
 
    function Extent (Self : in bounding_Box;   Dimension : in Index)    return Real;
-
    function Image  (Self : in bounding_Box)                            return String;
 
 
@@ -114,9 +114,9 @@ is
    -- Polygons
    --
 
-   type Polygon (vertex_Count : Positive) is
+   type Polygon (Vertex_Count : Positive) is
       record
-         Vertices : Sites (1 .. vertex_Count);
+         Vertices : Sites (1 .. Vertex_Count);
       end record;
 
    function  Area         (Self : in     Polygon) return Real;     -- Polygon must be convex.
@@ -130,8 +130,8 @@ is
    function  Centroid     (Self : in     Polygon) return Site;
    procedure center       (Self : in out Polygon);
 
-   function  prior_Vertex (Self : in     Polygon;    To_Vertex : in Positive) return Site;
-   function   next_Vertex (Self : in     Polygon;    To_Vertex : in Positive) return Site;
+   function  prior_Vertex (Self : in     Polygon;    to_Vertex : in Positive) return Site;
+   function   next_Vertex (Self : in     Polygon;    to_Vertex : in Positive) return Site;
 
    function  Image        (Self : in     Polygon) return String;
 
@@ -150,8 +150,8 @@ is
    function Perimeter    (Self : in Triangle)                            return Real;
    function Angle        (Self : in Triangle;   at_Vertex : in Positive) return Radians;
 
-   function prior_Vertex (Self : in Triangle;   To_Vertex : in Positive) return Site;
-   function  next_Vertex (Self : in Triangle;   To_Vertex : in Positive) return Site;
+   function prior_Vertex (Self : in Triangle;   to_Vertex : in Positive) return Site;
+   function  next_Vertex (Self : in Triangle;   to_Vertex : in Positive) return Site;
 
    Degenerate,
    Colinear  : exception;
@@ -160,9 +160,9 @@ is
 
 private
 
-   type line_Format is (anchored_Gradient, two_Points);
+   type Line_Format is (anchored_Gradient, two_Points);
 
-   type Line (Kind : line_Format := line_Format'First) is
+   type Line (Kind : Line_Format := Line_Format'First) is
       record
          case Kind is
             when anchored_Gradient =>
@@ -177,4 +177,4 @@ private
 
    null_Bounds : constant bounding_Box := (lower => (Real'Last,  Real'Last),
                                            upper => (Real'First, Real'First));
-end any_math.any_Geometry.any_d2;
+end any_Math.any_Geometry.any_d2;

@@ -1,5 +1,5 @@
 generic
-package any_math.any_Geometry.any_d3
+package any_Math.any_Geometry.any_d3
 --
 --  Provides a namespace and core types for 3D geometry.
 --
@@ -15,12 +15,11 @@ is
    type    Sites is array (Positive range <>) of Site;
 
 
-
-   type a_Model (site_Count : Positive;
-                  tri_Count : Positive) is
+   type a_Model (Site_Count : Positive;
+                  Tri_Count : Positive) is
       record
-         Sites     : any_d3      .Sites     (1 .. site_Count);
-         Triangles : any_Geometry.Triangles (1 ..  tri_Count);
+         Sites     : any_d3      .Sites     (1 .. Site_Count);
+         Triangles : any_Geometry.Triangles (1 ..  Tri_Count);
       end record;
 
    function Image (the_Model : in a_Model) return String;
@@ -31,7 +30,7 @@ is
    -- Planes
    --
 
-   type Plane is new Vector_4;   -- A general plane in equation.
+   type Plane is new Vector_4;   -- A general plane equation.
 
    procedure normalise (the_Plane : in out Plane);
 
@@ -68,15 +67,12 @@ is
 
 
    function Extent (Self : in bounding_Box;   Dimension : in Index)    return Real;
-
    function Image  (Self : in bounding_Box)                            return String;
-
-
 
 
 
 private
 
-   null_Bounds : constant bounding_Box := (lower => (Real'Last,  Real'Last,  Real'Last),
-                                           upper => (Real'First, Real'First, Real'First));
-end any_math.any_Geometry.any_d3;
+   null_Bounds : constant bounding_Box := (Lower => (Real'Last,  Real'Last,  Real'Last),
+                                           Upper => (Real'First, Real'First, Real'First));
+end any_Math.any_Geometry.any_d3;

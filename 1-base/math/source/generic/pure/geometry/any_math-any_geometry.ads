@@ -1,45 +1,42 @@
 generic
-package any_math.any_Geometry
+package any_Math.any_Geometry
 --
--- Provides core types for geometry.
+-- Provides a namespace and core types for geometry.
 --
 is
    pragma Pure;
 
 
-   subtype vertex_Id  is Index;
-   type    vertex_Ids is array (Index range <>) of vertex_Id;
+   subtype Vertex_Id  is Index;
+   type    Vertex_Ids is array (Index range <>) of Vertex_Id;
 
-   subtype Triangle   is vertex_Ids (1 .. 3);
+   subtype Triangle   is Vertex_Ids (1 .. 3);
    type    Triangles  is array (Index range <>) of Triangle;
 
    function Image (Self : in Triangle)  return String;
    function Image (Self : in Triangles) return String;
 
 
-
    --------
    -- Model
    --
 
-   type model_Options is tagged null record;
+   type Model_Options is tagged null record;
 
-   default_model_Options : constant model_Options;
+   default_Model_Options : constant Model_Options;
 
 
-
-   type model_Triangles (triangle_Count : any_math.Index) is tagged
+   type Model_Triangles (Triangle_Count : Index) is tagged
       record
-         Triangles : any_geometry.Triangles (1 .. triangle_Count);
+         Triangles : any_Geometry.Triangles (1 .. Triangle_Count);
       end record;
 
-   function Image (Self : in model_Triangles) return String;
-
+   function Image (Self : in Model_Triangles) return String;
 
 
    type Model is abstract tagged
       record
-         Triangles : access model_Triangles'Class;
+         Triangles : access Model_Triangles'Class;
       end record;
 
    function Image (Self : in Model) return String;
@@ -57,7 +54,6 @@ is
 
 
 
-
 private
 
    type Item  is abstract tagged
@@ -65,7 +61,6 @@ private
          null;
       end record;
 
+   default_Model_Options : constant Model_Options := (others => <>);
 
-   default_model_Options : constant model_Options := (others => <>);
-
-end any_math.any_Geometry;
+end any_Math.any_Geometry;

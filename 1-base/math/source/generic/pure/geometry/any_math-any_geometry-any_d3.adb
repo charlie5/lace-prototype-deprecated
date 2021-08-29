@@ -1,4 +1,4 @@
-package body any_math.any_Geometry.any_d3
+package body any_Math.any_Geometry.any_d3
 is
 
    --------
@@ -8,14 +8,14 @@ is
    procedure normalise (the_Plane : in out Plane)
    is
       use Functions;
-      inv_Magnitude : constant Real := 1.0 / Sqrt (  the_Plane (1) * the_Plane (1)
-                                                   + the_Plane (2) * the_Plane (2)
-                                                   + the_Plane (3) * the_Plane (3));
+      inverse_Magnitude : constant Real := 1.0 / SqRt (  the_Plane (1) * the_Plane (1)
+                                                       + the_Plane (2) * the_Plane (2)
+                                                       + the_Plane (3) * the_Plane (3));
    begin
-      the_Plane (1) := the_Plane (1) * inv_Magnitude;
-      the_Plane (2) := the_Plane (2) * inv_Magnitude;
-      the_Plane (3) := the_Plane (3) * inv_Magnitude;
-      the_Plane (4) := the_Plane (4) * inv_Magnitude;
+      the_Plane (1) := the_Plane (1) * inverse_Magnitude;
+      the_Plane (2) := the_Plane (2) * inverse_Magnitude;
+      the_Plane (3) := the_Plane (3) * inverse_Magnitude;
+      the_Plane (4) := the_Plane (4) * inverse_Magnitude;
    end normalise;
 
 
@@ -24,12 +24,12 @@ is
    is
    begin
       return
-          "(num_Sites =>" & Integer'Image (the_Model.site_Count) & ","
-        & " num_Tris =>"  & Integer'Image (the_Model. tri_Count) & ")";
+          "(Site_Count =>" & Integer'Image (the_Model.Site_Count) & ","
+        & " Tri_Count =>"  & Integer'Image (the_Model. Tri_Count) & ")";
 
    exception
       when others =>
-         return "<tbd>";
+         return "<TODO>";
    end Image;
 
 
@@ -40,20 +40,20 @@ is
 
    function to_bounding_Box (Self : Sites) return bounding_Box
    is
-      the_Bounds : bounding_Box := null_Bounds;
+      Bounds : bounding_Box := null_Bounds;
    begin
       for Each in Self'Range
       loop
-         the_Bounds.Lower (1) := Real'Min  (the_Bounds.Lower (1),  Self (Each)(1));
-         the_Bounds.Lower (2) := Real'Min  (the_Bounds.Lower (2),  Self (Each)(2));
-         the_Bounds.Lower (3) := Real'Min  (the_Bounds.Lower (3),  Self (Each)(3));
+         Bounds.Lower (1) := Real'Min  (Bounds.Lower (1),  Self (Each)(1));
+         Bounds.Lower (2) := Real'Min  (Bounds.Lower (2),  Self (Each)(2));
+         Bounds.Lower (3) := Real'Min  (Bounds.Lower (3),  Self (Each)(3));
 
-         the_Bounds.Upper (1) := Real'Max  (the_Bounds.Upper (1),  Self (Each)(1));
-         the_Bounds.Upper (2) := Real'Max  (the_Bounds.Upper (2),  Self (Each)(2));
-         the_Bounds.Upper (3) := Real'Max  (the_Bounds.Upper (3),  Self (Each)(3));
+         Bounds.Upper (1) := Real'Max  (Bounds.Upper (1),  Self (Each)(1));
+         Bounds.Upper (2) := Real'Max  (Bounds.Upper (2),  Self (Each)(2));
+         Bounds.Upper (3) := Real'Max  (Bounds.Upper (3),  Self (Each)(3));
       end loop;
 
-      return the_Bounds;
+      return Bounds;
    end to_bounding_Box;
 
 
@@ -116,4 +116,4 @@ is
    end Image;
 
 
-end any_math.any_Geometry.any_d3;
+end any_Math.any_Geometry.any_d3;

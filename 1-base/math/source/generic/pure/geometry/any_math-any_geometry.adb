@@ -1,40 +1,40 @@
-package body any_math.any_Geometry
+package body any_Math.any_Geometry
 is
 
    function Image (Self : in Triangle)  return String
    is
    begin
-      return "(" & vertex_Id'Image (Self (1)) & ","
-                 & vertex_Id'Image (Self (2)) & ","
-                 & vertex_Id'Image (Self (3)) & ")";
+      return "(" & Vertex_Id'Image (Self (1)) & ","
+                 & Vertex_Id'Image (Self (2)) & ","
+                 & Vertex_Id'Image (Self (3)) & ")";
    end Image;
 
 
 
    function Image (Self : in Triangles) return String
    is
-      Pad  : String (1 .. 1024);
-      Last : Standard.Natural  := 0;
+      Result : String (1 .. 1024);
+      Last   : Standard.Natural  := 0;
    begin
       for Each in Self'Range
       loop
          declare
-            id_Image : constant String := Image (Self (Each));
+            Id_Image : constant String := Image (Self (Each));
          begin
-            Pad (Last + 1 .. Last + id_Image'Length) := id_Image;
-            Last                                     := Last + id_Image'Length;
+            Result (Last + 1 .. Last + Id_Image'Length) := Id_Image;
+            Last                                        := Last + Id_Image'Length;
          end;
       end loop;
 
-      return Pad (1 .. Last);
+      return Result (1 .. Last);
 
    exception
       when Constraint_Error =>
          declare
-            ellipsis : constant String := " ...";
+            Ellipsis : constant String := " ...";
          begin
-            Pad (Pad'Last - ellipsis'Length + 1 .. Pad'Last) := ellipsis;
-            return Pad (1 .. Last);
+            Result (Result'Last - ellipsis'Length + 1 .. Result'Last) := ellipsis;
+            return Result (1 .. Last);
          end;
    end Image;
 
@@ -43,18 +43,17 @@ is
    function Image (Self : in Model) return String
    is
    begin
-      return self.triangles.Image;
+      return Self.Triangles.Image;
    end Image;
 
 
 
-   function Image (Self : in model_Triangles) return String
+   function Image (Self : in Model_Triangles) return String
    is
    begin
-      return
-          "triangle_count =>" & Standard.Positive'Image (Self.triangle_Count)
-        & Image (self.Triangles);
+      return   "Triangle_Count =>" & standard.Positive'Image (Self.Triangle_Count)
+             & Image (Self.Triangles);
    end Image;
 
 
-end any_math.any_Geometry;
+end any_Math.any_Geometry;
