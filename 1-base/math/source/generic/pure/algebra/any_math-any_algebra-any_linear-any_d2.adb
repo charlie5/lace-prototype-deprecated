@@ -5,7 +5,7 @@ is
    -- Vector_2
    --
 
-   function Angle_between_pre_Norm (U, V : in Vector_2) return Real
+   function Angle_between_pre_Norm (U, V : in Vector_2) return Radians
    is
       use Functions, Vectors;
       Val : Real := U * V;   -- Dot product.
