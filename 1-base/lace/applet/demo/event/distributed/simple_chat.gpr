@@ -8,8 +8,8 @@ is
 
    for Object_Dir  use "build";
    for Exec_Dir    use ".";
-   for Main        use ("launch_simple_chat_client.adb",
-                        "launch_simple_chat_registrar.adb");
+--   for Main        use ("launch_simple_chat_client.adb",
+--                        "launch_simple_chat_registrar.adb");
    for Source_Dirs use (".",
                         "source");
 
