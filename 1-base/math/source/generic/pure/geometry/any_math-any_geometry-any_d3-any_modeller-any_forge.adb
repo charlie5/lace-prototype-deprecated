@@ -3,37 +3,37 @@ with
      lace.Text.Forge;
 
 
-package body any_math.any_geometry.any_d3.any_Modeller.any_Forge
+package body any_Math.any_Geometry.any_d3.any_Modeller.any_Forge
 is
 
    function to_Box_Model (half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return a_Model
    is
-      the_Modeller : any_Modeller.item;
+      Modeller : any_Modeller.item;
    begin
-      the_Modeller.add_Triangle ((0.0, 0.0, 0.0),
-                                 (1.0, 0.0, 0.0),
-                                 (1.0, 1.0, 0.0));
+      Modeller.add_Triangle ((0.0, 0.0, 0.0),
+                             (1.0, 0.0, 0.0),
+                             (1.0, 1.0, 0.0));
 
-      the_Modeller.add_Triangle ((1.0, 1.0, 0.0),
-                                 (0.0, 1.0, 0.0),
-                                 (0.0, 0.0, 0.0));
+      Modeller.add_Triangle ((1.0, 1.0, 0.0),
+                             (0.0, 1.0, 0.0),
+                             (0.0, 0.0, 0.0));
 
-      --  tbd: Add the rest.
+      --  TODO: Add the rest.
 
-      return the_Modeller.Model;
+      return Modeller.Model;
    end to_Box_Model;
 
 
 
-   function to_capsule_Model (Length : in Real := 1.0;
+   function to_Capsule_Model (Length : in Real := 1.0;
                               Radius : in Real := 0.5) return a_Model
    is
       use Functions;
 
       quality_Level : constant Positive := 4;
-      sides_Count   : constant Positive := Positive (quality_Level * 4);     -- Number of sides to the cylinder (divisible by 4):
+      sides_Count   : constant Positive := Positive (quality_Level * 4);     -- Number of sides to the cylinder (divisible by 4).
 
-      type Edge is   -- 'barrel' edge.
+      type Edge is   -- 'Barrel' edge.
          record
             Fore : Site;
             Aft  : Site;
@@ -43,24 +43,22 @@ is
       type arch_Edges is array (Positive range 1 .. quality_Level) of Sites (1 .. sides_Count);
 
       tmp,
-      nx, ny, nz,
-      start_nx, start_ny,
-      a, ca, sa          : Real;
-      L                  : Real := Length;
+      ny, nz,
+      start_nx,
+      start_ny  : Real;
+      a         : constant Real := Pi * 2.0 / Real (sides_Count);
+      ca        : constant Real := Cos (a);
+      sa        : constant Real := Sin (a);
+      L         : constant Real := Length * 0.5;
 
-      the_Edges          : Edges;
-      the_Factory        : any_Modeller.item;
+      the_Edges : Edges;
+      Modeller  : any_Modeller.item;
 
    begin
-      L  := Length * 0.5;
-      a  := Pi * 2.0 / Real (sides_Count);
-      sa := sin (a);
-      ca := cos (a);
-
       --  Define cylinder body.
       --
       ny := 1.0;
-      nz := 0.0;              -- normal vector = (0,ny,nz)
+      nz := 0.0;              -- Normal vector = (0, ny, nz)
 
       for Each in Edges'Range
       loop
@@ -80,23 +78,23 @@ is
       end loop;
 
 
-      for Each in edges'Range
+      for Each in Edges'Range
       loop
-         if Each /= edges'Last
+         if Each /= Edges'Last
          then
-            the_Factory.add_Triangle (the_Edges (Each)    .Fore,
-                                      the_Edges (Each)    .Aft,
-                                      the_Edges (Each + 1).Aft);
-            the_Factory.add_Triangle (the_Edges (Each + 1).Aft,
-                                      the_Edges (Each + 1).Fore,
-                                      the_Edges (Each)    .Fore);
+            Modeller.add_Triangle (the_Edges (Each)    .Fore,
+                                   the_Edges (Each)    .Aft,
+                                   the_Edges (Each + 1).Aft);
+            Modeller.add_Triangle (the_Edges (Each + 1).Aft,
+                                   the_Edges (Each + 1).Fore,
+                                   the_Edges (Each)    .Fore);
          else
-            the_Factory.add_Triangle (the_Edges (Each)       .Fore,
-                                      the_Edges (Each)       .Aft,
-                                      the_Edges (edges'First).Aft);
-            the_Factory.add_Triangle (the_Edges (edges'First).Aft,
-                                      the_Edges (edges'First).Fore,
-                                      the_Edges (Each)       .Fore);
+            Modeller.add_Triangle (the_Edges (Each)       .Fore,
+                                   the_Edges (Each)       .Aft,
+                                   the_Edges (edges'First).Aft);
+            Modeller.add_Triangle (the_Edges (edges'First).Aft,
+                                   the_Edges (edges'First).Fore,
+                                   the_Edges (Each)       .Fore);
          end if;
       end loop;
 
@@ -117,9 +115,8 @@ is
                start_nx2 : constant Real :=  ca * start_nx  +  sa * start_ny;
                start_ny2 : constant Real := -sa * start_nx  +  ca * start_ny;
             begin
-               --  Get n=start_n and n2=start_n2.
+               --  Get n = start_n and n2 = start_n2.
                --
-               nx := start_nx;
                ny := start_ny;
                nz := 0.0;
 
@@ -134,7 +131,7 @@ is
                      the_arch_Edges (each_Hoop)(Each) (2) := nz2 * Radius;
                      the_arch_Edges (each_Hoop)(Each) (3) := nx2 * Radius + L;
 
-                     --  Rotate n,n2.
+                     --  Rotate n, n2.
                      --
                      tmp := ca * ny  -  sa * nz;
                      nz  := sa * ny  +  ca * nz;
@@ -156,24 +153,24 @@ is
          loop
             if Each /= sides_Count
             then
-               the_Factory.add_Triangle (the_Edges (Each).Fore,
-                                         the_Edges (Each + 1).Fore,
-                                         the_arch_Edges (1)(Each));
+               Modeller.add_Triangle (the_Edges (Each)    .Fore,
+                                      the_Edges (Each + 1).Fore,
+                                      the_arch_Edges (1) (Each));
             else
-               the_Factory.add_Triangle (the_Edges (Each).Fore,
-                                         the_Edges (1).Fore,
-                                         the_arch_Edges (1)(Each));
+               Modeller.add_Triangle (the_Edges (Each).Fore,
+                                      the_Edges (1)   .Fore,
+                                      the_arch_Edges (1) (Each));
             end if;
 
             if Each /= sides_Count
             then
-               the_Factory.add_Triangle (the_Edges (Each + 1).Fore,
-                                         the_arch_Edges (1)(Each + 1),
-                                         the_arch_Edges (1)(Each));
+               Modeller.add_Triangle (the_Edges (Each + 1).Fore,
+                                      the_arch_Edges (1) (Each + 1),
+                                      the_arch_Edges (1) (Each));
             else
-               the_Factory.add_Triangle (the_Edges (1).Fore,
-                                         the_arch_Edges (1)(1),
-                                         the_arch_Edges (1)(Each));
+               Modeller.add_Triangle (the_Edges (1).Fore,
+                                      the_arch_Edges (1) (1),
+                                      the_arch_Edges (1) (Each));
             end if;
          end loop;
 
@@ -183,23 +180,23 @@ is
             for Each in 1 .. sides_Count
             loop
                declare
-                  function next_hoop_Vertex return Positive
+                  function next_Hoop_Vertex return Positive
                   is
                   begin
                      if Each = sides_Count then return 1;
                      else                       return Each + 1;
                      end if;
-                  end next_hoop_Vertex;
+                  end next_Hoop_Vertex;
                begin
-                  the_Factory.add_Triangle (the_arch_Edges (each_Hoop)    (Each),
-                                            the_arch_Edges (each_Hoop)    (next_hoop_Vertex),
-                                            the_arch_Edges (each_Hoop + 1)(Each));
+                  Modeller.add_Triangle (the_arch_Edges (each_Hoop)     (Each),
+                                         the_arch_Edges (each_Hoop)     (next_Hoop_Vertex),
+                                         the_arch_Edges (each_Hoop + 1) (Each));
 
                   if each_Hoop /= quality_Level - 1
                   then
-                     the_Factory.add_Triangle (the_arch_Edges (each_Hoop)    (next_hoop_Vertex),
-                                               the_arch_Edges (each_Hoop + 1)(next_hoop_Vertex),
-                                               the_arch_Edges (each_Hoop + 1)(Each));
+                     Modeller.add_Triangle (the_arch_Edges (each_Hoop)     (next_Hoop_Vertex),
+                                            the_arch_Edges (each_Hoop + 1) (next_Hoop_Vertex),
+                                            the_arch_Edges (each_Hoop + 1) (Each));
                   end if;
                end;
             end loop;
@@ -223,9 +220,8 @@ is
                start_nx2 : constant Real := ca * start_nx  -  sa * start_ny;
                start_ny2 : constant Real := sa * start_nx  +  ca * start_ny;
             begin
-               --  Get n=start_n and n2=start_n2.
+               --  Get n = start_n and n2 = start_n2.
                --
-               nx := start_nx;
                ny := start_ny;
                nz := 0.0;
 
@@ -236,15 +232,16 @@ is
                begin
                   for Each in 1 .. sides_Count
                   loop
-                     the_arch_Edges (each_Hoop)(Each) (1) := ny2 * Radius;
-                     the_arch_Edges (each_Hoop)(Each) (2) := nz2 * Radius;
-                     the_arch_Edges (each_Hoop)(Each) (3) := nx2 * Radius - L;
+                     the_arch_Edges (each_Hoop) (Each) (1) := ny2 * Radius;
+                     the_arch_Edges (each_Hoop) (Each) (2) := nz2 * Radius;
+                     the_arch_Edges (each_Hoop) (Each) (3) := nx2 * Radius - L;
 
-                     --  Rotate n,n2
+                     --  Rotate n, n2
                      --
                      tmp := ca * ny  -  sa * nz;
                      nz  := sa * ny  +  ca * nz;
                      ny  := tmp;
+
                      tmp := ca * ny2  -  sa * nz2;
                      nz2 := sa * ny2  +  ca * nz2;
                      ny2 := tmp;
@@ -261,24 +258,24 @@ is
          loop
             if Each /= sides_Count
             then
-               the_Factory.add_Triangle (the_Edges (Each).Aft,
-                                         the_arch_Edges (1)(Each),
-                                         the_Edges (Each + 1).Aft);
+               Modeller.add_Triangle (the_Edges (Each).Aft,
+                                      the_arch_Edges (1) (Each),
+                                      the_Edges (Each + 1).Aft);
             else
-               the_Factory.add_Triangle (the_Edges (Each).Aft,
-                                         the_arch_Edges (1)(Each),
-                                         the_Edges (1).Aft);
+               Modeller.add_Triangle (the_Edges (Each).Aft,
+                                      the_arch_Edges (1) (Each),
+                                      the_Edges (1).Aft);
             end if;
 
             if Each /= sides_Count
             then
-               the_Factory.add_Triangle (The_Edges (Each + 1).Aft,
-                                         the_arch_Edges (1)(Each),
-                                         the_arch_Edges (1)(Each + 1));
+               Modeller.add_Triangle (The_Edges (Each + 1).Aft,
+                                      the_arch_Edges (1) (Each),
+                                      the_arch_Edges (1) (Each + 1));
             else
-               the_Factory.add_Triangle (the_Edges (1).Aft,
-                                         the_arch_Edges (1)(Each),
-                                         the_arch_Edges (1)(1));
+               Modeller.add_Triangle (the_Edges (1).Aft,
+                                      the_arch_Edges (1) (Each),
+                                      the_arch_Edges (1) (1));
             end if;
          end loop;
 
@@ -288,7 +285,7 @@ is
             for Each in 1 .. sides_Count
             loop
                declare
-                  function next_hoop_Vertex return Positive
+                  function next_Hoop_Vertex return Positive
                   is
                   begin
                      if Each = sides_Count then return 1;
@@ -296,15 +293,15 @@ is
                      end if;
                   end next_hoop_Vertex;
                begin
-                  the_Factory.add_Triangle (the_arch_Edges (each_Hoop)    (Each),
-                                            the_arch_Edges (each_Hoop + 1)(Each),
-                                            the_arch_Edges (each_Hoop)    (next_hoop_Vertex));
+                  Modeller.add_Triangle (the_arch_Edges (each_Hoop)     (Each),
+                                         the_arch_Edges (each_Hoop + 1) (Each),
+                                         the_arch_Edges (each_Hoop)     (next_Hoop_Vertex));
 
                   if each_Hoop /= quality_Level - 1
                   then
-                     the_Factory.add_Triangle (the_arch_Edges (each_Hoop)    (next_hoop_Vertex),
-                                               the_arch_Edges (each_Hoop + 1)(Each),
-                                               the_arch_Edges (each_Hoop + 1)(next_hoop_Vertex));
+                     Modeller.add_Triangle (the_arch_Edges (each_Hoop)     (next_hoop_Vertex),
+                                            the_arch_Edges (each_Hoop + 1) (Each),
+                                            the_arch_Edges (each_Hoop + 1) (next_Hoop_Vertex));
                   end if;
                end;
             end loop;
@@ -312,7 +309,7 @@ is
       end;
 
 
-      return the_Factory.Model;
+      return Modeller.Model;
    end to_capsule_Model;
 
 
@@ -321,75 +318,68 @@ is
    -- Polar to euclidian shape models.
    --
 
-   package Float_Functions is new Ada.Numerics.Generic_Elementary_Functions (Real);
-   use Float_Functions;
-
-
-   function to_Radians (from : in Latitude) return Real
+   function to_Radians (From : in Latitude) return Radians
    is
    begin
-      return real (from) * Pi / 180.0;
+      return Radians (From) * Pi / 180.0;
    end to_Radians;
 
 
-   function to_Radians (from : in Longitude) return Real
+   function to_Radians (From : in Longitude) return Radians
    is
    begin
-      return real (from) * Pi / 180.0;
+      return Radians (From) * Pi / 180.0;
    end to_Radians;
 
 
 
    function polar_Model_from (Model_Filename : in String) return polar_model
    is
+      use Functions,
+          lace.Text,
+          lace.Text.Cursor;
+
+      the_Text : aliased lace.Text.item        := lace.Text.Forge.to_Text (Filename => lace.Text.Forge.Filename (Model_Filename));
+      Cursor   : aliased lace.Text.Cursor.item := lace.Text.Cursor.First  (the_Text'unchecked_Access);
+
+      Lat      : Latitude;
+      Long     : Longitude;
+      Value    : Integer;
+      Distance : Real;
+      Scale    : constant Real := 10.0;     -- TODO: Add a 'Scale' parameter.
+
+      the_Model : polar_Model;
+
    begin
-      declare
-         use lace.Text, lace.Text.Cursor;
+      while has_Element (Cursor)
+      loop
+         Value := get_Integer (Cursor);
+         exit when Value = 360;
 
-         the_Text      : aliased lace.Text.item        := lace.Text.Forge.to_Text (Filename => lace.Text.Forge.Filename (Model_Filename));
-         Cursor        : aliased lace.Text.Cursor.item := lace.Text.Cursor.First (the_Text'unchecked_Access);
+         Long     := Longitude (Value);
+         Lat      := Latitude  (get_Integer (Cursor));
+         Distance := Real      (get_Real    (Cursor));
 
-         the_Latitude  :         latitude;
-         the_Longitude :         longitude;
-         the_Value     :         Integer;
-         the_Distance  :         Real;
+         skip_White (Cursor);
 
-         the_Model     :         polar_Model;
+         the_Model (Long) (Lat).Site (1) := Scale * Distance * Cos (to_Radians (Lat)) * Sin (to_Radians (Long));
+         the_Model (Long) (Lat).Site (2) := Scale * Distance * Sin (to_Radians (Lat));
+         the_Model (Long) (Lat).Site (3) := Scale * Distance * Cos (to_Radians (Lat)) * Cos (to_Radians (Long));
+      end loop;
 
-      begin
-         while has_Element (Cursor)
-         loop
-            the_Value := get_Integer (Cursor);
-            exit when the_Value = 360;
-
-            the_Longitude := longitude (the_Value);
-            the_Latitude  := latitude  (get_Integer (Cursor));
-
-            the_Distance  := Real  (get_Real (Cursor)); -- * 0.1; --1.0;
-
-            skip_White (Cursor);
-
-            the_Model (the_Longitude) (the_Latitude).Site (1) := 10.0 * cos (to_Radians (the_Latitude)) * sin (to_Radians (the_Longitude)) * the_Distance;
-            the_Model (the_Longitude) (the_Latitude).Site (2) := 10.0 * sin (to_Radians (the_Latitude)) * the_Distance;
-            the_Model (the_Longitude) (the_Latitude).Site (3) := 10.0 * cos (to_Radians (the_Latitude)) * cos (to_Radians (the_Longitude)) * the_Distance;
-         end loop;
-
-         return the_Model;
-      end;
+      return the_Model;
    end polar_Model_from;
 
 
 
-
-   function mesh_Model_from (the_Model : in polar_Model) return a_Model
+   function mesh_Model_from (Model : in polar_Model) return a_Model
    is
-      the_raw_model  : polar_Model := the_Model;
-
+      the_raw_Model  : polar_Model := Model;
       the_mesh_Model : a_Model (site_Count => 2522,
                                 tri_Count  => 73 * (16 * 4 + 6));
 
-      the_longitude  : longitude := 0;
-      the_latitude   : latitude ;
+      the_longitude  : Longitude := 0;
+      the_latitude   : Latitude ;
 
       the_Vertex     : Positive := 1;
       the_Triangle   : Positive := 1;
@@ -397,7 +387,7 @@ is
       the_North_Pole : Positive;
       the_South_Pole : Positive;
 
-      function Sum (the_Longitude : in longitude;   Increment : in Integer) return longitude
+      function Sum (the_Longitude : in Longitude;   Increment : in Integer) return Longitude
       is
          Result : Integer := Integer (the_Longitude) + Increment;
       begin
@@ -408,7 +398,6 @@ is
 
          return longitude (Result);
       end Sum;
-
 
    begin
       the_mesh_Model.Sites (the_Vertex) := (the_raw_model (0) (-90).Site);
@@ -451,27 +440,27 @@ is
 
       the_Longitude := 0;
       loop
-         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_North_Pole,
-                                                      2 => the_raw_Model (Sum (the_Longitude, 5)) (-85).Id,
-                                                      3 => the_raw_Model (     the_Longitude    ) (-85).Id);
+         the_mesh_Model.Triangles (the_Triangle) := (1 => the_North_Pole,
+                                                     2 => the_raw_Model (Sum (the_Longitude, 5)) (-85).Id,
+                                                     3 => the_raw_Model (     the_Longitude    ) (-85).Id);
          the_Triangle := the_Triangle + 1;
 
-         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_South_Pole,
-                                                      2 => the_raw_Model      (the_Longitude)     (85).Id,
-                                                      3 => the_raw_Model (Sum (the_Longitude, 5)) (85).Id);
+         the_mesh_Model.Triangles (the_Triangle) := (1 => the_South_Pole,
+                                                     2 => the_raw_Model      (the_Longitude)     (85).Id,
+                                                     3 => the_raw_Model (Sum (the_Longitude, 5)) (85).Id);
          the_Triangle := the_Triangle + 1;
 
-         the_latitude := -85;
+         the_Latitude := -85;
          loop
-            the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (     the_Longitude)     (the_Latitude    ).Id,
-                                                         2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
-                                                         3 => the_raw_Model (     the_Longitude)     (the_Latitude + 5).Id);
+            the_mesh_Model.Triangles (the_Triangle) := (1 => the_raw_Model (     the_Longitude)     (the_Latitude    ).Id,
+                                                        2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
+                                                        3 => the_raw_Model (     the_Longitude)     (the_Latitude + 5).Id);
             the_Triangle := the_Triangle + 1;
 
 
-            the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (the_Longitude)          (the_Latitude + 5).Id,
-                                                         2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
-                                                         3 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude + 5).Id);
+            the_mesh_Model.Triangles (the_Triangle) := (1 => the_raw_Model (the_Longitude)          (the_Latitude + 5).Id,
+                                                        2 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude    ).Id,
+                                                        3 => the_raw_Model (Sum (the_Longitude, 5)) (the_Latitude + 5).Id);
             the_Triangle := the_Triangle + 1;
 
 
@@ -483,27 +472,27 @@ is
          the_Longitude := the_Longitude + 5;
       end loop;
 
-      the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_North_Pole,
-                                                   2 => the_raw_Model (5) (-85).Id,
-                                                   3 => the_raw_Model (0) (-85).Id);
+      the_mesh_Model.Triangles (the_Triangle) := (1 => the_North_Pole,
+                                                  2 => the_raw_Model (5) (-85).Id,
+                                                  3 => the_raw_Model (0) (-85).Id);
       the_Triangle := the_Triangle + 1;
 
-      the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_South_Pole,
-                                                   2 => the_raw_Model (0) (85).Id,
-                                                   3 => the_raw_Model (5) (85).Id);
+      the_mesh_Model.Triangles (the_Triangle) := (1 => the_South_Pole,
+                                                  2 => the_raw_Model (0) (85).Id,
+                                                  3 => the_raw_Model (5) (85).Id);
       the_Triangle := the_Triangle + 1;
 
 
       the_latitude := -85;
       loop
-         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (0) (the_Latitude    ).Id,
-                                                      2 => the_raw_Model (5) (the_Latitude    ).Id,
-                                                      3 => the_raw_Model (0) (the_Latitude + 5).Id);
+         the_mesh_Model.Triangles (the_Triangle) := (1 => the_raw_Model (0) (the_Latitude    ).Id,
+                                                     2 => the_raw_Model (5) (the_Latitude    ).Id,
+                                                     3 => the_raw_Model (0) (the_Latitude + 5).Id);
          the_Triangle := the_Triangle + 1;
 
-         the_mesh_Model.Triangles (the_Triangle) :=  (1 => the_raw_Model (0) (the_Latitude + 5).Id,
-                                                      2 => the_raw_Model (5) (the_Latitude    ).Id,
-                                                      3 => the_raw_Model (5) (the_Latitude + 5).Id);
+         the_mesh_Model.Triangles (the_Triangle) := (1 => the_raw_Model (0) (the_Latitude + 5).Id,
+                                                     2 => the_raw_Model (5) (the_Latitude    ).Id,
+                                                     3 => the_raw_Model (5) (the_Latitude + 5).Id);
          the_Triangle := the_Triangle + 1;
 
 
@@ -515,4 +504,4 @@ is
    end mesh_Model_from;
 
 
-end any_math.any_geometry.any_d3.any_Modeller.any_Forge;
+end any_Math.any_Geometry.any_d3.any_Modeller.any_Forge;
