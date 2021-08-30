@@ -11,7 +11,7 @@ auto.cgpr
 *.log
 .clang-format
 .clangd
-
+.#*
 
 ## Build folders
 build
@@ -43,6 +43,7 @@ launch_simple_chat_registrar
 launch_outline
 launch_learn_linear
 launch_pong
+launch_core_test
 launch_opengl_model
 launch_drop_ball_on_box
 launch_hello_mmi
@@ -65,3 +66,7 @@ HelloWorld*
 ## Old Code
 *-old
 old-events
+
+
+## Misc
+*.project
