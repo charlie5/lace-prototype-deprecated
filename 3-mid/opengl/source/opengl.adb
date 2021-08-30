@@ -1,13 +1,10 @@
 with
-     Ada.Strings.Hash,
-     Ada.unchecked_Conversion;
+     ada.Strings.Hash,
+     ada.unchecked_Conversion;
 
 
 package body openGL
 is
---   use type Real;
-
-
    ------------
    --  Profiles
    --
@@ -34,9 +31,9 @@ is
    is
       Result : Vector_3_array (Self'Range);
    begin
-      for Each in Result'Range
+      for i in Result'Range
       loop
-         Result (Each) := Scaled (Self (Each),  By);
+         Result (i) := Scaled (Self (i),  By);
       end loop;
 
       return Result;
@@ -69,7 +66,7 @@ is
       then
          return 255;
       else
-         return color_Value (Self * 256.0);
+         return color_Value (Self * 256.0);     -- TODO: Check this.
       end if;
    end to_color_Value;
 
@@ -97,12 +94,12 @@ is
    --  Heightmap
    --
 
-   function scaled (Self : in height_Map;   By : in Real) return height_Map
+   function Scaled (Self : in height_Map;   By : in Real) return height_Map
    is
    begin
-      return the_height_Map : height_Map := Self
+      return Result : height_Map := Self
       do
-         scale (the_height_Map, by => By);
+         scale (Result, By);
       end return;
    end scaled;
 
@@ -143,8 +140,6 @@ is
 
    function Region (Self : in height_Map;   Rows, Cols : in index_Pair) return height_Map
    is
---      use type Index_t;
-
       Width      : constant Index_t := Index_t (Rows (2) - Rows (1));
       Height     : constant Index_t := Index_t (Cols (2) - Cols (1));
 
@@ -197,7 +192,7 @@ is
 
 
 
-   function Hash (Self : in asset_Name) return ada.Containers.Hash_Type
+   function Hash (Self : in asset_Name) return ada.Containers.Hash_type
    is
    begin
       return ada.Strings.Hash (to_String (Self));
@@ -211,22 +206,23 @@ is
 
    function bounding_Box_of (Self : Sites) return Bounds
    is
-      the_Bounds : Bounds := null_Bounds;
+      Result : Bounds := null_Bounds;
    begin
       for Each in Self'Range
       loop
-         the_Bounds.Box.Lower (1) := Real'Min  (the_Bounds.Box.Lower (1),  Self (Each)(1));
-         the_Bounds.Box.Lower (2) := Real'Min  (the_Bounds.Box.Lower (2),  Self (Each)(2));
-         the_Bounds.Box.Lower (3) := Real'Min  (the_Bounds.Box.Lower (3),  Self (Each)(3));
+         Result.Box.Lower (1) := Real'Min  (Result.Box.Lower (1),  Self (Each)(1));
+         Result.Box.Lower (2) := Real'Min  (Result.Box.Lower (2),  Self (Each)(2));
+         Result.Box.Lower (3) := Real'Min  (Result.Box.Lower (3),  Self (Each)(3));
 
-         the_Bounds.Box.Upper (1) := Real'Max  (the_Bounds.Box.Upper (1),  Self (Each)(1));
-         the_Bounds.Box.Upper (2) := Real'Max  (the_Bounds.Box.Upper (2),  Self (Each)(2));
-         the_Bounds.Box.Upper (3) := Real'Max  (the_Bounds.Box.Upper (3),  Self (Each)(3));
+         Result.Box.Upper (1) := Real'Max  (Result.Box.Upper (1),  Self (Each)(1));
+         Result.Box.Upper (2) := Real'Max  (Result.Box.Upper (2),  Self (Each)(2));
+         Result.Box.Upper (3) := Real'Max  (Result.Box.Upper (3),  Self (Each)(3));
 
-         the_Bounds.Ball          := Real'Max  (the_Bounds.Ball,           abs (Self (Each)));
+         Result.Ball := Real'Max (Result.Ball,
+                                  abs Self (Each));
       end loop;
 
-      return the_Bounds;
+      return Result;
    end bounding_Box_of;
 
 
@@ -234,8 +230,8 @@ is
    procedure set_Ball_from_Box (Self : in out Bounds)
    is
    begin
-      Self.Ball := Real'Max (abs (Self.Box.Lower),
-                             abs (Self.Box.Upper));
+      Self.Ball := Real'Max (abs Self.Box.Lower,
+                             abs Self.Box.Upper);
    end set_Ball_from_Box;
 
 

@@ -133,7 +133,7 @@ is
    type height_Map is array (Index_t range <>,
                              Index_t range <>) of aliased Real;
 
-   function  scaled (Self : in     height_Map;   By : in Real) return height_Map;
+   function  Scaled (Self : in     height_Map;   By : in Real) return height_Map;
    procedure scale  (Self : in out height_Map;   By : in Real);
 
    function  height_Extent (Self : in height_Map) return Vector_2;
