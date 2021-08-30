@@ -1,7 +1,7 @@
 generic
-   type Float_Type is digits <>;
+   type Float_type is digits <>;
 
-   slot_Count : Standard.Positive;
+   slot_Count : standard.Positive;
 
 package cached_Trigonometry
 --
@@ -10,20 +10,20 @@ package cached_Trigonometry
 is
    pragma Optimize (Time);
 
-   function cos (Angle : in Float_Type) return Float_Type;
-   function sin (Angle : in Float_Type) return Float_Type;
+   function  Cos (Angle : in Float_type) return Float_type;
+   function  Sin (Angle : in Float_type) return Float_type;
 
 
-   procedure get (Angle : in Float_Type;   the_Cos : out Float_Type;
-                                           the_Sin : out Float_Type);
+   procedure get (Angle : in Float_type;   the_Cos : out Float_type;
+                                           the_Sin : out Float_type);
 
-   -- tbd: tan, arccos, etc
+   -- TODO: tan, arccos, etc
 
 
 private
 
-   pragma Inline_Always (cos);
-   pragma Inline_Always (sin);
-   pragma Inline_Always (get);
+   pragma Inline_Always (Cos);
+   pragma Inline_Always (Sin);
+   pragma Inline_Always (Get);
 
 end cached_Trigonometry;

@@ -2,7 +2,7 @@ with
      cached_Rotation;
 
 
-package body any_math.any_fast_Rotation
+package body any_Math.any_fast_Rotation
 is
 
    function to_Matrix_2x2 (m11, m12,
@@ -27,4 +27,4 @@ is
    end to_Rotation;
 
 
-end any_math.any_fast_Rotation;
+end any_Math.any_fast_Rotation;
