@@ -15,7 +15,7 @@ package freetype.Face
 is
 
    type Item is tagged private;
-
+   type View is access all Item'Class;
 
 
    ---------

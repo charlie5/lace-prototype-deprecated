@@ -66,7 +66,7 @@ is
    procedure define   (Self : access Item;   ftFont            : access openGL.Font.item'Class;
                                              fontFilePath      : in     String);
 
-   procedure define   (Self : in out Item;   ftFont            : access openGL.Font.item'Class;
+   procedure define   (Self : access Item;   ftFont            : access openGL.Font.item'Class;
                                              pBufferBytes      : access interfaces.c.unsigned_char;
                                              bufferSizeInBytes : in     Integer);
    procedure destruct (Self : in out Item);

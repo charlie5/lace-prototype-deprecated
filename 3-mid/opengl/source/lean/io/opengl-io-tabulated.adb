@@ -79,7 +79,7 @@ is
    is
       use float_Math.Geometry.d3.Modeller.Forge;
 
-      the_math_Model : aliased Geometry_3d.a_Model := mesh_Model_from (the_Model => polar_Model_from ("./gaspra.tab"));
+      the_math_Model : aliased Geometry_3d.a_Model := mesh_Model_from (Model => polar_Model_from ("./gaspra.tab"));
    begin
       return to_Model (the_math_Model'Access);
    end to_Model;

@@ -48,7 +48,7 @@ is
 
 
 
-   procedure define (Self : in out Item;   ftFont            : access  openGL.Font.item'Class;
+   procedure define (Self : access Item;   ftFont            : access  openGL.Font.item'Class;
                                            pBufferBytes      : access  interfaces.c.unsigned_char;
                                            bufferSizeInBytes : in      Integer)
    is
@@ -204,7 +204,7 @@ is
          return False;
       end if;
 
-      Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.face'Access));
+      Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.face'unchecked_Access));
       return True;
    end FaceSize;
 

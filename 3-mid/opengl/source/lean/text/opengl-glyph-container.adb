@@ -12,7 +12,8 @@ is
    --- Forge
    --
 
-   function  to_glyph_Container (parent_Face : access freetype.Face.Item'Class) return openGL.glyph.Container.item
+   --  function  to_glyph_Container (parent_Face : access freetype.Face.Item'Class) return openGL.glyph.Container.item
+   function  to_glyph_Container (parent_Face : in freetype.Face.view) return openGL.glyph.Container.item
    is
       Self : openGL.glyph.Container.item;
    begin

@@ -75,7 +75,7 @@ is
    begin
       return Self : fontImpl.texture.item
       do
-         define (Self,  ftFont, pBufferBytes, bufferSizeInBytes);
+         define (Self'Access,  ftFont, pBufferBytes, bufferSizeInBytes);
 
          Self.load_Flags := freetype_c.FT_Int (   FT_LOAD_NO_HINTING_flag
                                                or FT_LOAD_NO_BITMAP_flag);

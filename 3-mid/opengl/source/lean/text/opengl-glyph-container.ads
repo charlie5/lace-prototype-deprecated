@@ -21,7 +21,8 @@ is
    --  Forge
    --
 
-   function  to_glyph_Container (parent_Face : access freetype.Face.Item'Class)     --  The Freetype face.
+   --  function  to_glyph_Container (parent_Face : access freetype.Face.Item'Class)     --  The Freetype face.
+   function  to_glyph_Container (parent_Face : in freetype.Face.view)     --  The Freetype face.
                                  return glyph.Container.item;
 
    procedure destruct (Self : in out Item);
@@ -114,7 +115,8 @@ private
 
    type Item is tagged
       record
-         face    : access freetype.Face.item'Class;           -- The FTGL face.
+         --  face    : access freetype.Face.item'Class;           -- The FTGL face.
+         face    : freetype.Face.view;           -- The FTGL face.
          charMap :        charMap_view;                       -- The Character Map object associated with the current face.
 
          Glyphs  :        glyph_Vectors.Vector;               -- A structure to hold the glyphs.
