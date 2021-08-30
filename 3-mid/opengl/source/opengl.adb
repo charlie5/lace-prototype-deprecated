@@ -62,7 +62,7 @@ is
    --  Colors
    --
 
-   function to_color_Value (Self : in Real) return color_Value
+   function to_color_Value (Self : in unit_Interval) return color_Value
    is
    begin
       if Self = 1.0
@@ -75,7 +75,7 @@ is
 
 
 
-   function to_Real (Self : in color_Value) return Real
+   function to_Real (Self : in color_Value) return unit_Interval
    is
    begin
       return Real (Self) / 255.0;
@@ -83,11 +83,8 @@ is
 
 
 
-   function to_Color (R, G, B : in Real) return Color
+   function to_Color (R, G, B : in unit_Interval) return Color
    is
-      pragma Assert (R >= 0.0 and R <= 1.0);
-      pragma Assert (G >= 0.0 and G <= 1.0);
-      pragma Assert (B >= 0.0 and B <= 1.0);
    begin
       return (to_color_Value (R),
               to_color_Value (G),

@@ -180,8 +180,8 @@ is
    Opaque : constant color_Value;
    Lucid  : constant color_Value;
 
-   function to_color_Value (Self : in Real)        return color_Value;
-   function to_Real        (Self : in color_Value) return Real;
+   function to_color_Value (Self : in unit_Interval) return color_Value;
+   function to_Real        (Self : in color_Value)   return unit_Interval;
 
 
    type Color is
@@ -321,7 +321,7 @@ private
    Opaque : constant color_Value := color_Value'Last;
    Lucid  : constant color_Value := color_Value'First;
 
-   function to_Color (R, G, B : in Real) return Color;
+   function to_Color (R, G, B : in unit_Interval) return Color;
 
 
    ----------------------------
