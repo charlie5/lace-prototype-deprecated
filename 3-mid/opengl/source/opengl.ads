@@ -73,9 +73,6 @@ is
 
    package real_Functions renames math.Functions;
 
-   function almost_Zero (X : Real) return Boolean;
-
-
    -- Safe Real
    --
    protected

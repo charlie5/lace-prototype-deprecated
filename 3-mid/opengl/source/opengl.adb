@@ -16,36 +16,6 @@ is
      is separate;
 
 
-
-   --------
-   -- Reals
-   --
-
-   --  'almost_Zero'
-   --
-
-   --  From the Ada 95 Quality and Style Guide, 7.2.7:
-   --
-   --  Tests for
-   --
-   --  (1) absolute "equality" to 0 in storage,
-   --  (2) absolute "equality" to 0 in computation,
-   --  (3) relative "equality" to 0 in storage, and
-   --  (4) relative "equality" to 0 in computation:
-   --
-   --    abs X <= Float_Type'Model_Small                      -- (1)
-   --    abs X <= Float_Type'Base'Model_Small                 -- (2)
-   --    abs X <= abs X * Float_Type'Model_Epsilon            -- (3)
-   --    abs X <= abs X * Float_Type'Base'Model_Epsilon       -- (4)
-   --
-   function almost_Zero (X : Real) return Boolean
-   is
-   begin
-      return  abs X  <=  Real'Base'Model_Small;
-   end Almost_zero;
-
-
-
    -----------
    --  Vectors
    --
