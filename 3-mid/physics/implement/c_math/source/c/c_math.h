@@ -6,6 +6,8 @@
 /// Provides a simple C++ interface to math structures used by the simple Box2D and Bullet3D C interfaces.
 //
 
+extern "C"
+{
 
   typedef float   Real;
 
@@ -71,5 +73,6 @@
            m30,  m31,  m32,  m33;
   };
 
+}
 
 #endif
