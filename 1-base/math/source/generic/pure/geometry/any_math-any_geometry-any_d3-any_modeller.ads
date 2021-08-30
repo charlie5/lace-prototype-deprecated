@@ -6,7 +6,7 @@ with
 
 
 generic
-package any_math.any_Geometry.any_d3.any_Modeller
+package any_Math.any_Geometry.any_d3.any_Modeller
 is
 
    type Item is tagged private;
@@ -16,23 +16,22 @@ is
    --------------
    --  Attributes
    --
-
    procedure add_Triangle   (Self : in out Item;   Vertex_1,
                                                    Vertex_2,
-                                                   Vertex_3      : in Site);
+                                                   Vertex_3 : in Site);
 
-   function  triangle_Count (Self : in     Item) return Natural;
+   function  Triangle_Count (Self : in     Item) return Natural;
    function  Model          (Self : in     Item) return a_Model;
 
-   function bounding_sphere_Radius (Self : access item) return Real;
+   function  bounding_Sphere_Radius (Self : in out Item) return Real;
+   --
+   -- Caches the radius on 1st call.
 
 
    --------------
    --  Operations
    --
-
-   procedure clear          (Self : in out Item);
-
+   procedure clear (Self : in out Item);
 
 
 
@@ -46,26 +45,25 @@ private
    --  Containers
    --
 
-   function Hash (the_Site : in my_Vertex) return ada.Containers.Hash_Type;
-   package vertex_index_Maps is new ada.containers.hashed_Maps (my_Vertex,
-                                                                Natural,
-                                                                Hash,
-                                                                "=");
-   subtype vertex_index_Map        is vertex_index_Maps.Map;
-   subtype vertex_index_map_Cursor is vertex_index_Maps.Cursor;
+   function Hash (Site : in my_Vertex) return ada.Containers.Hash_type;
+   package  Vertex_Maps_of_Index is new ada.Containers.hashed_Maps (my_Vertex,
+                                                                    Natural,
+                                                                    Hash,
+                                                                    "=");
+   subtype  Vertex_Map_of_Index         is Vertex_Maps_of_Index.Map;
 
 
-   package vertex_Vectors is new Ada.Containers.Vectors (Positive, Vertex);
+   package  Vertex_Vectors is new Ada.Containers.Vectors (Positive, Vertex);
+   subtype  Vertex_Vector  is Vertex_Vectors.Vector;
 
 
-   subtype index_Triangle is any_geometry.Triangle;
-
-
-   function "<" (L, R : in index_Triangle) return Boolean;
-
-   package index_triangle_Sets is new ada.Containers.Ordered_Sets (Element_Type => index_Triangle,
+   subtype  Index_Triangle is any_Geometry.Triangle;
+   function "<" (Left, Right : in Index_Triangle) return Boolean;
+   package  Index_Triangle_Sets is new ada.Containers.ordered_Sets (Element_Type => Index_Triangle,
                                                                    "<"          => "<",
                                                                    "="          => "=");
+   subtype  Index_Triangle_Set  is Index_Triangle_Sets.Set;
+
 
    ------------
    --  Modeller
@@ -73,12 +71,11 @@ private
 
    type Item is tagged
       record
-         Triangles              : index_triangle_Sets.Set;
+         Triangles : Index_Triangle_Set;
+         Vertices  : Vertex_Vector;
+         Index_Map : Vertex_Map_of_Index;
 
-         Vertices               : vertex_Vectors.Vector;
-         vertex_index_Map       : any_modeller.vertex_index_Map;
-
-         bounding_sphere_Radius : Real := Real'First;
+         bounding_Sphere_Radius : Real := Real'First;
       end record;
 
-end any_math.any_Geometry.any_d3.any_Modeller;
+end any_Math.any_Geometry.any_d3.any_Modeller;

@@ -49,8 +49,8 @@ is
 
    type Item is abstract tagged private;
 
-   procedure destroy (Self : in out Item)                       is abstract;
-   procedure expand  (Self : access Item;   By   : in     Real) is abstract;
+   procedure destroy (Self : in out Item)                 is abstract;
+   procedure expand  (Self : access Item;   By : in Real) is abstract;
 
 
 
