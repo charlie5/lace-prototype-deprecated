@@ -58,7 +58,7 @@ is
       c_half_Extents : aliased         c_math_c.Vector_3.item := +half_Extents;
    begin
       Self.C := b3d_new_Box (c_half_Extents'Unchecked_Access);
-      return Self;
+      return Self.all'Unchecked_Access;
    end new_box_Shape;
 
 
