@@ -1,20 +1,14 @@
 with
-     openGL.Errors,
---       openGL.Maths,
-     openGL.Palette,
      openGL.Server,
---       openGL.Sprite,
-     openGL.Texture.Coordinates,
-     openGL.Viewport,
      Lumen.Window,
-     Ada.Text_IO;
+     ada.Text_IO;
 
 
 procedure launch_core_Test
 --
 --  Exercise basic subprograms common to all GL profiles.
 --
---  todo: Complete this.
+--  TODO: Complete this.
 --
 is
    use ada.Text_IO;
@@ -28,4 +22,5 @@ begin
                         Animated => False);
 
    put_Line ("openGL Server: " & openGL.Server.Version);
+   delay 5.0;
 end launch_core_Test;
