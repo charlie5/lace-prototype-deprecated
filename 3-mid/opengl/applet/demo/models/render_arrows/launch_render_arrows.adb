@@ -1,11 +1,7 @@
 with
      openGL.Visual,
-     openGL.Model.arrow.colored,
-     openGL.Demo,
-
-     Ada.Text_IO,
-     Ada.Exceptions;
-
+     openGL.Model.Arrow.colored,
+     openGL.Demo;
 
 procedure launch_render_Arrows
 --
@@ -15,41 +11,43 @@ is
    use openGL,
        openGL.Model,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
+       openGL.linear_Algebra_3d;
 begin
-   Demo.define ("openGL 'render Arrows' Demo");
+   Demo.define ("openGL 'Render Arrows' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
    declare
       --  The Models.
       --
-      the_arrow_Model         : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.new_Arrow (End_2 => (0.0, 5.0, 0.0));
+      the_Arrow_Model         : constant Model.Arrow.colored.view
+        := Model.Arrow.colored.new_Arrow (End_2 => (0.0, 5.0, 0.0));
 
-      the_spinner_arrow_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.new_Arrow (End_1 => (0.0, -2.5, 0.0),
-                                                 End_2 => (0.0,  2.5, 0.0));
+      the_spinner_Arrow_Model : constant Model.Arrow.colored.view
+        := Model.Arrow.colored.new_Arrow (End_1 => (0.0, -2.5, 0.0),
+                                          End_2 => (0.0,  2.5, 0.0));
       --  The Sprites.
       --
       use openGL.Visual.Forge;
 
-      the_Sprites : constant openGL.Visual.views := (new_Visual (        the_arrow_Model.all'Access),
-                                                     new_Visual (the_spinner_arrow_Model.all'Access));
+      the_Sprites : constant openGL.Visual.views := (new_Visual (        the_Arrow_Model.all'Access),
+                                                     new_Visual (the_spinner_Arrow_Model.all'Access));
       Angle : Radians := 0.0;
+      Site  : openGL.Vector_2;
 
+      use openGL.Geometry_2d;
    begin
       --  Main loop.
       --
       while not Demo.Done
       loop
-         the_arrow_Model.Site_is (Now     => math.Vector_3 (Geometry_2d.to_Site (Geometry_2d.polar_Site' (angle  => Angle,
-                                                                                                          extent => 5.0)) & 0.0),
-                                  for_End => 2);
+         Site := to_Site (polar_Site' (Angle  => Angle,
+                                       Extent => 5.0));
 
-         the_Sprites (2).Spin_is (linear_Algebra_3d.to_Rotation (axis  => (0.0, 0.0, 1.0),
-                                                                 angle => Angle));
+         the_Arrow_Model.End_Site_is (Now     => math.Vector_3 (Site & 0.0),
+                                      for_End => 2);
 
+         the_Sprites (2).Spin_is (to_Rotation (Axis  => (0.0, 0.0, 1.0),
+                                               Angle => Angle));
          -- Handle user commands.
          --
          Demo.Dolly.evolve;
@@ -77,12 +75,4 @@ begin
    end;
 
    Demo.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
 end launch_render_Arrows;

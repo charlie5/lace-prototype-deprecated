@@ -32,9 +32,9 @@ is
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
 
-   procedure Site_is     (Self : in out Item;   Now     : in math.Vector_3;
+   procedure End_Site_is (Self : in out Item;   Now     : in math.Vector_3;
                                                 for_End : in Integer);
-   function  Site        (Self : in     Item;   for_End : in Integer) return math.Vector_3;
+   function  End_Site    (Self : in     Item;   for_End : in Integer) return math.Vector_3;
 
 --     overriding
 --     function  Bounds      (Self : in     Item) return openGL.Bounds;

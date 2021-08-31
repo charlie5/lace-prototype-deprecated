@@ -147,14 +147,14 @@ is
 
 
 
-   function Site (Self : in  Item;   for_End : in Integer) return math.Vector_3
+   function End_Site (Self : in  Item;   for_End : in Integer) return math.Vector_3
    is
    begin
       return Self.Vertices (openGL.Index_t (for_End)).Site;
-   end Site;
+   end End_Site;
 
 
-   procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
+   procedure End_Site_is (Self : in out Item;   Now     : in math.Vector_3;
                                             for_End : in Integer)
    is
    begin
@@ -163,7 +163,7 @@ is
 --        Self.set_Bounds;
 
       Self.is_Modified := True;
-   end Site_is;
+   end End_Site_is;
 
 
 
