@@ -1,11 +1,7 @@
 with
      openGL.Visual,
      openGL.Demo,
-     openGL.Model,
-
-     Ada.Text_IO,
-     Ada.Exceptions;
-
+     openGL.Model;
 
 procedure launch_Model_scaling
 --
@@ -14,11 +10,9 @@ procedure launch_Model_scaling
 is
    use openGL,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
-
+       openGL.linear_Algebra_3d;
 begin
-   Demo.define ("openGL 'Model scaling' Demo");
+   Demo.define ("openGL 'Model Scaling' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 20.0),
                             y_Rotation_from (to_Radians (0.0)));
    declare
@@ -28,8 +22,6 @@ begin
 
       --  The visuals.
       --
-      use openGL.Visual.Forge;
-
       the_Visuals : openGL.Visual.views (the_Models'Range);
 
       --  Scaling
@@ -40,7 +32,7 @@ begin
    begin
       for i in the_Visuals'Range
       loop
-         the_Visuals (i) := new_Visual (the_Models (i));
+         the_Visuals (i) := Visual.Forge.new_Visual (the_Models (i));
       end loop;
 
       Demo.layout (the_Visuals);
@@ -50,12 +42,12 @@ begin
       --
       while not Demo.Done
       loop
-         if scaling_Up then   Scale := Scale + (0.001, 0.001, 0.001);
-                       else   Scale := Scale - (0.001, 0.001, 0.001);
+         if scaling_Up then Scale := Scale + (0.001, 0.001, 0.001);
+                       else Scale := Scale - (0.001, 0.001, 0.001);
          end if;
 
-         if    Scale (1) > 2.0   then   scaling_Up := False;
-         elsif Scale (1) < 0.002 then   scaling_Up := True;
+         if    Scale (1) > 2.0   then scaling_Up := False;
+         elsif Scale (1) < 0.002 then scaling_Up := True;
          end if;
 
          for Each of the_Visuals
@@ -83,12 +75,4 @@ begin
    end;
 
    Demo.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
 end launch_Model_scaling;
