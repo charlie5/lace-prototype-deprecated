@@ -61,13 +61,9 @@ is
 
    function to_color_Value (Self : in unit_Interval) return color_Value
    is
+      Value : constant Real := Real'Rounding (Self * 255.0);
    begin
-      if Self = 1.0
-      then
-         return 255;
-      else
-         return color_Value (Self * 256.0);     -- TODO: Check this.
-      end if;
+      return color_Value (Value);
    end to_color_Value;
 
 
