@@ -45,6 +45,7 @@ launch_learn_linear
 launch_pong
 launch_core_test
 launch_opengl_model
+launch_large_terrain_demo
 launch_drop_ball_on_box
 launch_hello_mmi
 launch_text_sprite_demo
