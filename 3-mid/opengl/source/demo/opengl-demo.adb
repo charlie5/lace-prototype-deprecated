@@ -83,6 +83,7 @@ is
    begin
       Camera  .destroy;
       Renderer.stop_Engine;
+      ada.Text_IO.new_Line;
    end destroy;
 
 
