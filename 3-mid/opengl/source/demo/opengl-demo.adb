@@ -21,7 +21,8 @@ with
      openGL.Model.sphere        .lit_colored,
      openGL.Model.sphere        .lit_colored_textured,
      openGL.Model.Text          .lit_colored_textured,
-     openGL.Model.terrain;
+     openGL.Model.terrain,
+     ada.Text_IO;
 
 package body openGL.Demo
 is
@@ -342,6 +343,30 @@ is
       new_Line;
       set_next_visual_Site;
    end layout;
+
+
+
+   procedure print_Usage (append_Message : in String := "")
+   is
+      use ada.Text_IO;
+   begin
+      put_Line ("Camera controls: 'w' => Move forward");
+      put_Line ("                 'z' => Move backward");
+      put_Line ("                 'a' => Move left");
+      put_Line ("                 's' => Move right");
+      put_Line ("                 'e' => Move up");
+      put_Line ("                 'd' => Move down");
+      put_Line ("                 'W' => Rotate clockwise         about Z-axis");
+      put_Line ("                 'Z' => Rotate counter-clockwise about Z-axis");
+      put_Line ("                 'A' => Rotate clockwise about   about Y-Axis");
+      put_Line ("                 'S' => Rotate counter clockwise about Y-axis");
+      put_Line ("                 'E' => Rotate clockwise         about X-axis");
+      put_Line ("                 'D' => Rotate counter clockwise about X-axis");
+      put_Line ("                 'q' => Quit");
+
+      new_Line;
+      put_Line (append_Message);
+   end print_Usage;
 
 
 end openGL.Demo;

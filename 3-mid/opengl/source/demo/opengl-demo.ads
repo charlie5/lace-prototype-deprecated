@@ -28,6 +28,7 @@ is
    --
    -- Layout the visuals in a grid fashion for viewing all at once.
 
+   procedure print_Usage (append_Message : in String := "");
 
 
    procedure define (Name   : in String;
