@@ -1,12 +1,9 @@
 with
      openGL.Visual,
-     openGL.Model.capsule.lit_colored_textured,
+     openGL.Model.Capsule.lit_colored_textured,
      openGL.Palette,
-     openGL.Demo,
-
-     Ada.Text_IO,
-     Ada.Exceptions;
-
+     openGL.Light.directional,
+     openGL.Demo;
 
 procedure launch_render_Capsules
 --
@@ -16,12 +13,9 @@ is
    use openGL,
        openGL.Model,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
-
-   the_Texture : constant openGL.asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
+       openGL.linear_Algebra_3d;
 begin
-   Demo.define ("openGL 'render Capsules' Demo");
+   Demo.define ("openGL 'Render Capsules' Demo");
 
    Demo.Camera.Position_is ((0.0, 3.0, 10.0),
                             y_Rotation_from (to_Radians (-0.0)));
@@ -31,19 +25,25 @@ begin
    declare
       use openGL.Palette;
 
+      Light       : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+      the_Texture : constant asset_Name           := to_Asset ("assets/opengl/texture/Face1.bmp");
+
       --  The Models.
       --
-      the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-        := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
-                                                                  height => 2.0,
-                                                                  color  => (White, Opaque),
-                                                                  image  => the_Texture);
+      the_Capsule_Model : constant Model.Capsule.lit_colored_textured.view
+        := Model.Capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
+                                                           Height => 2.0,
+                                                           Color  => (White, Opaque),
+                                                           Image  => the_Texture);
       --  The Visuals.
       --
       use openGL.Visual.Forge;
 
-      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_capsule_Model.all'Access));
+      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Capsule_Model.all'Access));
    begin
+      Light.Site_is ((0.0, 5.0, 10.0));
+      Demo.Renderer.Light_is (Id => 1, Now => Light);
+
       --  Main loop.
       --
       while not Demo.Done
@@ -68,12 +68,4 @@ begin
    end;
 
    Demo.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
 end launch_render_Capsules;
