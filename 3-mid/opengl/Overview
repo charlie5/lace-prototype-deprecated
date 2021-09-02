@@ -1,7 +1,6 @@
-~~~~~~~~~~~~~~~~~~~~~~~~
-Lumen 'openGL' Component
-     Overview
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'openGL' Component Overview
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Platforms
@@ -29,4 +28,4 @@ Source Folders
 
 Installation
 ------------
-   Add the  .../lumen/opengl/library  folder to your GNAT_PROJECT_PATH.
+   Add the '.../opengl/library' folder to your GNAT_PROJECT_PATH.
