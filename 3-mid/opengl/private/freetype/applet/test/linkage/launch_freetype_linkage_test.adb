@@ -7,7 +7,6 @@ with
      freetype_C.FT_CharMapRec,
      interfaces.C.Strings;
 
-
 procedure launch_freetype_linkage_Test
 --
 --  Tests linkage to Freetype functions.
