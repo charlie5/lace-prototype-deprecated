@@ -1,15 +1,10 @@
 with
      openGL.Camera,
      openGL.Palette,
-     openGL.Texture,
-     openGL.Model.box .lit_colored_textured,
-     openGL.Model.sphere.lit_colored_textured,
+     openGL.Model.Box   .lit_colored_textured,
+     openGL.Model.Sphere.lit_colored_textured,
      openGL.Visual,
-     openGL.Demo,
-
-     ada.Text_IO,
-     ada.Exceptions;
-
+     openGL.Demo;
 
 procedure launch_two_Cameras_Demo
 --
@@ -18,29 +13,26 @@ procedure launch_two_Cameras_Demo
 is
    use openGL,
        openGL.Model,
-       openGL.Model.box,
+       openGL.Model.Box,
        openGL.Palette,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
+       openGL.linear_Algebra_3d;
 
-   the_Camera_2 : aliased  openGL.Camera.item;
-
-
+   Camera_2 : openGL.Camera.item;
 begin
-   openGL.Demo.define ("openGL 'two Cameras' Demo");
+   openGL.Demo.define ("openGL 'Two Cameras' Demo");
 
 
    --  Setup the extra camera.
    --
-   the_Camera_2.define;
-   the_Camera_2.Renderer_is (Demo.Renderer'unchecked_Access);
+   Camera_2.define;
+   Camera_2.Renderer_is (Demo.Renderer'unchecked_Access);
 
-   the_Camera_2.Position_is ((0.0, 20.0, 0.0),
-                             y_Rotation_from (to_Radians (0.0)));
+   Camera_2.Position_is ((0.0, 20.0, 0.0),
+                         y_Rotation_from (to_Radians (0.0)));
 
-   the_Camera_2.Viewport_is (width  => 1000,
-                             height => 1000);
+   Camera_2.Viewport_is (width  => 1000,
+                         height => 1000);
 
 
    -- Create the sprites.
@@ -50,39 +42,28 @@ begin
 
       --  The Models.
       --
-      the_box_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.new_Box
-             (size          => (0.5, 0.5, 0.5),
-              faces         => (front => (colors         => (others => (White,     Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
-                                          --  texture_object => Texture.null_Object),
-                                rear  => (colors         => (others => (Blue,     Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
-                                          --  texture_object => Texture.null_Object),
-                                upper => (colors         => (others => (Green,    Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
-                                          --  texture_object => Texture.null_Object),
-                                lower => (colors         => (others => (Green,    Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
-                                          --  texture_object => Texture.null_Object),
-                                left  => (colors         => (others => (Dark_Red, Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp")),
-                                          --  texture_object => Texture.null_Object),
-                                right => (colors         => (others => (Red,      Opaque)),
-                                          texture_name   => to_Asset ("assets/mmi/Face1.bmp"))));
-                                          --  texture_object => Texture.null_Object)));
+      the_Face      : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
+      the_box_Model : constant Model.box.lit_colored_textured.view
+        := Model.box.lit_colored_textured.new_Box
+             (size  => (0.5, 0.5, 0.5),
+              faces => (front => (colors => (others => (White,    Opaque)),  texture_name => the_Face),
+                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Face),
+                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Face),
+                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Face),
+                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Face),
+                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Face)));
 
-      the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
-        := openGL.Model.sphere.lit_colored_textured.new_sphere (radius => 0.5);
+      the_ball_Model : constant Model.Sphere.lit_colored_textured.view
+        := Model.Sphere.lit_colored_textured.new_Sphere (radius => 0.5);
 
       --  The Sprites.
       --
-      the_Sprites   : constant openGL.Visual.views (1 .. 4_000) := (others => openGL.Visual.Forge.new_Visual (openGL.Model.view (the_box_Model)));
-      the_Sprites_2 : constant openGL.Visual.views (1 .. 4_000) := (others => openGL.Visual.Forge.new_Visual (openGL.Model.view (the_ball_Model)));
+      the_Sprites   : constant Visual.views (1 .. 4_000) := (others => Visual.Forge.new_Visual (Model.view (the_box_Model)));
+      the_Sprites_2 : constant Visual.views (1 .. 4_000) := (others => Visual.Forge.new_Visual (Model.view (the_ball_Model)));
 
-      grid_Size     : constant openGL.Real                      := SqRt (openGL.Real (the_Sprites'Length));
-      x             :          openGL.Real                      := -grid_Size / 2.0;
-      z             :          openGL.Real                      := 0.0;
+      grid_Size     : constant openGL.Real := SqRt (openGL.Real (the_Sprites'Length));
+      x             :          openGL.Real := -grid_Size / 2.0;
+      z             :          openGL.Real := 0.0;
 
    begin
       Demo.Dolly.Speed_is (0.1);
@@ -122,48 +103,20 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         declare
-            Command : Character;
-            Avail   : Boolean;
-         begin
-            Demo.Dolly.get_last_Character (Command, Avail);
+         Demo.Camera.render (the_Sprites);
+         Camera_2   .render (the_Sprites_2);
 
-            if Avail
-            then
-               case Command
-               is
-               when others => null;
-               end case;
-            end if;
-         end;
-
-         Demo.Camera .render (the_Sprites);
-         the_Camera_2.render (the_Sprites_2);
-
-         while not (    Demo.Camera .cull_Completed
-                    and the_Camera_2.cull_Completed)
+         while not (    Demo.Camera.cull_Completed
+                    and Camera_2   .cull_Completed)
          loop
             delay Duration'Small;
          end loop;
 
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
-
---           while the_Renderer.is_Busy
---           loop
---              delay Duration'Small; -- 1.0 / (60.0 * 1000.0);
---           end loop;
       end loop;
    end;
 
    Demo.destroy;
-   the_Camera_2.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
+   Camera_2.destroy;
 end launch_two_Cameras_Demo;
