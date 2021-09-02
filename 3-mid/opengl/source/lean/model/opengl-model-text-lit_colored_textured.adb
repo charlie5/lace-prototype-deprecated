@@ -3,7 +3,9 @@ with
      openGL.GlyphImpl.Texture,
      openGL,
      openGL.Primitive.indexed,
-     openGL.Texture;
+     openGL.Texture,
+
+     ada.Directories;
 
 
 package body openGL.Model.Text.lit_colored_textured
@@ -22,17 +24,27 @@ is
                       Color    : in openGL.lucid_Color;
                       Centered : in Boolean            := True) return View
    is
-      Self : constant View := new Item;
+      Font_Name : constant String  := to_String (Font.Name);
+      Exists    : constant Boolean := ada.Directories.Exists (Font_Name);
    begin
-      Self.Text     := new String' (Text);
-      Self.Font_Id  := Font;
-      Self.Color    := Color;
-      Self.Centered := Centered;
-      Self.Bounds   := null_Bounds;
+      if not Exists
+      then
+         raise no_such_Font with Font_Name;
+      end if;
 
-      Self.define (Scale);
+      declare
+         Self : constant View := new Item;
+      begin
+         Self.Text     := new String' (Text);
+         Self.Font_Id  := Font;
+         Self.Color    := Color;
+         Self.Centered := Centered;
+         Self.Bounds   := null_Bounds;
 
-      return Self;
+         Self.define (Scale);
+
+         return Self;
+      end;
    end new_Text;
 
 

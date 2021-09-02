@@ -21,4 +21,6 @@ is
 
    function  Font    (Self : in     Item)     return openGL.Font.view   is abstract;
 
+   no_such_Font : exception;
+
 end openGL.Model.text;
