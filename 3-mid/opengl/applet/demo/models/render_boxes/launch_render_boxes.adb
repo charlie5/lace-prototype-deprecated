@@ -1,31 +1,26 @@
 with
      openGL.Visual,
 
-     openGL.Model.box. colored,
-     openGL.Model.box.textured,
-     openGL.Model.box.lit_colored_textured,
+     openGL.Model.Box. colored,
+     openGL.Model.Box.textured,
+     openGL.Model.Box.lit_colored_textured,
 
      openGL.Palette,
-     openGL.Demo,
-
-     Ada.Text_IO,
-     Ada.Exceptions;
-
+     openGL.Demo;
 
 procedure launch_render_Boxes
 --
---  Exercise the render of box models.
+--  Exercise the rendering of box models.
 --
 is
    use openGL,
        openGL.Model,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
+       openGL.linear_Algebra_3d;
 
    the_Texture : constant openGL.asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 begin
-   Demo.define ("openGL 'render Boxes' Demo");
+   Demo.define ("openGL 'Render Boxes' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
    declare
@@ -34,43 +29,43 @@ begin
 
       --  The Models.
       --
-      the_box_1_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.new_Box
+      the_Box_1_Model : constant Model.Box.colored.view
+        := Model.Box.colored.new_Box
              (Size => (1.0, 2.0, 1.0),
-              faces => (front => (colors => (others => (Blue,     Opaque))),
-                        rear  => (colors => (others => (Blue,     Opaque))),
-                        upper => (colors => (others => (Green,    Opaque))),
-                        lower => (colors => (others => (Green,    Opaque))),
-                        left  => (colors => (others => (Dark_Red, Opaque))),
-                        right => (colors => (others => (Red,      Opaque)))));
+              Faces => (Front => (Colors => (others => (Blue,     Opaque))),
+                        Rear  => (Colors => (others => (Blue,     Opaque))),
+                        Upper => (Colors => (others => (Green,    Opaque))),
+                        Lower => (Colors => (others => (Green,    Opaque))),
+                        Left  => (Colors => (others => (Dark_Red, Opaque))),
+                        Right => (Colors => (others => (Red,      Opaque)))));
 
-      the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.new_Box
+      the_Box_2_Model : constant Model.Box.lit_colored_textured.view
+        := Model.Box.lit_colored_textured.new_Box
              (Size => (1.0, 2.0, 1.0),
-              faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
-                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
+              Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                        Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                        Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                        Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                        Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
+                        Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
 
-      the_box_3_Model : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.new_Box
+      the_Box_3_Model : constant Model.Box.textured.view
+        := Model.Box.textured.new_Box
              (Size => (1.0, 2.0, 1.0),
-              faces => (front => (texture_name   => the_Texture),
-                        rear  => (texture_name   => the_Texture),
-                        upper => (texture_name   => the_Texture),
-                        lower => (texture_name   => the_Texture),
-                        left  => (texture_name   => the_Texture),
-                        right => (texture_name   => the_Texture)));
+              Faces => (Front => (texture_Name => the_Texture),
+                        Rear  => (texture_Name => the_Texture),
+                        Upper => (texture_Name => the_Texture),
+                        Lower => (texture_Name => the_Texture),
+                        Left  => (texture_Name => the_Texture),
+                        Right => (texture_Name => the_Texture)));
 
       --  The Visuals.
       --
       use openGL.Visual.Forge;
 
-      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_box_1_Model.all'Access),
-                                                     2 => new_Visual (the_box_2_Model.all'Access),
-                                                     3 => new_Visual (the_box_3_Model.all'Access));
+      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Box_1_Model.all'Access),
+                                                     2 => new_Visual (the_Box_2_Model.all'Access),
+                                                     3 => new_Visual (the_Box_3_Model.all'Access));
    begin
       the_Visuals (1).Site_is ((-3.0, 0.0, 0.0));
       the_Visuals (2).Site_is (( 0.0, 0.0, 0.0));
@@ -100,12 +95,4 @@ begin
    end;
 
    Demo.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
 end launch_render_Boxes;
