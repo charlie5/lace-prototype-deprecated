@@ -50,6 +50,7 @@ launch_many_boxes_demo
 launch_model_scaling
 launch_render_arrows
 launch_render_billboards
+launch_render_boxes
 launch_drop_ball_on_box
 launch_hello_mmi
 launch_text_sprite_demo
