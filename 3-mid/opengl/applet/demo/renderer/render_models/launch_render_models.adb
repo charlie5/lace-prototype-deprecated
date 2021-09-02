@@ -14,6 +14,7 @@ is
        openGL.linear_Algebra_3d;
 
 begin
+   Demo.print_Usage ("Use space ' ' to cycle through models.");
    Demo.define ("openGL 'Render Models' Demo");
    Demo.Camera.Position_is ((0.0, 2.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));

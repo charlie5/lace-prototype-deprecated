@@ -18,6 +18,7 @@ is
    the_font_Id : constant openGL.Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 24);
 
 begin
+   Demo.print_Usage ("Use space ' ' to cycle the text.");
    openGL.Demo.define ("openGL 'Render Text' Demo");
 
    --  Setup the camera.

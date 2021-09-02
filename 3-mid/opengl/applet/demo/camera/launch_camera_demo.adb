@@ -19,7 +19,8 @@ is
        openGL.linear_Algebra_3d;
 
 begin
-   openGL.Demo.define ("openGL 'Camera' Demo");
+   Demo.print_Usage;
+   Demo.define ("openGL 'Camera' Demo");
 
    --  Setup the camera.
    --

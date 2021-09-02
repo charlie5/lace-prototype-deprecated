@@ -20,6 +20,7 @@ is
 
    the_Texture : constant openGL.asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 begin
+   Demo.print_Usage;
    Demo.define ("openGL 'Render Boxes' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));

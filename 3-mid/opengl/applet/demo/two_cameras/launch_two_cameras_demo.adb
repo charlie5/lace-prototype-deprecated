@@ -20,8 +20,8 @@ is
 
    Camera_2 : openGL.Camera.item;
 begin
+   Demo.print_Usage;
    openGL.Demo.define ("openGL 'Two Cameras' Demo");
-
 
    --  Setup the extra camera.
    --

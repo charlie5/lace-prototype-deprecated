@@ -3,6 +3,8 @@ with
      openGL.Terrain,
      openGL.Demo;
 
+with openGL.Light.directional;
+
 procedure launch_large_Terrain_Demo
 --
 --  Exercise the culler with a large terrain grid.
@@ -13,21 +15,38 @@ is
        openGL.linear_Algebra_3d;
 
 begin
-   openGL.Demo.define ("openGL 'large Terrin' Demo");
+   Demo.print_Usage;
+   Demo.define ("openGL 'Large Terrain' Demo");
 
    --  Setup the camera.
    --
    Demo.Camera.Position_is ((0.0, 100.0, 500.0),
                             y_Rotation_from (to_Radians (0.0)));
 
+   -- Set the lights initial position to far behind and far to the left.
+   --
+   declare
+      Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+   begin
+      Light.Site_is ((0.0, 1000.0, 0.0));
+      Demo.Renderer.Light_is (Id => 1, Now => Light);
+   end;
+
 
    declare
+      --  Heights : constant asset_Name := to_Asset ("assets/test5.png");
       Heights : constant asset_Name := to_Asset ("assets/kidwelly-terrain-510x510.png");
+      --  Heights : constant asset_Name := to_Asset ("assets/kidwelly-terrain-510x510-with_hole.png");
       Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255.png");
+      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_vertical.png");
+      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_vertical_flip_horizontal.png");
+      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_horizontal.png");
+      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_horizontal_fv.png");
 
       Terrain : constant openGL.Visual.Grid := openGL.Terrain.new_Terrain (heights_File => Heights,
                                                                            texture_File => Texture,
                                                                            Scale        => (1.0, 20.0, 1.0));
+                                                                           --  Scale        => (1.0, 40.0, 1.0));
       Count   : constant Positive :=   Terrain'Length (1)
                                      * Terrain'Length (2);
       Last    : Natural := 0;

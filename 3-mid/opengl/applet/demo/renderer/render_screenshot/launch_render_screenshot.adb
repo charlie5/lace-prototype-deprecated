@@ -14,6 +14,7 @@ is
        openGL.linear_Algebra_3d;
 
 begin
+   Demo.print_Usage ("Use 't' or 'T' to take a screenshot.");
    Demo.define ("openGL 'Render Screenshot' Demo");
    Demo.Camera.Position_is ((0.0, 2.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));

@@ -18,7 +18,8 @@ is
        openGL.linear_Algebra_3d;
 
 begin
-   openGL.Demo.define ("openGL 'many Boxes' Demo");
+   Demo.print_Usage;
+   Demo.define ("openGL 'many Boxes' Demo");
 
    --  Setup the camera.
    --

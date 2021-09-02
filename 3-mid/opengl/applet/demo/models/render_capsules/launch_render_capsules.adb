@@ -15,11 +15,10 @@ is
        openGL.Math,
        openGL.linear_Algebra_3d;
 begin
+   Demo.print_Usage;
    Demo.define ("openGL 'Render Capsules' Demo");
-
    Demo.Camera.Position_is ((0.0, 3.0, 10.0),
                             y_Rotation_from (to_Radians (-0.0)));
-
    Demo.Dolly.Speed_is (0.1);
 
    declare
