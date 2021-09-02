@@ -1,11 +1,10 @@
 with
-     Ada.Strings.unbounded,
-     Ada.Strings.fixed,
-     Ada.Strings.Maps,
-     Ada.Characters.Latin_1,
-     Ada.Text_IO,
-     Ada.Command_Line,
-     Ada.Containers.Vectors;
+     ada.Strings.unbounded,
+     ada.Strings.Maps,
+     ada.Characters.latin_1,
+     ada.Text_IO,
+     ada.Command_Line,
+     ada.Containers.Vectors;
 
 
 procedure generate_GL_types_Spec
@@ -20,11 +19,11 @@ is
        Ada.Command_Line,
        Ada.Text_IO;
 
-   package lines_Vectors is new Ada.Containers.Vectors (Positive,
+   package lines_Vectors is new ada.Containers.Vectors (Positive,
                                                         unbounded_String);
    the_Lines      : lines_Vectors.Vector;
-   headers_Prefix : String              := (if    argument_Count = 0 then "/usr/include"
-                                            else                          Argument (1));
+   headers_Prefix : constant String     := (if argument_Count = 0 then "/usr/include"
+                                                                  else Argument (1));
 begin
    --  Find GL types in 'GL/gl.h'.
    --
@@ -36,7 +35,7 @@ begin
       while not End_of_File (the_File)
       loop
          declare
-            the_Line : unbounded_String := to_unbounded_String  (get_Line (the_File));
+            the_Line : constant unbounded_String := to_unbounded_String (get_Line (the_File));
          begin
             if    Index (the_Line, "typedef") /= 0
               and Index (the_Line, "(")        = 0
@@ -57,7 +56,7 @@ begin
                  or Index (the_Line, "GLdouble")   /= 0
                  or Index (the_Line, "GLclampd")   /= 0
                then
-                  the_Lines.append ((the_Line));
+                  the_Lines.append (the_Line);
                end if;
             end if;
          end;
@@ -77,7 +76,7 @@ begin
       while not End_of_File (the_File)
       loop
          declare
-            the_Line : unbounded_String := to_unbounded_String  (get_Line (the_File));
+            the_Line : constant unbounded_String := to_unbounded_String  (get_Line (the_File));
          begin
             if    Index (the_Line, "typedef") /= 0
               and Index (the_Line, "(")        = 0
@@ -85,7 +84,7 @@ begin
                if   Index (the_Line, "GLchar")  /= 0
                  or Index (the_Line, "GLfixed") /= 0
                then
-                  the_Lines.append ((the_Line));
+                  the_Lines.append (the_Line);
                end if;
             end if;
          end;
@@ -103,49 +102,47 @@ begin
           ada.Strings;
 
       the_File : File_type;
-      Cursor   : lines_Vectors.Cursor := the_Lines.First;
 
 
       function to_Ada (the_Line : in unbounded_String) return String
       is
-         Whitespace_Set : constant Character_Set := to_Set (" " & Ada.Characters.Latin_1.HT);
+         whitespace_Set : constant Character_Set := to_Set (" " & ada.Characters.latin_1.HT);
          semicolon_Pos  : constant Integer       := Index  (the_Line,  ";",  going => Backward);
 
-         Last           :          Integer       := semicolon_Pos - 1;
-         First          :          Integer;
+         Last  : Integer := semicolon_Pos - 1;
+         First : Integer;
 
 
          function GL_Type return String
          is
          begin
-            First := Index (the_Line, Whitespace_Set,  going => Backward,
-                                                       from  => Last);
+            First := Index (the_Line, whitespace_Set, going => Backward,
+                                                      from  => Last);
             declare
-               the_Slice : String  := Slice       (the_Line,  First + 1, Last);
-               pad_Size  : Integer := Integer'Max (0,         10 - the_Slice'Length);
+               the_Slice : constant String  := Slice       (the_Line,  First + 1, Last);
+               pad_Size  : constant Integer := Integer'Max (0, 10 - the_Slice'Length);
             begin
                return to_String (  the_Slice
                                  & pad_Size * ' ');  -- Padding.
             end;
          end GL_Type;
 
-         the_GL_Type : String := GL_Type;
+         the_GL_Type : constant String := GL_Type;
 
 
          function C_Type return String
          is
-            use ada.Strings.fixed;
          begin
-            Last  := Index (the_Line,  Whitespace_Set,  from  => First,
+            Last  := Index (the_Line,  whitespace_Set,  from  => First,
                                                         going => Backward,
                                                         test  => Outside);
-            First := Index (the_Line,  Whitespace_Set,  from  => 9,
+            First := Index (the_Line,  whitespace_Set,  from  => 9,
                                                         going => Backward,
                                                         test  => Outside);
             return Slice (the_Line,  First, Last);
          end C_Type;
 
-         the_C_Type : String := C_Type;
+         the_C_Type : constant String := C_Type;
 
 
          function the_Ada_Type return String
@@ -190,10 +187,9 @@ begin
       put_Line (the_File,  "   use Interfaces;");
       new_Line (the_File);
 
-      while has_Element (Cursor)
+      for Each of the_Lines
       loop
-         put_Line (the_File,  to_Ada (Element (Cursor)));
-         next (Cursor);
+         put_Line (the_File, to_Ada (Each));
       end loop;
 
       new_Line (the_File);
