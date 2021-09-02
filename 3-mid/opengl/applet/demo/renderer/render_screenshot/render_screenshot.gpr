@@ -12,6 +12,5 @@ is
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
-   package Linker   renames Lace_shared.Linker;
 
 end render_Screenshot;
