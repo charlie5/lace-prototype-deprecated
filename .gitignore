@@ -53,6 +53,7 @@ launch_render_billboards
 launch_render_boxes
 launch_render_screenshot
 launch_render_text
+launch_two_cameras_demo
 launch_drop_ball_on_box
 launch_hello_mmi
 launch_text_sprite_demo
