@@ -2,10 +2,7 @@ with
      openGL.Model,
      openGL.Visual,
      openGL.Light.directional,
-     openGL.Demo,
-
-     Ada.Text_IO,
-     Ada.Exceptions;
+     openGL.Demo;
 
 procedure launch_render_Models
 --
@@ -14,12 +11,11 @@ procedure launch_render_Models
 is
    use openGL,
        openGL.Math,
-       openGL.linear_Algebra_3d,
-       ada.Text_IO;
+       openGL.linear_Algebra_3d;
 
 begin
-   Demo.define ("openGL 'render Models' Demo");
-   Demo.Camera.Position_is ((0.0, 0.0, 10.0),
+   Demo.define ("openGL 'Render Models' Demo");
+   Demo.Camera.Position_is ((0.0, 2.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
 
    declare
@@ -76,7 +72,7 @@ begin
             end if;
          end;
 
-         --  Render all sprites.
+         --  Render all visuals.
          --
          Demo.Camera.render ((1 => the_Visuals (Current)));
 
@@ -91,12 +87,4 @@ begin
    end;
 
    Demo.destroy;
-   new_Line;
-
-exception
-   when E : others =>
-      new_Line;
-      put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
-      new_Line;
 end launch_render_Models;
