@@ -1,9 +1,8 @@
 with
      eGL.Binding,
      Swig,
-     Interfaces.C.strings,
+     interfaces.C.Strings,
      System;
-
 
 procedure launch_egl_linkage_Test
 --
@@ -21,7 +20,7 @@ is
    an_EGLsurface : EGLsurface;
    an_EGLcontext : EGLcontext;
 
-   a_chars_ptr   : Interfaces.C.strings.chars_ptr;
+   a_chars_ptr   : interfaces.C.strings.chars_ptr;
    a_void_ptr    : swig.void_ptr;
 
    an_EGLdisplay_pointer : access EGLdisplay;
