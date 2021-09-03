@@ -2,7 +2,6 @@ with
      ada.Strings.Hash,
      ada.unchecked_Conversion;
 
-
 package body openGL
 is
    ------------
@@ -54,7 +53,6 @@ is
    end to_Vector_3_array;
 
 
-
    ----------
    --  Colors
    --
@@ -83,7 +81,6 @@ is
               to_color_Value (G),
               to_color_Value (B));
    end to_Color;
-
 
 
    -------------
@@ -155,7 +152,6 @@ is
    end Region;
 
 
-
    ----------
    --  Assets
    --
@@ -195,7 +191,6 @@ is
    end Hash;
 
 
-
    ---------
    -- Bounds
    --
@@ -231,7 +226,6 @@ is
    end set_Ball_from_Box;
 
 
-
    ---------
    -- Images
    --
@@ -253,7 +247,6 @@ is
    end to_Image;
 
 
-
    ------------
    -- safe_Real
    --
@@ -273,6 +266,5 @@ is
          return the_Value;
       end Value;
    end safe_Real;
-
 
 end openGL;
