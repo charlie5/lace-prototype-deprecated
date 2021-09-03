@@ -34,14 +34,8 @@ begin
 
 
    declare
-      --  Heights : constant asset_Name := to_Asset ("assets/test5.png");
       Heights : constant asset_Name := to_Asset ("assets/kidwelly-terrain-510x510.png");
-      --  Heights : constant asset_Name := to_Asset ("assets/kidwelly-terrain-510x510-with_hole.png");
       Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255.png");
-      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_vertical.png");
-      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_vertical_flip_horizontal.png");
-      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_horizontal.png");
-      --  Texture : constant asset_Name := to_Asset ("assets/kidwelly-terrain-texture-255x255-flip_horizontal_fv.png");
 
       Terrain : constant openGL.Visual.Grid := openGL.Terrain.new_Terrain (heights_File => Heights,
                                                                            texture_File => Texture,

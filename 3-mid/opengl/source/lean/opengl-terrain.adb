@@ -67,24 +67,25 @@ is
       procedure free is new ada.unchecked_Deallocation (openGL.height_Map, openGL.IO.height_Map_view);
 
 
-      procedure flip (Self : openGL.io.height_Map_view)
-      is
-         Pad : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
-      begin
-         for Row in Self'Range (1)
-         loop
-            for Col in Self'Range (2)
-            loop
-               Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
-            end loop;
-         end loop;
-
-         free (Pad);
-      end flip;
-
+      --  procedure flip (Self : openGL.io.height_Map_view)
+      --  is
+      --     row_Last : constant Index_t          := Self'Last (1);
+      --     Pad      : openGL.io.height_Map_view := new openGL.height_Map' (Self.all);
+      --  begin
+      --     for Row in Self'Range (1)
+      --     loop
+      --        for Col in Self'Range (2)
+      --        loop
+      --           Self (Row, Col) := Pad (row_Last - Row + 1,  Col);
+      --        end loop;
+      --     end loop;
+      --
+      --     free (Pad);
+      --  end flip;
+      --
 
    begin
-      flip (the_Pixels.all'Unchecked_Access);
+      --  flip (the_Pixels.all'Unchecked_Access);
 
       --  Create each grid elements 'heightmap'.
       --
@@ -130,7 +131,7 @@ is
             site_X_offset := Real (tile_Width) / 2.0 * Scale (1);
 
             tile_X_Offset := 0.0;
-            tile_Z_Offset := tile_Z_Offset - Depth (the_heightmap_Grid (Row, 1).all) * Scale (3);
+            tile_Z_Offset := Real (Row - 1) * Depth (the_heightmap_Grid (Row, 1).all) * Scale (3);
 
             for Col in the_visual_Grid'Range (2)
             loop
@@ -169,9 +170,9 @@ is
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
 
-                  the_Site := (site_X_offset - (total_Width / 2.0) * 1.0,
-                               site_Y_Offset * Scale (2),
-                               site_Z_offset - (total_Depth / 2.0) * 1.0);
+                  the_Site := ( site_X_offset - (total_Width / 2.0) * 1.0,
+                                site_Y_Offset * Scale (2),
+                               -(site_Z_offset - (total_Depth / 2.0)));
 
 
                   the_visual_Grid (Row, Col).Site_is (the_Site + base_Centre);
