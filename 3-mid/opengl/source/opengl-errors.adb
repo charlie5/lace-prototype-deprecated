@@ -1,7 +1,6 @@
 with
      openGL.Tasks,
-     Ada.Text_IO;
-
+     ada.Text_IO;
 
 package body openGL.Errors
 is
@@ -18,7 +17,7 @@ is
          when GL_INVALID_ENUM      =>   return "invalid Enum";
          when GL_INVALID_VALUE     =>   return "invalid Value";
          when GL_INVALID_OPERATION =>   return "invalid Operation";
-         when GL_OUT_OF_MEMORY     =>   return "out of memory";
+         when GL_OUT_OF_MEMORY     =>   return "out of Memory";
          when others               =>   return "unknown openGL error detected";
       end case;
    end Current;
@@ -29,14 +28,14 @@ is
    is
       current_Error : constant String := Current;
 
-      function error_Msg return String
+      function Error_Message return String
       is
       begin
          if Prefix = ""
          then   return "openGL error: '" & current_Error & "'";
          else   return Prefix    & ": '" & current_Error & "'";
          end if;
-      end error_Msg;
+      end Error_Message;
 
    begin
       if current_Error = "no error"
@@ -44,12 +43,12 @@ is
          return;
       end if;
 
-      raise openGL.Error with error_Msg;
+      raise openGL.Error with Error_Message;
    end log;
 
 
 
-   procedure log (Prefix : in String := ""; error_Occurred : out Boolean)
+   procedure log (Prefix : in String := "";   Error_occurred : out Boolean)
    is
       use ada.Text_IO;
       current_Error : constant String := Current;
