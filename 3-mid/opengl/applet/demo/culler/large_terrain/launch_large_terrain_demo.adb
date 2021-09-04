@@ -39,8 +39,7 @@ begin
 
       Terrain : constant openGL.Visual.Grid := openGL.Terrain.new_Terrain (heights_File => Heights,
                                                                            texture_File => Texture,
-                                                                           Scale        => (1.0, 20.0, 1.0));
-                                                                           --  Scale        => (1.0, 40.0, 1.0));
+                                                                           Scale        => (1.0, 25.0, 1.0));
       Count   : constant Positive :=   Terrain'Length (1)
                                      * Terrain'Length (2);
       Last    : Natural := 0;
