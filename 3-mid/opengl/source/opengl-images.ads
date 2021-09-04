@@ -1,5 +1,5 @@
 with
-     Ada.Streams.Stream_IO;
+     ada.Streams.Stream_IO;
 
 
 package openGL.Images
