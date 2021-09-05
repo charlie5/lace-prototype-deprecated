@@ -1,44 +1,39 @@
 with
      glx.Pointers;
 
-
-
-package body openGL.Context
+package body openGL.Context     -- TODO: Finish this package.
 is
 
-   procedure define (Self : in out Item;   the_surface_Profile : in     openGL.surface_Profile.item'Class)
+   procedure define (Self : in out Item;   Profile : in openGL.surface_Profile.item'Class)
 
    is
-      pragma Unreferenced (the_surface_Profile);
-      use Glx,
+      pragma Unreferenced (Profile);
+      use GlX,
           glx.Pointers;
-
    begin
       if Self.glx_Context = null
       then
-         raise Program_Error with "no openGL context";
+         raise Program_Error with "No openGL context";
       end if;
    end define;
 
 
 
-   procedure make_Current (Self : in Item;   read_Surface  : in openGL.Surface.item;
-                                             write_Surface : in openGL.Surface.item)
+   procedure make_Current (Self : in Item;   read_Surface  : in Surface.item;
+                                             write_Surface : in Surface.item)
    is
       pragma Unreferenced (write_Surface);
-
-      Success : glx.Bool;     pragma Unreferenced (Success);
-
+      Success : glx.Bool with Unreferenced;
    begin
       null;
    end make_Current;
 
 
 
-   function glx_Context_debug (Self : in Item'Class) return GLX.GLXContext.item
+   function glx_Context_debug (Self : in Item'Class) return glx.GLXContext.item
    is
    begin
-      return self.glx_Context;
+      return Self.glx_Context;
    end glx_Context_debug;
 
 
