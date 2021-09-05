@@ -1,36 +1,39 @@
 with
      openGL.Tasks,
-     interfaces.C.strings,
+     interfaces.C.Strings,
      ada.unchecked_Conversion;
-
 
 package body openGL.Server
 is
-
 
    function Version return String
    is
       use GL, Interfaces;
 
-      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
 
       type GLubyte_Pointer  is access all GLubyte;
-      function to_chars_ptr is new ada.Unchecked_Conversion (GLubyte_Pointer,
-                                                             c.strings.chars_ptr);
+      function to_Chars_ptr is new ada.unchecked_Conversion (GLubyte_Pointer,
+                                                             c.Strings.Chars_ptr);
 
-      the_Version : constant String := c.strings.Value (to_chars_ptr (glGetString (GL_VERSION)));
+      Result : constant String := c.Strings.Value (to_Chars_ptr (glGetString (GL_VERSION)));
    begin
-      return the_Version;
+      return Result;
    end Version;
 
 
 
    function Version return a_Version
    is
-      the_Version : constant String := Version;
+      use GL;
+      Major : aliased glInt;
+      Minor : aliased glInt;
    begin
-      return (major => Integer'Value (the_Version (1 .. 1)),
-              minor => Integer'Value (the_Version (3 .. 3)));
+      glGetIntegerv (GL_MAJOR_VERSION, Major'Access);
+      glGetIntegerv (GL_MINOR_VERSION, Minor'Access);
+
+      return (Major => Integer (Major),
+              Minor => Integer (Minor));
    end Version;
 
 
