@@ -1,8 +1,7 @@
 with
-     interfaces.C.Pointers,
-     interfaces.C.Strings,
+     Interfaces.C.Pointers,
+     Interfaces.C.Strings,
      System;
-
 
 package Freetype_C
 --
@@ -102,14 +101,12 @@ is
    subtype FT_FaceRec       is System.Address;
    type    FT_FaceRec_array is array (C.Size_t range <>) of aliased FT_FaceRec;
 
-
    -- FT_Kerning_Mode
    --
    type FT_Kerning_Mode is (FT_KERNING_DEFAULT,
                             FT_KERNING_UNFITTED,
                             FT_KERNING_UNSCALED);
    type FT_Kerning_Mode_array is array (C.Size_t range <>) of aliased FT_Kerning_Mode;
-
 
    -- FT_SizeRec
    --

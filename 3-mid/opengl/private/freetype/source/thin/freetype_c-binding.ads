@@ -11,72 +11,70 @@ with
      freetype_c.FT_CharMap,
      freetype_c.Pointers,
 
-     interfaces.c.Pointers,
-     interfaces.c.Strings;
-
+     Interfaces.C.Pointers,
+     Interfaces.C.Strings;
 
 package freetype_c.Binding
 --
 --  Provides the Freetype library functions.
 --
 is
-   use
-       freetype_c.Pointers;
+   use freetype_c.Pointers;
 
 
    --  unsigned_char_Pointer
    --
    type    unsigned_char_Array      is array (C.size_t range <>) of aliased C.unsigned_Char;
-   package c_unsigned_char_Pointers is new interfaces.c.Pointers (Index              => C.size_t,
-                                                                  Element            => C.unsigned_Char,
-                                                                  element_Array      => unsigned_char_Array,
-                                                                  default_Terminator => 0);
+   package c_unsigned_char_Pointers is new C.Pointers (Index              => C.size_t,
+                                                       Element            => C.unsigned_Char,
+                                                       element_Array      => unsigned_char_Array,
+                                                       default_Terminator => 0);
    subtype unsigned_char_Pointer is c_unsigned_char_Pointers.Pointer;
 
 
-
+   ---------------
    --  Subprograms
    --
 
-   procedure FT_Outline_Get_CBox (outline     : in FT_Outline_Pointer;
-                                  acbox       : in FT_BBox.Pointer);
+   procedure FT_Outline_Get_CBox (Outline     : in FT_Outline_Pointer;
+                                  acBox       : in FT_BBox.Pointer);
 
-   function  FT_Init_FreeType    (alibrary    : in FT_Library.Pointer)   return FT_Error;
+   function  FT_Init_FreeType    (aLibrary    : in FT_Library.Pointer)   return FT_Error;
 
-   function  FT_Done_FreeType    (alibrary    : in FT_Library.Item)      return FT_Error;
+   function  FT_Done_FreeType    (aLibrary    : in FT_Library.Item)      return FT_Error;
 
-   function  FT_Render_Glyph     (slot        : in FT_GlyphSlot.Item;
-                                  render_mode : in FT_Render_Mode)       return FT_Error;
+   function  FT_Render_Glyph     (Slot        : in FT_GlyphSlot.Item;
+                                  render_Mode : in FT_Render_Mode)       return FT_Error;
 
-   function  FT_Set_Char_Size    (face            : in FT_Face.Item;
-                                  char_width      : in FT_F26Dot6;
-                                  char_height     : in FT_F26Dot6;
-                                  horz_resolution : in FT_UInt;
-                                  vert_resolution : in FT_UInt)          return FT_Error;
+   function  FT_Set_Char_Size    (Face            : in FT_Face.Item;
+                                  char_Width      : in FT_F26Dot6;
+                                  char_Height     : in FT_F26Dot6;
+                                  horz_Resolution : in FT_UInt;
+                                  vert_Resolution : in FT_UInt)          return FT_Error;
 
-   function  FT_Done_Face        (face         : in FT_Face.Item)        return FT_Error;
+   function  FT_Done_Face        (Face         : in FT_Face.Item)        return FT_Error;
 
-   function  FT_Attach_File      (face         : in FT_Face.Item;
-                                  filepathname : in C.strings.chars_ptr) return FT_Error;
+   function  FT_Attach_File      (Face         : in FT_Face.Item;
+                                  FilePathname : in C.strings.chars_ptr) return FT_Error;
 
-   function  FT_Set_Charmap      (face         : in FT_Face.Item;
-                                  charmap      : in FT_CharMap.Item)     return FT_Error;
+   function  FT_Set_Charmap      (Face         : in FT_Face.Item;
+                                  charMap      : in FT_CharMap.Item)     return FT_Error;
 
-   function  FT_Select_Charmap   (face         : in FT_Face.Item;
-                                  encoding     : in FT_Encoding)         return FT_Error;
+   function  FT_Select_Charmap   (Face         : in FT_Face.Item;
+                                  Encoding     : in FT_Encoding)         return FT_Error;
 
-   function  FT_Get_Char_Index   (face         : in FT_Face.Item;
-                                  charcode     : in FT_ULong)            return FT_UInt;
+   function  FT_Get_Char_Index   (Face         : in FT_Face.Item;
+                                  charCode     : in FT_ULong)            return FT_UInt;
 
-   function  FT_Get_Kerning      (face         : in FT_Face.Item;
-                                  left_glyph   : in FT_UInt;
-                                  right_glyph  : in FT_UInt;
-                                  kern_mode    : in FT_UInt;
-                                  akerning     : in FT_Vector.Pointer)   return FT_Error;
+   function  FT_Get_Kerning      (Face         : in FT_Face.Item;
+                                  left_Glyph   : in FT_UInt;
+                                  right_Glyph  : in FT_UInt;
+                                  kern_Mode    : in FT_UInt;
+                                  aKerning     : in FT_Vector.Pointer)   return FT_Error;
 
-   function  FT_Load_Glyph       (face         : in FT_Face.Item;
-                                  glyph_index  : in FT_UInt;
-                                  load_flags   : in FT_Int32)            return FT_Error;
+   function  FT_Load_Glyph       (Face         : in FT_Face.Item;
+                                  Glyph_Index  : in FT_UInt;
+                                  Load_Flags   : in FT_Int32)            return FT_Error;
 
    function  FT_GlyphSlot_Get_Outline     (Self : in FT_GlyphSlot.Item) return access FT_Outline;
    function  FT_GlyphSlot_Get_Advance     (Self : in FT_GlyphSlot.Item) return FT_Vector.Item;
@@ -87,11 +85,11 @@ is
    function  FT_Size_Get_Metrics          (Self : in FT_Size.Item)      return FT_Size_Metrics.Item;
 
    function  new_FT_Face              (Library           : in FT_Library.Item;
-                                       fontFilePath      : in C.strings.chars_ptr) return access FT_FaceRec;
+                                       FontFilePath      : in C.strings.chars_ptr) return access FT_FaceRec;
 
    function  new_FT_Memory_Face       (Library           : in FT_Library.Item;
                                        pBufferBytes      : in unsigned_char_Pointer;
-                                       bufferSizeInBytes : in C.int) return access FT_FaceRec;
+                                       BufferSizeInBytes : in C.int) return access FT_FaceRec;
 
    function  FT_Face_Get_Size         (Self : in FT_Face.Item) return access FT_SizeRec;
    function  FT_Face_IS_SCALABLE      (Self : in FT_Face.Item) return FT_Long;
@@ -101,13 +99,13 @@ is
    function  FT_Face_Get_num_glyphs   (Self : in FT_Face.Item) return FT_Long;
 
    function  FT_Face_Get_charmap      (Self : in FT_Face.Item)                     return  access FT_CharMapRec.Item;
-   function  FT_Face_Get_charmap_at   (Self : in FT_Face.Item;   index : in C.int) return  access FT_CharMapRec.Item;
+   function  FT_Face_Get_charmap_at   (Self : in FT_Face.Item;   Index : in C.int) return  access FT_CharMapRec.Item;
 
    function  FT_Face_Get_num_charmaps (Self : in FT_Face.Item) return FT_Int;
    function  FT_Face_Get_glyph        (Self : in FT_Face.Item) return access FT_GlyphSlotRec;
 
    function  FT_Face_Attach_Stream    (Self : in FT_Face.Item;   pBufferBytes      : in unsigned_char_Pointer;
-                                                                 bufferSizeInBytes : in C.size_t) return FT_Error;
+                                                                 BufferSizeInBytes : in C.size_t) return FT_Error;
 
    function  get_FT_GLYPH_FORMAT_NONE         return C.unsigned;
    function  get_FT_GLYPH_FORMAT_COMPOSITE    return C.unsigned;

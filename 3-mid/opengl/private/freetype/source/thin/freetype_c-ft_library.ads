@@ -9,7 +9,7 @@ is
 
 
    type Pointer       is access all freetype_c.FT_Library.Item;
-   type Pointer_array is array (interfaces.C.Size_t range <>) of aliased freetype_c.FT_Library.Pointer;
+   type Pointer_array is array (C.Size_t range <>) of aliased freetype_c.FT_Library.Pointer;
 
    type pointer_Pointer is access all freetype_c.FT_Library.Pointer;
 

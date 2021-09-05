@@ -1,17 +1,16 @@
 package freetype_c.FT_Bitmap
 is
 
-
    type Item is
       record
-         rows         : aliased c.int;
-         width        : aliased c.int;
-         pitch        : aliased c.int;
-         buffer       : access  c.unsigned_char;
-         num_grays    : aliased c.short;
-         pixel_mode   : aliased c.char;
-         palette_mode : aliased c.char;
-         palette      : aliased System.Address;
+         Rows         : aliased c.int;
+         Width        : aliased c.int;
+         Pitch        : aliased c.int;
+         Buffer       : access  c.unsigned_char;
+         num_Grays    : aliased c.short;
+         pixel_Mode   : aliased c.char;
+         palette_Mode : aliased c.char;
+         Palette      : aliased System.Address;
       end record;
 
    type Item_array is array (C.Size_t range <>) of aliased FT_Bitmap.Item;
