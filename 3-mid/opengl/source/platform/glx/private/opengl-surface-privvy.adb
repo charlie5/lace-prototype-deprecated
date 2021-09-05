@@ -1,10 +1,10 @@
 package body openGL.Surface.privvy
 is
 
-   function to_glx (Self : in Surface.item'Class) return glx.GLXDrawable
+   function to_GLX (Self : in Surface.item'Class) return glx.glxDrawable
    is
    begin
       return Self.glx_Surface;
-   end to_glx;
+   end to_GLX;
 
 end openGL.Surface.privvy;
