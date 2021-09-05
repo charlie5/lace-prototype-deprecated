@@ -2,13 +2,11 @@ with
      freetype_c.FT_Face,
      freetype_c.FT_Size;
 
-
 package freetype.face_Size
 --
---  The Size class provides an abstraction layer for the Freetype Size type.
+--  The face_Size class provides an abstraction layer for the Freetype Size type.
 --
 is
-
    type Item is tagged private;
    type View is access all Item'Class;
 
@@ -20,15 +18,14 @@ is
    procedure destruct (Self : in out Item) is null;
 
 
-
    --------------
    --- Attributes
    --
 
-   function CharSize  (Self : access Item;   face         : in freetype_c.FT_Face.item;
-                                             point_size   : in Natural;
-                                             x_resolution,
-                                             y_resolution : in Natural) return Boolean;
+   function CharSize  (Self : access Item;   Face         : in freetype_c.FT_Face.item;
+                                             point_Size   : in Natural;
+                                             x_Resolution,
+                                             y_Resolution : in Natural) return Boolean;
    --
    --  Sets the char size for the current face.
    --
@@ -86,7 +83,6 @@ is
 
 
 
-
 private
 
    type Item is tagged
@@ -94,11 +90,11 @@ private
          ftFace      : freetype_c.FT_Face.item;    -- The current Freetype face that this FTSize object relates to.
          ftSize      : freetype_c.FT_Size.item;    -- The freetype Size.
 
-         size        : Natural := 0;               -- The size in points.
+         Size        : Natural := 0;               -- The size in points.
          xResolution,                              -- The horizontal resolution.
          yResolution : Natural := 0;               -- The vertical resolution.
 
-         err         : freetype_c.FT_Error := 0;   -- Current error code. Zero means no error.
+         Err         : freetype_c.FT_Error := 0;   -- Current error code. Zero means no error.
       end record;
 
 end freetype.face_Size;

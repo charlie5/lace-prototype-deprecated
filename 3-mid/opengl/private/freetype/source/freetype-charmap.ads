@@ -1,17 +1,16 @@
 with
      Freetype_C,
-     interfaces.C,
+     Interfaces.C,
      ada.Containers.hashed_Maps;
 
 limited
 with
-     freetype.Face;
+     Freetype.Face;
 
 private
 with
-     freetype_c.FT_Face,
+     Freetype_C.FT_Face,
      ada.unchecked_Conversion;
-
 
 package freetype.charMap
 --
@@ -24,41 +23,41 @@ package freetype.charMap
 --   with unicode encoding
 --
 is
-
    type Item is tagged private;
+
+
+   use Interfaces;
 
 
    ---------
    --  Types
    --
-   subtype GlyphIndex    is interfaces.c.long;
-   subtype CharacterCode is interfaces.c.unsigned_long;
+   subtype GlyphIndex    is C.long;
+   subtype CharacterCode is C.unsigned_long;
 
    function to_characterCode (From : in Character) return characterCode;
-
 
 
    ---------
    --  Forge
    --
 
-   function  to_charMap (parent_Face : access freetype.Face.item'Class) return charMap.Item;
+   function  to_charMap (parent_Face : access Face.item'Class) return charMap.item;
    procedure destruct   (Self        : in out Item);
-
 
 
    --------------
    --  Attributes
    --
 
-   function  Encoding      (Self : in     Item) return freeType_c.FT_Encoding;   -- Returns the current character map code.
+   function  Encoding (Self : in     Item) return freeType_c.FT_Encoding;   -- Returns the current character map code.
    --
    --  Queries for the current character map code.
 
 
 
-   function  CharMap       (Self : access Item;   encoding : in freeType_c.FT_Encoding)   -- The Freetype encoding symbol.
-                            return Boolean;
+   function  CharMap  (Self : access Item;   Encoding : in freeType_c.FT_Encoding)   -- The Freetype encoding symbol.
+                       return Boolean;
    --
    --  Sets the character map for the face. If an error occurs the object is not modified.
    --
@@ -80,7 +79,7 @@ is
    --  Returns True if charmap was valid and set correctly.
 
 
-   function  GlyphListIndex (Self : in    Item;   character : in CharacterCode)
+   function  GlyphListIndex (Self : in    Item;   Character : in CharacterCode)
                              return GlyphIndex;
    --
    --  Get the Glyph Container index of the input character.
@@ -88,7 +87,7 @@ is
    --  'character'     The character code of the requested glyph in the current encoding (eg apple roman).
 
 
-   function  FontIndex     (Self : in     Item;   character : in characterCode)
+   function  FontIndex     (Self : in     Item;   Character : in characterCode)
                             return GlyphIndex;
    --
    --  Get the font glyph index of the input character.
@@ -96,8 +95,8 @@ is
    --  'character'     The character code of the requested glyph in the current encoding (eg apple roman).
 
 
-   procedure InsertIndex   (Self : in out Item;   character      : in characterCode;
-                                                  containerIndex : in ada.Containers.Count_type);
+   procedure insertIndex   (Self : in out Item;   Character      : in characterCode;
+                                                  ContainerIndex : in ada.Containers.Count_type);
    --
    --  Set the FTGlyphContainer index of the character code.
    --  'character'          The character code of the requested glyph in the current encoding eg apple roman.
@@ -112,14 +111,17 @@ is
 
 
 
-
 private
 
    function Hash is new ada.unchecked_Conversion (CharacterCode, ada.containers.Hash_Type);
-   use type CharacterCode, GlyphIndex;
 
-   package char_Maps_of_glyph_index is new ada.containers.hashed_Maps (CharacterCode, GlyphIndex,
-                                                                       Hash,          "=");
+   use type CharacterCode,
+            GlyphIndex;
+
+   package char_Maps_of_glyph_index is new ada.Containers.hashed_Maps (CharacterCode,
+                                                                       GlyphIndex,
+                                                                       Hash,
+                                                                       "=");
    --
    --  A structure that maps glyph indices to character codes
 
@@ -132,13 +134,13 @@ private
 
    type Item is tagged
       record
-         ftEncoding     : freeType_c.FT_Encoding;              -- Current character map code.
-         ftFace         : freeType_c.FT_Face.item;             -- The current Freetype face.
+         ftEncoding     : freeType_c.FT_Encoding;           -- Current character map code.
+         ftFace         : freeType_c.FT_Face.item;          -- The current Freetype face.
 
          charMap        : char_Maps_of_glyph_index.Map;
-         charIndexCache : Cache;                               -- Precomputed font indices.
+         charIndexCache : Cache;                            -- Precomputed font indices.
 
-         err            : freeType_c.FT_Error;                 -- Current error code.
+         Err            : freeType_c.FT_Error;              -- Current error code.
       end record;
 
 end freetype.charMap;

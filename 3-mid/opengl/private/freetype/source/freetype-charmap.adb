@@ -3,10 +3,9 @@ with
      freetype_C.Binding,
      freetype_C.FT_CharMapRec;
 
-
 package body freetype.charMap
 is
-   use FreeType_c;
+   use FreeType_C;
 
 
    -----------
@@ -20,35 +19,32 @@ is
    end to_characterCode;
 
 
-
-
    ---------
    --  Forge
    --
 
    function to_charMap (parent_Face : access Face.item'Class) return freetype.charMap.item
    is
-      use      freetype_c.Binding;
+      use freetype_c.Binding;
       use type FT_int;
 
       Self : freetype.charMap.item;
 
    begin
       Self.ftFace := parent_Face.freetype_Face;
-      Self.err    := 0;
+      Self.Err    := 0;
 
       if FT_Face_Get_charmap (Self.ftFace) = null
       then
          if FT_Face_Get_num_charmaps (Self.ftFace) = 0
          then
-            Self.err := 16#96#;
+            Self.Err := 16#96#;
             return Self;
          end if;
 
-         Self.err := FT_Set_Charmap (Self.ftFace,
+         Self.Err := FT_Set_Charmap (Self.ftFace,
                                      FT_Face_Get_charmap_at (Self.ftFace, 0).all'unchecked_Access);
       end if;
-
 
       Self.ftEncoding := FT_Face_Get_charmap (Self.ftFace).encoding;
 
@@ -86,33 +82,33 @@ is
    function CharMap (Self : access Item;   encoding : in FT_Encoding)
                      return Boolean
    is
-      use      freetype_c.Binding;
+      use freetype_c.Binding;
       use type FT_Encoding,
                FT_Error;
    begin
       if Self.ftEncoding = encoding
       then
-         Self.err := 0;
+         Self.Err := 0;
          return True;
       end if;
 
-      Self.err := FT_Select_Charmap (Self.ftFace, encoding);
+      Self.Err := FT_Select_Charmap (Self.ftFace, encoding);
 
-      if Self.err = 0
+      if Self.Err = 0
       then
          Self.ftEncoding := encoding;
          Self.charMap.clear;
       end if;
 
-      return Self.err = 0;
+      return Self.Err = 0;
    end CharMap;
 
 
 
-   function GlyphListIndex (Self : in Item;   character : in CharacterCode) return GlyphIndex
+   function GlyphListIndex (Self : in Item;   Character : in CharacterCode) return GlyphIndex
    is
    begin
-      return Self.charMap.Element (character);
+      return Self.charMap.Element (Character);
 
    exception
       when Constraint_Error =>
@@ -121,35 +117,35 @@ is
 
 
 
-   function FontIndex (Self : in Item;   character : in characterCode) return GlyphIndex
+   function FontIndex (Self : in Item;   Character : in characterCode) return GlyphIndex
    is
       use freetype_C.Binding;
    begin
-      if character < MAX_PRECOMPUTED
+      if Character < MAX_PRECOMPUTED
       then
-         return GlyphIndex (Self.charIndexCache (character));
+         return GlyphIndex (Self.charIndexCache (Character));
       end if;
 
       return GlyphIndex (FT_Get_Char_Index (Self.ftFace,
-                                            character));
+                                            Character));
    end FontIndex;
 
 
 
-   procedure InsertIndex (Self : in out Item;   character      : in characterCode;
+   procedure insertIndex (Self : in out Item;   Character      : in characterCode;
                                                 containerIndex : in ada.Containers.Count_type)
    is
    begin
-      Self.charMap.insert (character,
+      Self.charMap.insert (Character,
                            GlyphIndex (containerIndex));
-   end InsertIndex;
+   end insertIndex;
 
 
 
    function Error (Self : in Item) return FT_Error
    is
    begin
-      return Self.err;
+      return Self.Err;
    end Error;
 
 

@@ -33,7 +33,7 @@ is
       use type FT_Error;
 
    begin
-      Self.face       := to_Face (fontFilePath, precomputeKerning => True);
+      Self.face       := Forge.to_Face (fontFilePath, precomputeKerning => True);
       Self.load_Flags := FT_Int (FT_LOAD_DEFAULT_flag);
       Self.intf       := ftFont;
       Self.err        := Self.face.Error;
@@ -56,7 +56,7 @@ is
                freetype_c,    freetype_c.Binding;
       use type FT_Error;
    begin
-      Self.face       := to_Face (pBufferBytes, bufferSizeInBytes, precomputeKerning => True);
+      Self.face       := Forge.to_Face (pBufferBytes, bufferSizeInBytes, precomputeKerning => True);
       Self.load_Flags := FT_Int (FT_LOAD_DEFAULT_flag);
       Self.intf       := ftFont;
       Self.err        := Self.face.Error;
