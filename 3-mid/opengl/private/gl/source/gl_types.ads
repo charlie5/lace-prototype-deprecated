@@ -1,5 +1,5 @@
 with
-     interfaces.C,
+     Interfaces.C,
      System;
 
 package GL_Types
