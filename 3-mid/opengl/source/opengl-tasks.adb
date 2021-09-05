@@ -1,16 +1,27 @@
-
 package body openGL.Tasks
 is
 
-   function Check return Boolean
+   procedure check
    is
-      use Ada, ada.task_Identification;
+      use Ada,
+          ada.Task_Identification;
 
-      pragma assert (openGL.Tasks.current_Task = task_Identification.Current_Task,
-                       "Current task '"         & task_Identification.Image (ada.task_Identification.Current_Task) & "'"
-                     & "  /=  Renderer task '"  & task_Identification.Image (openGL.Tasks.current_Task)            & "'");
+      calling_Task : constant Task_Id := Task_Identification.current_Task;
+
+      pragma assert (Renderer_Task = calling_Task,
+                       "Calling task '"      & Task_Identification.Image (current_Task)  & "'"
+                     & " /= Renderer task '" & Task_Identification.Image (Renderer_Task) & "'");
    begin
+      null;
+   end check;
+
+
+
+   function check return Boolean
+   is
+   begin
+      check;
       return True;
-   end Check;
+   end check;
 
 end openGL.Tasks;
