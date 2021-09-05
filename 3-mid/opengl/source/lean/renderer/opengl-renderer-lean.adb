@@ -240,7 +240,7 @@ is
             the_Context := Context;
          end start;
 
-         openGL.Tasks.current_Task := ada.Task_Identification.Current_Task;
+         openGL.Tasks.Renderer_Task := ada.Task_Identification.Current_Task;
          Self.context_Setter.all;
 
          put_Line ("openGL Server version: " & openGL.Server.Version);
