@@ -88,15 +88,10 @@ is
    type    Drawable_array is array (C.size_t range <>) of aliased Drawable;
 
 
-   -- p_a_glxFBConfigRec
-   --
-   subtype p_a_glxFBConfigRec       is system.Address;
-   type    p_a_glxFBConfigRec_array is array (C.size_t range <>) of aliased p_a_glxFBConfigRec;
-
 
    -- FBConfig
    --
-   subtype FBConfig       is p_a_GLXFBConfigRec;
+   subtype FBConfig       is system.Address;
    type    FBConfig_array is array (C.size_t range <>) of aliased FBConfig;
 
 

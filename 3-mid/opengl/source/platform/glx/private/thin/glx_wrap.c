@@ -3,7 +3,6 @@ extern "C"
 {
 #endif
 
-
 #include "GL/glx.h"
 
 

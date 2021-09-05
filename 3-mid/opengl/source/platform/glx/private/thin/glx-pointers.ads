@@ -1,84 +1,78 @@
 package GLX.Pointers
 is
-
    --  VisualID_Pointer
    --
-   type VisualID_Pointer  is access all GLX.VisualID;
+   type VisualID_Pointer  is access all VisualID;
    type VisualID_Pointers is array (C.size_t range <>) of aliased VisualID_Pointer;
 
    --  XVisualInfo_Pointer
    --
-   type XVisualInfo_Pointer is access all GLX.XVisualInfo;
+   type XVisualInfo_Pointer is access all XVisualInfo;
    type XVisualInfo_Pointers is array (C.size_t range <>) of aliased XVisualInfo_Pointer;
 
    --  Pixmap_Pointer
    --
-   type Pixmap_Pointer  is access all GLX.Pixmap;
+   type Pixmap_Pointer  is access all Pixmap;
    type Pixmap_Pointers is array (C.size_t range <>) of aliased Pixmap_Pointer;
 
    --  Font_Pointer
    --
-   type Font_Pointer  is access all GLX.Font;
+   type Font_Pointer  is access all Font;
    type Font_Pointers is array (C.size_t range <>) of aliased Font_Pointer;
 
    --  Window_Pointer
    --
-   type Window_Pointer  is access all GLX.Window;
+   type Window_Pointer  is access all Window;
    type Window_Pointers is array (C.size_t range <>) of aliased Window_Pointer;
 
    --  Bool_Pointer
    --
-   type Bool_Pointer  is access all GLX.Bool;
-   type Bool_Pointers is array (Interfaces.C.size_t range <>) of aliased Bool_Pointer;
+   type Bool_Pointer  is access all Bool;
+   type Bool_Pointers is array (C.size_t range <>) of aliased Bool_Pointer;
 
-   --  a_a_GLXcontextRec_Pointer
+   --  ContextRec_Pointer
    --
-   type GLXcontextRec_Pointer  is access all GLX.ContextRec;
-   type a_a_GLXcontextRec_Pointers is array (C.size_t range <>) of aliased GLXcontextRec_Pointer;
+   type ContextRec_Pointer  is access all ContextRec;
+   type ContextRec_Pointers is array (C.size_t range <>) of aliased ContextRec_Pointer;
 
    --  XID_Pointer
    --
-   type XID_Pointer  is access all GLX.XID;
+   type XID_Pointer  is access all XID;
    type XID_Pointers is array (C.size_t range <>) of aliased XID_Pointer;
 
    --  GLXPixmap_Pointer
    --
-   type GLXPixmap_Pointer  is access all GLX.GLXPixmap;
+   type GLXPixmap_Pointer  is access all GLXPixmap;
    type GLXPixmap_Pointers is array (C.size_t range <>) of aliased GLXPixmap_Pointer;
 
-   --  GLXDrawable_Pointer
+   --  Drawable_Pointer
    --
-   type GLXDrawable_Pointer  is access all GLX.Drawable;
-   type GLXDrawable_Pointers is array (C.size_t range <>) of aliased GLXDrawable_Pointer;
+   type Drawable_Pointer  is access all Drawable;
+   type Drawable_Pointers is array (C.size_t range <>) of aliased Drawable_Pointer;
 
-   --  p._a_GLXFBConfigRec_Pointer
+   --  FBConfig_Pointer
    --
-   type p_a_GLXFBConfigRec_Pointer  is access all GLX.p_a_GLXFBConfigRec;
-   type p_a_GLXFBConfigRec_Pointers is array (C.size_t range <>) of aliased p_a_GLXFBConfigRec_Pointer;
-
-   --  GLXFBConfig_Pointer
-   --
-   type GLXFBConfig_Pointer  is access all GLX.FBConfig;
-   type GLXFBConfig_Pointers is array (C.size_t range <>) of aliased GLXFBConfig_Pointer;
+   type FBConfig_Pointer  is access all FBConfig;
+   type FBConfig_Pointers is array (C.size_t range <>) of aliased FBConfig_Pointer;
 
    --  GLXFBConfigID_Pointer
    --
-   type GLXFBConfigID_Pointer  is access all GLX.FBConfigID;
-   type GLXFBConfigID_Pointers is array (C.size_t range <>) of aliased GLXFBConfigID_Pointer;
+   type FBConfigID_Pointer  is access all FBConfigID;
+   type FBConfigID_Pointers is array (C.size_t range <>) of aliased FBConfigID_Pointer;
 
    --  GLXContextID_Pointer
    --
-   type GLXContextID_Pointer  is access all GLX.ContextID;
-   type GLXContextID_Pointers is array (C.size_t range <>) of aliased GLXContextID_Pointer;
+   type ContextID_Pointer  is access all ContextID;
+   type ContextID_Pointers is array (C.size_t range <>) of aliased ContextID_Pointer;
 
    --  GLXWindow_Pointer
    --
-   type GLXWindow_Pointer  is access all GLX.GLXWindow;
+   type GLXWindow_Pointer  is access all GLXWindow;
    type GLXWindow_Pointers is array (C.size_t range <>) of aliased GLXWindow_Pointer;
 
-   --  GLXPbuffer_Pointer
+   --  PBuffer_Pointer
    --
-   type GLXPbuffer_Pointer  is access all GLX.PBuffer;
-   type GLXPbuffer_Pointers is array (C.size_t range <>) of aliased GLXPbuffer_Pointer;
+   type PBuffer_Pointer  is access all PBuffer;
+   type PBuffer_Pointers is array (C.size_t range <>) of aliased PBuffer_Pointer;
 
 end GLX.Pointers;

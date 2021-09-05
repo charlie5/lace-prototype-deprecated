@@ -30,7 +30,7 @@ is
 
 
 
-   function glx_Context_debug (Self : in Item'Class) return glx.GLXContext.item
+   function glx_Context_debug (Self : in Item'Class) return glx.Context.item
    is
    begin
       return Self.glx_Context;
