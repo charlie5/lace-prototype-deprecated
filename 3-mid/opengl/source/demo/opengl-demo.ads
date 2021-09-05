@@ -7,7 +7,6 @@ with
      openGL.Dolly,
      openGL.frame_Counter;
 
-
 package openGL.Demo
 --
 -- Provides a convenient method of setting up a simple openGL demo.

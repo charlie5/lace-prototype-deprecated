@@ -27,7 +27,6 @@ with
 package body openGL.Demo
 is
 
-
    procedure my_context_Setter
    is
    begin
@@ -42,12 +41,11 @@ is
    end my_Swapper;
 
 
-
    procedure define (Name   : in String;
                      Width  : in Positive := 1000;
                      Height : in Positive := 1000)
    is
-      use openGL.Palette,
+      use Palette,
           linear_Algebra_3d;
    begin
       Lumen.Window.Create (Window,
@@ -56,8 +54,7 @@ is
                            name     => Name,
                            animated => True);
 
-      Renderer.define; --  := openGL.Renderer.lean.forge.to_Renderer;
-
+      Renderer.define;
       Renderer.Background_is (Grey);
       Renderer.Swapper_is    (my_Swapper'unrestricted_Access);
 
@@ -66,10 +63,8 @@ is
       Renderer.Context_Setter_is (my_context_Setter'unrestricted_Access);
       Renderer.start_Engine;
 
-
       Camera.define;
       Camera.Renderer_is (Renderer'unchecked_Access);
-
       Camera.Position_is ((0.0, 0.0, 5.0),
                           y_Rotation_from (to_Radians (0.0)));
 
@@ -87,163 +82,159 @@ is
    end destroy;
 
 
-
    function Models return openGL.Model.views
    is
-      use openGL,
-          openGL.Model,
-          openGL.Palette;
+      use Model,
+          Palette;
 
-      the_Texture : constant openGL.asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
-      the_font_Id : constant openGL.Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),
-                                                     24);
+      the_Texture : constant asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
+      the_font_Id : constant Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),
+                                              Size => 24);
 
-      the_arrow_Model : constant openGL.Model.arrow.colored.view
-        := openGL.Model.arrow.colored.new_Arrow (End_2 => (0.0, 1.0, 0.0));
+      the_arrow_Model : constant Model.arrow.colored.view
+        := Model.arrow.colored.new_Arrow (End_2 => (0.0, 1.0, 0.0));
 
-      the_ball_1_Model : constant openGL.Model.sphere.colored.view
-        := openGL.Model.sphere.colored.new_Sphere (Radius => 0.5, color => (Red, Opaque));
+      the_ball_1_Model : constant Model.sphere.colored.view
+        := Model.sphere.colored.new_Sphere (Radius => 0.5, Color => (Red, Opaque));
 
-      the_ball_2_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.new_Sphere (Radius => 1.0, color => (Green, Opaque));
+      the_ball_2_Model : constant Model.sphere.lit_colored.view
+        := Model.sphere.lit_colored.new_Sphere (Radius => 1.0, Color => (Green, Opaque));
 
-      the_ball_3_Model : constant openGL.Model.sphere.lit_colored_textured.view
-        := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, image => the_Texture);
+      the_ball_3_Model : constant Model.sphere.lit_colored_textured.view
+        := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
 
-      the_billboard_Model : constant openGL.Model.billboard.textured.view
-        := openGL.Model.billboard.textured.forge.new_Billboard (scale   => (1.0, 1.0, 1.0),
-                                                                plane   => Billboard.xy,
-                                                                texture => the_Texture);
+      the_billboard_Model : constant Model.billboard.textured.view
+        := Model.billboard.textured.forge.new_Billboard (Scale   => (1.0, 1.0, 1.0),
+                                                         Plane   => Billboard.xy,
+                                                         Texture => the_Texture);
 
-      the_colored_billboard_Model : constant openGL.Model.billboard.colored_textured.view
-        := openGL.Model.billboard.colored_textured.new_Billboard (scale   => (1.0, 1.0, 1.0),
-                                                                  plane   => Billboard.xy,
-                                                                  color   => (Green, Opaque),
-                                                                  texture => the_Texture);
-      use openGL.Model.box;
+      the_colored_billboard_Model : constant Model.billboard.colored_textured.view
+        := Model.billboard.colored_textured.new_Billboard (Scale   => (1.0, 1.0, 1.0),
+                                                           Plane   => Billboard.xy,
+                                                           Color   => (Green, Opaque),
+                                                           Texture => the_Texture);
+      use Model.box;
 
-      the_box_1_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.new_Box
+      the_box_1_Model : constant Model.box.colored.view
+        := Model.box.colored.new_Box
              (Size => (1.0, 2.0, 3.0),
-              faces => (front => (colors => (others => (Blue,     Opaque))),
-                        rear  => (colors => (others => (Blue,     Opaque))),
-                        upper => (colors => (others => (Green,    Opaque))),
-                        lower => (colors => (others => (Green,    Opaque))),
-                        left  => (colors => (others => (Dark_Red, Opaque))),
-                        right => (colors => (others => (Red,      Opaque)))));
+              Faces => (Front => (Colors => (others => (Blue,     Opaque))),
+                        Rear  => (Colors => (others => (Blue,     Opaque))),
+                        Upper => (Colors => (others => (Green,    Opaque))),
+                        Lower => (Colors => (others => (Green,    Opaque))),
+                        Left  => (Colors => (others => (Dark_Red, Opaque))),
+                        Right => (Colors => (others => (Red,      Opaque)))));
 
-      the_box_2_Model : constant openGL.Model.box.lit_colored_textured.view
-        := openGL.Model.box.lit_colored_textured.new_Box
+      the_box_2_Model : constant Model.box.lit_colored_textured.view
+        := Model.box.lit_colored_textured.new_Box
              (Size => (1.0, 2.0, 1.0),
-              faces => (front => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        rear  => (colors => (others => (Blue,     Opaque)),  texture_name => the_Texture),
-                        upper => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        lower => (colors => (others => (Green,    Opaque)),  texture_name => the_Texture),
-                        left  => (colors => (others => (Dark_Red, Opaque)),  texture_name => the_Texture),
-                        right => (colors => (others => (Red,      Opaque)),  texture_name => the_Texture)));
+              Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                        Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                        Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                        Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                        Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
+                        Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
 
-      the_box_3_Model : constant openGL.Model.box.textured.view
-        := openGL.Model.box.textured.new_Box
+      the_box_3_Model : constant Model.box.textured.view
+        := Model.box.textured.new_Box
              (Size => (1.0, 2.0, 3.0),
-              faces => (front => (texture_name   => the_Texture),
-                        rear  => (texture_name   => the_Texture),
-                        upper => (texture_name   => the_Texture),
-                        lower => (texture_name   => the_Texture),
-                        left  => (texture_name   => the_Texture),
-                        right => (texture_name   => the_Texture)));
+              Faces => (Front => (texture_Name => the_Texture),
+                        Rear  => (texture_Name => the_Texture),
+                        Upper => (texture_Name => the_Texture),
+                        Lower => (texture_Name => the_Texture),
+                        Left  => (texture_Name => the_Texture),
+                        Right => (texture_Name => the_Texture)));
 
-      the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-        := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
-                                                                  height => 2.0,
-                                                                  color  => (White, Opaque),
-                                                                  image  => the_Texture);
-      the_grid_Model    : constant openGL.Model.grid.view
-        := openGL.Model.grid.new_grid_Model (color  => Red,
-                                             width  => 3,
-                                             height => 3);
+      the_capsule_Model : constant Model.capsule.lit_colored_textured.view
+        := Model.capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
+                                                           Height => 2.0,
+                                                           Color  => (White, Opaque),
+                                                           Image  => the_Texture);
+      the_grid_Model    : constant Model.grid.view
+        := Model.grid.new_grid_Model (Color  => Red,
+                                      Width  => 3,
+                                      Height => 3);
 
-      the_hexagon_Model : constant openGL.Model.hexagon.lit_colored_textured.view
-        := openGL.Model.hexagon.lit_colored_textured.new_Hexagon (radius => 0.25,
-                                                                  face   => (center_Color => (Green, Opaque),
-                                                                             colors       => (others => (Red, Opaque)),
-                                                                             texture      => <>)); --openGL.io.to_Texture ("assets/mmi/Face1.bmp")));
+      the_hexagon_Model : constant Model.hexagon.lit_colored_textured.view
+        := Model.hexagon.lit_colored_textured.new_Hexagon (Radius => 0.25,
+                                                           Face   => (center_Color => (Green, Opaque),
+                                                                      Colors       => (others => (Red, Opaque)),
+                                                                      Texture      => <>));
 
-      the_faceted_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_faceted.view
-        := openGL.Model.hexagon_Column.lit_colored_textured_faceted.new_hexagon_Column
-             (radius => 0.25,
-              height => 1.0,
-              upper => (center_Color => (Green, Opaque),
-                        colors       => (others => (Red, Opaque)),
-                        texture      => <>),
-              lower => (center_Color => (Green, Opaque),
-                        colors       => (others => (Red, Opaque)),
-                        texture      => <>),
-              Shaft => (color        => (Green, Opaque),
-                        texture      => the_Texture));
+      the_faceted_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_textured_faceted.view
+        := Model.hexagon_Column.lit_colored_textured_faceted.new_hexagon_Column
+             (Radius => 0.25,
+              Height => 1.0,
+              Upper => (center_Color => (Green, Opaque),
+                        Colors       => (others => (Red, Opaque)),
+                        Texture      => <>),
+              Lower => (center_Color => (Green, Opaque),
+                        Colors       => (others => (Red, Opaque)),
+                        Texture      => <>),
+              Shaft => (Color        => (Green, Opaque),
+                        Texture      => the_Texture));
 
-      the_rounded_hexagon_column_Model : constant openGL.Model.hexagon_Column.lit_colored_textured_rounded.view
-        := openGL.Model.hexagon_Column.lit_colored_textured_rounded.new_hexagon_Column
-             (radius => 0.25,
-              height => 1.0,
-              upper => (center_Color => (Green, Opaque),
-                        colors       => (others => (Red, Opaque)),
-                        texture      => <>),
-              lower => (center_Color => (Green, Opaque),
-                        colors       => (others => (Red, Opaque)),
-                        texture      => <>),
-              Shaft => (color        => (White, Opaque),
-                        texture      => the_Texture));
+      the_rounded_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_textured_rounded.view
+        := Model.hexagon_Column.lit_colored_textured_rounded.new_hexagon_Column
+             (Radius => 0.25,
+              Height => 1.0,
+              Upper => (center_Color => (Green, Opaque),
+                        Colors       => (others => (Red, Opaque)),
+                        Texture      => <>),
+              Lower => (center_Color => (Green, Opaque),
+                        Colors       => (others => (Red, Opaque)),
+                        Texture      => <>),
+              Shaft => (Color        => (White, Opaque),
+                        Texture      => the_Texture));
 
-      the_line_Model       : constant openGL.Model.line.colored.view
-        := openGL.Model.line.colored.new_line_Model (color  => Red,
-                                                     End_1 => (0.0, 0.0, 0.0),
-                                                     End_2 => (5.0, 5.0, 0.0));
+      the_line_Model : constant Model.line.colored.view
+        := Model.line.colored.new_line_Model (Color  => Red,
+                                              End_1 => (0.0, 0.0, 0.0),
+                                              End_2 => (5.0, 5.0, 0.0));
 
-      the_collada_Model    : constant openGL.Model.any.view   -- tbd: broken for human models
-        := openGL.Model.any.new_Model (scale            => (1.0, 1.0, 1.0),
-                                       model            => to_Asset ("assets/opengl/model/human.dae"),
---                                     model => to_Asset ("assets/opengl/model/deer.dae"),
-                                       Texture          => the_Texture,
-                                       Texture_is_lucid => False);
+      the_collada_Model : constant Model.any.view
+        := Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                Model            => to_Asset ("assets/opengl/model/human.dae"),
+                                Texture          => the_Texture,
+                                Texture_is_lucid => False);
 
-      the_wavefront_Model  : constant openGL.Model.any.view
-        := openGL.Model.any.new_Model (scale            => (1.0, 1.0, 1.0),
-                                       model            => to_Asset ("assets/opengl/model/human.obj"),
-                                       Texture          => the_Texture,
-                                       Texture_is_lucid => False);
+      the_wavefront_Model : constant Model.any.view
+        := Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                Model            => to_Asset ("assets/opengl/model/human.obj"),
+                                Texture          => the_Texture,
+                                Texture_is_lucid => False);
 
-      the_polygon_Model    : constant openGL.Model.polygon.lit_colored.view
-        := openGL.Model.polygon.lit_colored.new_Polygon (vertices => (Origin_2d, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
-                                                         color    => (Red, Opaque));
+      the_polygon_Model : constant Model.polygon.lit_colored.view
+        := Model.polygon.lit_colored.new_Polygon (Vertices => (Origin_2D, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
+                                                  Color    => (Red, Opaque));
 
-      the_text_Model       : constant openGL.Model.Text.lit_colored_textured.view
-        := openGL.Model.Text.lit_colored_textured.new_Text (scale => (1.0, 1.0, 1.0),
-                                                            text     => "Howdy",
-                                                            Font     => the_font_Id,
-                                                            Color    => (Green, Opaque),
-                                                            Centered => False);
+      the_text_Model : constant Model.Text.lit_colored_textured.view
+        := Model.Text.lit_colored_textured.new_Text (Scale => (1.0, 1.0, 1.0),
+                                                     Text     => "Howdy",
+                                                     Font     => the_font_Id,
+                                                     Color    => (Green, Opaque),
+                                                     Centered => False);
 
-      the_segment_line_Model : constant openGL.Model.segment_line.view
-        := openGL.Model.segment_line.new_segment_line_Model (scale => (1.0, 1.0, 1.0),
-                                                             color => Green);
+      the_segment_line_Model : constant Model.segment_line.view
+        := Model.segment_line.new_segment_line_Model (Scale => (1.0, 1.0, 1.0),
+                                                      Color => Green);
 
       -- Terrain
       --
-      heights_File : constant openGL.asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain.png");
-      texture_File : constant openGL.asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain-texture.png");
+      heights_File : constant asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain.png");
+      texture_File : constant asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain-texture.png");
 
-      the_Region   : constant opengl.io.height_Map_view   := opengl.io.to_height_Map (heights_File, 10.0);
-      Tiling       : constant opengl.texture_Transform_2d := (s => (0.0, 1.0),
-                                                              t => (0.0, 1.0));
-      the_ground_Model : constant access openGL.Model.terrain.item
-        := new openGL.Model.terrain.item' (openGL.Model.item with
-                                           heights_asset => heights_File,
-                                           row           => 1,
-                                           col           => 1,
-                                           heights       => the_Region.all'Access,
-                                           color_map     => texture_File,
-                                           tiling        => Tiling);
-
+      the_Region   : constant IO.height_Map_view   := IO.to_height_Map (heights_File, 10.0);
+      Tiling       : constant texture_Transform_2d := (S => (0.0, 1.0),
+                                                       T => (0.0, 1.0));
+      the_ground_Model : constant access Model.terrain.item
+        := new Model.terrain.item' (openGL.Model.item with
+                                    heights_Asset => heights_File,
+                                    Row           => 1,
+                                    Col           => 1,
+                                    Heights       => the_Region.all'Access,
+                                    Color_Map     => texture_File,
+                                    Tiling        => Tiling);
    begin
       Demo.Renderer.add_Font (the_font_Id);
 
@@ -282,8 +273,7 @@ is
    end Models;
 
 
-
-   procedure layout (the_Visuals : in openGL.Visual.views)
+   procedure layout (the_Visuals : in Visual.views)
    is
       initial_X : constant openGL.Real := -6.0;
       initial_Y : constant openGL.Real :=  6.0;
@@ -293,14 +283,14 @@ is
       Pad  : constant openGL.Real := 3.0;
       i    :          Positive    := 1;
 
-      procedure set_next_visual_Site
+      procedure set_next_Visual_Site
       is
       begin
          the_Visuals (i).Site_is ((X, Y, 0.0));
 
          i := i + 1;
          X := X + Pad;
-      end set_next_visual_Site;
+      end set_next_Visual_Site;
 
       procedure new_Line
       is
@@ -310,41 +300,40 @@ is
       end new_Line;
 
    begin
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
-      set_next_visual_Site;
-      set_next_visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
+      set_next_Visual_Site;
 
       new_Line;
-      set_next_visual_Site;
+      set_next_Visual_Site;
    end layout;
-
 
 
    procedure print_Usage (append_Message : in String := "")
@@ -366,7 +355,12 @@ is
       put_Line ("                 'q' => Quit");
 
       new_Line;
-      put_Line (append_Message);
+
+      if append_Message /= ""
+      then
+         put_Line (append_Message);
+         new_Line;
+      end if;
    end print_Usage;
 
 
