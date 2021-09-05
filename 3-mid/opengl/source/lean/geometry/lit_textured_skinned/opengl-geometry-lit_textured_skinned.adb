@@ -6,6 +6,7 @@ with
      openGL.Palette,
      openGL.Tasks,
 
+     GL.Binding,
      GL.lean,
      GL.Pointers,
 
@@ -260,6 +261,7 @@ is
    procedure enable_Texture (Self : in Item)
    is
       use GL,
+          GL.Binding,
           openGL.Texture;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);

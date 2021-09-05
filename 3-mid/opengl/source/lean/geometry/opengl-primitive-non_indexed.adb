@@ -1,6 +1,7 @@
 with
      openGL.Errors,
-     openGL.Tasks;
+     openGL.Tasks,
+     GL.Binding;
 
 
 package body openGL.Primitive.non_indexed
@@ -56,7 +57,9 @@ is
    overriding
    procedure render (Self : in out Item)
    is
-      use GL;
+      use GL,
+          GL.Binding;
+
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
       glDrawArrays (Thin     (Self.facet_Kind),

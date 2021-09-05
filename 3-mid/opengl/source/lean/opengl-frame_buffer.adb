@@ -1,5 +1,7 @@
 with
      GL.lean,
+     GL.Binding,
+
      openGL.Tasks,
      openGL.Errors;
 
@@ -12,7 +14,9 @@ is
                              Height : in Positive) return Item
    is
       use openGL.Texture,
-          GL, GL.lean;
+          GL,
+          GL.Binding,
+          GL.lean;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       Self        :          Item;
@@ -86,7 +90,9 @@ is
 
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
-      use GL, GL.lean;
+      use GL,
+          GL.Binding,
+          GL.lean;
    begin
       openGL.Errors.log;
 

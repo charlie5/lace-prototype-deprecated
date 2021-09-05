@@ -3,6 +3,7 @@ with
      openGL.Buffer,
      openGL.Tasks,
 
+     GL.Binding,
      GL.lean;
 
 
@@ -137,7 +138,9 @@ is
    overriding
    procedure render (Self : in out Item)
    is
-      use GL, GL.lean;
+      use GL,
+          GL.Binding,
+          GL.lean;
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
       render (openGL.Primitive.item (Self));   -- Do base class render.

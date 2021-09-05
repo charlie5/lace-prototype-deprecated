@@ -2,6 +2,7 @@ with
      openGL.Palette,
      openGL.Tasks,
 
+     GL.Binding,
      GL.Pointers,
 
      freetype_c.Binding,
@@ -42,9 +43,11 @@ is
                            xOffset, yOffset : in Integer;
                            width, height    : in Integer) return GlyphImpl.Texture.view
    is
-      use      freetype_c,
-               freetype_c.Binding,
-               GL;
+      use freetype_c,
+          freetype_c.Binding,
+          GL,
+          GL.Binding;
+
       use type interfaces.c.unsigned,
                GLint;
 

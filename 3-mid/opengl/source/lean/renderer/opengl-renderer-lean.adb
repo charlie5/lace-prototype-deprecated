@@ -11,6 +11,7 @@ with
      openGL.Errors,
      openGL.Conversions,
 
+     GL.Binding,
      GL.lean,
 
      float_math.Algebra.linear.d3,
@@ -430,7 +431,10 @@ is
       for i in the_Updates'Range
       loop
          declare
-            use openGL.Texture, openGL.Visual;
+            use openGL.Texture,
+                openGL.Visual,
+                GL.Binding;
+
 
             the_Update               :          impostor_Update renames the_Updates (i);
             the_Impostor             :          impostor.view   renames the_Update.Impostor;
@@ -452,9 +456,9 @@ is
             -- Render the target after clearing openGL buffers.
             --
 
-            gl.glClearColor (0.0, 0.0, 0.0,  0.0);
-            glClear         (   GL_COLOR_BUFFER_BIT
-                             or GL_DEPTH_BUFFER_BIT);
+            glClearColor (0.0, 0.0, 0.0,  0.0);
+            glClear      (   GL_COLOR_BUFFER_BIT
+                          or GL_DEPTH_BUFFER_BIT);
 
             declare
                new_view_Transform : Matrix_4x4 := camera_world_Transform;
@@ -626,6 +630,7 @@ is
       --  State sort opaque geometries and render them.
       --
       declare
+         use GL.Binding;
 
          procedure heap_swap (L, R : in Natural)
          is
@@ -699,6 +704,8 @@ is
       --  Depth sort lucid geometries and render them.
       --
       declare
+         use GL.Binding;
+
          procedure heap_swap (L, R : in Natural)
          is
             Pad : constant visual_geometry_Couple := Self.all_lucid_Couples (L);

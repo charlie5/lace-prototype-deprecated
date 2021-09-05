@@ -5,6 +5,7 @@ with
      openGL.Viewport,
      openGL.Tasks,
 
+     GL.Binding,
      GL.safe,
      GL.Pointers,
 
@@ -72,6 +73,7 @@ is
    function current_Frame return openGL.Image
    is
       use GL,
+          GL.Binding,
           GL.Pointers,
           openGL.Texture;
 
@@ -388,7 +390,9 @@ is
    procedure Write_raw_BGR_frame (s             : Stream_Access;
                                   width, height : Natural)
    is
-      use GL, openGL.Texture;
+      use GL,
+          GL.Binding,
+          openGL.Texture;
 
       -- 4-byte padding for .bmp/.avi formats is the same as GL's default
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
@@ -463,7 +467,9 @@ is
    procedure Write_raw_BGRA_frame (s             : Stream_Access;
                                    width, height : Natural)
    is
-      use GL, openGL.Texture;
+      use GL,
+          GL.Binding,
+          openGL.Texture;
 
       -- 4-byte padding for .bmp/.avi formats is the same as GL's default
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
@@ -606,7 +612,8 @@ is
 
    procedure opaque_Screenshot (Filename : in String)
    is
-      use GL;
+      use GL,
+          GL.Binding;
 
       check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       f           :          ada.Streams.Stream_IO.File_Type;
@@ -682,7 +689,8 @@ is
 
    procedure lucid_Screenshot (Filename : in String)
    is
-      use GL;
+      use GL,
+          GL.Binding;
 
       check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       f           :          ada.Streams.Stream_IO.File_Type;
@@ -910,7 +918,8 @@ is
    procedure start_capture (AVI_name   : String;
                             frame_rate : Positive)
    is
-      use GL;
+      use GL,
+          GL.Binding;
 
       --        type intPtr is new intPointer;
       Viewport : array (0 .. 3) of aliased GLint;

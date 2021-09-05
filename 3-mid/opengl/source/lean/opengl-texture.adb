@@ -3,6 +3,7 @@ with
      openGL.Tasks,
      openGL.IO,
 
+     GL.Binding,
      GL.lean,
      GL.Pointers;
 
@@ -20,6 +21,8 @@ is
 
    function new_texture_Name return texture_Name
    is
+      use GL.Binding;
+
       check_is_OK : constant Boolean     := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       the_Name    : aliased  texture_Name;
    begin
@@ -56,6 +59,8 @@ is
 
    function to_Texture (Dimensions : in Texture.Dimensions) return Object
    is
+      use GL.Binding;
+
       check_is_OK : constant Boolean       := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       Self        : aliased  Texture.Object;
 
@@ -147,6 +152,8 @@ is
    procedure set_Image (Self : in out Object;   To          : in openGL.Image;
                                                 use_Mipmaps : in Boolean     := True)
    is
+      use GL.Binding;
+
       check_is_OK : constant Boolean      :=      openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       the_Image   :          openGL.Image renames To;
    begin
@@ -195,6 +202,8 @@ is
    procedure set_Image (Self : in out Object;   To          : in openGL.lucid_Image;
                                                 use_Mipmaps : in Boolean           := True)
    is
+      use GL.Binding;
+
       check_is_OK : constant Boolean  := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
 
       the_Image   :          openGL.lucid_Image renames To;
@@ -250,6 +259,7 @@ is
 
    procedure enable (Self : in Object)
    is
+      use GL.Binding;
       use type GL.GLuint;
       pragma Assert (Self.Name > 0);
 
@@ -339,6 +349,8 @@ is
 
    function new_Texture (From : access Pool;   Size : in Dimensions) return Object
    is
+      use GL.Binding;
+
       check_is_OK         : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
 
       the_Pool            : access  Pool renames From;

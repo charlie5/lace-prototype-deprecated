@@ -1,5 +1,6 @@
 with
      openGL.Tasks,
+     GL.Binding,
      ada.Text_IO;
 
 package body openGL.Errors
@@ -9,6 +10,7 @@ is
 
    function Current return String
    is
+      use GL.Binding;
       check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
       the_Error   : constant GL.GLenum := glGetError;
    begin

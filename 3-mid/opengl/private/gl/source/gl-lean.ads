@@ -1,14 +1,12 @@
 with
-     Interfaces.C.Pointers;
+     interfaces.C.Pointers,
+     System;
 
 package GL.lean
 --
 --  Provides types, constants and functions specific to the openGL 'Embedded' profile.
 --
 is
-   use Interfaces;
-
-
    ---------
    --  Types
    --

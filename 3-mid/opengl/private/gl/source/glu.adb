@@ -1,5 +1,6 @@
 with
-     GL.Lean,
+     GL.Binding,
+     GL.lean,
      GL.Pointers,
 
      interfaces.c.Pointers,
@@ -276,6 +277,7 @@ is
 
    procedure retrieveStoreModes (psm : in out PixelStorageModes)
    is
+      use gl.Binding;
    begin
       glGetIntegerv (GL_UNPACK_ALIGNMENT, psm.unpack_alignment'Access);
 

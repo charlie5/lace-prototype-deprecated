@@ -1,5 +1,6 @@
 with
      openGL.Tasks,
+     GL.Binding,
      interfaces.C.Strings,
      ada.unchecked_Conversion;
 
@@ -8,7 +9,9 @@ is
 
    function Version return String
    is
-      use GL, Interfaces;
+      use GL,
+          GL.Binding,
+          Interfaces;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
 
@@ -25,7 +28,8 @@ is
 
    function Version return a_Version
    is
-      use GL;
+      use GL,
+          GL.Binding;
       Major : aliased glInt;
       Minor : aliased glInt;
    begin

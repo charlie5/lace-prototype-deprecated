@@ -2,6 +2,7 @@ with
      openGL.Errors,
      openGL.Buffer,
      openGL.Tasks,
+     GL.Binding,
 
      ada.Unchecked_Deallocation;
 
@@ -83,7 +84,9 @@ is
    overriding
    procedure render (Self : in out Item)
    is
-      use GL;
+      use GL,
+          GL.Binding;
+
       check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
       render (openGL.Primitive.item (Self));   -- Do base class render.

@@ -4,6 +4,7 @@ with
      openGL.Palette,
      openGL.Tasks,
 
+     GL.Binding,
      GL.lean,
      GL.Pointers,
 
@@ -164,7 +165,9 @@ is
                                           spacing  : in Vector_3;
                                           Mode     : in renderMode) return Vector_3
    is
-      use GL;
+      use GL,
+          GL.Binding;
+
       function to_Integer is new ada.Unchecked_Conversion (fontImpl.RenderMode, Integer);
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -248,8 +251,10 @@ is
 
    procedure  CalculateTextureSize (Self : in out Item)
    is
-      use      openGL.Texture,
-               GL;
+      use openGL.Texture,
+          GL,
+          GL.Binding;
+
       use type GL.GLsizei;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
@@ -294,7 +299,8 @@ is
    function CreateTexture (Self : access Item) return openGL.Texture.texture_Name
    is
       use openGL.Palette,
-          GL; --, GL.lean;
+          GL,
+          GL.Binding;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
 

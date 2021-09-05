@@ -1,5 +1,6 @@
 with
      GL,
+     GL.Binding,
      openGL.Tasks,
      interfaces.C;
 
@@ -29,6 +30,7 @@ is
 
    procedure clear_Frame (Self : in Item)
    is
+      use GL.Binding;
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
    begin
       glClearColor (GLfloat (to_Real (Self.Background.Primary.Red)),

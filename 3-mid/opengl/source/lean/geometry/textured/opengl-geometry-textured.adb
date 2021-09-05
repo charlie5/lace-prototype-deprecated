@@ -7,6 +7,7 @@ with
      openGL.Texture,
      openGL.Tasks,
 
+     GL.Binding,
      GL.lean,
      GL.Pointers,
 
@@ -160,7 +161,9 @@ is
    overriding
    procedure enable_Texture (Self : in Item)
    is
-      use GL, openGL.Texture;
+      use GL,
+          GL.Binding,
+          openGL.Texture;
       check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
       glActiveTexture (gl.GL_TEXTURE0);

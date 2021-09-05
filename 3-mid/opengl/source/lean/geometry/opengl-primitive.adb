@@ -1,5 +1,6 @@
 with
      openGL.Tasks,
+     GL.Binding,
      ada.Unchecked_Deallocation;
 
 
@@ -83,7 +84,9 @@ is
 
    procedure render (Self : in out Item)
    is
-      use GL;
+      use GL,
+          GL.Binding;
+
       check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
       if Self.line_Width /= unused_line_Width
