@@ -5,27 +5,24 @@ private
 with
      Glx;
 
-limited
+limited private
 with
      openGL.Context;
-
 
 package openGL.Surface
 --
 --  Models an openGL surface.
 --
 is
-
    type Item  is tagged private;
    type Items is array (Positive range <>) of aliased Item;
 
-   type View  is access all Item'class;
+   type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
 
 
-   procedure define (Self : in out Item;   surface_Profile : in openGL.surface_Profile.item'Class;
-                                           Window_Id       : in Natural);
-
+   procedure define (Self : in out Item;   Profile   : in surface_Profile.item'Class;
+                                           Window_Id : in Natural);
 
    --  Operations
    --
@@ -37,7 +34,7 @@ private
 
    type Item is tagged
       record
-         glx_Surface :        glx.GLXDrawable;
+         glx_Surface :        glx.glxDrawable;
          Context     : access openGL.Context.item'Class;
       end record;
 
