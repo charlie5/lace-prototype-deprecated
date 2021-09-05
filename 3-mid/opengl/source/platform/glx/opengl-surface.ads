@@ -34,7 +34,7 @@ private
 
    type Item is tagged
       record
-         glx_Surface :        glx.glxDrawable;
+         glx_Surface :        glx.Drawable;
          Context     : access openGL.Context.item'Class;
       end record;
 
