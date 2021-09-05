@@ -6,7 +6,6 @@ package GLX
 is
    use Interfaces;
 
-
    ---------
    --  Types
    --
@@ -31,105 +30,103 @@ is
 
    -- VisualID
    --
-   subtype VisualID       is Interfaces.C.unsigned_long;
-   type    VisualID_array is array (Interfaces.C.size_t range <>) of aliased glx.VisualID;
+   subtype VisualID       is C.unsigned_long;
+   type    VisualID_array is array (C.size_t range <>) of aliased VisualID;
 
 
    -- XVisualInfo
    --
    subtype XVisualInfo       is system.Address;
-   type    XVisualInfo_array is array (Interfaces.C.size_t range <>) of aliased glx.XVisualInfo;
+   type    XVisualInfo_array is array (C.size_t range <>) of aliased XVisualInfo;
 
 
    -- Pixmap
    --
    subtype Pixmap       is system.Address;
-   type    Pixmap_array is array (Interfaces.C.size_t range <>) of aliased glx.Pixmap;
+   type    Pixmap_array is array (C.size_t range <>) of aliased Pixmap;
 
 
    -- Font
    --
-   subtype Font    is system.Address;
-   type Font_array is array (Interfaces.C.size_t range <>) of aliased glx.Font;
+   subtype Font       is system.Address;
+   type    Font_array is array (C.size_t range <>) of aliased Font;
 
 
    -- Window
    --
-   subtype Window    is system.Address;
-   type Window_array is array (Interfaces.C.size_t range <>) of aliased glx.Window;
+   subtype Window       is system.Address;
+   type    Window_array is array (C.size_t range <>) of aliased Window;
 
 
    -- Bool
    --
-   subtype Bool       is Interfaces.C.int;
-   type    Bool_array is array (Interfaces.C.size_t range <>) of aliased glx.Bool;
+   subtype Bool       is C.int;
+   type    Bool_array is array (C.size_t range <>) of aliased Bool;
 
 
-   -- GLXcontextRec
+   -- ContextRec
    --
-   subtype GLXcontextRec       is system.Address;
-   type    GLXcontextRec_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXcontextRec;
+   subtype ContextRec       is system.Address;
+   type    ContextRec_array is array (C.size_t range <>) of aliased ContextRec;
 
 
    -- XID
    --
    subtype XID       is system.Address;
-   type    XID_array is array (Interfaces.C.size_t range <>) of aliased glx.XID;
+   type    XID_array is array (C.size_t range <>) of aliased XID;
 
 
    -- GLXPixmap
    --
-   subtype GLXPixmap       is glx.XID;
-   type    GLXPixmap_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXPixmap;
+   subtype GLXPixmap       is XID;
+   type    GLXPixmap_array is array (C.size_t range <>) of aliased glxPixmap;
 
 
    -- GLXDrawable
    --
-   subtype GLXDrawable    is glx.XID;
-   type GLXDrawable_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXDrawable;
+   subtype Drawable       is glx.XID;
+   type    Drawable_array is array (C.size_t range <>) of aliased Drawable;
 
 
-   -- p_a_GLXFBConfigRec
+   -- p_a_glxFBConfigRec
    --
-   subtype p_a_GLXFBConfigRec       is system.Address;
-   type    p_a_GLXFBConfigRec_array is array (Interfaces.C.size_t range <>) of aliased glx.p_a_GLXFBConfigRec;
+   subtype p_a_glxFBConfigRec       is system.Address;
+   type    p_a_glxFBConfigRec_array is array (C.size_t range <>) of aliased p_a_glxFBConfigRec;
 
 
-   -- GLXFBConfig
+   -- FBConfig
    --
-   subtype GLXFBConfig       is glx.p_a_GLXFBConfigRec;
-   type    GLXFBConfig_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXFBConfig;
+   subtype FBConfig       is p_a_GLXFBConfigRec;
+   type    FBConfig_array is array (C.size_t range <>) of aliased FBConfig;
 
 
-   -- GLXFBConfigID
+   -- FBConfigID
    --
-   subtype GLXFBConfigID       is glx.XID;
-   type    GLXFBConfigID_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXFBConfigID;
+   subtype FBConfigID       is XID;
+   type    FBConfigID_array is array (C.size_t range <>) of aliased FBConfigID;
 
 
-   -- GLXContextID
+   -- ContextID
    --
-   subtype GLXContextID    is glx.XID;
-   type GLXContextID_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXContextID;
+   subtype ContextID       is XID;
+   type    ContextID_array is array (C.size_t range <>) of aliased ContextID;
 
 
-   -- GLXWindow
+   -- Window
    --
-   subtype GLXWindow       is glx.XID;
-   type    GLXWindow_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXWindow;
+   subtype GLXWindow       is XID;
+   type    GLXWindow_array is array (C.size_t range <>) of aliased GLXWindow;
 
 
    -- GLXPbuffer
    --
-   subtype GLXPbuffer    is glx.XID;
-   type GLXPbuffer_array is array (Interfaces.C.size_t range <>) of aliased glx.GLXPbuffer;
-
+   subtype PBuffer       is XID;
+   type    PBuffer_array is array (C.size_t range <>) of aliased PBuffer;
 
 
    -------------
    --  Constants
    --
-
    GLX_VERSION_1_1                 : constant := 1;
    GLX_VERSION_1_2                 : constant := 1;
    GLX_VERSION_1_3                 : constant := 1;

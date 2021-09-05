@@ -12,7 +12,7 @@ is
          serial      : aliased Interfaces.C.unsigned_long;
          send_event  : aliased glx.Bool;
          display     :         System.Address;
-         drawable    : aliased glx.GLXDrawable;
+         drawable    : aliased glx.Drawable;
          buffer_mask : aliased Interfaces.C.unsigned;
          aux_buffer  : aliased Interfaces.C.unsigned;
          x           : aliased Interfaces.C.int;

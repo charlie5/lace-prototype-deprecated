@@ -1,39 +1,34 @@
 with
      glx.Pointers,
-     Interfaces.C;
+     interfaces.C;
 
-
-package GLX.Binding
+package glx.Binding
 is
+   function  getCurrentContext  return access ContextRec;
+   function  getCurrentDrawable return        Drawable;
 
+   procedure waitGL;
+   procedure waitX;
 
-   function  glXGetCurrentContext  return access GLX.GLXcontextRec;
-   function  glXGetCurrentDrawable return  GLX.GLXDrawable;
+   procedure useXFont (Font  : in GLX.Font;
+                       First : in C.int;
+                       Count : in C.int;
+                       List  : in C.int);
 
-   procedure glXWaitGL;
-   procedure glXWaitX;
+   function  getCurrentReadDrawable return Drawable;
 
-   procedure glXUseXFont (font  : in GLX.Font;
-                          first : in Interfaces.C.int;
-                          count : in Interfaces.C.int;
-                          list  : in Interfaces.C.int);
-
-
-   function glXGetCurrentReadDrawable return  GLX.GLXDrawable;
-
-
-   function get_visualid (Self : in GLX.Pointers.XVisualInfo_Pointer) return GLX.VisualID;
+   function  get_visualid (Self : in Pointers.XVisualInfo_Pointer) return VisualID;
 
 
 
 private
 
-   pragma Import (C, glXGetCurrentContext,      "glXGetCurrentContext");
-   pragma Import (C, glXGetCurrentDrawable,     "glXGetCurrentDrawable");
-   pragma Import (C, glXWaitGL,                 "glXWaitGL");
-   pragma Import (C, glXWaitX,                  "glXWaitX");
-   pragma Import (C, glXUseXFont,               "glXUseXFont");
-   pragma Import (C, glXGetCurrentReadDrawable, "glXGetCurrentReadDrawable");
-   pragma Import (C, get_visualid,              "Ada_get_visualid");
+   pragma Import (C, getCurrentContext,      "glXGetCurrentContext");
+   pragma Import (C, getCurrentDrawable,     "glXGetCurrentDrawable");
+   pragma Import (C, waitGL,                 "glXWaitGL");
+   pragma Import (C, waitX,                  "glXWaitX");
+   pragma Import (C, useXFont,               "glXUseXFont");
+   pragma Import (C, getCurrentReadDrawable, "glXGetCurrentReadDrawable");
+   pragma Import (C, get_visualid,           "Ada_get_visualid");
 
-end GLX.Binding;
+end glx.Binding;

@@ -33,7 +33,7 @@ is
 
    --  a_a_GLXcontextRec_Pointer
    --
-   type GLXcontextRec_Pointer  is access all GLX.GLXcontextRec;
+   type GLXcontextRec_Pointer  is access all GLX.ContextRec;
    type a_a_GLXcontextRec_Pointers is array (C.size_t range <>) of aliased GLXcontextRec_Pointer;
 
    --  XID_Pointer
@@ -48,7 +48,7 @@ is
 
    --  GLXDrawable_Pointer
    --
-   type GLXDrawable_Pointer  is access all GLX.GLXDrawable;
+   type GLXDrawable_Pointer  is access all GLX.Drawable;
    type GLXDrawable_Pointers is array (C.size_t range <>) of aliased GLXDrawable_Pointer;
 
    --  p._a_GLXFBConfigRec_Pointer
@@ -58,17 +58,17 @@ is
 
    --  GLXFBConfig_Pointer
    --
-   type GLXFBConfig_Pointer  is access all GLX.GLXFBConfig;
+   type GLXFBConfig_Pointer  is access all GLX.FBConfig;
    type GLXFBConfig_Pointers is array (C.size_t range <>) of aliased GLXFBConfig_Pointer;
 
    --  GLXFBConfigID_Pointer
    --
-   type GLXFBConfigID_Pointer  is access all GLX.GLXFBConfigID;
+   type GLXFBConfigID_Pointer  is access all GLX.FBConfigID;
    type GLXFBConfigID_Pointers is array (C.size_t range <>) of aliased GLXFBConfigID_Pointer;
 
    --  GLXContextID_Pointer
    --
-   type GLXContextID_Pointer  is access all GLX.GLXContextID;
+   type GLXContextID_Pointer  is access all GLX.ContextID;
    type GLXContextID_Pointers is array (C.size_t range <>) of aliased GLXContextID_Pointer;
 
    --  GLXWindow_Pointer
@@ -78,7 +78,7 @@ is
 
    --  GLXPbuffer_Pointer
    --
-   type GLXPbuffer_Pointer  is access all GLX.GLXPbuffer;
+   type GLXPbuffer_Pointer  is access all GLX.PBuffer;
    type GLXPbuffer_Pointers is array (C.size_t range <>) of aliased GLXPbuffer_Pointer;
 
 end GLX.Pointers;

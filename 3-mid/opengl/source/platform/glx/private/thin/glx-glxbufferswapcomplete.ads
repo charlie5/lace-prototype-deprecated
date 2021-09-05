@@ -11,7 +11,7 @@ is
       serial     : aliased Interfaces.C.unsigned_long;
       send_event : aliased glx.Bool;
       display    :         System.Address;
-      drawable   : aliased glx.GLXDrawable;
+      drawable   : aliased glx.Drawable;
       event_type : aliased Interfaces.C.int;
       ust        : aliased Interfaces.Integer_64;
       msc        : aliased Interfaces.Integer_64;
