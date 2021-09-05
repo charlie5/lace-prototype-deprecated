@@ -12,13 +12,11 @@ is
    --
    procedure Background_is (Self : in out Item;   Now     : in openGL.lucid_Color);
    procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
-                                                  Opacity : in Real        := 1.0);
-
+                                                  Opacity : in unit_Interval := 1.0);
 
    --  Operations
    --
    procedure clear_Frame (Self : in Item);
-
 
 
 

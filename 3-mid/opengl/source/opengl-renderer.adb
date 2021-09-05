@@ -3,15 +3,14 @@ with
      openGL.Tasks,
      interfaces.C;
 
-
 package body openGL.Renderer
 is
-
-   use GL, interfaces.C;
+   use GL,
+       interfaces.C;
 
 
    procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
-                                                  Opacity : in Real        := 1.0)
+                                                  Opacity : in unit_Interval := 1.0)
    is
    begin
       Self.Background.Primary := Now;
@@ -30,7 +29,7 @@ is
 
    procedure clear_Frame (Self : in Item)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
    begin
       glClearColor (GLfloat (to_Real (Self.Background.Primary.Red)),
                     GLfloat (to_Real (Self.Background.Primary.Green)),
