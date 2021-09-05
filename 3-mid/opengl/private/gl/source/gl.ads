@@ -231,6 +231,9 @@ is
    GL_VERSION    : constant := 16#1f02#;
    GL_EXTENSIONS : constant := 16#1f03#;
 
+   GL_MAJOR_VERSION : constant := 16#821B#;
+   GL_MINOR_VERSION : constant := 16#821C#;
+
    GL_NEAREST : constant := 16#2600#;
    GL_LINEAR  : constant := 16#2601#;
 
