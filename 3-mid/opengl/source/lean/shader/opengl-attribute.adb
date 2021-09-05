@@ -100,7 +100,7 @@ is
       function to_GL is new ada.unchecked_Conversion (system.Storage_Elements.Storage_Offset,   GLvoid_access);
    begin
       glEnableVertexAttribArray (index      => Self.gl_Location);
-      glVertexAttribPointer     (indx       => Self.gl_Location,
+      glVertexAttribPointer     (index      => Self.gl_Location,
                                  size       => Self.Size,
                                  the_type   => to_GL (Self.data_Kind),
                                  normalized => Self.Normalized,
