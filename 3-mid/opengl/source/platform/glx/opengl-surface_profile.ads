@@ -72,7 +72,7 @@ private
 
    type Item is tagged
       record
-         glx_Config :        glx.glxFBConfig;
+         glx_Config :        glx.FBConfig;
          Visual     : access glx.XVisualInfo;
       end record;
 
