@@ -1,19 +1,17 @@
 with
      openGL.Screen,
-     Glx;
-
+     GLX;
 
 package openGL.surface_Profile
 --
 --  Models an openGL surface profile.
 --
 is
-
    type Item  is tagged private;
    type View  is access all Item'Class;
 
    type Items is array (Positive range <>) of Item;
-
+   type Views is array (Positive range <>) of View;
 
 
    -------------------
@@ -49,18 +47,16 @@ is
    function Image (Self : in Qualities) return String;
 
 
-
    ---------
    --  Forge
    --
 
    desired_Qualitites_unavailable : exception;
 
-   procedure define    (Self : in out Item;   Screen      : access openGL.Screen .item'Class;
-                                              Desired     : in     Qualities                := default_Qualities);
+   procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;
+                                           Desired : in     Qualities := default_Qualities);
 
    function  fetch_All return surface_Profile.items;
-
 
 
    --------------
@@ -68,9 +64,7 @@ is
    --
 
    function  Quality    (Self : in Item) return Qualities;
-   function  get_Visual (Self : in Item) return access GLX.XVisualInfo;
-
-
+   function  get_Visual (Self : in Item) return access glx.XVisualInfo;
 
 
 
@@ -78,8 +72,8 @@ private
 
    type Item is tagged
       record
-         glx_Config :        GLX.GLXFBConfig;
-         Visual     : access GLX.XVisualInfo;
+         glx_Config :        glx.glxFBConfig;
+         Visual     : access glx.XVisualInfo;
       end record;
 
 
@@ -93,5 +87,4 @@ private
                                                                       Bits_alpha_mask => Irrelevant),
                                               depth_buffer_Bits   => 24,
                                               stencil_buffer_Bits => Irrelevant);
-
 end openGL.surface_Profile;
