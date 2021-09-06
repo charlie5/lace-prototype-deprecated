@@ -1,29 +1,26 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body openGL.Visual
 is
 
    package body Forge
    is
-
       function new_Visual (Model      : in openGL.Model.view;
-                           Scale      : in Vector_3         := (1.0, 1.0, 1.0);
-                           is_Terrain : in Boolean          := False          ) return openGL.Visual.view
+                           Scale      : in Vector_3 := (1.0, 1.0, 1.0);
+                           is_Terrain : in Boolean  := False) return openGL.Visual.view
       is
       begin
-         return new openGL.Visual.item' (Model                    => Model,
-                                         Transform                => Identity_4x4,
-                                         mvp_Transform            => Identity_4x4,
-                                         inverse_modelview_Matrix => Identity_3x3,
-                                         Scale                    => Scale,
-                                         program_Parameters       => null,
-                                         is_Terrain               => is_Terrain,
-                                         face_Count               => 1,
-                                         apparent_Size            => <>);
+         return new Visual.item' (Model                    => Model,
+                                  Transform                => Identity_4x4,
+                                  mvp_Transform            => Identity_4x4,
+                                  inverse_modelview_Matrix => Identity_3x3,
+                                  Scale                    => Scale,
+                                  program_Parameters       => null,
+                                  is_Terrain               => is_Terrain,
+                                  face_Count               => 1,
+                                  apparent_Size            => <>);
       end new_Visual;
-
    end Forge;
 
 
@@ -37,7 +34,7 @@ is
 
 
 
-   function  Model (Self : in     Item) return openGL .Model.view
+   function Model (Self : in Item) return openGL.Model.view
    is
    begin
       return Self.Model;
@@ -52,7 +49,7 @@ is
 
 
 
-   function  Scale (Self : in     Item) return Vector_3
+   function Scale (Self : in Item) return Vector_3
    is
    begin
       return Scaled (Self.Scale,  by => Self.Model.Scale);
@@ -67,7 +64,7 @@ is
 
 
 
-   function  is_Terrain (Self : in     Item) return Boolean
+   function  is_Terrain (Self : in Item) return Boolean
    is
    begin
       return Self.is_Terrain;
@@ -82,7 +79,7 @@ is
 
 
 
-   function  face_Count (Self : in     Item) return Natural
+   function face_Count (Self : in Item) return Natural
    is
    begin
       return Self.face_Count;
@@ -97,7 +94,7 @@ is
 
 
 
-   function  apparent_Size (Self : in     Item) return Real
+   function apparent_Size (Self : in Item) return Real
    is
    begin
       return Self.apparent_Size;
@@ -112,7 +109,7 @@ is
 
 
 
-   function  Transform (Self : in     Item) return Matrix_4x4
+   function Transform (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Transform;
@@ -134,7 +131,7 @@ is
    end inverse_modelview_Matrix_is;
 
 
-   function  inverse_modelview_Matrix (Self : in     Item) return Matrix_3x3
+   function inverse_modelview_Matrix (Self : in Item) return Matrix_3x3
    is
    begin
       return Self.inverse_modelview_Matrix;
@@ -142,8 +139,7 @@ is
 
 
 
-
-   function  mvp_Transform (Self : in     Item) return Matrix_4x4
+   function mvp_Transform (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.mvp_Transform;
@@ -192,7 +188,7 @@ is
 
 
 
-   function  program_Parameters (Self : in     Item) return program.Parameters_view
+   function program_Parameters (Self : in Item) return program.Parameters_view
    is
    begin
       return Self.program_Parameters;
