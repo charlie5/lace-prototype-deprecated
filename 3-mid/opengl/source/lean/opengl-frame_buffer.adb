@@ -5,67 +5,72 @@ with
      openGL.Tasks,
      openGL.Errors;
 
-
-package body openGL.frame_Buffer
+package body openGL.Frame_Buffer
 is
 
-
-   function to_frame_Buffer (Width,
-                             Height : in Positive) return Item
+   package body Forge
    is
-      use openGL.Texture,
-          GL,
-          GL.Binding,
-          GL.lean;
 
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      Self        :          Item;
+      function to_Frame_Buffer (Width,
+                                Height : in Positive) return Item
+      is
+         use openGL.Texture,
+             GL,
+             GL.Binding,
+             GL.lean;
 
-   begin
-      Self.Texture := to_Texture (Dimensions' (Width, Height));
+         Self : Item;
 
-      glGenFramebuffers (1, Self.Name'Access);
+      begin
+         Tasks.check;
 
-      -- Attach each texture to the first color buffer of an FBO and clear it.
-      --
-      glBindFramebuffer      (GL_FRAMEBUFFER, Self.Name);
-      glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Self.Texture.Name, 0);
+         Self.Texture := to_Texture (Dimensions' (Width, Height));
 
-      glClear                (GL_COLOR_BUFFER_BIT);
-      glBindFramebuffer      (GL_FRAMEBUFFER, 0);
+         glGenFramebuffers (1, Self.Name'Access);
 
-      return Self;
-   end to_frame_Buffer;
+         -- Attach each texture to the first color buffer of an frame buffer object and clear it.
+         --
+         glBindFramebuffer      (GL_FRAMEBUFFER, Self.Name);
+         glFramebufferTexture2D (GL_FRAMEBUFFER,
+                                 GL_COLOR_ATTACHMENT0,
+                                 GL_TEXTURE_2D,
+                                 Self.Texture.Name,
+                                 0);
+         glClear                (GL_COLOR_BUFFER_BIT);
+         glBindFramebuffer      (GL_FRAMEBUFFER, 0);
+
+         return Self;
+      end to_frame_Buffer;
 
 
 
-   function to_frame_Buffer return Item
-   is
-      use openGL.Texture,
-          GL, GL.lean;
+      function to_Frame_Buffer return Item
+      is
+         use openGL.Texture,
+             GL,
+             GL.lean;
 
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      Self        :          Item;
+         Self : Item;
+      begin
+         Tasks.check;
+         Self.Texture := openGL.Texture.null_Object;
+         glGenFramebuffers (1, Self.Name'Access);
 
-   begin
-      Self.Texture := openGL.Texture.null_Object;
+         return Self;
+      end to_frame_Buffer;
 
-      glGenFramebuffers (1, Self.Name'Access);
-
-      return Self;
-   end to_frame_Buffer;
+   end Forge;
 
 
 
    procedure destruct (Self : in out Item)
    is
       use GL.lean;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
-      glDeleteFramebuffers (1,  Self.Name'Access);
+      Tasks.check;
+      glDeleteFramebuffers (1, Self.Name'Access);
       Self.Texture.destroy;
    end destruct;
-
 
 
 
@@ -73,12 +78,11 @@ is
    --- Attributes
    --
 
-   function  Name (Self : in     Item) return buffer_Name
+   function Name (Self : in Item) return Buffer_Name
    is
    begin
       return Self.Name;
    end Name;
-
 
 
    function Texture (Self : in Item) return openGL.Texture.Object
@@ -94,36 +98,41 @@ is
           GL.Binding,
           GL.lean;
    begin
+      Tasks.check;
       openGL.Errors.log;
 
       Self.Texture := Now;
 
       -- Attach each texture to the first color buffer of an FBO and clear it.
       --
-      glBindFramebuffer      (GL_FRAMEBUFFER, Self.Name);
+      glBindFramebuffer (GL_FRAMEBUFFER, Self.Name);
       openGL.Errors.log;
 
-      glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Self.Texture.Name, 0);
+      glFramebufferTexture2D (GL_FRAMEBUFFER,
+                              GL_COLOR_ATTACHMENT0,
+                              GL_TEXTURE_2D,
+                              Self.Texture.Name,
+                              0);
       openGL.Errors.log;
 
-      glClear                (GL_COLOR_BUFFER_BIT);
+      glClear (GL_COLOR_BUFFER_BIT);
       openGL.Errors.log;
    end Texture_is;
 
 
 
-   function  is_Complete (Self : in     Item) return Boolean
+   function is_complete (Self : in Item) return Boolean
    is
-      use GL, GL.lean;
+      use GL,
+          GL.lean;
       use type GL.GLenum;
 
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      check_is_OK : constant Boolean := Tasks.check with Unreferenced;
       Result      : constant Boolean := glCheckFramebufferStatus (GL_FRAMEBUFFER) = GL_FRAMEBUFFER_COMPLETE;
    begin
       openGL.Errors.log;
       return Result;
-   end is_Complete;
-
+   end is_complete;
 
 
 
@@ -133,26 +142,28 @@ is
 
    procedure enable (Self : in Item)
    is
-      use GL, GL.lean;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      use GL,
+          GL.lean;
+      check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, Self.Name);
 
       if not Self.is_Complete
       then
-         raise openGL.Error with "GL_FRAMEBUFFER is not 'complete'";
+         raise openGL.Error with "GL_FRAMEBUFFER" & Self.Name'Image & " is not 'complete'";
       end if;
    end enable;
 
 
+
    procedure disable (Self : in Item)
    is
-      use GL, GL.lean;
-      use type GL.GLenum;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      use GL,
+          GL.lean;
+      check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, 0);
    end disable;
 
 
-end openGL.frame_Buffer;
+end openGL.Frame_Buffer;

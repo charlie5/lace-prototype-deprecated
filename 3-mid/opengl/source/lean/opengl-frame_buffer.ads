@@ -1,8 +1,7 @@
 with
      openGL.Texture;
 
-
-package openGL.frame_Buffer
+package openGL.Frame_Buffer
 is
 
    type Item is tagged private;
@@ -14,9 +13,12 @@ is
    --- Forge
    --
 
-   function to_frame_Buffer                        return Item;
-   function to_frame_Buffer (Width,
-                             Height : in Positive) return Item;
+   package Forge
+   is
+      function to_Frame_Buffer return Item;
+      function to_Frame_Buffer (Width,
+                                Height : in Positive) return Item;
+   end Forge;
 
    procedure destruct (Self : in out Item);
 
@@ -24,14 +26,14 @@ is
    --------------
    --- Attributes
    --
-   subtype buffer_Name is GL.GLuint;     -- An openGL frame buffer 'Name'.
+   subtype Buffer_Name is GL.GLuint;     -- An openGL frame buffer 'Name'.
 
-   function  Name        (Self : in     Item)     return buffer_Name;
+   function  Name        (Self : in     Item)     return Buffer_Name;
 
    function  Texture     (Self : in     Item)     return openGL.Texture.Object;
-   procedure Texture_is  (Self : in out Item;   Now : in openGL.Texture.Object);
+   procedure Texture_is  (Self : in out Item;   now : in openGL.Texture.Object);
 
-   function  is_Complete (Self : in     Item)     return Boolean;
+   function  is_complete (Self : in     Item)     return Boolean;
 
 
    --------------
@@ -41,7 +43,7 @@ is
    procedure enable  (Self : in Item);
    procedure disable (Self : in Item);
    --
-   -- Unbind the FBO so rendering will return to the backbuffer.
+   -- Unbind the frame buffer so rendering will return to the backbuffer.
 
 
 
@@ -56,4 +58,4 @@ private
    null_Buffer : constant Item := (Name    => 0,
                                    Texture => openGL.Texture.null_Object);
 
-end openGL.frame_Buffer;
+end openGL.Frame_Buffer;
