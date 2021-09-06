@@ -2,7 +2,6 @@ with
      GL.Binding,
      openGL.Tasks;
 
-
 package body openGL.Viewport
 is
    use GL;
@@ -11,10 +10,9 @@ is
    function Extent return Extent_2d
    is
       use GL.Binding;
-
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      Extent      : array (1 .. 4) of aliased gl.glInt;
+      Extent : array (1 .. 4) of aliased gl.glInt;
    begin
+      Tasks.check;
       glGetIntegerv (gl_VIEWPORT,
                      Extent (1)'unchecked_Access);
 
@@ -27,12 +25,11 @@ is
    procedure Extent_is (Now : in Extent_2d)
    is
       use GL.Binding;
-
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
+      Tasks.check;
       glViewport (0, 0,
-                  GLint (now.Width),
-                  GLint (now.Height));
+                  GLint (Now.Width),
+                  GLint (Now.Height));
    end Extent_is;
 
 
