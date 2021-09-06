@@ -1,16 +1,14 @@
 package body openGL.Frustum
 is
 
-
-   procedure normalise (the_Planes : in out plane_Array)
+   procedure normalise (Planes : in out Plane_array)
    is
-      use Geometry_3d;
+      use Geometry_3D;
    begin
-      for Each in the_Planes'Range
+      for Each in Planes'Range
       loop
-         normalise (the_Planes (Each));
+         normalise (Planes (Each));
       end loop;
    end normalise;
-
 
 end openGL.Frustum;
