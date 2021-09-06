@@ -306,8 +306,8 @@ is
 
       is_Lucid        : aliased  Boolean;
       the_lucid_Image : constant openGL.lucid_Image := to_lucid_Image (image_Filename, is_Lucid'Access);
-      the_Texture     :          Texture.Object     := Texture.to_Texture (Texture.Dimensions' (the_lucid_Image'Length (2),
-                                                                                                the_lucid_Image'Length (1)));
+      the_Texture     :          Texture.Object     := Forge.to_Texture (Texture.Dimensions' (the_lucid_Image'Length (2),
+                                                                                              the_lucid_Image'Length (1)));
    begin
       if is_Lucid
       then

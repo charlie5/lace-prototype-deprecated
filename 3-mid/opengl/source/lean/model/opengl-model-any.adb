@@ -414,7 +414,7 @@ is
                     := io.to_lucid_Image (Self.Texture);
 
                   the_Texture : constant openGL.Texture.object
-                    := to_Texture (the_Image);
+                    := Forge.to_Texture (the_Image);
 
                begin
                   Self.Geometry.Texture_is (the_Texture);
@@ -424,7 +424,7 @@ is
                declare
                   use openGL.Texture;
                   the_Image   : constant openGL.Image          := io.to_Image   (Self.Texture);
-                  the_Texture : constant openGL.Texture.object :=    to_Texture (the_Image);
+                  the_Texture : constant openGL.Texture.object := Forge.to_Texture (the_Image);
                begin
                   Self.Geometry.Texture_is (the_Texture);
                end;

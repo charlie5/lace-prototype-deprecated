@@ -240,7 +240,7 @@ is
          set_Texture :
          declare
             the_Image   : constant openGL.Image          := openGL.io.to_Image (Self.color_Map);
-            the_Texture : constant openGL.Texture.object := to_Texture (the_Image);
+            the_Texture : constant openGL.Texture.object := Forge.to_Texture (the_Image);
          begin
             the_Geometry.Texture_is (the_Texture);
          end set_Texture;

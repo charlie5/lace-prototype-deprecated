@@ -286,7 +286,7 @@ is
 
          the_Geometry.add          (openGL.Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
-         the_Geometry.Texture_is   (openGL.Texture.to_Texture (Self.Font.gl_Texture));
+         the_Geometry.Texture_is   (openGL.Texture.Forge.to_Texture (Self.Font.gl_Texture));
 --           the_Geometry.is_Transparent;
 
          return (1 => the_Geometry.all'Access);

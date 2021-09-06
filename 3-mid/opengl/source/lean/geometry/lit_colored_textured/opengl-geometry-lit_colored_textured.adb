@@ -89,7 +89,7 @@ is
          white_Image   : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
 
       begin
-         white_Texture       := openGL.Texture.to_Texture (white_Image);
+         white_Texture       := openGL.Texture.Forge.to_Texture (white_Image);
          the_Program.Program := new openGL.Program.lit_colored_textured.item;
 
          the_Program.  vertex_Shader.define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");

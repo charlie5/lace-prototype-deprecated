@@ -96,7 +96,7 @@ is
                then
                   openGL.Texture.set_Image (Self.Texture, Self.lucid_Image.all);
                else
-                  Self.Texture := openGL.Texture.to_Texture (Self.lucid_Image.all);
+                  Self.Texture := Texture.Forge.to_Texture (Self.lucid_Image.all);
                end if;
             end if;
          else
@@ -106,7 +106,7 @@ is
                then
                   openGL.Texture.set_Image (Self.Texture, Self.Image.all);
                else
-                  Self.Texture := openGL.Texture.to_Texture (Self.Image.all);
+                  Self.Texture := Texture.Forge.to_Texture (Self.Image.all);
                end if;
             end if;
          end if;

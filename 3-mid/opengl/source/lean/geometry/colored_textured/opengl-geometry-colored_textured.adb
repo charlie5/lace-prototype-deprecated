@@ -70,7 +70,7 @@ is
 
             white_Image   : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
          begin
-            white_Texture := openGL.Texture.to_Texture (white_Image);
+            white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
 
             the_vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/colored_textured.vert");
             the_fragment_Shader.define (openGL.Shader.Fragment, "assets/opengl/shader/colored_textured.frag");

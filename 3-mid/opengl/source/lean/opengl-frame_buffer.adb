@@ -24,7 +24,7 @@ is
       begin
          Tasks.check;
 
-         Self.Texture := to_Texture (Dimensions' (Width, Height));
+         Self.Texture := openGL.Texture.Forge.to_Texture (Dimensions' (Width, Height));
 
          glGenFramebuffers (1, Self.Name'Access);
 
