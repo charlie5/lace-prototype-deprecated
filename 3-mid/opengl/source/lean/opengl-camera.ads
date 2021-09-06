@@ -6,7 +6,6 @@ with
      openGL.Surface,
      openGL.Renderer.lean;
 
-
 package openGL.Camera
 --
 -- Simulates a camera.
@@ -24,7 +23,6 @@ is
    procedure destroy (Self : in out Item);
 
 
-
    --------------
    --  Attributes
    --
@@ -32,69 +30,66 @@ is
    fairly_Far                  : constant         := 100_000.0;
    default_field_of_view_Angle : constant Degrees :=      60.0;
 
+   procedure Renderer_is              (Self : in out Item'Class;   now    : in Renderer.lean.view);
 
-   procedure Renderer_is              (Self : in out Item'Class;   Now    : in openGL.Renderer.lean.view);
-
-   procedure Site_is                  (Self : in out Item'Class;   Now    : in math.Vector_3);
+   procedure Site_is                  (Self : in out Item'Class;   now    : in math.Vector_3);
    function  Site                     (Self : in     Item'Class)        return math.Vector_3;
 
-   procedure Spin_is                  (Self : in out Item'Class;   Now    : in math.Matrix_3x3);
+   procedure Spin_is                  (Self : in out Item'Class;   now    : in math.Matrix_3x3);
    function  Spin                     (Self : in     Item'Class)        return math.Matrix_3x3;
 
    procedure Position_is              (Self : in out Item'Class;   Site   : in math.Vector_3;
                                                                    Spin   : in math.Matrix_3x3);
-   function  world_Transform          (Self : in     Item)              return math.Matrix_4x4;
+   function  World_Transform          (Self : in     Item)              return math.Matrix_4x4;
 
-   function  FOVy                     (Self : in     Item'Class)        return math.Degrees;   -- Field of view angle (deg) in the y direction.
+   function  FoVy                     (Self : in     Item'Class)        return math.Degrees;   -- Field of view angle in the Y direction.
 
-   function  Aspect                   (Self : in     Item'Class)        return math.Real;      -- x/y Aspect ratio.
-   procedure Aspect_is                (Self : in out Item'Class;   Now    : in math.Real);
+   function  Aspect                   (Self : in     Item'Class)        return math.Real;      -- X/Y Aspect ratio.
+   procedure Aspect_is                (Self : in out Item'Class;   now    : in math.Real);
 
-   function  near_plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the near clipping plane.
-   function   far_plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the far  clipping plane.
+   function  near_Plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the near clipping plane.
+   function   far_Plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the far  clipping plane.
 
-   procedure near_plane_Distance_is   (Self : in out Item'Class;   Now    : in math.Real);
-   procedure  far_plane_Distance_is   (Self : in out Item'Class;   Now    : in math.Real);
+   procedure near_Plane_Distance_is   (Self : in out Item'Class;   now    : in math.Real);
+   procedure  far_Plane_Distance_is   (Self : in out Item'Class;   now    : in math.Real);
 
    function        view_Transform     (Self : in     Item'Class)        return math.Matrix_4x4;
    function  projection_Transform     (Self : in     Item'Class)        return math.Matrix_4x4;
 
    function  Viewport                 (Self : in     Item)              return linear_Algebra_3d.Rectangle;
    procedure Viewport_is              (Self : in out Item'Class;   Width,
-                                                                   Height : in Integer);
+                                                                   Height : in Positive);
 
-   function  to_world_Site            (Self : in     Item'Class;   window_Site : in math.Vector_3) return math.Vector_3;
+   function  to_World_Site            (Self : in     Item'Class;   Window_Site : in math.Vector_3) return math.Vector_3;
    --
    --  Returns the 'window space' site transformed to the equivalent 'world space' site.
 
-   function  cull_Completed           (Self : in     Item) return Boolean;
-   procedure disable_Cull             (Self : in out Item);
+   function  cull_completed           (Self : in     Item) return Boolean;
+   procedure disable_cull             (Self : in out Item);
 
-   function  vanish_point_size_Min    (Self : in     Item'Class) return Real;
-   procedure vanish_point_size_Min_is (Self : in out Item'Class;   Now : in Real);
+   function  vanish_Point_Size_min    (Self : in     Item'Class) return Real;
+   procedure vanish_Point_Size_min_is (Self : in out Item'Class;   now : in Real);
    --
-   -- Visuals whose projected size falls below this minimum will not be displayed.
+   -- Visuals whose projected size falls below this minimum will be culled.
 
-   function  impostor_size_Min        (Self : in     Item)     return Real;
-   procedure impostor_size_Min_is     (Self : in out Item;   Now : in Real);
+   function  Impostor_Size_min        (Self : in     Item)     return Real;
+   procedure Impostor_Size_min_is     (Self : in out Item;   now : in Real);
    --
    -- Visuals whose projected size falls below this minimum will be substituted with impostors.
 
-   procedure allow_Impostors          (Self : in out Item;   Now : in Boolean := True);
-
+   procedure allow_Impostors          (Self : in out Item;   now : in Boolean := True);
 
 
    --------------
    --  Operations
    --
 
-   procedure render                (Self : in out Item;         the_Visuals        : in     Visual.views;
-                                                                To                 : in     Surface.view := null);
+   procedure render (Self : in out Item;   Visuals : in Visual.views;
+                                           to      : in Surface.view := null);
 
-   function current_Planes         (Self : in     Item) return openGL.Frustum.plane_Array;
+   function  current_Planes (Self : in Item) return Frustum.plane_Array;
    --
    -- Returns the frustum planes calculated from the current GL projection and modelview matrices.
-
 
 
 
@@ -103,43 +98,43 @@ private
    task
    type cull_Engine (Self : access Camera.item'Class)
    is
-      entry cull (the_Visuals : in Visual.views;   do_Cull : in Boolean);
+      entry cull (the_Visuals : in Visual.views;   do_cull : in Boolean);
       entry stop;
    end cull_Engine;
 
 
    type Item is tagged limited
       record
-         cull_Engine          :         camera.cull_Engine (Item'Access);
-         cull_Completed       :         safe_Boolean               := False;
-         Culler               :         openGL.Culler.frustum.item;
+         cull_Engine          : camera.cull_Engine (Item'Access);
+         cull_Completed       : safe_Boolean := False;
+         Culler               : openGL.Culler.frustum.item;
 
-         Impostorer           :         openGL.Impostorer.item;
-         impostors_Allowed    :         Boolean                    := False;
+         Impostorer           : openGL.Impostorer.item;
+         Impostors_allowed    : Boolean      := False;
 
-         Renderer             :         openGL.Renderer.lean.view;
+         Renderer             : openGL.Renderer.lean.view;
 
-         world_Transform      :         math.Matrix_4x4;
-         view_Transform       :         math.Matrix_4x4;
-         projection_Transform :         math.Matrix_4x4;
+         world_Transform      : math.Matrix_4x4;
+         view_Transform       : math.Matrix_4x4;
+         projection_Transform : math.Matrix_4x4;
 
-         Viewport             :         linear_Algebra_3d.Rectangle;
-         FOVy                 :         math.Degrees               := default_field_of_view_Angle; -- Field of view angle (deg) in the y direction.
-         Aspect               :         math.Real                  := 1.0;                         -- x/y Aspect ratio.
+         Viewport             : linear_Algebra_3d.Rectangle;
+         FoVy                 : math.Degrees := default_field_of_view_Angle; -- Field of view angle (deg) in the y direction.
+         Aspect               : math.Real    := 1.0;                         -- X/Y aspect ratio.
 
-         near_plane_Distance  :         math.Real                  := 0.1;                         -- Distance to the near clipping plane.
-         near_plane_Width     :         math.Real;
-         near_plane_Height    :         math.Real;
+         near_Plane_Distance  : math.Real    := 0.1;                         -- Distance to the near clipping plane.
+         near_Plane_Width     : math.Real;
+         near_Plane_Height    : math.Real;
 
-         far_plane_Distance   :         math.Real                  := fairly_Far;                  -- Distance to the far clipping plane.
-         far_plane_Width      :         math.Real;
-         far_plane_Height     :         math.Real;
+         far_Plane_Distance   : math.Real    := fairly_Far;                  -- Distance to the far clipping plane.
+         far_Plane_Width      : math.Real;
+         far_Plane_Height     : math.Real;
 
-         is_Culling           :         Boolean                    := True;
+         is_Culling           : Boolean      := True;
       end record;
 
 
-   procedure update_view_Transform (Self : in out Item);
+   procedure update_View_Transform (Self : in out Item);
 
 
 end openGL.Camera;

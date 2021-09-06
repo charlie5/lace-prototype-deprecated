@@ -153,7 +153,7 @@ is
                                         the_Camera.Viewport.Max (2)));
 
             Self.update_Impostors (the_Updates.Impostor_updates (1 .. the_Updates.impostor_updates_Last),
-                                   camera_world_Transform => the_Camera.world_Transform,
+                                   camera_world_Transform => the_Camera.World_Transform,
                                    view_Transform         => the_Camera.view_Transform,
                                    perspective_Transform  => the_Camera.projection_Transform);
 
@@ -176,7 +176,7 @@ is
 
 
             Self.draw (the_Visuals            => the_Updates.Visuals (1 .. the_Updates.visuals_Last),
-                       camera_world_Transform => the_Camera.world_Transform,
+                       camera_world_Transform => the_Camera.World_Transform,
                        view_Transform         => the_Camera.view_Transform,
                        perspective_Transform  => the_Camera.projection_Transform,
                        clear_Frame            => clear_Frame,
