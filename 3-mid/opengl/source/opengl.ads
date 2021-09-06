@@ -232,25 +232,41 @@ is
 
    --  Coordinates
    --
+
    type Coordinate_1D is
       record
          S : aliased Real;
       end record;
-
-   type Coordinates_1D is array (Index_t range <>) of Coordinate_1D;
-
 
    type Coordinate_2D is
       record
          S, T : aliased Real;
       end record;
 
-   type      Coordinates_2D is array (     Index_t range <>) of aliased Coordinate_2D;
+   type Coordinate_3D is
+      record
+         S, T, R : aliased Real;
+      end record;
+
+   type Coordinate_4D is
+      record
+         S, T, R, Q : aliased Real;
+      end record;
+
+   type Coordinates_1D is array (Index_t range <>) of aliased Coordinate_1D;
+   type Coordinates_2D is array (Index_t range <>) of aliased Coordinate_2D;
+   type Coordinates_3D is array (Index_t range <>) of aliased Coordinate_3D;
+   type Coordinates_4D is array (Index_t range <>) of aliased Coordinate_4D;
+
+   type many_Coordinates_1D is array (long_Index_t range <>) of aliased Coordinate_1D;
    type many_Coordinates_2D is array (long_Index_t range <>) of aliased Coordinate_2D;
+   type many_Coordinates_3D is array (long_Index_t range <>) of aliased Coordinate_3D;
+   type many_Coordinates_4D is array (long_Index_t range <>) of aliased Coordinate_4D;
 
 
    --  Transforms
    --
+
    type texture_Transform is
      record
          Offset : Real;
@@ -266,6 +282,21 @@ is
      record
        S : texture_Transform;
        T : texture_Transform;
+     end record;
+
+   type texture_Transform_3D is
+     record
+       S : texture_Transform;
+       T : texture_Transform;
+       R : texture_Transform;
+     end record;
+
+   type texture_Transform_4D is
+     record
+       S : texture_Transform;
+       T : texture_Transform;
+       R : texture_Transform;
+       Q : texture_Transform;
      end record;
 
 

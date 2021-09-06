@@ -16,8 +16,8 @@ is
 
    type xz_Generator is new coordinate_Generator with
       record
-         Normalise : texture_Transform_2d;
-         Tile      : texture_Transform_2d;
+         Normalise : texture_Transform_2D;
+         Tile      : texture_Transform_2D;
       end record;
 
    overriding
@@ -26,8 +26,8 @@ is
 
    type xy_Generator is new coordinate_Generator with
       record
-         Normalise : texture_Transform_2d;
-         Tile      : texture_Transform_2d;
+         Normalise : texture_Transform_2D;
+         Tile      : texture_Transform_2D;
       end record;
 
    overriding
@@ -36,47 +36,18 @@ is
 
    type zy_Generator is new coordinate_Generator with
       record
-         Normalise : texture_Transform_2d;
-         Tile      : texture_Transform_2d;
+         Normalise : texture_Transform_2D;
+         Tile      : texture_Transform_2D;
       end record;
 
    overriding
    function to_Coordinates (Self : in zy_Generator;   the_Vertices : access Sites) return Coordinates_2D;
 
 
-   type mercator_Generator is new coordinate_Generator with
-      record
-         null;
-      end record;
+   type mercator_Generator is new coordinate_Generator with null record;
 
    overriding
    function to_Coordinates (Self : in mercator_Generator;   the_Vertices : access Sites) return Coordinates_2D;
-
-
-
-   ------
-   --- 3D
-   --
-
-   type Coordinate_3D is
-      record
-         S, T, R : aliased Real;
-      end record;
-
-   type Coordinate_3D_array is array (Natural range <>) of Coordinate_3D;
-
-
-
-   ------
-   --- 4D
-   --
-
-   type Coordinate_4D is
-      record
-         S, T, R, Q : aliased Real;
-      end record;
-
-   type Coordinate_4D_array is array (Natural range <>) of Coordinate_4D;
 
 
 end openGL.Texture.Coordinates;
