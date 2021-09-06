@@ -1,10 +1,9 @@
 with
-     ada.Numerics.Discrete_Random;
-
+     ada.Numerics.discrete_Random;
 
 package body openGL.Palette
 is
-   package random_Colors is new ada.Numerics.Discrete_Random (color_Value);
+   package random_Colors is new ada.Numerics.discrete_Random (Color_Value);
    use     random_Colors;
 
    the_Generator : random_Colors.Generator;
@@ -21,7 +20,7 @@ is
 
 
 
-   function Shade_of (Self : in Color;   Level : in shade_Level) return Color
+   function Shade_of (Self : in Color;   Level : in Shade_Level) return Color
    is
    begin
       return (to_color_Value (to_Real (self.Red)   * Real (Level)),
@@ -34,22 +33,19 @@ is
    function Mixed (Self : in Color;   Other : in Color;
                                       Mix   : in mix_Factor := 0.5) return Color
    is
-      function Lerp (Value_1, Value_2 : color_Value) return color_Value
+      function Lerp (Value_1, Value_2 : color_Value) return color_Value     -- Linear interpolate.
       is
          V1 : constant Real := Real (Value_1);
          V2 : constant Real := Real (Value_2);
       begin
-         return color_Value (V1 + (V2 - V1) * Real (Mix));
+         return color_Value (   V1
+                             + (V2 - V1) * Real (Mix));
       end Lerp;
 
    begin
       return (Lerp (Self.Red,   Other.Red),
               Lerp (Self.Green, Other.Green),
               Lerp (Self.Blue,  Other.Blue));
-
---        return (to_color_Value ((to_Real (Self.Red)   + to_Real (other.Red))   / 2.0),
---                to_color_Value ((to_Real (Self.Green) + to_Real (other.Green)) / 2.0),
---                to_color_Value ((to_Real (Self.Blue)  + to_Real (other.Blue))  / 2.0));
    end Mixed;
 
 

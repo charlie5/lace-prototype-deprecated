@@ -17,18 +17,18 @@ is
    --  Shades
    --
 
-   type shade_Level is digits 7 range 0.0 .. 1.0;
+   type Shade_Level is digits 7 range 0.0 .. 1.0;
 
-   function Shade_of (Self : in Color;   Level : in shade_Level) return Color;
+   function Shade_of (Self : in Color;   Level : in Shade_Level) return Color;
    --
    --  Darkens a color by the given shade level factor.
 
 
    --  Color Mixing
    --
-   type mix_Factor is digits 7 range 0.0 .. 1.0;   -- 0.0 returns Self, 1.0 returns Other.
+   type mix_Factor is digits 7 range 0.0 .. 1.0;   -- 0.0 returns 'Self', 1.0 returns 'Other'.
 
-   function Mixed (Self : in Color;   Other : in Color;
+   function mixed (Self : in Color;   Other : in Color;
                                       Mix   : in mix_Factor := 0.5) return Color;
    --
    --  Combines two colors.
@@ -36,8 +36,11 @@ is
 
    --  Similarity
    --
-   function is_Similar (Self : in Color;   To         : in Color;
+   function is_similar (Self : in Color;   to         : in Color;
                                            Similarity : in color_Value := 3) return Boolean;
+   --
+   -- Returns true if the none of the red, green, blue components of 'Self'
+   -- differ from 'to' by more than 'Similarity'.
 
 
    --  Random Colors
@@ -78,7 +81,7 @@ is
    spring_Green : constant Color;
 
 
-   --  Named (tbd: sort named colors into primary, secondary or tertiary categories).
+   --  Named (TODO: sort named colors into primary, secondary and tertiary categories).
    --
    Air_Force_blue           : constant Color;
    Alice_blue               : constant Color;
