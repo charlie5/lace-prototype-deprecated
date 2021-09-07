@@ -4,7 +4,7 @@ is
    overriding
    procedure set_Uniforms (Self : in Item)
    is
-      the_scale_Uniform : constant openGL.Variable.uniform.vec3
+      the_scale_Uniform : constant Variable.uniform.vec3
         := Self.uniform_Variable ("uScale");
    begin
       Self.set_mvp_Uniform;
