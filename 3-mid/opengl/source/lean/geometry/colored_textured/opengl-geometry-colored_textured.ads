@@ -3,7 +3,6 @@ package openGL.Geometry.colored_textured
 --  Supports per-vertex site, color and texture.
 --
 is
-
    type Item is new openGL.Geometry.item with private;
 
    function new_Geometry return access Geometry.colored_textured.item'Class;
