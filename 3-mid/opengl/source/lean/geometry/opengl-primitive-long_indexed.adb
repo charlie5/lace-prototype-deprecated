@@ -4,40 +4,38 @@ with
      openGL.Tasks,
      GL.Binding,
 
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body openGL.Primitive.long_indexed
 is
-
    ---------
    --- Forge
    --
 
    procedure define (Self : in out Item;   Kind    : in facet_Kind;
-                                           Indices : in openGL.long_Indices)
+                                           Indices : in long_Indices)
    is
-      use openGL.Buffer.long_indices.Forge;
-      buffer_Indices : aliased openGL.long_Indices := (Indices'Range => <>);
+      use Buffer.long_indices.Forge;
+      buffer_Indices : aliased long_Indices := (Indices'Range => <>);
    begin
       for Each in buffer_Indices'Range
       loop
-         buffer_Indices (Each) := Indices (Each) - 1;   -- Adjust indices to zero-based-indexing for GL.
+         buffer_Indices (Each) := Indices (Each) - 1;     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
       Self.facet_Kind := Kind;
-      Self.Indices    := new openGL.Buffer.long_indices.object' (to_Buffer (buffer_Indices'Access,
-                                                                            usage => openGL.buffer.static_Draw));
+      Self.Indices    := new Buffer.long_indices.Object' (to_Buffer (buffer_Indices'Access,
+                                                                     usage => Buffer.static_Draw));
    end define;
 
 
 
    function new_Primitive (Kind    : in facet_Kind;
-                           Indices : in openGL.long_Indices) return Primitive.long_indexed.view
+                           Indices : in long_Indices) return Primitive.long_indexed.view
    is
       Self : constant View := new Item;
    begin
-      define (Self.all,  Kind, Indices);
+      define (Self.all, Kind, Indices);
       return Self;
    end new_Primitive;
 
@@ -46,29 +44,21 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-      procedure free is new ada.unchecked_Deallocation (Buffer.long_indices.Object'Class, Buffer.long_indices.view);
+      procedure free is new ada.unchecked_Deallocation (Buffer.long_indices.Object'Class,
+                                                        Buffer.long_indices.view);
    begin
       Buffer.destroy (Self.Indices.all);
       free (Self.Indices);
    end destroy;
 
 
-
    --------------
    --  Attributes
    --
 
-   -- None.
-
-
-
-   --------------
-   --  Operations
-   --
-
    procedure Indices_are  (Self : in out Item;   Now : in long_Indices)
    is
-      use openGL.Buffer.long_indices;
+      use Buffer.long_indices;
       buffer_Indices : aliased long_Indices := (Now'Range => <>);
    begin
       for Each in buffer_Indices'Range
@@ -80,24 +70,25 @@ is
    end Indices_are;
 
 
+   --------------
+   --  Operations
+   --
 
    overriding
    procedure render (Self : in out Item)
    is
       use GL,
           GL.Binding;
-
-      check_is_OK : constant Boolean := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
-      render (openGL.Primitive.item (Self));   -- Do base class render.
+      Tasks.check;
+      openGL.Primitive.item (Self).render;   -- Do base class render.
 
       Self.Indices.enable;
-      openGL.Errors.log;
-
       glDrawElements (Thin     (Self.facet_Kind),
                       gl.GLint (Self.Indices.Length),
                       GL_UNSIGNED_INT,
                       null);
+      Errors.log;
    end render;
 
 
