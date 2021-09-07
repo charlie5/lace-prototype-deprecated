@@ -3,7 +3,7 @@ with
      ada.Strings.fixed;
 
 
-package body openGL.Program.lit_textured_skinned
+package body openGL.Program.lit_colored_textured_skinned
 is
 
    the_vertex_Shader   : aliased openGL.Shader.item;
@@ -254,4 +254,4 @@ is
    end bone_Transform_is;
 
 
-end openGL.Program.lit_textured_skinned;
+end openGL.Program.lit_colored_textured_skinned;

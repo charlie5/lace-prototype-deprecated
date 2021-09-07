@@ -4,7 +4,7 @@ with
      openGL.Primitive. long_indexed,
 
      openGL.Geometry.lit_textured,
-     openGL.Geometry.lit_textured_skinned,
+     openGL.Geometry.lit_colored_textured_skinned,
 
      openGL.Texture,
      openGL.Palette,
@@ -23,7 +23,7 @@ package body openGL.Model.any
 is
 
    type lit_textured_Geometry_view         is access all openGL.Geometry.lit_textured.item'class;
-   type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_textured_skinned.item'class;
+   type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_colored_textured_skinned.item'class;
 
 
    ---------
@@ -108,10 +108,10 @@ is
 
 
 
-   function to_lit_textured_skinned_Vertices (Self : in any_Vertex_array) return openGL.Geometry.lit_textured_skinned.Vertex_array
+   function to_lit_textured_skinned_Vertices (Self : in any_Vertex_array) return openGL.Geometry.lit_colored_textured_skinned.Vertex_array
    is
       use openGL.Palette;
-      Result : openGL.geometry.lit_textured_skinned.Vertex_array (Self'Range);
+      Result : openGL.geometry.lit_colored_textured_skinned.Vertex_array (Self'Range);
    begin
       for Each in Self'Range
       loop
@@ -385,13 +385,13 @@ is
 
          else
             declare
-               use openGL.Geometry.lit_textured_skinned;
+               use openGL.Geometry.lit_colored_textured_skinned;
 
-               my_Vertices : aliased constant lit_textured_skinned.Vertex_array
+               my_Vertices : aliased constant lit_colored_textured_skinned.Vertex_array
                  := to_lit_textured_skinned_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_skinned_Geometry_view
-                 := lit_textured_skinned.new_Geometry.all'unchecked_Access;
+                 := lit_colored_textured_skinned.new_Geometry.all'unchecked_Access;
             begin
                my_Geometry.Vertices_are (now => my_Vertices);
                Self.Geometry := my_Geometry.all'Access;

@@ -14,13 +14,13 @@ with
      System.storage_Elements;
 
 
-package body openGL.Geometry.lit_textured_skinned
+package body openGL.Geometry.lit_colored_textured_skinned
 is
    --  Globals
    --
    the_vertex_Shader   : aliased openGL.Shader.item;
    the_fragment_Shader : aliased openGL.Shader.item;
-   the_Program         : aliased openGL.Program.lit_textured_skinned.view;
+   the_Program         : aliased openGL.Program.lit_colored_textured_skinned.view;
 
    white_Texture       :         openGL.Texture.Object;
 
@@ -49,14 +49,14 @@ is
    --  Forge
    --
 
-   type Geometry_view is access all Geometry.lit_textured_skinned.item'class;
+   type Geometry_view is access all Geometry.lit_colored_textured_skinned.item'class;
 
 
-   function new_Geometry return access Geometry.lit_textured_skinned.item'class
+   function new_Geometry return access Geometry.lit_colored_textured_skinned.item'class
    is
-      Self : constant Geometry_view := new Geometry.lit_textured_skinned.item;
+      Self : constant Geometry_view := new Geometry.lit_colored_textured_skinned.item;
    begin
-      Self.Program_is (openGL.Program.view (geometry.lit_textured_skinned.Program));
+      Self.Program_is (openGL.Program.view (geometry.lit_colored_textured_skinned.Program));
       return Self;
    end new_Geometry;
 
@@ -65,9 +65,9 @@ is
    --  Attributes
    --
 
-   function Program return openGL.Program.lit_textured_skinned.view
+   function Program return openGL.Program.lit_colored_textured_skinned.view
    is
-      use type openGL.Program.lit_textured_skinned.view;
+      use type openGL.Program.lit_colored_textured_skinned.view;
       check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
    begin
       if the_Program = null then   -- Define the shaders and program.
@@ -118,7 +118,7 @@ is
             the_vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
             the_fragment_Shader.define (openGL.Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
 
-            the_Program := new openGL.Program.lit_textured_skinned.item;
+            the_Program := new openGL.Program.lit_colored_textured_skinned.item;
             the_Program.define (the_vertex_Shader  'Access,
                                 the_fragment_Shader'Access);
             the_Program.enable;
@@ -128,7 +128,7 @@ is
                               gl_location => the_Program.attribute_Location ("aSite"),
                               size        => 3,
                               data_kind   => attribute.GL_FLOAT,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      => 0,
                               normalized  => False);
 
@@ -137,7 +137,7 @@ is
                               gl_location => the_Program.attribute_Location ("aNormal"),
                               size        => 3,
                               data_kind   => attribute.GL_FLOAT,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      =>   sample_Vertex.Normal (1)'Address
                                              - sample_Vertex.Site   (1)'Address,
                               normalized  => False);
@@ -147,7 +147,7 @@ is
                               gl_location => the_Program.attribute_Location ("aColor"),
                               size        => 4,
                               data_kind   => attribute.GL_UNSIGNED_BYTE,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      =>   sample_Vertex.Color.Primary.Red'Address
                                              - sample_Vertex.Site (1)         'Address,
                               normalized  => True);
@@ -157,7 +157,7 @@ is
                               gl_location => the_Program.attribute_Location ("aCoords"),
                               size        => 2,
                               data_kind   => attribute.GL_FLOAT,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      =>   sample_Vertex.Coords.S'Address
                                              - sample_Vertex.Site (1)'Address,
                               normalized  => False);
@@ -167,7 +167,7 @@ is
                               gl_location => the_Program.attribute_Location ("bone_Ids"),
                               size        => 4,
                               data_kind   => attribute.GL_FLOAT,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      =>   sample_Vertex.bone_Ids (1)'Address
                                              - sample_Vertex.Site (1)'Address,
                               normalized  => False);
@@ -177,7 +177,7 @@ is
                               gl_location => the_Program.attribute_Location ("bone_Weights"),
                               size        => 4,
                               data_kind   => attribute.GL_FLOAT,
-                              stride      => lit_textured_skinned.Vertex'Size / 8,
+                              stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                               offset      =>   sample_Vertex.bone_Weights (1)'Address
                                              - sample_Vertex.Site (1)'Address,
                               normalized  => False);
@@ -288,4 +288,4 @@ is
    end enable_Texture;
 
 
-end openGL.Geometry.lit_textured_skinned;
+end openGL.Geometry.lit_colored_textured_skinned;
