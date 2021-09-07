@@ -3,11 +3,10 @@ package openGL.Primitive.non_indexed
 --  Provides a class for non-indexed openGL primitives.
 --
 is
-
    type    Item  is limited new Primitive.item with private;
    subtype Class is Item'Class;
 
-   type    View  is access all Item'class;
+   type    View  is access all Item'Class;
    type    Views is array (Index_t range <>) of View;
 
 
@@ -21,18 +20,8 @@ is
    overriding
    procedure destroy (Self : in out Item);
 
-
    function  new_Primitive (Kind         : in facet_Kind;
                             vertex_Count : in Natural) return Primitive.non_indexed.view;
-
-
-   --------------
-   --  Attributes
-   --
-
-   -- Nil.
-
-
 
    --------------
    --  Operations
