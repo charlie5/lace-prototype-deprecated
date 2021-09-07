@@ -1,8 +1,7 @@
 with
      openGL.Errors,
      openGL.Tasks,
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body openGL.Buffer
 is
@@ -15,22 +14,22 @@ is
 
    function new_vbo_Name return a_Name
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Name    : aliased  a_Name;
+      Name : aliased a_Name;
    begin
-      glGenBuffers (1, the_Name'unchecked_Access);
-      return the_Name;
+      Tasks.check;
+      glGenBuffers (1, Name'unchecked_Access);
+      return Name;
    end new_vbo_Name;
 
 
-   procedure free (the_vbo_Name : in a_Name)
-   is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Name    : aliased  a_Name  := the_vbo_Name;
-   begin
-      glDeleteBuffers (1, the_Name'unchecked_Access);
-   end free;
 
+   procedure free (vbo_Name : in a_Name)
+   is
+      Name : aliased a_Name := vbo_Name;
+   begin
+      Tasks.check;
+      glDeleteBuffers (1, Name'unchecked_Access);
+   end free;
 
 
    ----------
@@ -46,6 +45,7 @@ is
    end verify_Name;
 
 
+
    function Name (Self : in Object) return Buffer.a_Name
    is
    begin
@@ -56,9 +56,9 @@ is
 
    procedure enable (Self : in Object'Class)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      pragma Assert (Self.Name > 0);
+      pragma assert (Self.Name > 0);
    begin
+      Tasks.check;
       glBindBuffer (to_GL_Enum (Self.Kind),
                     Self.Name);
    end enable;
@@ -67,9 +67,10 @@ is
 
    procedure destroy (Self : in out Object'Class)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
-      glBindBuffer    (to_GL_Enum (Self.Kind),  0);
+      Tasks.check;
+
+      glBindBuffer (to_GL_Enum (Self.Kind), 0);
       openGL.Errors.log;
 
       glDeleteBuffers (1,  Self.Name'Access);
@@ -82,7 +83,7 @@ is
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (Buffer.Object'Class,
+      procedure deallocate is new ada.unchecked_Deallocation (Buffer.Object'Class,
                                                               Buffer.view);
    begin
       if Self /= null
@@ -101,10 +102,10 @@ is
    end Length;
 
 
-
    -------------------------
    --  'array' Buffer Object
    --
+
    overriding
    function Kind (Self : in array_Object) return Buffer.a_Kind
    is
@@ -118,6 +119,7 @@ is
    ---------------------------------
    --  'element array' Buffer object
    --
+
    overriding
    function Kind (Self : in element_array_Object) return Buffer.a_Kind
    is

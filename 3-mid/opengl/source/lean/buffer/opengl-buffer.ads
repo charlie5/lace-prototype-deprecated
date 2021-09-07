@@ -1,21 +1,19 @@
 private
 with
      GL.lean,
-     ada.Unchecked_Conversion;
-
+     ada.unchecked_Conversion;
 
 package openGL.Buffer
 --
 --  Models a buffer object.
 --
 is
-
    --------------
    --- Core Types
    --
    subtype a_Name is GL.GLuint;                                    -- An openGL vertex buffer 'Name', which is a natural integer.
    type    a_Kind is (array_Buffer, element_array_Buffer);
-   type     Usage is (stream_Draw,  static_Draw,  dynamic_Draw);
+   type     Usage is (stream_Draw, static_Draw, dynamic_Draw);
 
 
    -----------------
@@ -32,8 +30,8 @@ is
    --  Attributes
    --
 
-   function Name (Self : in Object) return Buffer.a_Name;
-   function Kind (Self : in Object) return Buffer.a_Kind   is abstract;
+   function Name   (Self : in Object) return Buffer.a_Name;
+   function Kind   (Self : in Object) return Buffer.a_Kind is abstract;
    function Length (Self : in Object) return Positive;
 
 
@@ -41,8 +39,7 @@ is
    --  Operations
    --
 
-   procedure enable  (Self : in     Object'Class);
-
+   procedure enable (Self : in Object'Class);
 
 
    -----------------------------------------------
@@ -53,15 +50,14 @@ is
    type element_array_Object is new Object with private;
 
    --
-   --  refer to child packages, for specific buffers:
+   --  Refer to child packages, for specific buffers:
    --
    --  - gl.Buffer.vertex
    --  - gl.Buffer.texture_coords
    --  - gl.Buffer.normals
    --  - gl.Buffer.indices
    --
-   --  (tbd: pixel pack/unpack buffers)
-
+   --  (TODO: pixel pack/unpack buffers)
 
 
    ----------
@@ -70,41 +66,35 @@ is
 
    no_platform_Support : exception;
    --
-   --  Raised by buffer 'Map' functions when OS platform does not support GL
-   --  Buffer objects.
-
-
+   --  Raised by buffer 'Map' functions when OS platform does not
+   --  support GL Buffer objects.
 
 
 
 private
-
    use GL.lean;
 
 
    --  Buffer Kinds
    --
 
-   for a_Kind use
-     (array_Buffer         => GL_ARRAY_BUFFER,
-      element_array_Buffer => GL_ELEMENT_ARRAY_BUFFER);
+   for a_Kind use (array_Buffer         => GL_ARRAY_BUFFER,
+                   element_array_Buffer => GL_ELEMENT_ARRAY_BUFFER);
 
-   for a_Kind'Size use GL.GLenum'Size;
+   for a_Kind'Size use gl.GLenum'Size;
 
-   function to_GL_Enum is new ada.Unchecked_Conversion (a_Kind, GL.GLenum);
+   function to_GL_Enum is new ada.unchecked_Conversion (a_Kind, gl.GLenum);
 
 
    --  Usage
    --
-   for Usage use
-     (stream_Draw  => GL_STREAM_DRAW,
-      static_Draw  => GL_STATIC_DRAW,
-      dynamic_Draw => GL_DYNAMIC_DRAW);
+   for Usage use (stream_Draw  => GL_STREAM_DRAW,
+                  static_Draw  => GL_STATIC_DRAW,
+                  dynamic_Draw => GL_DYNAMIC_DRAW);
 
    for Usage'Size use GL.GLenum'Size;
 
-   function to_GL_Enum is new ada.Unchecked_Conversion (Usage, GL.GLenum);
-
+   function to_GL_Enum is new ada.unchecked_Conversion (Usage, gl.GLenum);
 
 
    ----------
@@ -118,7 +108,7 @@ private
       end record;
 
    overriding
-   function Kind (Self : in array_Object)         return Buffer.a_Kind;
+   function Kind (Self : in         array_Object) return Buffer.a_Kind;
 
    overriding
    function Kind (Self : in element_array_Object) return Buffer.a_Kind;
@@ -127,10 +117,8 @@ private
    type element_array_Object is new Object with null record;
 
 
-
    --  Support
    --
    procedure verify_Name (Self : in out Object'Class);
-
 
 end openGL.Buffer;
