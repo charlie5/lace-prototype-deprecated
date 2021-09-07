@@ -2,13 +2,11 @@ with
      openGL.Primitive.indexed,
      openGL.Primitive.long_indexed,
 
-     Ada.unchecked_Deallocation,
-     Ada.unchecked_Conversion;
-
+     ada.unchecked_Deallocation,
+     ada.unchecked_Conversion;
 
 package body openGL.Geometry
 is
-
    ---------
    --  Forge
    --
@@ -24,7 +22,7 @@ is
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new Ada.unchecked_Deallocation (Geometry.item'Class, View);
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       if Self = null then
          return;
@@ -40,12 +38,11 @@ is
    begin
       for Each in 1 .. Self.primitive_Count
       loop
-         openGL.Primitive.free (Self.Primitives (Each));
+         Primitive.free (Self.Primitives (Each));
       end loop;
 
       Self.primitive_Count := 0;
    end free_Primitives;
-
 
 
    --------------
@@ -67,11 +64,11 @@ is
 
 
 
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive)
+   procedure Indices_are (Self : in out Item;   Now       : in Indices;
+                                                for_Facia : in Positive)
    is
-      the_Primitive : constant openGL.Primitive.indexed.view
-        := openGL.Primitive.indexed.view (Self.Primitives (Index_t (for_Facia)));
+      the_Primitive : constant Primitive.indexed.view
+        := Primitive.indexed.view (Self.Primitives (Index_t (for_Facia)));
    begin
       the_Primitive.Indices_are (Now);
    end Indices_are;
@@ -80,15 +77,15 @@ is
    procedure Indices_are  (Self : in out Item;   Now       : in long_Indices;
                                                  for_Facia : in Positive)
    is
-      the_Primitive : constant openGL.Primitive.long_indexed.view
-        := openGL.Primitive.long_indexed.view (Self.Primitives (Index_t (for_Facia)));
+      the_Primitive : constant Primitive.long_indexed.view
+        := Primitive.long_indexed.view (Self.Primitives (Index_t (for_Facia)));
    begin
       the_Primitive.Indices_are (Now);
    end Indices_are;
 
 
 
-   function Primitives (Self : in Item'Class) return openGL.Primitive.views
+   function Primitives (Self : in Item'Class) return Primitive.views
    is
    begin
       return Self.Primitives (1 .. Self.primitive_Count);
@@ -96,11 +93,10 @@ is
 
 
 
-
    function Texture (Self : in Item'Class) return openGL.Texture.Object
    is
    begin
-      return self.Texture;
+      return Self.Texture;
    end Texture;
 
 
@@ -108,8 +104,10 @@ is
    is
    begin
       Self.Texture        := Now;
-      Self.is_Transparent := Self.is_Transparent or Now.is_Transparent;
+      Self.is_Transparent :=    Self.is_Transparent
+                             or Now .is_Transparent;
    end Texture_is;
+
 
 
    procedure Program_is  (Self : in out Item;   Now : in openGL.Program.view)
@@ -142,12 +140,11 @@ is
 
 
 
-
-   function is_Transparent (self : in Item) return Boolean
+   function is_Transparent (Self : in Item) return Boolean
    is
    begin
-      return Self.is_Transparent
-        or   Self.Texture.is_Transparent;
+      return    Self.is_Transparent
+             or Self.Texture.is_Transparent;
    end is_Transparent;
 
 
@@ -156,7 +153,6 @@ is
    begin
       Self.is_Transparent := Now;
    end is_Transparent;
-
 
 
    --------------
@@ -175,20 +171,17 @@ is
    procedure render (Self : in out Item'Class)
    is
    begin
+      if Self.primitive_Count = 0
+      then
+         raise Error with "Unable to render geometry with no primitives.";
+      end if;
+
       Self         .enable_Texture;
       Self.Program .set_Uniforms;
       Self.Vertices.enable;
       Self.Program .enable_Attributes;
 
-      --  Draw each primitive.
-      --
-
-      if Self.primitive_Count = 0
-      then
-         raise Program_Error;
-      end if;
-
-      for Each in 1 .. self.primitive_Count
+      for Each in 1 .. self.primitive_Count     -- Render each primitive.
       loop
          Self.Primitives (Each).render;
       end loop;
@@ -206,12 +199,12 @@ is
    function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
                               Indices   : in any_Indices;
                               for_Facet : in long_Index_t;
-                              for_Point : in openGL.long_Index_t) return any_Index_t;
+                              for_Point : in long_Index_t) return any_Index_t;
 
-   function any_vertex_Id_in (face_Kind : in primitive.facet_Kind;
+   function any_vertex_Id_in (face_Kind : in Primitive.facet_Kind;
                               Indices   : in any_Indices;
                               for_Facet : in long_Index_t;
-                              for_Point : in openGL.long_Index_t) return any_Index_t
+                              for_Point : in long_Index_t) return any_Index_t
    is
       use openGL.Primitive;
    begin
@@ -223,33 +216,33 @@ is
          when triangle_Strip =>
             return Indices (for_Facet - 1 + for_Point);
 
-         when Triangle_Fan =>
+         when triangle_Fan =>
             if for_Point = 1
             then   return 1;
             else   return Indices (for_Facet - 1 + for_Point);
             end if;
 
          when others =>
-            raise Program_Error with "openGL primitive " & facet_Kind'Image (face_Kind) & " not yet supportted.";
-            return any_Index_t'Last;
+            raise Error with "openGL primitive " & face_Kind'Image & " not yet supported.";
       end case;
    end any_vertex_Id_in;
 
 
 
-   --  'facet_Count_in' return the maximum possible facet count, which includes redundant facets.
-   --
    generic
       type any_Index_t is range <>;
       type any_Indices is array (long_Index_t range <>) of any_Index_t;
 
    function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
                                 Indices   : in any_Indices) return long_Index_t;
+   --
+   --  Returns the maximum possible facet count, which includes redundant facets.
+
 
    function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
                                 Indices   : in any_Indices) return long_Index_t
    is
-      use openGL.Primitive;
+      use Primitive;
    begin
       case face_Kind
       is
@@ -257,17 +250,17 @@ is
             return  Indices'Length / 3;
 
          when   triangle_Strip
-              | Triangle_Fan   =>
+              | triangle_Fan =>
             return  Indices'Length - 2;
 
          when others =>
-            raise Program_Error with "openGL primitive " & facet_Kind'Image (face_Kind) & " not yet supportted.";
-            return 0;
+            raise Error with "openGL primitive " & face_Kind'Image & " not yet supported.";
       end case;
    end any_facet_Count_in;
 
-   function facet_Count_in is new any_facet_Count_in (any_Index_t => openGL.Index_t,
-                                                      any_Indices => openGL.Indices);
+
+   function facet_Count_in is new any_facet_Count_in (any_Index_t => Index_t,
+                                                      any_Indices => Indices);
 
 
    ----------
@@ -280,17 +273,18 @@ is
    procedure free   is new ada.unchecked_Deallocation (Facets, Facets_view);
 
 
-   --  'Facets_of' returns all non-redundant facets.
-   --
    generic
       type any_Index_t is range <>;
       type any_Indices is array (long_Index_t range <>) of any_Index_t;
 
-   function any_Facets_of  (face_Kind : in primitive.facet_Kind;
-                            Indices   : in any_Indices) return access Facets;
+   function any_Facets_of (face_Kind : in primitive.facet_Kind;
+                           Indices   : in any_Indices) return access Facets;
+   --
+   --  'Facets_of' returns all non-redundant facets.
 
-   function any_Facets_of  (face_Kind : in primitive.facet_Kind;
-                            Indices   : in any_Indices) return access Facets
+
+   function any_Facets_of (face_Kind : in primitive.facet_Kind;
+                           Indices   : in any_Indices) return access Facets
    is
       use openGL.Primitive;
 
@@ -311,17 +305,19 @@ is
             P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 2));
             P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 3));
          begin
-            if not (P1 = P2 or P1 = P3 or P2 = P3)
+            if not (   P1 = P2
+                    or P1 = P3
+                    or P2 = P3)
             then
                Count := Count + 1;
 
                case face_Kind
                is
-                  when   Triangles
-                       | Triangle_Fan =>
+                  when Triangles
+                     | triangle_Fan =>
                      the_Facets (Count) := (P1, P2, P3);
 
-                  when   triangle_Strip =>
+                  when triangle_Strip =>
                      if Each mod 2 = 0
                      then   -- Is an even facet.
                         the_Facets (Count) := (P1, P3, P2);
@@ -330,14 +326,15 @@ is
                      end if;
 
                   when others =>
-                     raise Program_Error with "TBD";
+                     raise Error with "openGL primitive " & face_Kind'Image & " not yet supported.";
                end case;
+
             end if;
          end;
       end loop;
 
       declare
-         Result : constant Facets_view := new Facets'(the_Facets (1 .. Count));
+         Result : constant Facets_view := new Facets' (the_Facets (1 .. Count));
       begin
          free (the_Facets);
          return Result;
@@ -345,8 +342,8 @@ is
    end any_Facets_of;
 
 
---     function Facets_of is new any_Facets_of (openGL.Index_t,
---                                              openGL.Indices);
+   function Facets_of is new any_Facets_of (Index_t,
+                                            Indices);
 
 
    -----------
@@ -361,6 +358,7 @@ is
                             Indices   : in any_Indices;
                             Sites     : in openGL.Sites) return access Normals;
 
+
    function any_Normals_of (face_Kind : in primitive.facet_Kind;
                             Indices   : in any_Indices;
                             Sites     : in openGL.Sites) return access Normals
@@ -370,15 +368,15 @@ is
 
       the_Normals : constant access Normals     := new Normals (Sites'Range);
       the_Facets  :                 Facets_view :=     Facets_of (face_Kind,
-                                                                  Indices  ).all'unchecked_Access;
+                                                                  Indices).all'unchecked_Access;
 
       type facet_Normals      is array (long_Index_t range 1 .. the_Facets'Length) of Normal;
       type facet_Normals_view is access all facet_Normals;
 
-      procedure free is new ada.unchecked_Deallocation (facet_Normals, facet_Normals_view);
+      procedure free is new ada.unchecked_Deallocation (facet_Normals, facet_Normals_view);     -- TODO: Should not be needed since freeing will occur when 'facet_Normals_view' goes out of scope ?
 
-      the_facet_Normals : facet_Normals_view := new facet_Normals; -- (1 .. Index_t (the_Facets'Length));
-      N                 : openGL.Vector_3;
+      the_facet_Normals : facet_Normals_view := new facet_Normals;
+      N                 : Vector_3;
       length_N          : Real;
 
    begin
@@ -386,12 +384,12 @@ is
       --
       for Each in the_Facets'Range
       loop
-         N        :=   Vector_3' (Sites (the_Facets (Each)(2))  -  Sites (the_Facets (Each)(1)))
-                     * Vector_3' (Sites (the_Facets (Each)(3))  -  Sites (the_Facets (Each)(1)));
+         N :=   (Sites (the_Facets (Each)(2)) - Sites (the_Facets (Each)(1)))
+              * (Sites (the_Facets (Each)(3)) - Sites (the_Facets (Each)(1)));
 
          length_N := abs (N);
 
-         if Almost_zero (length_N)
+         if almost_Zero (length_N)
          then   the_facet_Normals (Each) := N;                        -- 0 vector !
          else   the_facet_Normals (Each) := (1.0 / length_N) * N;
          end if;
@@ -401,29 +399,29 @@ is
       --
       declare
          Id     : Index_t;
-         length : Real;
+         Length : Real;
       begin
          for Each in the_Normals'Range
          loop
-            the_Normals (Each) := (0.0, 0.0, 0.0);
+            the_Normals (Each) := Origin_3D;
          end loop;
 
          for f in the_Facets'Range
          loop
-            for p in Index_t'(1) .. 3
+            for p in Index_t' (1) .. 3
             loop
-               Id               := the_Facets (f)(p);
+               Id               := the_Facets (f) (p);
                the_Normals (Id) := the_Normals (Id) + the_facet_Normals (f);
             end loop;
          end loop;
 
          for p in the_Normals'Range
          loop
-            length := abs (the_Normals (p));
+            Length := abs (the_Normals (p));
 
-            if not Almost_zero (length)
-            then   the_Normals (p) := (1.0 / length) * the_Normals (p);
-            else   the_Normals (p) := (0.0, -1.0, 0.0);
+            if almost_Zero (Length)
+            then   the_Normals (p) := (0.0, -1.0, 0.0);
+            else   the_Normals (p) := (1.0 / Length) * the_Normals (p);
             end if;
          end loop;
       end;
@@ -443,7 +441,9 @@ is
       function my_Normals_of is new any_Normals_of (any_Index_t => Index_t,
                                                     any_Indices => openGL.Indices);
    begin
-      return my_Normals_of (face_Kind, Indices, Sites).all'unchecked_Access;
+      return my_Normals_of (face_Kind,
+                            Indices,
+                            Sites).all'unchecked_Access;
    end Normals_of;
 
 
@@ -455,7 +455,9 @@ is
       function my_Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
                                                     any_Indices => openGL.long_Indices);
    begin
-      return my_Normals_of (face_Kind, Indices, Sites).all'unchecked_Access;
+      return my_Normals_of (face_Kind,
+                            Indices,
+                            Sites).all'unchecked_Access;
    end Normals_of;
 
 
@@ -465,7 +467,7 @@ is
 
    function get_Bounds (Count : in Natural) return openGL.Bounds
    is
-      use Geometry_3d;
+      use Geometry_3D;
       the_Bounds : openGL.Bounds := null_Bounds;
    begin
       for i in 1 .. any_Index_t (Count)

@@ -1,7 +1,7 @@
 with
      openGL.Buffer.general;
 
-package openGL.Buffer.short_indices is new openGL.Buffer.general (base_object   => openGL.Buffer.element_array_Object,
-                                                                  index         => openGL.long_Index_t,
-                                                                  element       => openGL.short_Index_t,
-                                                                  element_array => openGL.short_Indices);
+package openGL.Buffer.short_indices is new openGL.Buffer.general (base_Object   => Buffer.element_array_Object,
+                                                                  Index         => long_Index_t,
+                                                                  Element       => short_Index_t,
+                                                                  Element_Array => short_Indices);

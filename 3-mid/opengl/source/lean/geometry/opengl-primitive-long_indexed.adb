@@ -17,7 +17,7 @@ is
    procedure define (Self : in out Item;   Kind    : in facet_Kind;
                                            Indices : in openGL.long_Indices)
    is
-      use openGL.Buffer.long_indices;
+      use openGL.Buffer.long_indices.Forge;
       buffer_Indices : aliased openGL.long_Indices := (Indices'Range => <>);
    begin
       for Each in buffer_Indices'Range

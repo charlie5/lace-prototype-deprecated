@@ -219,8 +219,8 @@ is
    begin
       if Self.Vertices = null
       then
-         self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
-                                                                                     usage => openGL.buffer.static_Draw));
+         self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (Forge.to_Buffer (Now,
+                                                                                           usage => openGL.buffer.static_Draw));
       else
          set (openGL_Buffer_of_geometry_Vertices.Object (Self.Vertices.all),
               to => Now);

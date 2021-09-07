@@ -18,7 +18,7 @@ is
                                            Indices    : in openGL.Indices;
                                            line_Width : in Real)
    is
-      use openGL.Buffer.indices;
+      use openGL.Buffer.indices.Forge;
       buffer_Indices : aliased openGL.Indices := (Indices'Range => <>);
 
    begin
@@ -39,7 +39,7 @@ is
                                            Indices    : in openGL.long_Indices;
                                            line_Width : in Real)
    is
-      use openGL.Buffer.indices;
+      use openGL.Buffer.indices.Forge;
       buffer_Indices : aliased openGL.Indices := (Indices'Range => <>);
 
    begin

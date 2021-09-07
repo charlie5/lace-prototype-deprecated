@@ -153,7 +153,7 @@ is
                                                                             element_array => Vertex_array);
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
-      use openGL_Buffer_of_geometry_Vertices;
+      use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                         usage => openGL.buffer.static_Draw));

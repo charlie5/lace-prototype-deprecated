@@ -6,8 +6,7 @@ with
 
 private
 with
-     Ada.Strings.unbounded;
-
+     ada.Strings.unbounded;
 
 package openGL.Geometry
 --
@@ -18,7 +17,6 @@ package openGL.Geometry
 --  Subclasses may be created to provide for the various possible variants of an openGL vertex.
 --
 is
-
    type    Item  is abstract tagged limited private;
    subtype Class is Item'Class;
 
@@ -38,34 +36,29 @@ is
    --  Attributes
    --
 
-   function  Label           (Self : in     Item'Class)     return String;
    procedure Label_is        (Self : in out Item'Class;   Now : in String);
+   function  Label           (Self : in     Item'Class)     return String;
 
-   function  Texture         (Self : in     Item'Class)     return openGL.Texture.Object;
-   procedure Texture_is      (Self : in out Item'Class;   Now : in openGL.Texture.Object);
+   procedure Texture_is      (Self : in out Item'Class;   Now : in Texture.Object);
+   function  Texture         (Self : in     Item'Class)     return Texture.Object;
 
-   procedure Bounds_are      (Self : in out Item'Class;   Now : in openGL.Bounds);
-   function  Bounds          (self : in     Item'Class)     return openGL.Bounds;
-   --
-   --  returns the bounds in Object space.
+   procedure Bounds_are      (Self : in out Item'Class;   Now : in Bounds);
+   function  Bounds          (self : in     Item'Class)     return Bounds;   -- Returns the bounds in object space.
 
-   procedure is_Transparent  (Self : in out Item;   Now : in Boolean := True);
-   function  is_Transparent  (Self : in     Item)     return Boolean;
+   procedure is_Transparent  (Self : in out Item;         Now : in Boolean := True);
+   function  is_Transparent  (Self : in     Item)           return Boolean;
 
-   function  Program         (Self : in     Item)           return openGL.Program.view;
-   procedure Program_is      (Self : in out Item;         Now : in openGL.Program.view);
-
+   procedure Program_is      (Self : in out Item;         Now : in Program.view);
+   function  Program         (Self : in     Item)           return Program.view;
 
    procedure add             (Self : in out Item'Class;   the_Primitive : in Primitive.view);
-   function  Primitives      (Self : in     Item'Class)        return openGL.Primitive.views;
+   function  Primitives      (Self : in     Item'Class)     return Primitive.views;
    procedure free_Primitives (Self : in out Item);
 
-
-   procedure Indices_are     (Self : in out Item;         Now       : in Indices;
-                                                          for_Facia : in Positive);
-
-   procedure Indices_are     (Self : in out Item;         Now       : in long_Indices;
-                                                          for_Facia : in Positive);
+   procedure Indices_are     (Self : in out Item;   Now       : in Indices;
+                                                    for_Facia : in Positive);
+   procedure Indices_are     (Self : in out Item;   Now       : in long_Indices;
+                                                    for_Facia : in Positive);
 
    --------------
    --  Operations
@@ -73,7 +66,6 @@ is
 
    procedure render         (Self : in out Item'Class);
    procedure enable_Texture (Self : in     Item) is null;
-
 
 
    -----------
@@ -89,9 +81,7 @@ is
                         Sites     : in openGL.Sites) return access Normals;
 
 
-
 private
-
    use ada.Strings.unbounded;
 
    type Item is abstract tagged limited
@@ -103,9 +93,9 @@ private
          Vertices        : Buffer.view;
 
          Primitives      : Primitive.views (1 .. 5);
-         primitive_Count : Index_t      := 0;
+         primitive_Count : Index_t := 0;
 
-         is_Transparent  : Boolean      := False;   -- Geometry contain lucid colors.
+         is_Transparent  : Boolean := False;     -- Geometry contains lucid colors.
          Bounds          : openGL.Bounds;
       end record;
 

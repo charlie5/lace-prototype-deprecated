@@ -127,7 +127,7 @@ is
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use openGL.Buffer,
-          openGL_Buffer_of_geometry_Vertices;
+          openGL_Buffer_of_geometry_Vertices.Forge;
    begin
       free (Self.Vertices);
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,

@@ -18,7 +18,7 @@ is
    procedure define (Self : in out Item;   Kind    : in facet_Kind;
                                            Indices : in openGL.short_Indices)
    is
-      use openGL.Buffer.short_indices;
+      use openGL.Buffer.short_indices.Forge;
       buffer_Indices : aliased openGL.short_Indices := (Indices'Range => <>);
    begin
       for Each in buffer_Indices'Range
@@ -36,7 +36,7 @@ is
    procedure define (Self : in out Item;   Kind    : in facet_Kind;
                                            Indices : in openGL.Indices)
    is
-      use openGL.Buffer.short_indices;
+      use openGL.Buffer.short_indices.Forge;
       buffer_Indices : aliased openGL.short_Indices := (Indices'Range => <>);
    begin
       for Each in buffer_Indices'Range
@@ -54,7 +54,7 @@ is
    procedure define (Self : in out Item;   Kind    : in facet_Kind;
                                            Indices : in openGL.long_Indices)
    is
-      use openGL.Buffer.short_indices;
+      use openGL.Buffer.short_indices.Forge;
       buffer_Indices : aliased openGL.short_indices := (Indices'Range => <>);
    begin
       for Each in buffer_Indices'Range

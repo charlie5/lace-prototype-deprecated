@@ -1,7 +1,7 @@
 with
      openGL.Buffer.general;
 
-package openGL.Buffer.normals is new openGL.Buffer.general (base_object   => openGL.Buffer.array_Object,
-                                                            index         => openGL.Index_t,
-                                                            element       => openGL.Normal,
-                                                            element_array => openGL.Normals);
+package openGL.Buffer.normals is new openGL.Buffer.general (base_Object   => Buffer.array_Object,
+                                                            Index         => Index_t,
+                                                            Element       => Normal,
+                                                            Element_Array => Normals);
