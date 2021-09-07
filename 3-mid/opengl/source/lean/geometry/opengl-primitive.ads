@@ -3,15 +3,13 @@ with
 
 private
 with
-     ada.Unchecked_Conversion;
-
+     ada.unchecked_Conversion;
 
 package openGL.Primitive
 --
 --  Provides a base class for openGL primitives.
 --
 is
-
    type    Item  is abstract tagged limited private;
    subtype Class is Item'Class;
 
@@ -26,15 +24,13 @@ is
                        Lines,     line_Loop,      line_Strip,
                        Triangles, triangle_Strip, triangle_Fan);
 
-
    ---------
    --  Forge
    --
 
    procedure define  (Self : in out Item;   Kind    : in facet_Kind);
-   procedure destroy (Self : in out Item)                             is abstract;
+   procedure destroy (Self : in out Item) is abstract;
    procedure free    (Self : in out View);
-
 
 
    --------------
@@ -47,11 +43,10 @@ is
    procedure Bounds_are     (Self : in out Item;   Now : in openGL.Bounds);
    function  Bounds         (self : in     Item)     return openGL.Bounds;
    --
-   --  returns the bounds in Object space.
+   -- Returns the bounds in object space.
 
    procedure is_Transparent (Self : in out Item;   Now : in Boolean := True);
    function  is_Transparent (Self : in     Item)     return Boolean;
-
 
 
    ---------------
@@ -64,7 +59,6 @@ is
 
 
 
-
 private
 
    type Item is abstract tagged limited
@@ -73,8 +67,7 @@ private
          Texture        : openGL.Texture.Object := openGL.Texture.null_Object;
          is_Transparent : Boolean;
          Bounds         : openGL.Bounds;
-
-         line_Width     : Real                  := unused_line_Width;
+         line_Width     : Real := unused_line_Width;
       end record;
 
 
@@ -94,10 +87,10 @@ private
 
    for facet_Kind'Size use gl.GLenum'Size;
 
-   function Convert_1 is new ada.Unchecked_Conversion (facet_Kind, gl.GLenum);
+   function Convert is new ada.Unchecked_Conversion (facet_Kind, gl.GLenum);
 
    function Thin (Self : in facet_Kind) return gl.GLenum
-                  renames Convert_1;
+                  renames Convert;
 
 
 end openGL.Primitive;
