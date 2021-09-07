@@ -10,7 +10,6 @@ package openGL.Buffer.general
 --  A generic for producing various types of openGL vertex buffer objects.
 --
 is
-
    type Object is new base_Object with private;
    type View   is access all Object'Class;
 
@@ -18,11 +17,15 @@ is
    ---------
    --  Forge
    --
-   function to_Buffer (From  : access constant Element_Array;
-                       Usage : in              Buffer.Usage) return Object;
 
-   function to_Buffer (From  : in              Element_Array;
-                       Usage : in              Buffer.Usage) return  Object;
+   package Forge
+   is
+      function to_Buffer (From  : access constant Element_Array;
+                          Usage : in              Buffer.Usage) return Object;
+
+      function to_Buffer (From  : in              Element_Array;
+                          Usage : in              Buffer.Usage) return  Object;
+   end Forge;
 
 
    --------------
@@ -44,8 +47,7 @@ private
          Usage : Buffer.Usage;
       end record;
 
-
-   default_Terminator : Element;       -- No 'i.c.Pointers' subprogram is called which uses this, so
+   default_Terminator : Element;       -- No 'Interfaces.C.Pointers' subprogram is called which uses the default terminator, so
                                        -- a default 'Element' should suffice.
 
 end openGL.Buffer.general;

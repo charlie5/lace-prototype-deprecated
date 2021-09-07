@@ -4,99 +4,99 @@ with
 
      GL.Pointers;
 
-
 package body openGL.Buffer.general
 is
-
    --------------------------
    --  'vertex buffer' Object
    --
 
-   function to_Buffer (From  : access constant Element_Array;
-                       Usage : in              Buffer.Usage) return  Object
+   package body Forge
    is
-      use GL.Pointers;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-   begin
-      return new_Buffer : Object
-      do
-         new_Buffer.Usage := Usage;
+      function to_Buffer (From  : access constant Element_Array;
+                          Usage : in              Buffer.Usage) return  Object
+      is
+         use GL.Pointers;
+      begin
+         Tasks.check;
 
-         verify_Name (new_Buffer);
-         openGL.Errors.log;
+         return new_Buffer : Object
+         do
+            new_Buffer.Usage  := Usage;
+            new_Buffer.Length := From'Length;
+            new_Buffer.verify_Name;
+            new_Buffer.enable;
 
-         new_Buffer.Length := From'Length;
-
-         enable       (new_Buffer);
-         glBufferData (to_GL_Enum (Kind (new_Buffer)),
-                       From.all'Size / 8,
-                      +From (From'First)'Address,
-                       to_GL_Enum (Usage));
-         openGL.Errors.log;
-      end return;
-   end to_Buffer;
-
-
-
-   function to_Buffer (From  : in Element_Array;
-                       Usage : in Buffer.Usage) return  Object
-   is
-      use GL.Pointers;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-   begin
-      return new_Buffer : Object
-      do
-         verify_Name (new_Buffer);
-
-         new_Buffer.Usage  := Usage;
-         new_Buffer.Length := From'Length;
-
-         enable       (new_Buffer);
-         glBufferData (to_GL_Enum (Kind (new_Buffer)),
-                       From'Size / 8,
-                      +From (From'First)'Address,
-                       to_GL_Enum (Usage));
-      end return;
-   end to_Buffer;
+            glBufferData (to_GL_Enum (new_Buffer.Kind),
+                          From.all'Size / 8,
+                         +From (From'First)'Address,
+                          to_GL_Enum (Usage));
+            Errors.log;
+         end return;
+      end to_Buffer;
 
 
+      function to_Buffer (From  : in Element_Array;
+                          Usage : in Buffer.Usage) return  Object
+      is
+         use GL.Pointers;
+      begin
+         Tasks.check;
 
-   procedure set (Self : in out Object;   Position : in Positive     := 1;
+         return new_Buffer : Object
+         do
+            new_Buffer.Usage  := Usage;
+            new_Buffer.Length := From'Length;
+            new_Buffer.verify_Name;
+            new_Buffer.enable;
+
+            glBufferData (to_GL_Enum (new_Buffer.Kind),
+                          From'Size / 8,
+                         +From (From'First)'Address,
+                          to_GL_Enum (Usage));
+         end return;
+      end to_Buffer;
+
+   end Forge;
+
+
+
+   procedure set (Self : in out Object;   Position : in Positive := 1;
                                           To       : in Element_Array)
    is
       use GL.Pointers;
 
-      check_is_OK         : constant Boolean       := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
       new_Vertices        : aliased  Element_Array := To;
       Vertex_Size_in_bits : constant Natural       := To (To'First)'Size;
 
    begin
+      Tasks.check;
+
       if Self.Length = To'Length
       then
-         enable          (Self);
-         glBufferSubData (to_GL_Enum (Kind (Self)),
-                          offset =>  GLintptr ((Position - 1) * Vertex_Size_in_bits / 8),
-                          size   =>  new_Vertices'Size / 8,
-                          data   => +new_Vertices (new_Vertices'First)'Address);
+         Self.enable;
+         glBufferSubData (Target =>  to_GL_Enum (Self.Kind),
+                          Offset =>  GLintptr ((Position - 1) * Vertex_Size_in_bits / 8),
+                          Size   =>  new_Vertices'Size / 8,
+                          Data   => +new_Vertices (new_Vertices'First)'Address);
       else
          Self.destroy;
 
-         verify_Name (Self);
+         Self.verify_Name;
          Self.Length := To'Length;
+         Self.enable;
 
-         enable       (Self);
-         glBufferData (to_GL_Enum (Kind (Self)),
+         glBufferData (to_GL_Enum (Self.Kind),
                        To'Size / 8,
                       +To (To'First)'Address,
                        to_GL_Enum (Self.Usage));
       end if;
 
-      openGL.Errors.log;
+      Errors.log;
    end set;
 
 
 
-   procedure set (Self : in out Object;   Position : in              Positive     := 1;
+   procedure set (Self : in out Object;   Position : in              Positive := 1;
                                           To       : access constant Element_Array)
    is
    begin
