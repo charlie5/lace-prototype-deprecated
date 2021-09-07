@@ -1,12 +1,11 @@
 package openGL.Geometry.lit_colored_textured
 --
---  Supports per-vertex site, color, texture and lighting.
+--  Supports per-vertex site color, texture and lighting.
 --
 is
-
    type Item is new openGL.Geometry.item with private;
 
-   function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'class;
+   function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class;
 
 
    ----------
@@ -28,20 +27,17 @@ is
    --  Attributes
    --
 
+   procedure Vertices_are   (Self : in out Item;   Now       : in Vertex_array);
+
    overriding
    procedure Indices_are    (Self : in out Item;   Now       : in Indices;
                                                    for_Facia : in Positive);
-
-   procedure Vertices_are   (Self : in out Item;   Now       : in Vertex_array);
 
 
 
 private
 
-   type Item is new Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new Geometry.item with null record;
 
    overriding
    procedure enable_Texture (Self : in Item);
