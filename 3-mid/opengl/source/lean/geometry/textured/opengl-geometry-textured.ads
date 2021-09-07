@@ -6,7 +6,7 @@ is
 
    type Item is new openGL.Geometry.item with private;
 
-   function new_Geometry return access Geometry.textured.item'class;
+   function new_Geometry return access Geometry.textured.item'Class;
 
 
    ----------
@@ -35,13 +35,9 @@ is
                                                    for_Facia : in Positive);
 
 
-
 private
 
-   type Item is new Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new Geometry.item with null record;
 
    overriding
    procedure enable_Texture (Self : in Item);
