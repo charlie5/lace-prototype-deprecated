@@ -1,25 +1,25 @@
 with
-     GID,
-
      openGL.Images,
      openGL.Viewport,
      openGL.Tasks,
+     openGL.Errors,
+
+     GID,
 
      GL.Binding,
      GL.safe,
      GL.Pointers,
 
-     Ada.Unchecked_Conversion,
-     Ada.Calendar,
-     Ada.Characters.Handling,
+     ada.unchecked_Conversion,
+     ada.Calendar,
+     ada.Characters.handling,
 
      System;
-
 
 package body openGL.IO
 is
    use ada.Characters.handling,
-       ada.Streams.stream_IO;
+       ada.Streams.Stream_IO;
 
    use type Index_t;
 
@@ -57,41 +57,38 @@ is
 
    procedure destroy (Self : in out Face)
    is
-      procedure free is new Ada.Unchecked_Deallocation (Vertices, Vertices_view);
+      procedure free is new ada.unchecked_Deallocation (Vertices, Vertices_view);
    begin
-      if Self.Kind = Polygon then
+      if Self.Kind = Polygon
+      then
          free (Self.Poly);
       end if;
    end destroy;
-
 
 
    -------------
    -- Operations
    --
 
-   function current_Frame return openGL.Image
+   function current_Frame return Image
    is
       use GL,
           GL.Binding,
           GL.Pointers,
-          openGL.Texture;
+          Texture;
 
-      check_is_OK : constant Boolean          := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-
-      the_Extent  : constant openGL.Extent_2d := openGL.Viewport.Extent;
-      the_Frame   :          openGL.Image (1 .. Index_t (the_Extent.Width),
-                                           1 .. Index_t (the_Extent.Height));
+      Extent  : constant Extent_2d := openGL.Viewport.Extent;
+      Frame   :          Image (1 .. Index_t (Extent.Width),
+                                1 .. Index_t (Extent.Height));
    begin
       glReadPixels (0, 0,
-                    GLsizei (the_Extent.Width),
-                    GLsizei (the_Extent.Height),
-                    to_GL (Format'(openGL.Texture.RGB)),
+                    GLsizei (Extent.Width),
+                    GLsizei (Extent.Height),
+                    to_GL (Format' (Texture.RGB)),
                     GL_UNSIGNED_BYTE,
-                    to_GLvoid_access (the_Frame (1, 1).Red'Access));
-      return the_Frame;
+                    to_GLvoid_access (Frame (1, 1).Red'Access));
+      return Frame;
    end current_Frame;
-
 
 
    ---------
@@ -101,52 +98,51 @@ is
    function to_height_Map (image_Filename : in asset_Name;
                            Scale          : in Real  := 1.0) return height_Map_view
    is
-      f       :          Ada.Streams.Stream_IO.File_Type;
-      image   :          GID.Image_descriptor;
-      up_name : constant String              := To_Upper (to_String (image_Filename));
+      File    :          Ada.Streams.Stream_IO.File_Type;
+      Image   :          GID.Image_Descriptor;
+      up_Name : constant String              := To_Upper (to_String (image_Filename));
 
-      next_frame : Ada.Calendar.Day_Duration := 0.0;
+      next_Frame : ada.Calendar.Day_Duration := 0.0;
 
    begin
-      Open (f, In_File, to_String (image_Filename));
+      open (File, in_File, to_String (image_Filename));
 
-      GID.Load_image_header (image,
-                             Stream (f).all,
+      GID.load_Image_Header (Image,
+                             Stream (File).all,
                              try_tga =>          image_Filename'Length >= 4
-                                        and then up_name (up_name'Last - 3 .. up_name'Last) = ".TGA");
+                                        and then up_Name (up_Name'Last - 3 .. up_Name'Last) = ".TGA");
       declare
-         image_width  : constant        Positive   := GID.Pixel_width  (image);
-         image_height : constant        Positive   := GID.Pixel_height (image);
+         image_Width  : constant Positive := GID.Pixel_Width  (Image);
+         image_Height : constant Positive := GID.Pixel_Height (Image);
 
          the_Heights  : constant access height_Map := new height_Map' (1 .. Index_t (image_height) =>
                                                                          (1 .. Index_t (image_width) => <>));
-
-         procedure Load_raw_image
+         procedure load_raw_Image
          is
-            subtype Primary_color_range is GL.GLubyte;
+            subtype primary_Color_range is GL.GLubyte;
 
             Row, Col : Index_t;
 
 
-            procedure Set_X_Y (x, y : Natural)
+            procedure set_X_Y (x, y : Natural)
             is
             begin
-               Col := Index_t (x + 1);
-               Row := Index_t (y + 1);
+               Col := Index_t (X + 1);
+               Row := Index_t (Y + 1);
             end Set_X_Y;
 
 
-            procedure Put_Pixel (red, green, blue : Primary_color_range;
-                                 alpha            : Primary_color_range)
+            procedure put_Pixel (Red, Green, Blue : primary_Color_range;
+                                 Alpha            : primary_Color_range)
             is
                pragma Warnings (Off, alpha); -- Alpha is just ignored.
                use type GL.GLubyte, Real;
             begin
-               the_Heights (Row, Col) :=   (Real (red) + Real (green) + Real (blue))
+               the_Heights (Row, Col) :=   (Real (Red) + Real (Green) + Real (Blue))
                                          / (3.0 * 255.0)
                                          * Scale;
 
-               if Col = Index_t (image_width)
+               if Col = Index_t (image_Width)
                then
                   Row := Row + 1;
                   Col := 1;
@@ -155,166 +151,166 @@ is
                end if;
 
                --  ^ GID requires us to look to next pixel on the right for next time.
-            end Put_Pixel;
+            end put_Pixel;
 
 
-            procedure Feedback (percents : Natural) is null;
+            procedure Feedback (Percents : Natural) is null;
 
-            procedure Load_image is new GID.Load_image_contents (Primary_color_range,
-                                                                 Set_X_Y,
-                                                                 Put_Pixel,
+            procedure load_Image is new GID.load_Image_contents (primary_Color_range,
+                                                                 set_X_Y,
+                                                                 put_Pixel,
                                                                  Feedback,
                                                                  GID.fast);
          begin
-            Load_image (image, next_frame);
-         end Load_raw_image;
+            load_Image (Image, next_Frame);
+         end load_Raw_image;
 
       begin
-         Load_raw_image;
-         Close (f);
+         load_raw_Image;
+         close (File);
 
-         return the_Heights.all'Unchecked_Access;
+         return the_Heights.all'unchecked_Access;
       end;
    end to_height_Map;
 
 
 
-   function fetch_Image (Stream  : in Ada.Streams.Stream_IO.Stream_Access;
-                         try_TGA : in Boolean) return openGL.Image
+   function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_access;
+                         try_TGA : in Boolean) return Image
    is
    begin
-      return openGL.Images.fetch_Image (Stream, try_TGA);
+      return Images.fetch_Image (Stream, try_TGA);
    end fetch_Image;
 
 
 
-   function to_Image (image_Filename : in     asset_Name)  return openGL.Image
+   function to_Image (image_Filename : in asset_Name)  return Image
    is
-      the_File :          Ada.Streams.Stream_IO.File_Type;
-      up_Name  : constant String                         := To_Upper (to_String (image_Filename));
+      File    :          ada.Streams.Stream_IO.File_type;
+      up_Name : constant String := to_Upper (to_String (image_Filename));
    begin
-      open (the_File, In_File, to_String (image_Filename));
+      open (File, In_File, to_String (image_Filename));
 
       declare
-         the_Image : constant openGL.Image
-           := fetch_Image (Stream (the_File),
+         the_Image : constant Image
+           := fetch_Image (Stream (File),
                            try_TGA =>          image_Filename'Length >= 4
                                       and then up_Name (up_Name'Last - 3 .. up_Name'Last) = ".TGA");
       begin
-         Close (the_File);
+         close (File);
          return the_Image;
       end;
    end to_Image;
 
 
 
-   function to_lucid_Image (image_Filename : in asset_Name) return openGL.lucid_Image
+   function to_lucid_Image (image_Filename : in asset_Name) return lucid_Image
    is
-      unused : aliased Boolean;
+      Unused : aliased Boolean;
    begin
-      return to_lucid_Image (image_Filename, unused'Access);
+      return to_lucid_Image (image_Filename, Unused'Access);
    end to_lucid_Image;
 
 
 
    function to_lucid_Image (image_Filename : in     asset_Name;
-                            is_Lucid       : access Boolean) return openGL.lucid_Image
+                            is_Lucid       : access Boolean) return lucid_Image
    is
-      the_File   :          Ada.Streams.Stream_IO.File_Type;
-      the_Image  :          GID.Image_descriptor;
-      up_Name    : constant String                    := to_Upper (to_String (image_Filename));
+      File      :          ada.Streams.Stream_IO.File_type;
+      the_Image :          GID.Image_Descriptor;
+      up_Name   : constant String := to_Upper (to_String (image_Filename));
 
-      next_Frame :          Ada.Calendar.Day_Duration := 0.0;
+      next_Frame :          ada.Calendar.Day_Duration := 0.0;
 
    begin
-      Open (the_File, In_File, to_String (image_Filename));
+      open (File, in_File, to_String (image_Filename));
 
-      GID.Load_image_header (the_Image,
-                             Stream (the_File).all,
-                             try_tga =>          image_Filename'Length >= 4
+      GID.load_Image_Header (the_Image,
+                             Stream (File).all,
+                             try_TGA =>          image_Filename'Length >= 4
                                         and then up_Name (up_Name'Last - 3 .. up_Name'Last) = ".TGA");
       declare
-         image_width  : constant Positive := GID.Pixel_width (the_Image);
-         image_height : constant Positive := GID.Pixel_height (the_Image);
+         image_Width  : constant Positive := GID.Pixel_Width  (the_Image);
+         image_Height : constant Positive := GID.Pixel_Height (the_Image);
 
-         the_Frame    :          openGL.lucid_Image (1 .. Index_t (image_height),
-                                                     1 .. Index_t (image_width));
+         Frame : lucid_Image (1 .. Index_t (image_Height),
+                              1 .. Index_t (image_Width));
 
-         procedure Load_raw_image
+         procedure load_raw_Image
          is
-            subtype Primary_color_range is GL.GLubyte;
+            subtype primary_Color_range is GL.GLubyte;
 
             Row, Col : Index_t;
 
 
-            procedure Set_X_Y (x, y : Natural)
+            procedure set_X_Y (X, Y : Natural)
             is
             begin
-               Col := Index_t (x + 1);
-               Row := Index_t (y + 1);
-            end Set_X_Y;
+               Col := Index_t (X + 1);
+               Row := Index_t (Y + 1);
+            end set_X_Y;
 
 
-            procedure Put_Pixel (red, green, blue : Primary_color_range;
-                                 alpha            : Primary_color_range)
+            procedure put_Pixel (Red, Green, Blue : primary_Color_range;
+                                 Alpha            : primary_Color_range)
             is
                use type GL.GLubyte, Real;
             begin
-               the_Frame (Row, Col) := ((red, green, blue), alpha);
+               Frame (Row, Col) := ((Red, Green, Blue), Alpha);
 
-               if Col = Index_t (image_width)
-               then                             -- GID requires us to look to next pixel on the right for next time
+               if Col = Index_t (image_Width)
+               then     -- GID requires us to look to next pixel on the right for next time.
                   Row := Row + 1;
                   Col := 1;
                else
                   Col := Col + 1;
                end if;
 
-               if alpha /= Opaque
+               if Alpha /= Opaque
                then
                   is_Lucid.all := True;
                end if;
-            end Put_Pixel;
+            end put_Pixel;
 
 
-            procedure Feedback (percents : Natural) is null;
+            procedure Feedback (Percents : Natural) is null;
 
-            procedure Load_image is new GID.Load_image_contents (Primary_color_range,
-                                                                 Set_X_Y,
-                                                                 Put_Pixel,
+            procedure load_Image is new GID.load_Image_contents (primary_Color_range,
+                                                                 set_X_Y,
+                                                                 put_Pixel,
                                                                  Feedback,
                                                                  GID.fast);
          begin
-            Load_image (the_Image, next_Frame);
+            load_Image (the_Image, next_Frame);
          end Load_raw_image;
 
       begin
          is_Lucid.all := False;
 
-         Load_raw_image;
-         Close (the_File);
+         load_raw_Image;
+         close (File);
 
-         return the_Frame;
+         return Frame;
       end;
    end to_lucid_Image;
 
 
 
-   function to_Texture (image_Filename : in asset_Name) return openGL.Texture.Object
+   function to_Texture (image_Filename : in asset_Name) return Texture.Object
    is
-      use openGL.Texture;
+      use Texture;
 
       is_Lucid        : aliased  Boolean;
-      the_lucid_Image : constant openGL.lucid_Image := to_lucid_Image (image_Filename, is_Lucid'Access);
-      the_Texture     :          Texture.Object     := Forge.to_Texture (Texture.Dimensions' (the_lucid_Image'Length (2),
-                                                                                              the_lucid_Image'Length (1)));
+      the_lucid_Image : constant lucid_Image    := to_lucid_Image (image_Filename, is_Lucid'Access);
+      the_Texture     :          Texture.Object := Forge.to_Texture (Texture.Dimensions' (the_lucid_Image'Length (2),
+                                                                                          the_lucid_Image'Length (1)));
    begin
       if is_Lucid
       then
          set_Image (the_Texture, the_lucid_Image);
       else
          declare
-            the_opaque_Image : constant openGL.Image := to_Image (the_lucid_Image);
+            the_opaque_Image : constant Image := to_Image (the_lucid_Image);
          begin
             set_Image (the_Texture, the_opaque_Image);
          end;
@@ -327,8 +323,8 @@ is
 
    procedure destroy (Self : in out Model)
    is
-      procedure free is new Ada.Unchecked_Deallocation (bone_Weights,                 bone_Weights_view);
-      procedure free is new Ada.Unchecked_Deallocation (openGL.IO.bone_weights_Array, bone_weights_Array_view);
+      procedure free is new ada.unchecked_Deallocation (bone_Weights,       bone_Weights_view);
+      procedure free is new ada.unchecked_Deallocation (bone_Weights_array, bone_Weights_array_view);
    begin
       free (Self.Sites);
       free (Self.Coords);
@@ -353,42 +349,40 @@ is
    end destroy;
 
 
-
    --------------------------------
    --- Screenshot and Video Capture
-   --------------------------------
+   --
 
    type U8  is mod 2 **  8;   for U8 'Size use  8;
    type U16 is mod 2 ** 16;   for U16'Size use 16;
    type U32 is mod 2 ** 32;   for U32'Size use 32;
 
-   type I32 is range -2 ** 31 .. 2 ** 31 - 1;   for I32'Size use 32;
-
+   type I32 is range -2 ** 31 .. 2 ** 31 - 1;
+   for  I32'Size use 32;
 
 
    generic
       type Number is mod <>;
-      s : Stream_Access;
-   procedure Write_Intel_x86_number (n : in Number);
+      S : Stream_Access;
+   procedure write_Intel_x86_Number (N : in Number);
 
 
-
-   procedure Write_Intel_x86_number (n : in Number)
+   procedure write_Intel_x86_Number (N : in Number)
    is
-      m     : Number           := n;
-      bytes : constant Integer := Number'Size / 8;
+      M     :          Number  := N;
+      Bytes : constant Integer := Number'Size / 8;
    begin
       for i in 1 .. bytes
       loop
-         U8'Write (s, U8 (m mod 256));
-         m := m / 256;
+         U8'write (S, U8 (M mod 256));
+         M := M / 256;
       end loop;
-   end Write_Intel_x86_number;
+   end write_Intel_x86_Number;
 
 
 
-   procedure Write_raw_BGR_frame (s             : Stream_Access;
-                                  width, height : Natural)
+   procedure write_raw_BGR_Frame (Stream        : Stream_Access;
+                                  Width, Height : Natural)
    is
       use GL,
           GL.Binding,
@@ -398,27 +392,26 @@ is
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
       -- http://www.openGL.org/sdk/docs/man/xhtml/glPixelStore.xml
       --
-      padded_row_size : constant Positive:= 4 * Integer(Float'Ceiling(Float(width) * 3.0 / 4.0));
+      padded_row_Size : constant Positive := 4 * Integer (Float'Ceiling (Float (Width) * 3.0 / 4.0));
       -- (in bytes)
-      --
 
-      type Temp_bitmap_type is array(Natural range <>) of aliased gl.GLUbyte;
 
-      PicData: Temp_bitmap_type(0..(padded_row_size+4) * (height+4) - 1);
+      type temp_Bitmap_type is array (Natural range <>) of aliased gl.GLUbyte;
+
+      PicData: temp_Bitmap_type (0 .. (padded_row_Size + 4) * (Height + 4) - 1);
       -- No dynamic allocation needed!
-      -- The "+4" are there to avoid parity address problems when GL writes
-      -- to the buffer.
+      -- The "+4" are there to avoid parity address problems when GL writes to the buffer.
 
-      type loc_pointer is new gl.safe.GLvoid_Pointer;
+      type Loc_pointer is new gl.safe.GLvoid_Pointer;
 
-      function Cvt is new Ada.Unchecked_Conversion(System.Address,loc_pointer);
+      function convert is new ada.unchecked_Conversion (System.Address, Loc_pointer);
       -- This method is functionally identical as GNAT's Unrestricted_Access
-      -- but has no type safety (cf GNAT Docs)
+      -- but has no type safety (cf GNAT Docs).
 
-      pragma No_Strict_Aliasing(loc_pointer); -- recommended by GNAT 2005+
+      pragma no_strict_Aliasing (Loc_pointer);     -- Recommended by GNAT 2005+.
 
-      pPicData :          loc_pointer;
-      data_max : constant Integer    := padded_row_size * height - 1;
+      pPicData :          Loc_pointer;
+      data_Max : constant Integer    := padded_row_Size * Height - 1;
 
       -- Workaround for the severe xxx'Read xxx'Write performance
       -- problems in the GNAT and ObjectAda compilers (as in 2009)
@@ -427,75 +420,76 @@ is
       --
       type Byte_array is array (Integer range <>) of aliased GLUByte;
 
-      subtype Size_test_a is Byte_Array (1..19);
-      subtype Size_test_b is Ada.Streams.Stream_Element_Array (1..19);
+      subtype Size_Test_a is Byte_array (1 .. 19);
+      subtype Size_Test_b is ada.Streams.Stream_Element_array (1 .. 19);
 
-      workaround_possible: constant Boolean:=          Size_test_a'Size      = Size_test_b'Size
-                                              and then Size_test_a'Alignment = Size_test_b'Alignment;
-
-
+      workaround_possible: constant Boolean :=          Size_Test_a'Size      = Size_Test_b'Size
+                                               and then Size_Test_a'Alignment = Size_Test_b'Alignment;
    begin
-      pPicData:= Cvt (PicData (0)'Address);
+      Tasks.check;
+
+      pPicData:= Convert (PicData (0)'Address);
 
       GLReadPixels (0, 0,
-                    GLSizei (width),
-                    GLSizei (height),
-                    to_GL (openGL.Texture.BGR),
+                    GLSizei (Width),
+                    GLSizei (Height),
+                    to_GL (Texture.BGR),
                     GL.GL_UNSIGNED_BYTE,
                     pPicData);
+      Errors.log;
 
       if workaround_possible
       then
          declare
-            use Ada.Streams;
+            use ada.Streams;
 
-            SE_Buffer   : Stream_Element_Array (0..Stream_Element_Offset(PicData'Last));
+            SE_Buffer : Stream_Element_array (0 .. Stream_Element_Offset (PicData'Last));
 
             for SE_Buffer'Address use PicData'Address;
-            pragma Import (Ada, SE_Buffer);
+            pragma import (Ada, SE_Buffer);
          begin
-            Ada.Streams.Write(s.all, SE_Buffer(0..Stream_Element_Offset(data_max)));
+            ada.Streams.write (Stream.all, SE_Buffer (0 .. Stream_Element_Offset (data_Max)));
          end;
 
       else
-         Temp_bitmap_type'Write(s, PicData(0..data_max) );
+         temp_Bitmap_type'write (Stream, PicData (0 .. data_Max));
       end if;
 
-   end Write_raw_BGR_frame;
+   end write_raw_BGR_Frame;
 
 
-   procedure Write_raw_BGRA_frame (s             : Stream_Access;
-                                   width, height : Natural)
+
+   procedure write_raw_BGRA_Frame (Stream        : Stream_access;
+                                   Width, Height : Natural)
    is
       use GL,
           GL.Binding,
-          openGL.Texture;
+          Texture;
 
       -- 4-byte padding for .bmp/.avi formats is the same as GL's default
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
       -- http://www.openGL.org/sdk/docs/man/xhtml/glPixelStore.xml
       --
-      padded_row_size : constant Positive:= 4 * Integer (Float'Ceiling (Float (width)));
+      padded_row_Size : constant Positive:= 4 * Integer (Float'Ceiling (Float (Width)));
       -- (in bytes)
-      --
 
-      type Temp_bitmap_type is array(Natural range <>) of aliased gl.GLUbyte;
+      type temp_Bitmap_type is array (Natural range <>) of aliased gl.GLUbyte;
 
-      PicData: Temp_bitmap_type(0..(padded_row_size+4) * (height+4) - 1);
+      PicData: temp_Bitmap_type (0.. (padded_row_size + 4) * (height + 4) - 1);
       -- No dynamic allocation needed!
       -- The "+4" are there to avoid parity address problems when GL writes
       -- to the buffer.
 
-      type loc_pointer is new gl.safe.GLvoid_Pointer;
+      type Loc_pointer is new gl.safe.GLvoid_Pointer;
 
-      function Cvt is new Ada.Unchecked_Conversion(System.Address,loc_pointer);
+      function convert is new ada.unchecked_Conversion (System.Address, Loc_pointer);
       -- This method is functionally identical as GNAT's Unrestricted_Access
-      -- but has no type safety (cf GNAT Docs)
+      -- but has no type safety (cf GNAT Docs).
 
-      pragma No_Strict_Aliasing(loc_pointer); -- recommended by GNAT 2005+
+      pragma no_strict_Aliasing (loc_pointer); -- Recommended by GNAT 2005+.
 
-      pPicData :          loc_pointer;
-      data_max : constant Integer    := padded_row_size * height - 1;
+      pPicData :          Loc_pointer;
+      data_Max : constant Integer    := padded_row_Size * Height - 1;
 
       -- Workaround for the severe xxx'Read xxx'Write performance
       -- problems in the GNAT and ObjectAda compilers (as in 2009)
@@ -504,15 +498,15 @@ is
       --
       type Byte_array is array (Integer range <>) of aliased GLUByte;
 
-      subtype Size_test_a is Byte_Array (1..19);
-      subtype Size_test_b is Ada.Streams.Stream_Element_Array (1..19);
+      subtype Size_Test_a is Byte_Array (1..19);
+      subtype Size_Test_b is ada.Streams.Stream_Element_array (1 .. 19);
 
-      workaround_possible: constant Boolean:=          Size_test_a'Size      = Size_test_b'Size
-                                              and then Size_test_a'Alignment = Size_test_b'Alignment;
-
-
+      workaround_possible: constant Boolean :=          Size_Test_a'Size      = Size_Test_b'Size
+                                               and then Size_Test_a'Alignment = Size_Test_b'Alignment;
    begin
-      pPicData:= Cvt (PicData (0)'Address);
+      Tasks.check;
+
+      pPicData:= convert (PicData (0)'Address);
 
       GLReadPixels (0, 0,
                     GLSizei (width),
@@ -520,26 +514,26 @@ is
                     to_GL (openGL.Texture.BGRA),
                     GL.GL_UNSIGNED_BYTE,
                     pPicData);
+      Errors.log;
 
       if workaround_possible
       then
          declare
-            use Ada.Streams;
+            use ada.Streams;
 
-            SE_Buffer   : Stream_Element_Array (0..Stream_Element_Offset(PicData'Last));
+            SE_Buffer : Stream_Element_array (0 .. Stream_Element_Offset (PicData'Last));
 
             for SE_Buffer'Address use PicData'Address;
             pragma Import (Ada, SE_Buffer);
          begin
-            Ada.Streams.Write(s.all, SE_Buffer(0..Stream_Element_Offset(data_max)));
+            ada.Streams.write (Stream.all, SE_Buffer (0 .. Stream_Element_Offset (data_Max)));
          end;
 
       else
-         Temp_bitmap_type'Write(s, PicData(0..data_max) );
+         temp_Bitmap_type'write (Stream, PicData (0 .. data_Max));
       end if;
 
-   end Write_raw_BGRA_frame;
-
+   end write_raw_BGRA_Frame;
 
 
    -------------
@@ -548,8 +542,7 @@ is
 
    subtype FXPT2DOT30 is U32;
 
-   type CIEXYZ
-   is
+   type CIEXYZ is
       record
          ciexyzX : FXPT2DOT30;
          ciexyzY : FXPT2DOT30;
@@ -571,9 +564,8 @@ is
          bfReserved2 : U16 := 0;
          bfOffBits   : U32;
       end record;
-   pragma Pack (BITMAPFILEHEADER);
-   for BITMAPFILEHEADER'Size use 8 * 14;
-
+   pragma pack (BITMAPFILEHEADER);
+   for          BITMAPFILEHEADER'Size use 8 * 14;
 
    type BITMAPINFOHEADER is
       record
@@ -589,8 +581,8 @@ is
          biClrUsed       : U32 := 0;
          biClrImportant  : U32 := 0;
       end record;
-   pragma Pack (BITMAPINFOHEADER);
-   for BITMAPINFOHEADER'Size use 8 * 40;
+   pragma pack (BITMAPINFOHEADER);
+   for          BITMAPINFOHEADER'Size use 8 * 40;
 
    type BITMAPV4HEADER is
       record
@@ -605,9 +597,8 @@ is
          bV4GammaGreen : U32;
          bV4GammaBlue  : U32;
       end record;
-   pragma Pack (BITMAPV4HEADER);
-   for BITMAPV4HEADER'Size use 8 * 108;
-
+   pragma pack (BITMAPV4HEADER);
+   for          BITMAPV4HEADER'Size use 8 * 108;
 
 
    procedure opaque_Screenshot (Filename : in String)
@@ -615,75 +606,69 @@ is
       use GL,
           GL.Binding;
 
-      check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      f           :          ada.Streams.Stream_IO.File_Type;
-
+      File       : ada.Streams.Stream_IO.File_Type;
       FileInfo   : BITMAPINFOHEADER;
       FileHeader : BITMAPFILEHEADER;
 
       Viewport   : array (0 .. 3) of aliased GLint;
-
-      --  This method is functionally identical as GNAT's Unrestricted_Access
-      --  but has no type safety (cf GNAT Docs)
-      --        pragma No_Strict_Aliasing(intPtr); -- recommended by GNAT 2005+
    begin
+      Tasks.check;
+
       glGetIntegerv (GL_VIEWPORT,
                      Viewport (0)'Unchecked_Access);
+      Errors.log;
 
-      FileHeader.bfType        := 16#4D42#; -- 'BM'
-      FileHeader.bfOffBits     :=   BITMAPINFOHEADER'Size / 8
-                                  + BITMAPFILEHEADER'Size / 8;
+      FileHeader.bfType    := 16#4D42#;     -- 'BM'
+      FileHeader.bfOffBits :=   BITMAPINFOHEADER'Size / 8
+                              + BITMAPFILEHEADER'Size / 8;
 
-      FileInfo.biSize          := BITMAPINFOHEADER'Size / 8;
-      FileInfo.biWidth         := I32 (Viewport (2));
-      FileInfo.biHeight        := I32 (Viewport (3));
-      FileInfo.biPlanes        := 1;
-      FileInfo.biBitCount      := 24;
-      FileInfo.biCompression   := 0;
-      FileInfo.biSizeImage     := U32 ( -- 4-byte padding for .bmp/.avi formats
-                                         4
-                                       * Integer (Float'Ceiling (Float (FileInfo.biWidth) * 3.0 / 4.0))
-                                       * Integer(FileInfo.biHeight)
-                                      );
-      FileHeader.bfSize        := FileHeader.bfOffBits + FileInfo.biSizeImage;
+      FileInfo.biSize        := BITMAPINFOHEADER'Size / 8;
+      FileInfo.biWidth       := I32 (Viewport (2));
+      FileInfo.biHeight      := I32 (Viewport (3));
+      FileInfo.biPlanes      := 1;
+      FileInfo.biBitCount    := 24;
+      FileInfo.biCompression := 0;
+      FileInfo.biSizeImage   := U32 (  4
+                                     * Integer (Float'Ceiling (Float (FileInfo.biWidth) * 3.0 / 4.0))
+                                     * Integer (FileInfo.biHeight));
+      FileHeader.bfSize      := FileHeader.bfOffBits + FileInfo.biSizeImage;
 
-      Create (f, Out_File, Filename);
+      create (File, out_File, Filename);
       declare
-         procedure Write_Intel is new Write_Intel_x86_number (U16, Stream (f));
-         procedure Write_Intel is new Write_Intel_x86_number (U32, Stream (f));
-         function  Cvt         is new Ada.Unchecked_Conversion (I32, U32);
+         procedure write_Intel is new write_Intel_x86_Number (U16, Stream (File));
+         procedure write_Intel is new write_Intel_x86_Number (U32, Stream (File));
+         function  convert     is new ada.unchecked_Conversion (I32, U32);
       begin
          -- ** Endian-safe: ** --
-         Write_Intel (FileHeader.bfType);
-         Write_Intel (FileHeader.bfSize);
-         Write_Intel (FileHeader.bfReserved1);
-         Write_Intel (FileHeader.bfReserved2);
-         Write_Intel (FileHeader.bfOffBits);
+         write_Intel (FileHeader.bfType);
+         write_Intel (FileHeader.bfSize);
+         write_Intel (FileHeader.bfReserved1);
+         write_Intel (FileHeader.bfReserved2);
+         write_Intel (FileHeader.bfOffBits);
          --
-         Write_Intel (FileInfo.biSize);
-         Write_Intel (Cvt (FileInfo.biWidth));
-         Write_Intel (Cvt (FileInfo.biHeight));
-         Write_Intel (FileInfo.biPlanes);
-         Write_Intel (FileInfo.biBitCount);
-         Write_Intel (FileInfo.biCompression);
-         Write_Intel (FileInfo.biSizeImage);
-         Write_Intel (Cvt (FileInfo.biXPelsPerMeter));
-         Write_Intel (Cvt (FileInfo.biYPelsPerMeter));
-         Write_Intel (FileInfo.biClrUsed);
-         Write_Intel (FileInfo.biClrImportant);
+         write_Intel (         FileInfo.biSize);
+         write_Intel (convert (FileInfo.biWidth));
+         write_Intel (convert (FileInfo.biHeight));
+         write_Intel (         FileInfo.biPlanes);
+         write_Intel (         FileInfo.biBitCount);
+         write_Intel (         FileInfo.biCompression);
+         write_Intel (         FileInfo.biSizeImage);
+         write_Intel (convert (FileInfo.biXPelsPerMeter));
+         write_Intel (convert (FileInfo.biYPelsPerMeter));
+         write_Intel (         FileInfo.biClrUsed);
+         write_Intel (         FileInfo.biClrImportant);
          --
-         Write_raw_BGR_frame (Stream (f),
+         write_raw_BGR_Frame (Stream (File),
                               Integer (Viewport (2)),
                               Integer (Viewport (3)));
-         Close (f);
+         Close (File);
 
       exception
          when others =>
-            Close (f);
+            Close (File);
             raise;
       end;
    end opaque_Screenshot;
-
 
 
 
@@ -692,36 +677,33 @@ is
       use GL,
           GL.Binding;
 
-      check_is_OK : constant Boolean                        := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      f           :          ada.Streams.Stream_IO.File_Type;
+      File        : ada.Streams.Stream_IO.File_type;
 
       FileHeader  : BITMAPFILEHEADER;
       FileInfo    : BITMAPV4HEADER;
 
       Viewport    : array (0 .. 3) of aliased GLint;
 
-      --  This method is functionally identical as GNAT's Unrestricted_Access
-      --  but has no type safety (cf GNAT Docs)
-      --        pragma No_Strict_Aliasing(intPtr); -- recommended by GNAT 2005+
    begin
+      Tasks.check;
+
       glGetIntegerv (GL_VIEWPORT,
                      Viewport (0)'Unchecked_Access);
+      Errors.log;
 
-      FileHeader.bfType        := 16#4D42#; -- 'BM'
-      FileHeader.bfOffBits     :=   BITMAPV4HEADER  'Size / 8
-                                  + BITMAPFILEHEADER'Size / 8;
+      FileHeader.bfType    := 16#4D42#;     -- 'BM'
+      FileHeader.bfOffBits :=   BITMAPV4HEADER  'Size / 8
+                              + BITMAPFILEHEADER'Size / 8;
 
-      FileInfo.Core.biSize          := BITMAPV4HEADER'Size / 8;
-      FileInfo.Core.biWidth         := I32 (Viewport (2));
-      FileInfo.Core.biHeight        := I32 (Viewport (3));
-      FileInfo.Core.biPlanes        := 1;
-      FileInfo.Core.biBitCount      := 32; -- 24;
-      FileInfo.Core.biCompression   := 3;
-      FileInfo.Core.biSizeImage     := U32 ( -- 4-byte padding for .bmp/.avi formats
-                                              4
-                                            * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth)))
-                                            * Integer(FileInfo.Core.biHeight)
-                                           );
+      FileInfo.Core.biSize        := BITMAPV4HEADER'Size / 8;
+      FileInfo.Core.biWidth       := I32 (Viewport (2));
+      FileInfo.Core.biHeight      := I32 (Viewport (3));
+      FileInfo.Core.biPlanes      :=  1;
+      FileInfo.Core.biBitCount    := 32;
+      FileInfo.Core.biCompression :=  3;
+      FileInfo.Core.biSizeImage   := U32 (  4     -- 4-byte padding for '.bmp/.avi' formats.
+                                          * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth)))
+                                          * Integer (FileInfo.Core.biHeight));
 
       FileInfo.bV4RedMask    := 16#00FF0000#;
       FileInfo.bV4GreenMask  := 16#0000FF00#;
@@ -735,61 +717,61 @@ is
 
       FileHeader.bfSize := FileHeader.bfOffBits + FileInfo.Core.biSizeImage;
 
-      Create (f, Out_File, Filename);
+      Create (File, out_File, Filename);
       declare
-         procedure Write_Intel is new Write_Intel_x86_number (U16, Stream (f));
-         procedure Write_Intel is new Write_Intel_x86_number (U32, Stream (f));
-         function  Cvt         is new Ada.Unchecked_Conversion (I32, U32);
+         procedure write_Intel is new write_Intel_x86_Number (U16, Stream (File));
+         procedure write_Intel is new write_Intel_x86_Number (U32, Stream (File));
+         function  convert     is new ada.unchecked_Conversion (I32, U32);
       begin
          -- ** Endian-safe: ** --
-         Write_Intel (FileHeader.bfType);
-         Write_Intel (FileHeader.bfSize);
-         Write_Intel (FileHeader.bfReserved1);
-         Write_Intel (FileHeader.bfReserved2);
-         Write_Intel (FileHeader.bfOffBits);
+         write_Intel (FileHeader.bfType);
+         write_Intel (FileHeader.bfSize);
+         write_Intel (FileHeader.bfReserved1);
+         write_Intel (FileHeader.bfReserved2);
+         write_Intel (FileHeader.bfOffBits);
          --
-         Write_Intel (     FileInfo.Core.biSize);
-         Write_Intel (Cvt (FileInfo.Core.biWidth));
-         Write_Intel (Cvt (FileInfo.Core.biHeight));
-         Write_Intel (     FileInfo.Core.biPlanes);
-         Write_Intel (     FileInfo.Core.biBitCount);
-         Write_Intel (     FileInfo.Core.biCompression);
-         Write_Intel (     FileInfo.Core.biSizeImage);
-         Write_Intel (Cvt (FileInfo.Core.biXPelsPerMeter));
-         Write_Intel (Cvt (FileInfo.Core.biYPelsPerMeter));
-         Write_Intel (     FileInfo.Core.biClrUsed);
-         Write_Intel (     FileInfo.Core.biClrImportant);
+         write_Intel (         FileInfo.Core.biSize);
+         write_Intel (convert (FileInfo.Core.biWidth));
+         write_Intel (convert (FileInfo.Core.biHeight));
+         write_Intel (         FileInfo.Core.biPlanes);
+         write_Intel (         FileInfo.Core.biBitCount);
+         write_Intel (         FileInfo.Core.biCompression);
+         write_Intel (         FileInfo.Core.biSizeImage);
+         write_Intel (convert (FileInfo.Core.biXPelsPerMeter));
+         write_Intel (convert (FileInfo.Core.biYPelsPerMeter));
+         write_Intel (         FileInfo.Core.biClrUsed);
+         write_Intel (         FileInfo.Core.biClrImportant);
 
-         Write_Intel (     FileInfo.bV4RedMask);
-         Write_Intel (     FileInfo.bV4GreenMask);
-         Write_Intel (     FileInfo.bV4BlueMask);
-         Write_Intel (     FileInfo.bV4AlphaMask);
-         Write_Intel (     FileInfo.bV4CSType);
+         write_Intel (FileInfo.bV4RedMask);
+         write_Intel (FileInfo.bV4GreenMask);
+         write_Intel (FileInfo.bV4BlueMask);
+         write_Intel (FileInfo.bV4AlphaMask);
+         write_Intel (FileInfo.bV4CSType);
 
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzX);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzY);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzRed.ciexyzZ);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzRed.ciexyzX);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzRed.ciexyzY);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzRed.ciexyzZ);
 
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzX);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzY);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzGreen.ciexyzZ);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzGreen.ciexyzX);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzGreen.ciexyzY);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzGreen.ciexyzZ);
 
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzX);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzY);
-         Write_Intel (     FileInfo.bV4Endpoints.ciexyzBlue.ciexyzZ);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzBlue.ciexyzX);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzBlue.ciexyzY);
+         write_Intel (FileInfo.bV4Endpoints.ciexyzBlue.ciexyzZ);
 
-         Write_Intel (     FileInfo.bV4GammaRed);
-         Write_Intel (     FileInfo.bV4GammaGreen);
-         Write_Intel (     FileInfo.bV4GammaBlue);
+         write_Intel (FileInfo.bV4GammaRed);
+         write_Intel (FileInfo.bV4GammaGreen);
+         write_Intel (FileInfo.bV4GammaBlue);
 
-         Write_raw_BGRA_frame (Stream (f),
+         write_raw_BGRA_Frame (Stream (File),
                                Integer (Viewport (2)),
                                Integer (Viewport (3)));
-         Close (f);
+         close (File);
 
       exception
          when others =>
-            Close (f);
+            Close (File);
             raise;
       end;
    end lucid_Screenshot;
@@ -799,10 +781,9 @@ is
    procedure Screenshot (Filename : in String;   with_Alpha : in Boolean := False)
    is
    begin
-      if with_Alpha then
-         lucid_Screenshot (Filename);
-      else
-         opaque_Screenshot (Filename);
+      if with_Alpha
+      then  lucid_Screenshot (Filename);
+      else opaque_Screenshot (Filename);
       end if;
    end Screenshot;
 
@@ -811,16 +792,16 @@ is
    -- Video Capture
    --
 
-   --  Exceptionally we define global variables since it is not expected
+   --  We define global variables since it is not expected
    --  that more that one capture is taken at the same time.
    --
-   avi           : Ada.Streams.Stream_IO.File_Type;
+   avi           : ada.Streams.Stream_IO.File_type;
    frames        : Natural;
    rate          : Positive;
    width, height : Positive;
    bmp_size      : U32;
 
-   procedure Write_RIFF_headers
+   procedure write_RIFF_Headers
    is
       --  Written 1st time to take place (but # of frames unknown)
       --  Written 2nd time for setting # of frames, sizes, etc.
@@ -832,160 +813,154 @@ is
       second_list_size : constant U32           := 4 + 64 + 48;
       first_list_size  : constant U32           := (4 + 64) + (8 + second_list_size);
       file_size        : constant U32           := 8 + (8 + first_list_size) + (4 + movie_size) + (8 + index_size);
-      s                : constant Stream_Access := Stream (avi);
+      Stream           : constant Stream_access := ada.Streams.Stream_IO.Stream (avi);
 
-      procedure Write_Intel is new Write_Intel_x86_number (U16, s);
-      procedure Write_Intel is new Write_Intel_x86_number (U32, s);
+      procedure write_Intel is new write_Intel_x86_Number (U16, Stream);
+      procedure write_Intel is new write_Intel_x86_Number (U32, Stream);
 
-      microseconds_per_frame : constant U32     := U32 (1_000_000.0 / Long_Float (rate));
+      microseconds_per_frame : constant U32 := U32 (1_000_000.0 / long_Float (rate));
    begin
       bmp_size := calc_bmp_size;
 
-      String'Write (s, "RIFF");
-      U32'Write (s, file_size);
-      String'Write (s, "AVI ");
-      String'Write (s, "LIST");
-      Write_Intel (first_list_size);
-      String'Write (s, "hdrl");
-      String'Write (s, "avih");
-      Write_Intel (U32'(56));
+      String'write (Stream, "RIFF");
+      U32   'write (Stream, file_size);
+      String'write (Stream, "AVI ");
+      String'write (Stream, "LIST");
+      write_Intel  (first_list_size);
+      String'write (Stream, "hdrl");
+      String'write (Stream, "avih");
+      write_Intel  (U32' (56));
 
       --  Begin of AVI Header
-      Write_Intel (microseconds_per_frame);
-      Write_Intel (U32'(0));      -- MaxBytesPerSec
-      Write_Intel (U32'(0));      -- Reserved1
-      Write_Intel (U32'(16));     -- Flags (16 = has an index)
-      Write_Intel (U32 (frames));
-      Write_Intel (U32'(0));      -- InitialFrames
-      Write_Intel (U32'(1));      -- Streams
-      Write_Intel (bmp_size);
-      Write_Intel (U32 (width));
-      Write_Intel (U32 (height));
-      Write_Intel (U32'(0));      -- Scale
-      Write_Intel (U32'(0));      -- Rate
-      Write_Intel (U32'(0));      -- Start
-      Write_Intel (U32'(0));      -- Length
+      write_Intel (microseconds_per_frame);
+      write_Intel (U32'(0));      -- MaxBytesPerSec
+      write_Intel (U32'(0));      -- Reserved1
+      write_Intel (U32'(16));     -- Flags (16 = has an index)
+      write_Intel (U32 (frames));
+      write_Intel (U32'(0));      -- InitialFrames
+      write_Intel (U32'(1));      -- Streams
+      write_Intel (bmp_size);
+      write_Intel (U32 (width));
+      write_Intel (U32 (height));
+      write_Intel (U32'(0));      -- Scale
+      write_Intel (U32'(0));      -- Rate
+      write_Intel (U32'(0));      -- Start
+      write_Intel (U32'(0));      -- Length
       --  End of AVI Header
 
-      String'Write (s, "LIST");
-      Write_Intel (second_list_size);
-      String'Write (s, "strl");
+      String'write (Stream, "LIST");
+      write_Intel  (second_list_size);
+      String'write (Stream, "strl");
 
       --  Begin of Str
-      String'Write (s, "strh");
-      Write_Intel (U32'(56));
-      String'Write (s, "vids");
-      String'Write (s, "DIB ");
-      Write_Intel (U32'(0));                -- flags
-      Write_Intel (U32'(0));                -- priority
-      Write_Intel (U32'(0));                -- initial frames
-      Write_Intel (microseconds_per_frame); -- Scale
-      Write_Intel (U32'(1_000_000));        -- Rate
-      Write_Intel (U32'(0));                -- Start
-      Write_Intel (U32 (frames));           -- Length
-      Write_Intel (bmp_size);               -- SuggestedBufferSize
-      Write_Intel (U32'(0));                -- Quality
-      Write_Intel (U32'(0));                -- SampleSize
-      Write_Intel (U32'(0));
-      Write_Intel (U16 (width));
-      Write_Intel (U16 (height));
+      String'write (Stream, "strh");
+      write_Intel  (U32'(56));
+      String'write (Stream, "vids");
+      String'write (Stream, "DIB ");
+      write_Intel  (U32'(0));                -- flags
+      write_Intel  (U32'(0));                -- priority
+      write_Intel  (U32'(0));                -- initial frames
+      write_Intel  (microseconds_per_frame); -- Scale
+      write_Intel  (U32'(1_000_000));        -- Rate
+      write_Intel  (U32'(0));                -- Start
+      write_Intel  (U32 (frames));           -- Length
+      write_Intel  (bmp_size);               -- SuggestedBufferSize
+      write_Intel  (U32'(0));                -- Quality
+      write_Intel  (U32'(0));                -- SampleSize
+      write_Intel  (U32'(0));
+      write_Intel  (U16 (width));
+      write_Intel  (U16 (height));
       --  End of Str
 
-      String'Write (s, "strf");
-      Write_Intel (U32'(40));
+      String'write (Stream, "strf");
+      write_Intel (U32'(40));
 
       --  Begin of BMI
-      Write_Intel (U32'(40));    -- BM header size (like BMP)
-      Write_Intel (U32 (width));
-      Write_Intel (U32 (height));
-      Write_Intel (U16'(1));     -- Planes
-      Write_Intel (U16'(24));    -- BitCount
-      Write_Intel (U32'(0));     -- Compression
-      Write_Intel (bmp_size);    -- SizeImage
-      Write_Intel (U32'(3780));  -- XPelsPerMeter
-      Write_Intel (U32'(3780));  -- YPelsPerMeter
-      Write_Intel (U32'(0));     -- ClrUsed
-      Write_Intel (U32'(0));     -- ClrImportant
+      write_Intel (U32'(40));    -- BM header size (like BMP)
+      write_Intel (U32 (width));
+      write_Intel (U32 (height));
+      write_Intel (U16'(1));     -- Planes
+      write_Intel (U16'(24));    -- BitCount
+      write_Intel (U32'(0));     -- Compression
+      write_Intel (bmp_size);    -- SizeImage
+      write_Intel (U32'(3780));  -- XPelsPerMeter
+      write_Intel (U32'(3780));  -- YPelsPerMeter
+      write_Intel (U32'(0));     -- ClrUsed
+      write_Intel (U32'(0));     -- ClrImportant
       --  End of BMI
 
-      String'Write (s, "LIST");
-      Write_Intel (movie_size);
-      String'Write (s, "movi");
+      String'write (Stream, "LIST");
+      write_Intel  (movie_size);
+      String'write (Stream, "movi");
    end Write_RIFF_headers;
 
 
 
-   procedure start_capture (AVI_name   : String;
-                            frame_rate : Positive)
+   procedure start_Capture (AVI_Name   : String;
+                            frame_Rate : Positive)
    is
       use GL,
           GL.Binding;
-
-      --        type intPtr is new intPointer;
       Viewport : array (0 .. 3) of aliased GLint;
-      --        function Cvt is new Ada.Unchecked_Conversion(System.Address,intPtr);
-      --  This method is functionally identical as GNAT's Unrestricted_Access
-      --  but has no type safety (cf GNAT Docs)
-      --        pragma No_Strict_Aliasing(intPtr); -- recommended by GNAT 2005+
-
    begin
-      Create (avi, Out_File, AVI_name);
+      Tasks.check;
 
-      frames := 0;
-      rate   := frame_rate;
+      create (Avi, out_File, AVI_Name);
+
+      Frames := 0;
+      Rate   := frame_Rate;
 
       glGetIntegerv (GL_VIEWPORT,
-                     Viewport (0)'Unchecked_Access);
+                     Viewport (0)'unchecked_Access);
+      Errors.log;
 
-      width  := Positive (Viewport (2));
-      height := Positive (Viewport (3));
-      --  NB: GL viewport resizing should be blocked during the video capture!
-      Write_RIFF_headers;
-   end start_capture;
+      Width  := Positive (Viewport (2));
+      Height := Positive (Viewport (3));
+      --  NB: GL viewport resizing should be blocked during the video capture !
+      write_RIFF_Headers;
+   end start_Capture;
 
 
 
    procedure capture_Frame
    is
-      s : constant Stream_Access := Stream (avi);
+      S : constant Stream_Access := Stream (Avi);
       procedure Write_Intel is new Write_Intel_x86_number (U32, s);
-
    begin
-      String'Write        (s, "00db");
-      Write_Intel         (bmp_size);
-      Write_raw_BGR_frame (s, width, height);
+      String'write        (S, "00db");
+      write_Intel         (bmp_Size);
+      write_raw_BGR_frame (S, Width, Height);
 
-      frames := frames + 1;
+      Frames := Frames + 1;
    end capture_Frame;
 
 
 
    procedure stop_Capture
    is
-      index_size  : constant U32           := U32 (frames) * 16;
-      s           : constant Stream_Access := Stream (avi);
+      index_Size  : constant U32           := U32 (Frames) * 16;
+      S           : constant Stream_Access := Stream (Avi);
       ChunkOffset :          U32           := 4;
-      procedure Write_Intel is new Write_Intel_x86_number (U32, s);
 
+      procedure write_Intel is new write_Intel_x86_Number (U32, S);
    begin
       --  Write the index section
       --
-      String'Write (s, "idx1");
-      Write_Intel (index_size);
+      String'write (S, "idx1");
+      write_Intel (index_Size);
 
-      for f in 1 .. frames
+      for f in 1 .. Frames
       loop
-         String'Write (s, "00db");
-         Write_Intel  (U32'(16));   -- Keyframe.
-         Write_Intel  (ChunkOffset);
-         ChunkOffset := ChunkOffset + bmp_size + 8;
-         Write_Intel  (bmp_size);
+         String'write (S, "00db");
+         write_Intel  (U32'(16));     -- Keyframe.
+         write_Intel  (ChunkOffset);
+         ChunkOffset := ChunkOffset + bmp_Size + 8;
+         write_Intel  (bmp_Size);
       end loop;
 
-      --  Go back to file beginning...
-      Set_Index (avi, 1);
-      Write_RIFF_headers;   -- Rewrite headers with correct data.
-      Close (avi);
+      Set_Index (avi, 1);     -- Go back to file beginning.
+      write_RIFF_Headers;     -- Rewrite headers with correct data.
+      close (Avi);
    end stop_Capture;
 
 
