@@ -2,16 +2,21 @@ with
      openGL.Texture,
      ada.Strings.fixed;
 
-
 package body openGL.Program.lit_colored_textured_skinned
 is
+   -----------
+   --- Globals
+   --
 
-   the_vertex_Shader   : aliased openGL.Shader.item;
-   the_fragment_Shader : aliased openGL.Shader.item;
+   vertex_Shader   : aliased Shader.item;
+   fragment_Shader : aliased Shader.item;
 
-   white_Texture       :         openGL.Texture.Object;
+   white_Texture   :         openGL.Texture.Object;
 
 
+
+   -- Old code kept for reference til new code is tested and stable ...
+   --
 
 --     overriding
 --     procedure define (Self : in out Item)
@@ -158,8 +163,8 @@ is
 
 
    overriding
-   procedure define  (Self : in out Item;   use_vertex_Shader   : in openGL.Shader.view;
-                                            use_fragment_Shader : in openGL.Shader.view)
+   procedure define  (Self : in out Item;   use_vertex_Shader   : in Shader.view;
+                                            use_fragment_Shader : in Shader.view)
    is
       use ada.Strings,
           ada.Strings.fixed;
@@ -167,10 +172,10 @@ is
       openGL.Program.item (Self).define (use_vertex_Shader,
                                          use_fragment_Shader);   -- Define base class.
 
-      for Each in Self.bone_transform_Uniforms'Range
+      for i in Self.bone_transform_Uniforms'Range
       loop
-         Self.bone_transform_Uniforms (Each).define (Self'Access,
-                                                     "bone_Matrices[" & Trim (Integer'Image (Each - 1), Left) & "]");
+         Self.bone_transform_Uniforms (i).define (Self'Access,
+                                                  "bone_Matrices[" & Trim (Integer'Image (i - 1), Left) & "]");
       end loop;
    end define;
 
@@ -179,11 +184,8 @@ is
    overriding
    procedure set_Uniforms (Self : in Item)
    is
-      the_inverse_modelview_matrix_Uniform : constant openGL.Variable.uniform.mat3
-        := Self.uniform_Variable ("inv_modelview_Matrix");
-
-      the_shine_Uniform : constant openGL.Variable.uniform.float
-        := Self.uniform_Variable ("uShine");
+      the_inverse_modelview_matrix_Uniform : constant Variable.uniform.mat3  := Self.uniform_Variable ("inv_modelview_Matrix");
+      the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("uShine");
 
    begin
       Self.set_mvp_Uniform;
@@ -198,34 +200,30 @@ is
          declare
             Light : openGL.Light.directional.item renames Self.directional_Light (i);
 
-            function light_Name return String is
-               use Ada.Strings, Ada.Strings.fixed;
+            function light_Name return String
+            is
+               use ada.Strings,
+                   ada.Strings.fixed;
             begin
                return "uLights [" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
-            the_light_on_Uniform : constant openGL.Variable.uniform.bool
-              := Self.uniform_Variable (light_Name & ".is_on");
+            the_light_on_Uniform : constant Variable.uniform.bool := Self.uniform_Variable (light_Name & ".is_on");
          begin
             the_light_on_Uniform.Value_is (Light.is_On);
 
             if Light.is_On
             then
                declare
-                  the_light_direction_Uniform      : constant openGL.Variable.uniform.vec3
-                    := Self.uniform_Variable (light_Name & ".direction");
-                  the_light_halfplane_Uniform      : constant openGL.Variable.uniform.vec3
-                    := Self.uniform_Variable (light_Name & ".halfplane");
+                  the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
+                  the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
 
-                  the_light_ambient_color_Uniform  : constant openGL.Variable.uniform.vec4
-                    := Self.uniform_Variable (light_Name & ".ambient_color");
-                  the_light_diffuse_color_Uniform  : constant openGL.Variable.uniform.vec4
-                    := Self.uniform_Variable (light_Name & "diffuse_color");
-                  the_light_specular_color_Uniform : constant openGL.Variable.uniform.vec4
-                    := Self.uniform_Variable (light_Name & ".specular_color");
+                  the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
+                  the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & "diffuse_color");
+                  the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
                begin
-                  the_light_direction_Uniform     .Value_is (Light.Direction);
-                  the_light_halfplane_Uniform     .Value_is (Light.halfplane_Vector);
+                  the_light_direction_Uniform.Value_is (Light.Direction);
+                  the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
 
                   the_light_ambient_color_Uniform .Value_is (Light.ambient_Color);
                   the_light_diffuse_color_Uniform .Value_is (Light.diffuse_Color);
@@ -238,9 +236,9 @@ is
       -- Texture
       --
       declare
-         the_sampler_Uniform : constant openGL.Variable.uniform.int := Self.uniform_Variable ("sTexture");
+         sampler_Uniform : constant Variable.uniform.int := Self.uniform_Variable ("sTexture");
       begin
-         the_sampler_Uniform.Value_is (0);
+         sampler_Uniform.Value_is (0);
       end;
    end set_Uniforms;
 
