@@ -6,10 +6,8 @@ with
      GL.Binding,
      GL.lean;
 
-
 package body openGL.Primitive.indexed
 is
-
    ---------
    --- Forge
    --
@@ -28,15 +26,15 @@ is
       end loop;
 
       Self.facet_Kind := Kind;
-      Self.Indices    := new openGL.Buffer.indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                       usage => openGL.buffer.static_Draw));
+      Self.Indices    := new Buffer.indices.Object' (to_Buffer (buffer_Indices'Access,
+                                                                usage => Buffer.static_Draw));
       Self.line_Width := line_Width;
    end define;
 
 
 
    procedure define (Self : in out Item;   Kind       : in facet_Kind;
-                                           Indices    : in openGL.long_Indices;
+                                           Indices    : in long_Indices;
                                            line_Width : in Real)
    is
       use openGL.Buffer.indices.Forge;
@@ -50,7 +48,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new openGL.Buffer.indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                       usage => openGL.buffer.static_Draw));
+                                                                       usage => Buffer.static_Draw));
       Self.line_Width := line_Width;
    end define;
 
@@ -58,23 +56,23 @@ is
 
    function new_Primitive (Kind       : in facet_Kind;
                            Indices    : in openGL.Indices;
-                           line_Width : in Real          := unused_line_Width) return Primitive.indexed.view
+                           line_Width : in Real := unused_line_Width) return Primitive.indexed.view
    is
       Self : constant View := new Item;
    begin
-      define (Self.all,  Kind, Indices, line_Width);
+      define (Self.all, Kind, Indices, line_Width);
       return Self;
    end new_Primitive;
 
 
 
    function new_Primitive (Kind       : in facet_Kind;
-                           Indices    : in openGL.long_Indices;
+                           Indices    : in long_Indices;
                            line_Width : in Real               := unused_line_Width) return Primitive.indexed.view
    is
       Self : constant View := new Item;
    begin
-      define (Self.all,  Kind, Indices, line_Width);
+      define (Self.all, Kind, Indices, line_Width);
       return Self;
    end new_Primitive;
 
@@ -90,27 +88,18 @@ is
    end destroy;
 
 
-
    --------------
    --  Attributes
    --
 
-   -- None.
-
-
-
-   --------------
-   --  Operations
-   --
-
    procedure Indices_are  (Self : in out Item;   Now : in Indices)
    is
-      use openGL.Buffer.indices;
+      use Buffer.indices;
       buffer_Indices : aliased Indices := (Now'Range => <>);
    begin
       for Each in buffer_Indices'Range
       loop
-         buffer_Indices (Each) := Now (Each) - 1;             -- Adjust indices to zero-based-indexing for GL.
+         buffer_Indices (Each) := Now (Each) - 1;     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
       Self.Indices.set (to => buffer_Indices);
@@ -120,20 +109,21 @@ is
 
    procedure Indices_are  (Self : in out Item;   Now : in long_Indices)
    is
-      use openGL.Buffer.indices;
+      use Buffer.indices;
       buffer_Indices : aliased Indices := (Now'Range => <>);
    begin
       for Each in buffer_Indices'Range
       loop
-         buffer_Indices (Each) := Index_t (Now (Each) - 1);   -- Adjust indices to zero-based-indexing for GL.
+         buffer_Indices (Each) := Index_t (Now (Each) - 1);     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
       Self.Indices.set (to => buffer_Indices);
    end Indices_are;
 
 
-
-
+   --------------
+   --  Operations
+   --
 
    overriding
    procedure render (Self : in out Item)
@@ -141,18 +131,17 @@ is
       use GL,
           GL.Binding,
           GL.lean;
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
-      render (openGL.Primitive.item (Self));   -- Do base class render.
+      Tasks.check;
 
+      Primitive.item (Self).render;   -- Do base class render.
       Self.Indices.enable;
-      openGL.Errors.log;
 
       glDrawElements (Thin     (Self.facet_Kind),
                       gl.GLint (Self.Indices.Length),
                       GL_UNSIGNED_SHORT,
                       null);
-      openGL.Errors.log;
+      Errors.log;
    end render;
 
 

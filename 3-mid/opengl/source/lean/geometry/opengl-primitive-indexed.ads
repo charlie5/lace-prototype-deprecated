@@ -2,13 +2,11 @@ private
 with
      openGL.Buffer.indices;
 
-
 package openGL.Primitive.indexed
 --
 --  Provides a class for indexed openGL primitives.
 --
 is
-
    type    Item  is limited new Primitive.item with private;
    subtype Class is Item'Class;
 
@@ -22,11 +20,11 @@ is
 
    function  new_Primitive (Kind       : in facet_Kind;
                             Indices    : in openGL.Indices;
-                            line_Width : in Real               := unused_line_Width) return Primitive.indexed.view;
+                            line_Width : in Real := unused_line_Width) return Primitive.indexed.view;
 
    function  new_Primitive (Kind       : in facet_Kind;
                             Indices    : in openGL.long_Indices;
-                            line_Width : in Real               := unused_line_Width) return Primitive.indexed.view;
+                            line_Width : in Real := unused_line_Width) return Primitive.indexed.view;
 
    procedure define  (Self : in out Item;   Kind       : in facet_Kind;
                                             Indices    : in openGL.Indices;
@@ -39,7 +37,6 @@ is
    procedure destroy (Self : in out Item);
 
 
-
    --------------
    --  Attributes
    --
@@ -48,15 +45,12 @@ is
    procedure Indices_are (Self : in out Item;   Now : in long_Indices);
 
 
-
    --------------
    --  Operations
    --
 
    overriding
    procedure render (Self : in out Item);
-
-
 
 
 
