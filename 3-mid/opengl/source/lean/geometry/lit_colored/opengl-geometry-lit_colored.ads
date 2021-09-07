@@ -1,9 +1,8 @@
 package openGL.Geometry.lit_colored
 --
---  Supports per-vertex site, color and lighting.
+--  Supports per-vertex site color and lighting.
 --
 is
-
    type Item is new openGL.Geometry.item with private;
 
    function new_Geometry return access Geometry.lit_colored.item'class;
@@ -30,11 +29,9 @@ is
    procedure Vertices_are   (Self : in out Item;   Now : in Vertex_array);
 
 
+
 private
 
-   type Item is new Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new Geometry.item with null record;
 
 end openGL.Geometry.lit_colored;

@@ -1,9 +1,8 @@
 package openGL.Program.lit_colored
 --
---  Provides a program for lit, colored GL vertices.
+--  Provides a program for lit and colored GL vertices.
 --
 is
-
    type Item is new openGL.Program.item with null record;
    type View is access all Item'Class;
 
