@@ -50,6 +50,7 @@ launch_large_terrain_demo
 launch_many_boxes_demo
 launch_model_scaling
 launch_render_arrows
+launch_render_asteroids
 launch_render_billboards
 launch_render_boxes
 launch_render_screenshot
