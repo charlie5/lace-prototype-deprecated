@@ -4,8 +4,7 @@ with
 package body openGL.IO.Lat_Long_Radius
 is
 
-   function to_Model (math_Model : access Geometry_3d.a_Model;
-                      Scale      : in     Vector_3 := (1.0, 1.0, 1.0)) return IO.Model
+   function to_Model (math_Model : access Geometry_3d.a_Model) return IO.Model
    is
       site_Count        : constant long_Index_t  := long_Index_t (math_Model.site_Count);
       coord_Count       : constant long_Index_t  := 0; --get_coord_Count;
@@ -71,8 +70,7 @@ is
 
 
 
-   function to_Model (model_Path : in String;
-                      Scale      : in Vector_3 := (1.0, 1.0, 1.0)) return IO.Model
+   function to_Model (model_Path : in String) return IO.Model
    is
       use float_Math.Geometry.d3.Modeller.Forge;
 
