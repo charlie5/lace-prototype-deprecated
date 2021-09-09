@@ -61,6 +61,7 @@ is
       Tasks.check;
       glBindBuffer (to_GL_Enum (Self.Kind),
                     Self.Name);
+      openGL.Errors.log;
    end enable;
 
 
