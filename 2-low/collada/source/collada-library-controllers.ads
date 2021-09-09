@@ -28,8 +28,8 @@ is
          Count  : Natural;
          Inputs : Inputs_view;
 
-         vCount : int_Array_view;
-         v      : int_Array_view;
+         v_Count : int_Array_view;
+         v       : int_Array_view;
       end record;
 
    function joint_Offset_of  (Self : in vertex_Weights) return math.Index;
