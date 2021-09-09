@@ -70,11 +70,11 @@ is
 
 
 
-   function to_Model (model_Path : in String) return IO.Model
+   function to_Model (model_File : in String) return IO.Model
    is
       use float_Math.Geometry.d3.Modeller.Forge;
 
-      the_math_Model : aliased Geometry_3d.a_Model := mesh_Model_from (Model => polar_Model_from (model_Path));
+      the_math_Model : aliased Geometry_3d.a_Model := mesh_Model_from (Model => polar_Model_from (model_File));
    begin
       return to_Model (the_math_Model'Access);
    end to_Model;
