@@ -425,8 +425,8 @@ is
          the_Weights.Inputs (Each) := to_Input (the_xml_Inputs (Each).all);
       end loop;
 
-      the_Weights.vCount := new int_Array' (to_int_Array (the_xml_vCount.Data));
-      the_Weights.V      := new int_array' (to_int_Array (the_xml_V.Data));
+      the_Weights.v_Count := new int_Array' (to_int_Array (the_xml_vCount.Data));
+      the_Weights.V       := new int_array' (to_int_Array (the_xml_V.Data));
 
       return the_Weights;
    end to_vertex_Weights;
