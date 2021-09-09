@@ -5,8 +5,8 @@ with
 
      openGL.Model.any,
      opengl.Palette,
-     opengl.Program.lit_textured_skinned,
-     opengl.Geometry.lit_textured_skinned,
+     opengl.Program .lit_colored_textured_skinned,
+     opengl.Geometry.lit_colored_textured_skinned,
 
      collada.Document,
      collada.Library,
@@ -127,7 +127,7 @@ is
       loop
          Slot := Element (Cursor);
 
-         openGL.Program.lit_textured_skinned.view (Self.Program)
+         openGL.Program.lit_colored_textured_skinned.view (Self.Program)
            .bone_Transform_is (which => Slot,
                                now   => Self.bone_Transforms.Element (Slot));
 
@@ -897,7 +897,7 @@ is
    procedure enable_Graphics (Self : in out Item)
    is
    begin
-      Self.program_Parameters.Program_is      (opengl.Program.view (opengl.Geometry.lit_textured_skinned.Program));
+      Self.program_Parameters.Program_is      (opengl.Program.view (opengl.Geometry.lit_colored_textured_skinned.Program));
       Self.skin_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
    end enable_Graphics;
 
