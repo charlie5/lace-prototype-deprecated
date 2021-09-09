@@ -1,7 +1,7 @@
 package body openGL.Light
 is
 
-   function  is_On (Self : in Item)     return Boolean
+   function is_On (Self : in Item) return Boolean
    is
    begin
       return Self.On;
@@ -16,7 +16,7 @@ is
 
 
 
-   function  Site    (Self : in Item)     return openGL.Site
+   function Site (Self : in Item) return openGL.Site
    is
    begin
       return Self.Site;

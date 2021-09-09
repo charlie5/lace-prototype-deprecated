@@ -3,11 +3,9 @@ package openGL.Light
 --  Models a light.
 --
 is
-
    type Item is abstract tagged private;
 
-
-   function  is_On   (Self : in     Item) return Boolean;
+   function  is_On   (Self : in     Item)     return Boolean;
    procedure is_On   (Self : in out Item;   Now : in Boolean := True);
 
    function  Site    (Self : in     Item)     return openGL.Site;
