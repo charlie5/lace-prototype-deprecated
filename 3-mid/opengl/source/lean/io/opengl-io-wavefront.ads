@@ -3,7 +3,6 @@ package openGL.IO.wavefront
 --  Provides a function to convert a Wavefront model file (*.obj) to an openGL IO model.
 --
 is
-
    ---------
    --  Group
    --
@@ -15,15 +14,14 @@ is
       record
          case Kind
          is
-         when object_Name     =>   object_Name     : Text;
-         when group_Name      =>   group_Name      : Text;
-         when smoothing_Group =>   smooth_group_Id : Natural;
-         when merging_Group   =>   null;
+         when object_Name     => object_Name     : Text;
+         when group_Name      => group_Name      : Text;
+         when smoothing_Group => smooth_group_Id : Natural;
+         when merging_Group   => null;
          end case;
       end record;
 
-   function Image (Self : in wavefront.Group) return String;
-
+   function Image (Self : in Group) return String;
 
 
    --------
@@ -36,17 +34,15 @@ is
       record
          case Kind
          is
-         when a_Group =>   Group : wavefront.Group;
-         when a_Facet =>   Facet : openGL.IO.Face;
+         when a_Group => Group : wavefront.Group;
+         when a_Facet => Facet : openGL.IO.Face;
          end case;
    end record;
 
    type Faces is array (long_Index_t range <>) of Face;
 
-
    function Image    (Self       : in wavefront.Face) return String;
-   function to_Model (model_Path : in String)         return IO.Model;
-
+   function to_Model (model_File : in String)         return IO.Model;
 
 
    --------------
@@ -61,9 +57,9 @@ is
          Faces   : access wavefront.Faces;
       end record;
 
-   function  to_Model (model_Path   : in String) return wavefront.Model;
+   function  to_Model (model_Path : in String) return wavefront.Model;
 
-   procedure write    (the_Model    : in wavefront.Model;
-                       to_file_Path : in String);
+   procedure write    (the_Model  : in wavefront.Model;
+                       to_File    : in String);
 
 end openGL.IO.wavefront;

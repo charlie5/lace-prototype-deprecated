@@ -1,23 +1,17 @@
 with
-     Ada.Text_IO,
-     Ada.Integer_Text_IO,
-     Ada.Strings.Fixed,
+     ada.Text_IO,
+     ada.Integer_Text_IO,
+     ada.Strings.fixed,
      ada.Strings.unbounded;
-
 
 package body openGL.IO.wavefront
 is
-   use Ada.Text_IO;
-
-
    package real_Text_IO is new Ada.Text_IO.Float_IO (openGL.Real);
-
-
 
    function to_Text (Self : in String) return Text
    is
    begin
-      return ada.Strings.unbounded.To_unbounded_String (Self);
+      return ada.Strings.unbounded.to_unbounded_String (Self);
    end to_Text;
 
 
@@ -29,9 +23,9 @@ is
       X, Y, Z : Real;
       Last    : Natural;
    begin
-      Get (Self, X, Last);
-      Get (Self (Last + 1 .. Self'Last), Y, Last);
-      Get (Self (Last + 1 .. Self'Last), Z, Last);
+      get (Self, X, Last);
+      get (Self (Last + 1 .. Self'Last), Y, Last);
+      get (Self (Last + 1 .. Self'Last), Z, Last);
 
       return (X, Y, Z);
    end to_Vector_3;
@@ -45,8 +39,8 @@ is
       U, V : Real;
       Last : Natural;
    begin
-      Get (Self, U, Last);
-      Get (Self (Last + 1 .. Self'Last), V, Last);
+      get (Self, U, Last);
+      get (Self (Last + 1 .. Self'Last), V, Last);
 
       return (U, V);
    end to_Coordinate;
@@ -55,20 +49,18 @@ is
 
    function to_Facet (Self : in String) return IO.Face
    is
-      use Ada.Integer_Text_IO;
+      use ada.Integer_Text_IO;
 
       site_Id,
       coord_Id,
       normal_Id    : Integer;
 
-      the_Vertices : Vertices (1 .. 500);
-      vertex_Count : long_Index_t       := 0;
-
-      Last         : Natural            := Self'First - 1;
-
+      the_Vertices : Vertices (1 .. 5_000);
+      vertex_Count : long_Index_t := 0;
+      Last         : Natural      := Self'First - 1;
    begin
       loop
-         Get (Self (Last + 1 .. Self'Last),
+         get (Self (Last + 1 .. Self'Last),
               site_Id,
               Last);
 
@@ -83,11 +75,11 @@ is
             if Self (Last + 2) = '/'
             then     -- Texture coord is absent.
                coord_Id := Integer (null_Id);
-               Get (Self (Last + 3 .. Self'Last),
+               get (Self (Last + 3 .. Self'Last),
                     normal_Id,
                     Last);
             else
-               Get (Self (Last + 2 .. Self'Last),
+               get (Self (Last + 2 .. Self'Last),
                     coord_Id,
                     Last);
 
@@ -98,8 +90,9 @@ is
 
                elsif Self (Last + 1) = '/'
                then
-                  Get (Self (Last + 2 .. Self'Last), normal_Id, Last);
-
+                  get (Self (Last + 2 .. Self'Last),
+                       normal_Id,
+                       Last);
                else
                   raise Constraint_Error with "Invalid indices: " & Self & ".";
                end if;
@@ -126,41 +119,40 @@ is
 
       case vertex_Count
       is
-         when 3      =>   return (Triangle,                the_Vertices (1 .. 3));
-         when 4      =>   return (Quad,                    the_Vertices (1 .. 4));
-         when others =>   return (Polygon,  new Vertices' (the_Vertices (1 .. vertex_Count)));
+         when 3      => return (Triangle,               the_Vertices (1 .. 3));
+         when 4      => return (Quad,                   the_Vertices (1 .. 4));
+         when others => return (Polygon, new Vertices' (the_Vertices (1 .. vertex_Count)));
       end case;
    end to_Facet;
 
 
 
-   function to_Model (model_Path : in String) return IO.Model
+   function to_Model (model_File : in String) return IO.Model
    is
-      use Ada.Strings.Fixed;
+      use ada.Strings.fixed,
+          ada.Text_IO;
 
       the_File     : File_Type;
 
       max_Elements : constant      := 200_000;
 
-      the_Sites    : Sites_view    := new many_Sites (1 .. max_Elements);
-      site_Count   : long_Index_t  := 0;
-
+      the_Sites    : Sites_view    := new many_Sites          (1 .. max_Elements);
       the_Coords   : Coords_view   := new many_Coordinates_2D (1 .. max_Elements);
+      the_Normals  : Normals_view  := new many_Normals        (1 .. max_Elements);
+      the_Faces    : IO.Faces_view := new IO.Faces'           (1 .. max_Elements => <>);
+
+      site_Count   : long_Index_t  := 0;
       coord_Count  : long_Index_t  := 0;
-
-      the_Normals  : Normals_view  := new many_Normals (1 .. max_Elements);
       normal_Count : long_Index_t  := 0;
-
-      the_Faces    : IO.Faces_view := new IO.Faces' (1 .. max_Elements => <>);
       face_Count   : long_Index_t  := 0;
 
    begin
-      Open (the_File, In_File, model_Path);
+      open (the_File, In_File, model_File);
 
-      while not End_Of_File (the_File)
+      while not end_of_File (the_File)
       loop
          declare
-            the_Line : constant String := Get_Line (the_File);
+            the_Line : constant String := get_Line (the_File);
          begin
             if the_Line'Length = 0 or else the_Line (1) = '#'
             then
@@ -168,13 +160,12 @@ is
 
             elsif Head (the_Line, 6) = "mtllib"
             then
-               null;   -- tbd
+               null;   -- TODO
 
             elsif Head (the_Line, 2) = "f "
             then
                face_Count             := face_Count + 1;
-               the_Faces (face_Count) :=
-                  to_Facet (the_Line (3 .. the_Line'Last));
+               the_Faces (face_Count) := to_Facet (the_Line (3 .. the_Line'Last));
 
             elsif Head (the_Line, 2) = "v "
             then
@@ -193,30 +184,30 @@ is
 
             elsif Head (the_Line, 2) = "o "
             then
-               null;   -- currently ignored
+               null;   -- Currently ignored.   TODO
 
             elsif Head (the_Line, 2) = "g "
             then
-               null;   -- currently ignored
+               null;   -- Currently ignored.   TODO
 
             elsif Head (the_Line, 2) = "s "
             then
-               null;   -- currently ignored
+               null;   -- Currently ignored.   TODO
 
             else
-               null;   -- currently ignored
+               null;   -- Currently ignored.   TODO
             end if;
          end;
       end loop;
 
-      Close (the_File);
+      close (the_File);
 
 
       declare
-         used_Sites   : constant IO.Sites_view   := new many_Sites'         (the_Sites   (1 ..   site_Count));
-         used_Coords  : constant IO.Coords_view  := new many_Coordinates_2D'(the_Coords  (1 ..  coord_Count));
-         used_Normals : constant IO.Normals_view := new many_Normals'       (the_Normals (1 .. normal_Count));
-         used_Faces   : constant IO.Faces_view   := new IO.Faces'           (the_Faces   (1 ..   face_Count));
+         used_Sites   : constant IO.  Sites_view := new many_Sites'          (the_Sites   (1 ..   site_Count));
+         used_Coords  : constant IO. Coords_view := new many_Coordinates_2D' (the_Coords  (1 ..  coord_Count));
+         used_Normals : constant IO.Normals_view := new many_Normals'        (the_Normals (1 .. normal_Count));
+         used_Faces   : constant IO.  Faces_view := new IO.Faces'            (the_Faces   (1 ..   face_Count));
       begin
          free (the_Sites);
          free (the_Coords);
@@ -242,42 +233,42 @@ is
       use ada.Strings.unbounded;
 
       the_Vertices : Vertices         renames Vertices_of (Self);
-      the_Image    : unbounded_String :=      To_unbounded_String ("f ");
+      the_Image    : unbounded_String :=      to_unbounded_String ("f ");
 
-      function id_Image (Self : in openGL.long_Index_t) return String
+      function id_Image (Self : in long_Index_t) return String
       is
-         use Ada.Strings.Fixed;
+         use ada.Strings.fixed;
       begin
          return Trim (long_Index_t'Image (Self),
-                      Ada.Strings.Left);
+                      ada.Strings.left);
       end id_Image;
 
    begin
-      for Each in the_Vertices'Range
+      for i in the_Vertices'Range
       loop
          append (the_Image,
-                 id_Image (the_Vertices (Each).site_Id));
+                 id_Image (the_Vertices (i).site_Id));
 
-         if the_Vertices (Each).coord_Id = null_Id
+         if the_Vertices (i).coord_Id = null_Id
          then
-            if the_Vertices (Each).normal_Id /= null_Id
+            if the_Vertices (i).normal_Id /= null_Id
             then
                append (the_Image, "/");
             end if;
          else
-            append (the_Image, "/" & id_Image (the_Vertices (Each).coord_Id));
+            append (the_Image, "/" & id_Image (the_Vertices (i).coord_Id));
          end if;
 
-         if the_Vertices (Each).normal_Id /= null_Id
+         if the_Vertices (i).normal_Id /= null_Id
          then
             append (the_Image,
-                    "/" & id_Image (the_Vertices (Each).normal_Id));
+                    "/" & id_Image (the_Vertices (i).normal_Id));
          end if;
 
          append (the_Image, " ");
       end loop;
 
-      return To_String (the_Image);
+      return to_String (the_Image);
    end Image;
 
 
@@ -288,10 +279,10 @@ is
    begin
       case Self.Kind
       is
-         when object_Name     =>   return "o " &     To_String (Self.object_Name);
-         when group_Name      =>   return "g " &     To_String (Self.group_Name);
-         when smoothing_Group =>   return "s"  & Natural'Image (Self.smooth_group_Id);
-         when merging_Group   =>   return "";
+         when object_Name     =>   return "o " & to_String (Self.object_Name);
+         when  group_Name     =>   return "g " & to_String (Self. group_Name);
+         when smoothing_Group =>   return "s"  & Self.smooth_group_Id'Image;
+         when   merging_Group =>   return "";     -- TODO
       end case;
    end Image;
 
@@ -302,16 +293,14 @@ is
    begin
       case Self.Kind
       is
-         when a_Group =>   return Image (Self.Group);
-         when a_Facet =>   return Image (Self.Facet);
+         when a_Group => return Image (Self.Group);
+         when a_Facet => return Image (Self.Facet);
       end case;
    end Image;
 
 
-
-
    --------------
-   --- Deprecated
+   --- Deprecated ~ TODO: Rid this.
    --
 
    type wf_Faces_view is access all wavefront.Faces;
@@ -319,7 +308,8 @@ is
 
    function to_Model (model_Path : in String) return wavefront.Model
    is
-      use Ada.Strings.Fixed;
+      use ada.Strings.fixed,
+          ada.Text_IO;
 
       the_File     : File_Type;
 
@@ -423,15 +413,15 @@ is
 
 
 
-   procedure write (the_Model : in wavefront.Model;   to_file_Path : in String)
+   procedure write (the_Model : in wavefront.Model;   to_File : in String)
    is
-      the_File : Ada.Text_IO.File_Type;
+      use ada.Text_IO;
 
-      package openGL_Real_text_IO is new Ada.Text_IO.Float_IO (openGL.Real);
-      use openGL_Real_text_IO;
+      the_File : File_type;
 
+      use Real_text_IO;
    begin
-      Create (the_File, Out_File, Name => to_file_Path);
+      Create (the_File, Out_File, Name => to_File);
 
       --  Write sites.
       --
