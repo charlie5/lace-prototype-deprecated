@@ -11,7 +11,7 @@ with
 
      openGL.IO.wavefront,
      openGL.IO.collada,
-     openGL.IO.tabulated,
+     openGL.IO.Lat_Long_Radius,
 
      ada.Strings.fixed,
      ada.Containers.hashed_Maps,
@@ -160,7 +160,7 @@ is
       begin
          if    Tail (model_Name, 4) = ".obj" then   return wavefront.to_Model (model_Name);
          elsif Tail (model_Name, 4) = ".dae" then   return collada  .to_Model (model_Name,   (1.0, 1.0, 1.0));
-         elsif Tail (model_Name, 4) = ".tab" then   return tabulated.to_Model (model_Name,   (1.0, 1.0, 1.0));
+         elsif Tail (model_Name, 4) = ".tab" then   return Lat_Long_Radius.to_Model (model_Name,   (1.0, 1.0, 1.0));
          else                                       raise  unsupported_model_Format with "for model => '" & model_Name & "'";
          end if;
       end load_Model;
