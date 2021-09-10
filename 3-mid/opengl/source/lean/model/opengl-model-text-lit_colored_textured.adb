@@ -7,22 +7,20 @@ with
 
      ada.Directories;
 
-
 package body openGL.Model.Text.lit_colored_textured
 is
-
-   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
+   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
 
    ---------
    --- Forge
    --
 
-   function new_Text (Scale    : in math.Vector_3;
+   function new_Text (Scale    : in Vector_3;
                       Text     : in String;
                       Font     : in openGL.Font.font_Id;
-                      Color    : in openGL.lucid_Color;
-                      Centered : in Boolean            := True) return View
+                      Color    : in lucid_Color;
+                      Centered : in Boolean := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);
       Exists    : constant Boolean := ada.Directories.Exists (Font_Name);
@@ -48,7 +46,6 @@ is
    end new_Text;
 
 
-
    --------------
    --- Attributes
    --
@@ -58,13 +55,13 @@ is
    is
    begin
       Self.Text          := new String (1 .. Now'Length);
-      Self.Text.all      := Now;                             -- nb: This results in Text'First = 1.
+      Self.Text.all      := Now;                             -- NB: This results in Text'First = 1.
       Self.needs_Rebuild := True;
    end Text_is;
 
 
    overriding
-   function  Text (Self : in     Item)     return String
+   function Text (Self : in Item) return String
    is
    begin
       return Self.Text.all;
@@ -73,7 +70,7 @@ is
 
 
    overriding
-   function  Font (Self : in     Item) return openGL.Font.view
+   function  Font (Self : in Item) return openGL.Font.view
    is
    begin
       return Self.Font.all'Access;
@@ -83,15 +80,13 @@ is
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                    Fonts    : in     openGL.Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+                                                    Fonts    : in     openGL.Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Textures);
+      pragma unreferenced (Textures);
 
-      text_Scale : constant openGL.Vector_3 := (2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
-                                                2.0 * 4.0 / 95.0,
-                                                1.0/1.0);
---        text_Scale : openGL.Vector_3 := (1.0, 1.0, 1.0);
-
+      text_Scale : constant Vector_3 := (2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
+                                         2.0 * 4.0 / 95.0,
+                                         1.0 / 1.0);
    begin
       if Self.Text.all = ""
       then
@@ -99,22 +94,21 @@ is
       end if;
 
       declare
-         use openGL.Geometry,
-             openGL.Geometry.lit_colored_textured,
-             openGL.Texture;
+         use Geometry,
+             Geometry.lit_colored_textured,
+             Texture;
 
          num_Characters : constant Positive     := Self.Text.all'Length;
          num_Indices    : constant long_Index_t := long_Index_t (num_Characters) * 2 * 3;   -- For each character, 2 triangles each with 3 indices.
          num_Vertices   : constant      Index_t :=      Index_t (num_Characters) * 4;       -- For each character, 2 triangles sharing 4 vertices.
 
          the_Indices    : aliased Indices (1 .. num_Indices);
-         the_Vertices   : aliased openGL.Geometry.lit_colored_textured.Vertex_array := (1 .. num_Vertices => <>);
-
+         the_Vertices   : aliased Geometry.lit_colored_textured.Vertex_array := (1 .. num_Vertices => <>);
 
          --- Procedure to 'add' a character.
          --
 
-         pen_Site       : Vector_3     := openGL.math.Origin_3d;
+         pen_Site       : Vector_3     := Origin_3d;
 
          indices_Count  : long_Index_t := 0;
          vertex_Count   :      Index_t := 0;
@@ -123,7 +117,7 @@ is
          procedure add (the_Character : in Character;
                         Next          : in Character)
          is
-            pragma Unreferenced (Next);
+            pragma unreferenced (Next);
             the_Quad : GlyphImpl.Texture.Quad_t := Self.Font.Quad (the_Character);
          begin
             --- Add indices.
@@ -153,7 +147,7 @@ is
 
             --- Scale the Quad sites and advance to pixel units.
             --
-            the_Quad.NW.Site (1) := the_Quad.NW.Site (1) * text_Scale (1);
+            the_Quad.NW.Site (1) := the_Quad.NW.Site (1) * text_Scale (1);     -- TODO: Scaling should be done by the shader.
             the_Quad.NW.Site (2) := the_Quad.NW.Site (2) * text_Scale (2);
 
             the_Quad.NE.Site (1) := the_Quad.NE.Site (1) * text_Scale (1);
@@ -233,7 +227,7 @@ is
          end add;
 
 
-         use      openGL.Primitive;
+         use      Primitive;
          use type openGL.Font.texture.view;
 
          the_Geometry   : Geometry_view;
@@ -252,14 +246,14 @@ is
          --
          unused := Self.Font.check_Glyphs (Self.Text.all);   -- Make sure the glyphs, for each character in 'Self.Text' exist in the font.
 
-         for Each in Self.Text'Range
+         for i in Self.Text'Range
          loop
-            if Each /= Self.Text'Last
-            then   next_Character := Self.Text (Each + 1);
+            if i /= Self.Text'Last
+            then   next_Character := Self.Text (i + 1);
             else   next_Character := ' ';
             end if;
 
-            add (Self.Text (Each),  next_Character);
+            add (Self.Text (i), next_Character);
          end loop;
 
          -- Center the vertex sites, if requested.
@@ -269,10 +263,10 @@ is
             declare
                the_Bounds : constant openGL.Bounds := Self.Font.BBox (Self.Text.all);
             begin
-               for Each in the_Vertices'Range
+               for i in the_Vertices'Range
                loop
-                  the_Vertices (Each).Site (1) := the_Vertices (Each).Site (1)  -  (the_Bounds.Box.Upper (1) / 2.0) * text_Scale (1);
-                  the_Vertices (Each).Site (2) := the_Vertices (Each).Site (2)  -  (the_Bounds.Box.Upper (2) / 2.0) * text_Scale (2);
+                  the_Vertices (i).Site (1) := the_Vertices (i).Site (1)  -  (the_Bounds.Box.Upper (1) / 2.0) * text_Scale (1);
+                  the_Vertices (i).Site (2) := the_Vertices (i).Site (2)  -  (the_Bounds.Box.Upper (2) / 2.0) * text_Scale (2);
                end loop;
             end;
          end if;
@@ -281,15 +275,14 @@ is
 
          -- Setup the geometry.
          --
-         the_Primitive := Primitive.indexed            .new_Primitive (Triangles,   the_Indices).all'Access;
-         the_Geometry  := Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True).all'Access;
+         the_Primitive := Primitive.indexed            .new_Primitive (Triangles, the_Indices);
+         the_Geometry  := Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True);
 
-         the_Geometry.add          (openGL.Primitive.view (the_Primitive));
+         the_Geometry.add          (Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
-         the_Geometry.Texture_is   (openGL.Texture.Forge.to_Texture (Self.Font.gl_Texture));
---           the_Geometry.is_Transparent;
+         the_Geometry.Texture_is   (Texture.Forge.to_Texture (Self.Font.gl_Texture));
 
-         return (1 => the_Geometry.all'Access);
+         return (1 => Geometry.view (the_Geometry));
       end;
    end to_GL_Geometries;
 
