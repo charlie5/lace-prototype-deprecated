@@ -1,14 +1,12 @@
 with
      openGL.Geometry.colored;
 
-
-package openGL.Model.Grid
+package openGL.Model.grid
 --
 --  Models a grid.
 --
 is
-
-   type Item is new openGL.Model.item with private;
+   type Item is new Model.item with private;
    type View is access all Item'Class;
 
 
@@ -18,26 +16,26 @@ is
 
    function new_grid_Model (Color  : openGL.Color;
                             Width  : Integer;
-                            Height : Integer) return Model.Grid.view;
+                            Height : Integer) return View;
 
    --------------
    --- Attributes
    --
 
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
 private
 
-   type Item is new openGL.Model.item with
+   type Item is new Model.item with
       record
          Color    :        openGL.Color;
-         Vertices : access openGL.geometry.colored.Vertex_array;
+         Vertices : access openGL.Geometry.colored.Vertex_array;
          Geometry : access openGL.Geometry.colored.item'Class;
          Width,
          Height   :        Positive;
       end record;
 
-end openGL.Model.Grid;
+end openGL.Model.grid;
