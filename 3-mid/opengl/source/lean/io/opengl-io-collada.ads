@@ -4,7 +4,6 @@ package openGL.IO.collada
 --
 is
 
-   function to_Model (model_Path : in String;
-                      Scale      : in Vector_3 := (1.0, 1.0, 1.0)) return IO.Model;
+   function to_Model (model_Path : in String) return IO.Model;
 
 end openGL.IO.collada;

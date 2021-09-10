@@ -10,8 +10,7 @@ is
    package std_Collada renames Standard.Collada;
 
 
-   function to_Model (model_Path : in String;
-                      Scale      : in Vector_3 := (1.0, 1.0, 1.0)) return IO.Model
+   function to_Model (model_Path : in String) return IO.Model
    is
       use std_Collada.Library,
           std_Collada.Library.geometries,
@@ -61,9 +60,9 @@ is
 
       for i in 1 .. Integer (site_Count)
       loop
-         the_Sites (long_Index_t (i)) := (collada_Positions (3 * (i - 1) + 1) * Scale (1),
-                                          collada_Positions (3 * (i - 1) + 2) * Scale (2),
-                                          collada_Positions (3 * (i - 1) + 3) * Scale (3));
+         the_Sites (long_Index_t (i)) := (collada_Positions (3 * (i - 1) + 1),
+                                          collada_Positions (3 * (i - 1) + 2),
+                                          collada_Positions (3 * (i - 1) + 3));
       end loop;
 
       for i in 1 .. Integer (normal_Count)
