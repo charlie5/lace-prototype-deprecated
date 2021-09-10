@@ -3,13 +3,11 @@ with
      openGL.Impostor.simple,
      openGL.Impostor.terrain,
 
-     ada.Containers.Generic_Array_Sort,
-     ada.Unchecked_Deallocation;
-
+     ada.Containers.generic_Array_sort,
+     ada.unchecked_Deallocation;
 
 package body openGL.Impostorer
 is
-
    ---------
    --- Forge
    --
@@ -24,13 +22,14 @@ is
 
    procedure destruct (Self : in out Item)
    is
-      procedure free is new ada.Unchecked_Deallocation (impostor_load_Balancer.Slots,
-                                                        impostor_load_Balancer.Slots_view);
+      procedure deallocate is new ada.unchecked_Deallocation (impostor_load_Balancer.Slots,
+                                                              impostor_load_Balancer.Slots_view);
    begin
-      free (Self.impostor_load_Slots);
+      deallocate (Self.impostor_load_Slots);
 
       declare
-         use Impostor;
+         use Impostor,
+             visual_Maps_of_impostor;
 
          the_Impostor : Impostor.view;
          Cursor       : visual_Maps_of_impostor.Cursor := Self.visual_Map_of_imposter.First;
@@ -46,19 +45,19 @@ is
    end destruct;
 
 
-
    --------------
    --- Attributes
    --
 
-   function  impostor_Count (Self : in     Item) return Natural
+   function impostor_Count (Self : in Item) return Natural
    is
    begin
       return Natural (Self.visual_Map_of_imposter.Length);
    end impostor_Count;
 
 
-   function impostor_size_Min (Self : in     Item'Class) return Real
+
+   function impostor_size_Min (Self : in Item'Class) return Real
    is
    begin
       return Self.impostor_size_Min.Value;
@@ -73,7 +72,7 @@ is
 
 
 
-   function  Camera (Self : in     Item'Class)     return access openGL.Camera.item'Class
+   function Camera (Self : in Item'Class) return access openGL.Camera.item'Class
    is
    begin
       return Self.Camera;
@@ -83,25 +82,23 @@ is
    procedure Camera_is (Self : in out Item'Class;   Now : access openGL.Camera.item'Class)
    is
    begin
-      Self.Camera := Now;
+      Self.Camera := Camera_view (Now);
    end Camera_is;
 
 
 
-   function  Renderer (Self : in     Item'Class)     return openGL.Renderer.lean.view
+   function Renderer (Self : in Item'Class) return openGL.Renderer.lean.view
    is
    begin
-      return Self.Renderer;
+      return openGL.Renderer.lean.view (Self.Renderer);
    end Renderer;
 
 
    procedure Renderer_is (Self : in out Item'Class;   Now : in openGL.Renderer.lean.view)
    is
    begin
-      Self.Renderer := Now;
+      Self.Renderer := Renderer_view (Now);
    end Renderer_is;
-
-
 
 
    --------------
@@ -117,18 +114,14 @@ is
       declare
          transposed_camera_Attitude : constant Matrix_3x3 := Transpose (Camera.Spin);
 
-         Impostor_updates           :          openGL.renderer.lean.impostor_Updates (1 .. 20_000);
+         Impostor_updates           :          openGL.Renderer.lean.impostor_Updates (1 .. 20_000);
          impostor_updates_Last      :          Natural    := 0;
 
          procedure add (the_Impostor : in Impostor.view)
          is
          begin
             impostor_updates_Last                    := impostor_updates_Last + 1;
-            Impostor_updates (impostor_updates_Last) := (impostor              => the_Impostor,
---                                                           Width_size            => to_Size (Natural (the_Impostor.current_Width_pixels)),
---                                                           Height_size           => to_Size (Natural (the_Impostor.current_Height_pixels)),
---                                                           Width_size            => Natural (the_Impostor.current_Width_pixels),
---                                                           Height_size           => to_Size (Natural (the_Impostor.current_Height_pixels)),
+            Impostor_updates (impostor_updates_Last) := (Impostor              => the_Impostor,
                                                          current_Width_pixels  => the_Impostor.current_Width_pixels,
                                                          current_Height_pixels => the_Impostor.current_Height_pixels,
 
@@ -152,10 +145,10 @@ is
             Self.impostor_load_Slots (Each).impostors_Count := 0;        -- Empty each slot's contents.
          end loop;
 
-         for Each in the_Visuals'Range
+         for i in the_Visuals'Range
          loop
             declare
-               the_Visual   : openGL.Visual.view renames the_Visuals (Each);
+               the_Visual   : Visual  .view renames the_Visuals (i);
                the_Impostor : Impostor.view;
             begin
                -- Replace the visual with the impostors visual, if the visuals apparent size is small enough.
@@ -164,10 +157,12 @@ is
                then   -- Use impostor.
                   -- Find or create the impostor for the visual.
                   --
+                  declare
+                     use visual_Maps_of_impostor;
                   begin
-                     the_Impostor := Element (Self.visual_Map_of_imposter, the_Visual);
+                     the_Impostor := Self.visual_Map_of_imposter.Element (the_Visual);
                   exception
-                     when Constraint_Error =>   -- No impostor exists for this visual yet, so create one.
+                     when constraint_Error =>   -- No impostor exists for this visual yet, so create one.
                         if the_Visual.is_Terrain
                         then
                            the_Impostor := new Impostor.terrain.item;
@@ -183,7 +178,7 @@ is
                   end;
 
                   declare
-                     use openGL.Visual;
+                     use Visual;
 
                      impostor_Target          : Visual.view renames the_Visual;
 
@@ -205,11 +200,10 @@ is
                               declare  -- Add impostor to appropriate load balancing slot.
                                  target_face_Count : constant Positive := impostor_Target.face_Count;
 
-
                                  function Slot_Id return Positive
                                  is
                                  begin
-                                    for Each in Self.impostor_load_Slots.all'Range
+                                    for Each in Self.impostor_load_Slots'Range
                                     loop
                                        if target_face_Count <= Self.impostor_load_Slots (Each).max_Faces
                                        then
@@ -219,7 +213,6 @@ is
 
                                     raise Program_Error;
                                  end Slot_Id;
-
 
                                  the_Slot : impostor_load_Balancer.Slot renames Self.impostor_load_Slots (Slot_Id);
                               begin
@@ -232,8 +225,7 @@ is
                         the_Impostor.Visual.Site_is (Site_of (the_Visual.all));
                         the_Impostor.Visual.Spin_is (transposed_camera_Attitude);
 
-                        the_Visuals (Each) := the_Impostor.Visual;   -- Replace the visual with the impostor.
-
+                        the_Visuals (i) := the_Impostor.Visual;   -- Replace the visual with the impostor.
                      end if;
                   end;
 
@@ -246,22 +238,20 @@ is
 
          -- Add the load balanced impostor updates.
          --
-         for Each in Self.impostor_load_Slots'Range
+         for i in Self.impostor_load_Slots'Range
          loop
             declare
-               the_Slot    :          impostor_load_Balancer.Slot renames Self.impostor_load_Slots (Each);
-               num_Updates : constant Natural                     :=      Natural'Min (the_Slot.max_Updates,
-                                                                                       the_Slot.impostors_Count);
-
-               function "<" (L, R : in Impostor.view) return Boolean
+               the_Slot    : impostor_load_Balancer.Slot renames Self.impostor_load_Slots (i);
+               num_Updates : constant Natural            :=      Natural'Min (the_Slot.max_Updates,
+                                                                              the_Slot.impostors_Count);
+               function "<" (Left, Right : in Impostor.view) return Boolean
                is
                begin
-                  return   L.target_camera_Distance_less_frame_Count  -- Subtracting 'frame count' allows distant
-                         < R.target_camera_Distance_less_frame_Count; -- targets a chance of update (tbd: need some sort of user-settable scale param to allow for very large scales (space/etc)).
-               end "<";
+                  return   Left .target_camera_Distance_less_frame_Count      -- Subtracting 'frame count' allows distant targets a chance of
+                         < Right.target_camera_Distance_less_frame_Count;     -- update. (TODO: Need some sort of user-settable scale parameter
+               end "<";                                                       --                to allow for very large scales such as space).
 
-
-               procedure sort is new Ada.Containers.Generic_Array_Sort (Positive,
+               procedure sort is new ada.Containers.generic_Array_sort (Positive,
                                                                         Impostor.view,
                                                                         Impostor.views);
             begin
@@ -273,7 +263,6 @@ is
                end loop;
             end;
          end loop;
-
 
          Self.Renderer.queue_Impostor_updates (Impostor_updates (1 .. impostor_updates_Last),
                                                Camera);
