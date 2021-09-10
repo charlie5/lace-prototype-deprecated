@@ -5,11 +5,9 @@ with
 
      ada.unchecked_Deallocation;
 
-
 package body openGL.Model.billboard.textured
 is
-
-   type Geometry_view is access all openGL.Geometry.textured.item'Class;
+   type Geometry_view is access all Geometry.textured.item'Class;
 
 
    ---------
@@ -18,10 +16,10 @@ is
 
    package body Forge
    is
-      function new_Billboard (Scale   : in math.Vector_3;
+      function new_Billboard (Scale   : in Vector_3;
                               Plane   : in billboard.Plane;
-                              Texture : in openGL.asset_Name;
-                              Lucid   : in Boolean          := False) return View
+                              Texture : in asset_Name;
+                              Lucid   : in Boolean := False) return View
       is
          Self : constant View := new Item (Lucid);
       begin
@@ -34,58 +32,55 @@ is
    end Forge;
 
 
-
    --------------
    --- Attributes
    --
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                    Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Textures, Fonts);
+      pragma unreferenced (Textures, Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.textured,
-          openGL.Texture;
+      use Geometry,
+          Geometry.textured,
+          Texture;
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
                                                                        Self.Scale (1),
                                                                        Self.Scale (2));
 
-      function new_Face (Vertices : access openGL.geometry.textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : access Geometry.textured.Vertex_array) return Geometry_view
       is
-         use
-             openGL.Primitive;
+         use Primitive;
 
-         the_Geometry  : constant Geometry_view  := openGL.Geometry.textured.new_Geometry.all'unchecked_Access;
+         the_Geometry  : constant Geometry_view  := Geometry.textured.new_Geometry;
          the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                      the_Indices).all'Access;
       begin
          the_Geometry.Vertices_are (Vertices.all);
-         the_Geometry.add          (the_Primitive);
+         the_Geometry.add (the_Primitive);
          the_Geometry.is_Transparent;
 
          return the_Geometry;
       end new_Face;
 
-
       the_Face : Geometry_view;
 
    begin
       declare
-         the_Vertices : aliased openGL.Geometry.textured.Vertex_array
-           := (1 => (site => the_Sites (1),   coords => Self.texture_Coords (1)),
-               2 => (site => the_Sites (2),   coords => Self.texture_Coords (2)),
-               3 => (site => the_Sites (3),   coords => Self.texture_Coords (3)),
-               4 => (site => the_Sites (4),   coords => Self.texture_Coords (4)));
+         the_Vertices : aliased Geometry.textured.Vertex_array
+                                  := (1 => (site => the_Sites (1),  coords => Self.texture_Coords (1)),
+                                      2 => (site => the_Sites (2),  coords => Self.texture_Coords (2)),
+                                      3 => (site => the_Sites (3),  coords => Self.texture_Coords (3)),
+                                      4 => (site => the_Sites (4),  coords => Self.texture_Coords (4)));
       begin
-         the_Face := new_Face (vertices => the_Vertices'Access);
+         the_Face := new_Face (Vertices => the_Vertices'Access);
 
          if Self.texture_Name /= null_Asset
          then
-            Self.Texture := io.to_Texture (Self.texture_Name);
+            Self.Texture := IO.to_Texture (Self.texture_Name);
          end if;
 
          if Self.Lucid
@@ -94,7 +89,7 @@ is
             then
                if Self.Texture /= null_Object
                then
-                  openGL.Texture.set_Image (Self.Texture, Self.lucid_Image.all);
+                  set_Image (Self.Texture, Self.lucid_Image.all);
                else
                   Self.Texture := Texture.Forge.to_Texture (Self.lucid_Image.all);
                end if;
@@ -104,7 +99,7 @@ is
             then
                if Self.Texture /= null_Object
                then
-                  openGL.Texture.set_Image (Self.Texture, Self.Image.all);
+                  Texture.set_Image (Self.Texture, Self.Image.all);
                else
                   Self.Texture := Texture.Forge.to_Texture (Self.Image.all);
                end if;
@@ -126,7 +121,7 @@ is
    is
    begin
       Self.texture_Coords := Now;
-      Self.needs_Rebuild := True;
+      Self.needs_Rebuild  := True;
    end Texture_Coords_are;
 
 
@@ -134,20 +129,20 @@ is
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.Scale := Now;
+      Self.Scale         := Now;
       Self.needs_Rebuild := True;
    end Scale_is;
 
 
 
-   procedure Image_is (Self : in out Item;   Now : in openGL.Image)
+   procedure Image_is (Self : in out Item;   Now : in Image)
    is
-      procedure free is new ada.unchecked_Deallocation (Image,
-                                                        Image_view);
+      procedure deallocate is new ada.unchecked_Deallocation (Image,
+                                                              Image_view);
    begin
       if Self.Image = null
       then
-         Self.Image := new openGL.Image' (Now);
+         Self.Image := new Image' (Now);
 
       elsif Self.Image'Length (1) = Now'Length (1)
         and Self.Image'Length (2) = Now'Length (2)
@@ -155,8 +150,8 @@ is
          Self.Image.all := Now;
 
       else
-         free (Self.Image);
-         Self.Image := new openGL.Image' (Now);
+         deallocate (Self.Image);
+         Self.Image := new Image' (Now);
       end if;
 
       Self.needs_Rebuild := True;
@@ -164,14 +159,14 @@ is
 
 
 
-   procedure Image_is (Self : in out Item;   Now : in openGL.lucid_Image)
+   procedure Image_is (Self : in out Item;   Now : in lucid_Image)
    is
-      procedure free is new ada.unchecked_Deallocation (lucid_Image,
-                                                        lucid_Image_view);
+      procedure deallocate is new ada.unchecked_Deallocation (lucid_Image,
+                                                              lucid_Image_view);
    begin
       if Self.lucid_Image = null
       then
-         Self.lucid_Image := new openGL.lucid_Image' (Now);
+         Self.lucid_Image := new lucid_Image' (Now);
 
       elsif Self.lucid_Image'Length (1) = Now'Length (1)
         and Self.lucid_Image'Length (2) = Now'Length (2)
@@ -179,8 +174,8 @@ is
          Self.lucid_Image.all := Now;
 
       else
-         free (Self.lucid_Image);
-         Self.lucid_Image := new openGL.lucid_Image' (Now);
+         deallocate (Self.lucid_Image);
+         Self.lucid_Image := new lucid_Image' (Now);
       end if;
 
       Self.needs_Rebuild := True;
