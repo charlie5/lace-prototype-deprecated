@@ -1,10 +1,10 @@
 package openGL.Model.sphere
 --
---  Models a sphere.
+--  Provides an abstract model of a sphere.
 --
 is
 
-   type Item is abstract new openGL.Model.item with
+   type Item is abstract new Model.item with
       record
          null;
       end record;
@@ -16,6 +16,6 @@ is
    --
 
    overriding
-   function  Bounds (Self : in Item) return openGL.Bounds;
+   function Bounds (Self : in Item) return openGL.Bounds;
 
 end openGL.Model.sphere;
