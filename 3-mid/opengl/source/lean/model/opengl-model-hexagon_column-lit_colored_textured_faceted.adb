@@ -5,11 +5,10 @@ with
 
      float_math.Algebra.linear.d3;
 
-
 package body openGL.Model.Hexagon_Column.lit_colored_textured_faceted
 is
 
-   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
+   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
 
    ---------
@@ -19,7 +18,7 @@ is
    function new_hexagon_Column (Radius : in Real;
                                 Height : in Real;
                                 Upper,
-                                Lower  : in lit_colored_textured_faceted.hex_Face;
+                                Lower  : in   hex_Face;
                                 Shaft  : in shaft_Face) return View
    is
       Self : constant View := new Item;
@@ -28,11 +27,10 @@ is
       Self.Height     := Height;
       Self.upper_Face := Upper;
       Self.lower_Face := Lower;
-      Self.shaft_Face := Shaft;
+      Self.Shaft      := Shaft;
 
       return Self;
    end new_hexagon_Column;
-
 
 
    --------------
@@ -40,27 +38,27 @@ is
    --
 
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Fonts);
+      pragma unreferenced (Fonts);
 
-      use openGL.Geometry.lit_colored_textured,
-          openGL.Model.hexagon,
-          openGL.Texture;
+      use Geometry.lit_colored_textured,
+          Model.hexagon,
+          Texture;
 
-      shaft_Height  : constant openGL.Real     := Self.Height;
-      height_Offset : constant openGL.Vector_3 := (0.0,  shaft_Height / 2.0,  0.0);
+      shaft_Height  : constant Real     := Self.Height;
+      height_Offset : constant Vector_3 := (0.0, shaft_Height / 2.0, 0.0);
 
-      mid_Sites     : constant hexagon.Sites   := vertex_Sites (Self.Radius);
-      upper_Sites   :          hexagon.Sites   := mid_Sites;
-      lower_Sites   :          hexagon.Sites   := mid_Sites;
+      mid_Sites     : constant hexagon.Sites := vertex_Sites (Self.Radius);
+      upper_Sites   :          hexagon.Sites := mid_Sites;
+      lower_Sites   :          hexagon.Sites := mid_Sites;
 
 
-      function new_hexagon_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array;
+      function new_hexagon_Face (Vertices : access Geometry.lit_colored_textured.Vertex_array;
                                  Flip     : in     Boolean := False) return Geometry_view
       is
-         use openGL.Primitive;
+         use Primitive;
 
          function the_Indices return Indices
          is
@@ -72,31 +70,31 @@ is
          end the_Indices;
 
          the_Geometry  : constant Geometry_view
-           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'unchecked_Access;
+           := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
 
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan,
-                                               the_Indices).all'Access;
+                                               the_Indices);
       begin
          the_Geometry.Vertices_are (Vertices.all);
-         the_Geometry.add          (openGL.Primitive.view (the_Primitive));
+         the_Geometry.add (Primitive.view (the_Primitive));
 
          return the_Geometry;
       end new_hexagon_Face;
 
 
-      function new_shaft_Face (Vertices : access openGL.geometry.lit_colored_textured.Vertex_array)
+      function new_shaft_Face (Vertices : access Geometry.lit_colored_textured.Vertex_array)
                                return Geometry_view
       is
-         use openGL.Primitive;
+         use Primitive;
 
          the_Indices   : constant Indices := (1, 2, 3, 4);
 
          the_Geometry  : constant Geometry_view
-           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'unchecked_Access;
+           := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
 
          the_Primitive : constant Primitive.view
-           := Primitive.indexed.new_Primitive (triangle_Strip,  the_Indices).all'Access;
+           := Primitive.indexed.new_Primitive (triangle_Strip, the_Indices).all'Access;
       begin
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (the_Primitive);
@@ -117,20 +115,19 @@ is
          lower_Sites (Each) := lower_Sites (Each) - height_Offset;
       end loop;
 
-
       --  Upper
       --
       declare
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1 => (site => height_Offset,     normal => Normal,   color => self.upper_Face.center_Color,   coords => (0.0, 0.0)),
-               2 => (site => upper_Sites (1),   normal => Normal,   color => self.upper_Face.Colors (1),     coords => (0.0, 0.0)),
-               3 => (site => upper_Sites (2),   normal => Normal,   color => self.upper_Face.Colors (2),     coords => (1.0, 0.0)),
-               4 => (site => upper_Sites (3),   normal => Normal,   color => self.upper_Face.Colors (3),     coords => (1.0, 1.0)),
-               5 => (site => upper_Sites (4),   normal => Normal,   color => self.upper_Face.Colors (4),     coords => (0.0, 1.0)),
-               6 => (site => upper_Sites (5),   normal => Normal,   color => self.upper_Face.Colors (5),     coords => (0.0, 1.0)),
-               7 => (site => upper_Sites (6),   normal => Normal,   color => self.upper_Face.Colors (6),     coords => (0.0, 1.0)));
+         the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1 => (Site => height_Offset,     Normal => Normal,   Color => self.upper_Face.center_Color,   Coords => (0.0, 0.0)),
+               2 => (Site => upper_Sites (1),   Normal => Normal,   Color => self.upper_Face.Colors (1),     Coords => (0.0, 0.0)),
+               3 => (Site => upper_Sites (2),   Normal => Normal,   Color => self.upper_Face.Colors (2),     Coords => (1.0, 0.0)),
+               4 => (Site => upper_Sites (3),   Normal => Normal,   Color => self.upper_Face.Colors (3),     Coords => (1.0, 1.0)),
+               5 => (Site => upper_Sites (4),   Normal => Normal,   Color => self.upper_Face.Colors (4),     Coords => (0.0, 1.0)),
+               6 => (Site => upper_Sites (5),   Normal => Normal,   Color => self.upper_Face.Colors (5),     Coords => (0.0, 1.0)),
+               7 => (Site => upper_Sites (6),   Normal => Normal,   Color => self.upper_Face.Colors (6),     Coords => (0.0, 1.0)));
       begin
-         upper_Face := new_hexagon_Face (vertices => the_Vertices'Access);
+         upper_Face := new_hexagon_Face (Vertices => the_Vertices'Access);
 
          if Self.upper_Face.Texture /= null_Asset
          then
@@ -138,21 +135,20 @@ is
          end if;
       end;
 
-
       --  Lower
       --
       declare
-         the_Vertices : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1 => (site => -height_Offset,    normal => -Normal,   color => self.upper_Face.center_Color,   coords => (0.0, 0.0)),
-               2 => (site =>  lower_Sites (1),  normal => -Normal,   color => self.upper_Face.Colors (1),     coords => (0.0, 0.0)),
-               3 => (site =>  lower_Sites (2),  normal => -Normal,   color => self.upper_Face.Colors (2),     coords => (1.0, 0.0)),
-               4 => (site =>  lower_Sites (3),  normal => -Normal,   color => self.upper_Face.Colors (3),     coords => (1.0, 1.0)),
-               5 => (site =>  lower_Sites (4),  normal => -Normal,   color => self.upper_Face.Colors (4),     coords => (0.0, 1.0)),
-               6 => (site =>  lower_Sites (5),  normal => -Normal,   color => self.upper_Face.Colors (5),     coords => (0.0, 1.0)),
-               7 => (site =>  lower_Sites (6),  normal => -Normal,   color => self.upper_Face.Colors (6),     coords => (0.0, 1.0)));
+         the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1 => (Site => -height_Offset,    Normal => -Normal,   Color => self.upper_Face.center_Color,   Coords => (0.0, 0.0)),
+               2 => (Site =>  lower_Sites (1),  Normal => -Normal,   Color => self.upper_Face.Colors (1),     Coords => (0.0, 0.0)),
+               3 => (Site =>  lower_Sites (2),  Normal => -Normal,   Color => self.upper_Face.Colors (2),     Coords => (1.0, 0.0)),
+               4 => (Site =>  lower_Sites (3),  Normal => -Normal,   Color => self.upper_Face.Colors (3),     Coords => (1.0, 1.0)),
+               5 => (Site =>  lower_Sites (4),  Normal => -Normal,   Color => self.upper_Face.Colors (4),     Coords => (0.0, 1.0)),
+               6 => (Site =>  lower_Sites (5),  Normal => -Normal,   Color => self.upper_Face.Colors (5),     Coords => (0.0, 1.0)),
+               7 => (Site =>  lower_Sites (6),  Normal => -Normal,   Color => self.upper_Face.Colors (6),     Coords => (0.0, 1.0)));
       begin
          lower_Face := new_hexagon_Face (vertices => the_Vertices'Access,
-                                        flip      => True);
+                                         flip     => True);
 
          if Self.upper_Face.Texture /= null_Asset
          then
@@ -164,15 +160,15 @@ is
       --  Shaft
       --
       declare
-         type shaft_Normals is array (1 .. 6) of openGL.Vector_3;
+         type shaft_Normals is array (1 .. 6) of Vector_3;
 
 
          function get_Normals return shaft_Normals
          is
-            use math.Algebra.linear.d3;
+            use linear_Algebra_3D;
 
-            Rotation   : constant math.Matrix_3x3 := y_Rotation_from (math.to_Radians (60.0));
-            the_Normal :          math.Vector_3   := (0.0, 0.0, -1.0);
+            Rotation   : constant Matrix_3x3   := y_Rotation_from (to_Radians (60.0));
+            the_Normal :          Vector_3     := (0.0, 0.0, -1.0);
             Result     :          shaft_Normals;
          begin
             Result (2) := the_Normal;
@@ -196,62 +192,60 @@ is
          end get_Normals;
 
 
-         Normals        : constant shaft_Normals := get_Normals;
+         Normals : constant shaft_Normals := get_Normals;
+         s_Delta : constant               := 1.0 / 6.0;
 
-         s_Delta        : constant := 1.0 / 6.0;
+         the_Vertices_1 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (1),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (0.0,           1.0)),
+               2  => (Site => lower_Sites (1),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (0.0,           0.0)),
+               3  => (Site => upper_Sites (2),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (s_Delta,       1.0)),
+               4  => (Site => lower_Sites (2),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (s_Delta,       0.0)));
 
-         the_Vertices_1 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (1),   normal => Normals (1),   color => self.shaft_Face.Color,   coords => (0.0,           1.0)),
-               2  => (site => lower_Sites (1),   normal => Normals (1),   color => self.shaft_Face.Color,   coords => (0.0,           0.0)),
-               3  => (site => upper_Sites (2),   normal => Normals (1),   color => self.shaft_Face.Color,   coords => (s_Delta,       1.0)),
-               4  => (site => lower_Sites (2),   normal => Normals (1),   color => self.shaft_Face.Color,   coords => (s_Delta,       0.0)));
+         the_Vertices_2 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (2),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (s_Delta,       1.0)),
+               2  => (Site => lower_Sites (2),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (s_Delta,       0.0)),
+               3  => (Site => upper_Sites (3),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (s_Delta * 2.0, 1.0)),
+               4  => (Site => lower_Sites (3),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (s_Delta * 2.0, 0.0)));
 
-         the_Vertices_2 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (2),   normal => Normals (2),   color => self.shaft_Face.Color,   coords => (s_Delta,       1.0)),
-               2  => (site => lower_Sites (2),   normal => Normals (2),   color => self.shaft_Face.Color,   coords => (s_Delta,       0.0)),
-               3  => (site => upper_Sites (3),   normal => Normals (2),   color => self.shaft_Face.Color,   coords => (s_Delta * 2.0, 1.0)),
-               4  => (site => lower_Sites (3),   normal => Normals (2),   color => self.shaft_Face.Color,   coords => (s_Delta * 2.0, 0.0)));
+         the_Vertices_3 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (3),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (s_Delta * 2.0, 1.0)),
+               2  => (Site => lower_Sites (3),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (s_Delta * 2.0, 0.0)),
+               3  => (Site => upper_Sites (4),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (s_Delta * 3.0, 1.0)),
+               4  => (Site => lower_Sites (4),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (s_Delta * 3.0, 0.0)));
 
-         the_Vertices_3 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (3),   normal => Normals (3),   color => self.shaft_Face.Color,   coords => (s_Delta * 2.0, 1.0)),
-               2  => (site => lower_Sites (3),   normal => Normals (3),   color => self.shaft_Face.Color,   coords => (s_Delta * 2.0, 0.0)),
-               3  => (site => upper_Sites (4),   normal => Normals (3),   color => self.shaft_Face.Color,   coords => (s_Delta * 3.0, 1.0)),
-               4  => (site => lower_Sites (4),   normal => Normals (3),   color => self.shaft_Face.Color,   coords => (s_Delta * 3.0, 0.0)));
+         the_Vertices_4 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (4),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (s_Delta * 3.0, 1.0)),
+               2  => (Site => lower_Sites (4),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (s_Delta * 3.0, 0.0)),
+               3  => (Site => upper_Sites (5),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (s_Delta * 4.0, 1.0)),
+               4  => (Site => lower_Sites (5),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (s_Delta * 4.0, 0.0)));
 
-         the_Vertices_4 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (4),   normal => Normals (4),   color => self.shaft_Face.Color,   coords => (s_Delta * 3.0, 1.0)),
-               2  => (site => lower_Sites (4),   normal => Normals (4),   color => self.shaft_Face.Color,   coords => (s_Delta * 3.0, 0.0)),
-               3  => (site => upper_Sites (5),   normal => Normals (4),   color => self.shaft_Face.Color,   coords => (s_Delta * 4.0, 1.0)),
-               4  => (site => lower_Sites (5),   normal => Normals (4),   color => self.shaft_Face.Color,   coords => (s_Delta * 4.0, 0.0)));
+         the_Vertices_5 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (5),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (s_Delta * 4.0, 1.0)),
+               2  => (Site => lower_Sites (5),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (s_Delta * 4.0, 0.0)),
+               3  => (Site => upper_Sites (6),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (s_Delta * 5.0, 1.0)),
+               4  => (Site => lower_Sites (6),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (s_Delta * 5.0, 0.0)));
 
-         the_Vertices_5 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (5),   normal => Normals (5),   color => self.shaft_Face.Color,   coords => (s_Delta * 4.0, 1.0)),
-               2  => (site => lower_Sites (5),   normal => Normals (5),   color => self.shaft_Face.Color,   coords => (s_Delta * 4.0, 0.0)),
-               3  => (site => upper_Sites (6),   normal => Normals (5),   color => self.shaft_Face.Color,   coords => (s_Delta * 5.0, 1.0)),
-               4  => (site => lower_Sites (6),   normal => Normals (5),   color => self.shaft_Face.Color,   coords => (s_Delta * 5.0, 0.0)));
+         the_Vertices_6 : aliased Geometry.lit_colored_textured.Vertex_array
+           := (1  => (Site => upper_Sites (6),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (s_Delta * 5.0, 1.0)),
+               2  => (Site => lower_Sites (6),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (s_Delta * 5.0, 0.0)),
+               3  => (Site => upper_Sites (1),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (1.0,           1.0)),
+               4  => (Site => lower_Sites (1),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (1.0,           0.0)));
 
-         the_Vertices_6 : aliased openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1  => (site => upper_Sites (6),   normal => Normals (6),   color => self.shaft_Face.Color,   coords => (s_Delta * 5.0, 1.0)),
-               2  => (site => lower_Sites (6),   normal => Normals (6),   color => self.shaft_Face.Color,   coords => (s_Delta * 5.0, 0.0)),
-               3  => (site => upper_Sites (1),   normal => Normals (6),   color => self.shaft_Face.Color,   coords => (1.0,           1.0)),
-               4  => (site => lower_Sites (1),   normal => Normals (6),   color => self.shaft_Face.Color,   coords => (1.0,           0.0)));
-
-         the_Vertices  : constant array (1 .. 6) of access openGL.geometry.lit_colored_textured.Vertex_array
+         the_Vertices  : constant array (1 .. 6) of access Geometry.lit_colored_textured.Vertex_array
            := (the_Vertices_1'Access,
                the_Vertices_2'Access,
                the_Vertices_3'Access,
                the_Vertices_4'Access,
                the_Vertices_5'Access,
                the_Vertices_6'Access);
-
       begin
-         for Each in shaft_Faces'Range
+         for i in shaft_Faces'Range
          loop
-            shaft_Faces (Each) := new_shaft_Face (vertices => the_Vertices (Each));
+            shaft_Faces (i) := new_shaft_Face (vertices => the_Vertices (i));
 
-            if Self.shaft_Face.Texture /= null_Asset
+            if Self.shaft.Texture /= null_Asset
             then
-               shaft_Faces (Each).Texture_is (Textures.fetch (Self.shaft_Face.Texture));
+               shaft_Faces (i).Texture_is (Textures.fetch (Self.shaft.Texture));
             end if;
          end loop;
       end;
