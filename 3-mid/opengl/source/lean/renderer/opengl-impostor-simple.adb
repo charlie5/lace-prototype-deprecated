@@ -4,10 +4,8 @@ with
 
      ada.unchecked_Deallocation;
 
-
 package body openGL.Impostor.simple
 is
-
 
    procedure free (Self : in out View)
    is
@@ -15,16 +13,15 @@ is
    begin
       if Self /= null
       then
-         destroy (Self.all);
+         destroy    (Self.all);
+         deallocate (Self);
       end if;
-
-      deallocate (Self);
    end free;
 
 
 
    overriding
-   function current_Camera_look_at_Rotation (Self : in Item) return MAtrix_3x3
+   function current_Camera_look_at_Rotation (Self : in Item) return Matrix_3x3
    is
    begin
       return Self.current_Camera_look_at_Rotation;
@@ -33,19 +30,19 @@ is
 
 
    overriding
-   function update_Required (Self : access Item;   the_Camera : access openGL.Camera.item'Class) return Boolean
+   function update_Required (Self : access Item;   the_Camera : access Camera.item'Class) return Boolean
    is
       use linear_Algebra_3d;
    begin
       -- Look directly at target so it will be rendered in the centre of the viewport.
       --
-      Self.current_Camera_look_at_Rotation := get_Rotation          (look_at (the_Camera.Site,
-                                                                              get_Translation (Self.Target.Transform),
-                                                                              (0.0, 1.0, 0.0)));
-      Self.current_pixel_Region            := Self.get_pixel_Region (camera_Spin                 => Self.current_Camera_look_at_Rotation,
-                                                                     camera_Site                 => the_Camera.Site,
-                                                                     camera_projection_Transform => the_Camera.projection_Transform,
-                                                                     camera_Viewport             => the_Camera.Viewport);
+      Self.current_Camera_look_at_Rotation := get_Rotation (look_at (the_Camera.Site,
+                                                                     get_Translation (Self.Target.Transform),
+                                                                     (0.0, 1.0, 0.0)));
+      Self.current_pixel_Region := Self.get_pixel_Region (camera_Spin                 => Self.current_Camera_look_at_Rotation,
+                                                          camera_Site                 => the_Camera.Site,
+                                                          camera_projection_Transform => the_Camera.projection_Transform,
+                                                          camera_Viewport             => the_Camera.Viewport);
       declare
          update_Required : Boolean := Self.general_Update_required (the_Camera.Site,
                                                                     Self.current_pixel_Region);
@@ -75,7 +72,7 @@ is
 
 
    overriding
-   procedure pre_update (Self : in out Item;   the_Camera : access openGL.Camera.item'Class)
+   procedure pre_update (Self : in out Item;   the_Camera : access Camera.item'Class)
    is
    begin
       Self.camera_world_Rotation_original := the_Camera.Spin;
@@ -86,14 +83,14 @@ is
 
 
    overriding
-   procedure update (Self : in out Item;   the_Camera   : access openGL.Camera.item'Class;
-                                           texture_Pool : in     openGL.Texture.Pool_view)
+   procedure update (Self : in out Item;   the_Camera   : access Camera.item'Class;
+                                           texture_Pool : in     Texture.Pool_view)
    is
       world_Rotation_original : constant Matrix_3x3 := the_Camera.Spin;
    begin
       the_Camera.Spin_is (Self.current_Camera_look_at_Rotation);
 
-      openGL.Impostor.item (Self).update (the_Camera, texture_Pool);   -- Base class 'update'.
+      Impostor.item (Self).update (the_Camera, texture_Pool);   -- Base class 'update'.
 
       the_Camera.Spin_is (world_Rotation_original);
    end update;
@@ -101,11 +98,11 @@ is
 
 
    overriding
-   procedure post_update (Self : in out Item;   the_Camera   : access openGL.Camera.item'Class)
+   procedure post_update (Self : in out Item;   the_Camera : access Camera.item'Class)
    is
    begin
       the_Camera.Spin_is (Self.camera_world_Rotation_original);
    end post_update;
 
 
-end openGL.Impostor.Simple;
+end openGL.Impostor.simple;
