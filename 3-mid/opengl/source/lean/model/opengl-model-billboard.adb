@@ -1,17 +1,16 @@
 package body openGL.Model.billboard
 is
-
    --------------
    --- Attributes
    --
 
-   function Width  (Self : in Item) return math.Real
+   function Width (Self : in Item) return Real
    is
    begin
       case Self.Plane
       is
          when xy =>
-            return Self.Scale (1);
+            return Self.Scale (1);     -- TODO: Use own width and height dimensions record field instead of model 'Scale'.
 
          when xz =>
             return Self.Scale (1);
@@ -23,13 +22,13 @@ is
 
 
 
-   function Height  (Self : in Item) return math.Real
+   function Height (Self : in Item) return Real
    is
    begin
       case Self.Plane
       is
          when xy =>
-            return Self.Scale (2);
+            return Self.Scale (2);     -- TODO: Use own width and height dimensions record field instead of model 'Scale'.
 
          when xz =>
             return Self.Scale (3);
@@ -42,10 +41,10 @@ is
 
 
    function vertex_Sites (for_Plane     : in Plane;
-                          Width, Height : in math.Real) return Sites
+                          Width, Height : in Real) return Sites
    is
-      half_Width  : constant openGL.Real            := openGL.Real (Width  / 2.0);
-      half_Height : constant openGL.Real            := openGL.Real (Height / 2.0);
+      half_Width  : constant openGL.Real := Width  / 2.0;
+      half_Height : constant openGL.Real := Height / 2.0;
 
       the_Sites   : constant array (Plane) of Sites := (xy => ((-half_Width, -half_Height,         0.0),
                                                                ( half_Width, -half_Height,         0.0),
