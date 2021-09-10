@@ -18,19 +18,18 @@ with
 
      ada.unchecked_Deallocation;
 
-
 package body openGL.Model.any
 is
 
-   type lit_textured_Geometry_view         is access all openGL.Geometry.lit_textured.item'class;
-   type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_colored_textured_skinned.item'class;
+   type lit_textured_Geometry_view         is access all openGL.Geometry.lit_textured                .item'Class;
+   type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_colored_textured_skinned.item'Class;
 
 
    ---------
    --- Forge
    --
 
-   function to_Model (Scale            : in math.Vector_3;
+   function to_Model (Scale            : in Vector_3;
                       Model            : in asset_Name;
                       Texture          : in asset_Name;
                       Texture_is_lucid : in Boolean) return openGL.Model.any.item
@@ -40,7 +39,7 @@ is
                                               Model,
                                               Texture,
                                               Texture_is_lucid,
-                                              geometry => null)
+                                              Geometry => null)
       do
          Self.define (Scale);
          Self.Bounds.Ball := 1.0;
@@ -48,7 +47,7 @@ is
    end to_Model;
 
 
-   function new_Model (Scale            : in math.Vector_3;
+   function new_Model (Scale            : in Vector_3;
                        Model            : in asset_Name;
                        Texture          : in asset_Name;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view
@@ -58,49 +57,49 @@ is
    end new_Model;
 
 
-
    --------------
    --- Attributes
    --
 
-   use      openGL.IO;
+   use openGL.IO;
 
 
-   function Hash (Self : in io.Vertex) return ada.containers.Hash_Type
+   function Hash (Self : in io.Vertex) return ada.Containers.Hash_type
    is
    begin
-      return ada.containers.Hash_Type (Self.site_Id + 3*Self.coord_Id + 5*Self.normal_Id + 7*Self.weights_Id);
+      return ada.Containers.Hash_type (Self.site_Id + 3 * Self.coord_Id + 5 * Self.normal_Id + 7 * Self.weights_Id);
    end Hash;
 
    package io_vertex_Maps_of_gl_vertex_id is new ada.containers.Hashed_Maps (io.Vertex,
                                                                              long_Index_t,
                                                                              Hash,
                                                                              "=");
+   subtype io_vertex_Map_of_gl_vertex_id is io_vertex_Maps_of_gl_vertex_id.Map;
+
    type any_Vertex is
       record
          Site   : Vector_3;
          Normal : Vector_3;
          Coords : Coordinate_2D;
-         Bones  : bone_weights (1 .. 4);
+         Bones  : bone_Weights (1 .. 4);
       end record;
 
    type any_Vertex_array      is array (long_Index_t range <>) of aliased any_Vertex;
    type any_Vertex_array_view is access all any_Vertex_array;
 
-   procedure free is new ada.Unchecked_Deallocation (any_Vertex_array,
-                                                     any_Vertex_array_view);
+   procedure deallocate is new ada.unchecked_Deallocation (any_Vertex_array,
+                                                           any_Vertex_array_view);
 
 
-
-   function to_lit_textured_Vertices (Self : in any_Vertex_array) return openGL.geometry.lit_textured.Vertex_array
+   function to_lit_textured_Vertices (Self : in any_Vertex_array) return Geometry.lit_textured.Vertex_array
    is
-      Result : openGL.geometry.lit_textured.Vertex_array (Self'Range);
+      Result : Geometry.lit_textured.Vertex_array (Self'Range);
    begin
-      for Each in Self'Range
+      for i in Self'Range
       loop
-         Result (Each) := (site   => Self (Each).Site,
-                           normal => Self (Each).Normal,
-                           coords => Self (Each).Coords);
+         Result (i) := (site   => Self (i).Site,
+                        normal => Self (i).Normal,
+                        coords => Self (i).Coords);
       end loop;
 
       return Result;
@@ -108,25 +107,25 @@ is
 
 
 
-   function to_lit_textured_skinned_Vertices (Self : in any_Vertex_array) return openGL.Geometry.lit_colored_textured_skinned.Vertex_array
+   function to_lit_textured_skinned_Vertices (Self : in any_Vertex_array) return Geometry.lit_colored_textured_skinned.Vertex_array
    is
-      use openGL.Palette;
-      Result : openGL.geometry.lit_colored_textured_skinned.Vertex_array (Self'Range);
+      use Palette;
+      Result : Geometry.lit_colored_textured_skinned.Vertex_array (Self'Range);
    begin
-      for Each in Self'Range
+      for i in Self'Range
       loop
-         Result (Each) := (site         => Self (Each).Site,
-                           normal       => Self (Each).Normal,
-                           color        => (White, Opaque),
-                           coords       => Self (Each).Coords,
-                           bone_Ids     => (1 => openGL.Real (Self (Each).Bones (1).Bone),
-                                            2 => openGL.Real (Self (Each).Bones (2).Bone),
-                                            3 => openGL.Real (Self (Each).Bones (3).Bone),
-                                            4 => openGL.Real (Self (Each).Bones (4).Bone)),
-                           bone_Weights => (1 => Self (Each).Bones (1).Weight,
-                                            2 => Self (Each).Bones (2).Weight,
-                                            3 => Self (Each).Bones (3).Weight,
-                                            4 => Self (Each).Bones (4).Weight));
+         Result (i) := (site         => Self (i).Site,
+                        normal       => Self (i).Normal,
+                        coords       => Self (i).Coords,
+                        color        => (White, Opaque),
+                        bone_Ids     => (1 => Real (Self (i).Bones (1).Bone),
+                                         2 => Real (Self (i).Bones (2).Bone),
+                                         3 => Real (Self (i).Bones (3).Bone),
+                                         4 => Real (Self (i).Bones (4).Bone)),
+                        bone_Weights => (1 =>       Self (i).Bones (1).Weight,
+                                         2 =>       Self (i).Bones (2).Weight,
+                                         3 =>       Self (i).Bones (3).Weight,
+                                         4 =>       Self (i).Bones (4).Weight));
       end loop;
 
       return Result;
@@ -136,46 +135,43 @@ is
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                    Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Textures, Fonts);
-
+      pragma unreferenced (Textures, Fonts);
    begin
       Self.build_GL_Geometries;
-      return (1 => openGL.Geometry.view (Self.Geometry));
+      return (1 => Self.Geometry);
    end to_GL_Geometries;
 
 
 
    procedure build_GL_Geometries (Self : in out Item)
    is
-      use openGL.Geometry;
+      use Geometry;
 
       model_Name : constant String := to_String (Self.Model);
 
-
-      function load_Model return openGL.io.Model
+      function load_Model return io.Model
       is
          use ada.Strings.fixed;
       begin
-         if    Tail (model_Name, 4) = ".obj" then   return wavefront.to_Model (model_Name);
-         elsif Tail (model_Name, 4) = ".dae" then   return collada  .to_Model (model_Name,   (1.0, 1.0, 1.0));
+         if    Tail (model_Name, 4) = ".obj" then   return wavefront      .to_Model (model_Name);
+         elsif Tail (model_Name, 4) = ".dae" then   return collada        .to_Model (model_Name);
          elsif Tail (model_Name, 4) = ".tab" then   return lat_long_Radius.to_Model (model_Name);
-         else                                       raise  unsupported_model_Format with "for model => '" & model_Name & "'";
+         else                                       raise  unsupported_model_Format with "Model => '" & model_Name & "'";
          end if;
       end load_Model;
 
-      the_Model     : openGL.io.Model       := load_Model;
-      the_Map       : io_vertex_Maps_of_gl_vertex_id.Map;
+      the_Model     : openGL.io.Model := load_Model;
+      the_Map       : io_vertex_Map_of_gl_vertex_id;
 
       the_Vertices  : any_Vertex_array_view := new any_Vertex_array' (1 .. 100_000 => <>);
       vertex_Count  : openGL.long_Index_t   := 0;
 
       tri_Count     : Index_t := 0;
-      normals_Known : Boolean := False;
+      Normals_known : Boolean := False;
 
-      --  nb: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
-      --
+      --  TODO: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
 
    begin
       Self.Bounds := null_Bounds;
@@ -183,16 +179,16 @@ is
       --  1st pass: - Set our openGL face vertices.
       --            - Build 'io vertex' to 'openGL face vertex_Id' map.
       --
-      for Each in the_Model.Faces'Range
+      for f in the_Model.Faces'Range
       loop
          declare
             use io_vertex_Maps_of_gl_vertex_id;
 
-            the_model_Face : io.Face renames the_Model.Faces (Each);
+            the_model_Face : io.Face renames the_Model.Faces (f);
 
          begin
-            if         the_model_Face.Kind = Triangle
-               or else the_model_Face.Kind = Quad
+            if    the_model_Face.Kind = Triangle
+               or the_model_Face.Kind = Quad
             then
                declare
                   the_io_Vertices : constant io.Vertices := Vertices_of (the_model_Face);
@@ -205,19 +201,20 @@ is
                      when Polygon  =>   null;
                   end case;
 
-                  for Each in the_io_Vertices'Range
+                  for v in the_io_Vertices'Range
                   loop
-                     Cursor := the_Map.find (the_io_Vertices (Each));
+                     Cursor := the_Map.find (the_io_Vertices (v));
 
                      if not has_Element (Cursor)
                      then   -- We do not know about this vertex yet, so add it.
                         vertex_Count := vertex_Count + 1;
 
                         declare
-                           the_io_Vertex : io.Vertex  renames the_io_Vertices (Each);
+                           the_io_Vertex :  io.Vertex renames the_io_Vertices (v);
                            the_gl_Vertex : any_Vertex renames the_Vertices (vertex_Count);
                         begin
-                           the_gl_Vertex.Site := Scaled (the_Model.Sites (the_io_Vertex.site_Id),  by => Self.Scale);
+                           the_gl_Vertex.Site := Scaled (the_Model.Sites (the_io_Vertex.site_Id),
+                                                         by => Self.Scale);   -- TODO: Shouldn't scale here, since the vertex shaders do scaling.
 
                            Self.Bounds.Box  := Self.Bounds.Box or the_gl_Vertex.Site;
                            Self.Bounds.Ball := Real'Max (Self.Bounds.Ball,
@@ -228,13 +225,14 @@ is
                            else   the_gl_Vertex.Coords := (0.0, 0.0);
                            end if;
 
-                           if         the_io_Vertex.normal_Id /= null_Id
-                           then   the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);   normals_Known := True;
+                           if the_io_Vertex.normal_Id /= null_Id
+                           then   the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
+                                  normals_Known        := True;
                            else   the_gl_Vertex.Normal := (0.0, 0.0, 0.0);
                            end if;
 
-                           if         the_Model.Weights        /= null
-                             and then the_io_Vertex.weights_Id /= null_Id
+                           if    the_Model.Weights        /= null
+                             and the_io_Vertex.weights_Id /= null_Id
                            then
                               declare
                                  the_Weights : bone_Weights renames the_Model.Weights (the_io_Vertex.weights_Id).all;
@@ -283,13 +281,13 @@ is
       --  We now have our gl face vertices built and mapped to each model vertex.
 
 
-      --  2nd pass: - Set the triangle faceted Indices.
-      --            - Set the quad     faceted Indices.
+      --  2nd pass: - Set the triangle faceted indices.
+      --            - Set the quad     faceted indices.
       --
       declare
-         tri_indices_Last   : constant openGL.long_Index_t                 := openGL.long_Index_t (tri_Count) * 3;
-         tri_Indices        : aliased  long_Indices (1 .. tri_indices_Last);
-         tri_indices_Count  :          openGL.long_Index_t                 := 0;
+         tri_indices_Count :          long_Index_t := 0;
+         tri_indices_Last  : constant long_Index_t := long_Index_t (tri_Count) * 3;
+         tri_Indices       : aliased  long_Indices (1 .. tri_indices_Last);
 
          procedure add_to_Tri (the_Vertex : in io.Vertex)
          is
@@ -299,28 +297,28 @@ is
          end add_to_Tri;
 
       begin
-         for Each in the_Model.Faces'Range
+         for f in the_Model.Faces'Range
          loop
             declare
-               the_model_Face  :          io.Face     renames the_Model.Faces (Each);
+               the_model_Face  :          io.Face     renames the_Model.Faces (f);
                the_io_Vertices : constant io.Vertices :=      Vertices_of (the_model_Face);
             begin
                case the_model_Face.Kind
                is
                   when Triangle =>
-                     for Each in the_io_Vertices'Range
+                     for v in the_io_Vertices'Range
                      loop
-                        add_to_Tri  (the_io_Vertices (Each));
+                        add_to_Tri (the_io_Vertices (v));
                      end loop;
 
                   when Quad     =>
-                     add_to_Tri  (the_io_Vertices (1));
-                     add_to_Tri  (the_io_Vertices (2));
-                     add_to_Tri  (the_io_Vertices (3));
+                     add_to_Tri (the_io_Vertices (1));
+                     add_to_Tri (the_io_Vertices (2));
+                     add_to_Tri (the_io_Vertices (3));
 
-                     add_to_Tri  (the_io_Vertices (3));
-                     add_to_Tri  (the_io_Vertices (4));
-                     add_to_Tri  (the_io_Vertices (1));
+                     add_to_Tri (the_io_Vertices (3));
+                     add_to_Tri (the_io_Vertices (4));
+                     add_to_Tri (the_io_Vertices (1));
 
                   when Polygon  =>
                      null;
@@ -328,7 +326,7 @@ is
             end;
          end loop;
 
-         pragma Assert (tri_indices_Count = tri_indices_Last);
+         pragma assert (tri_indices_Count = tri_indices_Last);
 
 
          --  Decide which geometry class is required and create the geometry.
@@ -336,71 +334,69 @@ is
          if the_Model.Weights = null
          then
             declare
-               use openGL.Geometry.lit_textured;
+               use Geometry.lit_textured;
 
                my_Vertices : aliased  lit_textured.Vertex_array
                  := to_lit_textured_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_Geometry_view
-                 := lit_textured.new_Geometry.all'unchecked_Access;
+                 := lit_textured.new_Geometry;
             begin
                if not normals_Known
                then
-                  set_Normals :
+                  set_Normals:
                   declare
-                     type Normals_view is access all openGL.Normals;
+                     type Normals_view is access all Normals;
 
-                     function get_Sites return openGL.Sites
+                     function get_Sites return Sites
                      is
-                        the_Sites : openGL.Sites := (1 .. my_Vertices'Length => <>);
+                        Result : Sites := (1 .. my_Vertices'Length => <>);
                      begin
-                        for i in the_Sites'Range
+                        for i in Result'Range
                         loop
-                           the_Sites (i) := my_Vertices (long_Index_t (i)).Site;
+                           Result (i) := my_Vertices (long_Index_t (i)).Site;
                         end loop;
 
-                        return the_Sites;
+                        return Result;
                      end get_Sites;
 
-
                      the_Sites   : constant openGL.Sites := get_Sites;
-                     the_Normals :          Normals_view := openGL.Geometry.Normals_of (openGL.primitive.Triangles,
-                                                                                        tri_Indices,
-                                                                                        the_Sites).all'Access;
-                     procedure free is new ada.Unchecked_Deallocation (openGL.Normals, Normals_view);
+                     the_Normals :          Normals_view := Geometry.Normals_of (Primitive.Triangles,
+                                                                                 tri_Indices,
+                                                                                 the_Sites);
+                     procedure deallocate is new ada.unchecked_Deallocation (Normals, Normals_view);
 
                   begin
-                     for Each in my_Vertices'Range
+                     for i in my_Vertices'Range
                      loop
-                        my_Vertices (Each).Normal := the_Normals (Index_t (Each));
+                        my_Vertices (i).Normal := the_Normals (Index_t (i));
                      end loop;
 
-                     free (the_Normals);
+                     deallocate (the_Normals);
                   end set_Normals;
                end if;
 
                my_Geometry.Vertices_are (now => my_Vertices);
-               Self.Geometry := my_Geometry.all'Access;
+               Self.Geometry := Geometry.view (my_Geometry);
             end;
 
          else
             declare
-               use openGL.Geometry.lit_colored_textured_skinned;
+               use Geometry.lit_colored_textured_skinned;
 
                my_Vertices : aliased constant lit_colored_textured_skinned.Vertex_array
                  := to_lit_textured_skinned_Vertices (the_Vertices (1 .. vertex_Count));
 
                my_Geometry : constant lit_textured_skinned_Geometry_view
-                 := lit_colored_textured_skinned.new_Geometry.all'unchecked_Access;
+                 := lit_colored_textured_skinned.new_Geometry;
             begin
                my_Geometry.Vertices_are (now => my_Vertices);
-               Self.Geometry := my_Geometry.all'Access;
+               Self.Geometry := Geometry.view (my_Geometry);
             end;
          end if;
 
-         free    (the_Vertices);
-         destroy (the_Model);
-
+         deallocate (the_Vertices);
+         destroy    (the_Model);
 
          --  Set the geometry texture.
          --
@@ -409,28 +405,26 @@ is
             if Self.has_lucid_Texture
             then
                declare
-                  use openGL.Texture;
-                  the_Image   : constant openGL.lucid_Image
+                  use Texture;
+                  the_Image   : constant lucid_Image
                     := io.to_lucid_Image (Self.Texture);
 
-                  the_Texture : constant openGL.Texture.object
+                  the_Texture : constant Texture.object
                     := Forge.to_Texture (the_Image);
 
                begin
                   Self.Geometry.Texture_is (the_Texture);
                end;
-
             else
                declare
-                  use openGL.Texture;
-                  the_Image   : constant openGL.Image          := io.to_Image   (Self.Texture);
-                  the_Texture : constant openGL.Texture.object := Forge.to_Texture (the_Image);
+                  use Texture;
+                  the_Image   : constant Image          := io.to_Image (Self.Texture);
+                  the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
                begin
                   Self.Geometry.Texture_is (the_Texture);
                end;
             end if;
          end if;
-
 
          --  Add any facia to the geometry.
          --
@@ -439,21 +433,21 @@ is
             if vertex_Count <= long_Index_t (short_Index_t'Last)
             then
                declare
-                  the_Primitive : constant openGL.Primitive.short_indexed.view
-                    := openGL.Primitive.short_indexed.new_Primitive (primitive.Triangles,
-                                                                     tri_Indices        ).all'Access;
+                  the_Primitive : constant Primitive.short_indexed.view
+                    := Primitive.short_indexed.new_Primitive (Primitive.Triangles,
+                                                              tri_Indices);
                begin
-                  Self.Geometry.add (openGL.Primitive.view (the_Primitive));
+                  Self.Geometry.add (Primitive.view (the_Primitive));
                end;
 
             elsif vertex_Count <= long_Index_t (Index_t'Last)
             then
                declare
-                  the_Primitive : constant openGL.Primitive.indexed.view
-                    := openGL.Primitive.indexed.new_Primitive (primitive.Triangles,
-                                                               tri_Indices        ).all'Access;
+                  the_Primitive : constant Primitive.indexed.view
+                    := Primitive.indexed.new_Primitive (primitive.Triangles,
+                                                        tri_Indices);
                begin
-                  Self.Geometry.add (openGL.Primitive.view (the_Primitive));
+                  Self.Geometry.add (Primitive.view (the_Primitive));
                end;
 
             else
@@ -463,11 +457,11 @@ is
                end if;
 
                declare
-                  the_Primitive : constant openGL.Primitive.long_indexed.view
-                    := openGL.Primitive.long_indexed.new_Primitive (primitive.Triangles,
-                                                                    tri_Indices        ).all'Access;
+                  the_Primitive : constant Primitive.long_indexed.view
+                    := Primitive.long_indexed.new_Primitive (primitive.Triangles,
+                                                             tri_Indices);
                begin
-                  Self.Geometry.add (openGL.Primitive.view (the_Primitive));
+                  Self.Geometry.add (Primitive.view (the_Primitive));
                end;
             end if;
          end if;
@@ -475,7 +469,7 @@ is
 
          if Geometry_3d.Extent (Self.Bounds.Box, 3) = 0.0
          then
-            Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;     -- TODO: The is dubious at best.
+            Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;     -- TODO: This is dubious at best.
          end if;
 
          Self.Geometry.is_Transparent (now => False);
