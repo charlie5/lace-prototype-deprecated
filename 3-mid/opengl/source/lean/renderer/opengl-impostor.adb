@@ -4,10 +4,8 @@ with
 
      ada.unchecked_Deallocation;
 
-
 package body openGL.Impostor
 is
-
    ---------
    --- Forge
    --
@@ -15,8 +13,8 @@ is
    procedure destroy (Self : in out Item)
    is
       use openGL.Visual,
-          openGL.Model,
-          openGL.Texture;
+          Model,
+          Texture;
 
       the_Model   : Model.view     := Self.Visual.Model;
       the_Texture : Texture.Object := Model.billboard.textured.view (the_Model).Texture;
@@ -33,9 +31,8 @@ is
    begin
       if Self /= null then
          destroy (Self.all);
+         deallocate (Self);
       end if;
-
-      deallocate (Self);
    end free;
 
 
@@ -51,7 +48,7 @@ is
    end Visual_is;
 
 
-   function  Visual (Self : access Item) return openGL.Visual.view
+   function Visual (Self : access Item) return openGL.Visual.view
    is
    begin
       return Self.Visual;
@@ -59,7 +56,7 @@ is
 
 
 
-   function get_Target (Self : in     Item) return openGL.Visual.view
+   function get_Target (Self : in Item) return openGL.Visual.view
    is
    begin
       return Self.Target;
@@ -81,9 +78,9 @@ is
       Self.Target     := Target;
       Self.is_Terrain := Target.is_Terrain;
 
-      Self.Visual.Model_is (openGL.Model.billboard.textured.Forge.new_Billboard (Scale   => (Width, Width, 0.01),
-                                                                                 Plane   => Model.billboard.xy,
-                                                                                 Texture => null_Asset).all'Access);
+      Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Scale   => (Width, Width, 0.01),
+                                                                          Plane   => Model.billboard.xy,
+                                                                          Texture => null_Asset).all'Access);
       Self.Visual.Transform_is (Target.Transform);
    end set_Target;
 
@@ -117,38 +114,37 @@ is
    end frame_Count_since_last_update;
 
 
-   function face_Count (Self : in     Item) return Natural
+   function face_Count (Self : in Item) return Natural
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return 1;
    end face_Count;
 
 
-   procedure set_Alpha (Self : in out Item;   Alpha  : in openGL.Real)
+   procedure set_Alpha (Self : in out Item;   Alpha : in Real)
    is
    begin
-      null;   -- tbd
+      null;   -- TODO
    end set_Alpha;
 
 
-   function Bounds (Self : in     Item) return openGL.Bounds
+   function Bounds (Self : in Item) return openGL.Bounds
    is
    begin
-      return (others => <>);
+      return (others => <>);     -- TODO
    end Bounds;
 
 
-   function  is_Transparent (Self : in     Item) return Boolean
+   function is_Transparent (Self : in Item) return Boolean
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return True;
    end is_Transparent;
 
 
-
-   -- update trigger configuration
+   -- Update trigger configuration.
    --
 
    procedure set_freshen_count_update_trigger_Mod (Self : in out Item;   To : in Positive)
@@ -158,7 +154,7 @@ is
    end set_freshen_count_update_trigger_Mod;
 
 
-   function get_freshen_count_update_trigger_Mod (Self : in     Item) return Positive
+   function get_freshen_count_update_trigger_Mod (Self : in Item) return Positive
    is
    begin
       return Positive (Self.freshen_count_update_trigger_Mod);
@@ -173,7 +169,7 @@ is
    end set_size_update_trigger_Delta;
 
 
-   function get_size_update_trigger_Delta (Self : in     Item) return Positive
+   function get_size_update_trigger_Delta (Self : in Item) return Positive
    is
    begin
       return Positive (Self.size_update_trigger_Delta);
@@ -181,11 +177,10 @@ is
 
 
 
-
-   function general_Update_required (Self : access Item;   the_Camera_Site  : in     Vector_3;
-                                                           the_pixel_Region : in     pixel_Region) return Boolean
+   function general_Update_required (Self : access Item;   the_Camera_Site  : in Vector_3;
+                                                           the_pixel_Region : in pixel_Region) return Boolean
    is
-      pragma Unreferenced (the_pixel_Region);
+      pragma unreferenced (the_pixel_Region);
 
       use linear_Algebra_3d;
       use type gl.GLsizei;
@@ -196,10 +191,10 @@ is
    begin
       Self.freshen_Count := Self.freshen_Count + 1;
 
-      if Self.freshen_Count > Self.freshen_count_update_trigger_Mod then
+      if Self.freshen_Count > Self.freshen_count_update_trigger_Mod
+      then
          return True;
       end if;
-
 
       if         Camera_has_moved
         and then abs (Angle (the_Camera_Site,
@@ -210,7 +205,7 @@ is
       end if;
 
       if         Target_has_moved
-        and then abs (Angle (get_Translation (Self.target.Transform),
+        and then abs (Angle (get_Translation (Self.Target.Transform),
                              Self.prior_camera_Position,
                              Self.prior_target_Position)) > to_Radians (15.0)
       then
@@ -220,7 +215,7 @@ is
 
       if         Self.prior_pixel_Region.Width  >  40                -- Ignore target rotation triggered updates when target is small on screen.
         and then Self.prior_pixel_Region.Height >  40                --
-        and then Self.prior_target_Rotation     /= get_Rotation (Self.target.Transform)
+        and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.Transform)
       then
          return True;
       end if;
@@ -235,8 +230,8 @@ is
       use      GL;
       use type gl.GLsizei;
    begin
-      return    abs (the_pixel_Region.Width  - Self.prior_Width_Pixels)  > Self.size_update_trigger_Delta
-        or else abs (the_pixel_Region.Height - Self.prior_Height_pixels) > Self.size_update_trigger_Delta;
+      return     abs (the_pixel_Region.Width  - Self.prior_Width_Pixels)  > Self.size_update_trigger_Delta
+             or  abs (the_pixel_Region.Height - Self.prior_Height_pixels) > Self.size_update_trigger_Delta;
    end size_Update_required;
 
 
@@ -246,73 +241,70 @@ is
                                                           camera_projection_Transform : in Matrix_4x4;
                                                           camera_Viewport             : in linear_Algebra_3d.Rectangle) return pixel_Region
    is
-      use linear_Algebra_3d;
+      use linear_Algebra_3D;
 
-      target_Centre            : constant Vector_3    := camera_Spin * (  get_Translation (Self.Target.Transform)
-                                                                        - camera_Site);
+      target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.Transform)
+                                                                    - camera_Site);
 
-      target_lower_Left        : constant Vector_3    := target_Centre - (Self.Target.Model.Bounds.Ball,
-                                                                          Self.Target.Model.Bounds.Ball,
-                                                                          0.0);
+      target_lower_Left       : constant Vector_3 := target_Centre - (Self.Target.Model.Bounds.Ball,
+                                                                      Self.Target.Model.Bounds.Ball,
+                                                                      0.0);
 
-      target_Centre_proj       : constant Vector_4    := target_Centre     * camera_projection_Transform;
-      target_Lower_Left_proj   : constant Vector_4    := target_lower_Left * camera_projection_Transform;
+      target_Centre_proj      : constant Vector_4 := target_Centre     * camera_projection_Transform;
+      target_Lower_Left_proj  : constant Vector_4 := target_lower_Left * camera_projection_Transform;
 
-      target_Centre_norm       : constant Vector_3    := (target_Centre_proj (1)     / target_Centre_proj (4),
-                                                          target_Centre_proj (2)     / target_Centre_proj (4),
-                                                          target_Centre_proj (3)     / target_Centre_proj (4));
+      target_Centre_norm      : constant Vector_3 := (target_Centre_proj (1)     / target_Centre_proj (4),
+                                                      target_Centre_proj (2)     / target_Centre_proj (4),
+                                                      target_Centre_proj (3)     / target_Centre_proj (4));
 
-      target_Lower_Left_norm   : constant Vector_3    := (target_Lower_Left_proj (1) / target_Lower_Left_proj (4),
-                                                          target_Lower_Left_proj (2) / target_Lower_Left_proj (4),
-                                                          target_Lower_Left_proj (3) / target_Lower_Left_proj (4));
+      target_Lower_Left_norm  : constant Vector_3 := (target_Lower_Left_proj (1) / target_Lower_Left_proj (4),
+                                                      target_Lower_Left_proj (2) / target_Lower_Left_proj (4),
+                                                      target_Lower_Left_proj (3) / target_Lower_Left_proj (4));
 
-      target_Centre_norm_0to1  : constant Vector_3    := (target_Centre_norm (1)     * 0.5 + 0.5,
-                                                          target_Centre_norm (2)     * 0.5 + 0.5,
-                                                          target_Centre_norm (3)     * 0.5 + 0.5);
+      target_Centre_norm_0to1 : constant Vector_3 := (target_Centre_norm (1)     * 0.5 + 0.5,
+                                                      target_Centre_norm (2)     * 0.5 + 0.5,
+                                                      target_Centre_norm (3)     * 0.5 + 0.5);
 
-      target_Lower_Left_norm_0to1 : constant Vector_3    := (target_Lower_Left_norm (1) * 0.5 + 0.5,
+      target_Lower_Left_norm_0to1 : constant Vector_3 := (target_Lower_Left_norm (1) * 0.5 + 0.5,
                                                           target_Lower_Left_norm (2) * 0.5 + 0.5,
                                                           target_Lower_Left_norm (3) * 0.5 + 0.5);
 
-      viewport_Width           : constant Integer     := camera_Viewport.Max (1) - camera_Viewport.Min (1) + 1;
-      viewport_Height          : constant Integer     := camera_Viewport.Max (2) - camera_Viewport.Min (2) + 1;
+      viewport_Width  : constant Integer    := camera_Viewport.Max (1) - camera_Viewport.Min (1) + 1;
+      viewport_Height : constant Integer    := camera_Viewport.Max (2) - camera_Viewport.Min (2) + 1;
 
-      Width                    : constant Real        := 2.0  *  Real (viewport_Width) * (  target_Centre_norm_0to1     (1)
-                                                                                          - target_Lower_Left_norm_0to1 (1));
+      Width           : constant Real       := 2.0  *  Real (viewport_Width) * (  target_Centre_norm_0to1     (1)
+                                                                                - target_Lower_Left_norm_0to1 (1));
 
-      Width_pixels             : constant gl.glSizei  := gl.glSizei (  Integer (Real (viewport_Width) * target_Lower_Left_norm_0to1 (1) + Width)
-                                                                     - Integer (Real (viewport_Width) * target_Lower_Left_norm_0to1 (1))
-                                                                     + 1);
+      Width_pixels   : constant gl.glSizei := gl.glSizei (  Integer (Real (viewport_Width) * target_Lower_Left_norm_0to1 (1) + Width)
+                                                          - Integer (Real (viewport_Width) * target_Lower_Left_norm_0to1 (1))
+                                                          + 1);
 
-      Height                   : constant Real        := 2.0  *  Real (viewport_Height) * (  target_Centre_norm_0to1     (2)
-                                                                                           - target_Lower_Left_norm_0to1 (2));
+      Height         : constant Real       := 2.0  *  Real (viewport_Height) * (  target_Centre_norm_0to1     (2)
+                                                                                - target_Lower_Left_norm_0to1 (2));
 
-      Height_pixels            : constant gl.glSizei  := gl.glSizei (  Integer (Real (viewport_Height) * target_Lower_Left_norm_0to1 (2) + Height)
-                                                                     - Integer (Real (viewport_Height) * target_Lower_Left_norm_0to1 (2))
-                                                                     + 1);
+      Height_pixels  : constant gl.glSizei := gl.glSizei (  Integer (Real (viewport_Height) * target_Lower_Left_norm_0to1 (2) + Height)
+                                                          - Integer (Real (viewport_Height) * target_Lower_Left_norm_0to1 (2))
+                                                          + 1);
       use type gl.GLsizei;
 
    begin
-      Self.all.target_camera_Distance := abs (target_Centre);   -- nb: Cache distance from camera to target.
+      Self.all.target_camera_Distance := abs (target_Centre);   -- NB: Cache distance from camera to target.
 
-      return (x      => gl.glInt (target_Lower_Left_norm_0to1 (1) * Real (Viewport_Width))  - 0,
-              y      => gl.glInt (target_Lower_Left_norm_0to1 (2) * Real (viewport_Height)) - 0,
-              width  => Width_pixels + 0,
-              height => Height_pixels + 0);
+      return (X      => gl.glInt (target_Lower_Left_norm_0to1 (1) * Real (Viewport_Width))  - 0,
+              Y      => gl.glInt (target_Lower_Left_norm_0to1 (2) * Real (viewport_Height)) - 0,
+              Width  => Width_pixels + 0,
+              Height => Height_pixels + 0);
    end get_pixel_Region;
-
-
-
 
 
    --------------
    --  Operations
    --
 
-   procedure update (Self : in out Item;   the_Camera   : access openGL.Camera.item'Class;
-                                           texture_Pool : in     openGL.texture.Pool_view)
+   procedure update (Self : in out Item;   the_Camera   : access Camera.item'Class;
+                                           texture_Pool : in     texture.Pool_view)
    is
-      pragma Unreferenced (the_Camera, texture_Pool);
+      pragma unreferenced (the_Camera, texture_Pool);
       use openGL.Visual;
 
 --        Width_size     : constant openGL.texture.Size := to_Size (Natural (Self.current_Width_pixels));
@@ -321,7 +313,7 @@ is
 --        texture_Width  : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Width_pixels ));
 --        texture_Height : constant gl.glSizei          := power_of_2_Ceiling (Natural (Self.current_Height_pixels));
 
-      the_Model      : constant openGL.Model.billboard.textured.view := openGL.Model.billboard.textured.view (Self.Visual.Model);
+      the_Model      : constant Model.billboard.textured.view := Model.billboard.textured.view (Self.Visual.Model);
 --        GL_Error       :          Boolean;
 
    begin
