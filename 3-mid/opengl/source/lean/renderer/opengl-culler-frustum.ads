@@ -1,14 +1,12 @@
 with
      ada.unchecked_Conversion;
 
-
 package openGL.Culler.frustum
 --
 -- Provides a frustrum culler.
 --
 is
-
-   type Item is new openGL.culler.Item with private;
+   type Item is new Culler.Item with private;
    type View is access all Item'Class;
 
 
@@ -19,23 +17,22 @@ is
    procedure define (Self : in out Item);
 
 
-
    --------------
    --- Attributes
    --
 
    overriding
-   procedure add          (Self : in out Item;   the_Visual     : in openGL.Visual.view);
+   procedure add          (Self : in out Item;   the_Visual     : in Visual.view);
    overriding
-   procedure rid          (Self : in out Item;   the_Visual     : in openGL.Visual.view);
+   procedure rid          (Self : in out Item;   the_Visual     : in Visual.view);
 
    overriding
    function  object_Count (Self : in     Item) return Natural;
 
    overriding
-   function  cull         (Self : in     Item;   the_Visuals    : in openGL.Visual.views;
+   function  cull         (Self : in     Item;   the_Visuals    : in Visual.views;
                                                  camera_Frustum : in openGL.frustum.Plane_array;
-                                                 camera_Site    : in math.Vector_3) return openGL.Visual.views;
+                                                 camera_Site    : in Vector_3) return Visual.views;
 
    function  vanish_point_size_Min    (Self : in     Item'Class)     return Real;
    procedure vanish_point_size_Min_is (Self : in out Item'Class;   Now : in Real);
@@ -47,10 +44,10 @@ is
 
 private
 
-   type Item is new openGL.culler.Item with
+   type Item is new Culler.item with
       record
-         countDown             : Natural := 0;
-         frame_Count           : Natural := 0;
+         countDown   : Natural := 0;
+         frame_Count : Natural := 0;
 
          vanish_point_size_Min : safe_Real;
       end record;
