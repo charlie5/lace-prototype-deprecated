@@ -2,11 +2,10 @@ with
      openGL.Geometry.lit_colored_textured,
      openGL.Primitive.indexed;
 
-
-package body openGL.Model.Hexagon.lit_colored_textured
+package body openGL.Model.hexagon.lit_colored_textured
 is
 
-   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
+   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
 
    ---------
@@ -30,27 +29,27 @@ is
    --
 
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Textures, Fonts);
+      pragma unreferenced (Textures, Fonts);
 
-      use openGL.Geometry.lit_colored_textured,
-          openGL.Texture;
+      use Geometry.lit_colored_textured,
+          Texture;
 
       the_Sites    :         constant hexagon.Sites := vertex_Sites (Self.Radius);
       the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
 
 
-      function new_Face (Vertices : in openGL.geometry.lit_colored_textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : in geometry.lit_colored_textured.Vertex_array) return Geometry_view
       is
-         use openGL.Primitive;
+         use Primitive;
 
          the_Geometry  : constant Geometry_view
-           := openGL.Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False).all'unchecked_Access;
+           := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
 
          the_Primitive : constant Primitive.indexed.view
-           := Primitive.indexed.new_Primitive (triangle_Fan,  the_Indices).all'Access;
+           := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
       begin
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
@@ -65,16 +64,16 @@ is
       --  Upper Face
       --
       declare
-         the_Vertices : constant openGL.Geometry.lit_colored_textured.Vertex_array
-           := (1 => (site => (0.0, 0.0, 0.0), normal => Normal, color => self.Face.center_Color, coords => (0.0, 0.0)),
-               2 => (site =>   the_Sites (1), normal => Normal, color => self.Face.Colors (1),   coords => (0.0, 0.0)),
-               3 => (site =>   the_Sites (2), normal => Normal, color => self.Face.Colors (2),   coords => (1.0, 0.0)),
-               4 => (site =>   the_Sites (3), normal => Normal, color => self.Face.Colors (3),   coords => (1.0, 1.0)),
-               5 => (site =>   the_Sites (4), normal => Normal, color => self.Face.Colors (4),   coords => (0.0, 1.0)),
-               6 => (site =>   the_Sites (5), normal => Normal, color => self.Face.Colors (5),   coords => (0.0, 1.0)),
-               7 => (site =>   the_Sites (6), normal => Normal, color => self.Face.Colors (6),   coords => (0.0, 1.0)));
+         the_Vertices : constant Geometry.lit_colored_textured.Vertex_array
+           := (1 => (Site => (0.0, 0.0, 0.0), Normal => Normal, Color => Self.Face.center_Color, Coords => (0.0, 0.0)),
+               2 => (Site =>   the_Sites (1), Normal => Normal, Color => Self.Face.Colors (1),   Coords => (0.0, 0.0)),
+               3 => (Site =>   the_Sites (2), Normal => Normal, Color => Self.Face.Colors (2),   Coords => (1.0, 0.0)),
+               4 => (Site =>   the_Sites (3), Normal => Normal, Color => Self.Face.Colors (3),   Coords => (1.0, 1.0)),
+               5 => (Site =>   the_Sites (4), Normal => Normal, Color => Self.Face.Colors (4),   Coords => (0.0, 1.0)),
+               6 => (Site =>   the_Sites (5), Normal => Normal, color => Self.Face.Colors (5),   Coords => (0.0, 1.0)),
+               7 => (Site =>   the_Sites (6), Normal => Normal, Color => Self.Face.Colors (6),   Coords => (0.0, 1.0)));
       begin
-         upper_Face := new_Face (vertices => the_Vertices);
+         upper_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Face.Texture /= null_Object
          then
@@ -86,4 +85,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.Hexagon.lit_colored_textured;
+end openGL.Model.hexagon.lit_colored_textured;
