@@ -1,7 +1,6 @@
 package body openGL.Model.hexagon
 is
 
-
    function vertex_Sites (Radius : in Real) return Sites
    is
       use linear_Algebra_3d;
@@ -12,14 +11,13 @@ is
       the_Sites :          Sites;
 
    begin
-      for Each in the_Sites'Range
+      for i in the_Sites'Range
       loop
-         the_Sites (Each) := the_Site;
-         the_Site         := Rotation * the_Site;
+         the_Sites (i) := the_Site;
+         the_Site      := Rotation * the_Site;
       end loop;
 
       return the_Sites;
    end vertex_Sites;
-
 
 end openGL.Model.hexagon;
