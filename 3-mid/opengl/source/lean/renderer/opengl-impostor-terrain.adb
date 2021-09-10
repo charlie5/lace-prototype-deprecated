@@ -4,16 +4,14 @@ with
 
      ada.unchecked_Deallocation;
 
-
 package body openGL.Impostor.terrain
 is
-
 
    overriding
    procedure set_Target (Self : in out Item;   Target : in openGL.Visual.view)
    is
    begin
-      set_Target (openGL.impostor.item (Self),  Target);
+      set_Target (openGL.impostor.item (Self), Target);     -- Base class call.
 
       Self.expand_X := 0.02;
       Self.expand_Y := 0.02;
@@ -32,7 +30,7 @@ is
 
 
    overriding
-   function current_Camera_look_at_Rotation (Self : in Item) return MAtrix_3x3
+   function current_Camera_look_at_Rotation (Self : in Item) return Matrix_3x3
    is
    begin
       return Self.current_Camera_look_at_Rotation;
@@ -41,26 +39,25 @@ is
 
 
    overriding
-   function update_Required (Self : access Item;   the_Camera : access openGL.Camera.item'Class) return Boolean
+   function update_Required (Self : access Item;   the_Camera : access Camera.item'Class) return Boolean
    is
    begin
       Self.current_pixel_Region := Self.get_pixel_Region (camera_Spin                 => the_Camera.Spin,
                                                           camera_Site                 => the_Camera.Site,
                                                           camera_projection_Transform => the_Camera.projection_Transform,
                                                           camera_Viewport             => the_Camera.Viewport);
-
       declare
          use      GL;
          use type GL.glInt;
 
-         update_Required : Boolean          := Self.general_Update_required (the_Camera.Site, Self.current_pixel_Region);
+         update_Required : Boolean    := Self.general_Update_required (the_Camera.Site, Self.current_pixel_Region);
 
-         copy_x_Offset   : gl.glInt         := 0;
-         copy_y_Offset   : gl.glInt         := 0;
-         copy_X          : gl.glInt         := Self.current_pixel_Region.X;
-         copy_Y          : gl.glInt         := Self.current_pixel_Region.Y;
-         copy_Width      : gl.glSizeI       := Self.current_pixel_Region.Width;
-         copy_Height     : gl.glSizeI       := Self.current_pixel_Region.Height;
+         copy_x_Offset   : gl.glInt   := 0;
+         copy_y_Offset   : gl.glInt   := 0;
+         copy_X          : gl.glInt   := Self.current_pixel_Region.X;
+         copy_Y          : gl.glInt   := Self.current_pixel_Region.Y;
+         copy_Width      : gl.glSizeI := Self.current_pixel_Region.Width;
+         copy_Height     : gl.glSizeI := Self.current_pixel_Region.Height;
 
          viewport_Width  : constant Integer := the_Camera.Viewport.Max (1) - the_Camera.Viewport.Min (1) + 1;
          viewport_Height : constant Integer := the_Camera.Viewport.Max (2) - the_Camera.Viewport.Min (2) + 1;
@@ -84,7 +81,7 @@ is
             if copy_Width < 1
             then
                Self.is_Valid := False;
-               return False;                                     -- nb: Short circuit return !
+               return False;             -- NB: Short circuit return !
             end if;
 
          elsif copy_X + glInt (copy_Width) >  glInt (Viewport_Width)
@@ -97,7 +94,7 @@ is
             if copy_Width < 1
             then
                Self.is_Valid := False;
-               return False;                                     -- nb: Short circuit return !
+               return False;             -- NB: Short circuit return !
             end if;
 
          else
@@ -118,7 +115,7 @@ is
             if copy_Height < 1
             then
                Self.is_Valid := False;
-               return False;                                     -- nb: Short circuit return !
+               return False;             -- NB: Short circuit return !
             end if;
 
          elsif copy_Y + glInt (copy_Height)  >  glInt (Viewport_Height)
@@ -131,7 +128,7 @@ is
             if copy_Height < 1
             then
                Self.is_Valid := False;
-               return False;                                     -- nb: Short circuit return !
+               return False;             -- NB: Short circuit return !
             end if;
 
          else
@@ -139,8 +136,10 @@ is
             Complete_bottom := True;
          end if;
 
-         now_Complete := Complete_left and then Complete_right and then Complete_top and then Complete_bottom;
-
+         now_Complete :=     Complete_left
+                         and Complete_right
+                         and Complete_top
+                         and Complete_bottom;
 
          if not update_Required
          then   -- Only do further tests if update not already required.
@@ -197,9 +196,9 @@ is
 
 
    overriding
-   procedure pre_update (Self : in out Item;   the_Camera : access openGL.Camera.item'Class)
+   procedure pre_update (Self : in out Item;   the_Camera : access Camera.item'Class)
    is
-      pragma Unreferenced (the_Camera);
+      pragma unreferenced (the_Camera);
    begin
       Self.expand_X := 0.0;
       Self.expand_Y := 0.0;
@@ -208,20 +207,20 @@ is
 
 
    overriding
-   procedure update (Self : in out Item;   the_Camera   : access openGL.Camera.item'Class;
-                                           texture_Pool : in     openGL.texture.Pool_view)
+   procedure update (Self : in out Item;   the_Camera   : access Camera.item'Class;
+                                           texture_Pool : in     Texture.Pool_view)
    is
    begin
       Self.expand_X := 0.0;
       Self.expand_Y := 0.0;
 
-      openGL.Impostor.item (Self).update (the_Camera, texture_Pool);     -- Base class 'update'.
+      Impostor.item (Self).update (the_Camera, texture_Pool);     -- Base class 'update'.
    end update;
 
 
 
    overriding
-   procedure post_update (Self : in out Item;   the_Camera : access openGL.Camera.item'Class)
+   procedure post_update (Self : in out Item;   the_Camera : access Camera.item'Class)
    is
    begin
       null;
