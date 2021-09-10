@@ -1,18 +1,16 @@
 with
-     openGL.Model,
      openGL.Geometry;
-
 
 package openGL.Model.capsule.lit_colored_textured
 --
---  Models a lit, colored, textured capsule.
+--  Models a lit, colored and textured capsule.
 --
 is
 
-   type Item is new openGL.Model.capsule.item with
+   type Item is new Model.capsule.item with
       record
-         Radius : math.Real;
-         Height : math.Real;
+         Radius : Real;
+         Height : Real;
 
          Color  : lucid_Color;
          Image  : asset_Name := null_Asset;
@@ -25,22 +23,17 @@ is
    --- Forge
    --
 
-   function new_Capsule (Radius : in math.Real;
-                         Height : in math.Real;
+   function new_Capsule (Radius : in Real;
+                         Height : in Real;
                          Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View;
-
 
    --------------
    --- Attributes
    --
 
---     overriding
---     function  Bounds (Self : in Item) return openGL.Bounds;
-
-
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 end openGL.Model.capsule.lit_colored_textured;

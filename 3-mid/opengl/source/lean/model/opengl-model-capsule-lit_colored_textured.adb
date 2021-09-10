@@ -4,16 +4,14 @@ with
      openGL.IO,
      openGL.Primitive.indexed;
 
-
 package body openGL.Model.capsule.lit_colored_textured
 is
-
    ---------
    --- Forge
    --
 
-   function new_Capsule (Radius : in math.Real;
-                         Height : in math.Real;
+   function new_Capsule (Radius : in Real;
+                         Height : in Real;
                          Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View
    is
@@ -29,24 +27,22 @@ is
    end new_Capsule;
 
 
-
    --------------
    --- Attributes
    --
 
-   type Geometry_view is access all openGL.Geometry.lit_colored_textured.item'class;
+   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
 
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma Unreferenced (Textures, Fonts);
+      pragma unreferenced (Textures, Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.lit_colored_textured,
+      use Geometry,
+          Geometry.lit_colored_textured,
           real_Functions;
-
 
       Length        : constant Real    := Self.Height;
       Radius        : constant Real    := Self.Radius;
@@ -68,17 +64,18 @@ is
       start_nx,
       start_ny   :          Real;
       a          : constant Real := Pi * 2.0 / Real (sides_Count);
-      ca         : constant Real := cos (a);
-      sa         : constant Real := sin (a);
+      ca         : constant Real := Cos (a);
+      sa         : constant Real := Sin (a);
       L          : constant Real := Length * 0.5;
 
-      the_Edges  :          Edges;
+      the_Edges  : Edges;
 
       the_shaft_Geometry  : constant Geometry_view
         := Geometry_view (Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False));
 
-      cap_1_Geometry      : Geometry_view;
-      cap_2_Geometry      : Geometry_view;
+      cap_1_Geometry : Geometry_view;
+      cap_2_Geometry : Geometry_view;
+
    begin
       --  Define capsule shaft,
       --
@@ -86,12 +83,12 @@ is
          vertex_Count  : constant      Index_t :=      Index_t (sides_Count * 2 + 2);   -- 2 triangles per side plus 2 since we cannot share the first and last edge.
          indices_Count : constant long_Index_t := long_Index_t (sides_Count * 2 * 3);   -- 2 triangles per side with 3 vertices per triangle.
 
-         the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
-         the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
+         the_Vertices  : aliased Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
+         the_Indices   : aliased Indices                                    := (1 .. indices_Count => <>);
 
       begin
          ny := 1.0;
-         nz := 0.0;              -- normal vector = (0, ny, nz)
+         nz := 0.0;              -- Normal vector = (0.0, ny, nz)
 
          -- Set vertices.
          --
@@ -120,7 +117,9 @@ is
                ny  := tmp;
 
                the_Vertices (i).Site   := the_Edges (Each).Fore;
-               the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1), the_Vertices (i).Site (2), 0.0));
+               the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
+                                                       the_Vertices (i).Site (2),
+                                                       0.0));
                the_Vertices (i).Color  := Self.Color;
                the_Vertices (i).Coords := (s => S,
                                            t => 1.0);
@@ -137,7 +136,9 @@ is
             end loop;
 
             the_Vertices (i).Site   := the_Edges (1).Fore;
-            the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1), the_Vertices (i).Site (2), 0.0));
+            the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
+                                                    the_Vertices (i).Site (2),
+                                                    0.0));
             the_Vertices (i).Color  := Self.Color;
             the_Vertices (i).Coords := (s => S,
                                         t => 1.0);
@@ -172,11 +173,11 @@ is
 
          if Self.Image /= null_Asset
          then
-            set_Texture :
+            set_Texture:
             declare
-               use openGL.Texture;
-               the_Image   : constant openGL.Image          := io.to_Image   (Self.Image);
-               the_Texture : constant openGL.Texture.object := Forge.to_Texture (the_Image);
+               use Texture;
+               the_Image   : constant Image          := IO.to_Image      (Self.Image);
+               the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
             begin
                the_shaft_Geometry.Texture_is (the_Texture);
             end set_Texture;
@@ -185,11 +186,11 @@ is
          Vertices_are (the_shaft_Geometry.all, the_Vertices);
 
          declare
-            the_Primitive : constant openGL.Primitive.indexed.view
-              := openGL.Primitive.indexed.new_Primitive (primitive.Triangles,
-                                                         the_Indices);
+            the_Primitive : constant Primitive.indexed.view
+              := Primitive.indexed.new_Primitive (primitive.Triangles,
+                                                  the_Indices);
          begin
-            the_shaft_Geometry.add (openGL.Primitive.view (the_Primitive));
+            the_shaft_Geometry.add (Primitive.view (the_Primitive));
          end;
       end;
 
@@ -200,15 +201,15 @@ is
             use linear_Algebra;
 
             cap_Geometry  : constant Geometry_view
-              := Geometry_view (Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False));
+              := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
 
             hoop_Count    : constant      Index_t := quality_Level;
             vertex_Count  : constant      Index_t :=      Index_t (Edges'Length * hoop_Count + 1);             -- A vertex for each edge of each hoop, + 1 for the pole.
             indices_Count : constant long_Index_t := long_Index_t (  (hoop_count - 1) * sides_Count * 2 * 3    -- For each hoop, 2 triangles per side with 3 vertices per triangle
                                                                    + sides_Count * 3);                         -- plus the extra indices for the pole triangles.
 
-            the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 ..  vertex_Count => <>);
-            the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
+            the_Vertices  : aliased Geometry.lit_colored_textured.Vertex_array := (1 ..  vertex_Count => <>);
+            the_Indices   : aliased Indices                                    := (1 .. indices_Count => <>);
 
             the_arch_Edges : arch_Edges;
             i              : Index_t   := 1;
@@ -216,16 +217,16 @@ is
             pole_Site      : constant Site := (if is_Fore then (0.0, 0.0,  L + Radius)
                                                           else (0.0, 0.0, -L - Radius));
 
-            Degrees_90        : constant      := Pi / 2.0;
-            Degrees_360       : constant      := Pi * 2.0;
+            Degrees_90        : constant := Pi / 2.0;
+            Degrees_360       : constant := Pi * 2.0;
 
-            latitude_Count    : constant      :=  hoop_Count + 1;
-            longitude_Count   : constant      :=  Edges'Length;
+            latitude_Count    : constant :=  hoop_Count + 1;
+            longitude_Count   : constant :=  Edges'Length;
 
             latitude_Spacing  : constant Real := Degrees_90  / Real (latitude_Count - 1);
             longitude_Spacing : constant Real := Degrees_360 / Real (longitude_Count);
 
-            a, b              :          Real := 0.0;          -- Angular 'cursors' used to track lat/long for texture coords.
+            a, b : Real := 0.0;          -- Angular 'cursors' used to track lat/long for texture coords.
          begin
             if not is_Fore
             then
@@ -247,17 +248,17 @@ is
 
                for Each in 1 .. sides_Count
                loop
-                  the_arch_Edges (each_Hoop)(Each)(1) :=  ny * Radius;
-                  the_arch_Edges (each_Hoop)(Each)(2) :=  nz * Radius;
-                  the_arch_Edges (each_Hoop)(Each)(3) :=  (if is_Fore then nx * Radius + L
-                                                                      else nx * Radius - L);
+                  the_arch_Edges (each_Hoop) (Each) (1) :=  ny * Radius;
+                  the_arch_Edges (each_Hoop) (Each) (2) :=  nz * Radius;
+                  the_arch_Edges (each_Hoop) (Each) (3) :=  (if is_Fore then nx * Radius + L
+                                                                        else nx * Radius - L);
                   --  Rotate ny, nz.
                   --
                   tmp := ca * ny  -  sa * nz;
                   nz  := sa * ny  +  ca * nz;
                   ny  := tmp;
 
-                  the_Vertices (i).Site   := the_arch_Edges (each_Hoop)(Each);
+                  the_Vertices (i).Site   := the_arch_Edges (each_Hoop) (Each);
                   the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                           the_Vertices (i).Site (2),
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
@@ -366,11 +367,11 @@ is
 
                if Self.Image /= null_Asset
                then
-                  set_the_Texture :
+                  set_the_Texture:
                   declare
-                     use openGL.Texture;
-                     the_Image   : constant openGL.Image          := io.to_Image   (Self.Image);
-                     the_Texture : constant openGL.Texture.object := Forge.to_Texture (the_Image);
+                     use Texture;
+                     the_Image   : constant Image          := IO.to_Image      (Self.Image);
+                     the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
                   begin
                      cap_Geometry.Texture_is (the_Texture);
                   end set_the_Texture;
@@ -379,11 +380,11 @@ is
                Vertices_are (cap_Geometry.all, the_Vertices);
 
                declare
-                  the_Primitive : constant openGL.Primitive.indexed.view
-                    := openGL.Primitive.indexed.new_Primitive (primitive.Triangles,
-                                                               the_Indices);
+                  the_Primitive : constant Primitive.indexed.view
+                    := Primitive.indexed.new_Primitive (Primitive.Triangles,
+                                                        the_Indices);
                begin
-                  cap_Geometry.add (openGL.Primitive.view (the_Primitive));
+                  cap_Geometry.add (Primitive.view (the_Primitive));
                end;
             end;
 
