@@ -46,6 +46,8 @@ is
                                                                    Element_Type    => Font.view,
                                                                    Hash            => Hash,
                                                                    Equivalent_Keys => "=");
+   subtype font_id_Map_of_font  is font_id_Maps_of_font.Map;
+
 
    ---------
    --  Forge

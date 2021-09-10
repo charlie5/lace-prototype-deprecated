@@ -4,7 +4,6 @@ with
      openGL.Texture,
      openGL.Geometry;
 
-
 package openGL.Model
 --
 --  Provides an abstract base class for 3D models.
@@ -26,23 +25,21 @@ is
    procedure free    (Self : in out View);
 
 
-
    -------------
    -- Attributes
    --
 
-   function  Id               (Self : in     Item'Class)     return openGL.Model_Id;
-   procedure Id_is            (Self : in out Item'Class;   Now : in openGL.Model_Id);
+   function  Id               (Self : in     Item'Class)     return model_Id;
+   procedure Id_is            (Self : in out Item'Class;   Now : in model_Id);
 
-
-   procedure modify           (Self : in out Item) is null;
-   function  is_Modified      (Self : in     Item) return Boolean;
+   procedure    modify        (Self : in out Item) is null;
+   function  is_modified      (Self : in     Item) return Boolean;
 
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views
+                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return Geometry.views
                                is abstract;
 
-   type access_Geometry_views is access openGL.Geometry.views;
+   type access_Geometry_views is access Geometry.views;
 
    function opaque_Geometries (Self : in     Item) return access_Geometry_views;
    function  lucid_Geometries (Self : in     Item) return access_Geometry_views;
@@ -66,8 +63,7 @@ is
    --
 
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
-                                                               Fonts    : in     Font.font_id_Maps_of_font.Map);
-
+                                                               Fonts    : in     Font.font_id_Map_of_font);
 
 
 private
