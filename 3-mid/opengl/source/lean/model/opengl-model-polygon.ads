@@ -4,6 +4,6 @@ package openGL.Model.polygon
 --
 is
 
-   type Item is abstract new openGL.Model.item with null record;
+   type Item is abstract new Model.item with null record;
 
 end openGL.Model.polygon;
