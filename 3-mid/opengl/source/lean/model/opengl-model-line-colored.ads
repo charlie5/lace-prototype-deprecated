@@ -1,10 +1,6 @@
-with
-     openGL.Model;
-
 private
 with
      openGL.Geometry.colored;
-
 
 package openGL.Model.line.colored
 --
@@ -12,7 +8,7 @@ package openGL.Model.line.colored
 --
 is
 
-   type Item is new openGL.Model.line.item with private;
+   type Item is new Model.line.item with private;
    type View is access all Item'Class;
 
 
@@ -22,7 +18,7 @@ is
 
    function new_line_Model (Color : in openGL.Color;
                             End_1,
-                            End_2 : in math.Vector_3 := Origin_3d) return Model.line.colored.view;
+                            End_2 : in Vector_3 := Origin_3d) return View;
 
 
    --------------
@@ -31,24 +27,23 @@ is
 
    overriding
    function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                     Fonts    : in     Font.font_id_Maps_of_font.Map) return openGL.Geometry.views;
+                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
    subtype end_Id is Index_t range 1 .. 2;
 
-   procedure Site_is (Self : in out Item;   Now     : in math.Vector_3;
+   procedure Site_is (Self : in out Item;   Now     : in Vector_3;
                                             for_End : in end_Id);
-   function  Site    (Self : in     Item;   for_End : in end_Id) return math.Vector_3;
+   function  Site    (Self : in     Item;   for_End : in end_Id) return Vector_3;
 
 
 
 private
 
-   type Item is new openGL.Model.line.item with
+   type Item is new Model.line.item with
       record
          Color    :        openGL.Color;
-
-         Vertices :        openGL.geometry.colored.Vertex_array (end_Id);
-         Geometry : access openGL.Geometry.colored.item'Class;
+         Vertices :        Geometry.colored.Vertex_array (end_Id);
+         Geometry : access Geometry.colored.item'Class;
       end record;
 
 end openGL.Model.line.colored;
