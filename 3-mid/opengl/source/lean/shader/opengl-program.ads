@@ -8,15 +8,14 @@ private
 with
      GL;
 
-
 package openGL.Program
 --
 --  Models an openGL program.
 --
 is
 
-   type Item  is tagged limited private;
-   type View  is access all Item'Class;
+   type Item is tagged limited private;
+   type View is access all Item'Class;
 
 
    ---------
@@ -25,14 +24,13 @@ is
 
    procedure define  (Self : in out Item) is null;
 
-   procedure define  (Self : in out Item;   use_vertex_Shader   : in openGL.Shader.view;
-                                            use_fragment_Shader : in openGL.Shader.view);
+   procedure define  (Self : in out Item;   use_vertex_Shader   : in Shader.view;
+                                            use_fragment_Shader : in Shader.view);
 
-   procedure define  (Self : in out Item;   use_vertex_Shader_Filename   : in String;
-                                            use_fragment_Shader_Filename : in String);
+   procedure define  (Self : in out Item;   use_vertex_Shader_File   : in String;
+                                            use_fragment_Shader_File : in String);
 
    procedure destroy (Self : in out Item);
-
 
 
    ----------------------
@@ -47,12 +45,11 @@ is
    --  (See 'mmi.Human' for an example of usage.)
 
    type Parameters      is limited new openGL.Parameters with private;
-   type Parameters_view is access all program.Parameters'Class;
+   type Parameters_view is access all Parameters'Class;
 
-   procedure Program_is (Self : in out Parameters;   Now : in openGL.Program.view);
-   function  Program    (Self : in     Parameters)     return openGL.Program.view;
+   procedure Program_is (Self : in out Parameters;   Now : in Program.view);
+   function  Program    (Self : in     Parameters)     return Program.view;
    procedure enable     (Self : in out Parameters) is null;
-
 
 
    --------------
@@ -61,30 +58,27 @@ is
 
    function is_defined         (Self : in     Item'Class) return Boolean;
 
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.bool;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.int;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.float;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.vec3;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.vec4;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.mat3;
-   function uniform_Variable   (Self : access Item'Class;   Named : in String) return openGL.Variable.uniform.mat4;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.bool;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.int;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.float;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec3;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec4;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.mat3;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.mat4;
 
-   function Attribute          (Self : access Item'Class;   Named : in String) return openGL.Attribute.view;
+   function Attribute          (Self : access Item'Class;   Named : in String) return Attribute.view;
    function attribute_Location (Self : access Item'Class;   Named : in String) return gl.GLuint;
 
-   function ProgramInfoLog     (Self : in     Item) return String;      -- tbd: rename
-
+   function ProgramInfoLog     (Self : in     Item) return String;      -- TODO: Better name.
 
 
    --------------
    --  Operations
    --
 
-   procedure add               (Self : in out Item;   the_Attribute : in openGL.Attribute.view);
-
+   procedure add               (Self : in out Item;   Attribute : in openGL.Attribute.view);
    procedure enable            (Self : in out Item);
    procedure enable_Attributes (Self : in     Item);
-
 
 
    ------------
@@ -95,16 +89,15 @@ is
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
    procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
-                                                                      Now      : in openGL.Light.directional.item);
+                                                                      Now      : in Light.directional.item);
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
-   procedure Shine_is                    (Self : in out Item'Class;   Now      : in openGL.Shine);
+   procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
 
-   procedure set_Uniforms                (Self : in     Item)   is null; -- abstract;
-
+   procedure set_Uniforms                (Self : in     Item)   is null;
 
 
    ----------
-   --  Privvy   ToDo: move this to privvy child package.
+   --  Privvy   TODO: move this to privvy child package.
    --
 
    subtype a_gl_Program is gl.GLuint;
@@ -117,16 +110,16 @@ private
    type Item is tagged limited
       record
          gl_Program               : gl.GLuint := 0;
-         vertex_Shader            : openGL.Shader.view;
-         fragment_Shader          : openGL.Shader.view;
+         vertex_Shader            : Shader.view;
+         fragment_Shader          : Shader.view;
 
          Attributes               : openGL.Attribute.views (1 .. 8);
-         attribute_Count          : Natural   := 0;
+         attribute_Count          : Natural := 0;
 
          mvp_Matrix               : Matrix_4x4;
          inverse_modelview_Matrix : Matrix_3x3;
 
-         directional_Light        : openGL.Light.directional.items (1 .. 2);
+         directional_Light        : Light.directional.items (1 .. 2);
 
          Scale                    : Vector_3     := (1.0, 1.0, 1.0);
          Shine                    : openGL.Shine := 1.0;
@@ -134,7 +127,6 @@ private
 
 
    procedure set_mvp_Uniform (Self : in Item);
-
 
 
    -------------
