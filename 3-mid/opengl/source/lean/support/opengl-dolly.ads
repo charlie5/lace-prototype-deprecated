@@ -1,14 +1,12 @@
 with
      openGL.Camera,
-     ada.Characters.Latin_1;
-
+     ada.Characters.latin_1;
 
 package openGL.Dolly
 --
 -- A utility which moves a camera via the keyboard.
 --
 is
-
    type Item (Camera : openGL.Camera.view) is tagged private;
 
 
@@ -21,14 +19,12 @@ is
                                                        Available     : out Boolean);
 
 
-
 private
 
    type Item (Camera : openGL.Camera.view) is tagged
       record
          quit_Requested : Boolean   := False;
          last_Character : Character := ada.Characters.Latin_1.NUL;
-
          Speed          : Real      := 1.0;
       end record;
 

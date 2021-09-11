@@ -1,10 +1,8 @@
 with
      ada.Text_IO;
 
-
 package body openGL.Dolly
 is
-
 
    procedure Speed_is (Self : in out Item;   Now : in Real)
    is
@@ -16,7 +14,8 @@ is
 
    procedure evolve (Self : in out Item)
    is
-      use linear_Algebra_3d, ada.Text_IO;
+      use linear_Algebra_3d,
+          ada.Text_IO;
 
       Command : Character;
       Avail   : Boolean;
@@ -75,14 +74,15 @@ is
    procedure get_last_Character (Self : in out Item;   the_Character : out Character;
                                                        Available     : out Boolean)
    is
+      use ada.Characters;
    begin
-      if Self.last_Character = ada.Characters.Latin_1.NUL
+      if Self.last_Character = latin_1.NUL
       then
          Available := False;
       else
          Available           := True;
          the_Character       := Self.last_Character;
-         Self.last_Character := ada.Characters.Latin_1.NUL;
+         Self.last_Character := latin_1.NUL;
       end if;
    end get_last_Character;
 
