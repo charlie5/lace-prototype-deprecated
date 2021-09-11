@@ -8,8 +8,7 @@ package openGL.Variable.uniform
 --  Models a uniform variable for shaders.
 --
 is
-
-   type Item  is new openGL.Variable.item with private;
+   type Item  is abstract new Variable.item with private;
 
 
    ---------
@@ -36,22 +35,17 @@ is
 
    procedure Value_is (Self : in bool;    Now : in Boolean);
    procedure Value_is (Self : in int;     Now : in Integer);
-   procedure Value_is (Self : in float;   Now : in openGL.Real);
-   procedure Value_is (Self : in vec3;    Now : in openGL.Vector_3);
-   procedure Value_is (Self : in vec4;    Now : in openGL.Vector_4);
-   procedure Value_is (Self : in mat3;    Now : in openGL.Matrix_3x3);
-   procedure Value_is (Self : in mat4;    Now : in openGL.Matrix_4x4);
-
-
+   procedure Value_is (Self : in float;   Now : in Real);
+   procedure Value_is (Self : in vec3;    Now : in Vector_3);
+   procedure Value_is (Self : in vec4;    Now : in Vector_4);
+   procedure Value_is (Self : in mat3;    Now : in Matrix_3x3);
+   procedure Value_is (Self : in mat4;    Now : in Matrix_4x4);
 
 
 
 private
 
-   type Item  is new openGL.Variable.item with
-      record
-         null;
-      end record;
+   type Item  is abstract new openGL.Variable.item with null record;
 
    type bool  is new Variable.uniform.item with null record;
    type int   is new Variable.uniform.item with null record;

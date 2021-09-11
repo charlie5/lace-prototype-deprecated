@@ -3,35 +3,33 @@ with
      openGL.Tasks,
      GL.lean,
      GL.Pointers,
-     Interfaces.C.Strings;
-
+     interfaces.C.Strings;
 
 package body openGL.Variable.uniform
 is
    use GL.lean,
        Interfaces;
 
-
    ---------
    --  Forge
    --
 
-   procedure define  (Self : in out Item;   Program : access openGL.Program.item'Class;
-                                            Name    : in     String)
+   procedure define (Self : in out Item;   Program : access openGL.Program.item'Class;
+                                           Name    : in     String)
    is
       use GL.Pointers, C;
-
-      check_is_OK : constant Boolean               := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Name    : Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.new_String (Name);
+      the_Name : C.Strings.chars_ptr := C.Strings.new_String (Name);
 
    begin
+      Tasks.check;
+
       Self.gl_Variable := glGetUniformLocation (Program.gl_Program,
                                                 to_GLchar_access (the_Name));
-      Interfaces.C.Strings.free (the_Name);
+      C.Strings.free (the_Name);
 
       if Self.gl_Variable = -1
       then
-         raise openGL.Error with "unable to get location for uniform named '" & Name & "'";
+         raise openGL.Error with "Unable to get location for uniform named '" & Name & "'";
       end if;
    end define;
 
@@ -45,8 +43,6 @@ is
    end destroy;
 
 
-
-
    -----------
    --  Actuals
    --
@@ -55,8 +51,8 @@ is
    --
    procedure Value_is (Self : in bool;   Now : in Boolean)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
+      Tasks.check;
       glUniform1i (Self.gl_Variable,
                    Boolean'Pos (Now));
    end Value_is;
@@ -66,83 +62,76 @@ is
    --
    procedure Value_is (Self : in int;   Now : in Integer)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
+      Tasks.check;
       glUniform1i (Self.gl_Variable,
                    gl.GLint (Now));
    end Value_is;
 
 
-
    --  float
    --
-   procedure Value_is (Self : in float;   Now : in openGL.Real)
+   procedure Value_is (Self : in float;   Now : in Real)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
+      Tasks.check;
       glUniform1fv (Self.gl_Variable,
                     1,
-                    GLfloat_Address (Now'Address));
+                    Now'Address);
    end Value_is;
 
 
 
    --  vec3
    --
-   procedure Value_is (Self : in vec3;   Now : in openGL.Vector_3)
+   procedure Value_is (Self : in vec3;   Now : in Vector_3)
    is
-      check_is_OK : constant Boolean         := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Vector  : aliased  openGL.Vector_3 := Now;
    begin
+      Tasks.check;
       glUniform3fv (Self.gl_Variable,
                     1,
-                    the_Vector (1)'Address);
+                    Now (1)'Address);
    end Value_is;
 
 
 
    --  vec4
    --
-   procedure Value_is (Self : in vec4;   Now : in openGL.Vector_4)
+   procedure Value_is (Self : in vec4;   Now : in Vector_4)
    is
-      check_is_OK : constant Boolean         := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Vector  : aliased  openGL.Vector_4 := Now;
    begin
+      Tasks.check;
       glUniform4fv (Self.gl_Variable,
                     1,
-                    the_Vector (1)'Address);
+                    Now (1)'Address);
    end Value_is;
 
 
 
    --  mat3
    --
-   procedure Value_is (Self : in mat3;   Now : in openGL.Matrix_3x3)
+   procedure Value_is (Self : in mat3;   Now : in Matrix_3x3)
    is
-      use GL;
-      check_is_OK : constant Boolean           := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      the_Matrix  : aliased  openGL.Matrix_3x3 := Now;
    begin
+      Tasks.check;
       glUniformMatrix3fv (Self.gl_Variable,
                           1,
-                          GL_FALSE,
-                          the_Matrix (1, 1)'Address);
+                          gl.GL_FALSE,
+                          Now (1, 1)'Address);
    end Value_is;
 
 
 
    --  mat4
    --
-   procedure Value_is (Self : in mat4;   Now : in openGL.Matrix_4x4)
+   procedure Value_is (Self : in mat4;   Now : in Matrix_4x4)
    is
-      use GL;
-      check_is_OK : constant Boolean           := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
-      the_Matrix  : aliased  openGL.Matrix_4x4 := Now;
    begin
+      Tasks.check;
       glUniformMatrix4fv (Self.gl_Variable,
                           1,
-                          GL_FALSE,
-                          the_Matrix (1, 1)'Address);
+                          gl.GL_FALSE,
+                          Now (1, 1)'Address);
    end Value_is;
 
 
