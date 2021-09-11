@@ -9,7 +9,7 @@ with
      openGL.Font,
      openGL.Light.directional,
 
-     ada.Containers.Hashed_Maps;
+     ada.Containers.hashed_Maps;
 
 limited
 with
@@ -19,13 +19,11 @@ private
 with
      ada.unchecked_Conversion;
 
-
 package openGL.Renderer.lean
 --
--- Provides a renderer for the 'lean' profile.
+-- Provides a rendering engine for the 'lean' GL profile.
 --
 is
-
    type Item is limited new Renderer.item with private;
    type View is access all Item'Class;
 
@@ -65,10 +63,8 @@ is
    type impostor_Update
    is
       record
-         Impostor              : openGL.Impostor.view;
+         Impostor : openGL.Impostor.view;
 
---           Width_size            : openGL.texture.Size;
---           Height_size           : openGL.texture.Size;
          current_Width_pixels  : gl.GLsizei;
          current_Height_pixels : gl.GLsizei;
 
@@ -87,34 +83,33 @@ is
 
 
    procedure queue_Impostor_updates (Self : in out Item;    the_Updates   : in     impostor_Updates;
-                                                            the_Camera    : access openGL.Camera.item'Class);
+                                                            the_Camera    : access Camera.item'Class);
 
    procedure queue_Visuals          (Self : in out Item;    the_Visuals   : in     Visual.views;
-                                                            the_Camera    : access openGL.Camera.item'Class);
+                                                            the_Camera    : access Camera.item'Class);
 
    procedure start_Engine (Self : in out Item);
    procedure  stop_Engine (Self : in out Item);
 
-   procedure render       (Self : in out Item;   to_Surface : in openGL.Surface.view := null);
-   procedure add_Font     (Self : in out Item;   font_Id    : in openGL.Font.font_Id);
+   procedure render       (Self : in out Item;   to_Surface : in Surface.view := null);
+   procedure add_Font     (Self : in out Item;   font_Id    : in Font.font_Id);
    procedure Screenshot   (Self : in out Item;   Filename   : in String;
                                                  with_Alpha : in Boolean := False);
 
    function  is_Busy      (Self : in Item) return Boolean;
 
    procedure draw         (Self : in out Item;   the_Visuals            : in Visual.views;
-                                                 camera_world_Transform : in math.Matrix_4x4;
-                                                 view_Transform         : in math.Matrix_4x4;
-                                                 perspective_Transform  : in math.Matrix_4x4;
+                                                 camera_world_Transform : in Matrix_4x4;
+                                                 view_Transform         : in Matrix_4x4;
+                                                 perspective_Transform  : in Matrix_4x4;
                                                  clear_Frame            : in Boolean;
-                                                 to_Surface             : in openGL.Surface.view := null);
+                                                 to_Surface             : in Surface.view := null);
    --
    --  Raises buffer_Overflow if the renderer is unable to cope with the new 'draw'.
 
 
-   procedure free (Self : in out Item;   the_Model    : in openGL.Model.view);
-   procedure free (Self : in out Item;   the_Impostor : in openGL.Impostor.view);
-
+   procedure free (Self : in out Item;   the_Model    : in Model   .view);
+   procedure free (Self : in out Item;   the_Impostor : in Impostor.view);
 
    buffer_Overflow   : exception;
    Texture_not_found : exception;
@@ -125,6 +120,7 @@ private
 
    type Camera_view is access all openGL.Camera.item'Class;
 
+   max_Visuals : constant := 20_000;
 
    ----------
    -- Updates
@@ -132,23 +128,24 @@ private
 
    type updates_for_Camera is
       record
-         Impostor_updates      : lean.impostor_Updates (1 .. 10_000);
-         impostor_updates_Last : Natural                            := 0;
+         impostor_Updates      : lean.impostor_Updates (1 .. max_Visuals);
+         impostor_updates_Last : Natural := 0;
 
-         Visuals               : openGL.Visual.views   (1 .. 20_000);
-         visuals_Last          : Natural                            := 0;
+         Visuals               : Visual.views (1 .. max_Visuals);
+         visuals_Last          : Natural := 0;
       end record;
 
-   type updates_for_Camera_view is access updates_for_Camera;
+   type Updates_for_Camera_view is access Updates_for_Camera;
 
-   function Hash                   is new ada.unchecked_Conversion   (Camera_view, ada.Containers.Hash_Type);
-   package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,  updates_for_Camera_view,
-                                                                      Hash,         "=");
-
+   function Hash                   is new ada.unchecked_Conversion   (Camera_view, ada.Containers.Hash_type);
+   package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,
+                                                                      updates_for_Camera_view,
+                                                                      Hash,
+                                                                      "=");
    type camera_updates_Couple is
       record
          Camera  : Camera_view;
-         Updates : updates_for_Camera_view;
+         Updates : Updates_for_Camera_view;
       end record;
 
    type camera_updates_Couples is array (Positive range <>) of camera_updates_Couple;
@@ -176,13 +173,12 @@ private
    end safe_camera_Map_of_updates;
 
 
-
    -- visual_geometry_Couple
    --
 
    type visual_geometry_Couple is
       record
-         Visual   : openGL.Visual.view;
+         Visual   : openGL.Visual  .view;
          Geometry : openGL.Geometry.view;
       end record;
 
@@ -190,16 +186,15 @@ private
    type visual_geometry_Couples_view is access all visual_geometry_Couples;
 
 
-
    -- graphics_Models
    --
 
-   type graphics_Models is  array (1 .. 20_000) of openGL.Model.view;
+   type graphics_Models is array (1 .. max_Visuals) of Model.view;
 
    protected
    type safe_Models
    is
-      procedure add   (the_Model  : in     openGL.Model.view);
+      procedure add   (the_Model  : in     Model.view);
       procedure fetch (the_Models :    out graphics_Models;
                        Count      :    out Natural);
    private
@@ -208,29 +203,27 @@ private
    end safe_Models;
 
 
-
    -- Impostors
    --
 
-   type Impostor_Set is array (1 .. 10_000) of openGL.Impostor.view;
+   type Impostor_Set is array (1 .. max_Visuals) of Impostor.view;
 
    protected
    type safe_Impostors
    is
-      procedure add   (the_Impostor  : in     openGL.Impostor.view);
-      procedure fetch (the_Impostors :    out Impostor_Set;
-                       Count         :    out Natural);
+      procedure add   (the_Impostor : in     Impostor.view);
+      procedure fetch (Impostors    :    out Impostor_Set;
+                       Count        :    out Natural);
    private
-      my_Impostors : Impostor_Set;
-      my_Count     : Natural     := 0;
+      the_Impostors : Impostor_Set;
+      the_Count     : Natural := 0;
    end safe_Impostors;
-
 
 
    -- Lights
    --
 
-   type light_Set is array (light_Id) of openGL.Light.directional.item;
+   type Light_Set is array (light_Id) of openGL.Light.directional.item;
 
    protected
    type safe_Lights
@@ -239,9 +232,8 @@ private
                      To : in openGL.Light.directional.item);
       function  fetch return light_Set;
    private
-      my_Lights : light_Set;
+      the_Lights : light_Set;
    end safe_Lights;
-
 
 
    -- Engine
@@ -252,13 +244,12 @@ private
       entry start      (Context    : in openGL.Context.view);
       entry Stop;
       entry render;
-      entry add_Font   (font_Id    : in openGL.Font.font_Id);
+      entry add_Font   (font_Id    : in Font.font_Id);
       entry Screenshot (Filename   : in String;
                         with_Alpha : in Boolean := False);
 
-      pragma Storage_Size (40_000_000);
+      pragma Storage_Size (50_000_000);
    end Engine;
-
 
 
    -- Renderer
@@ -266,28 +257,29 @@ private
 
    type Item is limited new Renderer.item with
       record
-         Lights                  :         safe_Lights;
+         Lights             :         safe_Lights;
 
-         Textures                : aliased openGL.Texture.name_Map_of_texture;
-         Fonts                   :         Font.font_id_Maps_of_font.Map;
+         Textures           : aliased Texture.name_Map_of_texture;
+         Fonts              :         Font.font_id_Map_of_font;
 
-         all_opaque_Couples      :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. 6 * 100_000);
-         all_lucid_Couples       :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. 6 * 100_000);
+         all_opaque_Couples :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Visuals);
+         all_lucid_Couples  :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Visuals);
 
-         obsolete_Models         :         lean.safe_Models;
-         obsolete_Impostors      :         lean.safe_Impostors;
+         obsolete_Models    :         safe_Models;
+         obsolete_Impostors :         safe_Impostors;
 
-         texture_Pool            : aliased openGL.texture.Pool;
+         texture_Pool       : aliased Texture.Pool;
 
-         safe_camera_updates_Map : aliased safe_camera_Map_of_updates;
+         safe_Camera_updates_Map
+                            : aliased safe_camera_Map_of_updates;
 
-         Engine                  :         lean.Engine (Self => Item'Access);
+         Engine             :         lean.Engine (Self => Item'Access);
 
-         Context                 :         openGL.Context.view;
-         context_Setter          :         lean.context_Setter;
-         Swapper                 :         lean.Swapper;
-         swap_Required           :         Boolean;
-         is_Busy                 :         Boolean     := False;
+         Context            :         openGL.Context.view;
+         context_Setter     :         lean.context_Setter;
+         Swapper            :         lean.Swapper;
+         swap_Required      :         Boolean;
+         is_Busy            :         Boolean := False;
       end record;
 
 
@@ -295,9 +287,9 @@ private
                                 (Self : in out Item;   all_Updates : in camera_updates_Couples);
 
    procedure update_Impostors   (Self : in out Item;   the_Updates            : in impostor_Updates;
-                                                       camera_world_Transform : in math.Matrix_4x4;
-                                                       view_Transform         : in math.Matrix_4x4;
-                                                       perspective_Transform  : in math.Matrix_4x4);
+                                                       camera_world_Transform : in Matrix_4x4;
+                                                       view_Transform         : in Matrix_4x4;
+                                                       perspective_Transform  : in Matrix_4x4);
    procedure free_old_Models    (Self : in out Item);
    procedure free_old_Impostors (Self : in out Item);
 

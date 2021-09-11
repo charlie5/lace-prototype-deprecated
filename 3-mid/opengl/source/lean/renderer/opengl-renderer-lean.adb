@@ -14,9 +14,7 @@ with
      GL.Binding,
      GL.lean,
 
-     float_math.Algebra.linear.d3,
-
-     interfaces.C,
+     Interfaces.C,
      gnat.heap_Sort,
      System,
 
@@ -25,11 +23,12 @@ with
      ada.Task_Identification,
      ada.unchecked_Deallocation;
 
-
 package body openGL.Renderer.lean
 is
-   use GL, openGL.Program, interfaces.C, ada.Text_IO;
-
+   use GL,
+       Program,
+       Interfaces.C,
+       ada.Text_IO;
 
    ---------
    --- Forge
@@ -38,14 +37,14 @@ is
    procedure define (Self : access Item)
    is
    begin
-      Self.safe_camera_updates_Map.define;
+      Self.safe_Camera_updates_Map.define;
    end define;
 
 
 
    procedure destroy (Self : in out Item)
    is
-      use openGL.Texture;
+      use Texture;
    begin
       Self.stop_Engine;
 
@@ -54,10 +53,10 @@ is
          delay Duration'Small;
       end loop;
 
-      Self.safe_camera_updates_Map.destruct;
+      Self.safe_Camera_updates_Map.destruct;
 
       declare
-         procedure free is new ada.Unchecked_Deallocation (visual_geometry_Couples,
+         procedure free is new ada.unchecked_Deallocation (visual_geometry_Couples,
                                                            visual_geometry_Couples_view);
       begin
          free (Self.all_opaque_Couples);
@@ -67,15 +66,16 @@ is
       vacuum  (Self.texture_Pool);
       destroy (Self.texture_Pool);
 
-      while not Self.Fonts.Is_Empty
+      while not Self.Fonts.is_Empty
       loop
          declare
-            use Font, Font.font_id_Maps_of_font;
-            Cursor   : font_id_Maps_of_font.Cursor := Self.Fonts.First;
-            the_Font : Font.view                   := Element (Cursor);
+            use Font,
+                Font.font_id_Maps_of_font;
+            the_Cursor : Cursor    := Self.Fonts.First;
+            the_Font   : Font.view := Element (the_Cursor);
          begin
             free (the_Font);
-            Self.Fonts.delete (Cursor);
+            Self.Fonts.delete (the_Cursor);
          end;
       end loop;
 
@@ -90,8 +90,6 @@ is
       Self.destroy;
       deallocate (Self);
    end free;
-
-
 
 
    --------------
@@ -120,22 +118,22 @@ is
 
 
 
-   procedure queue_Impostor_updates (Self : in out Item;    the_Updates   : in     impostor_Updates;
-                                                            the_Camera    : access openGL.Camera.item'Class)
+   procedure queue_Impostor_updates (Self : in out Item;    the_Updates : in     impostor_Updates;
+                                                            the_Camera  : access Camera.item'Class)
    is
-      the_camera_Updates : updates_for_Camera_view;
    begin
-      Self.safe_camera_updates_Map.add (the_Updates, Camera_view (the_Camera));
+      Self.safe_Camera_updates_Map.add (the_Updates,
+                                        Camera_view (the_Camera));
    end queue_Impostor_updates;
 
 
 
-   procedure queue_Visuals (Self : in out Item;    the_Visuals   : in     Visual.views;
-                                                   the_Camera    : access openGL.Camera.item'Class)
+   procedure queue_Visuals (Self : in out Item;    the_Visuals : in     Visual.views;
+                                                   the_Camera  : access Camera.item'Class)
    is
-      the_Updates : updates_for_Camera_view;
    begin
-      Self.safe_camera_updates_Map.add (the_Visuals, Camera_view (the_Camera));
+      Self.safe_Camera_updates_Map.add (the_Visuals,
+                                        Camera_view (the_Camera));
    end queue_Visuals;
 
 
@@ -149,10 +147,10 @@ is
             the_Camera  : constant Camera_view             := all_Updates (i).Camera;
             the_Updates : constant updates_for_Camera_view := all_Updates (i).Updates;
          begin
-            openGL.Viewport.Extent_is ((the_Camera.Viewport.Max (1),
-                                        the_Camera.Viewport.Max (2)));
+            Viewport.Extent_is ((the_Camera.Viewport.Max (1),
+                                 the_Camera.Viewport.Max (2)));
 
-            Self.update_Impostors (the_Updates.Impostor_updates (1 .. the_Updates.impostor_updates_Last),
+            Self.update_Impostors (the_Updates.impostor_Updates (1 .. the_Updates.impostor_updates_Last),
                                    camera_world_Transform => the_Camera.World_Transform,
                                    view_Transform         => the_Camera.view_Transform,
                                    perspective_Transform  => the_Camera.projection_Transform);
@@ -160,7 +158,6 @@ is
             the_Updates.impostor_updates_Last := 0;
          end;
       end loop;
-
 
       Self.swap_Required := False;
 
@@ -171,9 +168,8 @@ is
             the_Updates : constant updates_for_Camera_view := all_Updates (i).Updates;
             clear_Frame : constant Boolean                 := i = all_Updates'First;
          begin
-            openGL.Viewport.Extent_is ((the_Camera.Viewport.Max (1),
-                                        the_Camera.Viewport.Max (2)));
-
+            Viewport.Extent_is ((the_Camera.Viewport.Max (1),
+                                 the_Camera.Viewport.Max (2)));
 
             Self.draw (the_Visuals            => the_Updates.Visuals (1 .. the_Updates.visuals_Last),
                        camera_world_Transform => the_Camera.World_Transform,
@@ -192,7 +188,7 @@ is
 
    procedure free_old_Models (Self : in out Item)
    is
-      use openGL.Model;
+      use Model;
 
       free_Models : graphics_Models;
       Last        : Natural;
@@ -209,7 +205,7 @@ is
 
    procedure free_old_Impostors (Self : in out Item)
    is
-      use openGL.Impostor;
+      use Impostor;
 
       free_Impostors : Impostor_Set;
       Last           : Natural;
@@ -223,28 +219,26 @@ is
    end free_old_Impostors;
 
 
-
-
    ---------
    -- Engine
    --
 
    task body Engine
    is
-      the_Context : openGL.Context.view;
-      Done        : Boolean            := False;
+      the_Context : Context.view;
+      Done        : Boolean     := False;
 
    begin
       select
          accept start (Context : openGL.Context.view)
          do
-            the_Context := Context;
+            the_Context := Context;     -- TODO: This is not used.
          end start;
 
-         openGL.Tasks.Renderer_Task := ada.Task_Identification.Current_Task;
+         openGL.Tasks.Renderer_Task := ada.Task_Identification.current_Task;
          Self.context_Setter.all;
 
-         put_Line ("openGL Server version: " & openGL.Server.Version);
+         put_Line ("openGL Server version: " & Server.Version);
 
       or
          accept Stop
@@ -260,9 +254,9 @@ is
          Lights : light_Set := Self.Lights.fetch;
       begin
          Lights (1).is_On;
-         Lights (1).Color_is (ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
-                              diffuse  => (1.0, 1.0, 1.0, 1.0),
-                              specular => (1.0, 1.0, 1.0, 1.0));
+         Lights (1).Color_is (Ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
+                              Diffuse  => (1.0, 1.0, 1.0, 1.0),
+                              Specular => (1.0, 1.0, 1.0, 1.0));
 
          Self.Lights.set (Id => 1,
                           to => Lights (1));
@@ -272,7 +266,7 @@ is
       while not Done
       loop
          declare
-            all_Updates        : camera_updates_Couples (1 .. 100);
+            all_Updates        : camera_updates_Couples (1 .. 100);     -- TODO: This seems very small.
             Length             : Natural;
 
             new_font_Name      : asset_Name := null_Asset;
@@ -286,10 +280,10 @@ is
                accept render
                do
                   Self.is_Busy := True;
-                  Self.safe_camera_updates_Map.fetch_all_Updates (all_Updates, Length);
+                  Self.safe_Camera_updates_Map.fetch_all_Updates (all_Updates, Length);
                end render;
 
-            or accept add_Font (font_Id : in openGL.Font.font_Id)
+            or accept add_Font (font_Id : in Font.font_Id)
                do
                   new_font_Name := font_Id.Name;
                   new_font_Size := font_Id.Size;
@@ -315,13 +309,12 @@ is
             then
                Self.Fonts.insert ((new_font_Name,
                                    new_font_Size),
-                                  Font.texture.new_Font_texture (to_String (new_font_Name)).all'Access);
+                                   Font.texture.new_Font_texture (to_String (new_font_Name)).all'Access);
 
             elsif new_snapshot_Name /= null_Asset
             then
-               openGL.IO.Screenshot (Filename   => to_String (new_snapshot_Name),
-                                     with_Alpha => snapshot_has_Alpha);
-
+               IO.Screenshot (Filename   => to_String (new_snapshot_Name),
+                              with_Alpha => snapshot_has_Alpha);
             else
                Self.update_Impostors_and_draw_Visuals (all_Updates (1 .. Length));
 
@@ -342,15 +335,12 @@ is
       Self.free_old_Models;
       Self.free_old_Impostors;
 
-
    exception
       when E : others =>
          new_Line;
          put_Line ("Unhandled exception in openGL Renderer engine !");
-         put_Line (Ada.Exceptions.Exception_Information (E));
+         put_Line (ada.Exceptions.Exception_Information (E));
    end Engine;
-
-
 
 
    --------------
@@ -364,7 +354,6 @@ is
    end start_Engine;
 
 
-
    procedure stop_Engine (Self : in out Item)
    is
    begin
@@ -373,15 +362,15 @@ is
 
 
 
-   procedure render (Self : in out Item;   to_Surface : in openGL.Surface.view := null)
+   procedure render (Self : in out Item;   to_Surface : in Surface.view := null)
    is
-      pragma Unreferenced (to_Surface);
+      pragma unreferenced (to_Surface);
    begin
       Self.Engine.render;
    end render;
 
 
-   procedure add_Font (Self : in out Item;   font_Id : in openGL.Font.font_Id)
+   procedure add_Font (Self : in out Item;   font_Id : in Font.font_Id)
    is
    begin
       Self.Engine.add_Font (font_Id);
@@ -389,8 +378,8 @@ is
 
 
 
-   procedure Screenshot   (Self : in out Item;   Filename   : in String;
-                                                 with_Alpha : in Boolean := False)
+   procedure Screenshot (Self : in out Item;   Filename   : in String;
+                                               with_Alpha : in Boolean := False)
    is
    begin
       Self.Engine.Screenshot (Filename, with_Alpha);
@@ -407,55 +396,50 @@ is
 
 
    procedure update_Impostors (Self : in out Item;   the_Updates            : in impostor_Updates;
-                                                     camera_world_Transform : in math.Matrix_4x4;
-                                                     view_Transform         : in math.Matrix_4x4;
-                                                     perspective_Transform  : in math.Matrix_4x4)
+                                                     camera_world_Transform : in Matrix_4x4;
+                                                     view_Transform         : in Matrix_4x4;
+                                                     perspective_Transform  : in Matrix_4x4)
    is
-      use openGL.Conversions,
-          math.Algebra.linear.d3;
+      use Conversions,
+          linear_Algebra_3D;
 
-      check_is_OK              : constant Boolean                      := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-      inverse_view_Transform   : constant openGL.Matrix_3x3            := inverse_Rotation (get_Rotation (view_Transform));
+      inverse_view_Transform : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
 
-      light_Site               : constant openGL.Vector_3              := (10_000.0, -10_000.0, 10_000.0); --, 0.0);
-      the_Light                :          openGL.Light.directional.item;
+      light_Site : constant Vector_3 := (10_000.0, -10_000.0, 10_000.0);
+      the_Light  : openGL.Light.directional.item;
 
    begin
-      the_Light.inverse_view_Transform_is (inverse_view_Transform);
-      the_Light.Site_is  (light_Site);
-      the_Light.Color_is (ambient  => +(Palette.White, Opaque),
-                          diffuse  => +(Palette.White, Opaque),
-                          specular => +(Palette.White, Opaque));
+      Tasks.check;
 
+      the_Light.inverse_view_Transform_is (inverse_view_Transform);
+      the_Light. Site_is (light_Site);
+      the_Light.Color_is (Ambient  => +(Palette.White, Opaque),
+                          Diffuse  => +(Palette.White, Opaque),
+                          Specular => +(Palette.White, Opaque));
 
       for i in the_Updates'Range
       loop
          declare
-            use openGL.Texture,
-                openGL.Visual,
+            use Texture,
+                Visual,
                 GL.Binding;
 
+            the_Update     : impostor_Update renames the_Updates (i);
+            the_Impostor   : Impostor.view   renames the_Update.Impostor;
 
-            the_Update               :          impostor_Update renames the_Updates (i);
-            the_Impostor             :          impostor.view   renames the_Update.Impostor;
+            texture_Width  : constant gl.glSizei := power_of_2_Ceiling (Natural (the_Update.current_Width_pixels ));
+            texture_Height : constant gl.glSizei := power_of_2_Ceiling (Natural (the_Update.current_Height_pixels));
 
-            texture_Width            : constant gl.glSizei           := power_of_2_Ceiling (Natural (the_Update.current_Width_pixels ));
-            texture_Height           : constant gl.glSizei           := power_of_2_Ceiling (Natural (the_Update.current_Height_pixels));
-
-            the_Model                : constant openGL.Model.billboard.textured.view
-                                                                     := openGL.Model.billboard.textured.view (the_Impostor.Visual.Model);
-            GL_Error : Boolean;
-
+            the_Model      : constant openGL.Model.billboard.textured.view
+                                                 := openGL.Model.billboard.textured.view (the_Impostor.Visual.Model);
          begin
             the_Impostor.Visual.Scale_is         (the_Impostor.Target.Scale);
             the_Impostor.Visual.is_Terrain       (the_Impostor.Target.is_Terrain);
             the_Impostor.Visual.face_Count_is    (the_Impostor.Target.face_Count);
-
             the_Impostor.Visual.apparent_Size_is (the_Impostor.Target.apparent_Size);
 
             -- Render the target after clearing openGL buffers.
             --
-
             glClearColor (0.0, 0.0, 0.0,  0.0);
             glClear      (   GL_COLOR_BUFFER_BIT
                           or GL_DEPTH_BUFFER_BIT);
@@ -478,93 +462,83 @@ is
 
             -- Get a new sized texture, if needed.
             --
---              if        the_Update.Width_size  /= openGL.texture.Size_width  (the_Model.Texture)
---                or else the_Update.Height_size /= openGL.texture.Size_height (the_Model.Texture)
             if        Natural (the_Update.current_Width_pixels)  /= the_Model.Texture.Size.Width
               or else Natural (the_Update.current_Height_pixels) /= the_Model.Texture.Size.Height
             then
-               free (Self.texture_Pool,  the_Model.Texture);
+               free (Self.texture_Pool, the_Model.Texture);
                the_Model.Texture := new_Texture (Self.texture_Pool'Access,
-                                                 (Natural (texture_Width),  Natural (texture_Height)));
+                                                 (Natural (texture_Width),
+                                                  Natural (texture_Height)));
             end if;
 
             -- Set texture coordinates.
             --
             declare
-               X_first    : constant Real := the_Impostor.expand_X;
-               Y_first    : constant Real := the_Impostor.expand_Y;
-               X_last     : constant Real := Real (the_Update.current_Width_pixels)  / Real (texture_Width)  - X_First;
-               Y_last     : constant Real := Real (the_Update.current_Height_pixels) / Real (texture_Height) - Y_First;
+               X_first : constant Real := the_Impostor.expand_X;
+               Y_first : constant Real := the_Impostor.expand_Y;
+               X_last  : constant Real := Real (the_Update.current_Width_pixels)  / Real (texture_Width)  - X_First;
+               Y_last  : constant Real := Real (the_Update.current_Height_pixels) / Real (texture_Height) - Y_First;
             begin
-               the_Model.Texture_Coords_are ((1 => (s => X_first,     t => Y_first),
-                                              2 => (s => X_last,      t => Y_first),
-                                              3 => (s => X_last,      t => Y_last),
-                                              4 => (s => X_first,     t => Y_last)));
+               the_Model.Texture_Coords_are ((1 => (S => X_first, T => Y_first),
+                                              2 => (S => X_last,  T => Y_first),
+                                              3 => (S => X_last,  T => Y_last),
+                                              4 => (S => X_first, T => Y_last)));
             end;
 
-            enable (the_Model.Texture);
+            the_Model.Texture.enable;
 
-            gl.lean.glCopyTexSubImage2D (gl.GL_TEXTURE_2D,                 0,
+            GL.lean.glCopyTexSubImage2D (gl.GL_TEXTURE_2D,                 0,
                                          the_Update.current_copy_x_Offset, the_Update.current_copy_y_Offset,
                                          the_Update.current_copy_X,        the_Update.current_copy_Y,
                                          the_Update.current_copy_Width,    the_Update.current_copy_Height);
-
-            openGL.Errors.log (error_occurred => gl_Error);
+            Errors.log;
          end;
       end loop;
 
-      openGL.Errors.log;
+      Errors.log;
    end update_Impostors;
 
 
 
    procedure draw (Self : in out Item;   the_Visuals            : in Visual.views;
-                                         camera_world_Transform : in math.Matrix_4x4;
-                                         view_Transform         : in math.Matrix_4x4;
-                                         perspective_Transform  : in math.Matrix_4x4;
+                                         camera_world_Transform : in Matrix_4x4;
+                                         view_Transform         : in Matrix_4x4;
+                                         perspective_Transform  : in Matrix_4x4;
                                          clear_Frame            : in Boolean;
-                                         to_Surface             : in openGL.Surface.view := null)
+                                         to_Surface             : in Surface.view := null)
    is
-      pragma Unreferenced (to_Surface, camera_world_Transform);
+      pragma unreferenced (to_Surface, camera_world_Transform);
 
-      use math.Algebra.linear.d3;
+      use linear_Algebra_3D;
 
-      check_is_OK              : constant Boolean           := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
+      opaque_Count : math.Index := 0;
+      lucid_Count  : math.Index := 0;
 
-      opaque_Count             :          math.Index        := 0;
-      lucid_Count              :          math.Index        := 0;
+      inverse_view_Transform         : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
+      view_and_perspective_Transform : constant Matrix_4x4 := view_Transform * perspective_Transform;
 
-      inverse_view_Transform   : constant openGL.Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
-      view_and_perspective_Transform
-                               : constant openGL.Matrix_4x4 := view_Transform * perspective_Transform;
-
-      Lights                   :          light_Set := Self.Lights.fetch;
+      Lights : light_Set := Self.Lights.fetch;
    begin
+      Tasks.check;
+
       for Light of Lights
       loop
          Light.inverse_view_Transform_is (inverse_view_Transform);
       end loop;
 
---        Lights (1).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
---                             diffuse  => (0.3, 0.3, 0.3, 0.0),
---                             specular => (0.91, 0.91, 0.91, 0.0));
---
---        Lights (2).Color_is (ambient  => (0.2, 0.2, 0.2, 0.0),
---                             diffuse  => (0.6, 0.1, 0.1, 0.0),
---                             specular => (0.01, 0.01, 0.01, 0.0));
-
---        Lights (1).Color_is (ambient  => (Palette.Grey, Lucid),
---                             diffuse  => (Palette.Dark_blue, Lucid),
---                             specular => (Palette.White, Lucid));
---
---        Lights (2).Color_is (ambient  => (Palette.Grey, Lucid),
---                             diffuse  => (Palette.Dark_blue, Lucid),
---                             specular => (Palette.White, Lucid));
+      -- For debugging ...
+      --
+      --        Lights (1).Color_is (ambient  => (Palette.Grey, Lucid),
+      --                             diffuse  => (Palette.Dark_blue, Lucid),
+      --                             specular => (Palette.White, Lucid));
+      --
+      --        Lights (2).Color_is (ambient  => (Palette.Grey, Lucid),
+      --                             diffuse  => (Palette.Dark_blue, Lucid),
+      --                             specular => (Palette.White, Lucid));
 
       if clear_Frame then
          Self.clear_Frame;
       end if;
-
 
       ---------------------
       --- Draw the visuals.
@@ -591,7 +565,6 @@ is
             then
                the_Visual.Model.modify;
             end if;
-
 
             declare
                opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
@@ -624,28 +597,27 @@ is
          end;
       end loop;
 
-      openGL.Errors.log;
-
+      Errors.log;
 
       --  State sort opaque geometries and render them.
       --
       declare
          use GL.Binding;
 
-         procedure heap_swap (L, R : in Natural)
+         procedure Heap_swap (Left, Right : in Natural)
          is
-            Pad : constant visual_geometry_Couple := Self.all_opaque_Couples (L);
+            Pad : constant visual_geometry_Couple := Self.all_opaque_Couples (Left);
          begin
-            Self.all_opaque_Couples (L) := Self.all_opaque_Couples (R);
-            Self.all_opaque_Couples (R) := Pad;
-         end heap_swap;
+            Self.all_opaque_Couples (Left)  := Self.all_opaque_Couples (Right);
+            Self.all_opaque_Couples (Right) := Pad;
+         end Heap_swap;
 
 
-         function heap_LT (L, R : in Natural) return Boolean
+         function Heap_less_than (Left, Right : in Natural) return Boolean
          is
             use System;
-            L_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (L).Geometry;
-            R_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (R).Geometry;
+            L_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (Left) .Geometry;
+            R_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (Right).Geometry;
          begin
             if L_Geometry.Program.gl_Program = R_Geometry.Program.gl_Program
             then
@@ -653,8 +625,7 @@ is
             end if;
 
             return L_Geometry.Program.gl_Program < R_Geometry.Program.gl_Program;
-         end heap_LT;
-
+         end Heap_less_than;
 
          the_Couple      : visual_geometry_Couple;
          current_Program : openGL.Program.view;
@@ -663,13 +634,13 @@ is
          if opaque_Count > 1
          then
             gnat.heap_Sort.sort (opaque_Count,
-                                 heap_swap'unrestricted_Access,
-                                 heap_LT  'unrestricted_Access);
+                                 Heap_swap     'unrestricted_Access,
+                                 Heap_less_than'unrestricted_Access);
          end if;
 
          glDisable   (GL_BLEND);
          glEnable    (GL_DEPTH_TEST);
-         glDepthMask (gl_TRUE);                 -- Make depth buffer read/write.
+         glDepthMask (gl_TRUE);           -- Make depth buffer read/write.
 
          for Each in 1 .. opaque_Count
          loop
@@ -680,15 +651,13 @@ is
                current_Program := the_Couple.Geometry.Program;
             end if;
 
-            current_Program.enable;
-
+            current_Program.enable;     -- TODO: Only need to do this when program changes ?
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
             current_Program.directional_Light_is        (1, Lights (1));
             current_Program.directional_Light_is        (2, Lights (2));
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
             current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
-
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;
@@ -698,30 +667,28 @@ is
          end loop;
       end;
 
-      openGL.Errors.log;
-
+      Errors.log;
 
       --  Depth sort lucid geometries and render them.
       --
       declare
          use GL.Binding;
 
-         procedure heap_swap (L, R : in Natural)
+         procedure Heap_swap (Left, Right : in Natural)
          is
-            Pad : constant visual_geometry_Couple := Self.all_lucid_Couples (L);
+            Pad : constant visual_geometry_Couple := Self.all_lucid_Couples (Left);
          begin
-            Self.all_lucid_Couples (L) := Self.all_lucid_Couples (R);
-            Self.all_lucid_Couples (R) := Pad;
-         end heap_swap;
+            Self.all_lucid_Couples (Left)  := Self.all_lucid_Couples (Right);
+            Self.all_lucid_Couples (Right) := Pad;
+         end Heap_swap;
 
 
-         function heap_LT (L, R : in Natural) return Boolean
+         function Heap_less_than (Left, Right : in Natural) return Boolean
          is
          begin
-            return   Self.all_lucid_Couples (L).Visual.Transform (4, 3)   -- Depth_in_camera_space   -- nb: In camera space, negative Z is
-                   < Self.all_lucid_Couples (R).Visual.Transform (4, 3);  --                                forward, so use '<'.
-         end heap_LT;
-
+            return   Self.all_lucid_Couples (Left) .Visual.Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
+                   < Self.all_lucid_Couples (Right).Visual.Transform (4, 3);  --                                forward, so use '<'.
+         end Heap_less_than;
 
          the_Couple      : visual_geometry_Couple;
          current_Program : openGL.Program.view;
@@ -730,8 +697,8 @@ is
          if lucid_Count > 1
          then
             gnat.heap_Sort.sort (lucid_Count,
-                                 heap_swap'unrestricted_Access,
-                                 heap_LT  'unrestricted_Access);
+                                 Heap_swap     'unrestricted_Access,
+                                 Heap_less_than'unrestricted_Access);
          end if;
 
          glDepthMask  (gl_False);     -- Make depth buffer read-only, for correct transparency.
@@ -744,9 +711,9 @@ is
 
          for Each in 1 .. lucid_Count
          loop
-            the_Couple     := Self.all_lucid_Couples (Each);
+            the_Couple := Self.all_lucid_Couples (Each);
 
-            current_Program := the_Couple.Geometry.Program;
+            current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
 
             current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
@@ -766,9 +733,8 @@ is
          glDepthMask (gl_True);
       end;
 
-      openGL.Errors.log;
+      Errors.log;
    end draw;
-
 
 
    ---------
@@ -783,16 +749,11 @@ is
    end Light_is;
 
 
-
-   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item
+   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item
    is
    begin
       return Self.Lights.fetch (Id);
    end Light;
-
-
-
-
 
 
    -----------------------------
@@ -812,8 +773,8 @@ is
       procedure destruct
       is
          use camera_Maps_of_updates;
-         procedure free is new ada.Unchecked_Deallocation (updates_for_Camera,
-                                                           updates_for_Camera_view);
+         procedure deallocate is new ada.unchecked_Deallocation (updates_for_Camera,
+                                                                 updates_for_Camera_view);
 
          the_Updates : updates_for_Camera_view;
          Cursor      : camera_Maps_of_updates.Cursor := Map_1.First;
@@ -822,7 +783,7 @@ is
          while has_Element (Cursor)
          loop
             the_Updates := Element (Cursor);
-            free (the_Updates);
+            deallocate (the_Updates);
 
             next (Cursor);
          end loop;
@@ -832,7 +793,7 @@ is
          while has_Element (Cursor)
          loop
             the_Updates := Element (Cursor);
-            free (the_Updates);
+            deallocate (the_Updates);
 
             next (Cursor);
          end loop;
@@ -844,14 +805,14 @@ is
       procedure add (the_Updates : in impostor_Updates;
                      the_Camera  : in Camera_view)
       is
-         the_camera_Updates :          updates_for_Camera_view;
-         our_Camera         : constant Camera_view            := the_Camera;
+         the_camera_Updates : updates_for_Camera_view;
+         our_Camera         : constant Camera_view   := the_Camera;
 
       begin
          begin
             the_camera_Updates := current_Map.Element (our_Camera);
          exception
-            when Constraint_Error =>     -- No element exists for this camera yet.
+            when constraint_Error =>     -- No element exists for this camera yet.
                the_camera_Updates := new updates_for_Camera;
                current_Map.insert (our_Camera, the_camera_Updates);
          end;
@@ -869,14 +830,14 @@ is
       procedure add (the_Visuals : in Visual.views;
                      the_Camera  : in Camera_view)
       is
-         our_Camera         : constant Camera_view            := the_Camera;
-         the_camera_Updates :          updates_for_Camera_view;
+         the_camera_Updates : updates_for_Camera_view;
+         our_Camera         : constant Camera_view   := the_Camera;
 
       begin
          begin
             the_camera_Updates := current_Map.Element (our_Camera);
          exception
-            when Constraint_Error =>     -- No element exists for this camera yet.
+            when constraint_Error =>     -- No element exists for this camera yet.
                the_camera_Updates := new updates_for_Camera;
                current_Map.Insert (our_Camera, the_camera_Updates);
          end;
@@ -891,14 +852,13 @@ is
       end add;
 
 
-
       procedure fetch_all_Updates (the_Updates : out camera_updates_Couples;
                                    Length      : out Natural)
       is
          use camera_Maps_of_updates;
 
          the_Couples : camera_updates_Couples (1 .. Integer (current_Map.Length));
-         Cursor      : camera_Maps_of_updates.Cursor                             := current_Map.First;
+         Cursor      : camera_Maps_of_updates.Cursor := current_Map.First;
 
       begin
          for i in the_Couples'Range
@@ -929,7 +889,7 @@ is
    protected
    body safe_Models
    is
-      procedure add (the_Model : in openGL.Model.view)
+      procedure add (the_Model : in Model.view)
       is
       begin
          my_Count             := my_Count + 1;
@@ -948,12 +908,11 @@ is
 
 
 
-   procedure free (Self : in out Item;   the_Model : in openGL.Model.view)
+   procedure free (Self : in out Item;   the_Model : in Model.view)
    is
    begin
       Self.obsolete_Models.add (the_Model);
    end free;
-
 
 
    -----------------
@@ -963,31 +922,30 @@ is
    protected
    body safe_Impostors
    is
-      procedure add (the_Impostor : in openGL.Impostor.view)
+      procedure add (the_Impostor : in Impostor.view)
       is
       begin
-         my_Count                := my_Count + 1;
-         my_Impostors (my_Count) := the_Impostor;
+         the_Count                 := the_Count + 1;
+         the_Impostors (the_Count) := the_Impostor;
       end add;
 
-      procedure fetch (the_Impostors : out Impostor_Set;
-                       Count         : out Natural)
+      procedure fetch (Impostors : out Impostor_Set;
+                       Count     : out Natural)
       is
       begin
-         the_Impostors (1 .. my_Count) := my_Impostors (1 .. my_Count);
-         Count                         := my_Count;
-         my_Count                      := 0;
+         Impostors (1 .. the_Count) := the_Impostors (1 .. the_Count);
+         Count                      := the_Count;
+         the_Count                  := 0;
       end fetch;
    end safe_Impostors;
 
 
 
-   procedure free (Self : in out Item;   the_Impostor : in openGL.Impostor.view)
+   procedure free (Self : in out Item;   the_Impostor : in Impostor.view)
    is
    begin
       Self.obsolete_Impostors.add (the_Impostor);
    end free;
-
 
 
    -----------------
@@ -997,20 +955,19 @@ is
    protected
    body safe_Lights
    is
-      procedure set   (Id : in light_Id;
-                      To         : in openGL.Light.directional.item)
+      procedure set (Id : in light_Id;
+                     To : in openGL.Light.directional.item)
       is
       begin
-         my_Lights (Id) := To;
+         the_Lights (Id) := To;
       end set;
 
-      function  fetch return light_Set
+      function fetch return light_Set
       is
       begin
-         return my_Lights;
+         return the_Lights;
       end fetch;
    end safe_Lights;
-
 
 
 end openGL.Renderer.lean;
