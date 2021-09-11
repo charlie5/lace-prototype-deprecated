@@ -1,13 +1,11 @@
 with
      GL;
 
-
 package openGL.Variable
 --
 --  Models a shader variable.
 --
 is
-
    type Item  is abstract tagged private;
 
 
@@ -20,10 +18,7 @@ is
 
 
 
-
 private
-
-   use type gl.GLint;
 
    type Item is abstract tagged
       record
