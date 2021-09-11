@@ -1,21 +1,19 @@
 with
-     ada.Unchecked_Deallocation,
-     ada.Unchecked_Conversion;
+     ada.unchecked_Deallocation,
+     ada.unchecked_Conversion;
 
 package body openGL.Font
 is
-
    -----------
    --  Utility
    --
 
-   function Hash (the_Id : in font_Id) return ada.Containers.Hash_Type
+   function Hash (the_Id : in font_Id) return ada.Containers.Hash_type
    is
-      use type ada.Containers.Hash_Type;
+      use ada.Containers;
    begin
-      return Hash (the_Id.Name) + ada.Containers.Hash_Type (the_Id.Size);
+      return Hash (the_Id.Name) + Hash_type (the_Id.Size);
    end Hash;
-
 
 
    ---------
@@ -30,7 +28,7 @@ is
    end define;
 
 
-   procedure define (Self : in out Item;   pBufferBytes      : in unsigned_char_Pointer;
+   procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
                                            bufferSizeInBytes : in Natural)
    is
    begin
@@ -48,7 +46,7 @@ is
 
    procedure destruct (Self : in out Item)
    is
-      procedure free is new ada.Unchecked_Deallocation (FontImpl.item'Class,
+      procedure free is new ada.unchecked_Deallocation (FontImpl.item'Class,
                                                         FontImpl.view);
    begin
       Self.Impl.destruct;
@@ -56,25 +54,23 @@ is
    end destruct;
 
 
-
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (Item'Class, View);
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destruct;
       deallocate (Self);
    end free;
 
 
-
    --------------
    --  Attributes
    --
 
-   function CharMap (Self : in Item;   encoding : in freetype_c.FT_Encoding) return Boolean
+   function CharMap (Self : in Item;   Encoding : in freetype_c.FT_Encoding) return Boolean
    is
    begin
-      return Self.impl.CharMap (encoding);
+      return Self.impl.CharMap (Encoding);
    end CharMap;
 
 
@@ -85,163 +81,163 @@ is
    end CharMapCount;
 
 
-   function  CharMapList (Self : access Item) return freetype.face.FT_Encodings_view
+   function CharMapList (Self : access Item) return freetype.face.FT_Encodings_view
    is
    begin
       return Self.impl.CharMapList;
    end CharMapList;
 
 
-   function  Ascender (Self : in     Item) return Real
+   function Ascender (Self : in Item) return Real
    is
    begin
       return Self.impl.Ascender;
    end Ascender;
 
 
-   function  Descender  (Self : in     Item) return Real
+   function Descender (Self : in Item) return Real
    is
    begin
       return Self.impl.Descender;
    end Descender;
 
 
-   function  LineHeight (Self : in     Item) return Real
+   function LineHeight (Self : in Item) return Real
    is
    begin
       return Self.impl.LineHeight;
    end LineHeight;
 
 
-   function  FaceSize (Self : access Item;   size          : in Natural;
-                                             x_res, y_res  : in Natural) return Boolean
+   function FaceSize (Self : access Item;   Size          : in Natural;
+                                            x_Res, y_Res  : in Natural) return Boolean
    is
    begin
-      return Self.impl.FaceSize (size, x_res, y_res);
+      return Self.impl.FaceSize (Size, x_Res, y_Res);
    end FaceSize;
 
 
-   function  FaceSize (Self : in     Item) return Natural
+   function FaceSize (Self : in Item) return Natural
    is
    begin
       return Self.impl.FaceSize;
    end FaceSize;
 
 
-   procedure Depth  (Self : in out Item;   depth  : in Real)
+   procedure Depth (Self : in out Item;   Depth : in Real)
    is
    begin
-      Self.impl.Depth (depth);
+      Self.impl.Depth (Depth);
    end Depth;
 
 
-   procedure Outset (Self : in out Item;   outset : in Real)
+   procedure Outset (Self : in out Item;   Outset : in Real)
    is
    begin
-      Self.impl.Outset (outset);
+      Self.impl.Outset (Outset);
    end Outset;
 
 
-   procedure Outset (Self : in out Item;   front  : in Real;
-                                           back   : in Real)
+   procedure Outset (Self : in out Item;   Front : in Real;
+                                           Back  : in Real)
    is
    begin
-      Self.impl.Outset (front, back);
+      Self.impl.Outset (Front, Back);
    end Outset;
 
 
-   function  BBox (Self : access Item;   s        : in String;
-                                         len      : in Integer  := -1;
-                                         Position : in Vector_3 := math.Origin_3d;
-                                         Spacing  : in Vector_3 := math.Origin_3d) return Bounds
+   function BBox (Self : access Item;   Text     : in String;
+                                        Length   : in Integer  := -1;
+                                        Position : in Vector_3 := Origin_3d;
+                                        Spacing  : in Vector_3 := Origin_3d) return Bounds
    is
    begin
-      return Self.impl.BBox (s, len, position, spacing);
+      return Self.impl.BBox (Text, Length, Position, Spacing);
    end BBox;
 
 
    function Error (Self : in Item) return freetype_c.FT_Error
    is
    begin
-      return Self.impl.err;
+      return Self.impl.Err;
    end Error;
-
-
 
 
    --------------
    --  Operations
    --
 
-   function Attach (Self : in Item;   fontFilePath : in String) return Boolean
+   function attach (Self : in Item;   Font_File_Path : in String) return Boolean
    is
    begin
-      return Self.Impl.Attach (fontFilePath);
+      return Self.impl.attach (Font_File_Path);
    end Attach;
 
 
-   function Attach (Self : in Item;   pBufferBytes      : in unsigned_char_Pointer;
+   function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
                                       bufferSizeInBytes : in Natural) return Boolean
    is
    begin
-      return Self.Impl.Attach (pBufferBytes, bufferSizeInBytes);
+      return Self.impl.Attach (pBufferBytes, bufferSizeInBytes);
    end Attach;
 
 
-   procedure GlyphLoadFlags (Self : in out Item;   flags : in freetype_c.FT_Int)
+   procedure glyph_load_Flags (Self : in out Item;   Flags : in freetype_c.FT_Int)
    is
    begin
-      Self.impl.GlyphLoadFlags (flags);
-   end GlyphLoadFlags;
+      Self.impl.GlyphLoadFlags (Flags);
+   end glyph_load_Flags;
 
 
-   function  Advance (Self : access Item;   s        : in String;
-                                            len      : in Integer  := -1;
-                                            Spacing  : in Vector_3 := math.Origin_3d) return Real
+   function Advance (Self : access Item;   Text    : in String;
+                                           Length  : in Integer  := -1;
+                                           Spacing : in Vector_3 := Origin_3d) return Real
    is
    begin
-      return Self.impl.Advance (s, len, spacing);
+      return Self.impl.Advance (Text, Length, Spacing);
    end Advance;
 
 
-   function  kern_Advance (Self : in Item;   From, To : in Character) return openGL.Real
+   function kern_Advance (Self : in Item;   From, To : in Character) return Real
    is
    begin
       return Self.impl.kern_Advance (From, To);
    end kern_Advance;
 
 
-   function x_PPEM (Self : in Item) return openGL.Real
+   function x_PPEM (Self : in Item) return Real
    is
    begin
-      return Self.impl.x_ppem;
+      return Self.impl.x_PPEM;
    end x_PPEM;
 
 
-   function x_Scale (Self : in Item) return openGL.Real
+   function x_Scale (Self : in Item) return Real
    is
    begin
       return Self.impl.x_Scale;
    end x_Scale;
 
 
-   function y_Scale (Self : in Item) return openGL.Real
+   function y_Scale (Self : in Item) return Real
    is
    begin
       return Self.impl.y_Scale;
    end y_Scale;
 
 
-   function check_Glyphs (Self : access Item;   s          : in String;
-                                                len        : in Integer             := -1;
-                                                Position   : in Vector_3            := math.Origin_3d;
-                                                Spacing    : in Vector_3            := math.Origin_3d;
-                                                Mode       : in fontImpl.RenderMode := fontImpl.RENDER_ALL) return Vector_3
+   function check_Glyphs (Self : access Item;   Text     : in String;
+                                                Length   : in Integer             := -1;
+                                                Position : in Vector_3            := Origin_3D;
+                                                Spacing  : in Vector_3            := Origin_3D;
+                                                Mode     : in fontImpl.RenderMode := fontImpl.RENDER_ALL) return Vector_3
    is
       function to_Integer is new ada.Unchecked_Conversion (fontImpl.RenderMode, Integer);
    begin
-      return Self.impl.Render (s, len,
-                               position, spacing,
+      return Self.impl.Render (Text,
+                               Length,
+                               Position,
+                               Spacing,
                                to_Integer (Mode));
    end check_Glyphs;
 
