@@ -1,28 +1,25 @@
 with
      openGL.Tasks,
+     openGL.Errors,
      GL.lean,
      GL.Pointers,
 
-     ada.characters.latin_1,
+     ada.Characters.latin_1,
      ada.Strings.unbounded,
      ada.Text_IO,
      ada.IO_Exceptions,
 
-     interfaces.c.Strings;
-
+     interfaces.C.Strings;
 
 package body openGL.Shader
 is
    use GL.lean,
        Interfaces;
 
-
    -----------
    --  Utility
    --
-   function textFileRead (FileName : in String)       return c.Char_array;
-   function to_String    (Self     : in c.char_array) return String;
-
+   function read_text_File (Filename : in String) return C.char_array;
 
 
    ---------
@@ -32,14 +29,16 @@ is
    procedure define (Self : in out Item;   Kind            : in shader.Kind;
                                            source_Filename : in String)
    is
-      use C, GL.Pointers;
+      use GL.Pointers,
+          C.Strings;
 
-      check_is_OK      :         constant Boolean                   := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-
-      the_Source       : aliased          C.char_array              := textFileRead           (source_Filename);
-      the_Source_ptr   : aliased constant C.strings.chars_ptr       := C.strings.to_chars_ptr (the_Source'Unchecked_Access);
-      the_Source_Array : aliased          C.Strings.chars_ptr_array := (1 => the_Source_ptr);
+      the_Source       : aliased  C.char_array    := read_text_File (source_Filename);
+      the_Source_ptr   : aliased
+                         constant chars_ptr       := to_chars_ptr (the_Source'unchecked_Access);
+      the_Source_Array : aliased  chars_ptr_array := (1 => the_Source_ptr);
    begin
+      Tasks.check;
+
       Self.Kind := Kind;
 
       if Kind = Vertex
@@ -47,21 +46,31 @@ is
       else   Self.gl_Shader := glCreateShader (GL_FRAGMENT_SHADER);
       end if;
 
-      glShaderSource  (Self.gl_Shader,  1,  to_GLchar_Pointer_access (the_Source_array'Access),  null);
+      Errors.log;
+
+      glShaderSource (Self.gl_Shader,
+                      1,
+                      to_GLchar_Pointer_access (the_Source_array'Access),
+                      null);
+      Errors.log;
+
       glCompileShader (Self.gl_Shader);
+      Errors.log;
 
       declare
+         use type C.int;
          Status : aliased gl.glInt;
       begin
-         glGetShaderiv (self.gl_Shader,  GL_COMPILE_STATUS,  Status'Unchecked_Access);
-
+         glGetShaderiv (self.gl_Shader,
+                        GL_COMPILE_STATUS,
+                        Status'unchecked_Access);
          if Status = 0
          then
             declare
-               compile_Log : constant String := self.ShaderInfoLog;
+               compile_Log : constant String := Self.shader_info_Log;
             begin
                Self.destroy;
-               raise openGL.Error with "'" & source_Filename & "' compilation " & compile_Log;
+               raise Error with "'" & source_Filename & "' compilation failed ~ " & compile_Log;
             end;
          end if;
       end;
@@ -71,49 +80,47 @@ is
 
    procedure destroy (Self : in out Item)
    is
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
    begin
+      Tasks.check;
       glDeleteShader (self.gl_Shader);
    end destroy;
-
-
 
 
    --------------
    --  Attributes
    --
 
-   function ShaderInfoLog (Self : in Item) return String
+   function shader_info_Log (Self : in Item) return String
    is
       use C, GL;
 
-      check_is_OK   : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-
-      infologLength : aliased  glInt   := 0;
-      charsWritten  : aliased  glSizei := 0;
+      info_log_Length : aliased  glInt   := 0;
+      chars_Written   : aliased  glSizei := 0;
    begin
-      glGetShaderiv (self.gl_Shader,  GL_INFO_LOG_LENGTH,  infologLength'Unchecked_Access);
+      Tasks.check;
 
-      if infologLength = 0
+      glGetShaderiv (Self.gl_Shader,
+                     GL_INFO_LOG_LENGTH,
+                     info_log_Length'unchecked_Access);
+
+      if info_log_Length = 0
       then
          return "";
       end if;
 
       declare
          use gl.Pointers;
-         infoLog     : aliased  C.char_array        := C.char_array' (1 .. C.size_t (infoLogLength) => <>);
-         infoLog_Ptr : constant c.strings.chars_Ptr := C.strings.to_chars_ptr (infoLog'Unchecked_Access);
+         info_Log     : aliased  C.char_array        := C.char_array' (1 .. C.size_t (info_log_Length) => <>);
+         info_Log_ptr : constant C.Strings.chars_Ptr := C.Strings.to_chars_ptr (info_Log'unchecked_Access);
       begin
          glGetShaderInfoLog (self.gl_Shader,
-                             glSizei (infologLength),
-                             charsWritten'Unchecked_Access,
-                             to_GLchar_access (infoLog_Ptr));
+                             glSizei (info_log_Length),
+                             chars_Written'unchecked_Access,
+                             to_GLchar_access (info_Log_ptr));
 
-         return to_String (infoLog);
+         return C.to_Ada (info_Log);
       end;
-   end ShaderInfoLog;
-
-
+   end shader_info_Log;
 
 
    ----------
@@ -127,18 +134,18 @@ is
    end gl_Shader;
 
 
-
    -----------
    --  Utility
    --
    NL : constant String := "" & ada.characters.latin_1.LF;
 
 
-   function textFileRead (FileName : in String) return c.Char_array
+   function read_text_File (Filename : in String) return C.char_array
    is
-      use ada.text_IO,  ada.Strings.unbounded;
+      use ada.Text_IO,
+          ada.Strings.unbounded;
 
-      the_File  : ada.text_io.File_type;
+      the_File  : ada.Text_IO.File_type;
       Pad       : unbounded_String;
 
    begin
@@ -146,45 +153,30 @@ is
 
       while not end_of_File (the_File)
       loop
-         append (Pad,  get_Line (the_File) & NL);
+         append (Pad, get_Line (the_File) & NL);
       end loop;
 
       close (the_File);
 
       declare
-         use type interfaces.c.size_t;
+         use type Interfaces.C.size_t;
 
          the_Data : C.char_array (1 .. C.size_t (Length (Pad)) + 1);
       begin
-         for Each in 1 .. the_Data'Last - 1
+         for i in 1 .. the_Data'Last - 1
          loop
-            the_Data (Each) := C.char (Element (Pad, Integer (Each)));
+            the_Data (i) := C.char (Element (Pad, Integer (i)));
          end loop;
 
-         the_Data (the_Data'Last) := c.Char'Val (0);
+         the_Data (the_Data'Last) := C.char'Val (0);
 
          return the_Data;
       end;
 
    exception
-      when ada.IO_Exceptions.Name_Error =>
-         raise openGL.Error with "Unable to locate shader asset named '" & FileName & "'. Please check file exists.";
-   end textFileRead;
-
-
-
-   function to_String (Self : in c.char_array) return String
-   is
-      use C;
-      the_String : String (1 .. Self'Length);
-   begin
-      for Each in the_String'Range
-      loop
-         the_String (Each) := Character (Self (C.size_t (Each)));
-      end loop;
-
-      return the_String;
-   end to_String;
+      when ada.IO_Exceptions.name_Error =>
+         raise Error with "Unable to locate shader asset named '" & Filename & "'.";
+   end read_text_File;
 
 
 end openGL.Shader;
