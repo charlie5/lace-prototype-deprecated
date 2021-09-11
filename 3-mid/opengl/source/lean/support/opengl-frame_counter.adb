@@ -1,7 +1,6 @@
 with
      ada.Text_IO;
 
-
 package body openGL.frame_Counter
 is
 
