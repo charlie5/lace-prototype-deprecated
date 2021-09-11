@@ -4,11 +4,9 @@ with
      System,
      ada.unchecked_Conversion;
 
-
 package body openGL.Attribute
 is
    use GL.lean;
-
 
    ---------
    --  Forge
@@ -30,13 +28,13 @@ is
 
    package body Forge
    is
-      function  to_Attribute (Name        : in String;
-                              gl_Location : in gl.GLuint;
-                              Size        : in gl.GLint;
-                              data_Kind   : in Attribute.data_Kind;
-                              Stride      : in Natural;
-                              Offset      : in system.Storage_Elements.Storage_Offset;
-                              Normalized  : in Boolean) return Item
+      function to_Attribute (Name        : in String;
+                             gl_Location : in gl.GLuint;
+                             Size        : in gl.GLint;
+                             data_Kind   : in Attribute.data_Kind;
+                             Stride      : in Natural;
+                             Offset      : in storage_Offset;
+                             Normalized  : in Boolean) return Item
       is
       begin
          return (name          => new String'(Name),
@@ -54,16 +52,20 @@ is
                               Size        : in gl.GLint;
                               data_Kind   : in Attribute.data_Kind;
                               Stride      : in Natural;
-                              Offset      : in system.Storage_Elements.Storage_Offset;
+                              Offset      : in Storage_Offset;
                               Normalized  : in Boolean) return View
       is
       begin
-         return new Item' (to_Attribute (Name, gl_Location, Size, data_Kind, Stride, Offset, Normalized));
+         return new Item' (to_Attribute (Name,
+                                         gl_Location,
+                                         Size,
+                                         data_Kind,
+                                         Stride,
+                                         Offset,
+                                         Normalized));
       end new_Attribute;
 
    end Forge;
-
-
 
 
    --------------
@@ -84,28 +86,29 @@ is
    end gl_Location;
 
 
-
    --------------
    --  Operations
    --
 
    procedure enable (Self : in Item)
    is
-      use GL;
+      use GL,
+          system.Storage_Elements;
+
       type GLvoid_access is access all GLvoid;
 
-      check_is_OK : constant Boolean := openGL.Tasks.Check;     pragma Unreferenced (check_is_OK);
-
-      function to_GL is new ada.unchecked_Conversion (attribute.data_Kind,                      gl.GLenum);
-      function to_GL is new ada.unchecked_Conversion (system.Storage_Elements.Storage_Offset,   GLvoid_access);
+      function to_GL is new ada.unchecked_Conversion (attribute.data_Kind, gl.GLenum);          -- TODO: Address different sizes warning.
+      function to_GL is new ada.unchecked_Conversion (storage_Offset,      GLvoid_access);
    begin
-      glEnableVertexAttribArray (index      => Self.gl_Location);
-      glVertexAttribPointer     (index      => Self.gl_Location,
-                                 size       => Self.Size,
-                                 the_type   => to_GL (Self.data_Kind),
-                                 normalized => Self.Normalized,
-                                 stride     => Self.vertex_Stride,
-                                 ptr        => to_GL (Self.Offset));
+      Tasks.check;
+
+      glEnableVertexAttribArray (Index      => Self.gl_Location);
+      glVertexAttribPointer     (Index      => Self.gl_Location,
+                                 Size       => Self.Size,
+                                 the_Type   => to_GL (Self.data_Kind),
+                                 Normalized => Self.Normalized,
+                                 Stride     => Self.vertex_Stride,
+                                 Ptr        => to_GL (Self.Offset));
    end enable;
 
 

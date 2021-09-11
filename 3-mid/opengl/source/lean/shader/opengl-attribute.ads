@@ -1,25 +1,20 @@
 with
      GL,
-     system.Storage_Elements;
-
+     system.storage_Elements;
 
 package openGL.Attribute
 --
 --  Models an openGL shader attribute.
 --
 is
-
-   type Item is tagged private;
-   type View is access all Item'Class;
-
+   type Item  is tagged private;
+   type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
-
 
    type data_Kind is (GL_BYTE,  GL_UNSIGNED_BYTE,
                       GL_SHORT, GL_UNSIGNED_SHORT,
                       GL_INT,   GL_UNSIGNED_INT,
                       GL_FLOAT, GL_FIXED);
-
    ---------
    --- Forge
    --
@@ -27,15 +22,16 @@ is
    procedure define  (Self : in out Item);
    procedure destroy (Self : in out Item);
 
-
    package Forge
    is
+      use system.storage_Elements;
+
       function  to_Attribute (Name        : in String;
                               gl_Location : in gl.GLuint;
                               Size        : in gl.GLint;
                               data_Kind   : in Attribute.data_Kind;
                               Stride      : in Natural;
-                              Offset      : in system.Storage_Elements.Storage_Offset;
+                              Offset      : in storage_Offset;
                               Normalized  : in Boolean) return Item;
 
       function new_Attribute (Name        : in String;
@@ -43,10 +39,9 @@ is
                               Size        : in gl.GLint;
                               data_Kind   : in Attribute.data_Kind;
                               Stride      : in Natural;
-                              Offset      : in system.Storage_Elements.Storage_Offset;
+                              Offset      : in storage_Offset;
                               Normalized  : in Boolean) return View;
    end Forge;
-
 
 
    --------------
@@ -57,14 +52,11 @@ is
    function gl_Location (Self : in Item'Class) return gl.GLuint;
 
 
-
    --------------
    --- Operations
    --
 
    procedure enable (Self : in Item);
-
-
 
 
 
@@ -75,12 +67,11 @@ private
          Name          : access String;
          Location      :        gl.GLuint;
          Size          :        gl.GLint;
-         data_Kind     :        attribute.data_Kind;
+         data_Kind     :        Attribute.data_Kind;
          vertex_Stride :        gl.GLint;
-         Offset        :        system.Storage_Elements.Storage_Offset;
+         Offset        :        system.storage_Elements.storage_Offset;
          Normalized    :        gl.GLboolean;
       end record;
-
 
    for data_Kind use (GL_BYTE           => 16#1400#,
                       GL_UNSIGNED_BYTE  => 16#1401#,
@@ -90,6 +81,5 @@ private
                       GL_UNSIGNED_INT   => 16#1405#,
                       GL_FLOAT          => 16#1406#,
                       GL_FIXED          => 16#140c#);
-
 
 end openGL.Attribute;
