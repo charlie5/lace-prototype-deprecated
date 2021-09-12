@@ -1,6 +1,6 @@
 with
-     freetype_c.FT_Face,
-     freetype_c.FT_Size;
+     freeType_C.FT_Face,
+     freeType_C.FT_Size;
 
 package freetype.face_Size
 --
@@ -22,7 +22,7 @@ is
    --- Attributes
    --
 
-   function CharSize  (Self : access Item;   Face         : in freetype_c.FT_Face.item;
+   function CharSize  (Self : access Item;   Face         : in freeType_C.FT_Face.item;
                                              point_Size   : in Natural;
                                              x_Resolution,
                                              y_Resolution : in Natural) return Boolean;
@@ -31,28 +31,31 @@ is
    --
    --  This doesn't guarantee that the size was set correctly. Clients should call 'check Error' for
    --  more information if this function returns false. If an error does occur the size object isn't modified.
+   --
+   --  Face:         Parent face for this size object.
+   --  point_Size:   The face size in points (1/72 inch).
+   --  x_Resolution: The horizontal resolution of the target device.
+   --  y_Resolution: The vertical resolution of the target device.
+   --
    --  Returns true if the size has been set.
-   --  'face'             Parent face for this size object.
-   --  'point_size'       The face size in points (1/72 inch).
-   --  'x_resolution'     The horizontal resolution of the target device.
-   --  'y_resolution'     The vertical resolution of the target device.
+
 
    function CharSize  (Self : in Item) return Natural;   -- Returns the char size in points.
    --
    --  Get the char size for the current face.
 
 
-   function Ascender  (Self : in Item) return Float;   -- Returns the Ascender height.
+   function Ascender  (Self : in Item) return Float;     -- Returns the Ascender height.
    --
    --  Gets the global ascender height for the face in pixels.
 
 
-   function Descender (Self : in Item) return Float;   -- Returns the Descender height.
+   function Descender (Self : in Item) return Float;     -- Returns the Descender height.
    --
    --  Gets the global descender height for the face in pixels.
 
 
-   function Height    (Self : in Item) return Float;   -- Returns the height in pixels.
+   function Height    (Self : in Item) return Float;     -- Returns the height in pixels.
    --
    --  Gets the global face height for the face.
    --
@@ -77,7 +80,7 @@ is
    --  Gets the underline position for the face.
 
 
-   function Error     (Self : in Item) return freetype_c.FT_Error;   -- Returns the current error code.
+   function Error     (Self : in Item) return freeType_C.FT_Error;   -- Returns the current error code.
    --
    --  Queries for errors.
 
@@ -87,14 +90,14 @@ private
 
    type Item is tagged
       record
-         ftFace      : freetype_c.FT_Face.item;    -- The current Freetype face that this FTSize object relates to.
-         ftSize      : freetype_c.FT_Size.item;    -- The freetype Size.
+         ftFace      : freeType_C.FT_Face.item;    -- The current Freetype face that this FTSize object relates to.
+         ftSize      : freeType_C.FT_Size.item;    -- The freetype Size.
 
          Size        : Natural := 0;               -- The size in points.
          xResolution,                              -- The horizontal resolution.
          yResolution : Natural := 0;               -- The vertical resolution.
 
-         Err         : freetype_c.FT_Error := 0;   -- Current error code. Zero means no error.
+         Err         : freeType_C.FT_Error := 0;   -- Current error code. Zero means no error.
       end record;
 
 end freetype.face_Size;

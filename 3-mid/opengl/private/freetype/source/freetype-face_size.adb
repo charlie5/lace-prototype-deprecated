@@ -1,11 +1,10 @@
 with
-     Freetype_C.Binding,
-     Freetype_C.Pointers;
-
+     freeType_C.Binding,
+     freeType_C.Pointers;
 
 package body freetype.face_Size
 is
-   use Freetype_C;
+   use freeType_C;
 
 
    --------------
@@ -17,7 +16,7 @@ is
                                             x_Resolution,
                                             y_Resolution : in Natural) return Boolean
    is
-      use      Freetype_C.Binding;
+      use      freeType_C.Binding;
       use type FT_Error,
                FT_F26Dot6;
    begin
@@ -25,7 +24,7 @@ is
         or else Self.xResolution /= x_Resolution
         or else Self.yResolution /= y_Resolution
       then
-         Self.Err := FT_Set_Char_Size (face,
+         Self.Err := FT_Set_Char_Size (Face,
                                        0,
                                        FT_F26Dot6 (point_size) * 64,
                                        FT_UInt (Self.xResolution),
@@ -36,7 +35,7 @@ is
             Self.Size        := point_Size;
             Self.xResolution := x_Resolution;
             Self.yResolution := y_Resolution;
-            Self.ftSize      := FT_Face_Get_Size (Self.ftFace).all'Access;
+            Self.ftSize      := FT_Face_Get_Size (Self.ftFace);
          end if;
       end if;
 
@@ -55,8 +54,8 @@ is
 
    function Ascender (Self : in Item) return Float
    is
-      use Freetype_C.Binding,
-          Freetype_C.Pointers;
+      use freeType_C.Binding,
+          freeType_C.Pointers;
    begin
       if Self.ftSize = null
       then   return 0.0;
@@ -68,8 +67,8 @@ is
 
    function Descender (Self : in Item) return Float
    is
-      use Freetype_C.Binding,
-          Freetype_C.Pointers;
+      use freeType_C.Binding,
+          freeType_C.Pointers;
    begin
       if Self.ftSize = null
       then   return 0.0;
@@ -81,8 +80,8 @@ is
 
    function Height (Self : in Item) return Float
    is
-      use      Freetype_C.Binding,
-               Freetype_C.Pointers;
+      use      freeType_C.Binding,
+               freeType_C.Pointers;
       use type FT_Long;
 
    begin
@@ -93,7 +92,7 @@ is
 
       if FT_Face_IS_SCALABLE (Self.ftFace) /= 0
       then
-         return   Float (FT_Face_get_BBox (Self.ftFace).yMax  -  FT_Face_get_BBox (Self.ftFace).yMin)
+         return    Float (FT_Face_get_BBox    (Self.ftFace).yMax     -         FT_Face_get_BBox (Self.ftFace).yMin)
                 * (Float (FT_Size_get_Metrics (Self.ftSize).y_ppem)  /  Float (FT_Face_get_Units_per_EM (Self.ftFace)));
       else
          return Float (FT_Size_get_Metrics (Self.ftSize).Height) / 64.0;
@@ -104,8 +103,8 @@ is
 
    function Width (Self : in Item) return Float
    is
-      use      Freetype_C.Binding,
-               Freetype_C.Pointers;
+      use      freeType_C.Binding,
+               freeType_C.Pointers;
       use type FT_Long,
                FT_SizeRec_Pointer;
    begin
@@ -117,7 +116,7 @@ is
       if FT_Face_IS_SCALABLE (Self.ftFace) /= 0
       then
          return    Float (FT_Face_get_BBox    (Self.ftFace).xMax     -         FT_Face_get_BBox         (Self.ftFace).xMin)
-                * (Float (FT_Size_get_Metrics (Self.ftSize).x_ppem)  /  Float (FT_Face_get_units_per_EM (Self.ftFace)));
+                * (Float (FT_Size_get_Metrics (Self.ftSize).x_ppem)  /  Float (FT_Face_get_Units_per_EM (Self.ftFace)));
       else
          return Float (FT_Size_get_Metrics (Self.ftSize).max_Advance) / 64.0;
       end if;
@@ -127,7 +126,7 @@ is
 
    function Underline (Self : in Item) return Float
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return 0.0;
    end Underline;
