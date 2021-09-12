@@ -6,44 +6,43 @@ is
    --
 
    function to_Glyph (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
-                      texture_id       : in openGL.Texture.texture_Name;
+                      texture_Id       : in openGL.Texture.texture_Name;
                       xOffset, yOffset : in Integer;
-                      width, height    : in Integer) return Glyph.Texture.item
+                      Width,   Height  : in Integer) return Glyph.texture.item
    is
-      Self :          Glyph    .Texture.item;
-      Impl : constant GlyphImpl.Texture.view := GlyphImpl.texture.new_GlyphImpl (glyth_Slot,
-                                                                                 texture_id,
+      Self :          Glyph    .texture.item;
+      Impl : constant GlyphImpl.texture.view := GlyphImpl.texture.new_GlyphImpl (glyth_Slot,
+                                                                                 texture_Id,
                                                                                  xOffset, yOffset,
-                                                                                 width,   height);
+                                                                                 Width,   Height);
    begin
       Self.define (Impl.all'Access);
       return Self;
    end to_Glyph;
 
 
-
    function new_Glyph (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
-                       texture_id       : in openGL.Texture.texture_Name;
+                       texture_Id       : in openGL.Texture.texture_Name;
                        xOffset, yOffset : in Integer;
-                       width, height    : in Integer) return access Glyph.Texture.item'Class
+                       Width,   Height  : in Integer) return access Glyph.texture.item'Class
    is
    begin
-      return new Glyph.texture.item' (to_Glyph (glyth_Slot, texture_id, xOffset, yOffset, width, height));
+      return new Glyph.texture.item' (to_Glyph (glyth_Slot,
+                                                texture_Id,
+                                                xOffset, yOffset,
+                                                Width,   Height));
    end new_Glyph;
-
-
 
 
    --------------
    --  Attributes
    --
 
-   function Quad (Self : in Item;   Pen : in Vector_3) return openGL.GlyphImpl.Texture.Quad_t
+   function Quad (Self : in Item;   Pen : in Vector_3) return GlyphImpl.texture.Quad_t
    is
    begin
-      return openGL.GlyphImpl.texture.view (Self.Impl).Quad (Pen);
+      return GlyphImpl.texture.view (Self.Impl).Quad (Pen);
    end Quad;
-
 
 
    --------------
@@ -54,8 +53,8 @@ is
                                                  renderMode : in Integer) return Vector_3
    is
    begin
-      return GlyphImpl.Texture.view (Self.Impl).renderImpl (Pen, renderMode);
+      return GlyphImpl.texture.view (Self.Impl).renderImpl (Pen, renderMode);
    end render;
 
 
-end openGL.Glyph.Texture;
+end openGL.Glyph.texture;
