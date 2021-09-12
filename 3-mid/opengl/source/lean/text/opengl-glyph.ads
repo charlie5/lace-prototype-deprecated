@@ -2,7 +2,6 @@ with
      freeType_c.FT_GlyphSlot,
      openGL.GlyphImpl;
 
-
 package openGL.Glyph
 --
 --  Glyph is the base class for openGL glyphs.
@@ -13,7 +12,6 @@ package openGL.Glyph
 --  This is an abstract class and derived classes must implement the 'Render' function.
 --
 is
-
    type Item is abstract tagged private;
 
 
@@ -35,15 +33,16 @@ is
    --------------
    --- Operations
    --
-   function render (Self : in     Item;   Pen        : in Vector_3;                  -- The current pen position.
-                                          renderMode : in Integer)                   -- Render mode to display.
-                                                                   return Vector_3
+   function render (Self : in Item;   Pen        : in Vector_3;
+                                      renderMode : in Integer) return Vector_3
                     is abstract;
    --
    --  Renders this glyph at the current pen position.
+   --
+   --  Pen:        The current pen position.
+   --  renderMode: Render mode to display.
+   ---
    --  Returns the advance distance for this glyph.
-
-
 
 
 
@@ -57,12 +56,13 @@ private
 
    procedure define (Self : in out Item;   glyth_Slot : in freetype_c.FT_GlyphSlot.item);
    --
-   --  'glyth_Slot' is the Freetype glyph to be processed.
+   --  glyth_Slot: The Freetype glyph to be processed.
 
 
-   procedure define (Self : in out Item;   pImpl      : in openGL.GlyphImpl.view);
+   procedure define (Self : in out Item;   pImpl : in GlyphImpl.view);
    --
    --  Internal FTGL FTGlyph constructor. For private use only.
-   --  'pImpl' is an internal implementation object. Will be destroyed upon FTGlyph deletion.
+   --
+   --  pImpl: An internal implementation object. Will be destroyed upon FTGlyph deletion.
 
 end openGL.Glyph;

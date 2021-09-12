@@ -1,6 +1,5 @@
 with
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body openGL.Glyph
 is
@@ -17,22 +16,20 @@ is
    end define;
 
 
-
-   procedure define (Self : in out Item;   pImpl : in openGL.GlyphImpl.view)
+   procedure define (Self : in out Item;   pImpl : in GlyphImpl.view)
    is
    begin
       Self.Impl := pImpl;
    end define;
 
 
-
    procedure destruct (Self : in out Item)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (openGL.GlyphImpl.item'Class, openGL.GlyphImpl.view);
+      procedure deallocate is new ada.unchecked_Deallocation (GlyphImpl.item'Class,
+                                                              GlyphImpl.view);
    begin
       deallocate (Self.Impl);
    end destruct;
-
 
 
    --------------
@@ -46,13 +43,11 @@ is
    end Advance;
 
 
-
-   function BBox    (Self : in Item) return Bounds
+   function BBox (Self : in Item) return Bounds
    is
    begin
       return Self.Impl.BBox;
    end BBox;
-
 
 
    function Error (Self : in Item) return GlyphImpl.Error_Kind
