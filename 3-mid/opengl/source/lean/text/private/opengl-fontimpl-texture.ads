@@ -11,8 +11,7 @@ private
 with
      GL;
 
-
-package openGL.FontImpl.Texture
+package openGL.FontImpl.texture
 --
 --  Implements a texture font.
 --
@@ -25,22 +24,21 @@ is
    --  Forge
    --
 
-   function  to_FontImpl_texture (ftFont            : access openGL.Font.Item'Class;
+   function  to_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
                                   fontFilePath      : in     String)  return fontImpl.texture.item;
 
-   function new_FontImpl_texture (ftFont            : access openGL.Font.Item'Class;
+   function new_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
                                   fontFilePath      : in     String)  return access fontImpl.texture.item'Class;
 
-   function  to_FontImpl_texture (ftFont            : access openGL.Font.Item'Class;
+   function  to_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
                                   pBufferBytes      : in     unsigned_char_Pointer;
                                   bufferSizeInBytes : in     Natural) return fontImpl.texture.item;
 
-   function new_FontImpl_texture (ftFont            : access openGL.Font.Item'Class;
+   function new_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
                                   pBufferBytes      : in     unsigned_char_Pointer;
                                   bufferSizeInBytes : in     Natural) return access fontImpl.texture.item'Class;
    overriding
    procedure destruct (Self : in out Item);
-
 
 
    --------------
@@ -48,29 +46,29 @@ is
    --
 
    overriding
-   function FaceSize (Self : access Item;   size     : in Natural;
-                                            x_res,
-                                            y_res    : in Natural := 72) return Boolean;
+   function FaceSize (Self : access Item;   Size     : in Natural;
+                                            x_Res,
+                                            y_Res    : in Natural := 72) return Boolean;
    --
    --  Set the char size for the current face.
+   --
    --  Returns True if size was set correctly.
 
 
-   function Render   (Self : access Item;   s        : in String;
-                                            len      : in Integer;
-                                            position : in Vector_3;
-                                            spacing  : in Vector_3;
+   function render   (Self : access Item;   Text     : in String;
+                                            Length   : in Integer;
+                                            Position : in Vector_3;
+                                            Spacing  : in Vector_3;
                                             Mode     : in renderMode) return Vector_3;
 
    function Quad     (Self : access Item;   for_Character : in Character) return openGL.GlyphImpl.Texture.Quad_t;
-
 
 
    ---------------
    --- 'Protected'
    --
 
-   function MakeGlyphImpl (Self : access Item;   ftGlyph : in freetype_c.FT_GlyphSlot.item) return access Glyph.Item'Class;
+   function MakeGlyphImpl (Self : access Item;   ftGlyph : in freetype_c.FT_GlyphSlot.item) return access Glyph.item'Class;
    --
    --  Create an FTTextureGlyph object for the base class.
 
@@ -79,11 +77,9 @@ is
 
 
 
-
-
 private
 
-   use type openGL.texture.texture_Name;
+   use type openGL.Texture.texture_Name;
    package texture_name_Vectors is new ada.Containers.Vectors (Positive, openGL.Texture.texture_Name);
 
 
@@ -99,7 +95,7 @@ private
          glyphHeight          :         Integer    := 0;   -- The max height for glyphs in the current font.
          glyphWidth           :         Integer    := 0;   -- The max width  for glyphs in the current font.
 
-         padding              :         Natural    := 3;   -- A value to be added to the height and width to ensure that
+         Padding              :         Natural    := 3;   -- A value to be added to the height and width to ensure that
          numGlyphs            :         Natural;           -- glyphs don't overlap in the texture.
          remGlyphs            :         Natural;
 
