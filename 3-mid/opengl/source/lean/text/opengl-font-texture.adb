@@ -1,51 +1,45 @@
 with
-     openGL.FontImpl.Texture,
+     openGL.FontImpl.texture,
      ada.unchecked_Deallocation;
-
 
 package body openGL.Font.texture
 is
-
    ---------
    --  Forge
    --
 
-   function to_Font_texture (fontFilePath : in     String) return Font.texture.item
+   function to_Font_texture (fontFilePath : in String) return Font.texture.item
    is
    begin
       return Self : Font.texture.item
       do
-         Self.define (fontImpl.Texture.new_FontImpl_texture (Self'Access,
-                                                             fontFilePath).all'unchecked_Access);
+         Self.define (fontImpl.texture.new_FontImpl_texture (Self'Access,
+                                                             fontFilePath));
       end return;
    end to_Font_texture;
 
 
-
-   function new_Font_texture (fontFilePath : in     String) return Font.texture.view
+   function new_Font_texture (fontFilePath : in String) return Font.texture.view
    is
       Self : constant Font.texture.view := new Font.texture.item;
    begin
       Self.define (fontImpl.Texture.new_FontImpl_texture (Self,
-                                                          fontFilePath).all'unchecked_Access);
+                                                          fontFilePath));
       return Self;
    end new_Font_texture;
 
 
-
-   function to_Font_texture (pBufferBytes      : in     unsigned_char_Pointer;
-                             bufferSizeInBytes : in     Natural)
-     return Font.texture.item
+   function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+                             bufferSizeInBytes : in Natural) return Font.texture.item
    is
    begin
       return Self : Font.texture.item
       do
          Self.define (fontImpl.Texture.new_FontImpl_texture (Self'Access,
                                                              pBufferBytes,
-                                                             bufferSizeInBytes).all'unchecked_Access);
+                                                             bufferSizeInBytes));
       end return;
    end to_Font_texture;
-
 
 
    overriding
@@ -56,16 +50,13 @@ is
    end destruct;
 
 
-
-   procedure free     (Self : in out View)
+   procedure free (Self : in out View)
    is
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destruct;
       deallocate (Self);
    end free;
-
-
 
 
    --------------
@@ -79,13 +70,11 @@ is
    end gl_Texture;
 
 
-
-   function Quad (Self : in Item;   for_Character : in Character) return openGL.GlyphImpl.Texture.Quad_t
+   function Quad (Self : in Item;   for_Character : in Character) return GlyphImpl.Texture.Quad_t
    is
    begin
-      return fontImpl.Texture.View (Self.Impl).Quad (for_Character);
+      return fontImpl.texture.view (Self.Impl).Quad (for_Character);
    end Quad;
-
 
 
    --------------
@@ -93,7 +82,7 @@ is
    --
 
    overriding
-   function MakeGlyph (Self : access Item;   slot : in freetype_c.FT_GlyphSlot.item) return glyph.Container.Glyph_view
+   function MakeGlyph (Self : access Item;   Slot : in freetype_c.FT_GlyphSlot.item) return glyph.Container.Glyph_view
    is
       type FontImpl_texture_view is access all FontImpl.texture.Item'Class;
 
@@ -103,7 +92,7 @@ is
          return null;
       end if;
 
-      return myimpl.MakeGlyphImpl (slot).all'unchecked_Access;
+      return myimpl.MakeGlyphImpl (Slot);
    end MakeGlyph;
 
 
