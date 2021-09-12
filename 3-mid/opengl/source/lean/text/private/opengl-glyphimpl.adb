@@ -5,7 +5,6 @@ with
 
 package body openGL.GlyphImpl
 is
-
    -----------
    --  Utility
    --
@@ -14,25 +13,24 @@ is
    is
       use freetype_c.Binding;
 
-      bbox       : aliased freetype_c.FT_BBox.item;
+      bBox       : aliased freetype_c.FT_BBox.item;
       the_Bounds :         Bounds;
 
    begin
       FT_Outline_Get_CBox (FT_GlyphSlot_Get_Outline (glyth_Slot).all'unchecked_Access,
-                           bbox'unchecked_Access);
+                           bBox'unchecked_Access);
 
-      the_Bounds := (ball => <>,
-                     box  => (lower => (1 => Real (bbox.xMin) / 64.0,
+      the_Bounds := (Ball => <>,
+                     Box  => (Lower => (1 => Real (bbox.xMin) / 64.0,
                                         2 => Real (bbox.yMin) / 64.0,
                                         3 => 0.0),
-                              upper => (1 => Real (bbox.xMax) / 64.0,
+                              Upper => (1 => Real (bbox.xMax) / 64.0,
                                         2 => Real (bbox.yMax) / 64.0,
                                         3 => 0.0)));
       set_Ball_from_Box (the_Bounds);
 
       return the_Bounds;
    end Bounds_of;
-
 
 
    ---------
@@ -53,7 +51,7 @@ is
             use freetype_c.Binding;
             the_Advance : constant freetype_c.FT_Vector.item := FT_GlyphSlot_Get_Advance (glyth_Slot);
          begin
-            Self.advance := (Real (the_Advance.x) / 64.0,
+            Self.Advance := (Real (the_Advance.x) / 64.0,
                              Real (the_Advance.y) / 64.0,
                              0.0);
          end;
@@ -68,7 +66,6 @@ is
    end destruct;
 
 
-
    --------------
    --  Attributes
    --
@@ -76,7 +73,7 @@ is
    function Advance (Self : in Item) return Real
    is
    begin
-      return Self.advance (1);
+      return Self.Advance (1);
    end Advance;
 
 
@@ -87,10 +84,10 @@ is
    end BBox;
 
 
-   function Error (Self : in Item) return Error_Kind
+   function Error (Self : in Item) return error_Kind
    is
    begin
-      return Self.err;
+      return Self.Err;
    end Error;
 
 
