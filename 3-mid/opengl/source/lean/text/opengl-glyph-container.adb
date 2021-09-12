@@ -1,26 +1,19 @@
 with
-     ada.Unchecked_Deallocation,
-     ada.Text_IO;
-
+     ada.unchecked_Deallocation;
 
 package body openGL.Glyph.Container
 is
-   use ada.Text_IO;
-
-
    ---------
    --- Forge
    --
 
-   --  function  to_glyph_Container (parent_Face : access freetype.Face.Item'Class) return openGL.glyph.Container.item
-   function  to_glyph_Container (parent_Face : in freetype.Face.view) return openGL.glyph.Container.item
+   function to_glyph_Container (parent_Face : in freetype.Face.view) return openGL.glyph.Container.item
    is
       Self : openGL.glyph.Container.item;
    begin
-      Self.face    := parent_Face;
-      Self.err     := 0;
-      Self.charMap := new freetype.charMap.Item' (freetype.charMap.to_charMap (Self.face));
---        Self.Glyphs.append (null);
+      Self.Face    := parent_Face;
+      Self.Err     := 0;
+      Self.charMap := new freetype.charMap.Item' (freetype.charMap.to_charMap (Self.Face));
 
       return Self;
    end to_glyph_Container;
@@ -29,19 +22,19 @@ is
 
    procedure destruct (Self : in out Item)
    is
-      use glyph_Vectors;
+      use Glyph_Vectors;
 
-      procedure free is new ada.unchecked_Deallocation (openGL  .Glyph  .item'Class, Glyph_view);
-      procedure free is new ada.unchecked_Deallocation (freetype.charMap.item'Class, charMap_view);
+      procedure deallocate is new ada.unchecked_Deallocation (openGL.Glyph.item'Class,     Glyph_view);
+      procedure deallocate is new ada.unchecked_Deallocation (freetype.charMap.item'Class, charMap_view);
 
-      Cursor    : glyph_Vectors.Cursor := Self.Glyphs.First;
+      Cursor    : Glyph_Vectors.Cursor := Self.Glyphs.First;
       the_Glyph : Glyph_view;
 
    begin
       while has_Element (Cursor)
       loop
          the_Glyph := Element (Cursor);
-         free (the_Glyph);
+         deallocate (the_Glyph);
 
          next (Cursor);
       end loop;
@@ -49,72 +42,71 @@ is
       Self.Glyphs .clear;
       Self.charMap.destruct;
 
-      free (Self.charMap);
+      deallocate (Self.charMap);
    end destruct;
-
 
 
    --------------
    --  Attributes
    --
 
-   function CharMap (Self : access Item;   encoding : in freeType_c.FT_Encoding) return Boolean
+   function CharMap (Self : access Item;   Encoding : in freeType_c.FT_Encoding) return Boolean
    is
-      result : constant Boolean := Self.charMap.CharMap (encoding);
+      Result : constant Boolean := Self.charMap.CharMap (Encoding);
    begin
-      Self.err := Self.charMap.Error;
-      return result;
+      Self.Err := Self.charMap.Error;
+      return Result;
    end CharMap;
 
 
 
-   function FontIndex (Self : in Item;   character : in freetype.charMap.characterCode) return Natural
+   function FontIndex (Self : in Item;   Character : in freetype.charMap.characterCode) return Natural
    is
    begin
-      return Natural (Self.charMap.FontIndex (character));
+      return Natural (Self.charMap.FontIndex (Character));
    end FontIndex;
 
 
 
-   procedure Add (Self : in out Item;   glyph     : in Glyph_view;
-                                        character : in freetype.charMap.characterCode)
+   procedure add (Self : in out Item;   Glyph     : in Glyph_view;
+                                        Character : in freetype.charMap.characterCode)
    is
    begin
-      Self.glyphs .append      (Glyph);
-      Self.charMap.insertIndex (character, Self.glyphs.length);
-   end Add;
+      Self.glyphs.append (Glyph);
+      Self.charMap.insertIndex (Character, Self.Glyphs.Length);
+   end add;
 
 
 
-   function  Glyph (Self : in Item;   character : in freetype.charMap.characterCode) return Glyph_view
+   function Glyph (Self : in Item;   Character : in freetype.charMap.characterCode) return Glyph_view
    is
       use type freetype.charMap.glyphIndex;
-      index : constant freetype.charMap.glyphIndex := Self.charMap.GlyphListIndex (character);
+      Index : constant freetype.charMap.glyphIndex := Self.charMap.GlyphListIndex (Character);
    begin
-      if index = -1
+      if Index = -1
       then   return null;
-      else   return Self.glyphs.Element (Integer (index));
+      else   return Self.Glyphs.Element (Integer (Index));
       end if;
    end Glyph;
 
 
 
-   function BBox (Self : in Item;   character : in freetype.charMap.characterCode) return openGL.Bounds
+   function BBox (Self : in Item;   Character : in freetype.charMap.characterCode) return Bounds
    is
    begin
-      return Self.Glyph (character).BBox;
+      return Self.Glyph (Character).BBox;
    end BBox;
 
 
 
-   function Advance (Self : in Item;   character         : in freetype.charMap.characterCode;
+   function Advance (Self : in Item;   Character         : in freetype.charMap.characterCode;
                                        nextCharacterCode : in freetype.charMap.characterCode) return Real
    is
-      left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (character);
-      right : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode);
+      Left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (Character);
+      Right : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode);
    begin
-      return Real (Self.face.KernAdvance (Integer (left),
-                                          Integer (right)) (1)  +  Float (Self.Glyph (character).Advance));
+      return Real (Self.Face.KernAdvance (Integer (Left),
+                                          Integer (Right)) (1)  +  Float (Self.Glyph (Character).Advance));
    end Advance;
 
 
@@ -122,41 +114,40 @@ is
    function Error (Self : in Item) return freetype_c.FT_Error
    is
    begin
-      return Self.err;
+      return Self.Err;
    end Error;
-
 
 
    --------------
    --  Operations
    --
 
-   function Render (Self : access Item;   character         : in freetype.charMap.characterCode;
+   function render (Self : access Item;   Character         : in freetype.charMap.characterCode;
                                           nextCharacterCode : in freetype.charMap.characterCode;
                                           penPosition       : in Vector_3;
                                           renderMode        : in Integer) return Vector_3
    is
       use type freetype_c.FT_Error,
-               freetype  .charMap.glyphIndex;
+               freetype.charMap.glyphIndex;
 
-      left           : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (character)         - 0;
-      right          : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode) - 0;
+      Left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (Character)         - 0;
+      Right : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode) - 0;
 
-      ft_kernAdvance : constant freetype.Vector_3           := Self.face.KernAdvance (Integer (left),
-                                                                                      Integer (right));
-      kernAdvance    :          Vector_3                    := (ft_kernAdvance (1),
-                                                                ft_kernAdvance (2),
-                                                                ft_kernAdvance (3));
-      index          : freetype.charMap.glyphIndex;
+      ft_kernAdvance : constant freetype.Vector_3  := Self.Face.KernAdvance (Integer (Left),
+                                                                             Integer (Right));
+      kernAdvance : Vector_3 := (ft_kernAdvance (1),
+                                 ft_kernAdvance (2),
+                                 ft_kernAdvance (3));
+      Index : freetype.charMap.glyphIndex;
 
    begin
-      if Self.face.Error = 0
+      if Self.Face.Error = 0
       then
-         index       := Self.charMap.GlyphListIndex (character);
-         kernAdvance := kernAdvance + Self.glyphs.Element (Integer (index)).Render (penPosition,
+         Index       := Self.charMap.GlyphListIndex (Character);
+         kernAdvance := kernAdvance + Self.Glyphs.Element (Integer (Index)).Render (penPosition,
                                                                                     renderMode);
       else
-         put_Line ("FACE ERROR");
+         raise openGL.Error with "Unable to render character '" & Character'Image & "'";
       end if;
 
       return kernAdvance;
