@@ -1,6 +1,6 @@
 package Freetype
 --
--- A thick bindng to the Freetype font library.
+-- A thick bindng to the 'Freetype' font library.
 --
 is
    pragma Pure;
