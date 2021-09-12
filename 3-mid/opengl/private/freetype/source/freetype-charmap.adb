@@ -1,12 +1,11 @@
 with
      freetype.Face,
-     freetype_C.Binding,
-     freetype_C.FT_CharMapRec;
+     freeType_C.Binding,
+     freeType_C.FT_CharMapRec;
 
 package body freetype.charMap
 is
-   use FreeType_C;
-
+   use freeType_C;
 
    -----------
    --  Utility
@@ -23,12 +22,12 @@ is
    --  Forge
    --
 
-   function to_charMap (parent_Face : access Face.item'Class) return freetype.charMap.item
+   function to_charMap (parent_Face : access Face.item'Class) return Item
    is
       use freetype_c.Binding;
       use type FT_int;
 
-      Self : freetype.charMap.item;
+      Self : Item;
 
    begin
       Self.ftFace := parent_Face.freetype_Face;
@@ -43,12 +42,12 @@ is
          end if;
 
          Self.Err := FT_Set_Charmap (Self.ftFace,
-                                     FT_Face_Get_charmap_at (Self.ftFace, 0).all'unchecked_Access);
+                                     FT_Face_Get_charmap_at (Self.ftFace, 0));
       end if;
 
-      Self.ftEncoding := FT_Face_Get_charmap (Self.ftFace).encoding;
+      Self.ftEncoding := FT_Face_Get_charmap (Self.ftFace).Encoding;
 
-      for i in characterCode'(1) .. MAX_PRECOMPUTED
+      for i in characterCode'(1) .. max_Precomputed
       loop
          Self.charIndexCache (i) := FT_Get_Char_Index (Self.ftFace,
                                                        FT_ULong (i - 1));
@@ -66,7 +65,6 @@ is
    end destruct;
 
 
-
    --------------
    --  Attributes
    --
@@ -79,24 +77,23 @@ is
 
 
 
-   function CharMap (Self : access Item;   encoding : in FT_Encoding)
-                     return Boolean
+   function CharMap (Self : access Item;   Encoding : in FT_Encoding) return Boolean
    is
-      use freetype_c.Binding;
+      use freeType_C.Binding;
       use type FT_Encoding,
                FT_Error;
    begin
-      if Self.ftEncoding = encoding
+      if Self.ftEncoding = Encoding
       then
          Self.Err := 0;
          return True;
       end if;
 
-      Self.Err := FT_Select_Charmap (Self.ftFace, encoding);
+      Self.Err := FT_Select_Charmap (Self.ftFace, Encoding);
 
       if Self.Err = 0
       then
-         Self.ftEncoding := encoding;
+         Self.ftEncoding := Encoding;
          Self.charMap.clear;
       end if;
 
@@ -119,9 +116,9 @@ is
 
    function FontIndex (Self : in Item;   Character : in characterCode) return GlyphIndex
    is
-      use freetype_C.Binding;
+      use freeType_C.Binding;
    begin
-      if Character < MAX_PRECOMPUTED
+      if Character < max_Precomputed
       then
          return GlyphIndex (Self.charIndexCache (Character));
       end if;
