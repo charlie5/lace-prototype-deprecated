@@ -6,64 +6,66 @@ with
      freetype_c.Pointers,
      freetype_c.FT_Size_Metrics,
 
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body openGL.FontImpl
 is
    use freetype_c.Pointers;
 
-
    -----------
    --  Utility
    --
-   procedure free is new ada.Unchecked_Deallocation (openGL.Glyph.Container.item'Class, glyph_Container_view);
 
-
+   procedure deallocate is new ada.unchecked_Deallocation (Glyph.Container.item'Class,
+                                                           glyph_Container_view);
 
    ---------
    --  Forge
    --
 
-   procedure define (Self : access Item;   ftFont       : access openGL.Font.item'Class;
+   procedure define (Self : access Item;   ftFont       : access Font.item'Class;
                                            fontFilePath : in     String)
    is
-      use      freetype.Face, openGL.Glyph.container,
-               freetype_c,    freetype_c.Binding;
+      use freetype.Face,
+          openGL.Glyph.container,
+          Freetype_C,
+          Freetype_C.Binding;
       use type FT_Error;
 
    begin
-      Self.face       := Forge.to_Face (fontFilePath, precomputeKerning => True);
+      Self.Face       := Forge.to_Face (fontFilePath, precomputeKerning => True);
       Self.load_Flags := FT_Int (FT_LOAD_DEFAULT_flag);
-      Self.intf       := ftFont;
-      Self.err        := Self.face.Error;
+      Self.Intf       := ftFont;
+      Self.Err        := Self.face.Error;
 
-      if Self.err = 0
+      if Self.Err = 0
       then
-         Self.glyphList := new openGL.Glyph.Container.item' (to_glyph_Container (Self.face'Access));
+         Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.Face'Access));
       else
-         raise openGL.Error with "Unable to create face for font.";
+         raise Error with "Unable to create face for font '" & fontFilePath & "'.";
       end if;
    end define;
 
 
 
-   procedure define (Self : access Item;   ftFont            : access  openGL.Font.item'Class;
-                                           pBufferBytes      : access  interfaces.c.unsigned_char;
+   procedure define (Self : access Item;   ftFont            : access  Font.item'Class;
+                                           pBufferBytes      : access  C.unsigned_char;
                                            bufferSizeInBytes : in      Integer)
    is
-      use      freetype.Face, openGL.Glyph.container,
-               freetype_c,    freetype_c.Binding;
+      use freetype.Face,
+          openGL.Glyph.container,
+          Freetype_C,
+          Freetype_c.Binding;
       use type FT_Error;
    begin
-      Self.face       := Forge.to_Face (pBufferBytes, bufferSizeInBytes, precomputeKerning => True);
+      Self.Face       := Forge.to_Face (pBufferBytes, bufferSizeInBytes, precomputeKerning => True);
       Self.load_Flags := FT_Int (FT_LOAD_DEFAULT_flag);
-      Self.intf       := ftFont;
-      Self.err        := Self.face.Error;
+      Self.Intf       := ftFont;
+      Self.Err        := Self.face.Error;
 
-      if Self.err = 0
+      if Self.Err = 0
       then
-         self.glyphList := new openGL.Glyph.Container.item'(to_glyph_Container (Self.face'Access));
+         Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.Face'Access));
       end if;
    end define;
 
@@ -75,70 +77,68 @@ is
       if Self.glyphList /= null
       then
          Self.glyphList.destruct;
-         free (Self.glyphList);
+         deallocate (Self.glyphList);
       end if;
    end destruct;
-
-
 
 
    --------------
    --  Attributes
    --
 
-   function err (Self : in Item) return freetype_c.FT_Error
+   function Err (Self : in Item) return freetype_c.FT_Error
    is
    begin
-      return Self.err;
-   end err;
+      return Self.Err;
+   end Err;
 
 
 
-   function  Attach (Self : access Item;   fontFilePath : in String) return Boolean
+   function attach (Self : access Item;   fontFilePath : in String) return Boolean
    is
    begin
       if not Self.Face.attach (fontFilePath)
       then
-         Self.err := Self.face.Error;
+         Self.Err := Self.Face.Error;
          return False;
       end if;
 
-      Self.err := 0;
+      Self.Err := 0;
       return True;
-   end Attach;
+   end attach;
 
 
 
-   function  Attach (Self : access Item;   pBufferBytes      : access interfaces.c.unsigned_char;
-                                           bufferSizeInBytes : in     Integer) return Boolean
+   function attach (Self : access Item;   pBufferBytes      : access C.unsigned_char;
+                                          bufferSizeInBytes : in     Integer) return Boolean
    is
    begin
       if not Self.Face.attach (pBufferBytes, bufferSizeInBytes)
       then
-         Self.err := Self.face.Error;
+         Self.Err := Self.Face.Error;
          return False;
       end if;
 
-      Self.err := 0;
+      Self.Err := 0;
       return True;
-   end Attach;
+   end attach;
 
 
 
-   procedure GlyphLoadFlags (Self : in out Item;   flags : in freetype_c.FT_Int)
+   procedure GlyphLoadFlags (Self : in out Item;   Flags : in freetype_c.FT_Int)
    is
    begin
-      Self.load_Flags := flags;
+      Self.load_Flags := Flags;
    end GlyphLoadFlags;
 
 
 
-   function CharMap (Self : access Item;   encoding : in freetype_c.FT_Encoding) return Boolean
+   function CharMap (Self : access Item;   Encoding : in freetype_c.FT_Encoding) return Boolean
    is
-      result : constant Boolean := Self.glyphList.CharMap (encoding);
+      Result : constant Boolean := Self.glyphList.CharMap (Encoding);
    begin
-      Self.err := Self.glyphList.Error;
-      return result;
+      Self.Err := Self.glyphList.Error;
+      return Result;
    end CharMap;
 
 
@@ -146,7 +146,7 @@ is
    function CharMapCount (Self : in Item) return Natural
    is
    begin
-      return Self.face.CharMapCount;
+      return Self.Face.CharMapCount;
    end CharMapCount;
 
 
@@ -154,7 +154,7 @@ is
    function CharMapList (Self : access Item) return freetype.face.FT_Encodings_view
    is
    begin
-      return Self.face.CharMapList;
+      return Self.Face.CharMapList;
    end CharMapList;
 
 
@@ -162,7 +162,7 @@ is
    function Ascender (Self : in Item) return Real
    is
    begin
-      return Real (Self.charSize.Ascender);
+      return Self.charSize.Ascender;
    end Ascender;
 
 
@@ -170,7 +170,7 @@ is
    function Descender (Self : in Item) return Real
    is
    begin
-      return Real (Self.charSize.Descender);
+      return Self.charSize.Descender;
    end Descender;
 
 
@@ -178,33 +178,32 @@ is
    function LineHeight (Self : in Item) return Real
    is
    begin
-      return Real (Self.charSize.Height);
+      return Self.charSize.Height;
    end LineHeight;
 
 
 
-   function FaceSize (Self : access Item;   size         : in Natural;
-                                            x_res, y_res : in Natural) return Boolean
+   function FaceSize (Self : access Item;   Size         : in Natural;
+                                            x_Res, y_Res : in Natural) return Boolean
    is
-      use      openGL.Glyph.Container;
+      use      Glyph.Container;
       use type freetype_c.FT_Error;
 
    begin
       if Self.glyphList /= null
       then
          Self.glyphList.destruct;
-         free (Self.glyphList);
-         Self.glyphList := null;
+         deallocate (Self.glyphList);
       end if;
 
-      Self.charSize := Self.face.Size (size, x_res, y_res);
-      Self.err      := Self.face.Error;
+      Self.charSize := Self.Face.Size (Size, x_Res, y_Res);
+      Self.Err      := Self.Face.Error;
 
-      if Self.err /= 0 then
+      if Self.Err /= 0 then
          return False;
       end if;
 
-      Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.face'unchecked_Access));
+      Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.Face'unchecked_Access));
       return True;
    end FaceSize;
 
@@ -218,35 +217,35 @@ is
 
 
 
-   procedure Depth  (Self : in out Item;   depth  : in Real)
+   procedure Depth (Self : in out Item;   Depth : in Real)
    is
    begin
-      null;   -- nb: This is 'null' in FTGL also.
+      null;   -- NB: This is 'null' in FTGL also.
    end Depth;
 
 
 
-   procedure Outset (Self : in out Item;   outset : in Real)
+   procedure Outset (Self : in out Item;   Outset : in Real)
    is
    begin
-      null;   -- nb: This is 'null' in FTGL also.
+      null;   -- NB: This is 'null' in FTGL also.
    end Outset;
 
 
 
-   procedure Outset (Self : in out Item;   front  : in Real;
-                                           back   : in Real)
+   procedure Outset (Self : in out Item;   Front  : in Real;
+                                           Back   : in Real)
 
    is
    begin
-      null;   -- nb: This is 'null' in FTGL also.
+      null;   -- NB: This is 'null' in FTGL also.
    end Outset;
 
 
 
-   function CheckGlyph (Self : access Item;   character : in freetype.charmap.CharacterCode) return Boolean
+   function CheckGlyph (Self : access Item;   Character : in freetype.charmap.CharacterCode) return Boolean
    is
-      use type glyph.Container.Glyph_view,
+      use type Glyph.Container.Glyph_view,
                freetype_c.FT_Error;
 
       glyphIndex : freetype.charMap.glyphIndex;
@@ -254,38 +253,39 @@ is
       tempGlyph  : glyph.Container.Glyph_view;
 
    begin
-      if Self.glyphList.Glyph (character) /= null
+      if Self.glyphList.Glyph (Character) /= null
       then
          return True;
       end if;
 
-      glyphIndex := freetype.charMap.glyphIndex (Self.glyphList.FontIndex (character));
-      ftSlot     := Self.face.Glyph             (glyphIndex,  Self.load_flags);
+      glyphIndex := freetype.charMap.glyphIndex (Self.glyphList.FontIndex (Character));
+      ftSlot     := Self.Face.Glyph             (glyphIndex,  Self.load_flags);
 
       if ftSlot = null
       then
-         Self.err := Self.face.Error;
+         Self.Err := Self.Face.Error;
          return False;
       end if;
 
-      if Self.intf = null
+      if Self.Intf = null
       then
-         raise Program_Error with "Self.intf = null";
+         raise Error with "CheckGlyph ~ Self.Intf = null";
       end if;
 
-      tempGlyph := Self.intf.MakeGlyph (ftSlot);
+      tempGlyph := Self.Intf.MakeGlyph (ftSlot);
 
       if tempGlyph = null
       then
-         if Self.err = 0 then
-            Self.err := 16#13#;
+         if Self.Err = 0 then
+            Self.Err := 16#13#;
          end if;
 
          return False;
       end if;
 
-      if Self.glyphList.Glyph (character) = null then
-         Self.glyphList.add (tempGlyph, character);
+      if Self.glyphList.Glyph (character) = null
+      then
+         Self.glyphList.add (tempGlyph, Character);
       end if;
 
       return True;
@@ -293,19 +293,20 @@ is
 
 
 
-   function BBox (Self : access Item;   s        : in String;
-                                        len      : in Integer;
+   function BBox (Self : access Item;   Text     : in String;
+                                        Length   : in Integer;
                                         Position : in Vector_3;
                                         Spacing  : in Vector_3) return Bounds
    is
-      pragma Unreferenced (len);
+      pragma unreferenced (Length);
 
-      use freetype.charMap, Geometry_3d;
+      use freetype.charMap,
+          Geometry_3d;
 
       Pos       : Vector_3 := Position;
       totalBBox : Bounds   := null_Bounds;
    begin
-      if s = ""
+      if Text = ""
       then
          totalBBox.Box := totalBBox.Box or Pos;
          set_Ball_from_Box (totalBBox);
@@ -313,15 +314,14 @@ is
          return totalBBox;
       end if;
 
-
       --  Only compute the bounds if string is non-empty.
       --
-      if s'Length > 0
+      if Text'Length > 0     -- TODO: Rid this useless check.
       then
-         --  for multibyte - we can't rely on sizeof(T) == character
+         --  For multibyte, we can't rely on sizeof (T) == character
          --
          declare
-            use type freetype.charmap.characterCode;
+            use type freetype.charMap.characterCode;
 
             thisChar : Character;
             nextChar : Character;
@@ -329,15 +329,14 @@ is
          begin
             --  Expand totalBox by each glyph in string
             --
-            for Each in s'Range
+            for i in Text'Range
             loop
-               thisChar := s (Each);
+               thisChar := Text (i);
 
-               if Each /= s'Last
-               then   nextChar := s (Each + 1);
+               if i /= Text'Last
+               then   nextChar := Text (i + 1);
                else   nextChar := ' ';
                end if;
-
 
                if Self.CheckGlyph (to_characterCode (thisChar))
                then
@@ -347,11 +346,11 @@ is
                      tempBBox.Box  := tempBBox.Box + Pos;
                      totalBBox.Box := totalBBox.Box or tempBBox.Box;
 
-                     Pos           := Pos  +  spacing;
-                     Pos           := Pos  +  Vector_3' (Self.glyphList.Advance (to_characterCode (thisChar),
-                                                                                 to_characterCode (nextChar)),
-                                                         0.0,
-                                                         0.0);
+                     Pos := Pos  +  spacing;
+                     Pos := Pos  +  Vector_3' (Self.glyphList.Advance (to_characterCode (thisChar),
+                                                                       to_characterCode (nextChar)),
+                                               0.0,
+                                               0.0);
                   end;
                end if;
             end loop;
@@ -359,12 +358,13 @@ is
       end if;
 
       set_Ball_from_Box (totalBBox);
+
       return totalBBox;
    end BBox;
 
 
 
-   function kern_Advance (Self : in Item;   From, To : in Character) return openGL.Real
+   function kern_Advance (Self : in Item;   From, To : in Character) return Real
    is
       use freetype.charMap;
    begin
@@ -374,80 +374,80 @@ is
 
 
 
-   function x_PPEM (Self : in Item) return openGL.Real
+   function x_PPEM (Self : in Item) return Real
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'unchecked_Access;
+      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
-      return Real (ft_Metrics.x_ppem);
+      return Real (ft_Metrics.x_PPEM);
    end x_PPEM;
 
 
 
-   function x_Scale (Self : in Item) return openGL.Real
+   function x_Scale (Self : in Item) return Real
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'unchecked_Access;
+      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
-      return Real (ft_Metrics.x_scale);
+      return Real (ft_Metrics.x_Scale);
    end x_Scale;
 
 
 
-   function y_Scale (Self : in Item) return openGL.Real
+   function y_Scale (Self : in Item) return Real
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face).all'unchecked_Access;
+      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
-      return Real (ft_Metrics.y_scale);
+      return Real (ft_Metrics.y_Scale);
    end y_Scale;
 
 
 
-   function Advance (Self : access     Item;   s        : in String;
-                                               len      : in Integer;
-                                               Spacing  : in Vector_3) return Real
+   function Advance (Self : access Item;   Text     : in String;
+                                           Length   : in Integer;
+                                           Spacing  : in Vector_3)  return Real
    is
-      pragma Unreferenced (len);
+      pragma unreferenced (Length);
 
-      advance : Real    := 0.0;
+      Advance : Real    := 0.0;
       ustr    : Integer := 1;
       i       : Integer := 0;
 
    begin
-      while i < s'Length
+      while i < Text'Length
       loop
          declare
             use      freetype.charMap;
             use type freetype.charmap.characterCode;
 
-            thisChar : constant Character := s (ustr);
+            thisChar : constant Character := Text (ustr);
             nextChar :          Character;
 
          begin
             ustr := ustr + 1;
 
-            if ustr <= s'Length
-            then   nextChar := s (ustr);
+            if ustr <= Text'Length
+            then   nextChar := Text (ustr);
             else   nextChar := Character'Val (0);
             end if;
 
             if         nextChar /= Character'Val (0)
               and then Self.CheckGlyph (to_characterCode (thisChar))
             then
-               advance := advance + Self.glyphList.Advance (to_characterCode (thisChar),
+               Advance := Advance + Self.glyphList.Advance (to_characterCode (thisChar),
                                                             to_characterCode (nextChar));
             end if;
 
             if nextChar /= Character'Val (0)
             then
-               advance := advance + spacing (1);
+               Advance := Advance + Spacing (1);
             end if;
 
             i := i + 1;
@@ -458,53 +458,52 @@ is
    end Advance;
 
 
-
-
+   --------------
    --- Operations
    --
 
-   function Render (Self : access Item;   s          : in String;
-                                          len        : in Integer;
+   function render (Self : access Item;   Text       : in String;
+                                          Length     : in Integer;
                                           Position   : in Vector_3;
                                           Spacing    : in Vector_3;
                                           renderMode : in Integer) return Vector_3
    is
-      use type freetype.charmap.characterCode;
+      use type freetype.charMap.characterCode;
 
       ustr : Integer  := 1;
       i    : Integer  := 0;
       Pos  : Vector_3 := Position;
 
    begin
-      while     (len <  0  and then  i <  s'Length)
-        or else (len >= 0  and then  i <  len)
+      while     (Length <  0  and then  i <  Text'Length)
+        or else (Length >= 0  and then  i <  Length)
       loop
          declare
             use freetype.charMap;
 
-            thisChar : constant Character := s (ustr);
+            thisChar : constant Character := Text (ustr);
             nextChar :          Character;
 
          begin
             ustr := ustr + 1;
 
-            if ustr <= s'Length
-            then   nextChar := s (ustr);
+            if ustr <= Text'Length
+            then   nextChar := Text (ustr);
             else   nextChar := Character'Val (0);
             end if;
 
             if         nextChar /= Character'Val (0)
               and then Self.CheckGlyph (to_characterCode (thisChar))
             then
-               Pos := Pos + Self.glyphList.Render (to_characterCode (thisChar),
+               Pos := Pos + Self.glyphList.render (to_characterCode (thisChar),
                                                    to_characterCode (nextChar),
-                                                   position,
+                                                   Position,
                                                    renderMode);
             end if;
 
             if nextChar /= Character'Val (0)
             then
-               Pos := Pos + spacing;
+               Pos := Pos + Spacing;
             end if;
 
             i := i + 1;
