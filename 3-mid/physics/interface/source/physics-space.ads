@@ -8,15 +8,11 @@ with
      physics.Joint.slider,
      physics.Joint.ball;
 
-
 package physics.Space
 --
--- Models a static/dynamic physical space.
+-- Models a static/dynamic physics space.
 --
 is
-   use Math;
-
-
    type Item is limited interface;
    type View is access all Item'Class;
 
@@ -29,17 +25,16 @@ is
    procedure destruct (Self : in out Item)  is abstract;
 
 
-
    --------------
    --- Attributes
    --
 
-   procedure add    (Self : in out Item;   the_Object : in physics.Object.view)   is abstract;
-   procedure rid    (Self : in out Item;   the_Object : in physics.Object.view)   is abstract;
-   procedure evolve (Self : in out Item;   By         : in Duration)              is abstract;
+   procedure add    (Self : in out Item;   the_Object : in Object.view)   is abstract;
+   procedure rid    (Self : in out Item;   the_Object : in Object.view)   is abstract;
+   procedure evolve (Self : in out Item;   By         : in Duration)      is abstract;
 
 
-   type Real_view is access all math.Real;
+   type Real_view is access all Real;
 
 
    --- Contacts
@@ -58,13 +53,12 @@ is
 
    type a_Manifold is
       record
-         Objects       : physics.Object.views (1 .. 2);
+         Objects       : Object.views (1 .. 2);
          Contact       : a_Contact;
       end record;
 
-
-   function  manifold_Count    (Self : in     Item) return Natural                                is abstract;
-   function  Manifold          (Self : access Item;   Index : in    Positive) return a_Manifold   is abstract;
+   function manifold_Count (Self : in     Item) return Natural                             is abstract;
+   function Manifold       (Self : access Item;   Index : in Positive) return a_Manifold   is abstract;
 
 
    --- Ray Casting
@@ -72,7 +66,7 @@ is
 
    type ray_Collision is
       record
-         near_Object  : physics.Object.view;
+         near_Object  : Object.view;
          hit_Fraction : Real;
          Normal_world : Vector_3;
          Site_world   : Vector_3;
@@ -84,9 +78,7 @@ is
    --- Bounds
    --
 
-   procedure update_Bounds (Self : in out Item;   of_Obect : in physics.Object.view)   is abstract;
-
-
+   procedure update_Bounds (Self : in out Item;   of_Obect : in Object.view)   is abstract;
 
 
    -----------
@@ -99,14 +91,14 @@ is
    --- Physical Objects
    --
 
-   function  new_Object   (Self : access Item;   of_Shape     : in Shape .view;
+   function new_Object   (Self : access Item;   of_Shape      : in Shape.view;
                                                  of_Mass      : in Real;
                                                  Friction     : in Real;
                                                  Restitution  : in Real;
                                                  at_Site      : in Vector_3;
                                                  is_Kinematic : in Boolean) return Object.view   is abstract;
 
-   function  object_Count (Self : in     Item) return Natural   is abstract;
+   function object_Count (Self : in     Item) return Natural   is abstract;
 
 
    --- 3D
@@ -115,25 +107,23 @@ is
    --  Shapes
    --
 
-   function  new_Shape (Self : access Item;   Model : in physics.Model.view) return Shape.view   is abstract;
+   function              new_Shape (Self : access Item;   from_Model : in Model.view)                        return Shape.view   is abstract;
 
-
-
-   function          new_box_Shape (Self : access Item;   half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return Shape .view   is abstract;
-   function       new_sphere_Shape (Self : access Item;   Radius       : in Real     :=  0.5)            return Shape .view   is abstract;
-   function      new_capsule_Shape (Self : access Item;   Radius       : in Real     :=  0.5;
-                                                          Height       : in Real)                        return Shape .view   is abstract;
-   function         new_cone_Shape (Self : access Item;   Radius       : in Real     :=  0.5;
-                                                          Height       : in Real     := 1.0)             return Shape .view   is abstract;
-   function     new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return Shape .view   is abstract;
+   function          new_box_Shape (Self : access Item;   half_Extents : in     Vector_3 := (0.5, 0.5, 0.5)) return Shape.view   is abstract;
+   function       new_sphere_Shape (Self : access Item;   Radius       : in     Real     :=  0.5)            return Shape.view   is abstract;
+   function      new_capsule_Shape (Self : access Item;   Radius       : in     Real     :=  0.5;
+                                                          Height       : in     Real)                        return Shape.view   is abstract;
+   function         new_cone_Shape (Self : access Item;   Radius       : in     Real     :=  0.5;
+                                                          Height       : in     Real     :=  1.0)            return Shape.view   is abstract;
+   function     new_cylinder_Shape (Self : access Item;   half_Extents : in     Vector_3 := (0.5, 0.5, 0.5)) return Shape.view   is abstract;
    function  new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
-                                                          Scale        : in     Vector_3)                return Shape .view   is abstract;
-   function  new_multisphere_Shape (Self : access Item;   Sites        : in physics.vector_3_array;
-                                                          Radii        : in math.Vector)                 return Shape .view   is abstract;
-   function        new_plane_Shape (Self : access Item;   Normal       : in Vector_3 := (0.0, 1.0, 0.0);
-                                                          Offset       : in Real     :=  0.0)            return Shape .view   is abstract;
-   function  new_convex_hull_Shape (Self : access Item;   Points       : in physics.vector_3_array)      return Shape .view   is abstract;
-   function         new_mesh_Shape (Self : access Item;   Points       : access math.Geometry.d3.a_Model)    return Shape .view   is abstract;
+                                                          Scale        : in     Vector_3)                    return Shape.view   is abstract;
+   function  new_multisphere_Shape (Self : access Item;   Sites        : in     Vector_3_array;
+                                                          Radii        : in     Vector)                      return Shape.view   is abstract;
+   function        new_plane_Shape (Self : access Item;   Normal       : in     Vector_3 := (0.0, 1.0, 0.0);
+                                                          Offset       : in     Real     :=  0.0)            return Shape.view   is abstract;
+   function  new_convex_hull_Shape (Self : access Item;   Points       : in     Vector_3_array)              return Shape.view   is abstract;
+   function         new_mesh_Shape (Self : access Item;   Points       : access Geometry_3D.a_Model)         return Shape.view   is abstract;
 
 
    --  Joints
@@ -145,8 +135,8 @@ is
                                                         Anchor_in_B  : in Vector_3;
                                                         pivot_Axis   : in Vector_3;
                                                         low_Limit,
-                                                        high_Limit   : in Real;
-                                                        collide_Connected : in Boolean) return Joint.hinge.view   is abstract;
+                                                        high_Limit        : in Real;
+                                                        collide_Connected : in Boolean) return Joint.hinge.view is abstract;
 
    function new_hinge_Joint      (Self : access Item;   Object_A,
                                                         Object_B     : in Object.view;
@@ -154,32 +144,30 @@ is
                                                         Frame_B      : in Matrix_4x4;
                                                         low_Limit,
                                                         high_Limit   : in Real;
-                                                        collide_Connected : in Boolean) return Joint.hinge.view   is abstract;
+                                                        collide_Connected : in Boolean) return Joint.hinge.view is abstract;
 
    function new_hinge_Joint      (Self : access Item;   Object_A     : in Object.view;
-                                                        Frame_A      : in Matrix_4x4)   return Joint.hinge.view   is abstract;
-
+                                                        Frame_A      : in Matrix_4x4)   return Joint.hinge.view is abstract;
 
    function new_DoF6_Joint       (Self : access Item;   Object_A,
                                                         Object_B     : in Object.view;
                                                         Frame_A,
-                                                        Frame_B      : in Matrix_4x4)   return Joint.DoF6.view   is abstract;
+                                                        Frame_B      : in Matrix_4x4)   return Joint.DoF6.view  is abstract;
 
    function new_ball_Joint       (Self : access Item;   Object_A,
                                                         Object_B     : in Object.view;
                                                         Pivot_in_A,
-                                                        Pivot_in_B   : in Vector_3)     return Joint.ball.view   is abstract;
+                                                        Pivot_in_B   : in Vector_3)     return Joint.ball.view  is abstract;
 
    function new_slider_Joint     (Self : access Item;   Object_A,
                                                         Object_B     : in Object.view;
                                                         Frame_A,
-                                                        Frame_B      : in Matrix_4x4)  return Joint.slider.view   is abstract;
+                                                        Frame_B      : in Matrix_4x4)  return Joint.slider.view is abstract;
 
    function new_cone_twist_Joint (Self : access Item;   Object_A,
                                                         Object_B     : in Object.view;
                                                         Frame_A,
-                                                        Frame_B      : in Matrix_4x4)  return Joint.cone_twist.view   is abstract;
-
+                                                        Frame_B      : in Matrix_4x4)  return Joint.cone_twist.view is abstract;
    type joint_Cursor is interface;
 
    procedure next        (Cursor : in out joint_Cursor)                             is abstract;
@@ -195,36 +183,32 @@ is
    --- Shapes
    --
 
-   type polygon_Vertices is array (Positive range <>) of aliased math.Vector_2;
+   type polygon_Vertices is array (Positive range <>) of aliased Vector_2;
 
-
-   function  new_circle_Shape  (Self : access Item;   Radius   : in Real := 0.5)      return Shape .view is abstract;
-   function  new_polygon_Shape (Self : access Item;   Vertices : in polygon_Vertices) return Shape .view is abstract;
-
+   function new_circle_Shape  (Self : access Item;   Radius   : in Real := 0.5)      return Shape.view is abstract;
+   function new_polygon_Shape (Self : access Item;   Vertices : in polygon_Vertices) return Shape.view is abstract;
 
 
    ------------
    --  Dynamics
    --
 
-   function  Gravity    (Self : in     Item)     return Vector_3    is abstract;
-   procedure Gravity_is (Self : in out Item;   Now : in Vector_3)   is abstract;
+   function  Gravity    (Self : in     Item)     return Vector_3             is abstract;
+   procedure Gravity_is (Self : in out Item;   Now : in Vector_3)            is abstract;
 
-
-   procedure add        (Self : in out Item;   the_Joint    : in physics.Joint.view)   is abstract;
-   procedure rid        (Self : in out Item;   the_Joint    : in physics.Joint.view)   is abstract;
+   procedure add        (Self : in out Item;   the_Joint    : in Joint.view) is abstract;
+   procedure rid        (Self : in out Item;   the_Joint    : in Joint.view) is abstract;
 
    procedure set_Joint_local_Anchor
-                        (Self : in out Item;   the_Joint    : in physics.Joint.view;
+                        (Self : in out Item;   the_Joint    : in Joint.view;
                                                is_Anchor_A  : in Boolean;
                                                local_Anchor : in Vector_3)   is abstract;
-
 
    ----------
    --- Debug
    --
 
-   procedure user_Test_1 (Self : in Item)   is abstract;
+   procedure user_Test_1 (Self : in Item) is abstract;
 
 
 end physics.Space;
