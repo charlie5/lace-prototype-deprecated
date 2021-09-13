@@ -1,7 +1,6 @@
 with
      float_Math;
 
-
 package box2d_Physics
 --
 -- Provides an implementation of the physics interface using a binding to the Box2D C library.
@@ -9,7 +8,6 @@ package box2d_Physics
 is
    pragma Pure;
 
-   package Math
-      renames float_Math;
+   package Math renames float_Math;
 
 end box2d_Physics;
