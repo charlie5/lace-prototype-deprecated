@@ -13,7 +13,6 @@ package physics.Engine
 -- Provides a task which evolves a physical space.
 --
 is
-
    type Item is tagged limited private;
    type View is access all Item'Class;
 
@@ -21,36 +20,34 @@ is
    procedure start (Self : access Item;   the_Space : in Space.view);
    procedure stop  (Self : access Item);
 
-
    procedure add   (Self : access Item;   the_Object : in Object.view);
    procedure rid   (Self : in out Item;   the_Object : in Object.view);
 
-   procedure add   (Self : in out Item;   the_Joint : in Joint.view);
-   procedure rid   (Self : in out Item;   the_Joint : in Joint.view);
+   procedure add   (Self : in out Item;   the_Joint  : in Joint.view);
+   procedure rid   (Self : in out Item;   the_Joint  : in Joint.view);
 
    procedure update_Scale (Self : in out Item;   of_Object : in Object.view;
                                                  To        : in math.Vector_3);
 
-   procedure apply_Force (Self : in out Item;   to_Object : in Object.view;
-                                                Force     : in math.Vector_3);
+   procedure apply_Force   (Self : in out Item;   to_Object : in Object.view;
+                                                  Force     : in math.Vector_3);
 
-   procedure update_Site (Self : in out Item;   of_Object : in Object.view;
-                                                To        : in math.Vector_3);
+   procedure update_Site   (Self : in out Item;   of_Object : in Object.view;
+                                                  To        : in math.Vector_3);
 
-   procedure set_Speed (Self : in out Item;   of_Object : in Object.view;
-                                              To        : in math.Vector_3);
+   procedure set_Speed     (Self : in out Item;   of_Object : in Object.view;
+                                                  To        : in math.Vector_3);
 
-   procedure set_Gravity (Self : in out Item;   To        : in math.Vector_3);
+   procedure set_Gravity   (Self : in out Item;   To        : in math.Vector_3);
 
-   procedure set_xy_Spin (Self : in out Item;   of_Object : in Object.view;
-                                                To        : in math.Radians);
+   procedure set_xy_Spin   (Self : in out Item;   of_Object : in Object.view;
+                                                  To        : in math.Radians);
 
    procedure update_Bounds (Self : in out Item;   of_Object : in Object.view);
 
-   procedure set_local_Anchor (Self : in out Item;   for_Joint : in Joint.view;
-                                                     To        : in math.Vector_3;
+   procedure set_local_Anchor (Self : in out Item;   for_Joint   : in Joint.view;
+                                                     To          : in math.Vector_3;
                                                      is_Anchor_A : in Boolean);
-
 
 
 private
@@ -66,7 +63,6 @@ private
 
       pragma Storage_Size (20_000_000);
    end Evolver;
-
 
 
    --  Engine Commands
@@ -99,25 +95,25 @@ private
                rid_Children : Boolean;
 
             when update_Site =>
-               Site   : math.Vector_3;
+               Site    : math.Vector_3;
 
             when scale_Object =>
-               Scale  : math.Vector_3;
+               Scale   : math.Vector_3;
 
             when apply_Force =>
-               Force  : math.Vector_3;
+               Force   : math.Vector_3;
 
             when set_Speed =>
-               Speed  : math.Vector_3;
+               Speed   : math.Vector_3;
 
             when set_Gravity =>
-               Gravity  : math.Vector_3;
+               Gravity : math.Vector_3;
 
             when set_xy_Spin =>
                xy_Spin : math.Radians;
 
             when add_Joint | rid_Joint | free_Joint =>
-               Joint  : physics.Joint.view;
+               Joint   : physics.Joint.view;
 
             when set_Joint_local_Anchor =>
                anchor_Joint : physics.Joint.view;
@@ -156,8 +152,6 @@ private
    end safe_command_Set;
 
    type safe_command_Set_view is access all safe_command_Set;
-
-
 
 
    type Item is tagged limited

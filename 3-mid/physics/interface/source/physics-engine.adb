@@ -5,7 +5,6 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
-
 package body physics.Engine
 is
    use ada.Text_IO;
@@ -13,14 +12,14 @@ is
 
    protected body safe_command_Set
    is
-      function  is_Empty return Boolean
+      function is_Empty return Boolean
       is
       begin
          return the_Count = 0;
       end is_Empty;
 
 
-      procedure add   (the_Command : in     Command)
+      procedure add (the_Command : in Command)
       is
       begin
          the_Count       := the_Count + 1;
@@ -28,8 +27,8 @@ is
       end add;
 
 
-      procedure Fetch (To    :    out Commands;
-                       Count :    out Natural)
+      procedure Fetch (To    : out Commands;
+                       Count : out Natural)
       is
       begin
          To (1 .. the_Count) := Set (1 .. the_Count);
@@ -42,11 +41,11 @@ is
 
    task body Evolver is
       use Math;
-      use type Physics.Joint.view,
-               ada.Containers.Count_Type;
+      use type physics.Joint.view,
+               ada.Containers.Count_type;
 
       Stopped          : Boolean                   := True;
-      Cycle            : ada.Containers.Count_Type := 0;
+      Cycle            : ada.Containers.Count_type := 0;
       next_render_Time : ada.Calendar.Time;
 
       max_joint_Force,
@@ -71,8 +70,6 @@ is
          null;
 
       end free_Objects;
-
-
 
 
 
@@ -103,7 +100,7 @@ is
                      when scale_Object =>
                         the_Command.Object.activate;
                         the_Command.Object.Shape.Scale_is (the_Command.Scale);
-                        the_Command.Object.Scale_is (the_Command.Scale);
+                        the_Command.Object      .Scale_is (the_Command.Scale);
 
                         Self.Space.update_Bounds (the_Command.Object);
 
@@ -508,7 +505,7 @@ is
 
    procedure stop (Self : access Item)
    is
-      procedure free is new ada.Unchecked_Deallocation (safe_command_Set, safe_command_Set_view);
+      procedure free is new ada.unchecked_Deallocation (safe_command_Set, safe_command_Set_view);
    begin
       Self.Evolver.stop;
       free (Self.Commands);
@@ -516,43 +513,42 @@ is
 
 
 
-   procedure add (Self : access Item;   the_Object   : in Object.view)
+   procedure add (Self : access Item;   the_Object : in Object.view)
    is
    begin
       put_Line ("physics engine: add Object");
-      Self.Commands.add ((kind         => add_Object,
+      Self.Commands.add ((Kind         => add_Object,
                           Object       => the_Object,
-                          add_children => False));
+                          add_Children => False));
    end add;
 
 
-   procedure rid (Self : in out Item;   the_Object   : in Object.view)
+   procedure rid (Self : in out Item;   the_Object : in Object.view)
    is
    begin
-      Self.Commands.add ((kind         => rid_Object,
+      Self.Commands.add ((Kind         => rid_Object,
                           Object       => the_Object,
-                          rid_children => False));
+                          rid_Children => False));
    end rid;
 
 
 
-   procedure add (Self : in out Item;   the_Joint   : in Joint.view)
+   procedure add (Self : in out Item;   the_Joint : in Joint.view)
    is
    begin
-      Self.Commands.add ((kind   => add_Joint,
+      Self.Commands.add ((Kind   => add_Joint,
                           Object => null,
-                          joint  => the_Joint));
+                          Joint  => the_Joint));
    end add;
 
 
-   procedure rid (Self : in out Item;   the_Joint   : in Joint.view)
+   procedure rid (Self : in out Item;   the_Joint : in Joint.view)
    is
    begin
-      Self.Commands.add ((kind   => rid_Joint,
+      Self.Commands.add ((Kind   => rid_Joint,
                           Object => null,
-                          joint  => the_Joint));
+                          Joint  => the_Joint));
    end rid;
-
 
 
 
@@ -560,9 +556,9 @@ is
                                                  To        : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => scale_Object,
+      Self.Commands.add ((Kind   => scale_Object,
                           Object => of_Object,
-                          scale  => To));
+                          Scale  => To));
    end update_Scale;
 
 
@@ -571,11 +567,10 @@ is
                                                 Force     : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => apply_Force,
+      Self.Commands.add ((Kind   => apply_Force,
                           Object => to_Object,
-                          force  => Force));
+                          Force  => Force));
    end apply_Force;
-
 
 
 
@@ -584,9 +579,9 @@ is
    is
    begin
       put_Line ("physics engine: update_Site");
-      Self.Commands.add ((kind   => update_Site,
+      Self.Commands.add ((Kind   => update_Site,
                           Object => of_Object,
-                          site   => To));
+                          Site   => To));
    end update_Site;
 
 
@@ -595,22 +590,20 @@ is
                                               To        : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((kind   => set_Speed,
+      Self.Commands.add ((Kind   => set_Speed,
                           Object => of_Object,
-                          speed  => To));
+                          Speed  => To));
    end set_Speed;
 
 
 
-   procedure set_Gravity (Self : in out Item;   To        : in math.Vector_3)
+   procedure set_Gravity (Self : in out Item;   To : in math.Vector_3)
    is
    begin
-      Self.Commands.add ((kind    => set_Gravity,
+      Self.Commands.add ((Kind    => set_Gravity,
                           Object  => null,
-                          gravity => To));
+                          Gravity => To));
    end set_Gravity;
-
-
 
 
 
@@ -618,18 +611,17 @@ is
                                                 To        : in math.Radians)
    is
    begin
-      Self.Commands.add ((kind    => set_xy_Spin,
+      Self.Commands.add ((Kind    => set_xy_Spin,
                           Object  => of_Object,
                           xy_Spin => To));
    end set_xy_Spin;
 
 
 
-
    procedure update_Bounds (Self : in out Item;   of_Object : in Object.view)
    is
    begin
-      Self.Commands.add ((kind   => update_Bounds,
+      Self.Commands.add ((Kind   => update_Bounds,
                           Object => of_Object));
    end update_Bounds;
 
@@ -640,7 +632,7 @@ is
                                                      is_Anchor_A : in Boolean)
    is
    begin
-      Self.Commands.add ((kind         => set_Joint_local_Anchor,
+      Self.Commands.add ((Kind         => set_Joint_local_Anchor,
                           Object       => null,
                           anchor_Joint => for_Joint,
                           local_Anchor => To,
