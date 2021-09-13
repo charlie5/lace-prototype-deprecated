@@ -1,10 +1,8 @@
-
 package physics.Joint.DoF6
 --
 --   An interface to a general 'six degrees of freedom' joint.
 --
 is
-
    type Item is  limited interface
              and Joint.item;
 
