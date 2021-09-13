@@ -1,10 +1,8 @@
-
 package physics.Joint.ball
 --
 --   An interface to a ball/socket joint.
 --
 is
-
    type Item is  limited interface
              and Joint.item;
 
