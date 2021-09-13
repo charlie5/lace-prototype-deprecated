@@ -1,16 +1,14 @@
 with
      bullet_physics.Space,
-     box2d_physics.Space;
-
+     box2d_physics .Space;
 
 package body physics.Forge
 is
-
    ----------
    --- Space
    --
 
-   function new_Space (Kind : in space_Kind)  return Space.view
+   function new_Space (Kind : in space_Kind) return Space.view
    is
       Self : Space.view;
    begin
