@@ -1,7 +1,6 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body physics.Object
 is
 
@@ -17,6 +16,7 @@ is
    end free;
 
 
+
    protected
    body safe_Dynamics
    is
@@ -27,7 +27,7 @@ is
          Dynamics := To;
       end set;
 
-      function  get   return Matrix_4x4
+      function get return Matrix_4x4
       is
       begin
          return Dynamics;
@@ -40,7 +40,7 @@ is
          set_Rotation (Dynamics, To);
       end set_Spin;
 
-      function  get_Spin   return Matrix_3x3
+      function get_Spin return Matrix_3x3
       is
          use linear_Algebra_3D;
       begin
@@ -54,7 +54,7 @@ is
          set_Translation (Dynamics, To);
       end set_Site;
 
-      function  get_Site   return Vector_3
+      function get_Site return Vector_3
       is
          use linear_Algebra_3D;
       begin
@@ -62,7 +62,6 @@ is
       end get_Site;
 
    end safe_Dynamics;
-
 
 
 end physics.Object;
