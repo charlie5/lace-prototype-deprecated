@@ -536,21 +536,21 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Object   : in Joint.view)
+   procedure add (Self : in out Item;   the_Joint   : in Joint.view)
    is
    begin
       Self.Commands.add ((kind   => add_Joint,
                           Object => null,
-                          joint  => the_Object));
+                          joint  => the_Joint));
    end add;
 
 
-   procedure rid (Self : in out Item;   the_Object   : in Joint.view)
+   procedure rid (Self : in out Item;   the_Joint   : in Joint.view)
    is
    begin
       Self.Commands.add ((kind   => rid_Joint,
                           Object => null,
-                          joint  => the_Object));
+                          joint  => the_Joint));
    end rid;
 
 

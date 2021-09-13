@@ -25,8 +25,8 @@ is
    procedure add   (Self : access Item;   the_Object : in Object.view);
    procedure rid   (Self : in out Item;   the_Object : in Object.view);
 
-   procedure add   (Self : in out Item;   the_Object : in Joint.view);
-   procedure rid   (Self : in out Item;   the_Object : in Joint.view);
+   procedure add   (Self : in out Item;   the_Joint : in Joint.view);
+   procedure rid   (Self : in out Item;   the_Joint : in Joint.view);
 
    procedure update_Scale (Self : in out Item;   of_Object : in Object.view;
                                                  To        : in math.Vector_3);
