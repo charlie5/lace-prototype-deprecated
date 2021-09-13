@@ -1,10 +1,8 @@
-
 package physics.Joint.Slider
 --
 -- An interface to a slider joint.
 --
 is
-
    type Item is  limited interface
              and Joint.item;
 
