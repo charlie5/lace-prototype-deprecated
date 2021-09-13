@@ -1,7 +1,6 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body physics.Shape
 is
 
