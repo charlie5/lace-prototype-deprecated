@@ -15,11 +15,13 @@ is
    package Geometry_3D       renames math.Geometry.d3;
    package linear_Algebra_3D renames math.Algebra.linear.d3;
 
-   type Vector_2_array is array (Positive range <>) of math.Vector_2;
-   type Vector_3_array is array (Positive range <>) of math.Vector_3;
+   use Math;
+
+   type Vector_2_array is array (Positive range <>) of Vector_2;
+   type Vector_3_array is array (Positive range <>) of Vector_3;
 
    type Heightfield    is array (Positive range <>,
-                                 Positive range <>) of aliased math.Real;
+                                 Positive range <>) of aliased Real;
 
 
    type space_Kind is (Bullet, Box2D);
