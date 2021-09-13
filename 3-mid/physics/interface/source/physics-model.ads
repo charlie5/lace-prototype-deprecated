@@ -2,7 +2,6 @@ with
      physics.remote.Model,
      physics.Shape;
 
-
 package physics.Model
 --
 --  Provides a model describing physical properties.
@@ -13,7 +12,6 @@ is
    type shape_Kind is (Cylinder,  Cone,    Cube,  a_Sphere,  a_Capsule,  Heightfield,  Hull,  Mesh,  multi_Sphere, Plane,     -- 3D
                        Circle,    Polygon);                                                                                   -- 2D
 
-
    type a_Shape (Kind : shape_Kind := Cube) is
       record
          case Kind
@@ -23,28 +21,28 @@ is
 
             when a_Capsule =>
                lower_Radius,
-               upper_Radius  :        math.Real;
-               Height        :        math.Real;
+               upper_Radius  :        Real;
+               Height        :        Real;
 
             when Heightfield =>
                Heights       : access physics.Heightfield;
                height_Range  :        Vector_2;
 
             when a_Sphere =>
-               sphere_Radius :        math.Real;
+               sphere_Radius :        Real;
 
             when Circle =>
-               circle_Radius :        math.Real;
+               circle_Radius :        Real;
 
             when Hull =>
                Points        : access physics.Vector_3_array;
 
             when Mesh =>
-               Model         : access math.Geometry.d3.a_Model;
+               Model         : access Geometry_3D.a_Model;
 
             when multi_Sphere =>
                Sites         : access physics.Vector_3_array;
-               Radii         : access math   .Vector;
+               Radii         : access Vector;
 
             when Plane =>
                plane_Normal  :        Vector_3;
@@ -58,7 +56,6 @@ is
                null;
          end case;
       end record;
-
 
 
    type Item is new physics.remote.Model.item with
@@ -77,41 +74,36 @@ is
    type View is access all Item'Class;
 
 
-
-
    ----------
    --- Forge
    --
 
    package Forge
    is
-      function new_physics_Model (Id          : in physics.model_Id := null_model_Id;
+      function new_physics_Model (Id          : in model_Id := null_model_Id;
                                   shape_Info  : in a_Shape;
-                                  Scale       : in math.Vector_3        := (1.0, 1.0, 1.0);
-                                  Mass        : in math.Real            := 0.0;
-                                  Friction    : in math.Real            := 0.1;
-                                  Restitution : in math.Real            := 0.1;
-                                  Site        : in Vector_3             := (0.0, 0.0, 0.0);
-                                  is_Tangible : in Boolean              := True) return physics.Model.view;
+                                  Scale       : in Vector_3 := (1.0, 1.0, 1.0);
+                                  Mass        : in Real     := 0.0;
+                                  Friction    : in Real     := 0.1;
+                                  Restitution : in Real     := 0.1;
+                                  Site        : in Vector_3 := Origin_3d;
+                                  is_Tangible : in Boolean  := True) return View;
    end Forge;
 
-
-   procedure define  (Self : in out Item;   Scale : in math.Vector_3);
+   procedure define  (Self : in out Item;   Scale : in Vector_3);
    procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
-
-
 
 
    ---------------
    --- Attributes
    --
 
-   function  Id       (Self : in     Item'Class)     return physics.model_Id;
-   procedure Id_is    (Self : in out Item'Class;   Now : in physics.model_Id);
+   function  Id       (Self : in     Item'Class)     return model_Id;
+   procedure Id_is    (Self : in out Item'Class;   Now : in model_Id);
 
 
-   procedure Scale_is (Self : in out Item'Class;   Now : in math.Vector_3);
+   procedure Scale_is (Self : in out Item'Class;   Now : in Vector_3);
 
 
 end physics.Model;
