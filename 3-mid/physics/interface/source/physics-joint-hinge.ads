@@ -1,10 +1,8 @@
-
 package physics.Joint.hinge
 --
 -- An interface to a hinge joint.
 --
 is
-
    type Item is  limited interface
              and Joint.item;
 
