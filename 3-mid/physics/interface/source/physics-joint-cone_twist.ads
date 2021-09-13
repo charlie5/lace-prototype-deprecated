@@ -1,10 +1,8 @@
-
 package physics.Joint.cone_Twist
 --
 -- An interface to a cone-twist joint.
 --
 is
-
    type Item is  limited interface
              and Joint.item;
 
