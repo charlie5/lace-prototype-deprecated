@@ -173,7 +173,7 @@ is
                   function to_Physics is new ada.Unchecked_Conversion (height_Map_view, Heightfield_view);
 
                   the_ground_physics_Model : aliased constant  physics.Model.view
-                    := new physics.Model.item' (id          => physics.null_physics_model_Id,
+                    := new physics.Model.item' (id          => physics.null_model_Id,
                                                 site => Origin_3d,
                                                 scale       => Scale,
                                                 shape_Info  => (physics.Model.Heightfield,

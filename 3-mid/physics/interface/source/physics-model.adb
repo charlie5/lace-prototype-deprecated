@@ -11,7 +11,7 @@ is
 
    package body Forge
    is
-      function new_physics_Model (Id          : in physics.model_Id := null_physics_model_Id;
+      function new_physics_Model (Id          : in physics.model_Id := null_model_Id;
                                   shape_Info  : in a_Shape;
                                   Scale       : in math.Vector_3        := (1.0, 1.0, 1.0);
                                   Mass        : in math.Real            := 0.0;

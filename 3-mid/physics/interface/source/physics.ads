@@ -24,10 +24,10 @@ is
 
    type space_Kind is (Bullet, Box2D);
 
-   max_physics_Models : constant := 2**32 - 1;
-   type model_Id is range 0 .. max_physics_Models;
+   max_Models : constant := 2**32 - 1;
+   type model_Id is range 0 .. max_Models;
 
-   null_physics_model_Id : constant physics.model_Id;
+   null_model_Id : constant physics.model_Id;
 
 
    unsupported_Error : exception;
@@ -37,6 +37,6 @@ is
 
 private
 
-   null_physics_model_Id  : constant physics.model_Id  := 0;
+   null_model_Id : constant physics.model_Id := 0;
 
 end Physics;

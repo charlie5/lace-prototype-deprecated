@@ -1714,7 +1714,7 @@ is
    procedure add (Self : in out Item;   the_Model    : in Standard.physics.Model.view)
    is
    begin
-      if the_Model.Id = Standard.Physics.null_physics_model_Id
+      if the_Model.Id = Standard.Physics.null_model_Id
       then
          Self.last_used_physics_model_Id := Self.last_used_physics_model_Id + 1;
          the_Model.Id_is (Self.last_used_physics_model_Id);
