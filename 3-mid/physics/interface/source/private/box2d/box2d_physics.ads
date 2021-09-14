@@ -10,4 +10,6 @@ is
 
    package Math renames float_Math;
 
+   Error : exception;
+
 end box2d_Physics;
