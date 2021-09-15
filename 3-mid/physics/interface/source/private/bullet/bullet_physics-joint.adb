@@ -178,7 +178,7 @@ is
    is
    begin
       if DoF < 4 then
-         raise Program_Error with "Illegal degree of freedom:" & DoF'Image & ".";
+         raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
       return Real (b3d_Joint_Extent (Self.C, C.int (DoF)));
@@ -648,7 +648,7 @@ is
       use type Swig.bool;
    begin
       return b3d_Joint_is_Limited (Self.C,
-                                   Degree_of_freedom'Pos (DoF'Pos)) /= 0;
+                                   Degree_of_freedom'Pos (DoF)) /= 0;
    end is_Limited;
 
 
