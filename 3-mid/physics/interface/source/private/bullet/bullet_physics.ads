@@ -11,4 +11,6 @@ is
    package Math        renames float_Math;
    package Geometry_3D renames math.Geometry.D3;
 
+   Error : exception;
+
 end bullet_Physics;
