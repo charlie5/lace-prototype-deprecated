@@ -204,11 +204,4 @@ is
                                                is_Anchor_A  : in Boolean;
                                                local_Anchor : in Vector_3)   is abstract;
 
-   ----------
-   --- Debug
-   --
-
-   procedure user_Test_1 (Self : in Item) is abstract;
-
-
 end physics.Space;
