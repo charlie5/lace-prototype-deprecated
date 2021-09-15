@@ -14,9 +14,10 @@ package c_math_C.Conversion
 is
    package Math renames float_Math;
 
+   use Interfaces;
 
-   function "+" (Self : in Integer)                  return interfaces.C.int;
-   function "+" (Self : in interfaces.C.int)         return Integer;
+   function "+" (Self : in Integer)                  return C.int;
+   function "+" (Self : in C.int)                    return Integer;
 
    function "+" (Self : in math    .Real)            return c_math_c.Real;
    function "+" (Self : in c_math_c.Real)            return math    .Real;
