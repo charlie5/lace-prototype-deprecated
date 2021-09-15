@@ -16,22 +16,19 @@ with
      ada.Unchecked_Conversion,
      ada.Text_IO;
 
-
 package body box2d_Physics.Object
 is
    use
-       box2d_c.Binding,
+       box2d_c .Binding,
        c_math_c.Conversion,
        ada.Text_IO;
 
-   type Any_limited_view    is access all lace.Any.limited_Item'Class;
+   type Any_limited_view is access all lace.Any.limited_item'Class;
 
-   function to_void_ptr is new ada.Unchecked_Conversion (Any_limited_view, Swig.void_ptr);
-
-
+   function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
 
 
-   function new_Object (Shape       : in physics.Shape.view) return Object.view
+   function new_Object (Shape : in physics.Shape.view) return Object.view
    is
       Self        : constant View             := new Item;
 --        Self_as_any : constant Any_limited_view := Any_limited_view (Self);
@@ -76,7 +73,7 @@ is
                                 box2d_physics.Shape.view (Shape).C);
 
       Self.Shape := Shape;
-      b2d_Object_user_Data_is (box2d_c.Pointers.Object_Pointer (Self.C),
+      b2d_Object_user_Data_is (box2d_c.Pointers.Object_pointer (Self.C),
                                to_void_ptr (Self_as_any));
       Self.Site_is (at_Site);
 
@@ -117,8 +114,6 @@ is
    end destruct;
 
 
-
-
    procedure free (the_Object : in out physics.Object.view)
    is
       procedure deallocate is new ada.unchecked_Deallocation (physics.Object.item'Class,
@@ -130,7 +125,6 @@ is
    end free;
 
 
-
    function C (Self : in Item) return access box2d_C.Object
    is
    begin
@@ -139,7 +133,7 @@ is
 
 
    overriding
-   function  Model        (Self : in     Item)     return physics.Model.view
+   function Model (Self : in Item) return physics.Model.view
    is
    begin
       return Self.Model;
@@ -147,7 +141,7 @@ is
 
 
    overriding
-   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)
+   procedure Model_is (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
       Self.Model := Now;
@@ -155,14 +149,14 @@ is
 
 
    overriding
-   function  Shape        (Self : in     Item)     return physics.Shape.view
+   function Shape (Self : in Item) return physics.Shape.view
    is
    begin
       return Self.Shape;
    end Shape;
 
 
-   procedure Shape_is (Self : in out Item;   Now : in Physics.Shape.view)
+   procedure Shape_is (Self : in out Item;   Now : in physics.Shape.view)
    is
    begin
       Self.Shape := Now;
@@ -170,41 +164,37 @@ is
 
 
    overriding
-   function  Scale        (Self : in     Item)     return Vector_3
+   function Scale (Self : in Item) return Vector_3
    is
    begin
-      raise Program_Error with "TBD";
+      raise Error with "TODO";
       return math.Origin_3d;
    end Scale;
 
 
-
    overriding
-   procedure Scale_is     (Self : in out Item;   Now : in Vector_3)
+   procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
       c_Now : aliased c_math_c.Vector_2.item := (c_math_c.Real (Now (1)),
                                                  c_math_c.Real (Now (2)));
    begin
       Self.Shape.Scale_is (Now);
-      b2d_object_Scale_is (Self.C,   c_Now'Unchecked_Access);
+      b2d_object_Scale_is (Self.C, c_Now'unchecked_Access);
    end Scale_is;
 
 
-
    overriding
-   function  is_Active    (Self : in     Item)     return Boolean
+   function is_Active (Self : in Item) return Boolean
    is
    begin
       return True;
    end is_Active;
 
 
-
-
    overriding
-   procedure activate  (Self : in out Item;   forceActivation : in Boolean := False)
+   procedure activate (Self : in out Item;   forceActivation : in Boolean := False)
    is
-      pragma Unreferenced (forceActivation);
+      pragma unreferenced (forceActivation);
    begin
       null;
    end activate;
@@ -227,19 +217,16 @@ is
    end get_Dynamics;
 
 
-
    overriding
-   function  Mass         (Self : in     Item)     return Real
+   function Mass (Self : in Item) return Real
    is
    begin
       return Real (b2d_Object_Mass (Self.C));
    end Mass;
 
 
-
-
    overriding
-   function  Site   (Self : in     Item) return Vector_3
+   function Site (Self : in Item) return Vector_3
    is
       the_Site : constant c_math_c.Vector_3.item := b2d_Object_Site (Self.C);
 --        the_Site : constant Vector_3 := Self.Dynamics.get.Site;
@@ -254,13 +241,12 @@ is
    is
       c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
-      b2d_Object_Site_is (Self.C, c_Now'Unchecked_Access);
+      b2d_Object_Site_is (Self.C, c_Now'unchecked_Access);
    end Site_is;
 
 
-
    overriding
-   function  Spin         (Self : in     Item)     return math.Matrix_3x3
+   function Spin (Self : in Item) return Matrix_3x3
    is
       the_Spin : constant c_math_c.Matrix_3x3.item := b2d_Object_Spin (Self.C);
    begin
@@ -269,17 +255,16 @@ is
 
 
    overriding
-   procedure Spin_is      (Self : in out Item;   Now : in math.Matrix_3x3)
+   procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
       c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
    begin
-      b2d_Object_Spin_is (Self.C, c_Now'Unchecked_Access);
+      b2d_Object_Spin_is (Self.C, c_Now'unchecked_Access);
    end Spin_is;
 
 
-
    overriding
-   function  xy_Spin         (Self : in     Item) return math.Radians
+   function xy_Spin (Self : in Item) return Radians
    is
       the_Spin : constant c_math_c.Real := b2d_Object_xy_Spin (Self.C);
    begin
@@ -287,9 +272,8 @@ is
    end xy_Spin;
 
 
-
    overriding
-   procedure xy_Spin_is      (Self : in out Item;   Now : in math.Radians)
+   procedure xy_Spin_is (Self : in out Item;   Now : in Radians)
    is
       c_Now : constant c_math_c.Real := +Now;
    begin
@@ -297,10 +281,8 @@ is
    end xy_Spin_is;
 
 
-
-
    overriding
-   function  Transform    (Self : in     Item)     return math.Matrix_4x4
+   function Transform (Self : in Item) return Matrix_4x4
    is
       the_Transform : constant c_math_c.Matrix_4x4.item := b2d_Object_Transform (Self.C);
    begin
@@ -308,9 +290,8 @@ is
    end Transform;
 
 
-
    overriding
-   procedure Transform_is (Self : in out Item;   Now : in math.Matrix_4x4)
+   procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
       c_Now : aliased c_math_c.Matrix_4x4.item := +Now;
    begin
@@ -318,10 +299,8 @@ is
    end Transform_is;
 
 
-
-
    overriding
-   function  Speed        (Self : in     Item)     return math.Vector_3
+   function Speed (Self : in Item) return Vector_3
    is
       the_Speed : constant c_math_c.Vector_3.item := b2d_Object_Speed (Self.C);
    begin
@@ -329,21 +308,17 @@ is
    end Speed;
 
 
-
-
    overriding
-   procedure Speed_is     (Self : in out Item;   Now : in math.Vector_3)
+   procedure Speed_is (Self : in out Item;   Now : in Vector_3)
    is
       c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
-      b2d_Object_Speed_is (Self.C, c_Now'Unchecked_Access);
+      b2d_Object_Speed_is (Self.C, c_Now'unchecked_Access);
    end Speed_is;
 
 
-
-
    overriding
-   function  Gyre         (Self : in     Item)     return math.Vector_3
+   function Gyre (Self : in Item) return Vector_3
    is
       the_Gyre : constant c_math_c.Vector_3.item := b2d_Object_Gyre (Self.C);
    begin
@@ -351,20 +326,17 @@ is
    end Gyre;
 
 
-
    overriding
-   procedure Gyre_is      (Self : in out Item;   Now : in math.Vector_3)
+   procedure Gyre_is (Self : in out Item;   Now : in Vector_3)
    is
       c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
-      b2d_Object_Gyre_is (Self.C, c_Now'Unchecked_Access);
+      b2d_Object_Gyre_is (Self.C, c_Now'unchecked_Access);
    end Gyre_is;
 
 
-
-
    overriding
-   procedure Friction_is  (Self : in out Item;   Now : in math.Real)
+   procedure Friction_is (Self : in out Item;   Now : in Real)
    is
    begin
       b2d_Object_Friction_is (Self.C, +Now);
@@ -372,64 +344,56 @@ is
 
 
    overriding
-   procedure Restitution_is  (Self : in out Item;   Now : in math.Real)
+   procedure Restitution_is (Self : in out Item;   Now : in Real)
    is
    begin
       b2d_Object_Restitution_is (Self.C, +Now);
    end Restitution_is;
 
 
-
-
    --- Forces
    --
 
    overriding
-   procedure apply_Torque (Self : in out Item;   Torque : in math.Vector_3)
+   procedure apply_Torque (Self : in out Item;   Torque : in Vector_3)
    is
       c_Torque : aliased c_math_c.Vector_3.item := +Torque;
    begin
-      b2d_Object_apply_Torque (Self.C, c_Torque'Unchecked_Access);
+      b2d_Object_apply_Torque (Self.C, c_Torque'unchecked_Access);
    end apply_Torque;
 
 
-
-
    overriding
-   procedure apply_Torque_impulse (Self : in out Item;   Torque : in math.Vector_3)
+   procedure apply_Torque_impulse (Self : in out Item;   Torque : in Vector_3)
    is
       c_Torque : aliased c_math_c.Vector_3.item := +Torque;
    begin
-      b2d_Object_apply_Torque_impulse (Self.C, c_Torque'Unchecked_Access);
+      b2d_Object_apply_Torque_impulse (Self.C, c_Torque'unchecked_Access);
    end apply_Torque_impulse;
 
 
-
    overriding
-   procedure apply_Force (Self : in out Item;   Force  : in math.Vector_3)
+   procedure apply_Force (Self : in out Item;   Force : in Vector_3)
    is
       c_Force : aliased c_math_c.Vector_3.item := +Force;
    begin
-      b2d_Object_apply_Force (Self.C, c_Force'Unchecked_Access);
+      b2d_Object_apply_Force (Self.C, c_Force'unchecked_Access);
    end apply_Force;
-
-
 
 
    --- User Data
    --
 
    overriding
-   procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_Item'Class)
+   procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_item'Class)
    is
    begin
       Self.user_Data := Now;
    end user_Data_is;
 
 
-
    overriding
-   function  user_Data    (Self : in     Item)  return access lace.Any.limited_Item'Class
+   function user_Data (Self : in Item)  return access lace.Any.limited_item'Class
    is
    begin
       return Self.user_Data;
