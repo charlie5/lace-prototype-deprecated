@@ -11,26 +11,22 @@ with
 
      interfaces.C;
 
-
 package body bullet_Physics.Shape
 is
-
    use c_math_c.Conversion,
-       bullet_c.Binding;
+       bullet_c.Binding,
+       Interfaces;
 
-
-
-   --  Base Shape
+   ---------
+   --  Forge
    --
-
 
    overriding
    procedure define (Self : in out Item)
    is
    begin
-      raise Program_Error with "Bullet Shape not supported";
+      raise Error with "Bullet shape not supported.";
    end define;
-
 
 
    overriding
@@ -41,28 +37,21 @@ is
    end destruct;
 
 
-   overriding
-   procedure Scale_is (Self : in out Item;   Now : math.Vector_3)
-   is
-   begin
-      null;
-   end Scale_is;
-
-
-
+   -------
    --- Box
    --
+
    function new_box_Shape (half_Extents : in Vector_3) return physics.Shape.view
    is
       Self           : constant access Box                    := new Box;
       c_half_Extents : aliased         c_math_c.Vector_3.item := +half_Extents;
    begin
-      Self.C := b3d_new_Box (c_half_Extents'Unchecked_Access);
-      return Self.all'Unchecked_Access;
+      Self.C := b3d_new_Box (c_half_Extents'unchecked_Access);
+      return Self.all'unchecked_Access;
    end new_box_Shape;
 
 
-
+   -----------
    --- Capsule
    --
    function new_capsule_Shape (Radii  : in Vector_2;
@@ -71,12 +60,12 @@ is
       Self    : constant access Capsule                := new Capsule;
       c_Radii : aliased         c_math_c.Vector_2.item := +Radii;
    begin
-      Self.C := b3d_new_Capsule (c_Radii'Unchecked_Access, +Height);
+      Self.C := b3d_new_Capsule (c_Radii'unchecked_Access, +Height);
       return Self;
    end new_capsule_Shape;
 
 
-
+   --------
    --- Cone
    --
    function new_cone_Shape (Radius,
@@ -89,7 +78,7 @@ is
    end new_cone_Shape;
 
 
-
+   ---------------
    --- convex_Hull
    --
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
@@ -102,23 +91,21 @@ is
          c_Points (i) := +Points (i);
       end loop;
 
-      Self.C := b3d_new_convex_Hull (c_Points (1)'Unchecked_Access,
+      Self.C := b3d_new_convex_Hull (c_Points (1)'unchecked_Access,
                                      c_Points'Length);
       return Self;
    end new_convex_hull_Shape;
 
 
-
+   --------
    --- Mesh
    --
    function new_mesh_Shape (Model : access math.Geometry.d3.a_Model) return physics.Shape.view
    is
-      use Interfaces;
-
       Self        : constant access Mesh := new Mesh;
       c_Points    : array (1 .. Model.site_Count) of aliased c_math_c.Vector_3.item;
 
-      type Triangles is array (1 .. Model. tri_Count) of aliased c_math_c.Triangle.item;
+      type Triangles is array (1 .. Model.tri_Count) of aliased c_math_c.Triangle.item;
       pragma Pack (Triangles);
 
       c_Triangles : Triangles;
@@ -139,13 +126,12 @@ is
       Self.C := b3d_new_Mesh (Points         => c_Points (c_Points'First)'unchecked_Access,
                               point_Count    => 0,
                               Triangles      => c_Triangles (c_Triangles'First)'unchecked_Access,
-                              triangle_Count => Interfaces.C.int (Model.tri_Count));
+                              triangle_Count => C.int (Model.tri_Count));
       return Self;
    end new_mesh_Shape;
 
 
-
-
+   ------------
    --- Cylinder
    --
    function new_cylinder_Shape (half_Extents : in Vector_3) return physics.Shape.view
@@ -153,20 +139,20 @@ is
       Self           : constant access Cylinder               := new Cylinder;
       c_half_Extents : aliased         c_math_c.Vector_3.item := +half_Extents;
    begin
-      Self.C := b3d_new_Cylinder (c_half_Extents'Unchecked_Access);
+      Self.C := b3d_new_Cylinder (c_half_Extents'unchecked_Access);
       return Self;
    end new_cylinder_Shape;
 
 
-
+   ---------------
    --- Heightfield
    --
    function new_heightfield_Shape (Width,
-                                   Depth        : in  Positive;
-                                   Heights      : in  c_math_c.Pointers.Real_Pointer;
+                                   Depth       : in Positive;
+                                   Heights     : in c_math_c.Pointers.Real_Pointer;
                                    min_Height,
-                                   max_Height   : in  Real;
-                                   Scale        : in  Vector_3) return physics.Shape.view
+                                   max_Height  : in Real;
+                                   Scale       : in Vector_3) return physics.Shape.view
    is
       use c_math_c.Pointers;
 
@@ -178,12 +164,12 @@ is
                                      Heights,
                                      c_math_c.Real (min_Height),
                                      c_math_c.Real (max_Height),
-                                     c_Scale'Unchecked_Access);
+                                     c_Scale'unchecked_Access);
       return Self;
    end new_heightfield_Shape;
 
 
-
+   ---------------
    --- multiSphere
    --
    function new_multiSphere_Shape (Positions    : in physics.Vector_3_array;
@@ -202,14 +188,14 @@ is
          c_Radii     (i) := +Radii     (i);
       end loop;
 
-      Self.C := b3d_new_multiSphere (c_Positions (1)'Unchecked_Access,
-                                     c_Radii     (1)'Unchecked_Access,
+      Self.C := b3d_new_multiSphere (c_Positions (1)'unchecked_Access,
+                                     c_Radii     (1)'unchecked_Access,
                                      Radii'Length);
       return Self;
    end new_multiSphere_Shape;
 
 
-
+   ---------
    --- Plane
    --
    function new_plane_Shape (Normal : in Vector_3;
@@ -218,12 +204,12 @@ is
       Self : constant access Plane := new Plane;
       Pad : aliased c_math_c.Vector_3.item := +Normal;
    begin
-      Self.C := b3d_new_Plane (Pad'Unchecked_Access, +Offset);
+      Self.C := b3d_new_Plane (Pad'unchecked_Access, +Offset);
       return Self;
    end new_plane_Shape;
 
 
-
+   ----------
    --- Sphere
    --
    function new_sphere_Shape (Radius : in math.Real) return physics.Shape.view
@@ -235,8 +221,19 @@ is
    end new_sphere_Shape;
 
 
+   ---------------
+   ---  Attributes
+   --
+
+   overriding
+   procedure Scale_is (Self : in out Item;   Now : Vector_3)
+   is
+   begin
+      null;
+   end Scale_is;
 
 
+   --------
    --- Free
    --
 
