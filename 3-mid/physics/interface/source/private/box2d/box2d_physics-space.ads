@@ -213,8 +213,4 @@ private
                            (Self : in out Item;   the_Joint    : in physics.Joint.view;
                                                   is_Anchor_A  : in Boolean;
                                                   local_Anchor : in Vector_3);
-   overriding
-   procedure user_Test_1   (Self : in Item) is null;
-
-
 end box2d_Physics.Space;
