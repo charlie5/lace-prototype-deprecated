@@ -38,17 +38,13 @@ is
 
    function  Mass         (Self : in     Item)  return Real                                  is abstract;
 
+   function  Model        (Self : in     Item)     return physics.Model.view   is abstract;
+   procedure Model_is     (Self : in out Item;   Now : in physics.Model.view)  is abstract;
 
-   --- Shape
-   --
+   function  Shape        (Self : in     Item)     return physics.Shape.view   is abstract;
 
-   function  Model    (Self : in     Item)     return physics.Model.view   is abstract;
-   procedure Model_is (Self : in out Item;   Now : in physics.Model.view)  is abstract;
-
-   function  Shape    (Self : in     Item)     return physics.Shape.view   is abstract;
-
-   function  Scale    (Self : in     Item)     return Vector_3             is abstract;
-   procedure Scale_is (Self : in out Item;   Now : in Vector_3)            is abstract;
+   function  Scale        (Self : in     Item)     return Vector_3             is abstract;
+   procedure Scale_is     (Self : in out Item;   Now : in Vector_3)            is abstract;
 
 
    --- Dynamics
