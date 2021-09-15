@@ -3,35 +3,33 @@ with
      box2d_c.Pointers,
      physics.Space;
 
-
 package box2d_Physics.Shape
 --
 --  Provides glue between a physics shape and a Box2D shape.
 --
 is
-   use Math;
-
-
-   type Item is abstract new physics.Shape.item with
+   type Item is abstract new physics.Shape.item with     -- TODO: Make private.
       record
-         C : box2d_c.Pointers.Shape_Pointer;
+         C : box2d_c.Pointers.Shape_pointer;
       end record;
 
    type View is access all Item'Class;
 
 
+   use Math;
+
+   overriding
+   procedure define   (Self : in out Item);
+
    overriding
    procedure destruct (Self : in out Item);
 
    overriding
-   procedure Scale_is (Self : in out Item;   Now : math.Vector_3);
-
-   overriding
-   procedure define (Self : in out Item);
+   procedure Scale_is (Self : in out Item;   Now : Vector_3);
 
 
-   -----------
-   --  Factory
+   ---------
+   --  Forge
    --
 
    --  Shapes
@@ -40,33 +38,31 @@ is
 
    --  3D
 
-   function new_box_Shape            (half_Extents : in Vector_3)    return physics.Shape.view;
-   function new_capsule_Shape        (Radii        : in Vector_2;
-                                      Height       : in Real)        return physics.Shape.view;
-   function new_cone_Shape           (Radius,
-                                      Height       : in Real)        return physics.Shape.view;
-   function new_convex_hull_Shape    (Points       : in physics.Vector_3_array)
-                                                                     return physics.Shape.view;
-   function new_cylinder_Shape       (half_Extents : in Vector_3)    return physics.Shape.view;
-   function new_heightfield_Shape    (Width,
-                                      Depth        : in Positive;
-                                      Heights      : access constant Real;
-                                      min_Height,
-                                      max_Height   : in Real;
-                                      Scale        : in Vector_3)    return physics.Shape.view;
-   function new_multiSphere_Shape    (Positions    : in physics.Vector_3_array;
-                                      Radii        : in math.Vector) return physics.Shape.view;
-   function new_plane_Shape          (Normal       : in Vector_3;
-                                      Offset       : in Real)        return physics.Shape.view;
-   function new_sphere_Shape         (Radius       : in Real)        return physics.Shape.view;
+   function new_box_Shape         (half_Extents : in Vector_3)    return physics.Shape.view;
+   function new_capsule_Shape     (Radii        : in Vector_2;
+                                   Height       : in Real)        return physics.Shape.view;
+   function new_cone_Shape        (Radius,
+                                   Height       : in Real)        return physics.Shape.view;
+   function new_convex_hull_Shape (Points       : in physics.Vector_3_array)
+                                                                  return physics.Shape.view;
+   function new_cylinder_Shape    (half_Extents : in Vector_3)    return physics.Shape.view;
+   function new_heightfield_Shape (Width,
+                                   Depth        : in Positive;
+                                   Heights      : access constant Real;
+                                   min_Height,
+                                   max_Height   : in Real;
+                                   Scale        : in Vector_3)    return physics.Shape.view;
+   function new_multiSphere_Shape (Positions    : in physics.Vector_3_array;
+                                   Radii        : in Vector)      return physics.Shape.view;
+   function new_plane_Shape       (Normal       : in Vector_3;
+                                   Offset       : in Real)        return physics.Shape.view;
+   function new_sphere_Shape      (Radius       : in Real)        return physics.Shape.view;
 
 
    --  2D
 
-   function  new_circle_Shape        (Radius       : in Real)                           return physics.Shape.view;
-   function new_polygon_Shape        (Vertices     : in physics.Space.polygon_Vertices) return physics.Shape.view;
-
-
+   function  new_circle_Shape (Radius   : in Real)                           return physics.Shape.view;
+   function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view;
 
 
 

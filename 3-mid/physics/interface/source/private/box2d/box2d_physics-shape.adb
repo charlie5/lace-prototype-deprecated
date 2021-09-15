@@ -7,11 +7,10 @@ with
      ada.unchecked_Deallocation,
      ada.unchecked_Conversion;
 
-
 package body box2d_Physics.Shape
 is
    use c_math_c.Conversion,
-       box2d_c.Binding;
+       box2d_c .Binding;
 
 
    --  Base Shape
@@ -21,7 +20,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      raise Program_Error with "Shape not supported";
+      raise Error with "Shape not supported.";
    end define;
 
 
@@ -34,7 +33,7 @@ is
 
 
    overriding
-   procedure Scale_is (Self : in out Item;   Now : math.Vector_3)
+   procedure Scale_is (Self : in out Item;   Now : Vector_3)
    is
    begin
       b2d_shape_Scale_is (Self.C, (c_math_c.Real (Now (1)),
@@ -42,17 +41,16 @@ is
    end Scale_is;
 
 
-
    -----------
-   --  Factory
+   --  Forge
    --
 
    --  2D
    --
 
-   function  new_circle_Shape (Radius : in Real) return physics.Shape.view
+   function new_circle_Shape (Radius : in Real) return physics.Shape.view
    is
-      Self     : constant access  Circle        := new Circle;
+      Self : constant access Circle := new Circle;
 --        c_Radius : aliased constant c_math_c.Real := +Radius;
    begin
       --        Self.C := b2d_new_Circle (c_Radius);
@@ -70,12 +68,9 @@ is
    end define;
 
 
-
-
-
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
-      Self    : constant access Polygon := new Polygon (vertex_Count => Vertices'Length);
+      Self : constant access Polygon := new Polygon (vertex_Count => Vertices'Length);
 --        c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
    begin
          Self.Vertices := Vertices;
@@ -100,10 +95,9 @@ is
          c_Verts (i) := +Self.Vertices (i);
       end loop;
 
-      Self.C := b2d_new_Polygon (c_Verts (1)'Unchecked_Access,
+      Self.C := b2d_new_Polygon (c_Verts (1)'unchecked_Access,
                                  c_Verts'Length);
    end define;
-
 
 
    -- 3D
@@ -111,12 +105,11 @@ is
 
    function new_box_Shape (half_Extents : in Vector_3) return physics.Shape.view
    is
-      pragma Unreferenced (half_Extents);
+      pragma unreferenced (half_Extents);
    begin
       raise physics.unsupported_Error;
       return null;
    end new_box_Shape;
-
 
 
    function new_capsule_Shape (Radii  : in Vector_2;
@@ -128,7 +121,6 @@ is
    end new_capsule_Shape;
 
 
-
    function new_cone_Shape (Radius,
                             Height : in Real) return physics.Shape.view
    is
@@ -136,7 +128,6 @@ is
       raise physics.unsupported_Error;
       return null;
    end new_cone_Shape;
-
 
 
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
@@ -147,7 +138,6 @@ is
    end new_convex_hull_Shape;
 
 
-
    function new_cylinder_Shape (half_Extents : in Vector_3) return physics.Shape.view
    is
    begin
@@ -156,13 +146,12 @@ is
    end new_cylinder_Shape;
 
 
-
    function new_heightfield_Shape (Width,
-                                   Depth        : in              Positive;
-                                   Heights      : access constant Real;
+                                   Depth       : in Positive;
+                                   Heights     : access constant Real;
                                    min_Height,
-                                   max_Height   : in              Real;
-                                   Scale        : in              Vector_3)    return physics.Shape.view
+                                   max_Height  : in Real;
+                                   Scale       : in Vector_3) return physics.Shape.view
    is
    begin
       raise physics.unsupported_Error;
@@ -170,15 +159,13 @@ is
    end new_heightfield_Shape;
 
 
-
-   function new_multiSphere_Shape (Positions    : in physics.Vector_3_array;
-                                   Radii        : in math.Vector) return physics.Shape.view
+   function new_multiSphere_Shape (Positions : in physics.Vector_3_array;
+                                   Radii     : in Vector) return physics.Shape.view
    is
    begin
       raise physics.unsupported_Error;
       return null;
    end new_multiSphere_Shape;
-
 
 
    function new_plane_Shape (Normal : in Vector_3;
@@ -190,15 +177,12 @@ is
    end new_plane_Shape;
 
 
-
    function new_sphere_Shape (Radius : in math.Real) return physics.Shape.view
    is
    begin
       raise physics.unsupported_Error;
       return null;
    end new_sphere_Shape;
-
-
 
 
    procedure free (the_Shape : in out physics.Shape.view)
