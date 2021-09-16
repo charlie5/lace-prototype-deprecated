@@ -185,9 +185,7 @@ is
    function Site (Self : in Item) return Vector_3
    is
       the_Site : constant c_math_c.Vector_3.item := b2d_Object_Site (Self.C);
---        the_Site : constant Vector_3 := Self.Dynamics.get.Site;
    begin
---        return the_Site;
       return +the_Site;
    end Site;
 
