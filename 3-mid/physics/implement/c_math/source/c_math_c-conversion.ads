@@ -6,7 +6,6 @@ with
      c_math_c.Matrix_4x4,
      Interfaces;
 
-
 package c_math_C.Conversion
 --
 -- Provide a set of conversion utilities.
