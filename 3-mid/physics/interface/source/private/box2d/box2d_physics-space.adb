@@ -219,12 +219,12 @@ is
                                               is_Kinematic : in Boolean) return physics.Object.view
    is
       pragma unreferenced (Self, is_Kinematic);
-      the_box2d_Object : constant box2d_Physics.Object.view := box2d_physics.Object.new_Object (of_Shape);
+      the_box2d_Object : constant box2d_Physics.Object.view := box2d_physics.Object.new_Object (of_Shape,
+                                                                                                of_Mass,
+                                                                                                Friction,
+                                                                                                Restitution,
+                                                                                                at_Site);
       the_Object       : constant physics.Object.view       := physics.Object.view (the_box2d_Object);
---                                                                   of_Mass,
---                                                                   Friction,
---                                                                   Restitution,
---                                                                   at_Site));
    begin
       return the_Object;
    end new_Object;
