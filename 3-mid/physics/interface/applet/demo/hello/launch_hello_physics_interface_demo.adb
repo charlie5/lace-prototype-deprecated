@@ -15,19 +15,19 @@ is
        physics.Forge,
        ada.Text_IO;
 
-   the_Space  : physics.Space.view  := physics.Space .view (new_Space (Physics.Box2d));
+   the_Space  : constant physics.Space .view := new_Space (Physics.Box2d);
 
-   the_Sphere : physics.Shape .view := the_Space.new_circle_Shape;
-   the_Box    : physics.Shape .view := the_Space.new_circle_Shape;
+   the_Sphere : constant physics.Shape .view := the_Space.new_circle_Shape;
+   the_Box    : constant physics.Shape .view := the_Space.new_circle_Shape;
 
-   the_Ball   : physics.Object.view := the_Space.new_Object (of_shape     => the_Sphere,
+   the_Ball   : constant physics.Object.view := the_Space.new_Object (of_shape     => the_Sphere,
                                                              of_mass      => 1.0,
                                                              friction     => 0.5,
                                                              restitution  => 0.5,
                                                              at_site      => (0.0,  10.0, 0.0),
                                                              is_kinematic => False);
 
-   the_Ground : physics.Object.view := the_Space.new_Object (of_shape     => the_Box,
+   the_Ground : constant physics.Object.view := the_Space.new_Object (of_shape     => the_Box,
                                                              of_mass      => 0.0,
                                                              friction     => 0.5,
                                                              restitution  => 0.5,
