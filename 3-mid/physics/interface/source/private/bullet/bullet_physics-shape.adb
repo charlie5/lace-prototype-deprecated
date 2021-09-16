@@ -212,12 +212,15 @@ is
    ----------
    --- Sphere
    --
+
+   type Sphere_view is access Sphere;
+
    function new_sphere_Shape (Radius : in math.Real) return physics.Shape.view
    is
-      Self : constant access Sphere := new Sphere;
+      Self : constant Sphere_view := new Sphere;
    begin
       Self.C := b3d_new_Sphere (+Radius);
-      return Self;
+      return physics.Shape.view (Self);
    end new_sphere_Shape;
 
 

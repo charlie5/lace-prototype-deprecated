@@ -10,6 +10,7 @@ with
      c_math_c.Matrix_4x4,
 
      Swig,
+     interfaces.C,
 
      ada.unchecked_Deallocation,
      ada.Unchecked_Conversion,
@@ -24,35 +25,20 @@ is
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
 
-   function new_Object (Shape : in physics.Shape.view) return Object.view
-   is
-      Self : constant View := new Item;
-   begin
-      Self.Shape := Shape;
-      return Self;
-   end new_Object;
-
-
-   -- old
    function new_Object (Shape        : in physics.Shape.view;
                         Mass         : in Real;
-                        at_Site      : in Vector_3;
-                        is_Kinematic : in Boolean) return View
+                        Friction     : in Real;
+                        Restitution  : in Real;
+                        at_Site      : in Vector_3) return View
+                        --  is_Kinematic : in Boolean) return View
    is
-      function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
-
       Self : constant View := new Item;
    begin
-      Self.C := b3d_new_Object (c_math_c.Real (Mass),
-                                bullet_physics.Shape.view (Shape).C,
-                                Boolean'Pos (is_Kinematic));
-
-      b3d_Object_user_Data_is (Self => Self.C.all'Access,
-                               Now  => to_void_ptr (Self.all'Access));
-
-      Self.user_Data_is (Self);
-      Self.Site_is (at_Site);
-
+      Self.define (Shape       => Shape,
+                   Mass        => Mass,
+                   Friction    => Friction,
+                   Restitution => Restitution,
+                   at_Site     => at_Site);
       return Self;
    end new_Object;
 
@@ -64,8 +50,22 @@ is
                                            Restitution : in Real;
                                            at_Site     : in Vector_3)
    is
+      use interfaces.C;
+      function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
+
    begin
-      raise Error with "TODO";
+      Self.C := b3d_new_Object (c_math_c.Real (Mass),
+                                bullet_physics.Shape.view (Shape).C,
+                                is_Kinematic => Boolean'Pos (False));
+                                --  Boolean'Pos (is_Kinematic));
+
+      b3d_Object_Friction_is    (Self.C, c_float (Friction));
+      b3d_Object_Restitution_is (Self.C, c_float (Restitution));
+      b3d_Object_user_Data_is   (Self => Self.C.all'Access,
+                                 Now  => to_void_ptr (Self.all'Access));
+
+      Self.user_Data_is (Self);
+      Self.Site_is (at_Site);
    end define;
 
 

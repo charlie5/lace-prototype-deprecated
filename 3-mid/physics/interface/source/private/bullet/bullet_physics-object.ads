@@ -23,12 +23,13 @@ is
    --- Forge
    --
 
-   function  new_Object (Shape : in physics.Shape.view) return Object.view;
-
    function  new_Object (Shape        : in     physics.Shape.view;
                          Mass         : in     Real;
-                         at_Site      : in     Vector_3;
-                         is_Kinematic : in     Boolean) return View;
+                         Friction     : in     Real;
+                         Restitution  : in     Real;
+                         at_Site      : in     Vector_3) return View;
+                         --  is_Kinematic : in     Boolean) return View;
+
    overriding
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;
                                            Mass        : in Real;

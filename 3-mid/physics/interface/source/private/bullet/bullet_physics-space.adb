@@ -228,12 +228,15 @@ is
                                                is_Kinematic : in Boolean) return physics.Object.view
    is
       pragma unreferenced (Self);
-      the_b3d_Object : constant bullet_Physics.Object.view := bullet_physics.Object.new_Object (of_Shape);
-      the_Object     : constant physics.Object.view        := physics.Object.view (the_b3d_Object);
+      the_b3d_Object : constant bullet_Physics.Object.view := bullet_physics.Object.new_Object (Shape       => of_Shape,
+                                                                                                Mass        => of_Mass,
+                                                                                                Friction    => Friction,
+                                                                                                Restitution => Restitution,
+                                                                                                at_Site     => at_Site);
+      the_Object : constant physics.Object.view := physics.Object.view (the_b3d_Object);
 
    begin
       return the_Object;
---        return physics.Object.view (bullet_physics.Object.new_Object (of_Shape, of_Mass, at_Site, is_Kinematic));
    end new_Object;
 
 
