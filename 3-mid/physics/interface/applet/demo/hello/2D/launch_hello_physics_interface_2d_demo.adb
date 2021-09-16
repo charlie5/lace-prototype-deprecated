@@ -6,7 +6,7 @@ with
 
      ada.Text_IO;
 
-procedure launch_hello_physics_interface_Demo
+procedure launch_hello_physics_2D_interface_Demo
 --
 -- Simply exercises the physics interface.
 --
@@ -47,4 +47,4 @@ begin
       put_Line (  "Sites ~ Ball => "   & Image (the_Ball  .Site)
                 & "        Ground => " & Image (the_Ground.Site));
    end loop;
-end launch_hello_physics_interface_Demo;
+end launch_hello_physics_2D_interface_Demo;
