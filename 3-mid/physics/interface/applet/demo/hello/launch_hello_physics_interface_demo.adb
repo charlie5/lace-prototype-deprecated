@@ -4,8 +4,7 @@ with
      physics.Object,
      physics.Forge,
 
-     ada.text_IO;
-
+     ada.Text_IO;
 
 procedure launch_hello_physics_interface_Demo
 --
@@ -14,7 +13,7 @@ procedure launch_hello_physics_interface_Demo
 is
    use physics.Math,
        physics.Forge,
-       ada.text_IO;
+       ada.Text_IO;
 
    the_Space  : physics.Space.view  := physics.Space .view (new_Space (Physics.Box2d));
 
@@ -38,7 +37,7 @@ begin
    the_Space.add (the_Ball);
    the_Space.add (the_Ground);
 
-   for Count in 1 .. 100
+   for i in 1 .. 100
    loop
       the_Space.evolve (by => 1.0/60.0);
 
