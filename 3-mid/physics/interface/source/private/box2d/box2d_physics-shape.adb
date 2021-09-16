@@ -48,14 +48,18 @@ is
    --  2D
    --
 
+   type Circle_view is access Circle;
+
    function new_circle_Shape (Radius : in Real) return physics.Shape.view
    is
-      Self : constant access Circle := new Circle;
+      Self : constant Circle_view := new Circle;
+      --  Self : constant access Circle := new Circle;
 --        c_Radius : aliased constant c_math_c.Real := +Radius;
    begin
       --        Self.C := b2d_new_Circle (c_Radius);
       Self.Radius := Radius;
-      return Self;
+      Self.define;
+      return physics.Shape.view (Self);
    end new_circle_Shape;
 
 
@@ -68,9 +72,14 @@ is
    end define;
 
 
+
+   type Polygon_view is access Polygon;
+
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
-      Self : constant access Polygon := new Polygon (vertex_Count => Vertices'Length);
+      --  P : Polygon (vertex_Count => Vertices'Length);
+      --  Self : constant Polygon_view := new Polygon' (P);
+      Self : constant Polygon_view := new Polygon (vertex_Count => Vertices'Length);
 --        c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
    begin
          Self.Vertices := Vertices;
@@ -81,7 +90,8 @@ is
 --
 --        Self.C := b2d_new_Polygon (c_Verts (1)'Unchecked_Access,
 --                                   c_Verts'Length);
-      return Self;
+      Self.define;
+      return physics.Shape.view (Self);
    end new_polygon_Shape;
 
 
