@@ -13,45 +13,18 @@ with
      Swig,
 
      ada.unchecked_Deallocation,
-     ada.Unchecked_Conversion,
-     ada.Text_IO;
+     ada.Unchecked_Conversion;
 
 package body box2d_Physics.Object
 is
    use
-       box2d_c .Binding,
-       c_math_c.Conversion,
-       ada.Text_IO;
+       box2d_c.Binding,
+       c_math_c.Conversion;
 
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
    function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
 
-
-   function new_Object (Shape : in physics.Shape.view) return Object.view
-   is
-      Self        : constant View             := new Item;
---        Self_as_any : constant Any_limited_view := Any_limited_view (Self);
-
---        c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
---                                                         c_math_c.Real (at_Site (2)));
-   begin
---        Self.C := b2d_new_Object (c_Site'unchecked_Access,
---                                  c_math_c.Real (Mass),
---                                  c_math_c.Real (Friction),
---                                  c_math_c.Real (Restitution),
---                                  box2d_physics.Shape.view (Shape).C);
-
-      Self.Shape := Shape;
---        b2d_Object_user_Data_is (box2d_c.Pointers.Object_Pointer (Self.C),
---                                 to_void_ptr (Self_as_any));
---        Self.Site_is (at_Site);
-
-      return Self;
-   end new_Object;
-
-
-   -- old
 
    function new_Object (Shape       : in physics.Shape.view;
                         Mass        : in Real;
@@ -59,49 +32,33 @@ is
                         Restitution : in Real;
                         at_Site     : in Vector_3) return Object.view
    is
-      Self        : constant View             := new Item;
-      Self_as_any : constant Any_limited_view := Any_limited_view (Self);
-
-      c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
-                                                       c_math_c.Real (at_Site (2)));
+      Self : constant View := new Item;
    begin
-      raise Program_Error with "old";
-      Self.C := b2d_new_Object (c_Site'unchecked_Access,
-                                c_math_c.Real (Mass),
-                                c_math_c.Real (Friction),
-                                c_math_c.Real (Restitution),
-                                box2d_physics.Shape.view (Shape).C);
-
-      Self.Shape := Shape;
-      b2d_Object_user_Data_is (box2d_c.Pointers.Object_pointer (Self.C),
-                               to_void_ptr (Self_as_any));
-      Self.Site_is (at_Site);
-
+      Self.define (Shape, Mass, Friction, Restitution, at_Site);
       return Self;
    end new_Object;
 
 
    overriding
-   procedure define (Self : access Item;   Mass        : in Real;
+   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
+                                           Mass        : in Real;
                                            Friction    : in Real;
                                            Restitution : in Real;
                                            at_Site     : in Vector_3)
    is
-      Self_as_any : constant Any_limited_view := Any_limited_view (Self);
-
-      c_Site      : aliased c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
-                                                       c_math_c.Real (at_Site (2)));
+      Self_as_any : constant Any_limited_view       := Any_limited_view (Self);
+      c_Site      : aliased  c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
+                                                        c_math_c.Real (at_Site (2)));
    begin
       Self.C := b2d_new_Object (c_Site'unchecked_Access,
                                 c_math_c.Real (Mass),
                                 c_math_c.Real (Friction),
                                 c_math_c.Real (Restitution),
-                                box2d_physics.Shape.view (Self.Shape).C);
-
---        Self.Shape := Shape;
-      b2d_Object_user_Data_is (box2d_c.Pointers.Object_Pointer (Self.C),
+                                box2d_physics.Shape.view (Shape).C);
+      Self.Shape := Shape;
+      b2d_Object_user_Data_is (box2d_c.Pointers.Object_pointer (Self.C),
                                to_void_ptr (Self_as_any));
-      --        Self.Site_is (at_Site);
+      Self.Site_is (at_Site);
       Self.update_Dynamics;
    end define;
 
@@ -119,7 +76,6 @@ is
       procedure deallocate is new ada.unchecked_Deallocation (physics.Object.item'Class,
                                                               physics.Object.view);
    begin
-      put_Line ("b2d physics object free");
       the_Object.destruct;
       deallocate (the_Object);
    end free;

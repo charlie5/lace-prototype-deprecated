@@ -189,7 +189,8 @@ is
 
                               --                                rebuild_Shape  (the_Object);
                               the_Object.Shape.define;
-                              the_Object.define (Mass        => the_Object.Model.Mass,
+                              the_Object.define (Shape       => the_Object.Shape,
+                                                 Mass        => the_Object.Model.Mass,
                                                  Friction    => the_Object.Model.Friction,
                                                  Restitution => the_Object.Model.Restitution,
                                                  at_Site     => the_Object.Model.Site);

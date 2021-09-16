@@ -16,22 +16,21 @@ is
    type Item is limited new physics.Object.item with private;
    type View is access all Item'Class;
 
-   function new_Object (Shape : in physics.Shape.view) return Object.view;
-
    use Math;
 
 
    overriding
-   procedure define (Self : access Item;   Mass        : in Real;
+   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
+                                           Mass        : in Real;
                                            Friction    : in Real;
                                            Restitution : in Real;
                                            at_Site     : in Vector_3);
-   -- old
---     function  new_Object (Shape       : in physics.Shape.view;
---                           Mass        : in Real;
---                           Friction    : in Real;
---                           Restitution : in Real;
---                           at_Site     : in Vector_3) return Object.view;
+
+   function  new_Object (Shape       : in physics.Shape.view;
+                         Mass        : in Real;
+                         Friction    : in Real;
+                         Restitution : in Real;
+                         at_Site     : in Vector_3) return Object.view;
 
    procedure free (the_Object : in out physics.Object.view);
 

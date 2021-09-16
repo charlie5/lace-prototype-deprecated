@@ -58,7 +58,8 @@ is
 
 
    overriding
-   procedure define (Self : access Item;   Mass        : in Real;
+   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
+                                           Mass        : in Real;
                                            Friction    : in Real;
                                            Restitution : in Real;
                                            at_Site     : in Vector_3)
