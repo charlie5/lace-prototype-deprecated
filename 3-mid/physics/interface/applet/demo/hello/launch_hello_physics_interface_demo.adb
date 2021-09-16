@@ -18,7 +18,10 @@ is
    the_Space  : constant physics.Space .view := new_Space (Physics.Box2d);
 
    the_Sphere : constant physics.Shape .view := the_Space.new_circle_Shape;
-   the_Box    : constant physics.Shape .view := the_Space.new_circle_Shape;
+   the_Box    : constant physics.Shape .view := the_Space.new_polygon_Shape (Vertices => (1 => (-1.0, -1.0),
+                                                                                          2 => ( 1.0, -1.0),
+                                                                                          3 => ( 1.0,  1.0),
+                                                                                          4 => (-1.0,  1.0)));
 
    the_Ball   : constant physics.Object.view := the_Space.new_Object (of_shape     => the_Sphere,
                                                              of_mass      => 1.0,
