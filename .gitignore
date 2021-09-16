@@ -59,6 +59,7 @@ launch_two_cameras_demo
 launch_egl_linkage_test
 generate_gl_types_spec
 launch_freetype_linkage_test
+launch_hello_physics_interface_2d_demo
 launch_drop_ball_on_box
 launch_hello_mmi
 launch_text_sprite_demo
