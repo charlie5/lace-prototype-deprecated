@@ -85,7 +85,7 @@ is
    --- Factory
    --
 
-   unsupported_Error : exception;
+   unsupported_Shape : exception;
 
 
    --- Physical Objects

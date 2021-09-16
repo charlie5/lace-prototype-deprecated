@@ -97,7 +97,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Sphere shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Sphere shape not allowed in box2d physics.";
       return null;
    end new_sphere_Shape;
 
@@ -107,7 +107,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Box shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Box shape not allowed in box2d physics.";
       return null;
    end new_box_Shape;
 
@@ -118,7 +118,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Capsule shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Capsule shape not allowed in box2d physics.";
       return null;
    end new_capsule_Shape;
 
@@ -129,7 +129,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Cone shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Cone shape not allowed in box2d physics.";
       return null;
    end new_cone_Shape;
 
@@ -139,7 +139,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Cylinder shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Cylinder shape not allowed in box2d physics.";
       return null;
    end New_Cylinder_Shape;
 
@@ -150,7 +150,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Heightfield shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Heightfield shape not allowed in box2d physics.";
       return null;
    end new_heightfield_Shape;
 
@@ -161,7 +161,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "multiSphere shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "multiSphere shape not allowed in box2d physics.";
       return null;
    end new_multisphere_Shape;
 
@@ -173,7 +173,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Plane shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Plane shape not allowed in box2d physics.";
       return null;
    end new_plane_Shape;
 
@@ -183,7 +183,7 @@ is
    is
       pragma unreferenced (Self);
    begin
-      raise physics.Space.unsupported_Error with "Convex hull shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Convex hull shape not allowed in box2d physics.";
       return null;
    end new_convex_hull_Shape;
 
@@ -193,7 +193,7 @@ is
    is
       pragma unreferenced (Self, Points);
    begin
-      raise physics.Space.unsupported_Error with "Mesh shape not allowed in box2d physics.";
+      raise physics.Space.unsupported_Shape with "Mesh shape not allowed in box2d physics.";
       return null;
    end new_mesh_Shape;
 

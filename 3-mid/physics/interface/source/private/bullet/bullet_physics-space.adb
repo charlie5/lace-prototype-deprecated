@@ -201,7 +201,7 @@ is
    function new_circle_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape.view
    is
    begin
-      raise physics.Space.unsupported_Error with "Circle shape not allowed in bullet physics.";
+      raise physics.Space.unsupported_Shape with "Circle shape not allowed in bullet physics.";
       return null;
    end new_circle_Shape;
 
@@ -210,7 +210,7 @@ is
    function new_polygon_Shape (Self : access Item;   Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
    begin
-      raise physics.Space.unsupported_Error with "Polygon shape not allowed in bullet physics.";
+      raise physics.Space.unsupported_Shape with "Polygon shape not allowed in bullet physics.";
       return null;
    end new_polygon_Shape;
 
