@@ -13,12 +13,12 @@ with
      collada.Library.controllers,
      collada.Library.animations,
 
-     ada.Strings.unbounded;
-
+     ada.Strings.unbounded,
+     ada.Strings.Maps;
 
 package body gel.Rig
 is
-   use math.Algebra.linear.d3;
+   use linear_Algebra_3D;
 
 
    -----------
@@ -29,8 +29,7 @@ is
      renames ada.strings.unbounded.to_String;
 
    function "+" (From : in String) return ada.strings.unbounded.unbounded_String
-     renames ada.strings.unbounded.To_unbounded_String;
-
+     renames ada.strings.unbounded.to_unbounded_String;
 
 
 
@@ -38,7 +37,7 @@ is
    is
       use ada.Strings.unbounded;
    begin
-      return Parent & "_To_" & Child;
+      return Parent & "_to_" & Child;
    end to_gel_joint_Id;
 
 
@@ -54,21 +53,19 @@ is
 
 
 
-   function to_Details (Length       : math.Real             := Unpecified;
+   function to_Details (Length       : Real := Unspecified;
                         width_Factor,
-                        depth_Factor : math.Real             := 0.1;
+                        depth_Factor : Real := 0.1;
 
                         pitch_Limits,
                         yaw_Limits,
-                        roll_Limits  : gel.Sprite.DoF_Limits := (math.to_Radians (-15.0),
-                                                                 math.to_Radians ( 15.0))) return bone_Details
+                        roll_Limits  : gel.Sprite.DoF_Limits := (to_Radians (-15.0),
+                                                                 to_Radians ( 15.0))) return bone_Details
    is
    begin
       return (Length,       width_Factor, depth_Factor,
               pitch_Limits, yaw_Limits,   roll_Limits);
    end to_Details;
-
-
 
 
    ---------
@@ -78,10 +75,10 @@ is
    package body Forge
    is
 
-      function new_Rig (in_World     : in     gel.World.view;
-                        Model        : access openGL.Model.item'Class;
-                        Mass         : in     math.Real              := 0.0;
-                        is_Kinematic : in     Boolean                := False) return Rig.view
+      function new_Rig (in_World     : in gel.World.view;
+                        Model        : in openGL.Model.view;
+                        Mass         : in Real    := 0.0;
+                        is_Kinematic : in Boolean := False) return Rig.view
       is
          Self : constant Rig.view := new Rig.item;
       begin
@@ -92,10 +89,10 @@ is
 
 
 
-      function new_Rig (bone_Sprites            : in     bone_id_Map_of_sprite;
-                        joint_inv_bind_Matrices : in     inverse_bind_matrix_Vector;
-                        joint_site_Offets       : in     joint_Id_Map_of_bone_site_offset;
-                        Model                   : access openGL.Model.item'Class) return Rig.view
+      function new_Rig (bone_Sprites            : in bone_id_Map_of_sprite;
+                        joint_inv_bind_Matrices : in inverse_bind_matrix_Vector;
+                        joint_site_Offets       : in joint_Id_Map_of_bone_site_offset;
+                        Model                   : in openGL.Model.view) return Rig.view
       is
          the_Box : constant Rig.View := new Rig.item;
       begin
@@ -110,8 +107,8 @@ is
    end Forge;
 
 
-
-   --- skin_program_Parameters
+   ---------------------------
+   --- Skin program parameters
    --
 
    overriding
@@ -119,25 +116,24 @@ is
    is
       use joint_id_Maps_of_slot;
 
+      subtype Program_view is openGL.Program.lit_colored_textured_skinned.view;
+
       Cursor : joint_id_Maps_of_slot.Cursor := Self.joint_Map_of_slot.First;
       Slot   : Integer;
 
    begin
-      while Has_Element (Cursor)
+      while has_Element (Cursor)
       loop
          Slot := Element (Cursor);
 
-         openGL.Program.lit_colored_textured_skinned.view (Self.Program)
-           .bone_Transform_is (which => Slot,
-                               now   => Self.bone_Transforms.Element (Slot));
-
+         Program_view (Self.Program).bone_Transform_is (Which => Slot,
+                                                        Now   => Self.bone_Transforms.Element (Slot));
          next (Cursor);
       end loop;
    end enable;
 
 
-
-
+   -------------
    --- Animation
    --
 
@@ -150,33 +146,34 @@ is
       child_Joints         : constant visual_scenes.Nodes := the_Joint.Children;
 
       default_scene_Joint  :          scene_Joint;
-      the_global_Transform : constant math.Matrix_4x4     := math.Transpose (the_Joint.global_Transform);     -- Transpose to convert to row-major.
+      the_global_Transform : constant Matrix_4x4 := Transpose (the_Joint.global_Transform);     -- Transpose to convert to row-major.
 
    begin
       Self.joint_pose_Transforms.insert (which_Joint,  the_global_Transform);
       Self.collada_Joints       .insert (which_Joint,  the_Joint);
 
       default_scene_Joint.Node := the_Joint;
-      Self.scene_Joints.insert (which_Joint,  default_scene_Joint);
+      Self.scene_Joints.insert (which_Joint, default_scene_Joint);
 
-      for Each in child_Joints'Range
+      for i in child_Joints'Range
       loop
          Slot := Slot + 1;
-         define_global_Transform_for (Self,  child_Joints (Each),  Slot);      -- Recurse over children.
+         define_global_Transform_for (Self, child_Joints (i), Slot);      -- Recurse over children.
       end loop;
    end define_global_Transform_for;
 
 
 
-   procedure update_global_Transform_for (Self : in out Item'Class;   the_Joint : in     collada.Library.visual_scenes.Node_view)
+   procedure update_global_Transform_for (Self : in out Item'Class;   the_Joint : in collada.Library.visual_scenes.Node_view)
    is
-      use collada.Library, ada.Strings.Unbounded;
+      use collada.Library,
+          ada.Strings.unbounded;
 
       which_Joint          : constant scene_joint_Id      := the_Joint.Id;
       child_Joints         : constant visual_scenes.Nodes := the_Joint.Children;
 
-      the_global_Transform : constant math.Matrix_4x4     := math.Transpose (the_Joint.global_Transform);     -- Transpose to convert to row-major.
-      joint_site_Offet     :          math.Vector_3;
+      the_global_Transform : constant Matrix_4x4 := math.Transpose (the_Joint.global_Transform);     -- Transpose to convert to row-major.
+      joint_site_Offet     :          Vector_3;
 
    begin
       if which_Joint = Self.root_Joint.Name
@@ -189,20 +186,19 @@ is
       Self.scene_Joints (which_Joint).Transform      := the_global_Transform;
 
       declare
-         use      Math;
          use type gel.Sprite.view;
 
-         the_bone_Id : constant bone_Id        := which_Joint;
-         Site        :          math.Vector_3;
-         Rotation    :          math.Matrix_3x3;
+         the_bone_Id : constant bone_Id := which_Joint;
+         Site        :          Vector_3;
+         Rotation    :          Matrix_3x3;
 
       begin
          if Self.bone_Sprites (the_bone_Id) /= null
          then
-            Site     := get_Translation (the_global_Transform);
-            Site     := Site - joint_site_Offet * (get_Rotation (the_global_Transform));
-            Site     := Site * Inverse (Self.base_Sprite.Spin);
-            Site     := Site + Self.overall_Site;
+            Site := get_Translation (the_global_Transform);
+            Site := Site - joint_site_Offet * (get_Rotation (the_global_Transform));
+            Site := Site * Inverse (Self.base_Sprite.Spin);
+            Site := Site + Self.overall_Site;
 
             Rotation := Inverse (get_Rotation (the_global_Transform));
             Rotation := Self.base_Sprite.Spin * Rotation;
@@ -216,9 +212,9 @@ is
          end if;
       end;
 
-      for Each in child_Joints'Range
+      for i in child_Joints'Range
       loop
-         update_global_Transform_for (Self,  child_Joints (Each));      -- Recurse over children.
+         Self.update_global_Transform_for (child_Joints (i));      -- Recurse over children.
       end loop;
    end update_global_Transform_for;
 
@@ -227,14 +223,14 @@ is
    procedure update_all_global_Transforms (Self : in out Item'Class)
    is
    begin
-      update_global_Transform_for (Self,  Self.root_Joint);             -- Re-determine all joint transforms, recursively.
+      Self.update_global_Transform_for (Self.root_Joint);            -- Re-determine all joint transforms, recursively.
    end update_all_global_Transforms;
 
 
 
-   procedure set_rotation_Angle (Self : in out Item'Class;     for_Joint : in scene_joint_Id;
-                                                               Axis      : in Axis_Kind;
-                                                               To        : in math.Real)
+   procedure set_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
+                                                             Axis      : in axis_Kind;
+                                                             To        : in Real)
    is
    begin
       case Axis is
@@ -247,7 +243,7 @@ is
 
 
    procedure set_Location (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                       To        : in math.Vector_3)
+                                                       To        : in Vector_3)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Location (To);
@@ -256,7 +252,7 @@ is
 
 
    procedure set_Location_x (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                         To        : in math.Real)
+                                                         To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Location_x (To);
@@ -264,7 +260,7 @@ is
 
 
    procedure set_Location_y (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                         To        : in math.Real)
+                                                         To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Location_y (To);
@@ -272,7 +268,7 @@ is
 
 
    procedure set_Location_z (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                         To        : in math.Real)
+                                                         To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Location_z (To);
@@ -281,7 +277,7 @@ is
 
 
    procedure set_Transform (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                        To        : in math.Matrix_4x4)
+                                                        To        : in Matrix_4x4)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Transform (To);
@@ -290,7 +286,7 @@ is
 
 
    procedure set_x_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in math.Real)
+                                                               To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_x_rotation_Angle (To);
@@ -299,7 +295,7 @@ is
 
 
    procedure set_y_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in math.Real)
+                                                               To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_y_rotation_Angle (To);
@@ -308,26 +304,28 @@ is
 
 
    procedure set_z_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in math.Real)
+                                                               To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_z_rotation_Angle (To);
    end set_z_rotation_Angle;
 
 
-
-
-   -- Define
+   ----------
+   --- Define
    --
 
-   procedure define (Self : in out Item;   in_World     : in     gel   .World.view;
-                                           Model        : access openGL.Model.item'Class;
-                                           Mass         : in     math.Real              := 0.0;
-                                           is_Kinematic : in     Boolean                := False;
-                                           bone_Details : in     bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map)
+   procedure define (Self : in out Item;   in_World     : in gel   .World.view;
+                                           Model        : in openGL.Model.view;
+                                           Mass         : in Real                   := 0.0;
+                                           is_Kinematic : in Boolean                := False;
+                                           bone_Details : in bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map)
    is
-      use collada.Document, collada.Library, collada.Library.visual_scenes,
-          ada.Strings.unbounded, ada.Strings;
+      use collada.Document,
+          collada.Library,
+          collada.Library.visual_Scenes,
+          ada.Strings.unbounded,
+          ada.Strings;
 
       type any_Model_view is access all openGL.Model.any.item;
 
@@ -335,36 +333,36 @@ is
       the_Document : constant collada.Document.item := to_Document (openGL.to_String (the_Model.Model));
 
 
-      function get_root_Joint return visual_scenes.Node_view
+      function get_root_Joint return visual_Scenes.Node_view
       is
       begin
-         if the_Document.libraries.visual_Scenes.skeletal_Root = ""
+         if the_Document.Libraries.visual_Scenes.skeletal_Root = ""
          then
-            return the_Document.libraries.visual_Scenes.Contents (1).root_Node;
+            return the_Document.Libraries.visual_Scenes.Contents (1).root_Node;
          else
-            return the_Document.libraries.visual_Scenes.Contents (1).root_Node.Child (1);
+            return the_Document.Libraries.visual_Scenes.Contents (1).root_Node.Child (1);
          end if;
       end get_root_Joint;
 
 
-      the_root_Joint    : constant visual_scenes.Node_view  := get_root_Joint;
-      prior_bone_Length :          math.Real                := 1.0;
+      the_root_Joint    : constant visual_scenes.Node_view := get_root_Joint;
+      prior_bone_Length :          Real                    := 1.0;
 
 
-      package joint_id_Maps_of_vector_3 is new ada.Containers.hashed_Maps (Key_Type        => scene_joint_Id,
-                                                                           Element_Type    => math.Vector_3,
+      package joint_id_Maps_of_vector_3 is new ada.Containers.hashed_Maps (Key_type        => scene_joint_Id,
+                                                                           Element_type    => Vector_3,
                                                                            Hash            => ada.Strings.unbounded.Hash,
-                                                                           Equivalent_Keys => ada.Strings.unbounded."=",
-                                                                           "="             => math."=");
+                                                                           equivalent_Keys => ada.Strings.unbounded."=",
+                                                                           "="             => "=");
       subtype joint_id_Map_of_vector_3 is joint_id_Maps_of_vector_3.Map;
 
 
       joint_Sites : joint_id_Map_of_vector_3;
 
-      procedure set_Site_for (the_Joint : in visual_scenes.Node_view)
+      procedure set_Site_for (the_Joint : in visual_Scenes.Node_view)
       is
          which_Joint  : constant scene_joint_Id      := the_Joint.Id;
-         child_Joints : constant visual_scenes.Nodes := the_Joint.Children;
+         child_Joints : constant visual_Scenes.Nodes := the_Joint.Children;
 
       begin
          if which_Joint = Self.root_Joint.Name
@@ -376,39 +374,38 @@ is
                                 get_Translation (Self.joint_bind_Matrix (which_Joint)));
          end if;
 
-         for Each in child_Joints'Range
+         for i in child_Joints'Range
          loop
-            set_Site_for (child_Joints (Each));     -- Recurse over children.
+            set_Site_for (child_Joints (i));     -- Recurse over children.
          end loop;
       end set_Site_for;
 
 
       procedure create_Bone (the_Bone    : in bone_Id;
                              start_Joint : in scene_joint_Id;
-                             end_Point   : in math.Vector_3;
-                             Scale       : in math.Vector_3;
-                             Mass        : in math.Real)
+                             end_Point   : in Vector_3;
+                             Scale       : in Vector_3;
+                             Mass        : in Real)
       is
-         use math;
-         use openGL, opengl.Palette;
+         use opengl.Palette;
 
          new_Sprite    :          gel.Sprite.view;
-         the_bone_Site : constant math.Vector_3  := midPoint (joint_Sites (start_Joint),
-                                                              end_Point);
+         the_bone_Site : constant Vector_3  := midPoint (joint_Sites (start_Joint),
+                                                         end_Point);
       begin
          if the_Bone = Self.root_Joint.Name
          then
             declare
                use standard.physics.Model;
 
-               Size : constant math.Vector_3 := (0.1, 0.1, 0.1);
+               Size : constant Vector_3 := (0.1, 0.1, 0.1);
 
                physics_Model : constant standard.physics.Model.View
-                 := standard.physics.Model.Forge.new_physics_Model (shape_Info  => (kind         => cube,
-                                                                                    half_extents => Size / 2.0),
-                                                           mass        => 1.0);
+                 := standard.physics.Model.Forge.new_physics_Model (shape_Info  => (Kind         => Cube,
+                                                                                    half_Extents => Size / 2.0),
+                                                                    Mass        => 1.0);
             begin
-               new_Sprite := gel.Sprite.forge.new_Sprite ("Skin Sprite",
+               new_Sprite := gel.Sprite.Forge.new_Sprite ("Skin Sprite",
                                                           in_World,
                                                           Model,
                                                           physics_Model,
@@ -418,11 +415,11 @@ is
             new_Sprite.Site_is ((0.0, 0.0, 0.0));
             new_Sprite.Spin_is (Identity_3x3);
 
-            Self.bone_pose_Transforms.insert (the_Bone, math.Identity_4x4);
+            Self.bone_pose_Transforms.insert (the_Bone, Identity_4x4);
             Self.skin_Sprite := new_Sprite;
 
          else
-            new_Sprite := gel.forge.new_box_Sprite (in_World     => in_World,
+            new_Sprite := gel.Forge.new_box_Sprite (in_World     => in_World,
                                                     Mass         => 1.0,
                                                     Size         => Scale,
                                                     Colors       => (1      => Black,
@@ -435,48 +432,46 @@ is
 
             new_Sprite.is_Visible (False);
 
-
             Self.anim_joint_site_Offets.insert (the_Bone,   Inverse (get_Rotation (Self.joint_inv_bind_Matrix (start_Joint)))
                                                           * (joint_Sites (start_Joint) - the_bone_Site));
 
             Self.phys_joint_site_Offets.insert (the_Bone,  joint_Sites (start_Joint) - the_bone_Site);
 
 
-            Self.bone_pose_Transforms  .insert (the_Bone,  to_transform_Matrix (rotation    => get_Rotation (Self.joint_pose_Transforms (start_Joint)),
-                                                                                translation => the_bone_Site));
+            Self.bone_pose_Transforms  .insert (the_Bone,  to_transform_Matrix (Rotation    => get_Rotation (Self.joint_pose_Transforms (start_Joint)),
+                                                                                Translation => the_bone_Site));
          end if;
 
          Self.bone_Sprites.insert (the_Bone, new_Sprite);
 
          declare
             new_Sprite : constant gel.Sprite.view := gel.Forge.new_box_Sprite (in_World     => in_World,
-                                                                      Mass         => 0.0,
-                                                                      Size         => (0.02, 0.02, 0.02),
-                                                                      Colors       => (others => Yellow),
-                                                                      is_Kinematic => True);
+                                                                               Mass         => 0.0,
+                                                                               Size         => (0.02, 0.02, 0.02),
+                                                                               Colors       => (others => Yellow),
+                                                                               is_Kinematic => True);
          begin
-            Self.joint_Sprites.insert (the_Bone,
-                                       new_Sprite);
+            Self.joint_Sprites.insert (the_Bone, new_Sprite);
          end;
       end create_Bone;
 
 
-      procedure create_Bone_for (the_Joint : in visual_scenes.Node_view;   Parent : in bone_Id)
+      procedure create_Bone_for (the_Joint : in visual_Scenes.Node_view;   Parent : in bone_Id)
       is
-         use      bone_id_Maps_of_details, Math;
+         use bone_id_Maps_of_details;
 
          which_Joint      : constant scene_joint_Id      := the_Joint.Id;
-         child_Joints     : constant visual_scenes.Nodes := the_Joint.Children;
+         child_Joints     : constant visual_Scenes.Nodes := the_Joint.Children;
 
          the_bone_Details :          Rig.bone_Details;
 
-         bone_Length      :          math.Real;
-         end_Point        :          math.Vector_3;
+         bone_Length      :          Real;
+         end_Point        :          Vector_3;
 
          new_Joint        :          gel.Joint.view;
 
 
-         function guessed_bone_Length return math.Real
+         function guessed_bone_Length return Real
          is
          begin
             if child_Joints'Length = 0
@@ -501,7 +496,7 @@ is
          then
             the_bone_Details := bone_Details.Element (which_Joint);
 
-            if the_bone_Details.Length = Unpecified
+            if the_bone_Details.Length = Unspecified
             then   bone_Length := guessed_bone_Length;
             else   bone_Length := the_bone_Details.Length;
             end if;
@@ -540,14 +535,15 @@ is
                                 new_Joint);
          end if;
 
-         for Each in child_Joints'Range
+         for i in child_Joints'Range
          loop
-            create_Bone_for (child_Joints (Each),  parent => which_Joint);      -- Recurse over children.
+            create_Bone_for (child_Joints (i),           -- Recurse over children.
+                             parent => which_Joint);
          end loop;
       end create_Bone_for;
 
 
-      use collada.Library.controllers;
+      use collada.Library.Controllers;
 
       global_transform_Slot : Positive := 1;
 
@@ -560,33 +556,31 @@ is
 
       -- Set the bind shape matrix.
       --
-      Self.bind_shape_Matrix := math.Transpose (bind_shape_Matrix_of (the_Document.libraries.controllers.Contents (1).Skin));
+      Self.bind_shape_Matrix := Transpose (bind_shape_Matrix_of (the_Document.Libraries.Controllers.Contents (1).Skin));
 
 
       -- Set the joint slots.
       --
       declare
-         the_Skin        : constant controllers.Skin   := the_Document.libraries.controllers.Contents (1).Skin;
+         the_Skin        : constant Controllers.Skin   := the_Document.Libraries.Controllers.Contents (1).Skin;
          the_joint_Names : constant collada.Text_array := joint_Names_of (the_Skin);
       begin
-         for Each in 1 .. Integer (the_joint_Names'Length)
+         for i in 1 .. Integer (the_joint_Names'Length)
          loop
-            Self.program_Parameters.joint_Map_of_slot.insert (the_joint_Names (Each),
-                                                              Each);
+            Self.program_Parameters.joint_Map_of_slot.insert (the_joint_Names (i),
+                                                              i);
          end loop;
       end;
 
       -- Set the inverse bind matrices for all joints.
       --
       declare
-         use Math;
-
-         the_Skin       : constant controllers.Skin         := the_Document.libraries.controllers.Contents (1).Skin;
+         the_Skin       : constant Controllers.Skin         := the_Document.Libraries.Controllers.Contents (1).Skin;
          the_bind_Poses : constant collada.Matrix_4x4_array := bind_Poses_of (the_Skin);
       begin
-         for Each in 1 .. Integer (the_bind_Poses'Length)
+         for i in 1 .. Integer (the_bind_Poses'Length)
          loop
-            Self.joint_inv_bind_Matrices           .append (Transpose (the_bind_Poses (Each)));    -- Transpose corrects for collada column vectors.
+            Self.joint_inv_bind_Matrices           .append (Transpose (the_bind_Poses (i)));    -- Transpose corrects for collada column vectors.
             Self.program_Parameters.bone_Transforms.append (Identity_4x4);
          end loop;
       end;
@@ -594,17 +588,17 @@ is
 
       --- Parse Visual Scene.
       --
-
-      define_global_Transform_for (Self, the_root_Joint, slot   => global_transform_Slot);     -- Determine all joint transforms, recursively.
-      set_Site_for                (the_root_Joint);
-      create_Bone_for             (the_root_Joint,       parent => +"");                       -- Create all other bones, recursively.
+      Self.define_global_Transform_for (the_root_Joint,                  -- Determine all joint transforms, recursively.
+                                        Slot => global_transform_Slot);
+      set_Site_for    (the_root_Joint);
+      create_Bone_for (the_root_Joint, Parent => +"");                   -- Create all other bones, recursively.
 
 
       --- Parse the Collada animations file.
       --
       declare
-         use collada.Library.animations;
-         the_Animations  : constant access animations.Animation_array := the_Document.Libraries.Animations.Contents;
+         use collada.Library.Animations;
+         the_Animations : constant access Animation_array := the_Document.Libraries.Animations.Contents;
 
       begin
          if the_Animations /= null
@@ -616,13 +610,14 @@ is
                   the_Inputs    : access   collada.float_Array  := Inputs_of (the_Animation);
 
 
-                  procedure common_setup (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure common_setup (Channel     : in channel_Id;
+                                          scene_Joint : in scene_Joint_Id;
+                                          Sid         : in String)
                   is
                      default_scene_Joint : rig.scene_Joint;
                      default_Channel     : animation_Channel;
-
                   begin
-                     Self.Channels.insert (Channel,  default_Channel);
+                     Self.Channels.insert (Channel, default_Channel);
 
                      Self.Channels (Channel).Target       := Self.scene_Joints (scene_Joint).Node.fetch_Transform (Sid);
                      Self.Channels (Channel).target_Joint := scene_Joint;
@@ -632,7 +627,9 @@ is
                   end common_setup;
 
 
-                  procedure setup_Rotation (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Rotation (Channel     : in channel_Id;
+                                            scene_Joint : in scene_Joint_Id;
+                                            Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -644,7 +641,9 @@ is
                   end setup_Rotation;
 
 
-                  procedure setup_Location (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Location (Channel     : in channel_Id;
+                                            scene_Joint : in scene_Joint_Id;
+                                            Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -658,7 +657,9 @@ is
                   end setup_Location;
 
 
-                  procedure setup_Location_x (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Location_x (Channel     : in channel_Id;
+                                              scene_Joint : in scene_Joint_Id;
+                                              Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -670,10 +671,10 @@ is
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_X_Value : constant math.Real := Self.Channels (Channel).Values (i);
+                           the_X_Value : constant Real := Self.Channels (Channel).Values (i);
                         begin
-                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (math.Identity_3x3),
-                                                                      translation => (the_X_Value, 0.0, 0.0));
+                           Self.Channels (Channel).Transforms (i) := (Rotation    => to_Quaternion (Identity_3x3),
+                                                                      Translation => (the_X_Value, 0.0, 0.0));
                         end;
                      end loop;
 
@@ -685,7 +686,9 @@ is
                   end setup_Location_x;
 
 
-                  procedure setup_Location_y (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Location_y (Channel     : in channel_Id;
+                                              scene_Joint : in scene_Joint_Id;
+                                              Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -697,9 +700,9 @@ is
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Y_Value : constant math.Real := Self.Channels (Channel).Values (i);
+                           the_Y_Value : constant Real := Self.Channels (Channel).Values (i);
                         begin
-                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (math.Identity_3x3),
+                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (Identity_3x3),
                                                                       translation => (0.0, the_Y_Value, 0.0));
                         end;
                      end loop;
@@ -712,7 +715,9 @@ is
                   end setup_Location_y;
 
 
-                  procedure setup_Location_z (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Location_z (Channel     : in channel_Id;
+                                              scene_Joint : in scene_Joint_Id;
+                                              Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -724,9 +729,9 @@ is
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Z_Value : constant math.Real := Self.Channels (Channel).Values (i);
+                           the_Z_Value : constant Real := Self.Channels (Channel).Values (i);
                         begin
-                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (math.Identity_3x3),
+                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (Identity_3x3),
                                                                       translation => (0.0, 0.0, the_Z_Value));
                         end;
                      end loop;
@@ -739,7 +744,9 @@ is
                   end setup_Location_z;
 
 
-                  procedure setup_full_Transform (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_full_Transform (Channel     : in channel_Id;
+                                                  scene_Joint : in scene_Joint_Id;
+                                                  Sid         : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -751,13 +758,12 @@ is
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Matrix : constant math.Matrix_4x4 := math.Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all,
-                                                                                    which => i));
+                           the_Matrix : constant math.Matrix_4x4 := Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all,
+                                                                               which => i));
                         begin
-                           Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (get_Rotation    (the_Matrix)),
-                                                                      translation =>                get_Translation (the_Matrix));
+                           Self.Channels (Channel).Transforms (i) := (Rotation    => to_Quaternion (get_Rotation    (the_Matrix)),
+                                                                      Translation =>                get_Translation (the_Matrix));
                         end;
-
                      end loop;
 
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
@@ -768,121 +774,126 @@ is
                   end setup_full_Transform;
 
 
+                  function Index (Source  : in unbounded_String;
+                                  Pattern : in String;
+                                  Going   : in Direction              := Forward;
+                                  Mapping : in Maps.character_Mapping := ada.Strings.Maps.Identity) return Natural
+                    renames ada.Strings.unbounded.Index;
+
                begin
-                  if    Index (the_Animation.Channel.Target, "hips/transform") /= 0 then
-                     setup_full_Transform (+"hips", +"hips", "transform");
+                  if    Index (the_Animation.Channel.Target, "hips/transform")    /= 0 then
+                     setup_full_Transform (+"hips",         +"hips",         "transform");
 
                   elsif Index (the_Animation.Channel.Target, "thigh_L/transform") /= 0 then
-                     setup_full_Transform (+"thigh_L", +"thigh_L", "transform");
+                     setup_full_Transform (+"thigh_L",      +"thigh_L",      "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_L/transform") /= 0 then
-                     setup_full_Transform (+"shin_L", +"shin_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "shin_L/transform")  /= 0 then
+                     setup_full_Transform (+"shin_L",       +"shin_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_L/transform") /= 0 then
-                     setup_full_Transform (+"foot_L", +"foot_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "foot_L/transform")  /= 0 then
+                     setup_full_Transform (+"foot_L",       +"foot_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_L/transform") /= 0 then
-                     setup_full_Transform (+"toe_L", +"toe_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "toe_L/transform")   /= 0 then
+                     setup_full_Transform (+"toe_L",        +"toe_L",        "transform");
 
                   elsif Index (the_Animation.Channel.Target, "thigh_R/transform") /= 0 then
-                     setup_full_Transform (+"thigh_R", +"thigh_R", "transform");
+                     setup_full_Transform (+"thigh_R",      +"thigh_R",      "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_R/transform") /= 0 then
-                     setup_full_Transform (+"shin_R", +"shin_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "shin_R/transform")  /= 0 then
+                     setup_full_Transform (+"shin_R",       +"shin_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_R/transform") /= 0 then
-                     setup_full_Transform (+"foot_R", +"foot_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "foot_R/transform")  /= 0 then
+                     setup_full_Transform (+"foot_R",       +"foot_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_R/transform") /= 0 then
-                     setup_full_Transform (+"toe_R", +"toe_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "toe_R/transform")   /= 0 then
+                     setup_full_Transform (+"toe_R",        +"toe_R",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "spine/transform") /= 0 then
-                     setup_full_Transform (+"spine", +"spine", "transform");
+                  elsif Index (the_Animation.Channel.Target, "spine/transform")   /= 0 then
+                     setup_full_Transform (+"spine",        +"spine",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "chest/transform") /= 0 then
-                     setup_full_Transform (+"chest", +"chest", "transform");
+                  elsif Index (the_Animation.Channel.Target, "chest/transform")   /= 0 then
+                     setup_full_Transform (+"chest",        +"chest",        "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform") /= 0 then
-                     setup_full_Transform (+"clavicle_R", +"clavicle_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform")   /= 0 then
+                     setup_full_Transform (+"clavicle_R",   +"clavicle_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform") /= 0 then
-                     setup_full_Transform (+"upper_arm_R", +"upper_arm_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform")  /= 0 then
+                     setup_full_Transform (+"upper_arm_R",  +"upper_arm_R",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform") /= 0 then
-                     setup_full_Transform (+"forearm_R", +"forearm_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform")    /= 0 then
+                     setup_full_Transform (+"forearm_R",    +"forearm_R",    "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_R/transform") /= 0 then
-                     setup_full_Transform (+"hand_R", +"hand_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "hand_R/transform")       /= 0 then
+                     setup_full_Transform (+"hand_R",       +"hand_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform") /= 0 then
-                     setup_full_Transform (+"thumb_02_R", +"thumb_02_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform")   /= 0 then
+                     setup_full_Transform (+"thumb_02_R",   +"thumb_02_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform") /= 0 then
-                     setup_full_Transform (+"thumb_03_R", +"thumb_03_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform")   /= 0 then
+                     setup_full_Transform (+"thumb_03_R",   +"thumb_03_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform") /= 0 then
-                     setup_full_Transform (+"f_ring_01_R", +"f_ring_01_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform")  /= 0 then
+                     setup_full_Transform (+"f_ring_01_R",  +"f_ring_01_R",  "transform");
 
                   elsif Index (the_Animation.Channel.Target, "f_index_01_R/transform") /= 0 then
                      setup_full_Transform (+"f_index_01_R", +"f_index_01_R", "transform");
 
 
+                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform")   /= 0 then
+                     setup_full_Transform (+"clavicle_L",   +"clavicle_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform") /= 0 then
-                     setup_full_Transform (+"clavicle_L", +"clavicle_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform")  /= 0 then
+                     setup_full_Transform (+"upper_arm_L",  +"upper_arm_L",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform") /= 0 then
-                     setup_full_Transform (+"upper_arm_L", +"upper_arm_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform")    /= 0 then
+                     setup_full_Transform (+"forearm_L",    +"forearm_L",    "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform") /= 0 then
-                     setup_full_Transform (+"forearm_L", +"forearm_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "hand_L/transform")       /= 0 then
+                     setup_full_Transform (+"hand_L",       +"hand_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_L/transform") /= 0 then
-                     setup_full_Transform (+"hand_L", +"hand_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform")   /= 0 then
+                     setup_full_Transform (+"thumb_02_L",   +"thumb_02_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform") /= 0 then
-                     setup_full_Transform (+"thumb_02_L", +"thumb_02_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform")   /= 0 then
+                     setup_full_Transform (+"thumb_03_L",   +"thumb_03_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform") /= 0 then
-                     setup_full_Transform (+"thumb_03_L", +"thumb_03_L", "transform");
-
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform") /= 0 then
-                     setup_full_Transform (+"f_ring_01_L", +"f_ring_01_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform")  /= 0 then
+                     setup_full_Transform (+"f_ring_01_L",  +"f_ring_01_L",  "transform");
 
                   elsif Index (the_Animation.Channel.Target, "f_index_01_L/transform") /= 0 then
                      setup_full_Transform (+"f_index_01_L", +"f_index_01_L", "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "neck/transform") /= 0 then
-                     setup_full_Transform (+"neck", +"neck", "transform");
+                  elsif Index (the_Animation.Channel.Target, "neck/transform")         /= 0 then
+                     setup_full_Transform (+"neck",         +"neck",         "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "head/transform") /= 0 then
-                     setup_full_Transform (+"head", +"head", "transform");
+                  elsif Index (the_Animation.Channel.Target, "head/transform")         /= 0 then
+                     setup_full_Transform (+"head",         +"head",         "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "jaw/transform") /= 0 then
-                     setup_full_Transform (+"jaw", +"jaw", "transform");
+                  elsif Index (the_Animation.Channel.Target, "jaw/transform")          /= 0 then
+                     setup_full_Transform (+"jaw",          +"jaw",          "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_R/transform") /= 0 then
-                     setup_full_Transform (+"eye_R", +"eye_R", "transform");
+                  elsif Index (the_Animation.Channel.Target, "eye_R/transform")        /= 0 then
+                     setup_full_Transform (+"eye_R",        +"eye_R",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_L/transform") /= 0 then
-                     setup_full_Transform (+"eye_L", +"eye_L", "transform");
+                  elsif Index (the_Animation.Channel.Target, "eye_L/transform")        /= 0 then
+                     setup_full_Transform (+"eye_L",        +"eye_L",        "transform");
 
                   elsif Index (the_Animation.Channel.Target, "stride_bone/location.X") /= 0 then
 --                       setup_Location_x (+"stride_bone_x", +"stride_bone", "x");
-                     setup_Location_x (+"stride_bone_x", +"human", "x");
+                     setup_Location_x (+"stride_bone_x",    +"human",     "x");
 
                   elsif Index (the_Animation.Channel.Target, "stride_bone/location.Y") /= 0 then
 --                       setup_Location_y (+"stride_bone_y", +"stride_bone", "y");
-                     setup_Location_y (+"stride_bone_y", +"human", "y");
+                     setup_Location_y (+"stride_bone_y",    +"human",     "y");
 
                   elsif Index (the_Animation.Channel.Target, "stride_bone/location.Z") /= 0 then
 --                       setup_Location_z (+"stride_bone_z", +"stride_bone", "z");
-                     setup_Location_z (+"stride_bone_z", +"human", "z");
+                     setup_Location_z (+"stride_bone_z",    +"human",     "z");
 
                   else
-                     raise Constraint_Error with +the_Animation.Channel.Target & " not handled";
+                     raise constraint_Error with +the_Animation.Channel.Target & " not handled";
                   end if;
                end;
             end loop;
@@ -897,14 +908,13 @@ is
    procedure enable_Graphics (Self : in out Item)
    is
    begin
-      Self.program_Parameters.Program_is      (opengl.Program.view (opengl.Geometry.lit_colored_textured_skinned.Program));
-      Self.skin_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
+      Self            .program_Parameters.Program_is (opengl.Program.view (opengl.Geometry.lit_colored_textured_skinned.Program));
+      Self.skin_Sprite.program_Parameters_are (Self.program_Parameters'unchecked_Access);
    end enable_Graphics;
 
 
 
-
-   function  Joints (Self : in     Item) return gel_joint_id_Map_of_gel_Joint
+   function Joints (Self : in Item) return gel_joint_id_Map_of_gel_Joint
    is
    begin
       return Self.Joints;
@@ -912,7 +922,7 @@ is
 
 
 
-   function  joint_inv_bind_Matrices (Self : in     Item'Class)     return inverse_bind_matrix_Vector
+   function joint_inv_bind_Matrices (Self : in Item'Class) return inverse_bind_matrix_Vector
    is
    begin
       return Self.joint_inv_bind_Matrices;
@@ -928,19 +938,18 @@ is
 
 
 
-   function  joint_site_Offets (Self : in Item'Class) return joint_Id_Map_of_bone_site_offset
+   function joint_site_Offets (Self : in Item'Class) return joint_Id_Map_of_bone_site_offset
    is
    begin
       return Self.phys_joint_site_Offets;
    end joint_site_Offets;
 
 
-
-
+   --------------
    --- Attributes
    --
 
-   procedure Site_is (Self :in out Item;   Now : in math.Vector_3)
+   procedure Site_is (Self :in out Item;   Now : in Vector_3)
    is
    begin
       Self.base_Sprite.move (to_Site => Now);
@@ -949,7 +958,7 @@ is
 
 
 
-   procedure Spin_is (Self :in out Item;   Now : in math.Matrix_3x3)
+   procedure Spin_is (Self :in out Item;   Now : in Matrix_3x3)
    is
    begin
       Self.base_Sprite.rotate (to_Spin => Now);
@@ -957,15 +966,15 @@ is
 
 
 
-   function Sprite (Self : in Item'Class;   for_Bone : in bone_Id) return gel.Sprite.view
+   function Sprite (Self : in Item'Class;   Bone : in bone_Id) return gel.Sprite.view
    is
    begin
-      return Self.bone_Sprites (for_Bone);
+      return Self.bone_Sprites (Bone);
    end Sprite;
 
 
 
-   function  base_Sprite (Self : in Item'Class) return gel.Sprite.view
+   function base_Sprite (Self : in Item'Class) return gel.Sprite.view
    is
    begin
       return Self.bone_Sprites.Element (Self.root_Joint.Name);
@@ -973,7 +982,7 @@ is
 
 
 
-   function  skin_Sprite (Self : in Item'Class) return gel.Sprite.view
+   function skin_Sprite (Self : in Item'Class) return gel.Sprite.view
    is
    begin
       return Self.skin_Sprite;
@@ -981,7 +990,7 @@ is
 
 
 
-   function  bone_Sprites                (Self : in     Item)                                 return bone_id_Map_of_sprite
+   function bone_Sprites (Self : in Item) return bone_id_Map_of_sprite
    is
    begin
       return Self.bone_Sprites;
@@ -989,15 +998,14 @@ is
 
 
 
-
    procedure set_GL_program_Parameters (Self : in out Item'Class;   for_Bone : in controller_joint_Id;
-                                                                    To       : in math.Matrix_4x4)
+                                                                    To       : in Matrix_4x4)
    is
       use gel.Conversions;
       bone_Slot : constant Positive := Self.program_Parameters.joint_Map_of_slot.Element (for_Bone);
    begin
       Self.program_Parameters.bone_Transforms.replace_Element (bone_Slot,
-                                                               to_GL ((To)));
+                                                               to_GL (To));
    end set_GL_program_Parameters;
 
 
@@ -1017,18 +1025,14 @@ is
    end motion_Mode_is;
 
 
-
-
-
+   --------------
    --- Operations
    --
 
    procedure evolve (Self : in out Item'Class;   world_Age : in Duration)
    is
-      use Math;
 
-
-      function get_root_Transform return math.Matrix_4x4
+      function get_root_Transform return Matrix_4x4
       is
       begin
          if Self.Mode = Physics
@@ -1037,60 +1041,59 @@ is
 
          else -- Is an animation.
             declare
-               the_Transform : math.Matrix_4x4;
+               the_Transform : Matrix_4x4;
             begin
                set_Rotation    (the_Transform,  x_Rotation_from (to_Radians (0.0)));
                set_Translation (the_Transform, -get_Translation (Inverse (Self.joint_pose_Transforms (Self.root_Joint.Name))));
 
-               return           the_Transform;
+               return the_Transform;
             end;
          end if;
       end get_root_Transform;
 
 
-      root_Transform     : constant math.Matrix_4x4 := get_root_Transform;
-      inv_root_Transform : constant math.Matrix_4x4 := Inverse (root_Transform);
+      root_Transform     : constant Matrix_4x4 := get_root_Transform;
+      inv_root_Transform : constant Matrix_4x4 := Inverse (root_Transform);
 
 
-      function joint_Transform_for (the_collada_Joint : in controller_joint_Id) return math.Matrix_4x4
+      function joint_Transform_for (the_collada_Joint : in controller_joint_Id) return Matrix_4x4
       is
       begin
-         if Self.Mode = Physics
-         then
-            declare
-               the_bone_Transform    : constant math.Matrix_4x4 := Self.Sprite (the_collada_Joint).Transform;
-               the_joint_site_Offset :          math.Vector_3   := Self.phys_joint_site_Offets (the_collada_Joint);
-               the_joint_Transform   :          math.Matrix_4x4;
-            begin
-               the_joint_site_Offset :=   the_joint_site_Offset
-                                        * get_Rotation (Self.joint_inv_bind_Matrix (the_collada_Joint))
-                                        * get_Rotation (the_bone_Transform);
+         case Self.Mode
+         is
+            when Physics =>
+               declare
+                  the_bone_Transform    : constant Matrix_4x4 := Self.Sprite (the_collada_Joint).Transform;
+                  the_joint_site_Offset :          Vector_3   := Self.phys_joint_site_Offets (the_collada_Joint);
+                  the_joint_Transform   :          Matrix_4x4;
+               begin
+                  the_joint_site_Offset :=   the_joint_site_Offset
+                                           * get_Rotation (Self.joint_inv_bind_Matrix (the_collada_Joint))
+                                           * get_Rotation (the_bone_Transform);
 
-               set_Translation (the_joint_Transform,  get_Translation (the_bone_Transform) + the_joint_site_Offset);
-               set_Rotation    (the_joint_Transform,  get_Rotation    (the_bone_Transform));
+                  set_Translation (the_joint_Transform,  get_Translation (the_bone_Transform) + the_joint_site_Offset);
+                  set_Rotation    (the_joint_Transform,  get_Rotation    (the_bone_Transform));
 
+                  Self.joint_Sprites (the_collada_Joint).all.Site_is (get_Translation (the_joint_Transform));
 
-               Self.joint_Sprites (the_collada_Joint).all.Site_is (get_Translation (the_joint_Transform));
+                  return the_joint_Transform;
+               end;
 
-               return the_joint_Transform;
-            end;
+            when Animation =>
+               Self.joint_Sprites (the_collada_Joint).all.Site_is (         get_Translation (Self.scene_Joints (the_collada_Joint).Transform));
+               Self.joint_Sprites (the_collada_Joint).all.Spin_is (Inverse (get_Rotation    (Self.scene_Joints (the_collada_Joint).Transform)));
 
-         else   -- Must be animation mode.
-            Self.joint_Sprites (the_collada_Joint).all.Site_is (         get_Translation (Self.scene_Joints (the_collada_Joint).Transform));
-            Self.joint_Sprites (the_collada_Joint).all.Spin_is (Inverse (get_Rotation    (Self.scene_Joints (the_collada_Joint).Transform)));
-
-            return Self.scene_Joints (the_collada_Joint).Transform;
-         end if;
+               return Self.scene_Joints (the_collada_Joint).Transform;
+            end case;
       end joint_Transform_for;
-
 
 
       procedure set_Transform_for (the_Bone : in controller_joint_Id)
       is
          the_Slot : constant Positive := Self.program_Parameters.joint_Map_of_slot (the_Bone);
       begin
-         Self.set_GL_program_Parameters (for_bone => the_Bone,
-                                         to       =>   Self.bind_shape_Matrix
+         Self.set_GL_program_Parameters (for_Bone => the_Bone,
+                                         To       =>   Self.bind_shape_Matrix
                                                      * Self.joint_inv_bind_Matrices.Element (the_Slot)
                                                      * joint_Transform_for (the_Bone)
                                                      * inv_root_Transform);
@@ -1174,7 +1177,7 @@ is
 
    function joint_inv_bind_Matrix (Self : in Item;   for_Bone : in bone_Id) return math.Matrix_4x4
    is
-      use Math, ada.Strings.unbounded;
+      use ada.Strings.unbounded;
    begin
       if for_Bone = Self.root_Joint.Name
       then
@@ -1186,17 +1189,15 @@ is
 
 
 
-   function joint_bind_Matrix (Self : in Item;   for_Bone : in bone_Id) return math.Matrix_4x4
+   function joint_bind_Matrix (Self : in Item;   for_Bone : in bone_Id) return Matrix_4x4
    is
-      use Math;
    begin
       return Inverse (Self.joint_inv_bind_Matrix (for_Bone));
    end joint_bind_Matrix;
 
 
-
-
-   -- Animation
+   -------------
+   --- Animation
    --
 
    procedure animate (Self : in out Item;   world_Age : in Duration)
@@ -1209,12 +1210,10 @@ is
                                            for_Joint   : in scene_joint_Id;
                                            for_Axis    : in axis_Kind)
       is
-         use Math;
-
          the_Channel : animation_Channel renames Self.Channels (for_Channel);
          Cursor      : math.Index        renames the_Channel.Cursor;
 
-         function Reduced (Angle : in math.Real) return math.Real
+         function Reduced (Angle : in Real) return Real     -- TODO: Use Degrees type.
          is
          begin
             if    Angle >  180.0 then   return -360.0 + Angle;
@@ -1233,17 +1232,17 @@ is
 
                if Cursor = 1
                then
-                  if the_Channel.Times  (Cursor) = 0.0
+                  if the_Channel.Times (Cursor) = 0.0
                   then
-                     the_Channel.interp_Delta := Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle);
+                     the_Channel.interp_Delta :=   Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle);
                   else
                      the_Channel.interp_Delta :=   Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle)
-                                                 / (the_Channel.Times  (Cursor));
+                                                 / (the_Channel.Times (Cursor));
                   end if;
 
                else
-                  the_Channel.interp_Delta :=   Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle)
-                                              / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
+                  the_Channel.interp_Delta :=      Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle)
+                                                 / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
                end if;
 
                the_Channel.interp_Delta := the_Channel.interp_Delta / 60.0;  -- 60.0 is frames/sec.
@@ -1255,8 +1254,9 @@ is
             the_Channel.current_Angle := Reduced (  the_Channel.current_Angle
                                                   + the_Channel.interp_Delta);
 
-            Self.set_rotation_Angle (for_Joint,  for_Axis,
-                                     to => to_Radians (math.Degrees (the_Channel.current_Angle)));
+            Self.set_rotation_Angle (for_Joint,
+                                     for_Axis,
+                                     To => to_Radians (Degrees (the_Channel.current_Angle)));
          end if;
       end update_rotation_Animation;
 
@@ -1266,12 +1266,12 @@ is
                                            for_Joint   : in scene_joint_Id)
       is
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
-         Cursor      :          math.Index        renames the_Channel.Cursor;
+         Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
 
-         function site_X return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 1);   end site_X;
-         function site_Y return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 2);   end site_Y;
-         function site_Z return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 3);   end site_Z;
+         function site_X return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 1);   end site_X;
+         function site_Y return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 2);   end site_Y;
+         function site_Z return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 3);   end site_Z;
 
       begin
          if Cursor < the_Channel.Times'Last
@@ -1283,32 +1283,32 @@ is
 
                if Cursor = 1
                then
-                  if the_Channel.Times  (Cursor) = 0.0
+                  if the_Channel.Times (Cursor) = 0.0
                   then
                      the_Channel.site_interp_Delta (1) := site_X - the_Channel.current_Site (1);
                      the_Channel.site_interp_Delta (2) := site_Y - the_Channel.current_Site (2);
                      the_Channel.site_interp_Delta (3) := site_Z - the_Channel.current_Site (3);
                   else
                      the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
-                                                          / (the_Channel.Times  (Cursor));
+                                                          / (the_Channel.Times (Cursor));
                      the_Channel.site_interp_Delta (2) :=   (site_Y - the_Channel.current_Site (2))
-                                                          / (the_Channel.Times  (Cursor));
+                                                          / (the_Channel.Times (Cursor));
                      the_Channel.site_interp_Delta (3) :=   (site_Z - the_Channel.current_Site (3))
-                                                          / (the_Channel.Times  (Cursor));
+                                                          / (the_Channel.Times (Cursor));
                   end if;
 
                else
                   the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
-                                                       / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
+                                                       / (the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1));
                   the_Channel.site_interp_Delta (2) :=   (site_Y - the_Channel.current_Site (2))
-                                                       / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
+                                                       / (the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1));
                   the_Channel.site_interp_Delta (3) :=   (site_Z - the_Channel.current_Site (3))
-                                                       / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
+                                                       / (the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1));
                end if;
 
-               the_Channel.site_interp_Delta (1) := the_Channel.site_interp_Delta (1) / 60.0;  -- 60.0 is frames/sec
-               the_Channel.site_interp_Delta (2) := the_Channel.site_interp_Delta (2) / 60.0;  -- 60.0 is frames/sec
-               the_Channel.site_interp_Delta (3) := the_Channel.site_interp_Delta (3) / 60.0;  -- 60.0 is frames/sec
+               the_Channel.site_interp_Delta (1) := the_Channel.site_interp_Delta (1) / 60.0;  -- 60.0 is frames/sec.
+               the_Channel.site_interp_Delta (2) := the_Channel.site_interp_Delta (2) / 60.0;  --
+               the_Channel.site_interp_Delta (3) := the_Channel.site_interp_Delta (3) / 60.0;  --
             end if;
 
             Self.set_Location (the_Channel.target_Joint,  to => the_Channel.current_Site);
@@ -1322,15 +1322,14 @@ is
 
 
 
-
       procedure update_location_X_Animation (for_Channel : in channel_Id;
                                              for_Joint   : in scene_joint_Id)
       is
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
-         Cursor      :          math.Index        renames the_Channel.Cursor;
+         Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
 
-         function site_X return math.Real is begin   return the_Channel.Values (Cursor + 0);   end site_X;
+         function site_X return Real is begin   return the_Channel.Values (Cursor);   end site_X;
 
       begin
          if Cursor < the_Channel.Times'Last
@@ -1342,23 +1341,23 @@ is
 
                if Cursor = 1
                then
-                  if the_Channel.Times  (Cursor) = 0.0
+                  if the_Channel.Times (Cursor) = 0.0
                   then
                      the_Channel.site_interp_Delta (1) := site_X - the_Channel.current_Site (1);
                   else
                      the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
-                                                          / (the_Channel.Times  (Cursor));
+                                                          / (the_Channel.Times (Cursor));
                   end if;
 
                else
                   the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
-                                                       / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
+                                                       / (the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1));
                end if;
 
-               the_Channel.site_interp_Delta (1) := the_Channel.site_interp_Delta (1) / 60.0;  -- 60.0 is frames/sec
+               the_Channel.site_interp_Delta (1) := the_Channel.site_interp_Delta (1) / 60.0;  -- 60.0 is frames/sec.
             end if;
 
-            Self.set_Location_x (the_Channel.target_Joint,  to => the_Channel.current_Site (1));
+            Self.set_Location_x (the_Channel.target_Joint, To => the_Channel.current_Site (1));
 
             the_Channel.current_Site (1) := the_Channel.current_Site (1) + the_Channel.site_interp_Delta (1);
          end if;
@@ -1370,10 +1369,10 @@ is
                                              for_Joint   : in scene_joint_Id)
       is
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
-         Cursor      :          math.Index        renames the_Channel.Cursor;
+         Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
 
-         function site_Y return math.Real is begin   return the_Channel.Values (Cursor + 0);   end site_Y;
+         function site_Y return math.Real is begin   return the_Channel.Values (Cursor);   end site_Y;
 
       begin
          if Cursor < the_Channel.Times'Last
@@ -1400,7 +1399,7 @@ is
                the_Channel.site_interp_Delta (2) := the_Channel.site_interp_Delta (2) / 60.0;  -- 60.0 is frames/sec
             end if;
 
-            Self.set_Location_y (the_Channel.target_Joint,  to => the_Channel.current_Site (2));
+            Self.set_Location_y (the_Channel.target_Joint, To => the_Channel.current_Site (2));
 
             the_Channel.current_Site (2) := the_Channel.current_Site (2) + the_Channel.site_interp_Delta (2);
          end if;
@@ -1415,7 +1414,7 @@ is
          Cursor      :          math.Index        renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
 
-         function site_Z return math.Real is begin   return the_Channel.Values (Cursor + 0);   end site_Z;
+         function site_Z return math.Real is begin   return the_Channel.Values (Cursor);   end site_Z;
 
       begin
          if Cursor < the_Channel.Times'Last
@@ -1443,7 +1442,7 @@ is
                the_Channel.site_interp_Delta (3) := the_Channel.site_interp_Delta (3) / 60.0;  -- 60.0 is frames/sec
             end if;
 
-            Self.set_Location_z (the_Channel.target_Joint,  to => the_Channel.current_Site (3));
+            Self.set_Location_z (the_Channel.target_Joint, To => the_Channel.current_Site (3));
 
             the_Channel.current_Site (3) := the_Channel.current_Site (3) + the_Channel.site_interp_Delta (3);
          end if;
@@ -1455,9 +1454,9 @@ is
                                                  for_Joint   : in scene_joint_Id)
       is
          the_Channel    : animation_Channel renames Self.Channels (for_Channel);
-         Cursor         : math.Index        renames the_Channel.Cursor;
+         Cursor         : Index             renames the_Channel.Cursor;
          Cursor_updated : Boolean           :=      False;
-         new_Transform  : math.Matrix_4x4   :=      math.Identity_4x4;
+         new_Transform  : Matrix_4x4        :=      Identity_4x4;
 
       begin
          if Cursor = the_Channel.Times'Last
@@ -1469,7 +1468,6 @@ is
          -- Rotation
          --
          declare
-            use Math;
             Initial : Transform;
          begin
             if Cursor < the_Channel.Times'Last
@@ -1518,7 +1516,6 @@ is
                                                               the_Channel.slerp_Time)));
                the_Channel.slerp_Time :=   the_Channel.slerp_Time
                                          + the_Channel.Transform_interp_Delta;
-
             end if;
          end;
 
@@ -1526,9 +1523,8 @@ is
          -- Location
          --
          declare
-            use type math.Vector_3;
-
-            desired_Site : constant math.Vector_3 := the_Channel.Transforms (Cursor + 0).Translation;
+            use type Vector_3;
+            desired_Site : constant Vector_3 := the_Channel.Transforms (Cursor).Translation;
 
          begin
             if Cursor < the_Channel.Times'Last
@@ -1555,9 +1551,7 @@ is
 
                the_Channel.current_Site := the_Channel.current_Site + the_Channel.site_interp_Delta;
 
-               set_Translation (new_Transform,   to => the_Channel.current_Site);
-            else
-               null;
+               set_Translation (new_Transform, To => the_Channel.current_Site);
             end if;
          end;
 
@@ -1565,12 +1559,13 @@ is
          -- Scale
          --
 
-         -- (tbd)
+         -- (TODO)
 
 
          -- Store the new transform.
          --
-         Self.set_Transform (the_Channel.target_Joint, to => math.Transpose (new_Transform));    -- Convert to collada column vectors.
+         Self.set_Transform (the_Channel.target_Joint,
+                             To => Transpose (new_Transform));    -- Transpose to convert to collada column vectors.
       end update_full_transform_Animation;
 
 
@@ -1584,13 +1579,14 @@ is
       Elapsed := Now - Self.start_Time;
 
       declare
-         use channel_id_Maps_of_animation_Channel,  ada.Strings.Unbounded;
+         use channel_id_Maps_of_animation_Channel,
+             ada.Strings.Unbounded;
 
          Cursor : channel_id_Maps_of_animation_Channel.Cursor := Self.Channels.First;
       begin
          while has_Element (Cursor)
          loop
-            if Key (Cursor) = (+"stride_bone_x")
+            if    Key (Cursor) = (+"stride_bone_x")
             then
                update_location_X_Animation (Key (Cursor),
                                             Key (Cursor));
@@ -1615,7 +1611,6 @@ is
 
       Self.update_all_global_Transforms;
    end animate;
-
 
 
 
