@@ -20,6 +20,7 @@ is
    for Source_Dirs use (".",
                         "../source",
                         "../source/containers",
+                        "../source/environ",
                         "../source/events",
                         "../source/events",
                         "../source/events/concrete",
@@ -27,7 +28,8 @@ is
                         "../source/events/mixin",
                         "../source/events/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/utility",
-                        "../source/strings");
+                        "../source/strings",
+                        "../source/text");
 
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
