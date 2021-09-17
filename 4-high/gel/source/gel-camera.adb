@@ -2,24 +2,22 @@ with
      openGL.Visual,
      ada.unchecked_Deallocation;
 
-
 package body gel.Camera
 is
-   use math.Algebra.linear,
-       math.Algebra.linear.d3;
-
-
+   use linear_Algebra_3D;
 
    --------
    -- Forge
    --
 
-   procedure define  (Self : in out Item)
+   procedure define (Self : in out Item)
    is
    begin
-      Self.view_Transform := Look_at (eye    => Self.Clipper.eye_position,
-                                      center => (Self.Clipper.eye_position (1), Self.Clipper.eye_position (2), -100.0),
-                                      up     => (0.0, 1.0, 0.0));
+      Self.view_Transform := Look_at (Eye    => Self.Clipper.eye_Position,
+                                      Center => (Self.Clipper.eye_Position (1),
+                                                 Self.Clipper.eye_Position (2),
+                                                 -100.0),
+                                      Up     => (0.0, 1.0, 0.0));
 
       Self.world_Rotation := y_Rotation_from (0.0);
       Self.GL.define;
@@ -44,38 +42,35 @@ is
    end free;
 
 
-
-
    --------------
    --  Attributes
    --
 
-   function to_world_Site (Self : in Item'Class;   Site : in math.Vector_3) return math.Vector_3
+   function to_world_Site (Self : in Item'Class;   Site : in Vector_3) return Vector_3
    is
-      the_perspective_Transform : constant math.Matrix_4x4 := to_Perspective (fovy   => 60.0,
-                                                                              aspect => Self.Aspect, -- 1200.0 / 1200.0,
-                                                                              zNear  => Self.near_plane_Distance,
-                                                                              zFar   => Self.far_plane_Distance);
+      the_perspective_Transform : constant Matrix_4x4 := to_Perspective (FoVy   => 60.0,
+                                                                         Aspect => Self.Aspect,
+                                                                         zNear  => Self.near_plane_Distance,
+                                                                         zFar   => Self. far_plane_Distance);
 
-      Viewport                  : constant Rectangle       := Self.Clipper.main_Clipping;
-      Position_window_space     : constant Vector_3        := (Site (1),
-                                                               Real (Viewport.Max (2)) - Site (2),
-                                                               Site (3));
-      Site_world_space          : constant Vector_3        := unProject (Position_window_space,
-                                                                         Model      => Self.GL.view_Transform,
-                                                                         Projection => the_perspective_Transform,
-                                                                         Viewport   => Viewport);
+      Viewport              : constant Rectangle := Self.Clipper.main_Clipping;
+      Position_window_space : constant Vector_3  := (Site (1),
+                                                     Real (Viewport.Max (2)) - Site (2),
+                                                     Site (3));
+      Site_world_space      : constant Vector_3  := unProject (Position_window_space,
+                                                               Model      => Self.GL.view_Transform,
+                                                               Projection => the_perspective_Transform,
+                                                               Viewport   => Viewport);
    begin
       return Site_world_space;
    end to_world_Site;
 
 
 
-
-   procedure Site_is (Self : in out Item'Class;   Now : in math.Vector_3)
+   procedure Site_is (Self : in out Item'Class;   Now : in Vector_3)
    is
    begin
-      Self.Clipper.eye_position := Now;
+      Self.Clipper.eye_Position := Now;
       Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
 
       Self.GL.Site_is (Now);
@@ -83,41 +78,39 @@ is
 
 
 
-   function  Site (Self : in     Item'Class)    return  math.Vector_3
+   function Site (Self : in Item'Class) return Vector_3
    is
    begin
-      return Self.Clipper.eye_position;
+      return Self.Clipper.eye_Position;
    end Site;
 
 
 
-   procedure Position_is (Self : in out Item'Class;   Site : in math.Vector_3;
-                                                      Spin : in math.Matrix_3x3)
+   procedure Position_is (Self : in out Item'Class;   Site : in Vector_3;
+                                                      Spin : in Matrix_3x3)
    is
    begin
       Self.Clipper.eye_position := Site;
       Self.world_Rotation       := Spin;
-      Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
-
+      Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation,
+                                                        -Self.Site));
       Self.GL.Position_is (Site, Spin);
    end Position_is;
 
 
 
-
-
-   procedure world_Rotation_is (Self : in out Item'Class;   Now : in math.Matrix_3x3)
+   procedure world_Rotation_is (Self : in out Item'Class;   Now : in Matrix_3x3)
    is
    begin
       Self.world_Rotation := Now;
-      Self.view_Transform := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
-
+      Self.view_Transform := to_transform_Matrix ((Self.world_Rotation,
+                                                  -Self.Site));
       Self.GL.Spin_is (Now);
    end world_Rotation_is;
 
 
 
-   function  world_Rotation (Self : in     Item'Class)     return math.Matrix_3x3
+   function world_Rotation (Self : in Item'Class) return Matrix_3x3
    is
    begin
       return Self.world_Rotation;
@@ -125,7 +118,7 @@ is
 
 
 
-   procedure view_Transform_is (Self : in out Item'Class;   Now : in math.Matrix_4x4)
+   procedure view_Transform_is (Self : in out Item'Class;   Now : in Matrix_4x4)
    is
    begin
       Self.view_Transform := Now;
@@ -133,40 +126,41 @@ is
 
 
 
-   procedure rotation_Speed_is (Self : in out Item'Class;   Now : math.Vector_3)
+   procedure rotation_Speed_is (Self : in out Item'Class;   Now : Vector_3)
    is
    begin
-      null;
+      null;     -- TODO
    end rotation_Speed_is;
 
 
-   function rotation_Speed (Self : in Item'Class) return math.Vector_3
+
+   function rotation_Speed (Self : in Item'Class) return Vector_3
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
-      return (0.0, 0.0, 0.0);
+      return (0.0, 0.0, 0.0);     -- TODO
    end rotation_Speed;
 
 
 
-
-   function  Speed    (Self : in     Item'Class)     return math.Vector_3
+   function Speed (Self : in Item'Class) return Vector_3
    is
       pragma Unreferenced (Self);
    begin
-      return (0.0, 0.0, 0.0);
+      return (0.0, 0.0, 0.0);     -- TODO
    end Speed;
 
 
-   procedure Speed_is (Self : in out Item'Class;   Now : in math.Vector_3)
+
+   procedure Speed_is (Self : in out Item'Class;   Now : in Vector_3)
    is
    begin
-      null;
+      null;     -- TODO
    end Speed_is;
 
 
 
-   function FOVy   (Self : in Item'Class) return math.Real
+   function FoVy (Self : in Item'Class) return Real
    is
    begin
       return Self.FOVy;
@@ -174,21 +168,23 @@ is
 
 
 
-   function Aspect (Self : in Item'Class) return math.Real
+   function Aspect (Self : in Item'Class) return Real
    is
    begin
       return Self.Aspect;
    end Aspect;
 
 
-   procedure Aspect_is (Self : in out Item'Class;   Now : in math.Real)
+
+   procedure Aspect_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
       Self.Aspect := Now;
    end Aspect_is;
 
 
-   function near_plane_Distance (Self : in Item'Class) return math.Real
+
+   function near_plane_Distance (Self : in Item'Class) return Real
    is
    begin
       return Self.near_plane_Distance;
@@ -196,21 +192,23 @@ is
 
 
 
-   function far_plane_Distance (Self : in Item'Class) return math.Real
+   function far_plane_Distance (Self : in Item'Class) return Real
    is
    begin
       return Self.far_plane_Distance;
    end far_plane_Distance;
 
 
-   procedure far_plane_Distance_is  (Self : in out Item'Class;   Now : in math.Real)
+
+   procedure far_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
       Self.far_plane_Distance := Now;
    end far_plane_Distance_is;
 
 
-   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
+
+   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
       Self.near_plane_Distance := Now;
@@ -219,10 +217,7 @@ is
 
 
 
-
-
-
-   function ModelView_Matrix (Self : in Item'Class) return math.Matrix_4x4
+   function ModelView_Matrix (Self : in Item'Class) return Matrix_4x4
    is
       R : Matrix_3x3 renames Self.world_Rotation;
       S : Vector_3   renames Self.Site;
@@ -234,27 +229,25 @@ is
    end ModelView_Matrix;
 
 
-
-
    --------------
    --  Operations
    --
 
-   procedure set_viewport_Size (Self : in out Item'Class;   width, height : in Integer)
+   procedure set_viewport_Size (Self : in out Item'Class;   Width, Height : in Integer)
    is
       use math.Functions;
 
       deg2rad                  : constant := pi / 180.0;
 
-      half_fov_max_rads        : Real;
-      Tan_of_half_fov_max_rads : Real;
+      half_FoV_max_Rads        : Real;
+      Tan_of_half_FoV_max_Rads : Real;
 
    begin
-      Self.Clipper.main_clipping.Min (1) := 0;
-      Self.Clipper.main_clipping.Min (2) := 0;
+      Self.Clipper.main_Clipping.Min (1) := 0;
+      Self.Clipper.main_Clipping.Min (2) := 0;
 
-      Self.Clipper.main_clipping.Max (1) := width - 1;
-      Self.Clipper.main_clipping.Max (2) := height - 1;
+      Self.Clipper.main_Clipping.Max (1) := width  - 1;
+      Self.Clipper.main_Clipping.Max (2) := height - 1;
 
       if   Width  = 0
         or Height = 0
@@ -262,26 +255,26 @@ is
       else   Self.Aspect := Real (Width) / Real (Height);
       end if;
 
-      half_fov_max_rads        := 0.5 * Self.FOVy * deg2rad;
-      Tan_of_half_fov_max_rads := Tan (half_fov_max_rads);
+      half_FoV_max_Rads        :=  0.5 * Self.FoVy * deg2rad;
+      Tan_of_half_FoV_max_Rads := Tan (half_FoV_max_Rads);
 
-      Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_fov_max_rads;
+      Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
       Self.near_plane_Width    := Self.near_plane_Height   * Self.Aspect;
 
-      Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_fov_max_rads;
+      Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_FoV_max_Rads;
       Self.far_plane_Width     := Self.far_plane_Height    * Self.Aspect;
 
 
       if Self.aspect > 1.0
-      then -- X side angle broader than Y side angle.
-         half_fov_max_rads := ArcTan (Self.aspect * Tan_of_half_fov_max_rads);
+      then -- X side angle is broader than Y side angle.
+         half_FoV_max_Rads := arcTan (Self.Aspect * Tan_of_half_FoV_max_Rads);
       end if;
 
-      Self.Clipper.max_dot_product := Sin (half_fov_max_rads);
-      Self.Projection_Matrix       := to_Perspective (fovy   => Self.FOVy,
-                                                      aspect => Self.Aspect,
+      Self.Clipper.max_dot_product := Sin (half_FoV_max_Rads);
+      Self.projection_Matrix       := to_Perspective (FoVy   => Self.FoVy,
+                                                      Aspect => Self.Aspect,
                                                       zNear  => Self.near_plane_Distance,
-                                                      zFar   => Self.far_plane_Distance);
+                                                      zFar   => Self. far_plane_Distance);
       Self.GL.Viewport_is (Width, Height);
    end set_viewport_Size;
 
@@ -296,13 +289,13 @@ is
 
 
 
-   procedure render (Self : in out Item;   the_World : in     gel.World.view;
-                                           To        : in     openGL.Surface.view)
+   procedure render (Self : in out Item;   the_World : in gel.World.view;
+                                           To        : in openGL.Surface.view)
    is
-      all_Sprites   : gel.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
+      all_Sprites : gel.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
 
-      the_Visuals   : openGL.Visual.views (1 .. all_Sprites'Length);
-      visuals_Count : Natural := 0;
+      the_Visuals : openGL.Visual.views (1 .. all_Sprites'Length);
+      Count       : Natural := 0;
 
    begin
       for i in all_Sprites'Range
@@ -310,17 +303,17 @@ is
          if         not all_Sprites (i).Sprite.is_Destroyed
            and then     all_Sprites (i).Sprite.is_Visible
          then
-            visuals_Count := visuals_Count + 1;
+            Count := Count + 1;
 
-            the_Visuals (visuals_Count)            := all_Sprites (i).Sprite.Visual;
-            the_Visuals (visuals_Count).Transform_is (all_Sprites (i).Transform);
-            the_Visuals (visuals_Count).Scale_is     ((1.0, 1.0, 1.0));
+            the_Visuals (Count)            := all_Sprites (i).Sprite.Visual;
+            the_Visuals (Count).Transform_is (all_Sprites (i).Transform);
+            the_Visuals (Count).Scale_is     ((1.0, 1.0, 1.0));
 
-            the_Visuals (visuals_Count).program_Parameters_are (all_Sprites (i).Sprite.program_Parameters);
+            the_Visuals (Count).program_Parameters_are (all_Sprites (i).Sprite.program_Parameters);
          end if;
       end loop;
 
-      Self.GL.render (the_Visuals (1 .. visuals_Count));
+      Self.GL.render (the_Visuals (1 .. Count));
    end render;
 
 
