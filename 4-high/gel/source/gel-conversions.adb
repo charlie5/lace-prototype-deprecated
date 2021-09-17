@@ -3,18 +3,15 @@ is
    use Math;
 
 
-
-   function to_GL (Self : in geometry_3d.bounding_Box)   return openGL.Bounds
+   function to_GL (Self : in geometry_3d.bounding_Box) return openGL.Bounds
    is
-      use openGL;
-      the_Bounds : opengl.Bounds := (ball => <>,
-                                     box  => (lower => to_GL (Self.Lower),
-                                              upper => to_GL (Self.Upper)));
+      the_Bounds : opengl.Bounds := (Ball => <>,
+                                     Box  => (Lower => to_GL (Self.Lower),
+                                              Upper => to_GL (Self.Upper)));
    begin
-      set_Ball_from_Box (the_Bounds);
+      openGL.set_Ball_from_Box (the_Bounds);
       return the_Bounds;
    end to_GL;
-
 
 
 
@@ -33,7 +30,6 @@ is
 
 
 
-
    function to_GL (Self : in Vector_3) return opengl.Vector_3
    is
    begin
@@ -41,7 +37,6 @@ is
               to_GL (Self (2)),
               to_GL (Self (3)));
    end to_GL;
-
 
 
 
@@ -63,7 +58,6 @@ is
               (to_gl (Self (3, 1)),  to_gl (Self (3, 2)),  to_gl (Self (3, 3)),  to_gl (Self (3, 4))),
               (to_gl (Self (4, 1)),  to_gl (Self (4, 2)),  to_gl (Self (4, 3)),  to_gl (Self (4, 4))));
    end to_GL;
-
 
 
 

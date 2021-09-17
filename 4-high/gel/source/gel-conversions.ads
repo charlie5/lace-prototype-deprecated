@@ -1,7 +1,6 @@
 with
      openGL;
 
-
 package gel.Conversions
 is
 
