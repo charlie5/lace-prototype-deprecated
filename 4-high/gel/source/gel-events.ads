@@ -1,9 +1,7 @@
 with
-     lace.Event,
-
      gel.remote.World,
-     gel.Mouse;
-
+     gel.Mouse,
+     lace.Event;
 
 package gel.Events
 --
@@ -49,7 +47,6 @@ is
       end record;
 
 
-
    type new_sprite_Event is new lace.Event.item with
       record
          Pair : gel.remote.World.sprite_model_Pair;
@@ -67,7 +64,6 @@ is
       record
          Pair : gel.remote.World.sprite_model_Pair;
       end record;
-
 
 
    type sprite_click_down_Event is new lace.Event.item with
