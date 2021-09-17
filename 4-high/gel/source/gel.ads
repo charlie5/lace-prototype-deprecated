@@ -6,7 +6,7 @@ with
      float_Math.Algebra.linear.d3;
 
 
-package MMI
+package GEL
 --
 --  Provides a set of 'Man/Machine Interface' classes.
 --
@@ -74,4 +74,4 @@ private
    null_sprite_Id         : constant sprite_Id         := 0;
 
    null_Asset             : constant asset_Name        := (others => ' ');
-end MMI;
+end GEL;

@@ -3,7 +3,7 @@ with
      float_Math.Algebra.linear.d3;
 
 
-package body mmi.any_Joint
+package body gel.any_Joint
 is
    use Math;
 
@@ -16,13 +16,13 @@ is
    --
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.Item'Class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
                                            Frame_A,  Frame_B  : in     Math.Matrix_4x4)
    is
       the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
       the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
 
-      type joint_Cast is access all MMI.Joint.Item;
+      type joint_Cast is access all GEL.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : std_Physics.Object.view;
@@ -47,7 +47,7 @@ is
 
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.Item'Class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
                                            pivot_Anchor       : in     math.Vector_3;
                                            pivot_Axis         : in     math.Matrix_3x3)
    is
@@ -116,10 +116,10 @@ is
 
 
    overriding
-   function Physics (Self : in Item) return MMI.Joint.Physics_view
+   function Physics (Self : in Item) return GEL.Joint.Physics_view
    is
    begin
-      return MMI.Joint.Physics_view (Self.Physics);
+      return GEL.Joint.Physics_view (Self.Physics);
    end Physics;
 
 
@@ -228,4 +228,4 @@ is
    end Velocity_is;
 
 
-end mmi.any_Joint;
+end gel.any_Joint;

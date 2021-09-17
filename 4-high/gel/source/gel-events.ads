@@ -1,13 +1,13 @@
 with
      lace.Event,
 
-     mmi.remote.World,
-     mmi.Mouse;
+     gel.remote.World,
+     gel.Mouse;
 
 
-package mmi.Events
+package gel.Events
 --
--- Provides events for MMI.
+-- Provides events for GEL.
 --
 is
 
@@ -52,36 +52,36 @@ is
 
    type new_sprite_Event is new lace.Event.item with
       record
-         Pair : mmi.remote.World.sprite_model_Pair;
+         Pair : gel.remote.World.sprite_model_Pair;
       end record;
 
 
    type new_sprite_added_to_world_Event is new lace.Event.item with
       record
-         Sprite_Id : mmi.sprite_Id;
-         World_Id  : mmi. world_Id;
+         Sprite_Id : gel.sprite_Id;
+         World_Id  : gel. world_Id;
       end record;
 
 
    type my_new_sprite_added_to_world_Event is new lace.Event.item with
       record
-         Pair : mmi.remote.World.sprite_model_Pair;
+         Pair : gel.remote.World.sprite_model_Pair;
       end record;
 
 
 
    type sprite_click_down_Event is new lace.Event.item with
       record
-         mouse_Button : mmi.Mouse.Button_Id;
+         mouse_Button : gel.Mouse.Button_Id;
          world_Site   : math.Vector_3;
       end record;
 
 
    type sprite_click_up_Event is new lace.Event.item with
       record
-         mouse_Button : mmi.Mouse.Button_Id;
+         mouse_Button : gel.Mouse.Button_Id;
          world_Site   : math.Vector_3;
       end record;
 
 
-end mmi.Events;
+end gel.Events;

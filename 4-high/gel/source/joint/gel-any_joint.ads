@@ -1,18 +1,18 @@
 with
-     mmi.Joint,
-     mmi.Sprite,
+     gel.Joint,
+     gel.Sprite,
 
      physics.Joint.DoF6,
      physics.Space;
 
 
-package MMI.any_Joint
+package GEL.any_Joint
 --
 --  Allows sprites to be connected via '6 degree of freedom' joint.
 --
 is
 
-   type Item is new MMI.Joint.Item with private;
+   type Item is new GEL.Joint.Item with private;
    type View is access all Item'Class;
    type Views is array (Math.Index range <>) of View;
 
@@ -33,12 +33,12 @@ is
    --
 
    procedure define  (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                            Sprite_A, Sprite_B : access mmi.Sprite.Item'Class;
+                                            Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
                                             pivot_Anchor       : in     math.Vector_3;
                                             pivot_Axis         : in     math.Matrix_3x3);
 
    procedure define  (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                            Sprite_A, Sprite_B : access mmi.Sprite.Item'Class;
+                                            Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
                                             Frame_A,  Frame_B  : in     Math.Matrix_4x4);
 
    overriding
@@ -52,7 +52,7 @@ is
    --
 
    overriding
-   function Physics            (Self : in     Item) return MMI.Joint.Physics_view;
+   function Physics            (Self : in     Item) return GEL.Joint.Physics_view;
 
    overriding
    function Frame_A            (Self : in     Item) return Math.Matrix_4x4;
@@ -110,10 +110,10 @@ private
    type physics_DoF6_Joint_view is access all Standard.Physics.Joint.DoF6.Item'Class;
 
 
-   type Item is new MMI.Joint.Item with
+   type Item is new GEL.Joint.Item with
       record
          Physics : access standard.physics.Joint.DoF6.item'Class;
    end record;
 
 
-end MMI.any_Joint;
+end GEL.any_Joint;

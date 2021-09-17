@@ -1,12 +1,12 @@
 with
-     mmi.World,
+     gel.World,
 
      openGL.Surface,
      openGL.Camera,
      openGL.Renderer.lean;
 
 
-package mmi.Camera
+package gel.Camera
 --
 -- Models a camera.
 --
@@ -103,7 +103,7 @@ is
    --  Operations
    --
 
-   procedure render         (Self : in out Item;   the_World : in     mmi.World.view;
+   procedure render         (Self : in out Item;   the_World : in     gel.World.view;
                                                    To        : in     openGL.Surface.view);
 
    function  cull_Completed (Self : in     Item) return Boolean;
@@ -142,4 +142,4 @@ private
       end record;
 
 
-end mmi.Camera;
+end gel.Camera;

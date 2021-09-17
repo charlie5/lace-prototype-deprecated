@@ -3,7 +3,7 @@ with
      lace.Subject;
 
 
-package mmi.Keyboard
+package gel.Keyboard
 --
 --  Provides an interface for a keyboard.
 --
@@ -166,4 +166,4 @@ private
 
    no_Modifiers : constant modifier_Set := (others => False);
 
-end mmi.Keyboard;
+end gel.Keyboard;

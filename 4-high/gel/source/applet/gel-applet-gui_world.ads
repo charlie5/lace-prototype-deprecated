@@ -1,23 +1,23 @@
 with
-     mmi.World,
-     mmi.Camera,
-     mmi.Window;
+     gel.World,
+     gel.Camera,
+     gel.Window;
 
-package mmi.Applet.gui_world
+package gel.Applet.gui_world
 --
---  Provides a 'ready' mmi system, configured with a single window and a single GUI world.
+--  Provides a 'ready' gel system, configured with a single window and a single GUI world.
 --
 is
 
-   type Item is new mmi.Applet.item with private;
+   type Item is new gel.Applet.item with private;
    type View is access all Item'Class;
 
 
    package Forge
    is
       function new_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view;
-                           space_Kind : in physics.space_Kind) return mmi.Applet.gui_world.view;
+                           use_Window : in gel.Window.view;
+                           space_Kind : in physics.space_Kind) return gel.Applet.gui_world.view;
    end Forge;
 
    procedure free (Self : in out View);
@@ -26,16 +26,16 @@ is
    gui_world_Id  : constant  world_Id := 1;
    gui_camera_Id : constant camera_Id := 1;
 
-   function gui_World  (Self : in Item) return mmi.World .view;
-   function gui_Camera (Self : in Item) return mmi.Camera.view;
+   function gui_World  (Self : in Item) return gel.World .view;
+   function gui_Camera (Self : in Item) return gel.Camera.view;
 
 
 
 private
 
-   type Item is new mmi.Applet.item with
+   type Item is new gel.Applet.item with
       record
          null;
       end record;
 
-end mmi.Applet.gui_world;
+end gel.Applet.gui_world;

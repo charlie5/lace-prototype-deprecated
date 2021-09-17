@@ -2,14 +2,14 @@ with
      lace.Subject.local;
 
 
-package mmi.Keyboard.local
+package gel.Keyboard.local
 --
 --  Provides a concrete keyboard.
 --
 is
 
    type Item is limited new lace.Subject.local.item
-                        and mmi.Keyboard.item with private;
+                        and gel.Keyboard.item with private;
 
    type View is access all Item'class;
 
@@ -49,9 +49,9 @@ is
 private
 
    type Item is limited new lace.Subject.local.item
-                        and mmi.Keyboard      .item with
+                        and gel.Keyboard      .item with
       record
          Modifiers : Modifier_Set := no_Modifiers;
       end record;
 
-end mmi.Keyboard.local;
+end gel.Keyboard.local;

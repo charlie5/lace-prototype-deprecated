@@ -1,18 +1,18 @@
 with
-     mmi.Joint,
-     mmi.Sprite,
+     gel.Joint,
+     gel.Sprite,
 
      physics.Joint.hinge,
      physics.Space;
 
 
-package mmi.hinge_Joint
+package gel.hinge_Joint
 --
 --  Allows sprites to be connected via a hinge joint.
 --
 is
 
-   type Item  is new mmi.Joint.item with private;
+   type Item  is new gel.Joint.item with private;
    type View  is access all Item'Class;
    type Views is array (math.Index range <>) of View;
 
@@ -32,7 +32,7 @@ is
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
                                            Sprite_A,
-                                           Sprite_B           : access mmi.Sprite.item'class;
+                                           Sprite_B           : access gel.Sprite.item'class;
                                            pivot_Axis         : in     math.Vector_3;
                                            Anchor_in_A        : in     math.Vector_3;
                                            Anchor_in_B        : in     math.Vector_3;
@@ -41,26 +41,26 @@ is
                                            collide_Conected   : in     Boolean);
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.item'class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.item'class;
                                            pivot_Axis         : in     math.Vector_3;
                                            pivot_Anchor       : in     math.Vector_3);
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.item'class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.item'class;
                                            pivot_Axis         : in     math.Vector_3);
    --
    --  Uses midpoint between sprite A and B for pivot_Anchor.
 
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.item'class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.item'class;
                                            Frame_A,  Frame_B  : in     math.Matrix_4x4;
                                            low_Limit          : in     math.Real := math.to_Radians (-180.0);
                                            high_Limit         : in     math.Real := math.to_Radians ( 180.0);
                                            collide_Conected   : in     Boolean);
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A           : access mmi.Sprite.item'class;
+                                           Sprite_A           : access gel.Sprite.item'class;
                                            Frame_A            : in     math.Matrix_4x4);
 
 
@@ -138,7 +138,7 @@ is
 
 private
 
-   type Item  is new mmi.Joint.item with
+   type Item  is new gel.Joint.item with
       record
          Physics : access standard.physics.Joint.hinge.item'Class;
 
@@ -153,4 +153,4 @@ private
    procedure apply_Limits (Self : in out Item);
 
 
-end mmi.hinge_Joint;
+end gel.hinge_Joint;

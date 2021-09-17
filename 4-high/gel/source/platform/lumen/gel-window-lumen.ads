@@ -3,13 +3,13 @@ with lumen.Window;
 
 
 
-package mmi.Window.lumen
+package gel.Window.lumen
 --
 --
 --
 is
 
-   type Item is new mmi.Window.item with private;
+   type Item is new gel.Window.item with private;
    type View is access all Item'Class;
 
 
@@ -58,10 +58,10 @@ is
 private
 
 
-   type Item is new mmi.Window.item with
+   type Item is new gel.Window.item with
       record
          window_Handle : standard.lumen.Window.Window_Handle;
       end record;
 
 
-end mmi.Window.lumen;
+end gel.Window.lumen;

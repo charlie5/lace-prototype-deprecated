@@ -6,7 +6,7 @@ with ada.Characters.Latin_1;
 
 
 
-package body mmi.Window.lumen
+package body gel.Window.lumen
 --
 --
 --
@@ -19,7 +19,7 @@ is
 
    program_Exit      : exception;
 
---     the_Window        : mmi.Window.lumen.view;
+--     the_Window        : gel.Window.lumen.view;
 --     the_window_Handle : standard.lumen.Window.handle;
 
 
@@ -35,8 +35,8 @@ is
 
 
    use std_Lumen;  -- yes, we're definitely using Lumen
---     function to_mmi_Key (From : in Interfaces.Unsigned_8) return mmi.keyboard.Key;
-   function to_mmi_Key (From : in std_lumen.Events.Key_Symbol) return mmi.keyboard.Key;
+--     function to_gel_Key (From : in Interfaces.Unsigned_8) return gel.keyboard.Key;
+   function to_gel_Key (From : in std_lumen.Events.Key_Symbol) return gel.keyboard.Key;
 
    ----------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ is
    Letter_q  : constant Events.Key_Symbol := Events.Key_Symbol (Character'Pos (Ada.Characters.Latin_1.LC_Q));
 
 
-   the_Window : mmi.Window.lumen.view;
+   the_Window : gel.Window.lumen.view;
 
 
    --- construction
@@ -94,7 +94,7 @@ is
    is
    begin
       standard.Lumen.Window.destroy (Self.window_Handle);
-      destroy (mmi.Window.item (Self));                     -- Destroy base class.
+      destroy (gel.Window.item (Self));                     -- Destroy base class.
    end destroy;
 
 
@@ -103,10 +103,10 @@ is
    is
       function  to_Window (Title  : in String;
                            Width  : in Natural;
-                           Height : in Natural) return mmi.Window.lumen.item
+                           Height : in Natural) return gel.Window.lumen.item
       is
       begin
-         return Self : mmi.Window.lumen.item := (mmi.Window.private_Forge.to_Window (Title, Width, Height)
+         return Self : gel.Window.lumen.item := (gel.Window.private_Forge.to_Window (Title, Width, Height)
                                                with others => <>)
          do
             define (Self'unchecked_Access,  Title, Width, Height);
@@ -116,9 +116,9 @@ is
 
       function new_Window (Title  : in String;
                            Width  : in Natural;
-                           Height : in Natural) return mmi.Window.lumen.view
+                           Height : in Natural) return gel.Window.lumen.view
       is
-         Self : constant mmi.Window.lumen.view := new Window.lumen.item' (to_Window (Title, Width, Height));
+         Self : constant gel.Window.lumen.view := new Window.lumen.item' (to_Window (Title, Width, Height));
       begin
          return Self;
       end new_Window;
@@ -137,7 +137,7 @@ is
    --  Operations
    --
 
-   use mmi.Keyboard;
+   use gel.Keyboard;
 
 
 
@@ -146,7 +146,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Keyboard.accept_key_press_Event   (to_mmi_Key (Event.key_Data.Key));
+--        --the_Window.Keyboard.accept_key_press_Event   (to_gel_Key (Event.key_Data.Key));
 --     end;
 --
 --
@@ -156,7 +156,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Keyboard.accept_key_release_Event (to_mmi_Key (Event.key_Data.Key));
+--        --the_Window.Keyboard.accept_key_release_Event (to_gel_Key (Event.key_Data.Key));
 --     end;
 --
 --
@@ -165,7 +165,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Mouse.emit_button_press_Event (mmi.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
+--        --the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
 --          --                                        the_Window.Keyboard.Modifiers,
 --            --                                      (Integer (event.button_Data.x), Integer (event.button_Data.y)));
 --
@@ -177,7 +177,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Mouse.emit_button_release_Event (mmi.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
+--        --the_Window.Mouse.emit_button_release_Event (gel.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
 --          --                                          the_Window.Keyboard.Modifiers,
 --            --                                        (Integer (event.button_Data.x), Integer (event.button_Data.y)));
 --     end;
@@ -251,7 +251,7 @@ is
             null;
 
          when others =>
-            the_Window.Keyboard.emit_key_press_Event (to_mmi_Key (Symbol),
+            the_Window.Keyboard.emit_key_press_Event (to_gel_Key (Symbol),
                                                       Integer (Symbol));
             null;
       end case;
@@ -277,7 +277,7 @@ is
             null;
 
          when others =>
-            the_Window.Keyboard.emit_key_release_Event (to_mmi_Key (Symbol));
+            the_Window.Keyboard.emit_key_release_Event (to_gel_Key (Symbol));
       end case;
    end Key_Release_Handler;
 
@@ -312,7 +312,7 @@ is
          null;
       end if;
 
-      the_Window.Mouse.emit_button_press_Event (mmi.mouse.button_Id (std_Lumen.Window.Button_Enum'Pos (Button) + 1),
+      the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_Lumen.Window.Button_Enum'Pos (Button) + 1),
                                                 the_Window.Keyboard.Modifiers,
                                                 (X, Y));
    end Button_Handler;
@@ -325,7 +325,7 @@ is
                                      Button    : in std_Lumen.Window.Button_Enum;
                                      Modifiers : in Events.Modifier_Set) is
    begin  -- Button_Handler
-      the_Window.Mouse.emit_button_release_Event (mmi.mouse.button_Id (std_Lumen.Window.Button_Enum'Pos (Button) + 1),
+      the_Window.Mouse.emit_button_release_Event (gel.mouse.button_Id (std_Lumen.Window.Button_Enum'Pos (Button) + 1),
                                                   the_Window.Keyboard.Modifiers,
                                                   (X, Y));
    end Button_Release_Handler;
@@ -448,20 +448,20 @@ is
 
 
 
-   function to_mmi_Key (From : in std_lumen.Events.Key_Symbol) return mmi.keyboard.Key
+   function to_gel_Key (From : in std_lumen.Events.Key_Symbol) return gel.keyboard.Key
    is
    begin
 --        put_Line ("Key: " & std_lumen.Events.Key_Symbol'Image (From));
 
       case From is
-         when 13        => return mmi.Keyboard.Enter;
-         when 27        => return mmi.Keyboard.Escape;
-         when 32        => return mmi.Keyboard.Space;
-         when 43        => return mmi.Keyboard.KP_PLUS;
+         when 13        => return gel.Keyboard.Enter;
+         when 27        => return gel.Keyboard.Escape;
+         when 32        => return gel.Keyboard.Space;
+         when 43        => return gel.Keyboard.KP_PLUS;
 
-         when 48 ..  59 => return mmi.keyboard.Key'Val (From - 48 + mmi.keyboard.Key'Pos (KP0));
-         when 65 ..  90 => return mmi.keyboard.Key'Val (From - 65 + mmi.keyboard.Key'Pos (a));
-         when 97 .. 122 => return mmi.keyboard.Key'Val (From - 97 + mmi.keyboard.Key'Pos (a));
+         when 48 ..  59 => return gel.keyboard.Key'Val (From - 48 + gel.keyboard.Key'Pos (KP0));
+         when 65 ..  90 => return gel.keyboard.Key'Val (From - 65 + gel.keyboard.Key'Pos (a));
+         when 97 .. 122 => return gel.keyboard.Key'Val (From - 97 + gel.keyboard.Key'Pos (a));
 
          when 65505   => return lShift;
          when 65506   => return rShift;
@@ -485,8 +485,8 @@ is
          when others  => put_Line ("unhandled Key: " & std_lumen.Events.Key_Symbol'Image (From));
       end case;
 
-      return mmi.keyboard.Key'First;
-   end to_mmi_Key;
+      return gel.keyboard.Key'First;
+   end to_gel_Key;
 
 
 
@@ -497,15 +497,15 @@ is
 
    function window_Creator (Name : in String;
                             Width,
-                            Height : in Positive) return mmi.Window.view
+                            Height : in Positive) return gel.Window.view
    is
    begin
-      return mmi.Window.view (Forge.new_Window (Name, Width, Height));
+      return gel.Window.view (Forge.new_Window (Name, Width, Height));
    end window_Creator;
 
 
 begin
 
-   mmi.Window.use_create_Window (window_Creator'Access);
+   gel.Window.use_create_Window (window_Creator'Access);
 
-end mmi.Window.lumen;
+end gel.Window.lumen;

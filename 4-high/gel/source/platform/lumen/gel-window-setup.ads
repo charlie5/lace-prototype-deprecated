@@ -1,7 +1,7 @@
 with
-     mmi.Window.lumen;
+     gel.Window.lumen;
 
 
-package mmi.Window.setup
-   renames mmi.Window.lumen;
+package gel.Window.setup
+   renames gel.Window.lumen;
 

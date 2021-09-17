@@ -1,10 +1,10 @@
-package mmi.Dolly.simple
+package gel.Dolly.simple
 --
 --  Models a simple camera dolly.
 --
 is
 
-   type Item is new mmi.Dolly.item with private;
+   type Item is new gel.Dolly.item with private;
    type View is access all Item'Class;
 
 
@@ -32,10 +32,10 @@ private
    type Direction_Flags is array (Direction) of Boolean;
 
 
-   type Item is new mmi.Dolly.item with
+   type Item is new gel.Dolly.item with
       record
          null;
       end record;
 
 
-end mmi.Dolly.simple;
+end gel.Dolly.simple;

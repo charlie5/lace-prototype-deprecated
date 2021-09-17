@@ -2,7 +2,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body mmi.Dolly
+package body gel.Dolly
 is
    use Math;
 
@@ -80,5 +80,5 @@ is
    end speed_Multiplier_is;
 
 
-end mmi.Dolly;
+end gel.Dolly;
 

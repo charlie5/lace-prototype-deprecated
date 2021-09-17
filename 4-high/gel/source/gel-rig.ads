@@ -1,7 +1,7 @@
 with
-     mmi.Sprite,
-     mmi.Joint,
-     mmi.World,
+     gel.Sprite,
+     gel.Joint,
+     gel.World,
 
      openGL,
      openGL.Model,
@@ -16,9 +16,9 @@ with
      collada.Library.visual_scenes;
 
 
-package mmi.Rig
+package gel.Rig
 --
--- Provides MMI sprites which allow placing a collada skinned/rigged model into an MMI World.
+-- Provides GEL sprites which allow placing a collada skinned/rigged model into an GEL World.
 --
 -- The rig motion can be controlled either by normal physics or pre-canned animations.
 --
@@ -60,14 +60,14 @@ is
    -- Joints Ids
    --
 
-   subtype mmi_joint_Id is ada.Strings.unbounded.unbounded_String;
+   subtype gel_joint_Id is ada.Strings.unbounded.unbounded_String;
 
-   package mmi_joint_id_Maps_of_mmi_Joint is new ada.Containers.hashed_Maps (Key_Type        => mmi_joint_Id,
-                                                                             Element_Type    => mmi.Joint.view,
+   package gel_joint_id_Maps_of_gel_Joint is new ada.Containers.hashed_Maps (Key_Type        => gel_joint_Id,
+                                                                             Element_Type    => gel.Joint.view,
                                                                              Hash            => ada.Strings.unbounded.Hash,
                                                                              Equivalent_Keys => ada.Strings.unbounded."=",
-                                                                             "="             => mmi.Joint."=");
-   subtype mmi_joint_id_Map_of_mmi_Joint is mmi_joint_id_Maps_of_mmi_Joint.Map;
+                                                                             "="             => gel.Joint."=");
+   subtype gel_joint_id_Map_of_gel_Joint is gel_joint_id_Maps_of_gel_Joint.Map;
 
 
    package joint_Id_Maps_of_bone_site_offset is new ada.Containers.hashed_Maps (Key_Type        => controller_joint_Id,
@@ -82,10 +82,10 @@ is
    --
 
    package bone_id_Maps_of_sprite is new ada.Containers.hashed_Maps (Key_Type        => bone_id,
-                                                                     Element_Type    => mmi.Sprite.view,
+                                                                     Element_Type    => gel.Sprite.view,
                                                                      Hash            => ada.Strings.unbounded.Hash,
                                                                      Equivalent_Keys => ada.Strings.unbounded."=",
-                                                                     "="             => mmi.Sprite."=");
+                                                                     "="             => gel.Sprite."=");
    subtype bone_id_Map_of_sprite is bone_id_Maps_of_sprite.Map;
 
 
@@ -103,7 +103,7 @@ is
 
          pitch_Limits,
          yaw_Limits,
-         roll_Limits  : mmi.Sprite.DoF_Limits := (math.to_Radians (-15.0),
+         roll_Limits  : gel.Sprite.DoF_Limits := (math.to_Radians (-15.0),
                                                   math.to_Radians ( 15.0));
       end record;
 
@@ -115,7 +115,7 @@ is
 
                         pitch_Limits,
                         yaw_Limits,
-                        roll_Limits  : mmi.Sprite.DoF_Limits := (math.to_Radians (-15.0),
+                        roll_Limits  : gel.Sprite.DoF_Limits := (math.to_Radians (-15.0),
                                                                  math.to_Radians ( 15.0))) return bone_Details;
 
    package bone_id_Maps_of_details is new ada.Containers.hashed_Maps (Key_Type        => bone_id,
@@ -134,7 +134,7 @@ is
 
    package Forge
    is
-      function new_Rig (in_World                : in     mmi.World.view;
+      function new_Rig (in_World                : in     gel.World.view;
                         Model                   : access openGL.Model.item'Class;
                         Mass                    : in     math.Real              := 0.0;
                         is_Kinematic            : in     Boolean                := False) return Rig.view;
@@ -146,7 +146,7 @@ is
    end Forge;
 
 
-   procedure define (Self : in out Item;   in_World     : in     mmi.World.view;
+   procedure define (Self : in out Item;   in_World     : in     gel.World.view;
                                            Model        : access openGL.Model.item'Class;
                                            Mass         : in     math.Real              := 0.0;
                                            is_Kinematic : in     Boolean                := False;
@@ -162,13 +162,13 @@ is
    procedure Site_is                     (Self : in out Item;         Now       : in math.Vector_3);
    procedure Spin_is                     (Self : in out Item;         Now       : in math.Matrix_3x3);
 
-   function  skin_Sprite                 (Self : in     Item'Class)                           return mmi.Sprite.view;
-   function  base_Sprite                 (Self : in     Item'Class)                           return mmi.Sprite.view;
-   function  Sprite                      (Self : in     Item'Class;   for_Bone  : in bone_Id) return mmi.Sprite.view;
+   function  skin_Sprite                 (Self : in     Item'Class)                           return gel.Sprite.view;
+   function  base_Sprite                 (Self : in     Item'Class)                           return gel.Sprite.view;
+   function  Sprite                      (Self : in     Item'Class;   for_Bone  : in bone_Id) return gel.Sprite.view;
    function  bone_Sprites                (Self : in     Item)                                 return bone_id_Map_of_sprite;
 
 
-   function  Joints                      (Self : in     Item) return mmi_joint_id_Map_of_mmi_Joint;
+   function  Joints                      (Self : in     Item) return gel_joint_id_Map_of_gel_Joint;
 
    procedure joint_inv_bind_Matrices_are (Self : in out Item'Class;   Now       : in inverse_bind_matrix_Vector);
    function  joint_inv_bind_Matrices     (Self : in     Item'Class)           return inverse_bind_matrix_Vector;
@@ -376,11 +376,11 @@ private
 
          joint_Sprites           :         bone_id_Map_of_sprite;                   -- Sprite to show location/rotation of joints (mainly for debugging).
          bone_Sprites            :         bone_id_Map_of_sprite;                   -- A sprite for each bone.
-         skin_Sprite             :         mmi.Sprite.view;                         -- A sprite for the skin.
+         skin_Sprite             :         gel.Sprite.view;                         -- A sprite for the skin.
 
          bind_shape_Matrix       :         math.Matrix_4x4;
 
-         Joints                  :         mmi_joint_id_Map_of_mmi_Joint;
+         Joints                  :         gel_joint_id_Map_of_gel_Joint;
          joint_inv_bind_Matrices :         inverse_bind_matrix_Vector;              -- The joint inverse transforms when in the bind pose.
 
          phys_joint_site_Offets  :         joint_Id_Map_of_bone_site_offset;        -- Offset from the bone site to the joint site when in the bind pose.
@@ -412,4 +412,4 @@ private
    function joint_bind_Matrix     (Self : in Item;   for_Bone : in bone_Id) return math.Matrix_4x4;
 
 
-end mmi.Rig;
+end gel.Rig;

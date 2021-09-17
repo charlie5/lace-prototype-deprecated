@@ -1,4 +1,4 @@
-package body mmi.Mouse
+package body gel.Mouse
 is
 
    --- Attributes
@@ -38,4 +38,4 @@ is
    end emit_motion_Event;
 
 
-end mmi.Mouse;
+end gel.Mouse;

@@ -2,7 +2,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body mmi.Mouse.local
+package body gel.Mouse.local
 is
 
 
@@ -37,4 +37,4 @@ is
    end free;
 
 
-end mmi.Mouse.local;
+end gel.Mouse.local;

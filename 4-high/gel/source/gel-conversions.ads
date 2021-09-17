@@ -2,7 +2,7 @@ with
      openGL;
 
 
-package mmi.Conversions
+package gel.Conversions
 is
 
    function to_GL   (Self : in math.Real)                  return opengl.Real;
@@ -13,4 +13,4 @@ is
 
    function to_Math (Self : in opengl.Vector_3)            return math.Vector_3;
 
-end mmi.Conversions;
+end gel.Conversions;

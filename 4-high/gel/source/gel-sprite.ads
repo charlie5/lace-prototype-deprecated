@@ -1,5 +1,5 @@
 with
-     mmi.Joint,
+     gel.Joint,
 
      openGL.Model,
      openGL.Visual,
@@ -17,10 +17,10 @@ with
 
 limited
 with
-     mmi.World;
+     gel.World;
 
 
-package mmi.Sprite
+package gel.Sprite
 --
 --  Combines a graphics 'visual' and a physics 'solid'.
 --
@@ -59,7 +59,7 @@ is
    --- Forge
    --
 
-   procedure define       (Self : access Item;   World          : access mmi.World.item'Class;
+   procedure define       (Self : access Item;   World          : access gel.World.item'Class;
 
                                                  graphics_Model : access openGL.     Model.item'Class;
                                                  physics_Model  : access physics.Model.item'Class;
@@ -77,7 +77,7 @@ is
    package Forge
    is
       function  to_Sprite (Name           : in     String;
-                           World          : access mmi.        World.item'Class;
+                           World          : access gel.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
@@ -85,7 +85,7 @@ is
                            is_Kinematic   : in     Boolean       := False) return Item;
 
       function new_Sprite (Name           : in     String;
-                           World          : access mmi.        World.item'Class;
+                           World          : access gel.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
@@ -99,10 +99,10 @@ is
    --- Attributes
    --
 
-   function  World                 (Self : in     Item'Class)     return  access mmi.World.item'Class;
+   function  World                 (Self : in     Item'Class)     return  access gel.World.item'Class;
 
-   function  Id                    (Self : in     Item'Class)     return mmi.sprite_Id;
-   procedure Id_is                 (Self : in out Item'Class;   Now : in mmi.sprite_Id);
+   function  Id                    (Self : in     Item'Class)     return gel.sprite_Id;
+   procedure Id_is                 (Self : in out Item'Class;   Now : in gel.sprite_Id);
 
 
    function  Visual                (Self : access Item'Class)     return openGL.Visual.view;
@@ -142,7 +142,7 @@ is
    function  Shape                 (Self : in     Item'Class)     return physics_Shape_view;
 
 
-   function  to_MMI (the_Solid : in physics_Object_view) return mmi.Sprite.view;
+   function  to_GEL (the_Solid : in physics_Object_view) return gel.Sprite.view;
 
 
 
@@ -238,15 +238,15 @@ is
       end record;
 
 
-   function  parent_Joint     (Self : in     Item'Class) return mmi.Joint.view;
-   function  child_Joints     (Self : in     Item'Class) return mmi.Joint.views;
+   function  parent_Joint     (Self : in     Item'Class) return gel.Joint.view;
+   function  child_Joints     (Self : in     Item'Class) return gel.Joint.views;
 
-   function  top_Parent       (Self : access Item'Class) return mmi.Sprite.view;
-   function  Parent           (Self : in     Item)       return mmi.Sprite.view;
+   function  top_Parent       (Self : access Item'Class) return gel.Sprite.view;
+   function  Parent           (Self : in     Item)       return gel.Sprite.view;
    function  tree_Depth       (Self : in     Item)       return Natural;
 
 
-   procedure detach           (Self : in out Item;   the_Child : mmi.Sprite.view);
+   procedure detach           (Self : in out Item;   the_Child : gel.Sprite.view);
 
    no_such_Child : exception;
 
@@ -268,7 +268,7 @@ is
                                                            low_Limit         : in      math.Real;
                                                            high_Limit        : in      math.Real;
                                                            collide_Connected : in      Boolean;
-                                                           new_joint         :     out mmi.Joint.view);
+                                                           new_joint         :     out gel.Joint.view);
 
 
    procedure attach_via_Hinge (Self : access Item'Class;   the_Child    : in      Sprite.view;
@@ -276,13 +276,13 @@ is
                                                            pivot_Anchor : in      math.Vector_3;
                                                            low_Limit    : in      math.Real;
                                                            high_Limit   : in      math.Real;
-                                                           new_joint    :     out mmi.Joint.view);
+                                                           new_joint    :     out gel.Joint.view);
 
    procedure attach_via_Hinge (Self : access Item'Class;   the_Child  : in      Sprite.view;
                                                            pivot_Axis : in      math.Vector_3;
                                                            low_Limit  : in      math.Real;
                                                            high_Limit : in      math.Real;
-                                                           new_joint  :     out mmi.Joint.view);
+                                                           new_joint  :     out gel.Joint.view);
    --
    --  Uses midpoint between Self and the_Child sprite as pivot_Anchor.
 
@@ -292,7 +292,7 @@ is
                                                            Frame_in_child    : in     math.Matrix_4x4;
                                                            Limits            : in     DoF_Limits;
                                                            collide_Connected : in     Boolean;
-                                                           new_joint         :    out mmi.Joint.view);
+                                                           new_joint         :    out gel.Joint.view);
 
 
    --  Ball/Socket
@@ -303,7 +303,7 @@ is
                                                                  pitch_Limits : in     DoF_Limits;
                                                                  yaw_Limits   : in     DoF_Limits;
                                                                  roll_Limits  : in     DoF_Limits;
-                                                                 new_joint    :    out mmi.Joint.view);
+                                                                 new_joint    :    out gel.Joint.view);
 
 
    procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child       : in     Sprite.view;
@@ -312,7 +312,7 @@ is
                                                                  pitch_Limits    : in     DoF_Limits;
                                                                  yaw_Limits      : in     DoF_Limits;
                                                                  roll_Limits     : in     DoF_Limits;
-                                                                 new_joint       :    out mmi.Joint.view);
+                                                                 new_joint       :    out gel.Joint.view);
 
 
 
@@ -355,7 +355,7 @@ private
 
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
-         Id                      :        mmi.sprite_Id      := null_sprite_Id;
+         Id                      :        gel.sprite_Id      := null_sprite_Id;
 
          Visual                  :        openGL.Visual.view := new openGL.Visual.item;
          program_Parameters      : access openGL.program.Parameters'Class;
@@ -364,7 +364,7 @@ private
          physics_Model           :        physics.Model.view;
          owns_Physics            :        Boolean;
 
-         World                   : access mmi.World.item'Class;
+         World                   : access gel.World.item'Class;
          Shape                   :        physics_Shape_view;
          Solid                   :        physics_Object_view;
          is_Kinematic            :        Boolean;
@@ -380,7 +380,7 @@ private
          desired_Spin            :        math.Quaternion    := (0.0, (0.0, 1.0, 0.0));
          interpolation_spin_Time :        math.Real          := 0.0;
 
-         parent_Joint            :        mmi.Joint.view;
+         parent_Joint            :        gel.Joint.view;
          child_Joints            :        joint_Vectors.Vector;
 
          is_Visible              :        Boolean            := True;
@@ -393,4 +393,4 @@ private
    null_Sprites : constant Sprite.views (1 .. 0) := (others => null);
 
 
-end mmi.Sprite;
+end gel.Sprite;

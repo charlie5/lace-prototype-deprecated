@@ -3,9 +3,9 @@ with
      ada.Unchecked_Deallocation;
 
 
-package body mmi.hinge_Joint
+package body gel.hinge_Joint
 is
-   use mmi.Joint,
+   use gel.Joint,
        Math;
 
 
@@ -14,7 +14,7 @@ is
 
 
    procedure define (Self : access Item;  in_Space           : in     Standard.physics.Space.view;
-                                          Sprite_A, Sprite_B : access mmi.Sprite.item'class;
+                                          Sprite_A, Sprite_B : access gel.Sprite.item'class;
                                           pivot_Axis         : in     math.Vector_3;
                                           pivot_Anchor       : in     math.Vector_3)
    is
@@ -36,7 +36,7 @@ is
 
 
    procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access mmi.Sprite.item'class;
+                                           Sprite_A, Sprite_B : access gel.Sprite.item'class;
                                            pivot_Axis         : in     math.Vector_3)
    is
       Midpoint : constant math.Vector_3 := (Sprite_A.Site + Sprite_B.Site) / 2.0;
@@ -47,7 +47,7 @@ is
 
 
    procedure define (Self : access Item;   in_Space              : in     Standard.physics.Space.view;
-                                           Sprite_A,  Sprite_B   : access mmi.Sprite.item'class;
+                                           Sprite_A,  Sprite_B   : access gel.Sprite.item'class;
                                            Frame_A,   Frame_B    : in     math.Matrix_4x4;
                                            low_Limit             : in     math.Real := math.to_Radians (-180.0);
                                            high_Limit            : in     math.Real := math.to_Radians ( 180.0);
@@ -56,7 +56,7 @@ is
       the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
       the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
 
-      type joint_Cast is access all mmi.Joint.Item;
+      type joint_Cast is access all gel.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : standard.physics.Object.view;
@@ -83,10 +83,10 @@ is
 
 
    procedure define (Self : access Item;   in_Space  : in     Standard.physics.Space.view;
-                                           Sprite_A  : access mmi.Sprite.item'class;
+                                           Sprite_A  : access gel.Sprite.item'class;
                                            Frame_A   : in     math.Matrix_4x4)
    is
-      type joint_Cast is access all mmi.Joint.Item;
+      type joint_Cast is access all gel.Joint.Item;
 
       the_Frame_A    : aliased constant Matrix_4x4 := Frame_A;
       sprite_A_Solid : standard.physics.Object.view;
@@ -104,7 +104,7 @@ is
 
    procedure define (Self : access Item;   in_Space         : in     Standard.physics.Space.view;
                                            Sprite_A,
-                                           Sprite_B         : access mmi.Sprite.item'class;
+                                           Sprite_B         : access gel.Sprite.item'class;
                                            pivot_Axis       : in     math.Vector_3;
                                            Anchor_in_A      : in     math.Vector_3;
                                            Anchor_in_B      : in     math.Vector_3;
@@ -112,7 +112,7 @@ is
                                            high_Limit       : in     Real;
                                            collide_Conected : in     Boolean)
    is
-      type joint_Cast is access all mmi.Joint.Item;
+      type joint_Cast is access all gel.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : standard.physics.Object.view;
@@ -260,7 +260,7 @@ is
    overriding
    function  low_Bound    (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom) return math.Real
    is
-      use type mmi.Joint.Degree_of_freedom;
+      use type gel.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -275,7 +275,7 @@ is
    procedure low_Bound_is (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom;
                                                        Now        : in     math.Real)
    is
-      use type mmi.Joint.Degree_of_freedom;
+      use type gel.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -290,7 +290,7 @@ is
    overriding
    function  high_Bound    (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom) return math.Real
    is
-      use type mmi.Joint.Degree_of_freedom;
+      use type gel.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -305,7 +305,7 @@ is
    procedure high_Bound_is (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom;
                                                        Now        : in     math.Real)
    is
-      use type mmi.Joint.Degree_of_freedom;
+      use type gel.Joint.Degree_of_freedom;
 
       Span : math.Real := abs (Now) * 2.0;
    begin
@@ -322,7 +322,7 @@ is
    overriding
    function Extent (Self : in     Item;   for_Degree : in     Degree_of_freedom) return math.Real
    is
-      use type mmi.Joint.Degree_of_freedom;
+      use type gel.Joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
          raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
@@ -351,4 +351,4 @@ is
    end Velocity_is;
 
 
-end mmi.hinge_Joint;
+end gel.hinge_Joint;

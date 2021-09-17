@@ -1,17 +1,17 @@
 with
-     mmi.Camera.forge,
+     gel.Camera.forge,
      physics.Forge;
 
 
-package body mmi.Applet.sim_2d_world
+package body gel.Applet.sim_2d_world
 is
    use      Math;
    use type math.Real,
             math.Index;
 
 
-   sim_world_Id  : constant mmi.World_Id  := 1;
-   sim_camera_Id : constant mmi.camera_Id := 1;
+   sim_world_Id  : constant gel.World_Id  := 1;
+   sim_camera_Id : constant gel.camera_Id := 1;
 
 
 
@@ -20,9 +20,9 @@ is
    begin
       declare
          the_world_Info : constant world_Info_view  := new world_Info;
-         the_Camera     : constant mmi.Camera.View  := mmi.Camera.forge.new_Camera;
+         the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := mmi.World.forge.new_World (Name,
+         the_world_Info.World := gel.World.forge.new_World (Name,
                                                             sim_world_Id,
                                                             physics.Box2d,
                                                             Self.Renderer);
@@ -44,9 +44,9 @@ is
    is
 
       function new_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return View
+                           use_Window : in gel.Window.view) return View
       is
-         Self : constant View := new Item' (mmi.Applet.Forge.to_Applet (Name, use_Window)
+         Self : constant View := new Item' (gel.Applet.Forge.to_Applet (Name, use_Window)
                                             with others => <>);
       begin
          define (Self, Name);
@@ -57,18 +57,18 @@ is
 
 
 
-   function sim_World  (Self : in Item) return mmi.World.view
+   function sim_World  (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (sim_world_Id);
    end sim_World;
 
 
-   function sim_Camera (Self : in Item) return mmi.Camera.view
+   function sim_Camera (Self : in Item) return gel.Camera.view
    is
    begin
       return Self.Camera (sim_world_Id, sim_camera_Id);
    end sim_Camera;
 
 
-end mmi.Applet.sim_2d_world;
+end gel.Applet.sim_2d_world;

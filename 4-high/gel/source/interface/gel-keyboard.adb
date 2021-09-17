@@ -2,7 +2,7 @@ with
      ada.characters.Latin_1;
 
 
-package body mmi.Keyboard
+package body gel.Keyboard
 is
 
 
@@ -200,4 +200,4 @@ is
    end is_Graphic;
 
 
-end mmi.Keyboard;
+end gel.Keyboard;

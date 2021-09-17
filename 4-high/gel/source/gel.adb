@@ -1,4 +1,4 @@
-package body MMI
+package body GEL
 is
 
    function to_Asset (Self : in String) return asset_Name
@@ -27,4 +27,4 @@ is
       return "";
    end to_String;
 
-end MMI;
+end GEL;

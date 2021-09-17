@@ -1,4 +1,4 @@
-package body mmi.Conversions
+package body gel.Conversions
 is
    use Math;
 
@@ -76,4 +76,4 @@ is
    end to_Math;
 
 
-end mmi.Conversions;
+end gel.Conversions;

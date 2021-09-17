@@ -2,7 +2,7 @@ with
      float_math.Algebra.linear.d3;
 
 
-package body mmi.Dolly.following
+package body gel.Dolly.following
 is
    use Math,
        math.Algebra.linear,
@@ -31,7 +31,7 @@ is
    --
 
 
-   procedure follow (Self : in out Item;   the_Sprite : in mmi.Sprite.view)
+   procedure follow (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
    begin
       Self.Sprite := the_Sprite;
@@ -83,7 +83,7 @@ is
       Speed           :          Real       renames Self.Speed;
       the_sprite_Site : constant math.Vector_3   := Self.Sprite.Site;
 
-      the_Camera      : constant mmi.Camera.view := Self.Cameras.first_Element;
+      the_Camera      : constant gel.Camera.view := Self.Cameras.first_Element;
 
    begin
       --  Linear motion.
@@ -126,4 +126,4 @@ is
    end freshen;
 
 
-end mmi.Dolly.following;
+end gel.Dolly.following;

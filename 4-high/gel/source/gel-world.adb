@@ -1,5 +1,5 @@
 with
-     mmi.Events,
+     gel.Events,
      physics.remote.Model,
      physics.Forge,
 
@@ -20,9 +20,9 @@ with
      ada.Containers.Hashed_Sets;
 
 
-package body mmi.World
+package body gel.World
 is
-   use mmi .Sprite,
+   use gel .Sprite,
        math.Algebra.linear.d3,
 
        lace.Event.Utility,
@@ -102,11 +102,11 @@ is
       function to_World (Name       : in     String;
                           Id         : in     world_Id;
                           space_Kind : in     standard.physics.space_Kind;
-                         Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.item
+                         Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.item
       is
          use lace.Subject_and_deferred_Observer.forge;
       begin
-         return Self : mmi.World.item := (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
+         return Self : gel.World.item := (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
                                           with others => <>)
          do
             define (Self, Name, Id, space_Kind, Renderer);
@@ -118,12 +118,12 @@ is
       function new_World (Name       : in     String;
                           Id         : in     world_Id;
                           space_Kind : in     Standard.physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.view
+                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.view
       is
          use lace.Subject_and_deferred_Observer.forge;
 
-         Self : constant mmi.World.view
-           := new mmi.World.item' (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
+         Self : constant gel.World.view
+           := new gel.World.item' (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
                                    with others => <>);
       begin
          define (Self.all,  Name, Id, space_Kind, Renderer);
@@ -164,11 +164,11 @@ is
    function to_Sprite (the_Pair           : in remote.World.sprite_model_Pair;
                        the_Models         : in Id_Maps_of_Model        .Map;
                        the_physics_Models : in Id_Maps_of_physics_Model.Map;
-                       the_World          : in mmi.World.view) return mmi.Sprite.view
+                       the_World          : in gel.World.view) return gel.Sprite.view
    is
       the_graphics_Model : access openGL.      Model.item'Class;
       the_physics_Model  : access Standard.physics.Model.item'Class;
-      the_Sprite         :        mmi.Sprite.view;
+      the_Sprite         :        gel.Sprite.view;
 
       use openGL;
 
@@ -176,7 +176,7 @@ is
       the_graphics_Model := openGL          .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
       the_physics_Model  := Standard.physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
-      the_Sprite := mmi.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
+      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
                                                  the_World,
                                                  the_graphics_Model,
                                                  the_physics_Model,
@@ -205,7 +205,7 @@ is
 
    type create_new_Sprite is new lace.Response.item with
       record
-         World          :        mmi.World.view;
+         World          :        gel.World.view;
          Models         : access id_Maps_of_model        .Map;
          physics_Models : access id_Maps_of_physics_model.Map;
       end record;
@@ -219,8 +219,8 @@ is
    is
    begin
       declare
-         the_Event  : constant mmi.events.new_sprite_Event := mmi.events.new_sprite_Event (to_Event);
-         the_Sprite : constant mmi.Sprite.view             := to_Sprite (the_Event.Pair,
+         the_Event  : constant gel.events.new_sprite_Event := gel.events.new_sprite_Event (to_Event);
+         the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
                                                                          Self.Models.all,
                                                                          Self.physics_Models.all,
                                                                          Self.World);
@@ -231,7 +231,7 @@ is
 
 
 
-   procedure define (Self : in out create_new_Sprite;    World  : in     mmi.World.view;
+   procedure define (Self : in out create_new_Sprite;    World  : in     gel.World.view;
                                                          Models : access id_Maps_of_model.Map)
    is
    begin
@@ -280,7 +280,7 @@ is
    --  all_sprite_Transforms
    --
 
-   function to_Integer is new ada.unchecked_Conversion (mmi.Sprite.view, Integer);
+   function to_Integer is new ada.unchecked_Conversion (gel.Sprite.view, Integer);
 
 
    protected
@@ -375,7 +375,7 @@ is
       end is_Empty;
 
 
-      procedure add (the_Joint : in     mmi.Joint.view)
+      procedure add (the_Joint : in     gel.Joint.view)
       is
       begin
          the_Count       := the_Count + 1;
@@ -405,7 +405,7 @@ is
    task
    type impact_Responder
    is
-      entry start (the_World      : in     mmi.World.view;
+      entry start (the_World      : in     gel.World.view;
                    Filter         : in     impact_Filter;
                    Response       : in     impact_Response;
                    responses_Done : in     Signal_Object_view);
@@ -448,7 +448,7 @@ is
 
    task body Engine
    is
-      use type mmi.Joint.view,
+      use type gel.Joint.view,
                ada.Containers.Count_Type;
 
       Stopped                          : Boolean                   := True;
@@ -465,7 +465,7 @@ is
 
       procedure free_Sprites
       is
-         the_free_Sprites : mmi.Sprite.views := the_World.free_sprite_Set;
+         the_free_Sprites : gel.Sprite.views := the_World.free_sprite_Set;
       begin
          for Each in the_free_Sprites'Range
          loop
@@ -476,7 +476,7 @@ is
                the_World.Renderer.free (the_free_Sprites (Each).Visual.Model);
             end if;
 
-            mmi.Sprite.free (the_free_Sprites (Each));
+            gel.Sprite.free (the_free_Sprites (Each));
          end loop;
       end free_Sprites;
 
@@ -669,7 +669,7 @@ is
 --                                                                          the_Command.local_Anchor);
 
                      when free_Joint =>
-                        mmi.Joint.free (the_Command.Joint);
+                        gel.Joint.free (the_Command.Joint);
 
 
                      when cast_Ray =>
@@ -685,7 +685,7 @@ is
                                  return ray_Collision' (near_sprite => null,
                                                         others      => <>);
                               else
-                                 return ray_Collision' (to_MMI (physics_Collision.near_Object),
+                                 return ray_Collision' (to_GEL (physics_Collision.near_Object),
                                                         physics_Collision.hit_Fraction,
                                                         physics_Collision.Normal_world,
                                                         physics_Collision.Site_world);
@@ -764,12 +764,12 @@ is
                     := the_World.physics_Space.Manifold (Each);
                begin
                   Count                       := Count + 1;
-                  the_World.Manifolds (Count) := (sprites => (to_MMI (the_physics_Manifold.Objects (1)),
-                                                              to_MMI (the_physics_Manifold.Objects (2))),
+                  the_World.Manifolds (Count) := (sprites => (to_GEL (the_physics_Manifold.Objects (1)),
+                                                              to_GEL (the_physics_Manifold.Objects (2))),
                                                   contact => (Site => the_physics_Manifold.Contact.Site));
                exception
                   when others =>
-                     put_Line ("Error in 'mmi.world.Engine.evolve' contact manifolds !");
+                     put_Line ("Error in 'gel.world.Engine.evolve' contact manifolds !");
                      Count := Count - 1;
                end;
             end loop;
@@ -778,7 +778,7 @@ is
 
          exception
             when E : others =>
-               put_Line ("'mmi.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
+               put_Line ("'gel.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
                put_Line (Exception_Information (E));
          end;
 
@@ -813,7 +813,7 @@ is
 
          exception
             when E : others =>
-               put_Line ("'mmi.World.local.Engine.impact response' has an unhandled exception ...");
+               put_Line ("'gel.World.local.Engine.impact response' has an unhandled exception ...");
                put_Line (Exception_Information (E));
          end;
 
@@ -824,7 +824,7 @@ is
             use sprite_Maps_of_transforms;
 
             Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite : mmi.Sprite.view;
+            the_Sprite : gel.Sprite.view;
          begin
             while has_Element (Cursor)
             loop
@@ -946,10 +946,10 @@ is
          if the_World.broken_joints_Allowed
          then
             declare
-               use mmi.Joint,
+               use gel.Joint,
                    standard.physics.Space;
 
-               the_Joint       : mmi.Joint.view;
+               the_Joint       : gel.Joint.view;
                reaction_Force,
                reaction_Torque : math.Real;
 
@@ -957,7 +957,7 @@ is
             begin
                while has_Element (Cursor)
                loop
-                  the_Joint := to_MMI (Element (Cursor));
+                  the_Joint := to_GEL (Element (Cursor));
 
                   if the_Joint /= null
                   then
@@ -999,7 +999,7 @@ is
    exception
       when E : others =>
          new_Line (2);
-         put_Line ("Error in mmi.World.Engine");
+         put_Line ("Error in gel.World.Engine");
          new_Line;
          put_Line (Exception_Information (E));
          put_Line ("Engine has terminated !");
@@ -1130,7 +1130,7 @@ is
 
 
 
-   procedure update_Bounds (Self : in out Item;   of_Sprite : in mmi.Sprite.view)
+   procedure update_Bounds (Self : in out Item;   of_Sprite : in gel.Sprite.view)
    is
    begin
       Self.physics_Engine.update_Bounds (std_physics.Object.view (of_Sprite.Solid));
@@ -1141,7 +1141,7 @@ is
 
 
 
-   procedure update_Site   (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure update_Site   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                   To        : in Vector_3)
    is
    begin
@@ -1154,7 +1154,7 @@ is
 
 
 
-   procedure set_Speed   (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure set_Speed   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                 To        : in Vector_3)
    is
    begin
@@ -1167,7 +1167,7 @@ is
 
 
 
-   procedure set_xy_Spin   (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure set_xy_Spin   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                   To        : in Radians)
    is
    begin
@@ -1179,7 +1179,7 @@ is
    end set_xy_Spin;
 
 
-   procedure update_Scale (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure update_Scale (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                  To        : in Vector_3)
    is
    begin
@@ -1195,7 +1195,7 @@ is
 
 
 
-   procedure apply_Force (Self : in out Item;   to_Sprite : in mmi.Sprite.view;
+   procedure apply_Force (Self : in out Item;   to_Sprite : in gel.Sprite.view;
                                                 Force     : in Vector_3)
    is
    begin
@@ -1290,7 +1290,7 @@ is
 
 
 
-   procedure destroy (Self : in out Item;   the_Sprite : in mmi.Sprite.view)
+   procedure destroy (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
    begin
       Self.Commands.add ((kind   => destroy_Sprite,
@@ -1299,7 +1299,7 @@ is
 
 
 
-   function free_sprite_Set (Self : access Item) return mmi.Sprite.views
+   function free_sprite_Set (Self : access Item) return gel.Sprite.views
    is
       prior_set_Index : Integer;
    begin
@@ -1309,7 +1309,7 @@ is
       end if;
 
       declare
-         the_Set : constant mmi.Sprite.views
+         the_Set : constant gel.Sprite.views
            := Self.free_Sets (prior_set_Index).Sprites (1 .. Self.free_Sets (prior_set_Index).Count);
       begin
          Self.free_Sets (prior_set_Index).Count := 0;
@@ -1321,7 +1321,7 @@ is
 
 
 
-   function Sprites (Self : in Item) return mmi.Sprite.views
+   function Sprites (Self : in Item) return gel.Sprite.views
    is
    begin
       return Self.Sprites (1 .. Self.sprite_Count);
@@ -1329,7 +1329,7 @@ is
 
 
 
-   function fetch_Sprite  (Self : in Item;   Id : in sprite_Id) return mmi.Sprite.view
+   function fetch_Sprite  (Self : in Item;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
       return Self.id_Map_of_Sprite.Element (Id);
@@ -1337,7 +1337,7 @@ is
 
 
 
-   procedure set_Scale (Self : in out Item;   for_Sprite : in mmi.Sprite.view;
+   procedure set_Scale (Self : in out Item;   for_Sprite : in gel.Sprite.view;
                                               To         : in Vector_3)
    is
       Pad : constant Vector_3 := for_Sprite.Site;
@@ -1375,7 +1375,7 @@ is
             end if;
          exception
             when others =>
-               put_Line ("Exception in 'mmi.World.sprite_Transforms' !");
+               put_Line ("Exception in 'gel.World.sprite_Transforms' !");
          end;
 
          next (Cursor);
@@ -1389,7 +1389,7 @@ is
    --  Joints
    --
 
-   procedure destroy (Self : in out Item;   the_Joint : in mmi.Joint.view)
+   procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
       Self.Commands.add ((kind   => free_Joint,
@@ -1399,7 +1399,7 @@ is
 
 
 
-   procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in mmi.Joint.view;
+   procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in gel.Joint.view;
                                                           To        : in math.Vector_3)
    is
    begin
@@ -1421,7 +1421,7 @@ is
 
 
 
-   procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in mmi.Joint.view;
+   procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in gel.Joint.view;
                                                           To        : in math.Vector_3)
    is
    begin
@@ -1445,7 +1445,7 @@ is
 
    type new_model_Response is new lace.response.item with
       record
-         World : mmi.World.view;
+         World : gel.World.view;
       end record;
 
 
@@ -1482,7 +1482,7 @@ is
    --
    type my_new_sprite_Response is new lace.Response.item with
       record
-         World          :        mmi.World.view;
+         World          :        gel.World.view;
          Models         : access id_Maps_of_model.Map;
          physics_Models : access id_Maps_of_physics_model.Map;
       end record;
@@ -1495,10 +1495,10 @@ is
    overriding
    procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
    is
-      the_Event  : constant mmi.events.my_new_sprite_added_to_world_Event
-        := mmi.events.my_new_sprite_added_to_world_Event (to_Event);
+      the_Event  : constant gel.events.my_new_sprite_added_to_world_Event
+        := gel.events.my_new_sprite_added_to_world_Event (to_Event);
 
-      the_Sprite : constant mmi.Sprite.view
+      the_Sprite : constant gel.Sprite.view
         := to_Sprite (the_Event.Pair,
                       Self.Models.all,
                       Self.physics_Models.all,
@@ -1509,7 +1509,7 @@ is
 
 
 
-   procedure define (Self : in out my_new_sprite_Response;   World  : in     mmi.World.view;
+   procedure define (Self : in out my_new_sprite_Response;   World  : in     gel.World.view;
                                                              Models : access id_Maps_of_model.Map)
    is
    begin
@@ -1555,7 +1555,7 @@ is
                                             models => Self.graphics_Models'Access);
 
       Self.add (the_my_new_sprite_Response'Access,
-                to_Kind (mmi.Events.my_new_sprite_added_to_world_Event'Tag),
+                to_Kind (gel.Events.my_new_sprite_added_to_world_Event'Tag),
                 of_World.Name);
 
       --  Obtain and make a local copy of models, sprites and humans from the mirrored world.
@@ -1602,7 +1602,7 @@ is
          --  Fetch sprites from the server.
          --
          declare
-            the_Sprite         :          mmi.Sprite.view;
+            the_Sprite         :          gel.Sprite.view;
             the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
          begin
             for Each in the_server_Sprites'Range
@@ -1610,7 +1610,7 @@ is
                the_Sprite := to_Sprite (the_server_Sprites (Each),
                                         Self.graphics_Models,
                                         Self.physics_Models,
-                                        mmi.World.view (Self));
+                                        gel.World.view (Self));
                Self.add (the_Sprite, and_children => False);
             end loop;
          end;
@@ -1620,7 +1620,7 @@ is
 
 
 
-   procedure add (Self : access Item;   the_Sprite   : in mmi.Sprite.view;
+   procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean        := False)
    is
       procedure add_the_Sprite (the_Sprite : in out Sprite.item'Class)
@@ -1642,7 +1642,7 @@ is
          declare
             procedure add_the_Joint (the_Sprite : in out Sprite.item'Class)
             is
-               use type mmi.Joint.view;
+               use type gel.Joint.view;
             begin
                if the_Sprite.parent_Joint /= null
                then
@@ -1661,7 +1661,7 @@ is
 
 
 
-   procedure rid (Self : in out Item;   the_Sprite   : in mmi.Sprite.view;
+   procedure rid (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
       procedure rid_the_Sprite (the_Sprite : in out Sprite.item'Class)
@@ -1728,7 +1728,7 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Joint : in mmi.Joint.view)
+   procedure add (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
       the_Joint.Physics.user_Data_is (the_Joint);
@@ -1741,7 +1741,7 @@ is
 
 
 
-   procedure rid (Self : in out Item;   the_Joint : in mmi.Joint.view)
+   procedure rid (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
       Self.physics_Engine.rid (the_Joint.Physics.all'Access);
@@ -1775,7 +1775,7 @@ is
          declare
             use remote.World;
 
-            the_Id             : constant mmi.sprite_Id := Now (Each).Id;
+            the_Id             : constant gel.sprite_Id := Now (Each).Id;
             the_Sprite         :          Sprite.view;
 
             new_Site           : constant Vector_3      := refined (Now (Each).Site);
@@ -1874,7 +1874,7 @@ is
          exception
             when E : others =>
                new_Line (2);
-               put_Line ("Error in mmi.World.local.evolve ~ Self.Sprites (" & Integer'Image (Each) & ").respond;");
+               put_Line ("Error in gel.World.local.evolve ~ Self.Sprites (" & Integer'Image (Each) & ").respond;");
                new_Line;
                put_Line (ada.exceptions.Exception_Information (E));
                new_Line (2);
@@ -1889,7 +1889,7 @@ is
          declare
             the_sprite_Transforms : sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
             Cursor                : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite            : mmi.Sprite.view;
+            the_Sprite            : gel.Sprite.view;
 
             new_Transform         : Matrix_4x4;
          begin
@@ -1918,7 +1918,7 @@ is
 
             the_sprite_Transforms    : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
             Cursor                   :          sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite               :          mmi.Sprite.view;
+            the_Sprite               :          gel.Sprite.view;
 
             is_a_mirrored_World      : constant Boolean                          := not Self.Mirrors.Is_Empty;
             mirror_Updates_are_due   : constant Boolean                          := Self.Age >= Self.Age_at_last_mirror_update + 0.25;
@@ -1995,8 +1995,8 @@ is
       Self.Mirrors.append (the_Mirror);
 
       Self.register (Mirror_as_observer,  to_Kind (remote.World.                 new_model_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (mmi.events.                  new_sprite_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (mmi.events.my_new_sprite_added_to_world_Event'Tag));
+      Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));
+      Self.register (Mirror_as_observer,  to_Kind (gel.events.my_new_sprite_added_to_world_Event'Tag));
    end register;
 
 
@@ -2101,7 +2101,7 @@ is
 
    task body impact_Responder
    is
-      the_World          :        mmi.World.view;
+      the_World          :        gel.World.view;
       Done               :        Boolean        := False;
 
       Filters_through    :        impact_Filter;
@@ -2110,7 +2110,7 @@ is
       the_responses_Done : access Signal_Object;
 
    begin
-      accept start (the_World      : in     mmi.World.view;
+      accept start (the_World      : in     gel.World.view;
                     Filter         : in     impact_Filter;
                     Response       : in     impact_Response;
                     responses_Done : in     Signal_Object_view)
@@ -2188,12 +2188,12 @@ is
    --
 
    overriding
-   procedure kick_Sprite (Self : in out Item;   sprite_Id : in mmi.Sprite_Id)
+   procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id)
    is
-      the_Sprite : constant mmi.Sprite.view := Self.id_Map_of_Sprite.Element (sprite_Id);
+      the_Sprite : constant gel.Sprite.view := Self.id_Map_of_Sprite.Element (sprite_Id);
    begin
       the_Sprite.Speed_is ((0.0, 10.0, 0.0));
    end kick_Sprite;
 
 
-end mmi.World;
+end gel.World;

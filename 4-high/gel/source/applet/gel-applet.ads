@@ -1,12 +1,12 @@
 with
-     mmi.remote.World,
-     mmi.World,
-     mmi.Camera,
-     mmi.Keyboard,
-     mmi.Mouse,
-     mmi.Sprite,
-     mmi.Dolly,
-     mmi.Window,
+     gel.remote.World,
+     gel.World,
+     gel.Camera,
+     gel.Keyboard,
+     gel.Mouse,
+     gel.Sprite,
+     gel.Dolly,
+     gel.Window,
 
      openGL.Renderer.lean,
      opengl.Font,
@@ -20,7 +20,7 @@ with
      ada.containers.Vectors;
 
 
-package mmi.Applet
+package gel.Applet
 --
 --  Provides an application model, configured with a single window.
 --
@@ -37,10 +37,10 @@ is
    package Forge
    is
       function  to_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return Item;
+                           use_Window : in gel.Window.view) return Item;
 
       function new_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return View;
+                           use_Window : in gel.Window.view) return View;
    end Forge;
 
 
@@ -56,23 +56,23 @@ is
 
    function is_Open        (Self : in     Item) return        Boolean;
 
-   function Window         (Self : in     Item) return        mmi.Window.view;
+   function Window         (Self : in     Item) return        gel.Window.view;
    function Renderer       (Self : in     Item) return        openGL.Renderer.lean.view;
-   function Keyboard       (Self : in     Item) return access mmi.Keyboard.item'class;
-   function Mouse          (Self : in     Item) return access mmi.Mouse.item'class;
-   function Dolly          (Self : access Item) return        mmi.Dolly.view;
+   function Keyboard       (Self : in     Item) return access gel.Keyboard.item'class;
+   function Mouse          (Self : in     Item) return access gel.Mouse.item'class;
+   function Dolly          (Self : access Item) return        gel.Dolly.view;
 
-   function last_Keypress  (Self : access Item) return        mmi.Keyboard.Key;
+   function last_Keypress  (Self : access Item) return        gel.Keyboard.Key;
 
 
    function world_Count    (Self : in     Item)                            return Natural;
-   function Worlds         (Self : in     Item)                            return mmi.World.views;
-   function World          (Self : in     Item;   Id        : in world_Id := 1) return mmi.World.view;
-   function World_as_iFace (Self : in     Item;   Id        : in world_Id := 1) return mmi.remote.World.view;
+   function Worlds         (Self : in     Item)                            return gel.World.views;
+   function World          (Self : in     Item;   Id        : in world_Id := 1) return gel.World.view;
+   function World_as_iFace (Self : in     Item;   Id        : in world_Id := 1) return gel.remote.World.view;
 
 
-   function Camera         (Self : in     Item;   world_Id  : in mmi.world_Id  := 1;
-                                                  camera_Id : in mmi.camera_Id := 1) return mmi.Camera.view;
+   function Camera         (Self : in     Item;   world_Id  : in gel.world_Id  := 1;
+                                                  camera_Id : in gel.camera_Id := 1) return gel.Camera.view;
 
 
    function        Font    (Self : in     Item) return opengl.Font.font_Id;
@@ -83,14 +83,14 @@ is
    --- Add a new world and camera(s).
    --
 
-   use type mmi.Camera.view;
-   package camera_Vectors is new ada.Containers.Vectors (Positive, mmi.Camera.view);
+   use type gel.Camera.view;
+   package camera_Vectors is new ada.Containers.Vectors (Positive, gel.Camera.view);
    subtype camera_Vector  is     camera_Vectors.Vector;
 
 
    type world_Info is
       record
-         World   : mmi.World.view;
+         World   : gel.World.view;
          Cameras : camera_Vector;
       end record;
 
@@ -103,7 +103,7 @@ is
                                                   space_Kind : in physics.space_Kind);
 
    function  new_World (Self : access Item;   Name       : in String;
-                                              space_Kind : in physics.space_Kind) return mmi.World.view;
+                                              space_Kind : in physics.space_Kind) return gel.World.view;
 
 
 
@@ -113,14 +113,14 @@ is
 
    procedure evolve_all_Worlds      (Self : in out Item;   By : in Duration);
 
-   procedure add                    (Self : in out Item;   the_Sprite    : in mmi.Sprite.view);
-   procedure add                    (Self : in out Item;   the_Sprite    : in mmi.Sprite.view;
+   procedure add                    (Self : in out Item;   the_Sprite    : in gel.Sprite.view);
+   procedure add                    (Self : in out Item;   the_Sprite    : in gel.Sprite.view;
                                                            at_site       : in math.Vector_3);
 
 
-   procedure Dolly_is               (Self : access Item;   Now           : in mmi.Dolly.view);
+   procedure Dolly_is               (Self : access Item;   Now           : in gel.Dolly.view);
    procedure enable_simple_Dolly    (Self : access Item;   in_World      : in world_Id);
-   procedure enable_following_Dolly (Self : access Item;   Follow        : in mmi.Sprite.view);
+   procedure enable_following_Dolly (Self : access Item;   Follow        : in gel.Sprite.view);
 
 
 
@@ -160,7 +160,7 @@ private
 
    type applet_event_Response is abstract new lace.Response.item with
       record
-         Applet : mmi.Applet.view;
+         Applet : gel.Applet.view;
       end record;
 
 
@@ -209,7 +209,7 @@ private
 
    type mouse_click_raycast_Response is new lace.Response.item with
       record
-         Applet : mmi.Applet.view;
+         Applet : gel.Applet.view;
       end record;
 
    overriding
@@ -232,7 +232,7 @@ private
    -- world_Vector
    --
 
-   use type mmi.World.view;
+   use type gel.World.view;
    package world_Vectors is new ada.Containers.Vectors (Positive, world_Info_view);
    subtype world_Vector  is world_Vectors.Vector;
 
@@ -245,19 +245,19 @@ private
       record
          local_Subject_and_Observer   :         lace.Subject_and_deferred_Observer.view := new lace.Subject_and_deferred_Observer.item;
 
-         Window                       :         mmi.Window.view;
+         Window                       :         gel.Window.view;
 
          resize_Response              : aliased applet.resize_event_Response;
 
          Worlds                       :         World_Vector;
 
-         Keyboard                     : access  mmi.Keyboard.item'Class;
+         Keyboard                     : access  gel.Keyboard.item'Class;
          key_press_Response           : aliased applet.key_press_Response;
          key_release_Response         : aliased applet.key_release_Response;
 
-         Dolly                        : aliased mmi.Dolly.view;
+         Dolly                        : aliased gel.Dolly.view;
 
-         Mouse                        : access  mmi.Mouse.item'Class;
+         Mouse                        : access  gel.Mouse.item'Class;
          button_press_Response        : aliased applet.button_press_Response;
          button_release_Response      : aliased applet.button_release_Response;
          mouse_motion_Response        : aliased applet.mouse_motion_Response;
@@ -270,13 +270,13 @@ private
 
          is_capturing_Video           :         Boolean             := False;
 
-         last_pressed_Key             :         mmi.Keyboard.Key    := mmi.Keyboard.Nil;
-         key_Focus                    :         mmi.Sprite.view;
+         last_pressed_Key             :         gel.Keyboard.Key    := gel.Keyboard.Nil;
+         key_Focus                    :         gel.Sprite.view;
 
          quit_Requested               :         Boolean             := False;
       end record;
 
-   global_Window : mmi.Window.view;
+   global_Window : gel.Window.view;
 
 
-end mmi.Applet;
+end gel.Applet;

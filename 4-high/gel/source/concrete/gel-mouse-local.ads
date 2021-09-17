@@ -2,14 +2,14 @@ with
      lace.Subject.local;
 
 
-package mmi.Mouse.local
+package gel.Mouse.local
 --
 -- Provides a concrete mouse.
 --
 is
 
    type Item is limited new lace.Subject.local.item
-                        and mmi.Mouse         .item with private;
+                        and gel.Mouse         .item with private;
 
    type View is access all Item'Class;
 
@@ -27,9 +27,9 @@ is
 private
 
    type Item is limited new lace.Subject.local.item
-                        and mmi.Mouse         .item with
+                        and gel.Mouse         .item with
       record
          null;
       end record;
 
-end mmi.Mouse.local;
+end gel.Mouse.local;

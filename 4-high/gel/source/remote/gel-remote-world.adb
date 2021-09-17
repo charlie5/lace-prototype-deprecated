@@ -1,4 +1,4 @@
-package body mmi.remote.World
+package body gel.remote.World
 is
 
    function refined (Self : in coarse_Vector_3) return math.Vector_3
@@ -202,4 +202,4 @@ is
    end Read;
 
 
-end mmi.remote.World;
+end gel.remote.World;

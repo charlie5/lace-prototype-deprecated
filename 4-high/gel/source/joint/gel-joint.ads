@@ -4,10 +4,10 @@ with
 
 limited
 with
-     mmi.Sprite;
+     gel.Sprite;
 
 
-package mmi.Joint
+package gel.Joint
 --
 --  Allows sprites to be connected via a joint.
 --  A joint constrains the motion of the sprites which it connects.
@@ -24,7 +24,7 @@ is
 
    type Physics_view is access all physics.Joint.Item'Class;
 
-   function to_MMI (the_Joint : Physics.Joint.view) return mmi.Joint.view;
+   function to_GEL (the_Joint : Physics.Joint.view) return gel.Joint.view;
 
 
    subtype Degree_of_freedom is physics.Joint.Degree_of_freedom;
@@ -34,7 +34,7 @@ is
 
    --- Forge
    --
-   procedure define  (Self : access Item;   Sprite_A, Sprite_B : access mmi.Sprite.item'class);
+   procedure define  (Self : access Item;   Sprite_A, Sprite_B : access gel.Sprite.item'class);
 
    procedure destroy (Self : in out Item)    is abstract;
    procedure free    (Self : in out View);
@@ -44,8 +44,8 @@ is
    --- Attributes
    --
 
-   function  Sprite_A          (Self : in     Item'Class) return access mmi.Sprite.item'Class;
-   function  Sprite_B          (Self : in     Item'Class) return access mmi.Sprite.item'Class;
+   function  Sprite_A          (Self : in     Item'Class) return access gel.Sprite.item'Class;
+   function  Sprite_B          (Self : in     Item'Class) return access gel.Sprite.item'Class;
 
 
    function  Frame_A           (Self : in     Item)       return math.Matrix_4x4   is abstract;
@@ -123,8 +123,8 @@ private
 
    type Item  is abstract new lace.Any.limited_Item with
       record
-         Sprite_A          : access mmi.Sprite.item'Class;
-         Sprite_B          : access mmi.Sprite.item'Class;
+         Sprite_A          : access gel.Sprite.item'Class;
+         Sprite_B          : access gel.Sprite.item'Class;
 
          local_Anchor_on_A :        math.Vector_3;
          local_Anchor_on_B :        math.Vector_3;
@@ -134,4 +134,4 @@ private
    null_Joints : constant Joint.views (1 .. 0) := (others => null);
 
 
-end mmi.Joint;
+end gel.Joint;

@@ -1,7 +1,7 @@
 with
-     mmi.remote.World,
-     mmi.Sprite,
-     mmi.Joint,
+     gel.remote.World,
+     gel.Sprite,
+     gel.Joint,
 
      openGL.Model,
 
@@ -25,16 +25,16 @@ with
      openGL.Renderer.lean;
 
 
-package mmi.World
+package gel.World
 --
---  Provides an mmi world.
+--  Provides an gel world.
 --
 is
    use Math;
 
 
    type Item  is limited new lace.Subject_and_deferred_Observer.item
-                         and mmi.remote.World.item
+                         and gel.remote.World.item
    with private;
 
    type View  is access all Item'Class;
@@ -51,12 +51,12 @@ is
       function to_World  (Name       : in     String;
                           Id         : in     world_Id;
                           space_Kind : in     physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.item;
+                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.item;
 
       function new_World (Name       : in     String;
                           Id         : in     world_Id;
                           space_Kind : in     physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return mmi.World.view;
+                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.view;
    end Forge;
 
    overriding
@@ -83,34 +83,34 @@ is
    function  space_Kind      (Self : in     Item)     return physics.space_Kind;
    function  Space           (Self : in     Item)     return physics.Space.view;
 
-   procedure update_Bounds   (Self : in out Item;   of_Sprite : in mmi.Sprite.view);
-   procedure update_Site     (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure update_Bounds   (Self : in out Item;   of_Sprite : in gel.Sprite.view);
+   procedure update_Site     (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                     To        : in Vector_3);
-   procedure update_Scale    (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure update_Scale    (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                     To        : in Vector_3);
 
-   procedure set_Speed       (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure set_Speed       (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                     To        : in Vector_3);
-   procedure set_xy_Spin     (Self : in out Item;   of_Sprite : in mmi.Sprite.view;
+   procedure set_xy_Spin     (Self : in out Item;   of_Sprite : in gel.Sprite.view;
                                                     To        : in Radians);
 
-   procedure apply_Force     (Self : in out Item;   to_Sprite : in mmi.Sprite.view;
+   procedure apply_Force     (Self : in out Item;   to_Sprite : in gel.Sprite.view;
                                                     Force     : in Vector_3);
 
    --  Sprites
    --
    function  new_sprite_Id   (Self : access Item)                              return sprite_Id;
-   function  free_sprite_Set (Self : access Item)                              return mmi.Sprite.views;
-   function  Sprites         (Self : in     Item)                              return mmi.Sprite.views;
-   function  fetch_Sprite    (Self : in     Item;   Id         : in sprite_Id) return mmi.Sprite.view;
-   procedure destroy         (Self : in out Item;   the_Sprite : in mmi.Sprite.view);
-   procedure set_Scale       (Self : in out Item;   for_Sprite : in mmi.Sprite.view;
+   function  free_sprite_Set (Self : access Item)                              return gel.Sprite.views;
+   function  Sprites         (Self : in     Item)                              return gel.Sprite.views;
+   function  fetch_Sprite    (Self : in     Item;   Id         : in sprite_Id) return gel.Sprite.view;
+   procedure destroy         (Self : in out Item;   the_Sprite : in gel.Sprite.view);
+   procedure set_Scale       (Self : in out Item;   for_Sprite : in gel.Sprite.view;
                                                     To         : in Vector_3);
 
 
    type sprite_transform_Pair is
       record
-         Sprite    : mmi.Sprite.view;
+         Sprite    : gel.Sprite.view;
          Transform : Matrix_4x4;
       end record;
 
@@ -123,12 +123,12 @@ is
    --  Joints
    --
 
-   procedure destroy (Self : in out Item;   the_Joint : in mmi.Joint.view);
+   procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view);
 
-   procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in mmi.Joint.view;
+   procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in gel.Joint.view;
                                                           To        : in math.Vector_3);
 
-   procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in mmi.Joint.view;
+   procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in gel.Joint.view;
                                                           To        : in math.Vector_3);
 
 
@@ -173,17 +173,17 @@ is
    --  Operations
    --
 
-   procedure is_a_Mirror          (Self : access Item'Class;   of_World : in mmi.remote.World.view);
+   procedure is_a_Mirror          (Self : access Item'Class;   of_World : in gel.remote.World.view);
 
    procedure add                  (Self : in out Item;   the_Model    : in openGL.Model.view);
    procedure add                  (Self : in out Item;   the_Model    : in Standard.physics.Model.view);
-   procedure add                  (Self : access Item;   the_Sprite   : in mmi.Sprite.view;
+   procedure add                  (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                                          and_Children : in Boolean        := False);
-   procedure add                  (Self : in out Item;   the_Joint    : in mmi.Joint.view);
+   procedure add                  (Self : in out Item;   the_Joint    : in gel.Joint.view);
 
-   procedure rid                  (Self : in out Item;   the_Sprite   : in mmi.Sprite.view;
+   procedure rid                  (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
                                                          and_Children : in Boolean        := False);
-   procedure rid                  (Self : in out Item;   the_Joint    : in mmi.Joint.view);
+   procedure rid                  (Self : in out Item;   the_Joint    : in gel.Joint.view);
 
 
    procedure start                (Self : access Item);
@@ -202,7 +202,7 @@ is
 
    type ray_Collision is
       record
-         near_Sprite  : mmi.Sprite.view;
+         near_Sprite  : gel.Sprite.view;
          hit_Fraction : Real;
          Normal_world : Vector_3;
          Site_world   : Vector_3;
@@ -213,7 +213,7 @@ is
 
    type raycast_collision_Event is new lace.Event.item with
       record
-         near_Sprite : mmi.Sprite.view;
+         near_Sprite : gel.Sprite.view;
          Context     : Any_limited_view;
          Site_world  : Vector_3;
       end record;
@@ -276,9 +276,9 @@ is
    --  Graphics Models
    --
    use type openGL.Model.view;
-   use type mmi.graphics_model_Id;
-   function Hash             is new ada.unchecked_Conversion   (mmi.graphics_model_Id,  ada.Containers.Hash_Type);
-   package  id_Maps_of_model is new ada.containers.hashed_Maps (mmi.graphics_model_Id,  openGL.Model.view,
+   use type gel.graphics_model_Id;
+   function Hash             is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_Type);
+   package  id_Maps_of_model is new ada.containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
                                                                 Hash,                   "=");
 
    function local_graphics_Models (Self : in Item) return id_Maps_of_model.Map;
@@ -309,7 +309,7 @@ is
    ---  Testing/Debug
    --
    overriding
-   procedure kick_Sprite (Self : in out Item;   sprite_Id : in mmi.Sprite_Id);
+   procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id);
 
 
 
@@ -321,7 +321,7 @@ private
    --
 
    task
-   type Engine (the_World : access mmi.World.item'Class)
+   type Engine (the_World : access gel.World.item'Class)
    is
       entry start (space_Kind : in standard.physics.space_Kind);
       entry stop;
@@ -357,7 +357,7 @@ private
    --
 
    task
-   type sprite_transform_Updater (the_World : access mmi.World.item'Class)
+   type sprite_transform_Updater (the_World : access gel.World.item'Class)
    is
       entry stop;
    end sprite_transform_Updater;
@@ -370,15 +370,15 @@ private
    --  id_Maps_of_Sprite
    --
    use type Sprite.view;
-   function Hash              is new ada.unchecked_Conversion   (mmi.sprite_Id, ada.containers.Hash_type);
-   package  id_Maps_of_Sprite is new ada.containers.hashed_Maps (mmi.sprite_Id,  mmi.Sprite.view,
+   function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.containers.Hash_type);
+   package  id_Maps_of_Sprite is new ada.containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
                                                                  hash            => Hash,
                                                                  equivalent_keys => "=");
 
    -----------------------------
    --  sprite_Maps_of_transforms
    --
-   function Hash is new ada.unchecked_Conversion (mmi.Sprite.view, ada.containers.Hash_type);
+   function Hash is new ada.unchecked_Conversion (gel.Sprite.view, ada.containers.Hash_type);
    package  sprite_Maps_of_transforms is new ada.containers.hashed_Maps (Sprite.view,  Matrix_4x4,
                                                                          hash            => Hash,
                                                                          equivalent_keys => "=");
@@ -447,7 +447,7 @@ private
 
    type Command (Kind : command_Kind := command_Kind'First) is
       record
-         Sprite : mmi.Sprite.view;
+         Sprite : gel.Sprite.view;
 
          case Kind
          is
@@ -475,10 +475,10 @@ private
             when --add_Joint |
 --                   rid_Joint |
                  free_Joint =>
-               Joint  : mmi.Joint.view;
+               Joint  : gel.Joint.view;
 
 --              when set_Joint_local_Anchor =>
---                 anchor_Joint : mmi.Joint.view;
+--                 anchor_Joint : gel.Joint.view;
 --                 is_Anchor_A  : Boolean;         -- When false, is anchor B.
 --                 local_Anchor : math.Vector_3;
 
@@ -522,7 +522,7 @@ private
 
    type free_Set is
       record
-         Sprites  : mmi.Sprite.views (1 .. 10_000);
+         Sprites  : gel.Sprite.views (1 .. 10_000);
          Count    : Natural := 0;
       end record;
 
@@ -534,14 +534,14 @@ private
    -- safe_Joints
    --
 
-   subtype safe_Joints is mmi.Joint.views (1 .. 10_000);
+   subtype safe_Joints is gel.Joint.views (1 .. 10_000);
 
    protected
    type safe_joint_Set
    is
       function  is_Empty return Boolean;
 
-      procedure add   (the_Joint : in     mmi.Joint.view);
+      procedure add   (the_Joint : in     gel.Joint.view);
       procedure Fetch (To        :    out safe_Joints;
                        Count     :    out Natural);
    private
@@ -559,7 +559,7 @@ private
    -- TODO: refactor into two subclasses 'local' and 'mirror'.
 
    type Item is limited new lace.Subject_and_deferred_Observer.item
-                        and mmi.remote.World                  .item with
+                        and gel.remote.World                  .item with
       record
          local_Subject_and_deferred_Observer :     lace.Subject_and_deferred_Observer.view;
 
@@ -576,7 +576,7 @@ private
          graphics_Models                 : aliased id_Maps_of_model        .Map;
          physics_Models                  : aliased id_Maps_of_physics_model.Map;
 
-         Sprites                         :         mmi.Sprite.views (1 .. 100_000);
+         Sprites                         :         gel.Sprite.views (1 .. 100_000);
          sprite_Count                    :         math.Index;
 
          all_sprite_Transforms           :         World.all_sprite_Transforms;
@@ -594,8 +594,8 @@ private
 
          --  Ids
          --
-         last_used_sprite_Id             :         mmi.sprite_Id         := 0;
-         last_used_model_Id              :         mmi.graphics_model_Id := 0;
+         last_used_sprite_Id             :         gel.sprite_Id         := 0;
+         last_used_model_Id              :         gel.graphics_model_Id := 0;
          last_used_physics_model_Id      :         Standard.physics.model_Id := 0;
 
          --  Command sets
@@ -620,4 +620,4 @@ private
       end record;
 
 
-end mmi.World;
+end gel.World;

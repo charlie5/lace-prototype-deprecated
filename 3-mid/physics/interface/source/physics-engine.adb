@@ -54,7 +54,7 @@ is
 
       procedure free_Objects
       is
---           the_free_Objects : mmi.Object.views := the_World.free_Object_Set;
+--           the_free_Objects : gel.Object.views := the_World.free_Object_Set;
       begin
 --           for Each in the_free_Objects'Range
 --           loop
@@ -65,7 +65,7 @@ is
 --                 the_World.Renderer.free (the_free_Objects (Each).Visual.Model);
 --              end if;
 --
---              mmi.Object.free (the_free_Objects (Each));
+--              gel.Object.free (the_free_Objects (Each));
 --           end loop;
          null;
 
@@ -318,7 +318,7 @@ is
 --                                   return ray_Collision' (near_Object => null,
 --                                                          others      => <>);
 --                                else
---                                   return ray_Collision' (to_MMI (physics_Collision.near_Object),
+--                                   return ray_Collision' (to_GEL (physics_Collision.near_Object),
 --                                                          physics_Collision.hit_Fraction,
 --                                                          physics_Collision.Normal_world,
 --                                                          physics_Collision.Site_world);
@@ -434,10 +434,10 @@ is
 --           if the_World.broken_joints_Allowed
 --           then
 --              declare
---                 use mmi.Joint,
+--                 use gel.Joint,
 --                     standard.physics.Space;
 --
---                 the_Joint       : mmi.Joint.view;
+--                 the_Joint       : gel.Joint.view;
 --                 reaction_Force,
 --                 reaction_Torque : math.Real;
 --
@@ -445,7 +445,7 @@ is
 --              begin
 --                 while has_Element (Cursor)
 --                 loop
---                    the_Joint := to_MMI (Element (Cursor));
+--                    the_Joint := to_GEL (Element (Cursor));
 --
 --                    if the_Joint /= null
 --                    then

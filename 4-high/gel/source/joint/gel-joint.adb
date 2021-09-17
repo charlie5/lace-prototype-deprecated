@@ -1,19 +1,19 @@
 with
-     mmi.Sprite,
-     mmi.World,
+     gel.Sprite,
+     gel.World,
 
      ada.unchecked_Deallocation;
 
 
-package body mmi.Joint
+package body gel.Joint
 is
 
 
-   function to_MMI (the_Joint : standard.Physics.Joint.view) return mmi.Joint.view
+   function to_GEL (the_Joint : standard.Physics.Joint.view) return gel.Joint.view
    is
    begin
-      return mmi.Joint.view (the_Joint.user_Data);
-   end to_MMI;
+      return gel.Joint.view (the_Joint.user_Data);
+   end to_GEL;
 
 
 
@@ -21,7 +21,7 @@ is
    --- Forge
    --
 
-   procedure define (Self : access Item;   Sprite_A, Sprite_B : access mmi.Sprite.item'class)
+   procedure define (Self : access Item;   Sprite_A, Sprite_B : access gel.Sprite.item'class)
    is
    begin
       Self.Sprite_A := Sprite_A;
@@ -47,14 +47,14 @@ is
    --- Attributes
    --
 
-   function  Sprite_A (Self : in Item'Class) return access mmi.Sprite.item'class
+   function  Sprite_A (Self : in Item'Class) return access gel.Sprite.item'class
    is
    begin
       return Self.Sprite_A;
    end Sprite_A;
 
 
-   function  Sprite_B (Self : in Item'Class) return access mmi.Sprite.item'class
+   function  Sprite_B (Self : in Item'Class) return access gel.Sprite.item'class
    is
    begin
       return Self.Sprite_B;
@@ -125,4 +125,4 @@ is
    end reaction_Torque;
 
 
-end mmi.Joint;
+end gel.Joint;

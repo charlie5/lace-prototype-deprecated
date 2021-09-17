@@ -2,7 +2,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body mmi.Keyboard.local
+package body gel.Keyboard.local
 is
 
 
@@ -103,4 +103,4 @@ is
    end Modifiers;
 
 
-end mmi.Keyboard.local;
+end gel.Keyboard.local;

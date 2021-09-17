@@ -1,7 +1,7 @@
 with
-     mmi.hinge_Joint,
-     mmi.any_Joint,
-     mmi.World,
+     gel.hinge_Joint,
+     gel.any_Joint,
+     gel.World,
 
      float_math.Algebra.linear.d3,
 
@@ -10,7 +10,7 @@ with
      ada.unchecked_Conversion;
 
 
-package body mmi.Sprite
+package body gel.Sprite
 is
    use ada.Tags,
        float_math.Algebra.linear.d3;
@@ -109,7 +109,7 @@ is
 
 
 
-   procedure define (Self : access Item;   World          : access mmi.    World.item'Class;
+   procedure define (Self : access Item;   World          : access gel.    World.item'Class;
                                            graphics_Model : access openGL. Model.item'Class;
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
@@ -145,7 +145,7 @@ is
 
    procedure destroy (Self : access Item;   and_Children : in Boolean)
    is
-      use mmi.Joint;
+      use gel.Joint;
 
    begin
       if Self.is_Destroyed
@@ -195,7 +195,7 @@ is
    is
       pragma assert (Self.is_Destroyed);
 
-      use mmi.Joint,
+      use gel.Joint,
           physics.Model,
           physics.Object,
           physics.Shape;
@@ -231,7 +231,7 @@ is
    is
 
       function  to_Sprite (Name           : in     String;
-                           World          : access mmi.        World.item'Class;
+                           World          : access gel.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean;
@@ -249,7 +249,7 @@ is
 
 
       function new_Sprite (Name           : in     String;
-                           World          : access mmi.        World.item'Class;
+                           World          : access gel.        World.item'Class;
                            graphics_Model : access openGL.     Model.item'class;
                            physics_Model  : access physics.Model.item'class;
                            owns_Graphics  : in     Boolean       := True;
@@ -276,7 +276,7 @@ is
    --- Attributes
    --
 
-   function  World (Self : in     Item'Class) return access mmi.World.item'Class
+   function  World (Self : in     Item'Class) return access gel.World.item'Class
    is
    begin
       return Self.World;
@@ -284,7 +284,7 @@ is
 
 
 
-   function  Id (Self : in Item'Class) return mmi.sprite_Id
+   function  Id (Self : in Item'Class) return gel.sprite_Id
    is
    begin
       return Self.Id;
@@ -292,7 +292,7 @@ is
 
 
 
-   procedure Id_is (Self : in out Item'Class;   Now : in mmi.sprite_Id)
+   procedure Id_is (Self : in out Item'Class;   Now : in gel.sprite_Id)
    is
    begin
       Self.Id := Now;
@@ -474,11 +474,11 @@ is
 
 
 
-   function to_MMI (the_Solid : in physics_Object_view) return mmi.Sprite.view
+   function to_GEL (the_Solid : in physics_Object_view) return gel.Sprite.view
    is
    begin
-      return mmi.Sprite.view (the_Solid.user_Data);
-   end to_MMI;
+      return gel.Sprite.view (the_Solid.user_Data);
+   end to_GEL;
 
 
 
@@ -819,7 +819,7 @@ is
    --- Hierachy
    --
 
-   function parent_Joint (Self : in Item'Class) return mmi.Joint.view
+   function parent_Joint (Self : in Item'Class) return gel.Joint.view
    is
    begin
       return Self.parent_Joint;
@@ -827,7 +827,7 @@ is
 
 
 
-   function child_Joints (Self : in Item'Class) return mmi.Joint.views
+   function child_Joints (Self : in Item'Class) return gel.Joint.views
    is
       the_Joints : Joint.views (1 .. Integer (Self.child_Joints.Length));
    begin
@@ -841,18 +841,18 @@ is
 
 
 
-   function  top_Parent (Self : access Item'Class) return mmi.Sprite.view
+   function  top_Parent (Self : access Item'Class) return gel.Sprite.view
    is
    begin
       if Self.parent_Joint = null
-      then   return mmi.Sprite.view (Self);
+      then   return gel.Sprite.view (Self);
       else   return Self.parent_Joint.Sprite_A.top_Parent;   -- Recurse.
       end if;
    end top_Parent;
 
 
 
-   function Parent (Self : in Item) return mmi.Sprite.view
+   function Parent (Self : in Item) return gel.Sprite.view
    is
    begin
       if Self.parent_Joint = null
@@ -894,10 +894,10 @@ is
 
 
    procedure attach (Self : access Item'Class;   the_Child : in Sprite.view;
-                                                 the_Joint : in mmi.Joint.view)
+                                                 the_Joint : in gel.Joint.view)
    is
    begin
-      log ("Attaching " & mmi.sprite_Id'Image (the_Child.Id) & " to " & mmi.sprite_Id'Image (Self.Id));
+      log ("Attaching " & gel.sprite_Id'Image (the_Child.Id) & " to " & gel.sprite_Id'Image (Self.Id));
 
       Self.child_Joints.append (the_Joint);
 
@@ -908,11 +908,11 @@ is
 
 
 
-   procedure detach (Self : in out Item;   the_Child : mmi.Sprite.view)
+   procedure detach (Self : in out Item;   the_Child : gel.Sprite.view)
    is
       childs_Joint : Joint.view;
    begin
-      log ("Detaching " & mmi.sprite_Id'Image (the_Child.Id) & " from " & mmi.sprite_Id'Image (Self.Id));
+      log ("Detaching " & gel.sprite_Id'Image (the_Child.Id) & " from " & gel.sprite_Id'Image (Self.Id));
 
       for i in 1 .. Integer (Self.child_Joints.Length)
       loop
@@ -942,9 +942,9 @@ is
                                                            low_Limit         : in      math.Real;
                                                            high_Limit        : in      math.Real;
                                                            collide_Connected : in      Boolean;
-                                                           new_joint         :     out mmi.Joint.view)
+                                                           new_joint         :     out gel.Joint.view)
    is
-      the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
+      the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
       the_Joint.define (Self.World.Space,
                         Self,       the_Child,
@@ -967,9 +967,9 @@ is
                                                            pivot_Anchor : in math.Vector_3;
                                                            low_Limit    : in math.Real;
                                                            high_Limit   : in math.Real;
-                                                           new_joint    : out mmi.Joint.view)
+                                                           new_joint    : out gel.Joint.view)
    is
-      the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
+      the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
       the_Joint.define     (Self.World.Space,
                             Self,        the_Child,
@@ -988,9 +988,9 @@ is
                                                            pivot_Axis : in     math.Vector_3;
                                                            low_Limit  : in     math.Real;
                                                            high_Limit : in     math.Real;
-                                                           new_joint  :    out mmi.Joint.view)
+                                                           new_joint  :    out gel.Joint.view)
    is
-      the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
+      the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
       the_Joint.define     (Self.World.Space,
                             Self, the_Child,
@@ -1010,9 +1010,9 @@ is
                                                            Frame_in_child    : in     math.Matrix_4x4;
                                                            Limits            : in     DoF_Limits;
                                                            collide_Connected : in     Boolean;
-                                                           new_joint         :    out mmi.Joint.view)
+                                                           new_joint         :    out gel.Joint.view)
    is
-      the_Joint : constant mmi.hinge_Joint.view := new mmi.hinge_Joint.item;
+      the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
       the_Joint.define (Self.World.Space,
                         Self,             the_Child,
@@ -1038,9 +1038,9 @@ is
                                                                           pitch_Limits : in DoF_Limits;
                                                                           yaw_Limits   : in DoF_Limits;
                                                                           roll_Limits  : in DoF_Limits;
-                                                                          the_Joint    : in mmi.any_Joint.view)
+                                                                          the_Joint    : in gel.any_Joint.view)
    is
-      use mmi.any_Joint;
+      use gel.any_Joint;
    begin
       the_Joint.low_Bound_is  (Pitch, pitch_Limits.Low);
       the_Joint.low_Bound_is  (Yaw,   yaw_Limits  .Low);
@@ -1060,9 +1060,9 @@ is
                                                                  pivot_Axis   : in math.Matrix_3x3;
                                                                  pitch_Limits : in DoF_Limits;
                                                                  yaw_Limits   : in DoF_Limits;
-                                                                 roll_Limits  : in DoF_Limits;   new_joint : out mmi.Joint.view)
+                                                                 roll_Limits  : in DoF_Limits;   new_joint : out gel.Joint.view)
    is
-      the_Joint : constant mmi.any_Joint.view := new mmi.any_Joint.item;
+      the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
       the_Joint.define     (Self.World.Space,
                             Self,         the_Child,
@@ -1083,9 +1083,9 @@ is
                                                                  Frame_in_child  : in math.Matrix_4x4;
                                                                  pitch_Limits    : in DoF_Limits;
                                                                  yaw_Limits      : in DoF_Limits;
-                                                                 roll_Limits     : in DoF_Limits;   new_joint : out mmi.Joint.view)
+                                                                 roll_Limits     : in DoF_Limits;   new_joint : out gel.Joint.view)
    is
-      the_Joint : constant mmi.any_Joint.view := new mmi.any_Joint.item;
+      the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
       the_Joint.define (Self.World.Space,
                         Self,             the_Child,
@@ -1158,4 +1158,4 @@ is
    end safe_Matrix_4x4;
 
 
-end mmi.Sprite;
+end gel.Sprite;

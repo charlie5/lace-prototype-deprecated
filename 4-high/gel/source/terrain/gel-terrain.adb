@@ -9,7 +9,7 @@ with
      ada.Unchecked_Conversion;
 
 
-package body mmi.Terrain
+package body gel.Terrain
 is
    type Heightfield_view is access all physics.Heightfield;
 
@@ -35,10 +35,10 @@ is
 
 
 
-   function new_Terrain (World        : access mmi.World.item'Class;
+   function new_Terrain (World        : access gel.World.item'Class;
                          heights_File : in     String;
                          texture_File : in     String        := "";
-                         Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access mmi.Sprite.Grid
+                         Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid
    is
       use Math;
 
@@ -66,7 +66,7 @@ is
       the_heightmap_Grid  :          height_map_Grid (1  ..  Grid_last (the_Pixels'Length (1), tile_Depth),
                                                       1  ..  Grid_last (the_Pixels'Length (2), tile_Width));
 
-      the_Sprite_Grid     : constant mmi.Sprite.Grid_view := new mmi.Sprite.Grid (the_heightmap_Grid'Range (1),
+      the_Sprite_Grid     : constant gel.Sprite.Grid_view := new gel.Sprite.Grid (the_heightmap_Grid'Range (1),
                                                                                   the_heightmap_Grid'Range (2));
 
       procedure free is new ada.Unchecked_Deallocation (opengl.height_Map, opengl.IO.height_Map_view);
@@ -187,14 +187,14 @@ is
                                                 is_Tangible => True);
 
                   the_height_Extents : constant opengl.Vector_2 := opengl.height_Extent (the_Region.all);
-                  the_Sprite         : mmi.Sprite.view     renames the_sprite_Grid      (Row, Col);
+                  the_Sprite         : gel.Sprite.view     renames the_sprite_Grid      (Row, Col);
                   the_Site           : vector_3;
                begin
                   the_ground_Model.Scale := (Scale (1),
                                              Scale (2),
                                              Scale (3));
 
-                  the_Sprite    := mmi.Sprite.Forge.new_Sprite ("Terrain" & Integer'Image (Row) & Integer'Image (Col),
+                  the_Sprite    := gel.Sprite.Forge.new_Sprite ("Terrain" & Integer'Image (Row) & Integer'Image (Col),
                                                                 World,
                                                                 the_ground_Model,
                                                                 the_ground_physics_Model,
@@ -234,4 +234,4 @@ is
    end new_Terrain;
 
 
-end mmi.Terrain;
+end gel.Terrain;

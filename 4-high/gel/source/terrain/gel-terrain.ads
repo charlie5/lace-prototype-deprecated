@@ -1,17 +1,17 @@
 with
-     mmi.Sprite,
-     mmi.World;
+     gel.Sprite,
+     gel.World;
 
 
-package mmi.Terrain
+package gel.Terrain
 --
 --  Provides a constructor for heightmap terrain.
 --
 is
 
-   function new_Terrain (World        : access mmi.World.item'Class;
+   function new_Terrain (World        : access gel.World.item'Class;
                          heights_File : in     String;
                          texture_File : in     String        := "";
-                         Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access mmi.Sprite.Grid;
+                         Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid;
 
-end mmi.Terrain;
+end gel.Terrain;

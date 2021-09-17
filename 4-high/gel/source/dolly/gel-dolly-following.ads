@@ -1,14 +1,14 @@
 with
-     mmi.Sprite;
+     gel.Sprite;
 
 
-package mmi.Dolly.following
+package gel.Dolly.following
 --
---  Provides a camera dolly which follows an 'mmi.Sprite'.
+--  Provides a camera dolly which follows an 'gel.Sprite'.
 --
 is
 
-   type Item is new mmi.Dolly.item with private;
+   type Item is new gel.Dolly.item with private;
    type View is access all Item'Class;
 
 
@@ -26,7 +26,7 @@ is
    --  Attributes
    --
 
-   procedure follow               (Self : in out Item;   the_Sprite : in mmi.Sprite.view);
+   procedure follow               (Self : in out Item;   the_Sprite : in gel.Sprite.view);
 
    overriding
    procedure allow_linear_Motion  (Self : in out Item;   Allow      : in Boolean);
@@ -49,9 +49,9 @@ is
 
 private
 
-   type Item is new mmi.Dolly.item with
+   type Item is new gel.Dolly.item with
       record
-         Sprite               : mmi.Sprite.view;
+         Sprite               : gel.Sprite.view;
          sprite_Offset        : math.Vector_3  := (0.0, 30.0, 0.0);
 
          allow_linear_Motion  : Boolean        := True;
@@ -64,4 +64,4 @@ private
       end record;
 
 
-end mmi.Dolly.following;
+end gel.Dolly.following;

@@ -1,9 +1,9 @@
-package mmi.Remote
+package gel.Remote
 --
--- Provides a namespace for remote MMI classes.
+-- Provides a namespace for remote GEL classes.
 --
 is
 
    pragma Pure;
 
-end mmi.Remote;
+end gel.Remote;

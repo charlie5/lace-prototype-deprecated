@@ -1,9 +1,9 @@
 with
-     mmi.Dolly.simple,
-     mmi.Dolly.following,
-     mmi.Camera.forge,
-     mmi.Joint,
-     mmi.Events,
+     gel.Dolly.simple,
+     gel.Dolly.following,
+     gel.Camera.forge,
+     gel.Joint,
+     gel.Events,
 
      openGL.Palette,
      openGL.Renderer.lean.forge,
@@ -16,7 +16,7 @@ with
      ada.Text_IO;
 
 
-package body mmi.Applet
+package body gel.Applet
 is
    use Math,
        lace.Event.utility,
@@ -42,10 +42,10 @@ is
    overriding
    procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.Item'Class)
    is
-      the_Event  : constant mmi.events.new_sprite_added_to_world_Event
-        := mmi.events.new_sprite_added_to_world_Event (to_Event);
+      the_Event  : constant gel.events.new_sprite_added_to_world_Event
+        := gel.events.new_sprite_added_to_world_Event (to_Event);
 
-      the_Sprite :          mmi.Sprite.view;
+      the_Sprite :          gel.Sprite.view;
 
    begin
       the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
@@ -55,7 +55,7 @@ is
 
    exception
       when Constraint_Error =>
-         put_Line ("mmi.applet ~ Exception in  'respond (Self : in out add_new_Sprite ...)'");
+         put_Line ("gel.applet ~ Exception in  'respond (Self : in out add_new_Sprite ...)'");
    end respond;
 
 
@@ -69,7 +69,7 @@ is
    end Name;
 
 
-   procedure define (Self : in View;   use_Window : in mmi.Window.view)
+   procedure define (Self : in View;   use_Window : in gel.Window.view)
    is
    begin
       Self.Window := use_Window;
@@ -77,11 +77,11 @@ is
       -- Add window resize event repsonse.
       --
       Self.local_Subject_and_Observer.add (Self.resize_Response'Unchecked_Access,
-                                           to_Kind (mmi.events.window_resize_Request'Tag),
+                                           to_Kind (gel.events.window_resize_Request'Tag),
                                            use_Window.Name);
 
       Self.Window.register (lace.Observer.view (Self.local_Subject_and_Observer),
-                            to_Kind (mmi.events.window_resize_Request'Tag));
+                            to_Kind (gel.events.window_resize_Request'Tag));
 
       Self.resize_Response.Applet := Self;
 
@@ -123,17 +123,17 @@ is
    procedure destroy (Self : in out Item)
    is
       use world_Vectors,
-          mmi.Dolly,
+          gel.Dolly,
           openGL.Renderer.lean,
-          mmi.Window,
-          mmi.World;
+          gel.Window,
+          gel.World;
 
       procedure free is new ada.unchecked_Deallocation (world_Info, world_Info_view);
 
       Cursor     : world_Vectors.Cursor := Self.Worlds.First;
 
       world_Info : world_Info_view;
-      the_World  : mmi.World.view;
+      the_World  : gel.World.view;
 
    begin
       while has_Element (Cursor)
@@ -149,10 +149,10 @@ is
          -- Free the cameras
          --
          declare
-            use mmi.Camera;
+            use gel.Camera;
 
             the_Cameras : camera_Vector renames world_Info.Cameras;
-            the_Camera  : mmi.Camera.view;
+            the_Camera  : gel.Camera.view;
          begin
             for i in 1 .. Integer (the_Cameras.Length)
             loop
@@ -194,10 +194,10 @@ is
    is
 
       function  to_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return Item
+                           use_Window : in gel.Window.view) return Item
       is
       begin
-         mmi.Applet.global_Window := use_Window;
+         gel.Applet.global_Window := use_Window;
 
          return Self : Item := (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
                                 local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
@@ -210,13 +210,13 @@ is
 
 
       function new_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return View
+                           use_Window : in gel.Window.view) return View
       is
          Self : constant View := new Item' (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
                                             local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
                                             others                     => <>);
       begin
-         mmi.Applet.global_Window := use_Window;
+         gel.Applet.global_Window := use_Window;
 
          define (Self,  use_Window);
          return Self;
@@ -240,7 +240,7 @@ is
 
 
    function  new_World (Self : access Item;   Name       : in String;
-                                              space_Kind : in physics.space_Kind) return mmi.World.view
+                                              space_Kind : in physics.space_Kind) return gel.World.view
    is
    begin
       Self.add_new_World (Name, space_Kind);
@@ -254,9 +254,9 @@ is
       use type ada.Containers.Count_Type;
 
       the_world_Info : constant world_Info_view  := new world_Info;
-      the_Camera     : constant mmi.Camera.View  := mmi.Camera.forge.new_Camera;
+      the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
    begin
-      the_world_Info.World := mmi.World.forge.new_World (Name,
+      the_world_Info.World := gel.World.forge.new_World (Name,
                                                          world_Id (Self.Worlds.Length + 1),
                                                          space_Kind,
                                                          Self.Renderer);
@@ -270,7 +270,7 @@ is
       Self.Worlds.append (the_world_Info);
 
       Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                           to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag),
+                                           to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
                                            the_world_Info.World.Name);
       the_world_Info.World.start;
 
@@ -291,7 +291,7 @@ is
 
 
 
-   function Window (Self : in Item) return mmi.Window.view
+   function Window (Self : in Item) return gel.Window.view
    is
    begin
       return Self.Window;
@@ -307,9 +307,9 @@ is
 
 
 
-   function Worlds (Self : in Item) return mmi.World.views
+   function Worlds (Self : in Item) return gel.World.views
    is
-      the_Worlds : mmi.World.views (1 .. Natural (Self.Worlds.Length));
+      the_Worlds : gel.World.views (1 .. Natural (Self.Worlds.Length));
    begin
       for i in the_Worlds'Range
       loop
@@ -321,7 +321,7 @@ is
 
 
 
-   function World (Self : in Item;   Id : in world_Id := 1) return mmi.World.view
+   function World (Self : in Item;   Id : in world_Id := 1) return gel.World.view
    is
    begin
       return Self.Worlds.Element (Integer (Id)).World;
@@ -329,7 +329,7 @@ is
 
 
 
-   function World_as_iFace (Self : in Item;   Id : in world_Id := 1) return mmi.remote.World.view
+   function World_as_iFace (Self : in Item;   Id : in world_Id := 1) return gel.remote.World.view
    is
    begin
       return remote.World.view (Self.Worlds.Element (Integer (Id)).World);
@@ -338,8 +338,8 @@ is
 
 
 
-   function Camera (Self : in Item;   world_Id  : in mmi.world_Id  := 1;
-                                      camera_Id : in mmi.camera_Id := 1) return mmi.Camera.view
+   function Camera (Self : in Item;   world_Id  : in gel.world_Id  := 1;
+                                      camera_Id : in gel.camera_Id := 1) return gel.Camera.view
    is
    begin
       return Self.Worlds.Element (Integer (world_Id)) .Cameras.Element (Integer (camera_Id));
@@ -372,7 +372,7 @@ is
 
 
 
-   function Keyboard (Self : in     Item) return access mmi.Keyboard.item'class
+   function Keyboard (Self : in     Item) return access gel.Keyboard.item'class
    is
    begin
       return Self.Keyboard;
@@ -380,7 +380,7 @@ is
 
 
 
-   function Mouse    (Self : in     Item) return access mmi.Mouse.item'class
+   function Mouse    (Self : in     Item) return access gel.Mouse.item'class
    is
    begin
       return Self.Mouse;
@@ -388,7 +388,7 @@ is
 
 
 
-   function Dolly   (Self : access Item) return mmi.Dolly.view
+   function Dolly   (Self : access Item) return gel.Dolly.view
    is
    begin
       return Self.Dolly;
@@ -396,11 +396,11 @@ is
 
 
 
-   function last_Keypress (Self : access Item) return mmi.Keyboard.Key
+   function last_Keypress (Self : access Item) return gel.Keyboard.Key
    is
-      the_last_Keypress : constant mmi.Keyboard.Key := Self.last_pressed_Key;
+      the_last_Keypress : constant gel.Keyboard.Key := Self.last_pressed_Key;
    begin
-      Self.last_pressed_Key := mmi.keyboard.Nil;
+      Self.last_pressed_Key := gel.keyboard.Nil;
       return the_last_Keypress;
    end last_Keypress;
 
@@ -435,7 +435,7 @@ is
 
    procedure freshen (Self : in out Item)
    is
-      use type mmi.Dolly.view;
+      use type gel.Dolly.view;
 
       Window_is_active : Boolean;
 
@@ -458,7 +458,7 @@ is
          declare
             use world_Vectors;
             world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
-            all_Cameras      : mmi.Camera.views (1 .. 1000);
+            all_Cameras      : gel.Camera.views (1 .. 1000);
             all_cameras_Last : Natural                     := 0;
 
          begin
@@ -509,13 +509,13 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Sprite : in mmi.Sprite.view)
+   procedure add (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
    begin
       --  Add children and their joints.
       --
       declare
-         child_Joints : constant mmi.Joint.views := the_Sprite.child_Joints;
+         child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
       begin
          for Each in child_Joints'Range
          loop
@@ -527,7 +527,7 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Sprite : in mmi.Sprite.view;
+   procedure add (Self : in out Item;   the_Sprite : in gel.Sprite.view;
                                         at_site    : in math.Vector_3)
    is
    begin
@@ -569,13 +569,13 @@ is
    overriding
    procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use mmi.Keyboard, mmi.Dolly;
+      use gel.Keyboard, gel.Dolly;
 
-      the_Event     :          mmi.Keyboard.key_press_Event renames mmi.Keyboard.key_press_Event (to_Event);
-      the_Dolly     : constant mmi.Dolly.view               :=      Self.Applet.Dolly;
+      the_Event     :          gel.Keyboard.key_press_Event renames gel.Keyboard.key_press_Event (to_Event);
+      the_Dolly     : constant gel.Dolly.view               :=      Self.Applet.Dolly;
 
-      the_Key       : constant mmi.keyboard.Key             :=      the_Event.modified_Key.Key;
-      the_Modifiers : constant mmi.Keyboard.modifier_Set    :=      the_Event.modified_Key.modifier_Set;
+      the_Key       : constant gel.keyboard.Key             :=      the_Event.modified_Key.Key;
+      the_Modifiers : constant gel.Keyboard.modifier_Set    :=      the_Event.modified_Key.modifier_Set;
 
    begin
       Self.Applet.last_pressed_Key := the_Event.modified_Key.Key;
@@ -650,13 +650,13 @@ is
    overriding
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use mmi.Keyboard, mmi.Dolly;
+      use gel.Keyboard, gel.Dolly;
 
-      the_Event     :          mmi.Keyboard.key_release_Event renames mmi.Keyboard.key_release_Event (to_Event);
-      the_Dolly     :          mmi.Dolly.view                 renames Self.Applet.Dolly;
+      the_Event     :          gel.Keyboard.key_release_Event renames gel.Keyboard.key_release_Event (to_Event);
+      the_Dolly     :          gel.Dolly.view                 renames Self.Applet.Dolly;
 
-      the_Key       : constant mmi.keyboard.Key               :=      the_Event.modified_Key.Key;
-      the_Modifiers : constant mmi.Keyboard.modifier_Set      :=      the_Event.modified_Key.modifier_Set;
+      the_Key       : constant gel.keyboard.Key               :=      the_Event.modified_Key.Key;
+      the_Modifiers : constant gel.Keyboard.modifier_Set      :=      the_Event.modified_Key.modifier_Set;
    begin
       if the_Dolly = null
       then
@@ -706,7 +706,7 @@ is
 
 
 
-   procedure Dolly_is (Self : access Item;   Now : in mmi.Dolly.view)
+   procedure Dolly_is (Self : access Item;   Now : in gel.Dolly.view)
    is
    begin
       Self.Dolly := Now;
@@ -718,30 +718,30 @@ is
    procedure enable_simple_Dolly (Self : access Item;   in_World : in world_Id)
    is
    begin
-      Self.Dolly := new mmi.Dolly.simple.item;
+      Self.Dolly := new gel.Dolly.simple.item;
       Self.Dolly.add_Camera (Self.Camera (in_World, 1));
 
-      Self.key_press_Response  .Applet := mmi.Applet.view (Self);
-      Self.key_release_Response.Applet := mmi.Applet.view (Self);
+      Self.key_press_Response  .Applet := gel.Applet.view (Self);
+      Self.key_release_Response.Applet := gel.Applet.view (Self);
 
       lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                   lace.Subject .view (Self.Keyboard),
                                   Self.key_press_Response  'Unchecked_Access,
-                                  to_Kind (mmi.Keyboard.key_press_Event'Tag));
+                                  to_Kind (gel.Keyboard.key_press_Event'Tag));
 
       lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                   lace.Subject .view (Self.Keyboard),
                                   Self.key_release_Response'Unchecked_Access,
-                                  to_Kind (mmi.Keyboard.key_release_Event'Tag));
+                                  to_Kind (gel.Keyboard.key_release_Event'Tag));
    end enable_simple_Dolly;
 
 
 
 
 
-   procedure enable_following_Dolly (Self : access Item;   Follow : in mmi.Sprite.view)
+   procedure enable_following_Dolly (Self : access Item;   Follow : in gel.Sprite.view)
    is
-      the_Dolly : constant mmi.Dolly.following.view := new mmi.Dolly.following.item;
+      the_Dolly : constant gel.Dolly.following.view := new gel.Dolly.following.item;
    begin
       the_Dolly.follow (the_sprite => Follow);
 
@@ -761,7 +761,7 @@ is
       record
          is_Motion : Boolean;
          is_Press  : Boolean;
-         button_Id : mmi.mouse.Button_Id;
+         button_Id : gel.mouse.Button_Id;
       end record;
 
    type button_press_raycast_Context_view is access all button_press_raycast_Context'Class;
@@ -771,7 +771,7 @@ is
    overriding
    procedure respond (Self : in out mouse_click_raycast_Response;   to_Event : in lace.Event.item'Class)
    is
-      use mmi.World;
+      use gel.World;
 
       the_Event   :          raycast_collision_Event           := raycast_collision_Event (to_Event);
       the_Context : constant button_press_raycast_Context_view := button_press_raycast_Context_view (the_Event.Context);
@@ -784,7 +784,7 @@ is
          if the_Context.is_Press
          then
             declare
-               collide_Event : constant mmi.events.sprite_click_down_Event := (mouse_button => the_Context.Button_Id,
+               collide_Event : constant gel.events.sprite_click_down_Event := (mouse_button => the_Context.Button_Id,
                                                                                world_site   => the_Event.Site_world);
             begin
                the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
@@ -792,7 +792,7 @@ is
 
          else   -- Is a button release.
             declare
-               collide_Event : constant mmi.events.sprite_click_up_Event := (mouse_button => the_Context.Button_Id,
+               collide_Event : constant gel.events.sprite_click_up_Event := (mouse_button => the_Context.Button_Id,
                                                                              world_site   => the_Event.Site_world);
             begin
                the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
@@ -805,7 +805,7 @@ is
 
 
 
-   type mouse_button_collision_Event is new mmi.World.raycast_collision_Event with null record;
+   type mouse_button_collision_Event is new gel.World.raycast_collision_Event with null record;
 
 
 
@@ -813,9 +813,9 @@ is
    procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.Item'Class)
    is
       use world_Vectors,
-          mmi.Mouse;
+          gel.Mouse;
 
-      the_Event       : mmi.mouse.button_press_Event renames mmi.mouse.button_press_Event (to_Event);
+      the_Event       : gel.mouse.button_press_Event renames gel.mouse.button_press_Event (to_Event);
       Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
       the_world_Info  : world_Info_view;
 
@@ -825,9 +825,9 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            use mmi.World;
+            use gel.World;
 
-            the_Camera        : constant        mmi.Camera.view              := the_world_Info.Cameras.first_Element;
+            the_Camera        : constant        gel.Camera.view              := the_world_Info.Cameras.first_Element;
 
             Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
                                                                                  Real (the_Event.Site (2)),
@@ -858,9 +858,9 @@ is
    procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.Item'Class)
    is
       use world_Vectors,
-          mmi.Mouse;
+          gel.Mouse;
 
-      the_Event      : mmi.mouse.button_release_Event renames mmi.mouse.button_release_Event (to_Event);
+      the_Event      : gel.mouse.button_release_Event renames gel.mouse.button_release_Event (to_Event);
       Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
 
@@ -870,7 +870,7 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera        : constant        mmi.Camera.view               := the_world_Info.Cameras.first_Element;
+            the_Camera        : constant        gel.Camera.view               := the_world_Info.Cameras.first_Element;
             Site_window_space : constant        Vector_3                      := (Real (the_Event.Site (1)),
                                                                                   Real (the_Event.Site (2)),
                                                                                   1.0);
@@ -901,7 +901,7 @@ is
    is
       use world_Vectors;
 
-      the_Event      : mmi.mouse.motion_Event renames mmi.mouse.motion_Event (to_Event);
+      the_Event      : gel.mouse.motion_Event renames gel.mouse.motion_Event (to_Event);
       Cursor         : world_Vectors.Cursor   :=      Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
 
@@ -911,7 +911,7 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera        : constant        mmi.Camera.view              := the_world_Info.Cameras.first_Element;
+            the_Camera        : constant        gel.Camera.view              := the_world_Info.Cameras.first_Element;
             Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
                                                                                  Real (the_Event.Site (2)),
                                                                                  1.0);
@@ -948,7 +948,7 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera : constant mmi.Camera.view := the_world_Info.Cameras.first_Element;
+            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
          begin
             the_Camera.set_viewport_Size (Self.Applet.Window.Width,
                                           Self.Applet.Window.Height);
@@ -969,15 +969,15 @@ is
    is
    begin
       Self.local_Subject_and_Observer.add (Self.button_press_Response'unchecked_Access,
-                                           to_Kind (mmi.Mouse.button_press_Event'Tag),
+                                           to_Kind (gel.Mouse.button_press_Event'Tag),
                                            Self.Mouse.Name);
 
       Self.local_Subject_and_Observer.add (Self.button_release_Response'unchecked_Access,
-                                           to_Kind (mmi.Mouse.button_release_Event'Tag),
+                                           to_Kind (gel.Mouse.button_release_Event'Tag),
                                            Self.Mouse.Name);
 
-      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (mmi.Mouse.button_press_Event  'Tag));
-      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (mmi.Mouse.button_release_Event'Tag));
+      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (gel.Mouse.button_press_Event  'Tag));
+      Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (gel.Mouse.button_release_Event'Tag));
 
 
       if detect_Motion
@@ -985,7 +985,7 @@ is
          lace.Event.Utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                      lace.Subject.view  (Self.Mouse),
                                      Self.mouse_motion_Response'unchecked_Access,
-                                     to_Kind (mmi.Mouse.motion_Event'Tag));
+                                     to_Kind (gel.Mouse.motion_Event'Tag));
       end if;
 
       Self.mouse_click_raycast_Response.Applet := Self.all'unchecked_Access;
@@ -1038,4 +1038,4 @@ is
    end local_Observer;
 
 
-end mmi.Applet;
+end gel.Applet;

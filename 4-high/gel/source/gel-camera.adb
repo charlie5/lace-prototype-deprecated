@@ -3,7 +3,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body mmi.Camera
+package body gel.Camera
 is
    use math.Algebra.linear,
        math.Algebra.linear.d3;
@@ -296,10 +296,10 @@ is
 
 
 
-   procedure render (Self : in out Item;   the_World : in     mmi.World.view;
+   procedure render (Self : in out Item;   the_World : in     gel.World.view;
                                            To        : in     openGL.Surface.view)
    is
-      all_Sprites   : mmi.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
+      all_Sprites   : gel.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
 
       the_Visuals   : openGL.Visual.views (1 .. all_Sprites'Length);
       visuals_Count : Natural := 0;
@@ -341,4 +341,4 @@ is
    end disable_Cull;
 
 
-end mmi.Camera;
+end gel.Camera;

@@ -1,10 +1,10 @@
-package mmi.Camera.forge
+package gel.Camera.forge
 --
 -- Provides a constructor for a camera.
 --
 is
 
-   function new_Camera return mmi.Camera.item;
-   function new_Camera return mmi.Camera.view;
+   function new_Camera return gel.Camera.item;
+   function new_Camera return gel.Camera.view;
 
-end mmi.Camera.forge;
+end gel.Camera.forge;

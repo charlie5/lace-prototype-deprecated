@@ -1,29 +1,29 @@
 with
-     mmi.Camera.forge,
-     mmi.Events,
+     gel.Camera.forge,
+     gel.Events,
 
      lace.event.Utility;
 
 
-package body mmi.Applet.gui_and_sim_world
+package body gel.Applet.gui_and_sim_world
 is
 
    procedure define (Self : access Item;   Name       : in String;
-                                           use_Window : in mmi.Window.view)
+                                           use_Window : in gel.Window.view)
    is
       use lace.Event.utility;
    begin
       declare
          the_world_Info : constant world_Info_view  := new world_Info;
-         the_Camera     : constant mmi.Camera.View  := mmi.Camera.forge.new_Camera;
+         the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := mmi.World.forge.new_World (Name,
+         the_world_Info.World := gel.World.forge.new_World (Name,
                                                             gui_world_Id,
                                                             space_kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
          the_world_Info.World.register (Self.all'Unchecked_Access,
-                                        to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag));
+                                        to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
          the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
          the_Camera.Renderer_is       (Self.Renderer);
@@ -33,7 +33,7 @@ is
          Self.Worlds           .append (the_world_Info);
 
          Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                              to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag),
+                                              to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
                                               the_world_Info.World.Name);
          the_world_Info.World.start;
       end;
@@ -41,15 +41,15 @@ is
 
       declare
          the_world_Info : constant world_Info_view  := new world_Info;
-         the_Camera     : constant mmi.Camera.View  := mmi.Camera.forge.new_Camera;
+         the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := mmi.World.forge.new_World (name       => Name,
+         the_world_Info.World := gel.World.forge.new_World (name       => Name,
                                                             id         => sim_world_Id,
                                                             space_kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
          the_world_Info.World.register (the_observer => Self.all'Unchecked_Access,
-                                        of_kind      => to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag));
+                                        of_kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
          the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
          the_Camera.Renderer_is       (Self.Renderer);
@@ -59,7 +59,7 @@ is
          Self.Worlds           .append (the_world_Info);
 
          Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                              to_Kind (mmi.events.new_sprite_added_to_world_Event'Tag),
+                                              to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
                                               the_world_Info.World.Name);
          the_world_Info.World.start;
       end;
@@ -71,10 +71,10 @@ is
    package body Forge
    is
       function  to_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return Item
+                           use_Window : in gel.Window.view) return Item
       is
       begin
-         return Self : Item := (mmi.Applet.Forge.to_Applet (Name, use_Window)
+         return Self : Item := (gel.Applet.Forge.to_Applet (Name, use_Window)
                                 with others => <>)
          do
             define (Self'Unchecked_Access, Name, use_Window);
@@ -84,7 +84,7 @@ is
 
 
       function new_Applet (Name       : in String;
-                           use_Window : in mmi.Window.view) return View
+                           use_Window : in gel.Window.view) return View
       is
          Self : constant View := new Item' (to_Applet (Name, use_Window));
       begin
@@ -97,14 +97,14 @@ is
 
 
 
-   function sim_World  (Self : in Item) return mmi.World.view
+   function sim_World  (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (sim_world_Id);
    end sim_World;
 
 
-   function sim_Camera (Self : in Item) return mmi.Camera.view
+   function sim_Camera (Self : in Item) return gel.Camera.view
    is
    begin
       return Self.Camera (sim_world_Id, sim_camera_Id);
@@ -112,18 +112,18 @@ is
 
 
 
-   function gui_World  (Self : in Item) return mmi.World.view
+   function gui_World  (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (gui_world_Id);
    end gui_World;
 
 
-   function gui_Camera (Self : in Item) return mmi.Camera.view
+   function gui_Camera (Self : in Item) return gel.Camera.view
    is
    begin
       return Self.Camera (gui_world_Id, gui_camera_Id);
    end gui_Camera;
 
 
-end mmi.Applet.gui_and_sim_world;
+end gel.Applet.gui_and_sim_world;

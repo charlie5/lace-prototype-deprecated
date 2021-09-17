@@ -2,7 +2,7 @@ with
      float_math.Algebra.linear.d3;
 
 
-package body mmi.Dolly.simple
+package body gel.Dolly.simple
 is
 
    use Math,
@@ -135,7 +135,7 @@ is
       --
       declare
          use camera_Vectors;
-         the_Camera : mmi.Camera.view;
+         the_Camera : gel.Camera.view;
          Cursor     : camera_Vectors.Cursor := Self.Cameras.First;
       begin
          while Has_Element (Cursor)
@@ -159,5 +159,5 @@ is
    end freshen;
 
 
-end mmi.Dolly.simple;
+end gel.Dolly.simple;
 

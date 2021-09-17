@@ -1,6 +1,6 @@
 with
-     mmi.Keyboard.local,
-     mmi.Mouse.local,
+     gel.Keyboard.local,
+     gel.Mouse.local,
 
      openGL.Surface,
 
@@ -11,7 +11,7 @@ with
      ada.Calendar;
 
 
-package mmi.Window
+package gel.Window
 --
 -- Models a UI Window.
 --
@@ -50,8 +50,8 @@ is
    function is_Open          (Self : in     Item) return Boolean;
    function is_Exposed       (Self : in     Item) return Boolean;
 
-   function Keyboard         (Self : access Item) return access mmi.Keyboard.item'class;
-   function Mouse            (Self : access Item) return access mmi.Mouse.item'class;
+   function Keyboard         (Self : access Item) return access gel.Keyboard.item'class;
+   function Mouse            (Self : access Item) return access gel.Mouse.item'class;
 
    function Width            (Self : in     Item) return Positive;
    function Height           (Self : in     Item) return Positive;
@@ -123,8 +123,8 @@ private
 
          Surface          : openGL.Surface.view := new openGL.Surface.item;
 
-         Keyboard         :   mmi.Keyboard.local.view;
-         Mouse            :   mmi.Mouse   .local.view;
+         Keyboard         :   gel.Keyboard.local.view;
+         Mouse            :   gel.Mouse   .local.view;
 
          is_Open          :         Boolean          := True;
          is_Exposed       :         Boolean          := True;
@@ -153,4 +153,4 @@ private
    procedure use_create_Window (create_Window : in create_Window_Function);
 
 
-end mmi.Window;
+end gel.Window;

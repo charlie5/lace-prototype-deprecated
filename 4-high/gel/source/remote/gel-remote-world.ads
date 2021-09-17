@@ -12,9 +12,9 @@ with
      ada.Streams;
 
 
-package mmi.remote.World
+package gel.remote.World
 --
---  Provides a remote interface of an mmi world.
+--  Provides a remote interface of an gel world.
 --
 --  Supports world mirroring, in which a mirror world mimics the objects and dynamics of a master world.
 --
@@ -54,10 +54,10 @@ is
    use type openGL.remote_Model.item;
    package  model_Vectors is new ada.containers.indefinite_Vectors (Positive,  openGL.remote_Model.item'Class);
 
-   function Hash is new ada.unchecked_Conversion (mmi.graphics_model_Id,  ada.containers.Hash_type);
-   use type mmi.graphics_model_Id;
+   function Hash is new ada.unchecked_Conversion (gel.graphics_model_Id,  ada.containers.Hash_type);
+   use type gel.graphics_model_Id;
 
-   package  Id_Maps_of_Model_Plan is new ada.containers.indefinite_Hashed_Maps (mmi.graphics_model_Id,
+   package  Id_Maps_of_Model_Plan is new ada.containers.indefinite_Hashed_Maps (gel.graphics_model_Id,
                                                                                 openGL.remote_Model.item'Class,
                                                                                 Hash,
                                                                                 "=");
@@ -115,7 +115,7 @@ is
 
    type sprite_model_Pair is
       record
-         sprite_Id         : mmi.sprite_Id;
+         sprite_Id         : gel.sprite_Id;
          graphics_model_Id : openGL.model_Id;
          physics_model_Id  : physics.model_Id;
 
@@ -156,7 +156,7 @@ is
 
    type motion_Update is
       record
-         Id   : mmi.sprite_Id;
+         Id   : gel.sprite_Id;
          Site : coarse_Vector_3;
          Spin : coarse_Quaternion;
       end record;
@@ -181,6 +181,6 @@ is
    --  Test/Debug
    --
 
-   procedure kick_Sprite (Self : in out Item;   sprite_Id : in mmi.Sprite_Id) is abstract;
+   procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id) is abstract;
 
-end mmi.remote.World;
+end gel.remote.World;

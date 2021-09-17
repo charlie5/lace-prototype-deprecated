@@ -1,9 +1,9 @@
 with
-     mmi.Events,
+     gel.Events,
      ada.unchecked_Deallocation;
 
 
-package body mmi.Window
+package body gel.Window
 is
 
    -----------
@@ -28,8 +28,8 @@ is
       Self.Width    := Width;
       Self.Height   := Height;
 
-      Self.Keyboard := mmi.Keyboard.local.Forge.new_Keyboard (of_name => Self.Name & "." & "Keyboard");
-      Self.Mouse    := mmi.Mouse   .local.Forge.new_Mouse    (of_name => Self.Name & "." & "Mouse");
+      Self.Keyboard := gel.Keyboard.local.Forge.new_Keyboard (of_name => Self.Name & "." & "Keyboard");
+      Self.Mouse    := gel.Mouse   .local.Forge.new_Mouse    (of_name => Self.Name & "." & "Mouse");
    end define;
 
 
@@ -45,7 +45,7 @@ is
       begin
          if window_Creator = null
          then
-            raise Error with "mmi.Window.Forge.window_Creator has *not* been set";
+            raise Error with "gel.Window.Forge.window_Creator has *not* been set";
          end if;
 
          return window_Creator (Name, Width, Height);
@@ -59,8 +59,8 @@ is
    procedure destroy (Self : in out Item)
    is
       use lace.Subject_and_deferred_Observer,
-          mmi.Keyboard.local,
-          mmi.Mouse   .local;
+          gel.Keyboard.local,
+          gel.Mouse   .local;
       procedure free is new ada.Unchecked_Deallocation (openGL.Surface.item'Class, openGL.Surface.View);
    begin
       destroy (lace.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
@@ -87,7 +87,7 @@ is
    begin
       if window_Creator /= null
       then
-         raise Error with "'mmi.Window.Forge.window_Creator' has already been set";
+         raise Error with "'gel.Window.Forge.window_Creator' has already been set";
       end if;
 
       window_Creator := create_Window;
@@ -124,14 +124,14 @@ is
    end Surface;
 
 
-   function Keyboard (Self : access Item) return access mmi.Keyboard.item'class
+   function Keyboard (Self : access Item) return access gel.Keyboard.item'class
    is
    begin
       return Self.Keyboard;
    end Keyboard;
 
 
-   function Mouse    (Self : access Item) return access mmi.Mouse.item'class
+   function Mouse    (Self : access Item) return access gel.Mouse.item'class
    is
    begin
       return Self.Mouse;
@@ -188,7 +188,7 @@ is
 
       --  Generate a 'resize' event.
       --
-      Self.emit (mmi.Events.window_resize_Request'(Width, Height));
+      Self.emit (gel.Events.window_resize_Request'(Width, Height));
    end Size_is;
 
 
@@ -219,7 +219,7 @@ is
 
    procedure emit_enter_Event  (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_Enter;
+      the_Event : gel.Events.window_Enter;
    begin
       Self.emit (the_Event);
    end emit_enter_Event;
@@ -228,7 +228,7 @@ is
 
    procedure emit_leave_Event  (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_Leave;
+      the_Event : gel.Events.window_Leave;
    begin
       Self.emit (the_Event);
    end emit_leave_Event;
@@ -237,7 +237,7 @@ is
 
    procedure emit_focus_in_Event  (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_Leave;
+      the_Event : gel.Events.window_Leave;
    begin
       Self.emit (the_Event);
    end emit_focus_in_Event;
@@ -246,7 +246,7 @@ is
 
    procedure emit_focus_out_Event  (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_Leave;
+      the_Event : gel.Events.window_Leave;
    begin
       Self.emit (the_Event);
    end emit_focus_out_Event;
@@ -255,7 +255,7 @@ is
 
    procedure emit_keymap_notify_Event  (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_keymap_Notify;
+      the_Event : gel.Events.window_keymap_Notify;
    begin
       Self.emit (the_Event);
    end emit_keymap_notify_Event;
@@ -264,7 +264,7 @@ is
 
    procedure emit_Expose_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_Expose;
+      the_Event : gel.Events.window_Expose;
    begin
       Self.emit (the_Event);
    end emit_Expose_Event;
@@ -273,7 +273,7 @@ is
 
    procedure emit_graphics_Exposure_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_graphics_Exposure;
+      the_Event : gel.Events.window_graphics_Exposure;
    begin
       Self.emit (the_Event);
    end emit_graphics_Exposure_Event;
@@ -282,7 +282,7 @@ is
 
    procedure emit_no_Exposure_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_no_Exposure;
+      the_Event : gel.Events.window_no_Exposure;
    begin
       Self.emit (the_Event);
    end emit_no_Exposure_Event;
@@ -291,7 +291,7 @@ is
 
    procedure emit_visibility_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_visibility_Notify;
+      the_Event : gel.Events.window_visibility_Notify;
    begin
       Self.emit (the_Event);
    end emit_visibility_Notify_Event;
@@ -300,7 +300,7 @@ is
 
    procedure emit_create_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_create_Notify;
+      the_Event : gel.Events.window_create_Notify;
    begin
       Self.emit (the_Event);
    end emit_create_Notify_Event;
@@ -309,7 +309,7 @@ is
 
    procedure emit_destroy_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_destroy_Notify;
+      the_Event : gel.Events.window_destroy_Notify;
    begin
       Self.emit (the_Event);
    end emit_destroy_Notify_Event;
@@ -318,7 +318,7 @@ is
 
    procedure emit_unmap_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_unmap_Notify;
+      the_Event : gel.Events.window_unmap_Notify;
    begin
       Self.emit (the_Event);
    end emit_unmap_Notify_Event;
@@ -327,7 +327,7 @@ is
 
    procedure emit_map_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_map_Notify;
+      the_Event : gel.Events.window_map_Notify;
    begin
       Self.emit (the_Event);
    end emit_map_Notify_Event;
@@ -336,7 +336,7 @@ is
 
    procedure emit_map_Request_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_map_Request;
+      the_Event : gel.Events.window_map_Request;
    begin
       Self.emit (the_Event);
    end emit_map_Request_Event;
@@ -345,7 +345,7 @@ is
 
    procedure emit_reparent_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_reparent_Notify;
+      the_Event : gel.Events.window_reparent_Notify;
    begin
       Self.emit (the_Event);
    end emit_reparent_Notify_Event;
@@ -354,7 +354,7 @@ is
 
    procedure emit_configure_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_configure_Notify;
+      the_Event : gel.Events.window_configure_Notify;
    begin
       Self.emit (the_Event);
    end emit_configure_Notify_Event;
@@ -363,7 +363,7 @@ is
 
    procedure emit_configure_Request_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_configure_Request;
+      the_Event : gel.Events.window_configure_Request;
    begin
       Self.emit (the_Event);
    end emit_configure_Request_Event;
@@ -372,7 +372,7 @@ is
 
    procedure emit_gravity_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_gravity_Notify;
+      the_Event : gel.Events.window_gravity_Notify;
    begin
       Self.emit (the_Event);
    end emit_gravity_Notify_Event;
@@ -381,7 +381,7 @@ is
 
    procedure emit_resize_Request_Event (Self : in out Item'Class;   Width, Height : in Positive)
    is
-      the_Event : constant mmi.Events.window_resize_Request := (Width, Height);
+      the_Event : constant gel.Events.window_resize_Request := (Width, Height);
    begin
       Self.emit (the_Event);
    end emit_resize_Request_Event;
@@ -390,7 +390,7 @@ is
 
    procedure emit_circulate_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_circulate_Notify;
+      the_Event : gel.Events.window_circulate_Notify;
    begin
       Self.emit (the_Event);
    end emit_circulate_Notify_Event;
@@ -399,7 +399,7 @@ is
 
    procedure emit_circulate_Request_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_circulate_Request;
+      the_Event : gel.Events.window_circulate_Request;
    begin
       Self.emit (the_Event);
    end emit_circulate_Request_Event;
@@ -408,7 +408,7 @@ is
 
    procedure emit_property_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_property_Notify;
+      the_Event : gel.Events.window_property_Notify;
    begin
       Self.emit (the_Event);
    end emit_property_Notify_Event;
@@ -417,7 +417,7 @@ is
 
    procedure emit_selection_Clear_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_selection_Clear;
+      the_Event : gel.Events.window_selection_Clear;
    begin
       Self.emit (the_Event);
    end emit_selection_Clear_Event;
@@ -426,7 +426,7 @@ is
 
    procedure emit_selection_Request_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_selection_Request;
+      the_Event : gel.Events.window_selection_Request;
    begin
       Self.emit (the_Event);
    end emit_selection_Request_Event;
@@ -435,7 +435,7 @@ is
 
    procedure emit_selection_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_selection_Notify;
+      the_Event : gel.Events.window_selection_Notify;
    begin
       Self.emit (the_Event);
    end emit_selection_Notify_Event;
@@ -444,7 +444,7 @@ is
 
    procedure emit_colormap_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_colormap_Notify;
+      the_Event : gel.Events.window_colormap_Notify;
    begin
       Self.emit (the_Event);
    end emit_colormap_Notify_Event;
@@ -453,7 +453,7 @@ is
 
    procedure emit_client_Message_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_client_Message;
+      the_Event : gel.Events.window_client_Message;
    begin
       Self.emit (the_Event);
    end emit_client_Message_Event;
@@ -462,10 +462,10 @@ is
 
    procedure emit_mapping_Notify_Event (Self : in out Item'Class)
    is
-      the_Event : mmi.Events.window_mapping_Notify;
+      the_Event : gel.Events.window_mapping_Notify;
    begin
       Self.emit (the_Event);
    end emit_mapping_Notify_Event;
 
 
-end mmi.Window;
+end gel.Window;

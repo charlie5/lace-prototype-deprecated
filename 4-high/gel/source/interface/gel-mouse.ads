@@ -1,11 +1,11 @@
 with
-     mmi.Keyboard,
+     gel.Keyboard,
 
      lace.Event,
      lace.Subject;
 
 
-package mmi.Mouse
+package gel.Mouse
 --
 -- Provides an interface to a mouse.
 --
@@ -69,4 +69,4 @@ is
    procedure emit_motion_Event         (Self : in out Item'Class;   Site         : in mouse.Site);
 
 
-end mmi.Mouse;
+end gel.Mouse;

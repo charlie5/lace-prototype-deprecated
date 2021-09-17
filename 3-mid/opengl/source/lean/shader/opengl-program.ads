@@ -42,7 +42,7 @@ is
    --  apply the varying data to the programs Uniforms. 'enable' is called as part of the rendering process
    --  just prior to the visuals geometry being rendered.
    --
-   --  (See 'mmi.Human' for an example of usage.)
+   --  (See 'gel.Human' for an example of usage.)
 
    type Parameters      is limited new openGL.Parameters with private;
    type Parameters_view is access all Parameters'Class;

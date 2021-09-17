@@ -1,6 +1,6 @@
 with
-     mmi.Forge,
-     mmi.Conversions,
+     gel.Forge,
+     gel.Conversions,
      physics.Model,
 
      openGL.Model.any,
@@ -16,7 +16,7 @@ with
      ada.Strings.unbounded;
 
 
-package body mmi.Rig
+package body gel.Rig
 is
    use math.Algebra.linear.d3;
 
@@ -34,12 +34,12 @@ is
 
 
 
-   function to_mmi_joint_Id (Parent, Child : in bone_Id) return mmi_joint_Id
+   function to_gel_joint_Id (Parent, Child : in bone_Id) return gel_joint_Id
    is
       use ada.Strings.unbounded;
    begin
       return Parent & "_To_" & Child;
-   end to_mmi_joint_Id;
+   end to_gel_joint_Id;
 
 
 
@@ -60,7 +60,7 @@ is
 
                         pitch_Limits,
                         yaw_Limits,
-                        roll_Limits  : mmi.Sprite.DoF_Limits := (math.to_Radians (-15.0),
+                        roll_Limits  : gel.Sprite.DoF_Limits := (math.to_Radians (-15.0),
                                                                  math.to_Radians ( 15.0))) return bone_Details
    is
    begin
@@ -78,7 +78,7 @@ is
    package body Forge
    is
 
-      function new_Rig (in_World     : in     mmi.World.view;
+      function new_Rig (in_World     : in     gel.World.view;
                         Model        : access openGL.Model.item'Class;
                         Mass         : in     math.Real              := 0.0;
                         is_Kinematic : in     Boolean                := False) return Rig.view
@@ -190,7 +190,7 @@ is
 
       declare
          use      Math;
-         use type mmi.Sprite.view;
+         use type gel.Sprite.view;
 
          the_bone_Id : constant bone_Id        := which_Joint;
          Site        :          math.Vector_3;
@@ -320,7 +320,7 @@ is
    -- Define
    --
 
-   procedure define (Self : in out Item;   in_World     : in     mmi   .World.view;
+   procedure define (Self : in out Item;   in_World     : in     gel   .World.view;
                                            Model        : access openGL.Model.item'Class;
                                            Mass         : in     math.Real              := 0.0;
                                            is_Kinematic : in     Boolean                := False;
@@ -392,7 +392,7 @@ is
          use math;
          use openGL, opengl.Palette;
 
-         new_Sprite    :          mmi.Sprite.view;
+         new_Sprite    :          gel.Sprite.view;
          the_bone_Site : constant math.Vector_3  := midPoint (joint_Sites (start_Joint),
                                                               end_Point);
       begin
@@ -408,7 +408,7 @@ is
                                                                                     half_extents => Size / 2.0),
                                                            mass        => 1.0);
             begin
-               new_Sprite := mmi.Sprite.forge.new_Sprite ("Skin Sprite",
+               new_Sprite := gel.Sprite.forge.new_Sprite ("Skin Sprite",
                                                           in_World,
                                                           Model,
                                                           physics_Model,
@@ -422,7 +422,7 @@ is
             Self.skin_Sprite := new_Sprite;
 
          else
-            new_Sprite := mmi.forge.new_box_Sprite (in_World     => in_World,
+            new_Sprite := gel.forge.new_box_Sprite (in_World     => in_World,
                                                     Mass         => 1.0,
                                                     Size         => Scale,
                                                     Colors       => (1      => Black,
@@ -449,7 +449,7 @@ is
          Self.bone_Sprites.insert (the_Bone, new_Sprite);
 
          declare
-            new_Sprite : constant mmi.Sprite.view := mmi.Forge.new_box_Sprite (in_World     => in_World,
+            new_Sprite : constant gel.Sprite.view := gel.Forge.new_box_Sprite (in_World     => in_World,
                                                                       Mass         => 0.0,
                                                                       Size         => (0.02, 0.02, 0.02),
                                                                       Colors       => (others => Yellow),
@@ -473,7 +473,7 @@ is
          bone_Length      :          math.Real;
          end_Point        :          math.Vector_3;
 
-         new_Joint        :          mmi.Joint.view;
+         new_Joint        :          gel.Joint.view;
 
 
          function guessed_bone_Length return math.Real
@@ -536,7 +536,7 @@ is
 
                                                          new_Joint    => new_Joint);
 
-            Self.Joints.insert (to_mmi_joint_Id (Parent, which_Joint),
+            Self.Joints.insert (to_gel_joint_Id (Parent, which_Joint),
                                 new_Joint);
          end if;
 
@@ -904,7 +904,7 @@ is
 
 
 
-   function  Joints (Self : in     Item) return mmi_joint_id_Map_of_mmi_Joint
+   function  Joints (Self : in     Item) return gel_joint_id_Map_of_gel_Joint
    is
    begin
       return Self.Joints;
@@ -957,7 +957,7 @@ is
 
 
 
-   function Sprite (Self : in Item'Class;   for_Bone : in bone_Id) return mmi.Sprite.view
+   function Sprite (Self : in Item'Class;   for_Bone : in bone_Id) return gel.Sprite.view
    is
    begin
       return Self.bone_Sprites (for_Bone);
@@ -965,7 +965,7 @@ is
 
 
 
-   function  base_Sprite (Self : in Item'Class) return mmi.Sprite.view
+   function  base_Sprite (Self : in Item'Class) return gel.Sprite.view
    is
    begin
       return Self.bone_Sprites.Element (Self.root_Joint.Name);
@@ -973,7 +973,7 @@ is
 
 
 
-   function  skin_Sprite (Self : in Item'Class) return mmi.Sprite.view
+   function  skin_Sprite (Self : in Item'Class) return gel.Sprite.view
    is
    begin
       return Self.skin_Sprite;
@@ -993,7 +993,7 @@ is
    procedure set_GL_program_Parameters (Self : in out Item'Class;   for_Bone : in controller_joint_Id;
                                                                     To       : in math.Matrix_4x4)
    is
-      use mmi.Conversions;
+      use gel.Conversions;
       bone_Slot : constant Positive := Self.program_Parameters.joint_Map_of_slot.Element (for_Bone);
    begin
       Self.program_Parameters.bone_Transforms.replace_Element (bone_Slot,
@@ -1136,7 +1136,7 @@ is
    is
       use bone_id_Maps_of_transform;
 
-      the_Bone : mmi.Sprite.view;
+      the_Bone : gel.Sprite.view;
       Cursor   : bone_id_Maps_of_transform.Cursor := Self.bone_pose_Transforms.First;
 
    begin
@@ -1645,4 +1645,4 @@ is
    end reset_Animation;
 
 
-end mmi.Rig;
+end gel.Rig;

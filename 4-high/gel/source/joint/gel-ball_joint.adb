@@ -5,7 +5,7 @@ with
      ada.Text_IO;   -- for debug only
 
 
-package body MMI.ball_Joint
+package body GEL.ball_Joint
 is
    use Math,
        Interfaces;
@@ -19,13 +19,13 @@ is
    --
 
    procedure define (Self : access Item;   in_Space                : in     Standard.physics.Space.view;
-                                           Sprite_A,    Sprite_B   : access mmi.Sprite.Item'Class;
+                                           Sprite_A,    Sprite_B   : access gel.Sprite.Item'Class;
                                            Pivot_in_A,  Pivot_in_B : in     Math.Vector_3)
    is
       use      math.Algebra.linear.d3;
       use type Real;
 
-      type joint_Cast is access all MMI.Joint.Item;
+      type joint_Cast is access all GEL.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : std_physics.Object.view;
@@ -95,10 +95,10 @@ is
 
 
    overriding
-   function Physics (Self : in Item) return MMI.Joint.Physics_view
+   function Physics (Self : in Item) return GEL.Joint.Physics_view
    is
    begin
-      return MMI.Joint.Physics_view (Self.Physics);
+      return GEL.Joint.Physics_view (Self.Physics);
    end Physics;
 
 
@@ -218,4 +218,4 @@ is
    end Velocity_is;
 
 
-end mmi.ball_Joint;
+end gel.ball_Joint;

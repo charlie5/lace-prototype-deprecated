@@ -1,9 +1,9 @@
 with
-     mmi.Camera,
+     gel.Camera,
      ada.Containers.Vectors;
 
 
-package mmi.Dolly
+package gel.Dolly
 --
 --  Models a camera dolly.
 --
@@ -58,8 +58,8 @@ is
 private
 
 
-   use type mmi.Camera.view;
-   package camera_Vectors is new ada.Containers.Vectors (Positive, mmi.Camera.view);
+   use type gel.Camera.view;
+   package camera_Vectors is new ada.Containers.Vectors (Positive, gel.Camera.view);
    subtype camera_Vector  is     camera_Vectors.Vector;
 
    type Direction_Flags is array (Direction) of Boolean;
@@ -67,7 +67,7 @@ private
 
    type Item is abstract tagged
       record
-         Cameras          : camera_Vector;  -- mmi.Camera.view;
+         Cameras          : camera_Vector;  -- gel.Camera.view;
 
          Motion           : Direction_Flags := (others => False);
          Spin             : Direction_Flags := (others => False);
@@ -78,4 +78,4 @@ private
       end record;
 
 
-end mmi.Dolly;
+end gel.Dolly;
