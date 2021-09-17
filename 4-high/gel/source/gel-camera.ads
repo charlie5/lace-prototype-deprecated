@@ -31,8 +31,8 @@ is
    -- Core Types
    --
 
-   fairly_Far                  : constant := 100_000.0;
-   default_field_of_view_Angle : constant :=      60.0;   -- TODO: Use 'Degrees' type.
+   fairly_Far                  : constant         := 100_000.0;
+   default_field_of_view_Angle : constant Degrees := 60.0;
 
 
    subtype Rectangle is linear_Algebra_3D.Rectangle;
@@ -69,7 +69,7 @@ is
    function  Speed                  (Self : in     Item'Class)     return Vector_3;        -- Linear speed
    procedure Speed_is               (Self : in out Item'Class;   Now : in Vector_3);
 
-   function  FOVy                   (Self : in     Item'Class) return Real;                 -- Field of view angle (deg) in the y direction.
+   function  FoVy                   (Self : in     Item'Class) return Degrees;             -- Field of view angle in the y direction.
 
    procedure set_viewport_Size      (Self : in out Item'Class;   Width,
                                                                  Height : in Integer);
@@ -114,14 +114,14 @@ private
          world_Rotation      :         Matrix_3x3;
          view_Transform      :         Matrix_4x4;
 
-         FoVy                :         Real := default_field_of_view_Angle;      -- Field of view angle (deg) in the y direction.
-         Aspect              :         Real := 1.0;                              -- X/Y aspect ratio.
+         FoVy                :         Degrees := default_field_of_view_Angle;
+         Aspect              :         Real    := 1.0;
 
-         near_plane_Distance :         Real := 0.1;                              -- Distance to the near clipping plane.
+         near_plane_Distance :         Real := 0.1;
          near_plane_Width    :         Real;
          near_plane_Height   :         Real;
 
-         far_plane_Distance  :         Real := fairly_Far;                       -- Distance to the far clipping plane.
+         far_plane_Distance  :         Real := fairly_Far;
          far_plane_Width     :         Real;
          far_plane_Height    :         Real;
 

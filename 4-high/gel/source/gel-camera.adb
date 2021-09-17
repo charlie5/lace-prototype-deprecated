@@ -160,7 +160,7 @@ is
 
 
 
-   function FoVy (Self : in Item'Class) return Real
+   function FoVy (Self : in Item'Class) return Degrees
    is
    begin
       return Self.FOVy;
@@ -237,8 +237,6 @@ is
    is
       use math.Functions;
 
-      deg2rad                  : constant := pi / 180.0;
-
       half_FoV_max_Rads        : Real;
       Tan_of_half_FoV_max_Rads : Real;
 
@@ -255,7 +253,7 @@ is
       else   Self.Aspect := Real (Width) / Real (Height);
       end if;
 
-      half_FoV_max_Rads        :=  0.5 * Self.FoVy * deg2rad;
+      half_FoV_max_Rads        := to_Radians (0.5 * Self.FoVy);
       Tan_of_half_FoV_max_Rads := Tan (half_FoV_max_Rads);
 
       Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
