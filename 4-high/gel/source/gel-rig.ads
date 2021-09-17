@@ -321,7 +321,7 @@ private
    --
    type Transform is
       record
-         Rotation    : math.Quaternion := Algebra_3d.to_Quaternion (Algebra_3d.x_Rotation_from (0.0));
+         Rotation    : math.Quaternion := linear_Algebra_3D.to_Quaternion (linear_Algebra_3D.x_Rotation_from (0.0));
          Translation : math.Vector_3   := (0.0, 0.0, 0.0);
       end record;
 

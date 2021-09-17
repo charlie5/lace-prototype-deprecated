@@ -16,11 +16,11 @@ is
    function to_String (Self : in asset_Name) return String
    is
    begin
-      for Each in reverse Self'Range
+      for i in reverse Self'Range
       loop
-         if Self (Each) /= ' '
+         if Self (i) /= ' '
          then
-            return String (Self (1 .. Each));
+            return String (Self (1 .. i));
          end if;
       end loop;
 
