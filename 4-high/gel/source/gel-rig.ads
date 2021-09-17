@@ -19,7 +19,7 @@ package gel.Rig
 --
 -- Provides GEL sprites which allow placing a collada skinned/rigged model into a GEL World.
 --
--- The rig motion can be controlled either by normal physics or pre-canned animations.
+-- The rig motion can be controlled either by normal dynamics or pre-canned animations.
 --
 is
    type Item  is tagged limited private;
@@ -34,7 +34,7 @@ is
    --- Core Types
    --
 
-   type motion_Mode is (Physics, Animation);     -- TODO: Rename Physics to Dynamics.
+   type motion_Mode is (Dynamics, Animation);
 
    procedure motion_Mode_is (Self : in out Item;   Now : in motion_Mode);
 
@@ -352,7 +352,7 @@ private
    --
    type Item is tagged limited
       record
-         Mode                    : motion_Mode := Physics;
+         Mode                    : motion_Mode := Dynamics;
 
          joint_Sprites           : bone_id_Map_of_sprite;                   -- Sprite to show location/rotation of joints (mainly for debugging).
          bone_Sprites            : bone_id_Map_of_sprite;                   -- A sprite for each bone.

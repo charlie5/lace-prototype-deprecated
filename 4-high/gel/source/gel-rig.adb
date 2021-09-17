@@ -1035,20 +1035,21 @@ is
       function get_root_Transform return Matrix_4x4
       is
       begin
-         if Self.Mode = Physics
-         then
-            return Self.base_Sprite.Transform;
+         case Self.Mode
+         is
+            when Dynamics =>
+               return Self.base_Sprite.Transform;
 
-         else -- Is an animation.
-            declare
-               the_Transform : Matrix_4x4;
-            begin
-               set_Rotation    (the_Transform,  x_Rotation_from (to_Radians (0.0)));
-               set_Translation (the_Transform, -get_Translation (Inverse (Self.joint_pose_Transforms (Self.root_Joint.Name))));
+            when Animation =>
+               declare
+                  the_Transform : Matrix_4x4;
+               begin
+                  set_Rotation    (the_Transform,  x_Rotation_from (to_Radians (0.0)));
+                  set_Translation (the_Transform, -get_Translation (Inverse (Self.joint_pose_Transforms (Self.root_Joint.Name))));
 
-               return the_Transform;
-            end;
-         end if;
+                  return the_Transform;
+               end;
+         end case;
       end get_root_Transform;
 
 
@@ -1061,7 +1062,7 @@ is
       begin
          case Self.Mode
          is
-            when Physics =>
+            when Dynamics =>
                declare
                   the_bone_Transform    : constant Matrix_4x4 := Self.Sprite (the_collada_Joint).Transform;
                   the_joint_site_Offset :          Vector_3   := Self.phys_joint_site_Offets (the_collada_Joint);
