@@ -1,10 +1,10 @@
 with
-     "mmi",
+     "gel",
      "sdlada",
      "lace_shared";
 
 library
-project SDL_MMI
+project SDL_GEL
 is
    for Create_Missing_Dirs use "True";
 
@@ -12,10 +12,10 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "SDL_MMI";
+   for Library_Name    use "SDL_GEL";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
 
-end SDL_MMI;
+end SDL_GEL;
