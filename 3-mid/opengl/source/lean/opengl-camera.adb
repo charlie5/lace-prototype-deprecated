@@ -201,7 +201,7 @@ is
          half_FoV_max := arcTan (Self.aspect * Tan_of_half_FoV_max);     -- TODO: 'half_FoV_max' is not used after here. Why is it set ?
       end if;
 
-      Self.projection_Transform := to_Perspective (FoVy   => Real (Self.FOVy),
+      Self.projection_Transform := to_Perspective (FoVy   => Self.FoVy,
                                                    Aspect => Self.Aspect,
                                                    zNear  => Self.near_Plane_Distance,
                                                    zFar   => Self. far_Plane_Distance);

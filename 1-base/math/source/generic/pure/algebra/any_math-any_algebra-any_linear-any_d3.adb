@@ -276,13 +276,17 @@ is
    --- General
    --
 
-   function to_Perspective (FoVy, Aspect, zNear, zFar : Real) return Matrix_4x4
+   function to_Perspective (FoVy : in Degrees;
+                            Aspect,
+                            zNear,
+                            zFar : in Real) return Matrix_4x4
    is
       use Functions;
-      deltaZ          : constant Real := zFar - zNear;
-      Radians         : constant Real := FoVy / 2.0  *  Pi / 180.0;
-      Sine            : constant Real := Sin (Radians);
-      Cotangent       :          Real;
+
+      deltaZ    : constant Real    := zFar - zNear;
+      Rads      : constant Radians := to_Radians (FoVy / 2.0);
+      Sine      : constant Real    := Sin (Rads);
+      Cotangent :          Real;
 
    begin
       if deltaZ = 0.0 or Sine = 0.0 or Aspect = 0.0
@@ -290,7 +294,7 @@ is
          raise Constraint_Error;   -- tbd: 'mesa' simnply returns here ... ?
       end if;
 
-      Cotangent := cos (Radians) / Sine;
+      Cotangent := cos (Rads) / Sine;
 
       return ((Cotangent / Aspect,        0.0,                           0.0,   0.0),
               (               0.0,  Cotangent,                           0.0,   0.0),

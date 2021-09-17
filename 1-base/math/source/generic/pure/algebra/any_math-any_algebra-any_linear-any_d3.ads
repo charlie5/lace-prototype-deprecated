@@ -89,9 +89,17 @@ is
    --- General
    --
 
-   function  Look_at               (Eye,    Center, Up          : in Vector_3) return Matrix_4x4;
-   function  to_Perspective        (FoVy,   Aspect, zNear, zFar : in Real)     return Matrix_4x4;
-   function  to_Viewport_Transform (Origin, Extent              : in Vector_2) return Matrix_4x4;
+   function Look_at (Eye,
+                     Center,
+                     Up     : in Vector_3) return Matrix_4x4;
+
+   function to_Viewport_Transform (Origin,
+                                   Extent : in Vector_2) return Matrix_4x4;
+
+   function to_Perspective (FoVy   : in Degrees;
+                            Aspect,
+                            zNear,
+                            zFar   : in Real) return Matrix_4x4;
 
 
    -------------
