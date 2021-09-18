@@ -1,7 +1,6 @@
 package body gel.Camera.forge
 is
 
-
    function new_Camera return gel.Camera.item
    is
    begin
@@ -20,6 +19,5 @@ is
       Self.define;
       return Self;
    end new_Camera;
-
 
 end gel.Camera.forge;

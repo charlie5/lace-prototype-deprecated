@@ -1,6 +1,6 @@
 package gel.Camera.forge
 --
--- Provides a constructor for a camera.
+-- Provides constructors for a camera.
 --
 is
 
