@@ -1,14 +1,12 @@
 with
      gel.Events,
+
      physics.remote.Model,
+     physics.Object,
      physics.Forge,
 
      openGL.remote_Model,
      openGL.Renderer.lean,
-
-     physics.Object,
-
-     float_math.Algebra.linear.d3,
 
      lace.Response,
      lace.Event.utility,
@@ -16,24 +14,20 @@ with
      ada.Calendar,
      ada.Text_IO,
      ada.Exceptions,
-     ada.Unchecked_Deallocation,
-     ada.Containers.Hashed_Sets;
-
+     ada.unchecked_Deallocation,
+     ada.Containers.hashed_Sets;
 
 package body gel.World
 is
-   use gel .Sprite,
-       math.Algebra.linear.d3,
+   use gel.Sprite,
+       linear_Algebra_3D,
 
-       lace.Event.Utility,
+       lace.Event.utility,
        lace.Event,
 
-       ada .Calendar,
-       ada .Exceptions,
-       ada .Text_IO;
-
-   package std_Physics renames standard.Physics;
-
+       ada.Calendar,
+       ada.Exceptions,
+       ada.Text_IO;
 
 
    procedure log (Message : in String)
@@ -41,28 +35,24 @@ is
    is null;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (Item'Class, View);
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       deallocate (Self);
    end free;
 
-
-   procedure free is new ada.Unchecked_Deallocation (lace.Any.limited_Item'Class, Any_limited_view);
-
-
-   procedure define  (Self : in out Item'Class;   Name       : in     String;
-                                                  Id         : in     world_Id;
-                                                  space_Kind : in     std_physics.space_Kind;
-                                                  Renderer   : access openGL.Renderer.lean.item'Class);
+   procedure free is new ada.unchecked_Deallocation (lace.Any.limited_item'Class, Any_limited_view);
 
 
+   procedure define (Self : in out Item'Class;   Name       : in     String;
+                                                 Id         : in     world_Id;
+                                                 space_Kind : in     physics.space_Kind;
+                                                 Renderer   : access openGL.Renderer.lean.item'Class);
 
    overriding
    procedure destroy (Self : in out Item)
@@ -81,18 +71,17 @@ is
       --  Free record components.
       --
       declare
-         procedure free is new ada.Unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
-         procedure free is new ada.Unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
-         procedure free is new ada.Unchecked_Deallocation (Engine,                   Engine_view);
+         procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
+         procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
+         procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
       begin
-         std_physics.Space.free (Self.physics_Space);
+         physics.Space.free (Self.physics_Space);
          free (Self.Commands);
       end;
 
-      lace.Subject_and_deferred_Observer.destroy (lace.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
-      lace.Subject_and_deferred_Observer.free    (Self.local_Subject_and_deferred_Observer);
+      lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
+      lace.Subject_and_deferred_Observer.free (Self.local_Subject_and_deferred_Observer);
    end destroy;
-
 
 
 
@@ -100,16 +89,16 @@ is
    is
 
       function to_World (Name       : in     String;
-                          Id         : in     world_Id;
-                          space_Kind : in     standard.physics.space_Kind;
+                         Id         : in     world_Id;
+                         space_Kind : in     physics.space_Kind;
                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.item
       is
-         use lace.Subject_and_deferred_Observer.forge;
+         use lace.Subject_and_deferred_Observer.Forge;
       begin
-         return Self : gel.World.item := (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
+         return Self : gel.World.item := (to_Subject_and_Observer (Name => Name & " world" & Id'Image)
                                           with others => <>)
          do
-            define (Self, Name, Id, space_Kind, Renderer);
+            Self.define (Name, Id, space_Kind, Renderer);
          end return;
       end to_World;
 
@@ -117,38 +106,36 @@ is
 
       function new_World (Name       : in     String;
                           Id         : in     world_Id;
-                          space_Kind : in     Standard.physics.space_Kind;
+                          space_Kind : in     physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.view
       is
-         use lace.Subject_and_deferred_Observer.forge;
+         use lace.Subject_and_deferred_Observer.Forge;
 
          Self : constant gel.World.view
-           := new gel.World.item' (to_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id))
+           := new gel.World.item' (to_Subject_and_Observer (name => Name & " world" & Id'Image)
                                    with others => <>);
       begin
-         define (Self.all,  Name, Id, space_Kind, Renderer);
-         return  Self;
+         Self.define (Name, Id, space_Kind, Renderer);
+         return Self;
       end new_World;
 
    end Forge;
 
 
 
-
-
-   function  local_Observer (Self : in     Item)     return lace.Observer.view
+   function local_Observer (Self : in Item) return lace.Observer.view
    is
    begin
       return lace.Observer.view (Self.local_Subject_and_deferred_Observer);
    end local_Observer;
 
 
-   function  local_Subject  (Self : in     Item)     return lace.Subject .view
+
+   function local_Subject (Self : in Item) return lace.Subject.view
    is
    begin
       return lace.Subject.view (Self.local_Subject_and_deferred_Observer);
    end local_Subject;
-
 
 
 
@@ -160,35 +147,33 @@ is
 
 
 
-
    function to_Sprite (the_Pair           : in remote.World.sprite_model_Pair;
                        the_Models         : in Id_Maps_of_Model        .Map;
                        the_physics_Models : in Id_Maps_of_physics_Model.Map;
                        the_World          : in gel.World.view) return gel.Sprite.view
    is
-      the_graphics_Model : access openGL.      Model.item'Class;
-      the_physics_Model  : access Standard.physics.Model.item'Class;
+      the_graphics_Model : access openGL .Model.item'Class;
+      the_physics_Model  : access physics.Model.item'Class;
       the_Sprite         :        gel.Sprite.view;
 
       use openGL;
-
    begin
-      the_graphics_Model := openGL          .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
-      the_physics_Model  := Standard.physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
+      the_graphics_Model := openGL .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
+      the_physics_Model  := physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
-      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
+      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
                                                  the_graphics_Model,
                                                  the_physics_Model,
                                                  owns_Graphics => False,
                                                  owns_Physics  => False,
-                                                 is_kinematic  => the_Pair.Mass /= 0.0);
+                                                 is_Kinematic  => the_Pair.Mass /= 0.0);
 
-      the_Sprite.Id_is           (now => the_Pair.sprite_Id);
-      the_Sprite.is_Visible      (now => the_Pair.is_Visible);
+      the_Sprite.Id_is      (Now => the_Pair.sprite_Id);
+      the_Sprite.is_Visible (Now => the_Pair.is_Visible);
 
-      the_Sprite.Site_is         (get_Translation (the_Pair.Transform));
-      the_Sprite.Spin_is         (get_Rotation    (the_Pair.Transform));
+      the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
+      the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
 
       the_Sprite.desired_Site_is (the_Sprite.Site);
       the_Sprite.desired_Spin_is (to_Quaternion (get_Rotation (the_Sprite.Transform)));
@@ -197,10 +182,8 @@ is
    end to_Sprite;
 
 
-
-
    --------------------------------
-   --  'create_new_Sprite' Response
+   --- 'create_new_Sprite' Response
    --
 
    type create_new_Sprite is new lace.Response.item with
@@ -210,16 +193,18 @@ is
          physics_Models : access id_Maps_of_physics_model.Map;
       end record;
 
+
    overriding
    function Name (Self : in create_new_Sprite) return String;
 
 
+
    overriding
-   procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
    begin
       declare
-         the_Event  : constant gel.events.new_sprite_Event := gel.events.new_sprite_Event (to_Event);
+         the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
          the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
                                                                          Self.Models.all,
                                                                          Self.physics_Models.all,
@@ -241,7 +226,6 @@ is
 
 
 
-
    overriding
    function Name (Self : in create_new_Sprite) return String
    is
@@ -251,20 +235,18 @@ is
    end Name;
 
 
-
-
-   ---------
-   -- Define
+   ----------
+   --- Define
    --
 
    procedure define  (Self : in out Item'Class;   Name       : in     String;
                                                   Id         : in     world_Id;
-                                                  space_Kind : in     std_physics.space_Kind;
+                                                  space_Kind : in     physics.space_Kind;
                                                   Renderer   : access openGL.Renderer.lean.Item'Class)
    is
       use lace.Subject_and_deferred_Observer.Forge;
    begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & world_Id'Image (Id));
+      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & Id'Image);
 
       Self.Id           := Id;
       Self.space_Kind   := space_Kind;
@@ -275,9 +257,8 @@ is
    end define;
 
 
-
    -------------------------
-   --  all_sprite_Transforms
+   --- all_sprite_Transforms
    --
 
    function to_Integer is new ada.unchecked_Conversion (gel.Sprite.view, Integer);
@@ -286,7 +267,6 @@ is
    protected
    body all_sprite_Transforms
    is
-
       procedure set (To : in sprite_Maps_of_transforms.Map)
       is
       begin
@@ -294,7 +274,7 @@ is
       end set;
 
 
-      function  Fetch return sprite_Maps_of_transforms.Map
+      function fetch return sprite_Maps_of_transforms.Map
       is
       begin
          return sprite_Map_of_transforms;
@@ -303,10 +283,8 @@ is
    end all_sprite_Transforms;
 
 
-
-
    -----------------
-   --  Duration_safe
+   --- Duration_safe
    --
 
    protected
@@ -318,30 +296,29 @@ is
          the_Duration := Now;
       end Duration_is;
 
-      function  Duration return standard.Duration
+      function Duration return standard.Duration
       is
       begin
          return the_Duration;
       end Duration;
+
    end Duration_safe;
 
 
-
-
-   --------------------
+   -------------------
    --- Engine Commands
    --
 
    protected body safe_command_Set
    is
-      function  is_Empty return Boolean
+      function is_Empty return Boolean
       is
       begin
          return the_Count = 0;
       end is_Empty;
 
 
-      procedure add   (the_Command : in     Command)
+      procedure add (the_Command : in Command)
       is
       begin
          the_Count       := the_Count + 1;
@@ -349,8 +326,8 @@ is
       end add;
 
 
-      procedure Fetch (To    :    out Commands;
-                       Count :    out Natural)
+      procedure fetch (To    : out Commands;
+                       Count : out Natural)
       is
       begin
          To (1 .. the_Count) := Set (1 .. the_Count);
@@ -360,22 +337,20 @@ is
    end safe_command_Set;
 
 
-
-
-   -------------------
-   -- Breakable Joints
+   --------------------
+   --- Breakable Joints
    --
 
    protected body safe_joint_Set
    is
-      function  is_Empty return Boolean
+      function is_Empty return Boolean
       is
       begin
          return the_Count = 0;
       end is_Empty;
 
 
-      procedure add (the_Joint : in     gel.Joint.view)
+      procedure add (the_Joint : in gel.Joint.view)
       is
       begin
          the_Count       := the_Count + 1;
@@ -383,8 +358,8 @@ is
       end add;
 
 
-      procedure Fetch (To          :    out safe_Joints;
-                       Count       :    out Natural)
+      procedure fetch (To    : out safe_Joints;
+                       Count : out Natural)
       is
       begin
          To (1 .. the_Count) := Set (1 .. the_Count);
@@ -395,22 +370,19 @@ is
    end safe_joint_Set;
 
 
-
-
-
    --------------
-   --  Collisions
+   --- Collisions
    --
 
    task
    type impact_Responder
    is
-      entry start (the_World      : in     gel.World.view;
-                   Filter         : in     impact_Filter;
-                   Response       : in     impact_Response;
-                   responses_Done : in     Signal_Object_view);
+      entry start (the_World      : in gel.World.view;
+                   Filter         : in impact_Filter;
+                   Response       : in impact_Response;
+                   responses_Done : in Signal_Object_view);
       entry stop;
-      entry respond;                                     -- Filter and do responses.
+      entry respond;     -- Filter and do responses.
    end impact_Responder;
 
 
@@ -418,7 +390,7 @@ is
 
    procedure free (Self : in out impact_Responder_view)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (impact_Responder, impact_Responder_view);
+      procedure deallocate is new ada.unchecked_Deallocation (impact_Responder, impact_Responder_view);
    begin
       deallocate (Self);
    end free;
@@ -427,56 +399,52 @@ is
 
    type filtered_impact_Response is
       record
-         Filter         :        impact_Filter;
-         Response       :        impact_Response;
+         Filter    : impact_Filter;
+         Response  : impact_Response;
 
-         Responder      :        impact_Responder_view;
-         responses_Done : access Signal_Object        := new Signal_Object;
+         Responder : impact_Responder_view;
+
+         responses_Done : access Signal_Object := new Signal_Object;
       end record;
 
    function Hash (Self : in filtered_impact_Response) return ada.Containers.Hash_type;
 
-   package  filtered_impact_Response_Sets is new ada.Containers.Hashed_Sets (filtered_impact_Response,
-                                                                             Hash,  "=");
+   package filtered_impact_Response_Sets is new ada.Containers.hashed_Sets (filtered_impact_Response,
+                                                                            Hash,  "=");
 
-
-
-
-   -----------
+   ----------
    --- Engine
    --
 
    task body Engine
    is
       use type gel.Joint.view,
-               ada.Containers.Count_Type;
+               ada.Containers.Count_type;
 
-      Stopped                          : Boolean                   := True;
-      Cycle                            : ada.Containers.Count_Type := 0;
-      next_render_Time                 : ada.Calendar.Time;
+      Stopped          : Boolean                   := True;
+      Cycle            : ada.Containers.Count_type := 0;
+      next_render_Time : ada.Calendar.Time;
 
       the_filtered_impact_Response_Set : filtered_impact_Response_Sets.Set;
 
-
       max_joint_Force,
-      max_joint_Torque                 : Real                      := 0.0;
-
+      max_joint_Torque : Real := 0.0;
 
 
       procedure free_Sprites
       is
          the_free_Sprites : gel.Sprite.views := the_World.free_sprite_Set;
       begin
-         for Each in the_free_Sprites'Range
+         for i in the_free_Sprites'Range
          loop
-            log ("Engine is Freeing sprite id: " & sprite_Id'Image (the_free_Sprites (Each).Id));
+            log ("Engine is freeing sprite id:" & the_free_Sprites (i).Id'Image);
 
-            if the_free_Sprites (Each).owns_Graphics
+            if the_free_Sprites (i).owns_Graphics
             then
-               the_World.Renderer.free (the_free_Sprites (Each).Visual.Model);
+               the_World.Renderer.free (the_free_Sprites (i).Visual.Model);
             end if;
 
-            gel.Sprite.free (the_free_Sprites (Each));
+            gel.Sprite.free (the_free_Sprites (i));
          end loop;
       end free_Sprites;
 
@@ -506,7 +474,6 @@ is
          declare
             the_Commands  : World.Commands;
             Count         : Natural;
-
             command_Count : array (command_Kind) of Natural := (others => 0);
 
          begin
@@ -515,7 +482,7 @@ is
             for Each in 1 .. Count
             loop
                declare
-                  use std_Physics.Engine;
+                  use Physics.Engine;
                   the_Command : World.Command renames the_Commands (Each);
                begin
                   command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
@@ -538,7 +505,8 @@ is
 
 
                      when update_Site =>
-                        the_World.physics_Engine.update_Site (std_physics.Object.view (the_Command.Sprite.Solid), the_Command.Site);
+                        the_World.physics_Engine.update_Site (the_Command.Sprite.Solid,
+                                                              the_Command.Site);
 --                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
 
 
@@ -560,8 +528,8 @@ is
                                  raise Program_Error;
                               end if;
 
-                              the_World.add (the_Sprite.graphics_Model.all'Access);
-                              the_World.add (the_Sprite. physics_Model.all'Access);
+                              the_World.add (the_Sprite.graphics_Model);
+                              the_World.add (the_Sprite. physics_Model);
 
                               the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
 
@@ -570,7 +538,7 @@ is
 
                               if the_Sprite.physics_Model.is_Tangible
                               then
-                                 the_World.physics_Engine.add (std_physics.Object.view (the_Sprite.Solid));
+                                 the_World.physics_Engine.add (physics.Object.view (the_Sprite.Solid));
                               end if;
 
                               the_World.sprite_Count                     := the_World.sprite_Count + 1;
@@ -587,28 +555,28 @@ is
                            function find (the_Sprite : in Sprite.view) return Index
                            is
                            begin
-                              for Each in 1 .. the_World.sprite_Count
+                              for i in 1 .. the_World.sprite_Count
                               loop
-                                 if the_World.Sprites (Each) = the_Sprite
+                                 if the_World.Sprites (i) = the_Sprite
                                  then
-                                    return Each;
+                                    return i;
                                  end if;
                               end loop;
 
-                              raise constraint_Error with "no such sprite in world";
+                              raise constraint_Error with "No such sprite in world.";
                               return 0;
                            end find;
 
 
                            procedure rid (the_Sprite : in Sprite.view)
                            is
-                              use type std_physics.Object.view;
+                              use type physics.Object.view;
                            begin
                               if the_Sprite.Solid /= null
                               then
                                  if the_Sprite.physics_Model.is_Tangible
                                  then
-                                    the_World.physics_Engine.rid (std_physics.Object.view (the_Sprite.Solid));
+                                    the_World.physics_Engine.rid (the_Sprite.Solid);
                                  end if;
 
                                  if the_sprite_Transforms.contains (the_Sprite) then
@@ -618,7 +586,6 @@ is
                               else
                                  raise program_Error;
                               end if;
-
 
                               declare
                                  Id : Index;
@@ -674,21 +641,21 @@ is
 
                      when cast_Ray =>
                         declare
-                           function cast_Ray (Self : in Item'Class;   From, To : in math.Vector_3) return ray_Collision
+                           function cast_Ray (Self : in Item'Class;   From, To : in Vector_3) return ray_Collision
                            is
-                              use type std_physics.Object.view;
+                              use type physics.Object.view;
 
-                              physics_Collision : constant standard.physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
+                              physics_Collision : constant physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
                            begin
                               if physics_Collision.near_Object = null
                               then
-                                 return ray_Collision' (near_sprite => null,
+                                 return ray_Collision' (near_Sprite => null,
                                                         others      => <>);
                               else
                                  return ray_Collision' (to_GEL (physics_Collision.near_Object),
                                                         physics_Collision.hit_Fraction,
                                                         physics_Collision.Normal_world,
-                                                        physics_Collision.Site_world);
+                                                        physics_Collision.  Site_world);
                               end if;
                            end cast_Ray;
 
@@ -708,11 +675,11 @@ is
                                    := raycast_collision_Event_dispatching_Constructor (the_Command.event_Kind,
                                                                                        no_Params'Access);
                               begin
-                                 the_Event.near_Sprite := the_Collision.near_Sprite;
                                  the_Event.Context     := the_Command.Context;
+                                 the_Event.near_Sprite := the_Collision.near_Sprite;
                                  the_Event.Site_world  := the_Collision.Site_world;
 
-                                 the_Command.Observer.receive (the_Event, from_subject => the_World.Name);
+                                 the_Command.Observer.receive (the_Event, from_Subject => the_World.Name);
                               end;
                            end if;
                         end;
@@ -724,9 +691,9 @@ is
                            the_responses_done_Signal : constant Signal_Object_view    := new signal_Object;
                         begin
                            the_filtered_impact_Response_Set.insert ((the_Command.Filter,
-                                                                          the_Command.Response,
-                                                                          the_impact_Responder,
-                                                                          the_responses_done_Signal));
+                                                                     the_Command.Response,
+                                                                     the_impact_Responder,
+                                                                     the_responses_done_Signal));
                            the_impact_Responder.start (the_World,
                                                        the_Command.Filter,
                                                        the_Command.Response,
@@ -755,13 +722,13 @@ is
          declare
             Count : Natural := 0;
          begin
-            for Each in 1 .. the_World.physics_Space.manifold_Count
+            for i in 1 .. the_World.physics_Space.manifold_Count
             loop
                declare
                   function to_Integer is new ada.unchecked_Conversion (physics_Object_view, Integer);
 
-                  the_physics_Manifold : constant std_physics.Space.a_Manifold
-                    := the_World.physics_Space.Manifold (Each);
+                  the_physics_Manifold : constant physics.Space.a_Manifold
+                    := the_World.physics_Space.Manifold (i);
                begin
                   Count                       := Count + 1;
                   the_World.Manifolds (Count) := (sprites => (to_GEL (the_physics_Manifold.Objects (1)),
@@ -769,7 +736,7 @@ is
                                                   contact => (Site => the_physics_Manifold.Contact.Site));
                exception
                   when others =>
-                     put_Line ("Error in 'gel.world.Engine.evolve' contact manifolds !");
+                     put_Line ("Error in 'gel.world.Engine.evolve' contact manifolds.");
                      Count := Count - 1;
                end;
             end loop;
@@ -779,7 +746,7 @@ is
          exception
             when E : others =>
                put_Line ("'gel.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
-               put_Line (Exception_Information (E));
+               put_Line (exception_Information (E));
          end;
 
 
@@ -814,7 +781,7 @@ is
          exception
             when E : others =>
                put_Line ("'gel.World.local.Engine.impact response' has an unhandled exception ...");
-               put_Line (Exception_Information (E));
+               put_Line (exception_Information (E));
          end;
 
 
@@ -838,21 +805,20 @@ is
             end loop;
          end;
 
-         the_World.all_sprite_Transforms.set (to => the_sprite_Transforms);
+         the_World.all_sprite_Transforms.set (To => the_sprite_Transforms);
 
          free_Sprites;
       end evolve;
 
 
-      use type std_physics.Space.view;
+      use type physics.Space.view;
 
    begin
-      accept start (space_Kind : in standard.physics.space_Kind)
+      accept start (space_Kind : in physics.space_Kind)
       do
          Stopped                 := False;
-         the_World.physics_Space := std_physics.Forge.new_Space (space_Kind);
+         the_World.physics_Space := physics.Forge.new_Space (space_Kind);
       end start;
-
 
       next_render_Time := ada.Calendar.Clock;
 
@@ -861,7 +827,6 @@ is
             accept stop
             do
                Stopped := True;
-
 
                -- Add 'destroy' commands for all sprites.
                --
@@ -886,7 +851,8 @@ is
                declare
                   use filtered_impact_Response_Sets;
 
-                  procedure free is new ada.Unchecked_Deallocation (Signal_Object, Signal_Object_view);
+                  procedure free is new ada.unchecked_Deallocation (Signal_Object,
+                                                                    Signal_Object_view);
 
                   Cursor        : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
 
@@ -947,13 +913,13 @@ is
          then
             declare
                use gel.Joint,
-                   standard.physics.Space;
+                   physics.Space;
 
                the_Joint       : gel.Joint.view;
                reaction_Force,
-               reaction_Torque : math.Real;
+               reaction_Torque : Real;
 
-               Cursor          : standard.physics.Space.joint_Cursor'Class := the_World.physics_Space.first_Joint;
+               Cursor          : physics.Space.joint_Cursor'Class := the_World.physics_Space.first_Joint;
             begin
                while has_Element (Cursor)
                loop
@@ -973,7 +939,7 @@ is
 
                         exception
                            when no_such_Child =>
-                              put_Line ("Error when breaking joint due to reaction Force:  no_such_Child !");
+                              put_Line ("Error when breaking joint due to reaction Force:  no_such_Child.");
                         end;
                      end if;
 
@@ -1001,11 +967,10 @@ is
          new_Line (2);
          put_Line ("Error in gel.World.Engine");
          new_Line;
-         put_Line (Exception_Information (E));
+         put_Line (exception_Information (E));
          put_Line ("Engine has terminated !");
          new_Line (2);
    end Engine;
-
 
 
 
@@ -1027,7 +992,6 @@ is
 
 
 
-
    task body sprite_transform_Updater
    is
       Stopped : Boolean := False;
@@ -1040,7 +1004,6 @@ is
             do
                Stopped := True;
             end stop;
-
          else
             null;
          end select;
@@ -1055,7 +1018,7 @@ is
                   use sprite_Maps_of_transforms;
 
                   the_sprite_Transforms : constant sprite_Maps_of_transforms.Map
-                    := the_World.all_sprite_Transforms.Fetch;
+                    := the_World.all_sprite_Transforms.fetch;
 
                   Cursor                :          sprite_Maps_of_transforms.Cursor
                     := the_sprite_Transforms.First;
@@ -1066,7 +1029,6 @@ is
                      next (Cursor);
                   end loop;
                end;
-
             or
                delay 0.5;
             end select;
@@ -1076,10 +1038,9 @@ is
    exception
       when E : others =>
          put_Line ("sprite_transform_Updater unhandled exception ...");
-         put_Line (Exception_Information (E));
+         put_Line (exception_Information (E));
          put_Line ("sprite_transform_Updater has terminated !");
    end sprite_transform_Updater;
-
 
 
 
@@ -1090,6 +1051,7 @@ is
    end local_graphics_Models;
 
 
+
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map
    is
    begin
@@ -1097,9 +1059,8 @@ is
    end local_physics_Models;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure wait_on_Evolve (Self : in out Item)
@@ -1114,7 +1075,7 @@ is
 
 
 
-   function  space_Kind (Self : in     Item) return standard.physics.space_Kind
+   function space_Kind (Self : in Item) return physics.space_Kind
    is
    begin
       return Self.space_Kind;
@@ -1122,7 +1083,7 @@ is
 
 
 
-   function Space (Self : in Item) return standard.physics.Space.view
+   function Space (Self : in Item) return physics.Space.view
    is
    begin
       return Self.physics_Space;
@@ -1133,7 +1094,7 @@ is
    procedure update_Bounds (Self : in out Item;   of_Sprite : in gel.Sprite.view)
    is
    begin
-      Self.physics_Engine.update_Bounds (std_physics.Object.view (of_Sprite.Solid));
+      Self.physics_Engine.update_Bounds (of_Sprite.Solid);
 
 --        Self.Commands.add ((kind   => update_Bounds,
 --                            sprite => of_Sprite));
@@ -1141,21 +1102,21 @@ is
 
 
 
-   procedure update_Site   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
-                                                  To        : in Vector_3)
+   procedure update_Site (Self : in out Item;   of_Sprite : in gel.Sprite.view;
+                                                To        : in Vector_3)
    is
    begin
 --      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
 
-      Self.Commands.add ((kind   => update_Site,
-                          sprite => of_Sprite,
-                          site   => To));
+      Self.Commands.add ((Kind   => update_Site,
+                          Sprite => of_Sprite,
+                          Site   => To));
    end update_Site;
 
 
 
-   procedure set_Speed   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
-                                                To        : in Vector_3)
+   procedure set_Speed (Self : in out Item;   of_Sprite : in gel.Sprite.view;
+                                              To        : in Vector_3)
    is
    begin
       Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
@@ -1167,8 +1128,8 @@ is
 
 
 
-   procedure set_xy_Spin   (Self : in out Item;   of_Sprite : in gel.Sprite.view;
-                                                  To        : in Radians)
+   procedure set_xy_Spin (Self : in out Item;   of_Sprite : in gel.Sprite.view;
+                                                To        : in Radians)
    is
    begin
       Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
@@ -1215,11 +1176,13 @@ is
    end Age;
 
 
+
    procedure Age_is (Self : in out Item;   Now : in Duration)
    is
    begin
       Self.Age := Now;
    end Age_is;
+
 
 
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
@@ -1234,25 +1197,24 @@ is
 
 
 
-   procedure cast_Ray (Self : in Item;   From, To   : in     math.Vector_3;
+   procedure cast_Ray (Self : in Item;   From, To   : in     Vector_3;
                                          Observer   : in     lace.Observer.view;
-                                         Context    : access lace.Any.limited_Item'Class;
-                                         Event_Kind : in     raycast_collision_Event'Class)
+                                         Context    : access lace.Any.limited_item'Class;
+                                         event_Kind : in     raycast_collision_Event'Class)
    is
    begin
-      Self.Commands.add ((kind     => cast_Ray,
-                          sprite   => null,
-                          from     => From,
-                          to       => To,
-                          observer => Observer,
-                          context  => Context,
-                          Event_Kind => Event_Kind'Tag));
+      Self.Commands.add ((Kind     => cast_Ray,
+                          Sprite   => null,
+                          From     => From,
+                          To       => To,
+                          Observer => Observer,
+                          Context  => Context,
+                          event_Kind => event_Kind'Tag));
    end cast_Ray;
 
 
-
-
-   --  Collisions
+   --------------
+   --- Collisions
    --
 
    function manifold_Count (Self : in Item) return Natural
@@ -1276,11 +1238,11 @@ is
    end Manifolds;
 
 
-
-   --  Sprites
+   -----------
+   --- Sprites
    --
 
-   function  new_sprite_Id   (Self : access Item) return sprite_Id
+   function new_sprite_Id (Self : access Item) return sprite_Id
    is
    begin
       Self.last_used_sprite_Id := Self.last_used_sprite_Id + 1;
@@ -1293,8 +1255,8 @@ is
    procedure destroy (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
    begin
-      Self.Commands.add ((kind   => destroy_Sprite,
-                          sprite => the_Sprite));
+      Self.Commands.add ((Kind   => destroy_Sprite,
+                          Sprite => the_Sprite));
    end destroy;
 
 
@@ -1313,7 +1275,7 @@ is
            := Self.free_Sets (prior_set_Index).Sprites (1 .. Self.free_Sets (prior_set_Index).Count);
       begin
          Self.free_Sets (prior_set_Index).Count := 0;
-         Self.current_free_Set                  := prior_set_Index;
+         Self.current_free_Set := prior_set_Index;
 
          return the_Set;
       end;
@@ -1329,7 +1291,7 @@ is
 
 
 
-   function fetch_Sprite  (Self : in Item;   Id : in sprite_Id) return gel.Sprite.view
+   function fetch_Sprite (Self : in Item;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
       return Self.id_Map_of_Sprite.Element (Id);
@@ -1346,7 +1308,7 @@ is
       for_Sprite.Scale_is (To);
       Self.add (for_Sprite, and_children => False);
 
-      for_Sprite.Site_is (Pad);   -- tbd: Hack !
+      for_Sprite.Site_is (Pad);   -- TODO: Hack !
    end set_Scale;
 
 
@@ -1370,12 +1332,12 @@ is
             if not the_Sprite.is_Destroyed
             then
                Count                         := Count + 1;
-               the_sprite_Transforms (Count) := (sprite    => the_Sprite,
-                                                 transform => Element (Cursor));
+               the_sprite_Transforms (Count) := (Sprite    => the_Sprite,
+                                                 Transform => Element (Cursor));
             end if;
          exception
             when others =>
-               put_Line ("Exception in 'gel.World.sprite_Transforms' !");
+               put_Line ("Exception in 'gel.World.sprite_Transforms'.");
          end;
 
          next (Cursor);
@@ -1385,8 +1347,8 @@ is
    end sprite_Transforms;
 
 
-
-   --  Joints
+   ----------
+   --- Joints
    --
 
    procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view)
@@ -1400,12 +1362,12 @@ is
 
 
    procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in gel.Joint.view;
-                                                          To        : in math.Vector_3)
+                                                          To        : in Vector_3)
    is
    begin
       Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-                                            to => To,
-                                            is_Anchor_A  => True);
+                                            to          => To,
+                                            is_Anchor_A => True);
 
 --        the_World.physics_Space.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
 --                                                        the_Command.is_Anchor_A,
@@ -1422,12 +1384,12 @@ is
 
 
    procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in gel.Joint.view;
-                                                          To        : in math.Vector_3)
+                                                          To        : in Vector_3)
    is
    begin
       Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-                                            to => To,
-                                            is_Anchor_A  => False);
+                                            To          => To,
+                                            is_Anchor_A => False);
 
 --        Self.Commands.add ((Kind         => set_Joint_local_Anchor,
 --                            Sprite       => null,
@@ -1437,13 +1399,11 @@ is
    end set_local_anchor_on_B;
 
 
-
-
-
-   --  new_model_Response
+   ----------------------
+   --- new_model_Response
    --
 
-   type new_model_Response is new lace.response.item with
+   type new_model_Response is new lace.Response.item with
       record
          World : gel.World.view;
       end record;
@@ -1465,7 +1425,7 @@ is
    overriding
    function Name (Self : in new_model_Response) return String
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return "new_model_Response";
    end Name;
@@ -1474,16 +1434,13 @@ is
    the_new_model_Response : aliased new_model_Response;
 
 
-
-
-
-
-   --  my_new_sprite_Response
+   --------------------------
+   --- my_new_sprite_Response
    --
    type my_new_sprite_Response is new lace.Response.item with
       record
          World          :        gel.World.view;
-         Models         : access id_Maps_of_model.Map;
+         Models         : access id_Maps_of_model        .Map;
          physics_Models : access id_Maps_of_physics_model.Map;
       end record;
 
@@ -1495,7 +1452,7 @@ is
    overriding
    procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
    is
-      the_Event  : constant gel.events.my_new_sprite_added_to_world_Event
+      the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
         := gel.events.my_new_sprite_added_to_world_Event (to_Event);
 
       the_Sprite : constant gel.Sprite.view
@@ -1504,7 +1461,7 @@ is
                       Self.physics_Models.all,
                       Self.World);
    begin
-      Self.World.add (the_Sprite, and_children => False);
+      Self.World.add (the_Sprite, and_Children => False);
    end respond;
 
 
@@ -1518,11 +1475,10 @@ is
    end define;
 
 
-
    overriding
    function Name (Self : in my_new_sprite_Response) return String
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return "my_new_sprite_Response";
    end Name;
@@ -1550,9 +1506,8 @@ is
                 to_Kind (remote.World.new_model_Event'Tag),
                 of_World.Name);
 
-
-      define   (the_my_new_sprite_Response, world  => Self.all'Access,
-                                            models => Self.graphics_Models'Access);
+      define   (the_my_new_sprite_Response, World  => Self.all'Access,
+                                            Models => Self.graphics_Models'Access);
 
       Self.add (the_my_new_sprite_Response'Access,
                 to_Kind (gel.Events.my_new_sprite_added_to_world_Event'Tag),
@@ -1561,7 +1516,7 @@ is
       --  Obtain and make a local copy of models, sprites and humans from the mirrored world.
       --
       declare
-         use remote.World.Id_Maps_of_Model_Plan;
+         use remote.World.id_Maps_of_model_plan;
 
          the_server_Models         : constant remote.World.graphics_Model_Set := of_World.graphics_Models;    -- Fetch graphics models from the server.
          the_server_physics_Models : constant remote.World.physics_model_Set  := of_World.physics_Models;     -- Fetch physics  models from the server.
@@ -1570,7 +1525,7 @@ is
          --
          declare
             Cursor    : remote.World.Id_Maps_of_Model_Plan.Cursor := the_server_Models.First;
-            new_Model : graphics_Model_iface_view;
+            new_Model : graphics_Model_iFace_view;
          begin
             while has_Element (Cursor)
             loop
@@ -1584,16 +1539,16 @@ is
          --  Create our local physics models.
          --
          declare
-            use remote.World.Id_Maps_of_physics_Model_Plan;
+            use remote.World.id_Maps_of_physics_model_plan;
 
-            Cursor    : remote.World.Id_Maps_of_physics_Model_Plan.Cursor := the_server_physics_Models.First;
-            new_Model : physics_Model_iface_view;
+            Cursor    : remote.World.id_Maps_of_physics_model_plan.Cursor := the_server_physics_Models.First;
+            new_Model : physics_Model_iFace_view;
 
          begin
             while has_Element (Cursor)
             loop
-               new_Model := new Standard.physics.remote.Model.item'Class' (Element (Cursor));
-               Self.add (Standard.physics.Model.view (new_Model));
+               new_Model := new physics.remote.Model.item'Class' (Element (Cursor));
+               Self.add (physics.Model.view (new_Model));
 
                next (Cursor);
             end loop;
@@ -1605,13 +1560,13 @@ is
             the_Sprite         :          gel.Sprite.view;
             the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
          begin
-            for Each in the_server_Sprites'Range
+            for i in the_server_Sprites'Range
             loop
-               the_Sprite := to_Sprite (the_server_Sprites (Each),
+               the_Sprite := to_Sprite (the_server_Sprites (i),
                                         Self.graphics_Models,
-                                        Self.physics_Models,
+                                        Self. physics_Models,
                                         gel.World.view (Self));
-               Self.add (the_Sprite, and_children => False);
+               Self.add (the_Sprite, and_Children => False);
             end loop;
          end;
       end;
@@ -1619,23 +1574,22 @@ is
 
 
 
-
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean        := False)
+                                        and_Children : in Boolean := False)
    is
       procedure add_the_Sprite (the_Sprite : in out Sprite.item'Class)
       is
       begin
-         Self.Commands.add ((kind         => add_Sprite,
-                             sprite       => the_Sprite'unchecked_Access,
-                             add_children => False));
+         Self.Commands.add ((Kind         => add_Sprite,
+                             Sprite       => the_Sprite'unchecked_Access,
+                             add_Children => False));
 
          Self.id_Map_of_Sprite.insert (the_Sprite.Id,
                                        the_Sprite'unchecked_Access);
       end add_the_Sprite;
 
    begin
-      pragma assert (the_Sprite.World = Self, "Trying to add Sprite to the wrong world");
+      pragma assert (the_Sprite.World = Self, "Trying to add sprite to the wrong world.");
 
       if and_Children
       then
@@ -1667,9 +1621,9 @@ is
       procedure rid_the_Sprite (the_Sprite : in out Sprite.item'Class)
       is
       begin
-         Self.Commands.add ((kind         => rid_Sprite,
-                             sprite       => the_Sprite'unchecked_Access,
-                             rid_children => False));
+         Self.Commands.add ((Kind         => rid_Sprite,
+                             Sprite       => the_Sprite'unchecked_Access,
+                             rid_Children => False));
 
          Self.id_Map_of_Sprite.delete (the_Sprite.Id);
       end rid_the_Sprite;
@@ -1711,10 +1665,10 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Model    : in Standard.physics.Model.view)
+   procedure add (Self : in out Item;   the_Model : in physics.Model.view)
    is
    begin
-      if the_Model.Id = Standard.Physics.null_model_Id
+      if the_Model.Id = Physics.null_model_Id
       then
          Self.last_used_physics_model_Id := Self.last_used_physics_model_Id + 1;
          the_Model.Id_is (Self.last_used_physics_model_Id);
@@ -1752,16 +1706,14 @@ is
    end rid;
 
 
-
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure start (Self : access Item)
    is
    begin
-      Self.Engine.start (Self.space_Kind);
+      Self.Engine        .start (Self.space_Kind);
       Self.physics_Engine.start (Self.physics_Space);
    end start;
 
@@ -1770,22 +1722,22 @@ is
    procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
    is
    begin
-      for Each in Now'Range
+      for i in Now'Range
       loop
          declare
             use remote.World;
 
-            the_Id             : constant gel.sprite_Id := Now (Each).Id;
+            the_Id             : constant gel.sprite_Id := Now (i).Id;
             the_Sprite         :          Sprite.view;
 
-            new_Site           : constant Vector_3      := refined (Now (Each).Site);
+            new_Site           : constant Vector_3   := refined (Now (i).Site);
             site_Delta         :          Vector_3;
 
-            min_teleport_Delta : constant               := 20.0;
-            new_Spin           : constant Quaternion    := refined (Now (Each).Spin);
+            min_teleport_Delta : constant            := 20.0;
+            new_Spin           : constant Quaternion := refined (Now (i).Spin);
 
          begin
-            the_Sprite := Self.id_Map_of_Sprite.Element (the_Id);
+            the_Sprite := Self.id_Map_of_sprite.Element (the_Id);
             site_Delta := new_Site - the_Sprite.desired_Site;
 
             if        abs site_Delta (1) > min_teleport_Delta
@@ -1803,13 +1755,12 @@ is
 
 
 
-
-
-   procedure allow_broken_Joints (Self :    out Item)
+   procedure allow_broken_Joints (Self : out Item)
    is
    begin
       Self.broken_joints_Allowed := True;
    end allow_broken_Joints;
+
 
 
    procedure handle_broken_Joints (Self : in out Item;   the_Joints :in Joint.views)
@@ -1827,17 +1778,16 @@ is
                   the_Joints (i).Sprite_A.detach (the_Joints (i).Sprite_B);
                exception
                   when no_such_Child =>
-                     put_Line ("handle_broken_Joints: cannot detach sprite:  no_such_Child !" );
+                     put_Line ("handle_broken_Joints: Cannot detach sprite:  no_such_Child." );
                end;
             end if;
 
          exception
             when Storage_Error =>
-               put_Line ("handle_broken_Joints: cannot tell if sprite exists:  Storage_Error !" );
+               put_Line ("handle_broken_Joints: Cannot tell if sprite exists:  storage_Error." );
          end;
       end loop;
    end handle_broken_Joints;
-
 
 
 
@@ -1860,23 +1810,22 @@ is
          Self.handle_broken_Joints (the_Joints (1 .. Count));
       end;
 
-
       --  Perform responses to events, for all sprites.
       --
-      for Each in 1 .. Self.sprite_Count
+      for i in 1 .. Self.sprite_Count
       loop
          begin
-            if not Self.Sprites (Each).is_Destroyed
+            if not Self.Sprites (i).is_Destroyed
             then
-               Self.Sprites (Each).respond;
+               Self.Sprites (i).respond;
             end if;
 
          exception
             when E : others =>
                new_Line (2);
-               put_Line ("Error in gel.World.local.evolve ~ Self.Sprites (" & Integer'Image (Each) & ").respond;");
+               put_Line ("Error in gel.World.local.evolve ~ Self.Sprites (" & i'Image & ").respond;");
                new_Line;
-               put_Line (ada.exceptions.Exception_Information (E));
+               put_Line (ada.Exceptions.exception_Information (E));
                new_Line (2);
          end;
       end loop;
@@ -1902,12 +1851,12 @@ is
                set_Translation (new_Transform, the_Sprite.Site);
                set_Rotation    (new_Transform, the_Sprite.Spin);
 
-               the_sprite_Transforms.replace_Element (Cursor,  new_Transform);
+               the_sprite_Transforms.replace_Element (Cursor, new_Transform);
 
                next (Cursor);
             end loop;
 
-            Self.all_sprite_Transforms.set (to => the_sprite_Transforms);
+            Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
          end;
 
       else
@@ -1943,7 +1892,7 @@ is
 
                exception
                   when others =>
-                     put_Line ("Exception during update of mirrored sprite transforms !");
+                     put_Line ("Exception during update of mirrored sprite transforms.");
                end;
 
                next (Cursor);
@@ -1959,9 +1908,9 @@ is
                if updates_Count > 0
                then
                   declare
-                     use World.world_vectors;
+                     use World.world_Vectors;
 
-                     Cursor     : world_vectors.Cursor := Self.Mirrors.First;
+                     Cursor     : world_Vectors.Cursor := Self.Mirrors.First;
                      the_Mirror : remote.World.view;
                   begin
                      while has_Element (Cursor)
@@ -1981,10 +1930,8 @@ is
    end evolve;
 
 
-
-
    -----------------------
-   --  Mirror Registration
+   --- Mirror Registration
    --
 
    overriding
@@ -2000,6 +1947,7 @@ is
    end register;
 
 
+
    overriding
    procedure deregister (Self : access Item;   the_Mirror : in remote.World.view)
    is
@@ -2008,14 +1956,13 @@ is
    end deregister;
 
 
-
    overriding
    function graphics_Models (Self : in Item) return remote.World.graphics_Model_Set
    is
       use id_Maps_of_model;
 
       the_Models  : remote.World.graphics_Model_Set;
-      Cursor      : id_Maps_of_model.Cursor        := Self.graphics_Models.First;
+      Cursor      : id_Maps_of_model.Cursor := Self.graphics_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -2028,13 +1975,12 @@ is
    end graphics_Models;
 
 
-
    overriding
-   function physics_Models (Self : in Item) return remote.World.physics_Model_Set
+   function physics_Models (Self : in Item) return remote.World.physics_model_Set
    is
       use id_Maps_of_physics_model;
 
-      the_Models  : remote.World.physics_Model_Set;
+      the_Models  : remote.World.physics_model_Set;
       Cursor      : id_Maps_of_physics_model.Cursor := Self.physics_Models.First;
    begin
       while has_Element (Cursor)
@@ -2048,38 +1994,35 @@ is
    end physics_Models;
 
 
-
    overriding
    function Sprites (Self : in Item) return remote.World.sprite_model_Pairs
    is
       the_Pairs : remote.World.sprite_model_Pairs (1 .. Self.sprite_Count);
    begin
-      for Each in the_Pairs'Range
+      for i in the_Pairs'Range
       loop
-         the_Pairs (Each) := (sprite_id         => Self.Sprites (Each).Id,
-                              graphics_model_Id => Self.Sprites (Each).graphics_Model.Id,
-                              physics_model_id  => Self.Sprites (Each).physics_Model .Id,
-                              mass              => Self.Sprites (Each).Mass,
-                              transform         => Self.Sprites (Each).Transform,
-                              is_visible        => Self.Sprites (Each).is_Visible);
+         the_Pairs (i) := (sprite_Id         => Self.Sprites (i).Id,
+                           graphics_model_Id => Self.Sprites (i).graphics_Model.Id,
+                           physics_model_Id  => Self.Sprites (i). physics_Model.Id,
+                           Mass              => Self.Sprites (i).Mass,
+                           Transform         => Self.Sprites (i).Transform,
+                           is_Visible        => Self.Sprites (i).is_Visible);
       end loop;
 
       return the_Pairs;
    end Sprites;
 
 
-
-
    --------------
-   --  Collisions
+   --- Collisions
    --
 
    function Hash (Self : in filtered_impact_Response) return ada.Containers.Hash_type
    is
       use type ada.Containers.Hash_type;
 
-      function to_Hash is new ada.Unchecked_Conversion (impact_Filter,   ada.Containers.Hash_type);
-      function to_Hash is new ada.Unchecked_Conversion (impact_Response, ada.Containers.Hash_type);
+      function to_Hash is new ada.unchecked_Conversion (impact_Filter,   ada.Containers.Hash_type);
+      function to_Hash is new ada.unchecked_Conversion (impact_Response, ada.Containers.Hash_type);
    begin
       return   to_Hash (Self.Filter)
              + to_Hash (Self.Response);
@@ -2101,19 +2044,19 @@ is
 
    task body impact_Responder
    is
-      the_World          :        gel.World.view;
-      Done               :        Boolean        := False;
+      the_World : gel.World.view;
+      Done      : Boolean := False;
 
-      Filters_through    :        impact_Filter;
-      the_Response       :        impact_Response;
+      Filters_through : impact_Filter;
+      the_Response    : impact_Response;
 
       the_responses_Done : access Signal_Object;
 
    begin
-      accept start (the_World      : in     gel.World.view;
-                    Filter         : in     impact_Filter;
-                    Response       : in     impact_Response;
-                    responses_Done : in     Signal_Object_view)
+      accept start (the_World      : in gel.World.view;
+                    Filter         : in impact_Filter;
+                    Response       : in impact_Response;
+                    responses_Done : in Signal_Object_view)
       do
          impact_Responder.the_World := the_World;
          Filters_through            := Filter;
@@ -2136,13 +2079,13 @@ is
 
             --  Filter and call response.
             --
-            for Each in 1 .. the_World.manifold_Count
+            for i in 1 .. the_World.manifold_Count
             loop
-               if         not the_World.Manifolds (Each).Sprites (1).is_Destroyed
-                 and then not the_World.Manifolds (Each).Sprites (2).is_Destroyed
-                 and then     Filters_through (the_World.Manifolds (Each))
+               if         not the_World.Manifolds (i).Sprites (1).is_Destroyed
+                 and then not the_World.Manifolds (i).Sprites (2).is_Destroyed
+                 and then     Filters_through (the_World.Manifolds (i))
                then
-                  the_Response (the_World.Manifolds (Each),
+                  the_Response (the_World.Manifolds (i),
                                 the_World);
                end if;
             end loop;
@@ -2151,9 +2094,8 @@ is
 
          exception
             when E : others =>
-               put_Line ("Exception in impact_Responder !");
+               put_Line ("Exception in impact_Responder.");
                put_Line (Exception_Information (E));
-
                the_responses_Done.signal;
          end;
       end loop;
@@ -2161,9 +2103,8 @@ is
    end impact_Responder;
 
 
-
    ----------
-   --  Events
+   --- Events
    --
 
    function to_raycast_collision_Event (Params : not null access no_Parameters) return raycast_collision_Event
@@ -2181,14 +2122,12 @@ is
    end destruct;
 
 
-
-
    -----------
    --  Testing
    --
 
    overriding
-   procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id)
+   procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.sprite_Id)
    is
       the_Sprite : constant gel.Sprite.view := Self.id_Map_of_Sprite.Element (sprite_Id);
    begin

@@ -15,31 +15,28 @@ with
      lace.Subject_and_deferred_Observer,
      lace.Any,
 
-     ada.Tags.Generic_Dispatching_Constructor,
+     ada.Tags.generic_dispatching_Constructor,
      ada.unchecked_Conversion,
      ada.Containers.Vectors,
-     ada.Containers.Hashed_Maps;
+     ada.Containers.hashed_Maps;
 
 limited
 with
      openGL.Renderer.lean;
 
-
 package gel.World
 --
---  Provides an gel world.
+--  Provides a gel world.
 --
 is
-   use Math;
-
-
    type Item  is limited new lace.Subject_and_deferred_Observer.item
                          and gel.remote.World.item
    with private;
 
    type View  is access all Item'Class;
-   type Views is array (math.Index range <>) of View;
+   type Views is array (math.Index range <>) of View;     -- TODO: Use a Positive type instead of 'math.Index'.
 
+   use Math;
 
 
    ---------
@@ -61,9 +58,7 @@ is
 
    overriding
    procedure destroy (Self : in out Item);
-
-   procedure free (Self : in out View);
-
+   procedure free    (Self : in out View);
 
 
    --------------
@@ -97,6 +92,7 @@ is
    procedure apply_Force     (Self : in out Item;   to_Sprite : in gel.Sprite.view;
                                                     Force     : in Vector_3);
 
+   -----------
    --  Sprites
    --
    function  new_sprite_Id   (Self : access Item)                              return sprite_Id;
@@ -106,7 +102,6 @@ is
    procedure destroy         (Self : in out Item;   the_Sprite : in gel.Sprite.view);
    procedure set_Scale       (Self : in out Item;   for_Sprite : in gel.Sprite.view;
                                                     To         : in Vector_3);
-
 
    type sprite_transform_Pair is
       record
@@ -119,20 +114,19 @@ is
    function  sprite_Transforms (Self : in Item) return sprite_transform_Pairs;
 
 
-
-   --  Joints
+   ----------
+   --- Joints
    --
 
-   procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view);
+   procedure destroy               (Self : in out Item;   the_Joint : in gel.Joint.view);
 
    procedure set_local_Anchor_on_A (Self : in out Item;   for_Joint : in gel.Joint.view;
-                                                          To        : in math.Vector_3);
-
+                                                          To        : in Vector_3);
    procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in gel.Joint.view;
-                                                          To        : in math.Vector_3);
+                                                          To        : in Vector_3);
 
-
-   --  Collisions
+   --------------
+   --- Collisions
    --
 
    type a_Contact is
@@ -167,29 +161,28 @@ is
    procedure add_impact_Response (Self : in out Item;   Filter   : in impact_Filter;
                                                         Response : in impact_Response);
 
-
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure is_a_Mirror          (Self : access Item'Class;   of_World : in gel.remote.World.view);
 
-   procedure add                  (Self : in out Item;   the_Model    : in openGL.Model.view);
-   procedure add                  (Self : in out Item;   the_Model    : in Standard.physics.Model.view);
+   procedure add                  (Self : in out Item;   the_Model    : in openGL .Model.view);
+   procedure add                  (Self : in out Item;   the_Model    : in physics.Model.view);
+
    procedure add                  (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                                         and_Children : in Boolean        := False);
+                                                         and_Children : in Boolean := False);
+
    procedure add                  (Self : in out Item;   the_Joint    : in gel.Joint.view);
 
    procedure rid                  (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
-                                                         and_Children : in Boolean        := False);
+                                                         and_Children : in Boolean := False);
    procedure rid                  (Self : in out Item;   the_Joint    : in gel.Joint.view);
-
 
    procedure start                (Self : access Item);
    procedure evolve               (Self : in out Item;   By           : in Duration);
 
-   procedure allow_broken_Joints  (Self :    out Item);
+   procedure  allow_broken_Joints (Self :    out Item);
    procedure handle_broken_Joints (Self : in out Item;   the_Joints   : in Joint.views);
    --
    -- Detaches any broken joints from associated sprites.
@@ -197,7 +190,8 @@ is
    -- tbd: This should be in private section and only available to child packages.
 
 
-   --  Ray Casting
+   ---------------
+   --- Ray Casting
    --
 
    type ray_Collision is
@@ -218,7 +212,6 @@ is
          Site_world  : Vector_3;
       end record;
 
-
    overriding
    procedure destruct (Self : in out raycast_collision_Event);
 
@@ -227,11 +220,10 @@ is
 
    function to_raycast_collision_Event (Params : not null access no_Parameters) return raycast_collision_Event;
 
-   function raycast_collision_Event_dispatching_Constructor is new Ada.Tags.Generic_Dispatching_Constructor (raycast_collision_Event,
+   function raycast_collision_Event_dispatching_Constructor is new ada.Tags.generic_dispatching_Constructor (raycast_collision_Event,
                                                                                                              Parameters  => no_Parameters,
                                                                                                              Constructor => to_raycast_collision_Event);
-
-   procedure cast_Ray (Self : in Item;   From, To   : in     math.Vector_3;
+   procedure cast_Ray (Self : in Item;   From, To   : in     Vector_3;
                                          Observer   : in     lace.Observer.view;
                                          Context    : access lace.Any.limited_Item'Class;
                                          Event_Kind : in     raycast_collision_Event'Class);
@@ -242,22 +234,21 @@ is
    -- for use by the raycast_collision_Event response.
 
 
-
    --------------------
    ---  World Mirroring
    --
 
    overriding
-   procedure   register         (Self : access Item;   the_Mirror         : in remote.World.view;
-                                                       Mirror_as_observer : in lace.Observer.view);
+   procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view);
    overriding
-   procedure deregister         (Self : access Item;   the_Mirror         : in remote.World.view);
+   procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view);
 
 
    overriding
-   procedure motion_Updates_are (Self : in     Item;   Now                : in remote.World.motion_Updates);
+   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates);
    --
-   --  nb: 'Self' must use 'in' as mode to ensure async transmission with DSA.
+   --  'Self' must use 'in' as mode to ensure async transmission with DSA.
 
 
    overriding
@@ -268,7 +259,6 @@ is
    function  Sprites         (Self : in Item) return remote.World.sprite_model_Pairs;
 
 
-
    ----------
    --- Models
    --
@@ -277,8 +267,8 @@ is
    --
    use type openGL.Model.view;
    use type gel.graphics_model_Id;
-   function Hash             is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_Type);
-   package  id_Maps_of_model is new ada.containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
+   function Hash             is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_type);
+   package  id_Maps_of_model is new ada.Containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
                                                                 Hash,                   "=");
 
    function local_graphics_Models (Self : in Item) return id_Maps_of_model.Map;
@@ -288,21 +278,17 @@ is
    --
    use type Standard.physics.Model.view,
             Standard.physics.model_Id;
-   function Hash                     is new ada.unchecked_Conversion   (Standard.physics.model_Id,  ada.Containers.Hash_Type);
-   package  id_Maps_of_physics_model is new ada.containers.hashed_Maps (Standard.physics.model_Id,  Standard.physics.Model.view,
-                                                                        Hash,                  "=");
+   function Hash                     is new ada.unchecked_Conversion   (physics.model_Id,  ada.Containers.Hash_type);
+   package  id_Maps_of_physics_model is new ada.Containers.hashed_Maps (physics.model_Id,  physics.Model.view,
+                                                                        Hash,              "=");
 
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map;
-
-
 
 
    ---------
    ---  Misc
    --
    procedure wait_on_Evolve (Self : in out Item);
-
-
 
 
    ------------------
@@ -313,36 +299,34 @@ is
 
 
 
-
 private
 
    ----------
-   --  Engine
+   --- Engine
    --
 
    task
    type Engine (the_World : access gel.World.item'Class)
    is
-      entry start (space_Kind : in standard.physics.space_Kind);
+      entry start (space_Kind : in physics.space_Kind);
       entry stop;
 
       entry reset_Age;
 
-      pragma Storage_Size (20_000_000);
+      pragma storage_Size (20_000_000);
    end Engine;
 
    type Engine_view is access all Engine;
 
 
-
    -----------------
-   --  Signal Object
+   --- Signal Object
    --
    protected
    type signal_Object
    is
-      entry     Wait;
-      procedure Signal;
+      entry     wait;
+      procedure signal;
 
    private
       Open : Boolean := False;
@@ -351,9 +335,8 @@ private
    type signal_Object_view is access all signal_Object;
 
 
-
    ----------------------------
-   --  sprite_transform_Updater
+   --- sprite_transform_Updater
    --
 
    task
@@ -365,67 +348,60 @@ private
    type sprite_transform_Updater_view is access all sprite_transform_Updater;
 
 
-
    ---------------------
-   --  id_Maps_of_Sprite
+   --- id_Maps_of_sprite
    --
    use type Sprite.view;
-   function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.containers.Hash_type);
-   package  id_Maps_of_Sprite is new ada.containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
-                                                                 hash            => Hash,
-                                                                 equivalent_keys => "=");
-
+   function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.Containers.Hash_type);
+   package  id_Maps_of_sprite is new ada.Containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
+                                                                 Hash            => Hash,
+                                                                 equivalent_Keys => "=");
    -----------------------------
-   --  sprite_Maps_of_transforms
+   --- sprite_Maps_of_transforms
    --
-   function Hash is new ada.unchecked_Conversion (gel.Sprite.view, ada.containers.Hash_type);
-   package  sprite_Maps_of_transforms is new ada.containers.hashed_Maps (Sprite.view,  Matrix_4x4,
-                                                                         hash            => Hash,
-                                                                         equivalent_keys => "=");
-
-
+   function Hash is new ada.unchecked_Conversion (gel.Sprite.view, ada.Containers.Hash_type);
+   package  sprite_Maps_of_transforms is new ada.Containers.hashed_Maps (Sprite.view,  Matrix_4x4,
+                                                                         Hash            => Hash,
+                                                                         equivalent_Keys => "=");
    -------------------------
-   --  all_sprite_Transforms
+   --- all_sprite_Transforms
    --
    protected
    type all_sprite_Transforms
    is
       procedure set (To : in sprite_Maps_of_transforms.Map);
-      function  Fetch return sprite_Maps_of_transforms.Map;
+      function  fetch return sprite_Maps_of_transforms.Map;
 
    private
       sprite_Map_of_transforms : sprite_Maps_of_transforms.Map;
    end all_sprite_Transforms;
 
 
-
    -----------------
-   --  Duration_safe
+   --- Duration_safe
    --
    protected
    type Duration_safe
    is
-      procedure Duration_is (Now : in standard.Duration);
-      function  Duration       return standard.Duration;
+      procedure Duration_is (Now : in Duration);
+      function  Duration       return Duration;
 
    private
       the_Duration : standard.Duration;
    end Duration_safe;
 
 
-
    -----------
-   --  Mirrors
+   --- Mirrors
    --
    use type remote.World.View;
 
    package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
-   subtype world_Vector  is world_Vectors.Vector;
-
+   subtype world_Vector  is     world_Vectors.Vector;
 
 
    -------------------
-   --  Engine Commands
+   --- Engine Commands
    --
 
    type command_Kind is (add_Sprite,
@@ -458,7 +434,7 @@ private
                rid_Children : Boolean;
 
             when update_Site =>
-               Site   : math.Vector_3;
+               Site : Vector_3;
 
 --              when scale_Sprite =>
 --                 Scale  : math.Vector_3;
@@ -475,7 +451,7 @@ private
             when --add_Joint |
 --                   rid_Joint |
                  free_Joint =>
-               Joint  : gel.Joint.view;
+               Joint : gel.Joint.view;
 
 --              when set_Joint_local_Anchor =>
 --                 anchor_Joint : gel.Joint.view;
@@ -483,7 +459,7 @@ private
 --                 local_Anchor : math.Vector_3;
 
             when cast_Ray =>
-               From, To : math.Vector_3;
+               From, To : Vector_3;
                Observer : lace.Observer.view;
                Context  : Any_limited_view;
                event_Kind : ada.Tags.Tag;
@@ -519,7 +495,6 @@ private
    type safe_command_Set_view is access all safe_command_Set;
 
 
-
    type free_Set is
       record
          Sprites  : gel.Sprite.views (1 .. 10_000);
@@ -529,9 +504,8 @@ private
    type free_Sets is array (1 .. 2) of free_Set;
 
 
-
-   --------------
-   -- safe_Joints
+   ---------------
+   --- safe_Joints
    --
 
    subtype safe_Joints is gel.Joint.views (1 .. 10_000);
@@ -550,73 +524,71 @@ private
    end safe_joint_Set;
 
 
-
-
    --------------
-   --  World Item
+   --- World Item
    --
 
    -- TODO: refactor into two subclasses 'local' and 'mirror'.
 
    type Item is limited new lace.Subject_and_deferred_Observer.item
-                        and gel.remote.World                  .item with
+                        and gel.remote.World.item with
       record
-         local_Subject_and_deferred_Observer :     lace.Subject_and_deferred_Observer.view;
+         local_Subject_and_deferred_Observer : lace.Subject_and_deferred_Observer.view;
 
-         Id                              :         world_Id;
+         Id : world_Id;
 
-         space_Kind                      :         standard.physics.space_Kind;
-         physics_Space                   : aliased standard.physics.Space.view;
-         physics_Engine                  : aliased standard.physics.Engine.item;
+         space_Kind      :         physics.space_Kind;
+         physics_Space   : aliased physics.Space.view;
+         physics_Engine  : aliased physics.Engine.item;
 
-         Renderer                        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
+         Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
-         Age                             :         Duration := 0.0;
+         Age             :         Duration := 0.0;
 
-         graphics_Models                 : aliased id_Maps_of_model        .Map;
-         physics_Models                  : aliased id_Maps_of_physics_model.Map;
+         graphics_Models : aliased id_Maps_of_model        .Map;
+         physics_Models  : aliased id_Maps_of_physics_model.Map;
 
-         Sprites                         :         gel.Sprite.views (1 .. 100_000);
-         sprite_Count                    :         math.Index;
+         Sprites         : gel.Sprite.views (1 .. 100_000);
+         sprite_Count    : Index;
 
-         all_sprite_Transforms           :         World.all_sprite_Transforms;
-         new_sprite_transforms_Available :         Signal_Object;
-         sprite_transform_Updater        :         World.sprite_transform_Updater (Item'Access);
+         all_sprite_Transforms           : World.all_sprite_Transforms;
+         new_sprite_transforms_Available : Signal_Object;
+         sprite_transform_Updater        : World.sprite_transform_Updater (Item'Access);
 
-         evolver_Done                    :         Signal_Object;
+         evolver_Done : Signal_Object;
 
          --  Mirrors
          --
-         is_a_Mirror                     :         Boolean  := False;
-         Age_at_last_mirror_update       :         Duration := 0.0;
-         Mirrors                         :         World_vector;                            -- Used by a master world.
-         id_Map_of_Sprite                :         id_Maps_of_Sprite.Map;
+         is_a_Mirror                : Boolean  := False;
+         Age_at_last_mirror_update  : Duration := 0.0;
+         Mirrors                    : World_vector;             -- Used by a master world.
+         id_Map_of_Sprite           : id_Maps_of_sprite.Map;
 
          --  Ids
          --
-         last_used_sprite_Id             :         gel.sprite_Id         := 0;
-         last_used_model_Id              :         gel.graphics_model_Id := 0;
-         last_used_physics_model_Id      :         Standard.physics.model_Id := 0;
+         last_used_sprite_Id        : gel.sprite_Id         := 0;
+         last_used_model_Id         : gel.graphics_model_Id := 0;
+         last_used_physics_model_Id : physics     .model_Id := 0;
 
          --  Command sets
          --
-         Commands                        :         safe_command_Set_view := new safe_command_Set;
-         free_Sets                       :         World.free_Sets;
-         current_free_Set                :         Integer := 2;
+         Commands         : safe_command_Set_view := new safe_command_Set;
+         free_Sets        : World.free_Sets;
+         current_free_Set : Integer := 2;
 
          --  Collisions
          --
-         Manifolds                       :         Manifold_array (1 .. 50_000);
-         manifold_Count                  :         Natural := 0;
+         Manifolds      : Manifold_array (1 .. 50_000);
+         manifold_Count : Natural := 0;
 
          -- Broken Joints
          --
-         broken_Joints                   :         safe_joint_Set;
-         broken_joints_Allowed           :         Boolean := False;
+         broken_Joints         : safe_joint_Set;
+         broken_joints_Allowed : Boolean := False;
 
          --  Engine
          --
-         Engine                          :         World.Engine (Item'Access);
+         Engine : World.Engine (Item'Access);
       end record;
 
 
