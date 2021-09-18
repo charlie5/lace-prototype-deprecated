@@ -1,13 +1,5 @@
-with
-     float_math.Algebra.linear.d3;
-
-
 package body gel.Dolly.following
 is
-   use Math,
-       math.Algebra.linear,
-       math.Algebra.linear.d3;
-
 
    overriding
    procedure define  (Self : in out Item)
@@ -15,6 +7,7 @@ is
    begin
       null;
    end define;
+
 
 
    overriding
@@ -25,11 +18,9 @@ is
    end destroy;
 
 
-
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
-
 
    procedure follow (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
@@ -57,7 +48,7 @@ is
 
 
 
-   function Offset (Self : in Item) return Vector_3
+   function Offset (Self : in Item) return math.Vector_3
    is
    begin
       return Self.sprite_Offset;
@@ -65,24 +56,25 @@ is
 
 
 
-   procedure Offset_is (Self : in out Item;   Now : in Vector_3)
+   procedure Offset_is (Self : in out Item;   Now : in math.Vector_3)
    is
    begin
       Self.sprite_Offset := Now;
    end Offset_is;
 
 
-
-
-   --  Operations
+   --------------
+   --- Operations
    --
 
    overriding
    procedure freshen (Self : in out Item)
    is
-      Speed           :          Real       renames Self.Speed;
-      the_sprite_Site : constant math.Vector_3   := Self.Sprite.Site;
+      use Math,
+          linear_Algebra_3D;
 
+      Speed           :          math.Real  renames Self.Speed;
+      the_sprite_Site : constant math.Vector_3   := Self.Sprite.Site;
       the_Camera      : constant gel.Camera.view := Self.Cameras.first_Element;
 
    begin
@@ -90,18 +82,18 @@ is
       --
       if Self.allow_linear_Motion
       then
-         if Self.Motion (forward)  then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
-         if Self.Motion (backward) then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
+         if Self.Motion (Forward)  then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
+         if Self.Motion (Backward) then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
 
-         if Self.Motion (up)       then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
-         if Self.Motion (down)     then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
+         if Self.Motion (Up)       then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
+         if Self.Motion (Down)     then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
       end if;
 
       --  Orbit.
       --
       if Self.allow_orbital_Motion
       then
-         if Self.Motion (left)
+         if Self.Motion (Left)
          then
             Self.camera_y_Spin := Self.camera_y_Spin - 0.01 * Speed;
             Self.sprite_Offset := y_Rotation_from (-0.01 * Speed) * Self.sprite_Offset;
@@ -111,7 +103,7 @@ is
                                                         Self.camera_z_Spin));
          end if;
 
-         if Self.Motion (right)
+         if Self.Motion (Right)
          then
             Self.camera_y_Spin := Self.camera_y_Spin + 0.01 * Speed;
             Self.sprite_Offset := y_Rotation_from (0.01 * Speed) * Self.sprite_Offset;
