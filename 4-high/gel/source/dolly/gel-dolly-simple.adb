@@ -1,17 +1,8 @@
-with
-     float_math.Algebra.linear.d3;
-
-
 package body gel.Dolly.simple
 is
 
-   use Math,
-       math.Algebra.linear,
-       math.Algebra.linear.d3;
-
-
    overriding
-   procedure define  (Self : in out Item)
+   procedure define (Self : in out Item)
    is
    begin
       null;
@@ -27,28 +18,30 @@ is
    end destroy;
 
 
-
-
+   --------------
    --  Operations
    --
 
    overriding
    procedure freshen (Self : in out Item)
    is
+      use Math,
+          linear_Algebra_3D;
+
       Speed         : constant Real := Self.Speed * Self.Multiplier;
       rotate_Factor : constant Real := 0.04;
       orbit_Factor  : constant Real := 0.08;
 
-      initial_Site : constant math.Vector_3   := Self.Cameras.first_Element.Site;
-      initial_Spin : constant math.Matrix_3x3 := Self.Cameras.first_Element.world_Rotation;
+      initial_Site  : constant Vector_3   := Self.Cameras.first_Element.Site;
+      initial_Spin  : constant Matrix_3x3 := Self.Cameras.first_Element.world_Rotation;
 
-      new_Site     : math.Vector_3;
-      new_Spin     : math.Matrix_3x3;
+      new_Site      : Vector_3;
+      new_Spin      : Matrix_3x3;
 
-      site_Updated : Boolean := False;
-      spin_Updated : Boolean := False;
+      site_Updated  : Boolean := False;
+      spin_Updated  : Boolean := False;
 
-      procedure update_Site (To : in math.Vector_3)
+      procedure update_Site (To : in Vector_3)
       is
       begin
          new_Site     := To;
@@ -66,65 +59,63 @@ is
       --  Linear Motion
       --
 
-      if Self.Motion (forward)  then   update_Site (initial_Site - forward_Direction (initial_Spin) * Speed);   end if;
-      if Self.Motion (backward) then   update_Site (initial_Site + forward_Direction (initial_Spin) * Speed);   end if;
+      if Self.Motion (Forward)  then   update_Site (initial_Site - forward_Direction (initial_Spin) * Speed);   end if;
+      if Self.Motion (Backward) then   update_Site (initial_Site + forward_Direction (initial_Spin) * Speed);   end if;
 
-      if Self.Motion (left)     then   update_Site (initial_Site - right_Direction   (initial_Spin) * Speed);   end if;
-      if Self.Motion (right)    then   update_Site (initial_Site + right_Direction   (initial_Spin) * Speed);   end if;
+      if Self.Motion (Left)     then   update_Site (initial_Site - right_Direction   (initial_Spin) * Speed);   end if;
+      if Self.Motion (Right)    then   update_Site (initial_Site + right_Direction   (initial_Spin) * Speed);   end if;
 
-      if Self.Motion (up)       then   update_Site (initial_Site + up_Direction      (initial_Spin) * Speed);   end if;
-      if Self.Motion (down)     then   update_Site (initial_Site - up_Direction      (initial_Spin) * Speed);   end if;
-
+      if Self.Motion (Up)       then   update_Site (initial_Site + up_Direction      (initial_Spin) * Speed);   end if;
+      if Self.Motion (Down)     then   update_Site (initial_Site - up_Direction      (initial_Spin) * Speed);   end if;
 
       --  Angular Spin
       --
 
-      if Self.Spin (left)       then   update_Spin (initial_Spin * y_Rotation_from (-rotate_Factor));     end if;
-      if Self.Spin (right)      then   update_Spin (initial_Spin * y_Rotation_from ( rotate_Factor));     end if;
+      if Self.Spin (Left)       then   update_Spin (initial_Spin * y_Rotation_from (-rotate_Factor));     end if;
+      if Self.Spin (Right)      then   update_Spin (initial_Spin * y_Rotation_from ( rotate_Factor));     end if;
 
-      if Self.Spin (forward)    then   update_Spin (initial_Spin * x_Rotation_from ( rotate_Factor));     end if;
-      if Self.Spin (backward)   then   update_Spin (initial_Spin * x_Rotation_from (-rotate_Factor));     end if;
+      if Self.Spin (Forward)    then   update_Spin (initial_Spin * x_Rotation_from ( rotate_Factor));     end if;
+      if Self.Spin (Backward)   then   update_Spin (initial_Spin * x_Rotation_from (-rotate_Factor));     end if;
 
-      if Self.Spin (up)         then   update_Spin (initial_Spin * z_Rotation_from (-rotate_Factor));     end if;
-      if Self.Spin (down)       then   update_Spin (initial_Spin * z_Rotation_from ( rotate_Factor));     end if;
-
+      if Self.Spin (Up)         then   update_Spin (initial_Spin * z_Rotation_from (-rotate_Factor));     end if;
+      if Self.Spin (Down)       then   update_Spin (initial_Spin * z_Rotation_from ( rotate_Factor));     end if;
 
       --  Orbit
       --
 
-      if Self.Orbit (left)
+      if Self.Orbit (Left)
       then
          update_Site (initial_Site * y_Rotation_from (orbit_Factor * Speed));
          update_Spin (initial_Spin * y_Rotation_from (orbit_Factor * Speed));
       end if;
 
-      if Self.Orbit (right)
+      if Self.Orbit (Right)
       then
          update_Site (initial_Site * y_Rotation_from (-orbit_Factor * Speed));
          update_Spin (initial_Spin * y_Rotation_from (-orbit_Factor * Speed));
       end if;
 
 
-      if Self.Orbit (forward)
+      if Self.Orbit (Forward)
       then
          update_Site (initial_Site * x_Rotation_from (-orbit_Factor * Speed));
          update_Spin (initial_Spin * x_Rotation_from (-orbit_Factor * Speed));
       end if;
 
-      if Self.Orbit (backward)
+      if Self.Orbit (Backward)
       then
          update_Site (initial_Site * x_Rotation_from (orbit_Factor * Speed));
          update_Spin (initial_Spin * x_Rotation_from (orbit_Factor * Speed));
       end if;
 
 
-      if Self.Orbit (up)
+      if Self.Orbit (Up)
       then
          update_Site (initial_Site * z_Rotation_from (-orbit_Factor * Speed));
          update_Spin (initial_Spin * z_Rotation_from (-orbit_Factor * Speed));
       end if;
 
-      if Self.Orbit (down)
+      if Self.Orbit (Down)
       then
          update_Site (initial_Site * z_Rotation_from (orbit_Factor * Speed));
          update_Spin (initial_Spin * z_Rotation_from (orbit_Factor * Speed));
@@ -138,7 +129,7 @@ is
          the_Camera : gel.Camera.view;
          Cursor     : camera_Vectors.Cursor := Self.Cameras.First;
       begin
-         while Has_Element (Cursor)
+         while has_Element (Cursor)
          loop
             the_Camera := Element (Cursor);
 
