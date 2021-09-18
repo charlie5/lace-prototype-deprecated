@@ -2,8 +2,7 @@ with
      gel.Camera.forge,
      gel.Events,
 
-     lace.event.Utility;
-
+     lace.Event.utility;
 
 package body gel.Applet.gui_and_sim_world
 is
@@ -15,17 +14,17 @@ is
    begin
       declare
          the_world_Info : constant world_Info_view  := new world_Info;
-         the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
+         the_Camera     : constant gel.Camera.view  := gel.Camera.forge.new_Camera;
       begin
          the_world_Info.World := gel.World.forge.new_World (Name,
                                                             gui_world_Id,
-                                                            space_kind => physics.Bullet,
+                                                            space_Kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
-         the_world_Info.World.register (Self.all'Unchecked_Access,
+         the_world_Info.World.register (Self.all'unchecked_Access,
                                         to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
-         the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
+         the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
          the_Camera.Renderer_is       (Self.Renderer);
          the_Camera.Site_is           ((0.0, 5.0, 5.0));
 
@@ -38,20 +37,19 @@ is
          the_world_Info.World.start;
       end;
 
-
       declare
          the_world_Info : constant world_Info_view  := new world_Info;
          the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := gel.World.forge.new_World (name       => Name,
-                                                            id         => sim_world_Id,
-                                                            space_kind => physics.Bullet,
+         the_world_Info.World := gel.World.forge.new_World (Name       => Name,
+                                                            Id         => sim_world_Id,
+                                                            space_Kind => physics.Bullet,
                                                             Renderer   => Self.Renderer);
 
-         the_world_Info.World.register (the_observer => Self.all'Unchecked_Access,
-                                        of_kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
+         the_world_Info.World.register (the_Observer => Self.all'unchecked_Access,
+                                        of_Kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
-         the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
+         the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
          the_Camera.Renderer_is       (Self.Renderer);
          the_Camera.Site_is           ((0.0, 5.0, 5.0));
 
@@ -67,17 +65,16 @@ is
 
 
 
-
    package body Forge
    is
-      function  to_Applet (Name       : in String;
-                           use_Window : in gel.Window.view) return Item
+      function to_Applet (Name       : in String;
+                          use_Window : in gel.Window.view) return Item
       is
       begin
          return Self : Item := (gel.Applet.Forge.to_Applet (Name, use_Window)
                                 with others => <>)
          do
-            define (Self'Unchecked_Access, Name, use_Window);
+            define (Self'unchecked_Access, Name, use_Window);
          end return;
       end to_Applet;
 
@@ -95,34 +92,36 @@ is
 
 
 
-
-
-   function sim_World  (Self : in Item) return gel.World.view
+   function sim_World (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (sim_world_Id);
    end sim_World;
 
 
+
    function sim_Camera (Self : in Item) return gel.Camera.view
    is
    begin
-      return Self.Camera (sim_world_Id, sim_camera_Id);
+      return Self.Camera (sim_world_Id,
+                          sim_camera_Id);
    end sim_Camera;
 
 
 
-   function gui_World  (Self : in Item) return gel.World.view
+   function gui_World (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (gui_world_Id);
    end gui_World;
 
 
+
    function gui_Camera (Self : in Item) return gel.Camera.view
    is
    begin
-      return Self.Camera (gui_world_Id, gui_camera_Id);
+      return Self.Camera (gui_world_Id,
+                          gui_camera_Id);
    end gui_Camera;
 
 
