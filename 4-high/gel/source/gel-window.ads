@@ -1,26 +1,23 @@
 with
      gel.Keyboard.local,
      gel.Mouse.local,
-
      openGL.Surface,
-
      lace.Subject_and_deferred_Observer;
 
 private
 with
      ada.Calendar;
 
-
 package gel.Window
 --
 -- Models a UI Window.
 --
 is
-
    type Item is limited new lace.Subject_and_deferred_Observer.item with private;
    type View is access all Item'Class;
 
 
+   ---------
    --- Forge
    --
 
@@ -33,17 +30,17 @@ is
 
    overriding
    procedure destroy (Self : in out Item);
-
    procedure free    (Self : in out View);
 
 
-
+   --------------
    --- Exceptions
    --
 
    Error : exception;
 
 
+   --------------
    --- Attributes
    --
 
@@ -61,7 +58,7 @@ is
    function Surface          (Self : in Item) return openGL.Surface.view;
 
 
-
+   --------------
    --- Operations
    --
 
@@ -71,7 +68,7 @@ is
    procedure swap_GL      (Self : in out Item)   is null;
 
 
-
+   ----------
    --  Events
    --
 
@@ -108,34 +105,29 @@ is
 
 
 
-
-
 private
-
 
    type String_view is access all String;
 
 
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
-         Width            :         Positive;
-         Height           :         Positive;
+         Width      : Positive;
+         Height     : Positive;
 
-         Surface          : openGL.Surface.view := new openGL.Surface.item;
+         Surface    : openGL.Surface.view := new openGL.Surface.item;
 
-         Keyboard         :   gel.Keyboard.local.view;
-         Mouse            :   gel.Mouse   .local.view;
+         Keyboard   : gel.Keyboard.local.view;
+         Mouse      : gel.Mouse   .local.view;
 
-         is_Open          :         Boolean          := True;
-         is_Exposed       :         Boolean          := True;
+         is_Open    : Boolean := True;
+         is_Exposed : Boolean := True;
 
          last_resize_Time : ada.Calendar.Time;
       end record;
 
 
-
    procedure Size_is (Self : in out Item;   Width, Height : in Positive);
-
 
 
    package private_Forge

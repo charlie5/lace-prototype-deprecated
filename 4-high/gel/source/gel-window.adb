@@ -2,10 +2,8 @@ with
      gel.Events,
      ada.unchecked_Deallocation;
 
-
 package body gel.Window
 is
-
    -----------
    --- Utility
    --
@@ -13,17 +11,15 @@ is
    procedure free is new ada.unchecked_Deallocation (String, String_view);
 
 
-
    ----------
    --- Forge
    --
 
-   procedure define  (Self : in out Item;   -- Name   : in String;
-                                            Width  : in Positive;
+   procedure define  (Self : in out Item;   Width  : in Positive;
                                             Height : in Positive)
    is
    begin
-      Self.last_resize_Time := Ada.Calendar.Clock;
+      Self.last_resize_Time := ada.Calendar.Clock;
 
       Self.Width    := Width;
       Self.Height   := Height;
@@ -45,7 +41,7 @@ is
       begin
          if window_Creator = null
          then
-            raise Error with "gel.Window.Forge.window_Creator has *not* been set";
+            raise Error with "'window_Creator' has not been set.";
          end if;
 
          return window_Creator (Name, Width, Height);
@@ -61,20 +57,22 @@ is
       use lace.Subject_and_deferred_Observer,
           gel.Keyboard.local,
           gel.Mouse   .local;
-      procedure free is new ada.Unchecked_Deallocation (openGL.Surface.item'Class, openGL.Surface.View);
+
+      procedure deallocate is new ada.unchecked_Deallocation (openGL.Surface.item'Class, openGL.Surface.View);
    begin
       destroy (lace.Subject_and_deferred_Observer.item (Self));   -- Destroy base class.
 
       free (Self.Keyboard);
       free (Self.Mouse);
-      free (Self.Surface);
+
+      deallocate (Self.Surface);
    end destroy;
 
 
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (Item'Class, View);
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destroy;
       deallocate (Self);
@@ -87,7 +85,7 @@ is
    begin
       if window_Creator /= null
       then
-         raise Error with "'gel.Window.Forge.window_Creator' has already been set";
+         raise Error with "'window_Creator' has already been set.";
       end if;
 
       window_Creator := create_Window;
@@ -105,23 +103,22 @@ is
          return Self : Item := (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name)
                                 with others => <>)
          do
-            define (Self,  Width, Height);
+            Self.define (Width, Height);
          end return;
       end to_Window;
    end private_Forge;
-
-
 
 
    --------------
    --- Attributes
    --
 
-   function Surface    (Self : in Item) return openGL.Surface.view
+   function Surface (Self : in Item) return openGL.Surface.view
    is
    begin
       return Self.Surface;
    end Surface;
+
 
 
    function Keyboard (Self : access Item) return access gel.Keyboard.item'class
@@ -131,7 +128,8 @@ is
    end Keyboard;
 
 
-   function Mouse    (Self : access Item) return access gel.Mouse.item'class
+
+   function Mouse (Self : access Item) return access gel.Mouse.item'class
    is
    begin
       return Self.Mouse;
@@ -146,7 +144,8 @@ is
    end is_Open;
 
 
-   function is_Exposed  (Self : in Item) return Boolean
+
+   function is_Exposed (Self : in Item) return Boolean
    is
    begin
       return Self.is_Exposed;
@@ -154,11 +153,12 @@ is
 
 
 
-   function Width  (Self : in Item) return Positive
+   function Width (Self : in Item) return Positive
    is
    begin
       return Self.Width;
    end Width;
+
 
 
    function Height (Self : in Item) return Positive
@@ -173,7 +173,7 @@ is
    is
       use ada.Calendar;
    begin
-      return Ada.Calendar.Clock - Self.last_resize_Time < 0.1;
+      return ada.Calendar.Clock - Self.last_resize_Time < 0.1;
    end is_being_Resized;
 
 
@@ -190,7 +190,6 @@ is
       --
       Self.emit (gel.Events.window_resize_Request'(Width, Height));
    end Size_is;
-
 
 
    ---------------
@@ -212,12 +211,11 @@ is
    end sync;
 
 
-
    ----------
    --- Events
    --
 
-   procedure emit_enter_Event  (Self : in out Item'Class)
+   procedure emit_enter_Event (Self : in out Item'Class)
    is
       the_Event : gel.Events.window_Enter;
    begin
@@ -226,7 +224,7 @@ is
 
 
 
-   procedure emit_leave_Event  (Self : in out Item'Class)
+   procedure emit_leave_Event (Self : in out Item'Class)
    is
       the_Event : gel.Events.window_Leave;
    begin
@@ -235,7 +233,7 @@ is
 
 
 
-   procedure emit_focus_in_Event  (Self : in out Item'Class)
+   procedure emit_focus_in_Event (Self : in out Item'Class)
    is
       the_Event : gel.Events.window_Leave;
    begin
@@ -244,7 +242,7 @@ is
 
 
 
-   procedure emit_focus_out_Event  (Self : in out Item'Class)
+   procedure emit_focus_out_Event (Self : in out Item'Class)
    is
       the_Event : gel.Events.window_Leave;
    begin
@@ -253,7 +251,7 @@ is
 
 
 
-   procedure emit_keymap_notify_Event  (Self : in out Item'Class)
+   procedure emit_keymap_notify_Event (Self : in out Item'Class)
    is
       the_Event : gel.Events.window_keymap_Notify;
    begin
