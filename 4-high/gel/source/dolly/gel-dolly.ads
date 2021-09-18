@@ -2,19 +2,17 @@ with
      gel.Camera,
      ada.Containers.Vectors;
 
-
 package gel.Dolly
 --
 --  Models a camera dolly.
 --
 is
-
    type Item is abstract tagged private;
    type View is access all Item'Class;
 
 
-
-   --  Forge
+   ---------
+   --- Forge
    --
 
    procedure define  (Self : in out Item)   is abstract;
@@ -23,40 +21,35 @@ is
    procedure free    (Self : in out View);
 
 
-
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
 
-   procedure add_Camera           (Self : in out Item'Class;   the_Camera : in Camera.view);
-
-
    type Direction is (Left, Right, Up, Down, Forward, Backward);
+
+   procedure add_Camera           (Self : in out Item'Class;   the_Camera : in Camera.view);
 
    procedure is_moving            (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True);
    procedure is_spinning          (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True);
    procedure is_orbiting          (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True);
 
-   function  Speed                (Self : in     Item)                 return math.Real;
-   procedure Speed_is             (Self : in out Item;         Now       : in math.Real);
-   procedure speed_Multiplier_is  (Self : in out Item;         Now       : in math.Real);
+   function  Speed                (Self : in     Item)       return math.Real;
+   procedure Speed_is             (Self : in out Item;   Now   : in math.Real);
+   procedure speed_Multiplier_is  (Self : in out Item;   Now   : in math.Real);
 
-   procedure allow_linear_Motion  (Self : in out Item;         Allow     : in Boolean)   is null;
-   procedure allow_orbital_Motion (Self : in out Item;         Allow     : in Boolean)   is null;
+   procedure allow_linear_Motion  (Self : in out Item;   Allow : in Boolean) is null;
+   procedure allow_orbital_Motion (Self : in out Item;   Allow : in Boolean) is null;
 
 
-
-   --  Operations
+   --------------
+   --- Operations
    --
 
-   procedure freshen (Self : in out Item)   is abstract;
-
-
+   procedure freshen (Self : in out Item) is abstract;
 
 
 
 private
-
 
    use type gel.Camera.view;
    package camera_Vectors is new ada.Containers.Vectors (Positive, gel.Camera.view);
@@ -67,14 +60,14 @@ private
 
    type Item is abstract tagged
       record
-         Cameras          : camera_Vector;  -- gel.Camera.view;
+         Cameras    : camera_Vector;
 
-         Motion           : Direction_Flags := (others => False);
-         Spin             : Direction_Flags := (others => False);
-         Orbit            : Direction_Flags := (others => False);
+         Motion     : Direction_Flags := (others => False);
+         Spin       : Direction_Flags := (others => False);
+         Orbit      : Direction_Flags := (others => False);
 
-         Speed            : math.Real       := 1.0;
-         speed_Multiplier : math.Real       := 1.0;
+         Speed      : math.Real       := 1.0;
+         Multiplier : math.Real       := 1.0;     -- Applied to speed.
       end record;
 
 

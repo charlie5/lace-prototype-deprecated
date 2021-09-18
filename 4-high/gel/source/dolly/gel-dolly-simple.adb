@@ -35,7 +35,7 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
-      Speed         : constant Real := Self.Speed * Self.speed_Multiplier;
+      Speed         : constant Real := Self.Speed * Self.Multiplier;
       rotate_Factor : constant Real := 0.04;
       orbit_Factor  : constant Real := 0.08;
 

@@ -1,7 +1,6 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body gel.Dolly
 is
    use Math;
@@ -21,9 +20,8 @@ is
    end free;
 
 
-
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
 
    procedure add_Camera (Self : in out Item'Class;   the_Camera : in Camera.view)
@@ -49,6 +47,7 @@ is
    end is_spinning;
 
 
+
    procedure is_orbiting (Self : in out Item'Class;   Direction : dolly.Direction;   Now : in Boolean := True)
    is
    begin
@@ -65,7 +64,7 @@ is
 
 
 
-   function  Speed (Self : in     Item) return math.Real
+   function Speed (Self : in Item) return Real
    is
    begin
       return Self.Speed;
@@ -73,10 +72,10 @@ is
 
 
 
-   procedure speed_Multiplier_is (Self : in out Item;  Now : in math.Real)
+   procedure speed_Multiplier_is (Self : in out Item;  Now : in Real)
    is
    begin
-      Self.speed_Multiplier := Now;
+      Self.Multiplier := Now;
    end speed_Multiplier_is;
 
 
