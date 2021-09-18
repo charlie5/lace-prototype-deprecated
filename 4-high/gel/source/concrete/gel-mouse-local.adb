@@ -1,10 +1,8 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body gel.Mouse.local
 is
-
 
    package body Forge
    is
@@ -19,11 +17,13 @@ is
       end to_Mouse;
 
 
+
       function new_Mouse (of_Name : in String) return View
       is
       begin
          return new Item' (to_Mouse (of_Name));
       end new_Mouse;
+
    end Forge;
 
 

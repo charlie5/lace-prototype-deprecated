@@ -7,7 +7,6 @@ package gel.Mouse.local
 -- Provides a concrete mouse.
 --
 is
-
    type Item is limited new lace.Subject.local.item
                         and gel.Mouse         .item with private;
 
@@ -27,9 +26,6 @@ is
 private
 
    type Item is limited new lace.Subject.local.item
-                        and gel.Mouse         .item with
-      record
-         null;
-      end record;
+                        and gel.Mouse         .item with null record;
 
 end gel.Mouse.local;
