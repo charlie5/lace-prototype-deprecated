@@ -5,10 +5,9 @@ with
 
 package gel.Applet.gui_world
 --
---  Provides a 'ready' gel system, configured with a single window and a single GUI world.
+--  Provides a gel applet configured with a single window and a single GUI world.
 --
 is
-
    type Item is new gel.Applet.item with private;
    type View is access all Item'Class;
 
