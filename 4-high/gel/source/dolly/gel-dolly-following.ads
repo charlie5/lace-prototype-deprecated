@@ -25,9 +25,9 @@ is
    --
 
    overriding
-   procedure allow_linear_Motion  (Self : in out Item;   Allow : in Boolean);
+   procedure allow_linear_Motion  (Self : in out Item;   Allow : in Boolean := True);
    overriding
-   procedure allow_orbital_Motion (Self : in out Item;   Allow : in Boolean);
+   procedure allow_orbital_Motion (Self : in out Item;   Allow : in Boolean := True);
 
    procedure Offset_is (Self : in out Item;   Now : in math.Vector_3);
    function  Offset    (Self : in     Item)     return math.Vector_3;

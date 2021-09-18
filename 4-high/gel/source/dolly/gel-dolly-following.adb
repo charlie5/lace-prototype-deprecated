@@ -31,7 +31,7 @@ is
 
 
    overriding
-   procedure allow_linear_Motion  (Self : in out Item;   Allow : in Boolean)
+   procedure allow_linear_Motion  (Self : in out Item;   Allow : in Boolean := True)
    is
    begin
       Self.allow_linear_Motion := Allow;
@@ -40,7 +40,7 @@ is
 
 
    overriding
-   procedure allow_orbital_Motion (Self : in out Item;   Allow : in Boolean)
+   procedure allow_orbital_Motion (Self : in out Item;   Allow : in Boolean := True)
    is
    begin
       Self.allow_orbital_Motion := Allow;
