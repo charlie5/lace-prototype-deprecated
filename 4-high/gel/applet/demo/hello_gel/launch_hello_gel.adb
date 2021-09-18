@@ -1,21 +1,22 @@
 with
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.Window.setup,     -- This makes MMI use the GL window system selected by the 'opengl_platform' scenario variable.
-     Ada.Text_IO,
-     Ada.Exceptions;
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.Window.setup,     -- This makes GEL use the GL window system selected by the 'opengl_platform' scenario variable.
+     ada.Text_IO,
+     ada.Exceptions;
 
-pragma Unreferenced (mmi.Window.setup);
+pragma unreferenced (gel.Window.setup);
 
 
-procedure launch_hello_MMI
+procedure launch_hello_GEL
 --
---  Opens an MMI window.
+--  Opens a GEL window.
 --
 is
-   use mmi.Applet.gui_world, Ada.Text_IO;
+   use gel.Applet.gui_world,
+       ada.Text_IO;
 
-   the_Applet : mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("Hello MMI");
+   the_Applet : gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Hello GEL");
 
 begin
    while the_Applet.is_open
@@ -30,4 +31,4 @@ exception
    when E : others =>
       put_Line ("Exception in Environment task");
       put_Line (ada.Exceptions.Exception_Information (E));
-end launch_hello_MMI;
+end launch_hello_GEL;

@@ -1,12 +1,12 @@
 with
-     "sdl_mmi",
+     "sdl_gel",
      "lace_shared";
 
-project Hello_SDL_MMI
+project Hello_SDL_GEL
 is
    for Object_Dir use "build";
    for Exec_Dir   use ".";
-   for Main       use ("launch_hello_mmi.adb");
+   for Main       use ("launch_hello_gel.adb");
    for Languages  use ("Ada");
 
    package Ide      renames Lace_shared.Ide;
@@ -20,4 +20,4 @@ is
 --      for Default_Switches ("ada") use ("-g", "-lGL", "-lexpat", "-lX11-xcb", "-lX11", "-lxcb", "-lxcb-glx", "-lxcb-render");
    end Linker;
 
-end Hello_SDL_MMI;
+end Hello_SDL_GEL;
