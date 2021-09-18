@@ -35,7 +35,7 @@ is
 
 
 
-   function new_Terrain (World        : access gel.World.item'Class;
+   function new_Terrain (World        : gel.World.view;
                          heights_File : in     String;
                          texture_File : in     String        := "";
                          Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid
@@ -195,7 +195,7 @@ is
                                              Scale (3));
 
                   the_Sprite    := gel.Sprite.Forge.new_Sprite ("Terrain" & Integer'Image (Row) & Integer'Image (Col),
-                                                                World,
+                                                                sprite.World_view (World),
                                                                 the_ground_Model,
                                                                 the_ground_physics_Model,
                                                                 owns_Graphics => True,

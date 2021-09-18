@@ -177,7 +177,7 @@ is
       the_physics_Model  := Standard.physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & sprite_Id'Image (the_Pair.sprite_Id),
-                                                 the_World,
+                                                 sprite.World_view (the_World),
                                                  the_graphics_Model,
                                                  the_physics_Model,
                                                  owns_Graphics => False,

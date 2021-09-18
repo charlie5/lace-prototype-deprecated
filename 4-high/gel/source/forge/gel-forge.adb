@@ -101,7 +101,7 @@ is
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("circle_Sprite",
-                                          in_World,
+                                          sprite.World_view (in_World),
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -139,7 +139,7 @@ is
                                                   Restitution => Bounce);
    begin
       return gel.Sprite.Forge.new_Sprite ("polygon_Sprite",
-                                          in_World,
+                                          sprite.World_view (in_World),
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -191,7 +191,7 @@ is
                                                       mass       => Mass);
    begin
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
-                                          in_World,
+                                          sprite.World_view (in_World),
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -226,7 +226,7 @@ is
                                                   mass       => Mass);
       the_Box               : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("demo.Box",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_box_Model.all'Access,
                                         the_box_physics_Model,
                                         owns_graphics => True,
@@ -260,7 +260,7 @@ is
                                                       mass       => Mass);
       the_Box               : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("demo.Box",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_box_Model.all'Access,
                                         the_box_physics_Model,
                                         owns_graphics => True,
@@ -292,7 +292,7 @@ is
 
       the_Billboard               : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Billboard",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_billboard_Model.all'Access,
                                         the_billboard_physics_Model,
                                         owns_graphics => True,
@@ -324,7 +324,7 @@ is
 
       the_Billboard               : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Billboard",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_billboard_Model.all'Access,
                                         the_billboard_physics_Model,
                                         owns_graphics => True,
@@ -356,7 +356,7 @@ is
                                                       mass       => Mass);
       the_Arrow          : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Arrow",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_graphics => True,
@@ -386,7 +386,7 @@ is
                                                       mass       => Mass);
       the_Line           : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Line",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_graphics => True,
@@ -417,7 +417,7 @@ is
                                                       mass       => Mass);
       the_Line           : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Line",
-                                        in_World,
+                                        sprite.World_view (in_World),
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_graphics => True,
@@ -473,7 +473,7 @@ is
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("text_Sprite",
-                                          in_World,
+                                          sprite.World_view (in_World),
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,

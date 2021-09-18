@@ -406,7 +406,7 @@ is
                                                                     Mass        => 1.0);
             begin
                new_Sprite := gel.Sprite.Forge.new_Sprite ("Skin Sprite",
-                                                          in_World,
+                                                          gel.sprite.World_view (in_World),
                                                           Model,
                                                           physics_Model,
                                                           is_Kinematic => is_Kinematic);
@@ -419,7 +419,7 @@ is
             Self.skin_Sprite := new_Sprite;
 
          else
-            new_Sprite := gel.Forge.new_box_Sprite (in_World     => in_World,
+            new_Sprite := gel.Forge.new_box_Sprite (in_World     => in_World.all'Access,
                                                     Mass         => 1.0,
                                                     Size         => Scale,
                                                     Colors       => (1      => Black,

@@ -1,19 +1,16 @@
 with
      gel.hinge_Joint,
-     gel.any_Joint,
+     gel.  any_Joint,
      gel.World,
 
-     float_math.Algebra.linear.d3,
-
      ada.Tags,
-     ada.Unchecked_Deallocation,
+     ada.unchecked_Deallocation,
      ada.unchecked_Conversion;
-
 
 package body gel.Sprite
 is
    use ada.Tags,
-       float_math.Algebra.linear.d3;
+       linear_Algebra_3D;
 
 
    procedure log (Message : in String)
@@ -22,9 +19,8 @@ is
 
 
    ------------------
-   --  Initialisation
+   --- Initialisation
    --
-
 
    procedure rebuild_Shape (Self : in out Item)
    is
@@ -35,7 +31,6 @@ is
 
    begin
 --        Self.Shape := Self.World.Space.new_Shape (Self.physics_Model);
-
 
       -- Old
       if Self.physics_Model = null then
@@ -54,13 +49,13 @@ is
 
          when physics.Model.multi_Sphere =>
             Self.Shape := physics_Shape_view (Self.World.Space.new_multisphere_Shape (Self.physics_Model.shape_Info.Sites.all,
-                                                                                        Self.physics_Model.shape_Info.Radii.all));
+                                                                                      Self.physics_Model.shape_Info.Radii.all));
          when physics.Model.Cone =>
-            Self.Shape := physics_Shape_view (Self.World.Space.       new_cone_Shape (radius => Real (Self.physics_Model.Scale (1) / 2.0),
-                                                                                        height => Real (Self.physics_Model.Scale (2))));
+            Self.Shape := physics_Shape_view (Self.World.Space.       new_cone_Shape (Radius => Real (Self.physics_Model.Scale (1) / 2.0),
+                                                                                      Height => Real (Self.physics_Model.Scale (2))));
          when physics.Model.a_Capsule =>
             Self.Shape := physics_Shape_view (Self.World.Space.    new_capsule_Shape (Self.physics_Model.shape_Info.lower_Radius,
-                                                                                        Self.physics_Model.shape_Info.Height));
+                                                                                      Self.physics_Model.shape_Info.Height));
          when physics.Model.Cylinder =>
             Self.Shape := physics_Shape_view (Self.World.Space.   new_cylinder_Shape (Self.physics_Model.shape_Info.half_Extents));
 
@@ -72,10 +67,10 @@ is
 
          when physics.Model.Plane =>
             Self.Shape := physics_Shape_view (Self.World.Space.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
-                                                                                        Self.physics_Model.Shape_Info.plane_Offset));
+                                                                                      Self.physics_Model.Shape_Info.plane_Offset));
          when physics.Model.Heightfield =>
             Self.Shape := physics_Shape_view (Self.World.Space.new_heightfield_Shape (Self.physics_Model.shape_Info.Heights.all,
-                                                                                        Self.physics_Model.Scale));
+                                                                                      Self.physics_Model.Scale));
          when physics.Model.Circle =>
             Self.Shape := physics_Shape_view (Self.World.Space.     new_circle_Shape (Self.physics_Model.shape_Info.circle_Radius));
 
@@ -84,8 +79,6 @@ is
       end case;
 
    end rebuild_Shape;
-
-
 
 
 
@@ -99,23 +92,21 @@ is
       end if;
 
       Self.Solid := physics_Object_view (Self.World.Space.new_Object (physics.Shape.view (Self.Shape),
-                                                                        Self.physics_Model.Mass,
-                                                                        Self.physics_Model.Friction,
-                                                                        Self.physics_Model.Restitution,
-                                                                        Self.physics_Model.Site,
-                                                                        Self.is_Kinematic));
+                                                                      Self.physics_Model.Mass,
+                                                                      Self.physics_Model.Friction,
+                                                                      Self.physics_Model.Restitution,
+                                                                      Self.physics_Model.Site,
+                                                                      Self.is_Kinematic));
    end rebuild_Solid;
 
 
 
-
-   procedure define (Self : access Item;   World          : access gel.    World.item'Class;
+   procedure define (Self : access Item;   World          : in     World_view;
                                            graphics_Model : access openGL. Model.item'Class;
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
-                                           is_Kinematic   : in     Boolean       := False)
-
+                                           is_Kinematic   : in     Boolean := False)
    is
       use type physics.Model.view;
    begin
@@ -142,15 +133,13 @@ is
 
 
 
-
    procedure destroy (Self : access Item;   and_Children : in Boolean)
    is
       use gel.Joint;
-
    begin
       if Self.is_Destroyed
       then
-         raise program_Error with "sprite is already destroyed";
+         raise Error with "Sprite is already destroyed.";
       end if;
 
       -- Detach parent, if any.
@@ -178,7 +167,7 @@ is
       Self.is_Destroyed := True;
       Self.World.destroy (Sprite.view (Self));
 
-      lace.Subject_and_deferred_Observer.destroy (lace.Subject_and_deferred_Observer.item (Self.all));   -- Destroy base class.
+      lace.Subject_and_deferred_Observer.item (Self.all).destroy;   -- Destroy base class.
    end destroy;
 
 
@@ -191,7 +180,7 @@ is
 
 
 
-   procedure free    (Self : in out View)
+   procedure free (Self : in out View)
    is
       pragma assert (Self.is_Destroyed);
 
@@ -200,8 +189,8 @@ is
           physics.Object,
           physics.Shape;
 
-      procedure deallocate is new ada.Unchecked_Deallocation (Sprite.item'Class, Sprite.view);
-      procedure deallocate is new ada.Unchecked_Deallocation (Joint.views,       access_Joint_views);
+      procedure deallocate is new ada.unchecked_Deallocation (Sprite.item'Class, Sprite.view);
+      procedure deallocate is new ada.unchecked_Deallocation (Joint.views,       access_Joint_views);
 
       child_Joint : Joint.view;
 
@@ -224,19 +213,19 @@ is
    end free;
 
 
-
-
-
+   ----------
+   --- Forge
+   --
    package body Forge
    is
 
-      function  to_Sprite (Name           : in     String;
-                           World          : access gel.        World.item'Class;
-                           graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access physics.Model.item'class;
-                           owns_Graphics  : in     Boolean;
-                           owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean       := False) return Item
+      function to_Sprite (Name           : in     String;
+                          World          : in     World_view;
+                          graphics_Model : access openGL. Model.item'Class;
+                          physics_Model  : access physics.Model.item'Class;
+                          owns_Graphics  : in     Boolean;
+                          owns_Physics   : in     Boolean;
+                          is_Kinematic   : in     Boolean := False) return Item
       is
       begin
          return Self : Item := (lace.Subject_and_deferred_Observer.forge.to_Subject_and_Observer (Name)
@@ -249,12 +238,12 @@ is
 
 
       function new_Sprite (Name           : in     String;
-                           World          : access gel.        World.item'Class;
-                           graphics_Model : access openGL.     Model.item'class;
-                           physics_Model  : access physics.Model.item'class;
-                           owns_Graphics  : in     Boolean       := True;
-                           owns_Physics   : in     Boolean       := True;
-                           is_Kinematic   : in     Boolean       := False) return View
+                           World          : in     World_view;
+                           graphics_Model : access openGL. Model.item'Class;
+                           physics_Model  : access physics.Model.item'Class;
+                           owns_Graphics  : in     Boolean := True;
+                           owns_Physics   : in     Boolean := True;
+                           is_Kinematic   : in     Boolean := False) return View
       is
          Self : constant View := new Item' (to_Sprite (Name,
                                                        World,
@@ -270,13 +259,11 @@ is
    end Forge;
 
 
-
-
    --------------
    --- Attributes
    --
 
-   function  World (Self : in     Item'Class) return access gel.World.item'Class
+   function World (Self : in Item'Class) return access gel.World.item'Class
    is
    begin
       return Self.World;
@@ -284,7 +271,7 @@ is
 
 
 
-   function  Id (Self : in Item'Class) return gel.sprite_Id
+   function Id (Self : in Item'Class) return gel.sprite_Id
    is
    begin
       return Self.Id;
@@ -300,8 +287,7 @@ is
 
 
 
-
-   function  Depth_in_camera_space (Self : in Item'Class) return math.Real
+   function Depth_in_camera_space (Self : in Item'Class) return Real
    is
    begin
       return Self.Depth_in_camera_space;
@@ -309,8 +295,7 @@ is
 
 
 
-
-   function Mass (Self : in Item'Class) return math.Real
+   function Mass (Self : in Item'Class) return Real
    is
    begin
       return Self.physics_Model.Mass;
@@ -318,8 +303,7 @@ is
 
 
 
-
-   function  is_Static (Self : in Item'Class) return Boolean
+   function is_Static (Self : in Item'Class) return Boolean
    is
    begin
       return Self.Mass = 0.0;
@@ -327,7 +311,7 @@ is
 
 
 
-   function  is_Kinematic (Self : in Item'Class) return Boolean
+   function is_Kinematic (Self : in Item'Class) return Boolean
    is
    begin
       return Self.is_Kinematic;
@@ -335,9 +319,7 @@ is
 
 
 
-
-
-   procedure mvp_Matrix_is (Self : in out Item'Class;   Now : in math.Matrix_4x4)
+   procedure mvp_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
    is
    begin
       Self.Visual.mvp_Transform_is (Now);
@@ -346,7 +328,7 @@ is
 
 
 
-   function  mvp_Matrix (Self : in     Item'Class) return math.Matrix_4x4
+   function mvp_Matrix (Self : in Item'Class) return Matrix_4x4
    is
    begin
       return Self.Visual.mvp_Transform;
@@ -362,12 +344,11 @@ is
 
 
 
-   function is_Visible (Self : in     Item'Class) return Boolean
+   function is_Visible (Self : in Item'Class) return Boolean
    is
    begin
       return Self.is_Visible;
    end is_Visible;
-
 
 
 
@@ -379,9 +360,7 @@ is
 
 
 
-
-
-   function  key_Response (Self : in     Item'Class)     return lace.Response.view
+   function key_Response (Self : in Item'Class) return lace.Response.view
    is
    begin
       return Self.key_Response;
@@ -389,8 +368,7 @@ is
 
 
 
-
-   function  Visual (Self : access Item'Class)     return openGL.Visual.view
+   function Visual (Self : access Item'Class) return openGL.Visual.view
    is
    begin
       return Self.Visual;
@@ -398,7 +376,7 @@ is
 
 
 
-   function graphics_Model (Self : in     Item'Class)     return openGL.Model.view
+   function graphics_Model (Self : in Item'Class) return openGL.Model.view
    is
    begin
       return Self.visual.Model;
@@ -414,7 +392,7 @@ is
 
 
 
-   function  owns_Graphics  (Self : in     Item) return Boolean
+   function owns_Graphics  (Self : in Item) return Boolean
    is
    begin
       return Self.owns_Graphics;
@@ -422,8 +400,7 @@ is
 
 
 
-
-   function physics_Model (Self : in     Item'Class)     return access physics.Model.item'class
+   function physics_Model (Self : in Item'Class) return access physics.Model.item'class
    is
    begin
       return Self.physics_Model;
@@ -439,18 +416,16 @@ is
 
 
 
-
    procedure Scale_is (Self : in out Item'Class;   Now : in math.Vector_3)
    is
    begin
-      Self.physics_Model.Scale_is  (Now);
-      Self.World .update_Scale     (Self'Unchecked_Access, +Now);
+      Self.physics_Model.Scale_is (Now);
+      Self.World .update_Scale    (Self'unchecked_Access, +Now);
    end Scale_is;
 
 
 
-
-   function  Scale (Self : in     Item'Class)  return math.Vector_3
+   function Scale (Self : in Item'Class) return Vector_3
    is
    begin
       return Self.physics_Model.Scale;
@@ -458,7 +433,7 @@ is
 
 
 
-   function Solid (Self : in     Item'Class)     return physics_Object_view
+   function Solid (Self : in Item'Class) return physics_Object_view
    is
    begin
       return Self.Solid;
@@ -466,7 +441,7 @@ is
 
 
 
-   procedure Solid_is (Self :    out Item'Class;   Now : in physics_Object_view)
+   procedure Solid_is (Self : out Item'Class;   Now : in physics_Object_view)
    is
    begin
       Self.Solid := Now;
@@ -482,13 +457,11 @@ is
 
 
 
-   function  Shape (Self : in     Item'Class)     return physics_Shape_view
+   function Shape (Self : in Item'Class) return physics_Shape_view
    is
    begin
       return Self.Shape;
    end Shape;
-
-
 
 
    -------------
@@ -509,7 +482,7 @@ is
    --- Site
    --
 
-   function  Site      (Self : in     Item)     return math.Vector_3
+   function Site (Self : in Item) return Vector_3
    is
       Transform : constant Matrix_4x4 := Self.Transform.Value;
    begin
@@ -518,66 +491,58 @@ is
 
 
 
-   procedure Site_is   (Self : in out Item;   Now : in math.Vector_3)
+   procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
-      use type Standard.physics.Model.view;
-      my_Transform : Matrix_4x4 := Self.Transform.Value;
-
+      use type physics.Model.view;
+      Transform : Matrix_4x4 := Self.Transform.Value;
    begin
-      set_Translation   (my_Transform, Now);
-      Self.Transform_is (my_Transform);
+      set_Translation   (Transform, Now);
+      Self.Transform_is (Transform);
 
       if Self.physics_Model /= null
       then
-         Self.World.update_Site (Self'Unchecked_Access, Now);
+         Self.World.update_Site (Self'unchecked_Access, Now);
       end if;
    end Site_is;
 
 
 
-   procedure move (Self : in out Item;   to_Site : in math.Vector_3)
+   procedure move (Self : in out Item;   to_Site : in Vector_3)
    is
+      the_Offset   : constant Vector_3 := to_Site - Self.Site;
+      child_Sprite : Sprite.view;
    begin
-      --  do children
+      --  Do children.
       --
-      declare
-         the_Offset   : constant math.Vector_3 := to_Site - Self.Site;
-         child_Sprite :          Sprite.view;
-      begin
-         for Each in 1 .. Integer (Self.child_Joints.Length)
-         loop
-            child_Sprite := Self.child_Joints.Element (Each).Sprite_B.all'Access;
-            child_Sprite.move (to_site => child_Sprite.Site + the_Offset);            -- Recurse.
-         end loop;
-      end;
+      for i in 1 .. Integer (Self.child_Joints.Length)
+      loop
+         child_Sprite := Self.child_Joints.Element (i).Sprite_B;
+         child_Sprite.move (to_site => child_Sprite.Site + the_Offset);            -- Recurse.
+      end loop;
 
       Self.Site_is (to_Site);
    end move;
 
 
 
-   procedure  set_Speed (Self : in out Item;   to_Speed : in math.Vector_3)
+   procedure set_Speed (Self : in out Item;   to_Speed : in Vector_3)
    is
+      child_Sprite : Sprite.view;
    begin
-      --  do children
+      --  Do children.
       --
-      declare
-         child_Sprite : Sprite.view;
-      begin
-         for Each in 1 .. Integer (Self.child_Joints.Length)
-         loop
-            child_Sprite := Self.child_Joints.Element (Each).Sprite_B.all'Access;
-            child_Sprite.set_Speed (to_Speed);
-         end loop;
-      end;
+      for i in 1 .. Integer (Self.child_Joints.Length)
+      loop
+         child_Sprite := Self.child_Joints.Element (i).Sprite_B;
+         child_Sprite.set_Speed (to_Speed);
+      end loop;
 
       Self.Speed_is (to_Speed);
    end set_Speed;
 
 
 
-
-   function  Spin      (Self : in     Item)     return math.Matrix_3x3
+   function Spin (Self : in Item) return Matrix_3x3
    is
    begin
       return Self.Solid.Spin;
@@ -585,14 +550,13 @@ is
 
 
 
-   procedure Spin_is   (Self : in out Item;   Now : in math.Matrix_3x3)
+   procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
       use type Physics.Object.view;
-      my_Transform : Matrix_4x4 := Self.Transform.Value;
-
+      Transform : Matrix_4x4 := Self.Transform.Value;
    begin
-      set_Rotation      (my_Transform, Now);
-      Self.Transform_is (my_Transform);
+      set_Rotation      (Transform, Now);
+      Self.Transform_is (Transform);
 
       if Self.Solid /= null then
          Self.Solid.Spin_is (Now);
@@ -601,24 +565,25 @@ is
 
 
 
-   function  xy_Spin    (Self : in     Item)     return math.Radians
+   function xy_Spin (Self : in Item) return Radians
    is
    begin
       return Self.Solid.xy_Spin;
    end xy_Spin;
 
 
-   procedure xy_Spin_is (Self : in out Item;   Now : in math.Radians)
+
+   procedure xy_Spin_is (Self : in out Item;   Now : in Radians)
    is
    begin
-      Self.World.set_xy_Spin (Self'Unchecked_Access, Now);
+      Self.World.set_xy_Spin (Self'unchecked_Access, Now);
    end xy_Spin_is;
 
 
 
-   procedure rotate (Self : in out Item;   to_Spin : in math.Matrix_3x3)
+   procedure rotate (Self : in out Item;   to_Spin : in Matrix_3x3)
    is
-      the_spin_Delta : constant math.Matrix_3x3 := to_Spin * Inverse (Self.Spin);   -- The rotation matrix describing the amount by which Self has rotated.
+      the_spin_Delta : constant Matrix_3x3 := to_Spin * Inverse (Self.Spin);   -- The rotation matrix describing the amount by which Self has rotated.
 
       procedure spin_Children (the_Sprite : in Sprite.item'class)
       is
@@ -629,37 +594,37 @@ is
 
          declare
             child_Sprite    : Sprite.view;
-            the_site_Offset : math.Vector_3;
+            the_site_Offset : Vector_3;
          begin
-            for Each in 1 .. Integer (the_Sprite.child_Joints.Length)
+            for i in 1 .. Integer (the_Sprite.child_Joints.Length)
             loop
-               child_Sprite    := the_Sprite.child_Joints.Element (Each).Sprite_B.all'Access;
+               child_Sprite    := the_Sprite.child_Joints.Element (i).Sprite_B;
                the_site_Offset := the_spin_Delta * (child_Sprite.Site - Self.Site) ;
 
-               child_Sprite.Site_is (Self.Site         + the_site_Offset);
+               child_Sprite.Site_is (Self.Site      + the_site_Offset);
                child_Sprite.Spin_is (the_spin_Delta * child_Sprite.Spin);
 
-               spin_Children (child_Sprite.all);   -- Recurse.
+               spin_Children (child_Sprite.all);     -- Recurse.
             end loop;
          end;
       end spin_Children;
 
    begin
       spin_Children (Self);      -- Do children.
-      Self.Spin_is  (to_Spin);
+      Self.Spin_is (to_Spin);
    end rotate;
 
 
 
-
-   function  Transform (Self : in     Item)     return math.Matrix_4x4
+   function Transform (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Transform.Value;
    end Transform;
 
 
-   procedure Transform_is (Self : in out Item;   Now : in math.Matrix_4x4)
+
+   procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
    begin
       Self.Transform.Value_is (Now);
@@ -667,29 +632,31 @@ is
 
 
 
-   function  Speed      (Self : in     Item)     return math.Vector_3
+   function Speed (Self : in Item) return Vector_3
    is
    begin
       return Self.Solid.Speed;
    end Speed;
 
 
-   procedure Speed_is   (Self : in out Item;   Now : in math.Vector_3)
+
+   procedure Speed_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.World.set_Speed (Self'Unchecked_Access, Now);
+      Self.World.set_Speed (Self'unchecked_Access, Now);
    end Speed_is;
 
 
 
-   function  Gyre      (Self : in     Item)     return math.Vector_3
+   function Gyre (Self : in Item) return Vector_3
    is
    begin
       return Self.Solid.Gyre;
    end Gyre;
 
 
-   procedure Gyre_is   (Self : in out Item;   Now : in math.Vector_3)
+
+   procedure Gyre_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.Solid.Gyre_is (Now);
@@ -697,33 +664,26 @@ is
 
 
 
-
-   procedure  set_Gyre (Self : in out Item;   to_Gyre : in math.Vector_3)
+   procedure set_Gyre (Self : in out Item;   to_Gyre : in Vector_3)
    is
+      child_Sprite : Sprite.view;
    begin
       --  Do children.
       --
-      declare
-         child_Sprite : Sprite.view;
-      begin
-         for Each in 1 .. Integer (Self.child_Joints.Length)
-         loop
-            child_Sprite := Self.child_Joints.Element (Each).Sprite_B.all'Access;
-            child_Sprite.set_Gyre (to_Gyre);
-         end loop;
-      end;
+      for i in 1 .. Integer (Self.child_Joints.Length)
+      loop
+         child_Sprite := Self.child_Joints.Element (i).Sprite_B;
+         child_Sprite.set_Gyre (to_Gyre);
+      end loop;
 
       Self.Gyre_is (to_Gyre);
    end set_Gyre;
 
 
-
-
-
    --- Forces
    --
 
-   procedure apply_Force          (Self : in out Item;   Force  : in math.Vector_3)
+   procedure apply_Force (Self : in out Item;   Force  : in Vector_3)
    is
       the_Force : aliased constant Vector_3 := Force;
    begin
@@ -731,7 +691,8 @@ is
    end apply_Force;
 
 
-   procedure apply_Torque (Self : in out Item;   Torque : in math.Vector_3)
+
+   procedure apply_Torque (Self : in out Item;   Torque : in Vector_3)
    is
       the_Torque : constant Vector_3 := Torque;
    begin
@@ -739,7 +700,8 @@ is
    end apply_Torque;
 
 
-   procedure apply_Torque_impulse (Self : in out Item;   Torque : in math.Vector_3)
+
+   procedure apply_Torque_impulse (Self : in out Item;   Torque : in Vector_3)
    is
       the_Torque : constant Vector_3 := Torque;
    begin
@@ -747,12 +709,10 @@ is
    end apply_Torque_impulse;
 
 
-
-
    --  Mirrored Dynamics
    --
 
-   function  desired_Site (Self : in     Item) return math.Vector_3
+   function desired_Site (Self : in Item) return Vector_3
    is
    begin
       return Self.desired_Site;
@@ -760,7 +720,7 @@ is
 
 
 
-   procedure desired_Site_is (Self : in out Item;   Now : in math.Vector_3)
+   procedure desired_Site_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.desired_Site         := Now;
@@ -769,7 +729,7 @@ is
 
 
 
-   procedure desired_Spin_is   (Self : in out Item;   Now : in math.Quaternion)
+   procedure desired_Spin_is   (Self : in out Item;   Now : in Quaternion)
    is
    begin
       Self.initial_Spin            := to_Quaternion (Transpose (Self.Spin));
@@ -787,7 +747,7 @@ is
       end if;
 
       declare
-         current_Distance : constant math.Vector_3 := (Self.desired_Site - Self.Site) / 15.0;
+         current_Distance : constant Vector_3 := (Self.desired_Site - Self.Site) / 15.0;     -- TODO: Where does 15.0 come from ?
       begin
          if         abs (current_Distance (1)) < 0.005   -- Prevent drift due to very small interpolation vectors.
            and then abs (current_Distance (2)) < 0.005
@@ -800,7 +760,7 @@ is
       Self.Site_is (Self.Site + Self.interpolation_Vector);
 
       if Self.interpolation_spin_Time < 1.0
-      then   -- Interpolation is not yet complete.
+      then -- Interpolation is not yet complete.
          Self.interpolation_spin_Time := Self.interpolation_spin_Time + 1.0/15.0;
 
          Self.Spin_is (Transpose (to_Matrix (slerp (Self.initial_spin,
@@ -808,8 +768,6 @@ is
                                                     Self.interpolation_spin_Time))));
       end if;
    end interpolate_Motion;
-
-
 
 
    --------------
@@ -841,7 +799,7 @@ is
 
 
 
-   function  top_Parent (Self : access Item'Class) return gel.Sprite.view
+   function top_Parent (Self : access Item'Class) return gel.Sprite.view
    is
    begin
       if Self.parent_Joint = null
@@ -856,14 +814,14 @@ is
    is
    begin
       if Self.parent_Joint = null
-      then  return null;
-      else  return Self.parent_Joint.Sprite_A;
+      then   return null;
+      else   return Self.parent_Joint.Sprite_A;
       end if;
    end Parent;
 
 
 
-   function  tree_Depth       (Self : in     Item)       return Natural
+   function tree_Depth (Self : in Item) return Natural
    is
       Parent : Sprite.view := Self.Parent;
       Depth  : Natural     := 0;
@@ -881,7 +839,6 @@ is
 
    procedure apply (Self : in out Item;   do_Action : Action)
    is
-
    begin
       do_Action (Self);
 
@@ -897,14 +854,13 @@ is
                                                  the_Joint : in gel.Joint.view)
    is
    begin
-      log ("Attaching " & gel.sprite_Id'Image (the_Child.Id) & " to " & gel.sprite_Id'Image (Self.Id));
+      log ("Attaching " & the_Child.Id'Image & " to " & Self.Id'Image);
 
       Self.child_Joints.append (the_Joint);
 
-      the_Child.parent_Joint := the_Joint.all'Access;
-      the_Child.relay_responseless_Events (to => Self.all'Access);
+      the_Child.parent_Joint := the_Joint;
+      the_Child.relay_responseless_Events (To => Self);
    end attach;
-
 
 
 
@@ -912,7 +868,7 @@ is
    is
       childs_Joint : Joint.view;
    begin
-      log ("Detaching " & gel.sprite_Id'Image (the_Child.Id) & " from " & gel.sprite_Id'Image (Self.Id));
+      log ("Detaching " & the_Child.Id'Image & " from " & Self.Id'Image);
 
       for i in 1 .. Integer (Self.child_Joints.Length)
       loop
@@ -936,11 +892,11 @@ is
    --  Hinge
    --
    procedure attach_via_Hinge (Self : access Item'Class;   the_Child         : in      Sprite.view;
-                                                           pivot_Axis        : in      math.Vector_3;
-                                                           Anchor            : in      math.Vector_3;
-                                                           child_Anchor      : in      math.Vector_3;
-                                                           low_Limit         : in      math.Real;
-                                                           high_Limit        : in      math.Real;
+                                                           pivot_Axis        : in      Vector_3;
+                                                           Anchor            : in      Vector_3;
+                                                           child_Anchor      : in      Vector_3;
+                                                           low_Limit         : in      Real;
+                                                           high_Limit        : in      Real;
                                                            collide_Connected : in      Boolean;
                                                            new_joint         :     out gel.Joint.view)
    is
@@ -955,29 +911,29 @@ is
 
       the_Joint.Limits_are (low_Limit, high_Limit);
 
-      attach (Self, the_Child, the_Joint.all'Access);
+      Self.attach (the_Child, the_Joint.all'Access);
 
       new_Joint := the_Joint.all'Access;
    end attach_via_Hinge;
 
 
 
-   procedure attach_via_Hinge (Self : access Item'Class;   the_Child    : in Sprite.view;
-                                                           pivot_Axis   : in math.Vector_3;
-                                                           pivot_Anchor : in math.Vector_3;
-                                                           low_Limit    : in math.Real;
-                                                           high_Limit   : in math.Real;
-                                                           new_joint    : out gel.Joint.view)
+   procedure attach_via_Hinge (Self : access Item'Class;   the_Child    : in     Sprite.view;
+                                                           pivot_Axis   : in     Vector_3;
+                                                           pivot_Anchor : in     Vector_3;
+                                                           low_Limit    : in     Real;
+                                                           high_Limit   : in     Real;
+                                                           new_joint    :    out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
-      the_Joint.define     (Self.World.Space,
-                            Self,        the_Child,
-                            pivot_Axis,  pivot_Anchor);
+      the_Joint.define (Self.World.Space,
+                        Self,        the_Child,
+                        pivot_Axis,  pivot_Anchor);
 
       the_Joint.Limits_are (low_Limit, high_Limit);
 
-      attach (Self, the_Child, the_Joint.all'Access);
+      Self.attach (the_Child, the_Joint.all'Access);
 
       new_Joint := the_Joint.all'Access;
    end attach_via_Hinge;
@@ -985,20 +941,20 @@ is
 
 
    procedure attach_via_Hinge (Self : access Item'Class;   the_Child  : in     Sprite.view;
-                                                           pivot_Axis : in     math.Vector_3;
-                                                           low_Limit  : in     math.Real;
-                                                           high_Limit : in     math.Real;
+                                                           pivot_Axis : in     Vector_3;
+                                                           low_Limit  : in     Real;
+                                                           high_Limit : in     Real;
                                                            new_joint  :    out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
-      the_Joint.define     (Self.World.Space,
-                            Self, the_Child,
-                            pivot_Axis);
+      the_Joint.define (Self.World.Space,
+                        Self, the_Child,
+                        pivot_Axis);
 
       the_Joint.Limits_are (low_Limit, high_Limit);
 
-      attach (Self, the_Child, the_Joint.all'Access);
+      Self.attach (the_Child, the_Joint.all'Access);
 
       new_Joint := the_Joint.all'Access;
    end attach_via_Hinge;
@@ -1006,8 +962,8 @@ is
 
 
    procedure attach_via_Hinge (Self : access Item'Class;   the_Child         : in     Sprite.view;
-                                                           Frame_in_parent   : in     math.Matrix_4x4;
-                                                           Frame_in_child    : in     math.Matrix_4x4;
+                                                           Frame_in_parent   : in     Matrix_4x4;
+                                                           Frame_in_child    : in     Matrix_4x4;
                                                            Limits            : in     DoF_Limits;
                                                            collide_Connected : in     Boolean;
                                                            new_joint         :    out gel.Joint.view)
@@ -1022,13 +978,10 @@ is
 
       the_Joint.Limits_are (limits.Low, limits.High);
 
-      attach (Self, the_Child, the_Joint.all'Access);
+      Self.attach (the_Child, the_Joint.all'Access);
 
       new_Joint := the_Joint.all'Access;
    end attach_via_Hinge;
-
-
-
 
 
    --  Ball/Socket
@@ -1050,40 +1003,42 @@ is
       the_Joint.high_Bound_is (Yaw,   yaw_Limits  .High);
       the_Joint.high_Bound_is (Roll,  roll_Limits .High);
 
-      attach (Self,  the_Child,  the_Joint.all'Access);
+      Self.attach (the_Child,  the_Joint.all'Access);
    end internal_attach_via_ball_Socket;
 
 
 
-   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child    : in Sprite.view;
-                                                                 pivot_Anchor : in math.Vector_3;
-                                                                 pivot_Axis   : in math.Matrix_3x3;
-                                                                 pitch_Limits : in DoF_Limits;
-                                                                 yaw_Limits   : in DoF_Limits;
-                                                                 roll_Limits  : in DoF_Limits;   new_joint : out gel.Joint.view)
+   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child    : in     Sprite.view;
+                                                                 pivot_Anchor : in     Vector_3;
+                                                                 pivot_Axis   : in     Matrix_3x3;
+                                                                 pitch_Limits : in     DoF_Limits;
+                                                                 yaw_Limits   : in     DoF_Limits;
+                                                                 roll_Limits  : in     DoF_Limits;
+                                                                 new_joint    :    out gel.Joint.view)
    is
       the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
-      the_Joint.define     (Self.World.Space,
-                            Self,         the_Child,
-                            pivot_Anchor, pivot_Axis);
+      the_Joint.define (Self.World.Space,
+                        Self,         the_Child,
+                        pivot_Anchor, pivot_Axis);
 
-      internal_attach_via_ball_Socket (Self,  the_Child,
-                                       pitch_Limits,
-                                       yaw_Limits,
-                                       roll_Limits,
-                                       the_joint);
+      Self.internal_attach_via_ball_Socket (the_Child,
+                                            pitch_Limits,
+                                            yaw_Limits,
+                                            roll_Limits,
+                                            the_joint);
       new_Joint := the_Joint.all'Access;
    end attach_via_ball_Socket;
 
 
 
-   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child       : in Sprite.view;
-                                                                 Frame_in_parent : in math.Matrix_4x4;
-                                                                 Frame_in_child  : in math.Matrix_4x4;
-                                                                 pitch_Limits    : in DoF_Limits;
-                                                                 yaw_Limits      : in DoF_Limits;
-                                                                 roll_Limits     : in DoF_Limits;   new_joint : out gel.Joint.view)
+   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child       : in     Sprite.view;
+                                                                 Frame_in_parent : in     Matrix_4x4;
+                                                                 Frame_in_child  : in     Matrix_4x4;
+                                                                 pitch_Limits    : in     DoF_Limits;
+                                                                 yaw_Limits      : in     DoF_Limits;
+                                                                 roll_Limits     : in     DoF_Limits;
+                                                                 new_joint       :    out gel.Joint.view)
    is
       the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
@@ -1091,64 +1046,64 @@ is
                         Self,             the_Child,
                         Frame_in_parent,  Frame_in_child);
 
-      internal_attach_via_ball_Socket (Self,  the_Child,
-                                       pitch_Limits,
-                                       yaw_Limits,
-                                       roll_Limits,
-                                       the_joint);
+      Self.internal_attach_via_ball_Socket (the_Child,
+                                            pitch_Limits,
+                                            yaw_Limits,
+                                            roll_Limits,
+                                            the_joint);
       new_Joint := the_Joint.all'Access;
    end attach_via_ball_Socket;
 
 
 
-
+   ------------
    --- Graphics
    --
 
-   procedure program_Parameters_are  (Self : in out Item'Class;   Now : access opengl.Program.Parameters'Class)
+   procedure program_Parameters_are  (Self : in out Item'Class;   Now : in opengl.Program.Parameters_view)
    is
    begin
       Self.program_Parameters := Now;
    end program_Parameters_are;
 
 
-   function  program_Parameters      (Self : in Item'Class)  return access opengl.Program.Parameters'Class
+
+   function program_Parameters (Self : in Item'Class) return opengl.Program.Parameters_view
    is
    begin
       return Self.program_Parameters;
    end program_Parameters;
 
 
-
+   -----------
    --- Utility
    --
 
-   function to_Hash (Self : in ada.tags.Tag) return ada.containers.Hash_type
+   function to_Hash (Self : in ada.Tags.Tag) return ada.Containers.Hash_type
    is
-      function Converted is new ada.unchecked_Conversion (ada.tags.Tag, ada.containers.Hash_type);
+      function Converted is new ada.unchecked_Conversion (ada.Tags.Tag, ada.Containers.Hash_type);
    begin
       return Converted (Self);
    end to_Hash;
 
 
 
-
    protected
    body safe_Matrix_4x4
    is
-      function  Value       return math.Matrix_4x4
+      function Value return Matrix_4x4
       is
       begin
          return the_Value;
       end Value;
 
-      procedure Value_is (Now : in math.Matrix_4x4)
+      procedure Value_is (Now : in Matrix_4x4)
       is
       begin
          the_Value := Now;
       end Value_is;
 
-      procedure Site_is  (Now : in math.Vector_3)
+      procedure Site_is (Now : in Vector_3)
       is
       begin
          the_Value (4, 1) := Now (1);
