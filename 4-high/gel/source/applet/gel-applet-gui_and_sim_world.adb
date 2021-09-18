@@ -72,7 +72,7 @@ is
       is
       begin
          return Self : Item := (gel.Applet.Forge.to_Applet (Name, use_Window)
-                                with others => <>)
+                                with null record)
          do
             define (Self'unchecked_Access, Name, use_Window);
          end return;
