@@ -4,12 +4,11 @@ with
      gel.Window;
 
 
-package gel.Applet.sim_2d_world
+package gel.Applet.sim_2D_world
 --
---  Provides a 'ready' gel system, configured with a single window and a single 2d world.
+--  Provides an applet configured with a single window and a single 2D world.
 --
 is
-
    type Item is new gel.Applet.item with private;
    type View is access all Item'Class;
 
@@ -33,4 +32,4 @@ private
          null;
       end record;
 
-end gel.Applet.sim_2d_world;
+end gel.Applet.sim_2D_world;

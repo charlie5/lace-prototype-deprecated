@@ -2,40 +2,31 @@ with
      gel.Camera.forge,
      physics.Forge;
 
-
-package body gel.Applet.sim_2d_world
+package body gel.Applet.sim_2D_world
 is
-   use      Math;
-   use type math.Real,
-            math.Index;
 
-
-   sim_world_Id  : constant gel.World_Id  := 1;
+   sim_world_Id  : constant gel.world_Id  := 1;
    sim_camera_Id : constant gel.camera_Id := 1;
 
 
 
    procedure define (Self : in View;   Name : in String)
    is
+      the_world_Info : constant world_Info_view  := new world_Info;
+      the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
    begin
-      declare
-         the_world_Info : constant world_Info_view  := new world_Info;
-         the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
-      begin
-         the_world_Info.World := gel.World.forge.new_World (Name,
-                                                            sim_world_Id,
-                                                            physics.Box2d,
-                                                            Self.Renderer);
+      the_world_Info.World := gel.World.forge.new_World (Name,
+                                                         sim_world_Id,
+                                                         physics.Box2d,
+                                                         Self.Renderer);
 
-         the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
-         the_Camera.Renderer_is       (Self.Renderer);
-         the_Camera.Site_is           ((0.0, 5.0, 50.0));
+      the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
+      the_Camera.Renderer_is       (Self.Renderer);
+      the_Camera.Site_is           ((0.0, 5.0, 50.0));
 
-         the_world_Info.Cameras.append (the_Camera);
+      the_world_Info.Cameras.append (the_Camera);
 
-         Self.Worlds.append (the_world_Info);
-      end;
-
+      Self.Worlds.append (the_world_Info);
    end define;
 
 
@@ -47,7 +38,7 @@ is
                            use_Window : in gel.Window.view) return View
       is
          Self : constant View := new Item' (gel.Applet.Forge.to_Applet (Name, use_Window)
-                                            with others => <>);
+                                            with null record);
       begin
          define (Self, Name);
          return Self;
@@ -57,18 +48,20 @@ is
 
 
 
-   function sim_World  (Self : in Item) return gel.World.view
+   function sim_World (Self : in Item) return gel.World.view
    is
    begin
       return Self.World (sim_world_Id);
    end sim_World;
 
 
+
    function sim_Camera (Self : in Item) return gel.Camera.view
    is
    begin
-      return Self.Camera (sim_world_Id, sim_camera_Id);
+      return Self.Camera (sim_world_Id,
+                          sim_camera_Id);
    end sim_Camera;
 
 
-end gel.Applet.sim_2d_world;
+end gel.Applet.sim_2D_world;
