@@ -11,15 +11,13 @@ with
      lace.Any,
      lace.Event.utility,
 
-     ada.Unchecked_Conversion,
-     ada.Unchecked_Deallocation,
+     ada.unchecked_Conversion,
+     ada.unchecked_Deallocation,
      ada.Text_IO;
-
 
 package body gel.Applet
 is
-   use Math,
-       lace.Event.utility,
+   use lace.Event.utility,
        ada.Text_IO;
 
 
@@ -37,15 +35,13 @@ is
    end my_Swapper;
 
 
-
-
    overriding
-   procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
-      the_Event  : constant gel.events.new_sprite_added_to_world_Event
+      the_Event : constant gel.events.new_sprite_added_to_world_Event
         := gel.events.new_sprite_added_to_world_Event (to_Event);
 
-      the_Sprite :          gel.Sprite.view;
+      the_Sprite : gel.Sprite.view;
 
    begin
       the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
@@ -54,19 +50,19 @@ is
       Self.Applet.add (the_Sprite);
 
    exception
-      when Constraint_Error =>
-         put_Line ("gel.applet ~ Exception in  'respond (Self : in out add_new_Sprite ...)'");
+      when constraint_Error =>
+         put_Line ("Exception in 'add_new_Sprite' response.");
    end respond;
 
 
-
    overriding
-   function  Name    (Self : in     add_new_Sprite) return String
+   function Name (Self : in add_new_Sprite) return String
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return "add_new_Sprite";
    end Name;
+
 
 
    procedure define (Self : in View;   use_Window : in gel.Window.view)
@@ -76,7 +72,7 @@ is
 
       -- Add window resize event repsonse.
       --
-      Self.local_Subject_and_Observer.add (Self.resize_Response'Unchecked_Access,
+      Self.local_Subject_and_Observer.add (Self.resize_Response'unchecked_Access,
                                            to_Kind (gel.events.window_resize_Request'Tag),
                                            use_Window.Name);
 
@@ -100,7 +96,6 @@ is
       Self.Renderer.add_Font (Self.       Font);
       Self.Renderer.add_Font (Self.titles_Font);
 
-
       -- Set up the keyboard events.
       --
       Self.Keyboard := Self.Window.Keyboard;
@@ -110,13 +105,11 @@ is
       Self.button_release_Response.Applet := Self;
       Self.mouse_motion_Response  .Applet := Self;
 
-
       -- Add the new sprite event response.
       --
-      the_add_new_sprite_Response.Applet := Self.all'Access;
+      the_add_new_sprite_Response.Applet := Self;
 
    end define;
-
 
 
    overriding
@@ -146,7 +139,7 @@ is
          the_World.destroy;
          free (the_World);
 
-         -- Free the cameras
+         -- Free the cameras.
          --
          declare
             use gel.Camera;
@@ -169,21 +162,19 @@ is
       free (Self.Renderer);
       free (Self.Window);
 
-      Self. local_Subject_and_Observer         .destroy;
-      lace.Subject_and_deferred_Observer.destroy (lace.Subject_and_deferred_Observer.Item (Self));   -- Destroy base class.
+      Self.local_Subject_and_Observer.destroy;
+      lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
    end destroy;
 
 
 
    procedure free (Self : in out View)
    is
-      procedure deallocate is new ada.Unchecked_Deallocation (Applet.item'Class, Applet.view);
+      procedure deallocate is new ada.unchecked_Deallocation (Applet.item'Class, Applet.view);
    begin
       Self.destroy;
       deallocate (Self);
    end free;
-
-
 
 
    ---------
@@ -193,17 +184,16 @@ is
    package body Forge
    is
 
-      function  to_Applet (Name       : in String;
-                           use_Window : in gel.Window.view) return Item
+      function to_Applet (Name       : in String;
+                          use_Window : in gel.Window.view) return Item
       is
+         use lace.Subject_and_deferred_Observer.Forge;
       begin
-         gel.Applet.global_Window := use_Window;
-
-         return Self : Item := (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
-                                local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
+         return Self : Item := (to_Subject_and_Observer (Name) with
+                                local_Subject_and_Observer => new_Subject_and_Observer (Name),
                                 others                     => <>)
          do
-            define (Self'Unchecked_Access,  use_Window);
+            define (Self'unchecked_Access, use_Window);
          end return;
       end to_Applet;
 
@@ -212,19 +202,11 @@ is
       function new_Applet (Name       : in String;
                            use_Window : in gel.Window.view) return View
       is
-         Self : constant View := new Item' (lace.Subject_and_deferred_Observer.Forge.to_Subject_and_Observer (Name) with
-                                            local_Subject_and_Observer => lace.Subject_and_deferred_Observer.Forge.new_Subject_and_Observer (Name),
-                                            others                     => <>);
       begin
-         gel.Applet.global_Window := use_Window;
-
-         define (Self,  use_Window);
-         return Self;
+         return new Item' (to_Applet (Name, use_Window));
       end new_Applet;
 
    end Forge;
-
-
 
 
    --------------
@@ -239,8 +221,8 @@ is
 
 
 
-   function  new_World (Self : access Item;   Name       : in String;
-                                              space_Kind : in physics.space_Kind) return gel.World.view
+   function new_World (Self : access Item;   Name       : in String;
+                                             space_Kind : in physics.space_Kind) return gel.World.view
    is
    begin
       Self.add_new_World (Name, space_Kind);
@@ -248,20 +230,21 @@ is
    end new_World;
 
 
+
    procedure add_new_World (Self : in out Item;   Name       : in String;
-                            space_Kind : in physics.space_Kind)
+                                                  space_Kind : in physics.space_Kind)
    is
-      use type ada.Containers.Count_Type;
+      use type ada.Containers.Count_type;
 
       the_world_Info : constant world_Info_view  := new world_Info;
-      the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
+      the_Camera     : constant gel.Camera.view  := gel.Camera.forge.new_Camera;
    begin
       the_world_Info.World := gel.World.forge.new_World (Name,
                                                          world_Id (Self.Worlds.Length + 1),
                                                          space_Kind,
                                                          Self.Renderer);
 
-      the_Camera.set_viewport_Size (Self.Window.Width,  Self.Window.Height);
+      the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
       the_Camera.Renderer_is       (Self.Renderer);
       the_Camera.Site_is           ((0.0, 5.0, 50.0));
 
@@ -270,15 +253,12 @@ is
       Self.Worlds.append (the_world_Info);
 
       Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                           to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
+                                           to_Kind (gel.Events.new_sprite_added_to_world_Event'Tag),
                                            the_world_Info.World.Name);
       the_world_Info.World.start;
 
       Self.add (the_world_Info);
    end add_new_World;
-
-
-
 
 
 
@@ -337,15 +317,14 @@ is
 
 
 
-
    function Camera (Self : in Item;   world_Id  : in gel.world_Id  := 1;
                                       camera_Id : in gel.camera_Id := 1) return gel.Camera.view
    is
+      w : Integer := Integer (world_Id);
+      c : Integer := Integer (world_Id);
    begin
-      return Self.Worlds.Element (Integer (world_Id)) .Cameras.Element (Integer (camera_Id));
+      return Self.Worlds.Element (w).Cameras.Element (c);
    end Camera;
-
-
 
 
 
@@ -356,6 +335,7 @@ is
    end Font;
 
 
+
    function titles_Font (Self : in Item) return opengl.Font.font_Id
    is
    begin
@@ -364,7 +344,7 @@ is
 
 
 
-   function Renderer (Self : in     Item) return openGL.Renderer.lean.view
+   function Renderer (Self : in Item) return openGL.Renderer.lean.view
    is
    begin
       return Self.Renderer;
@@ -372,7 +352,7 @@ is
 
 
 
-   function Keyboard (Self : in     Item) return access gel.Keyboard.item'class
+   function Keyboard (Self : in Item) return access gel.Keyboard.item'Class
    is
    begin
       return Self.Keyboard;
@@ -380,7 +360,7 @@ is
 
 
 
-   function Mouse    (Self : in     Item) return access gel.Mouse.item'class
+   function Mouse (Self : in Item) return access gel.Mouse.item'Class
    is
    begin
       return Self.Mouse;
@@ -388,7 +368,7 @@ is
 
 
 
-   function Dolly   (Self : access Item) return gel.Dolly.view
+   function Dolly (Self : access Item) return gel.Dolly.view
    is
    begin
       return Self.Dolly;
@@ -400,19 +380,16 @@ is
    is
       the_last_Keypress : constant gel.Keyboard.Key := Self.last_pressed_Key;
    begin
-      Self.last_pressed_Key := gel.keyboard.Nil;
+      Self.last_pressed_Key := gel.Keyboard.Nil;
       return the_last_Keypress;
    end last_Keypress;
-
-
 
 
    --------------
    --- Operations
    --
 
-
-   procedure evolve_all_Worlds      (Self : in out Item;   By : in Duration)
+   procedure evolve_all_Worlds (Self : in out Item;   By : in Duration)
    is
       use world_Vectors;
       world_Cursor : world_Vectors.Cursor := Self.Worlds.First;
@@ -429,7 +406,6 @@ is
          next (world_Cursor);
       end loop;
    end evolve_all_Worlds;
-
 
 
 
@@ -453,56 +429,54 @@ is
       Window_is_active :=              Self.Window.is_Open
                           and then     Self.Window.is_Exposed
                           and then not Self.Window.is_being_Resized;
+      declare
+         use world_Vectors;
+         world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
+         all_Cameras      : gel.Camera.views (1 .. 1000);
+         all_cameras_Last : Natural                     := 0;
 
+      begin
+         while has_Element (world_Cursor)
+         loop
+            declare
+               use camera_Vectors;
+               the_world_Info : world_Info       renames Element (world_Cursor).all;
+               camera_Cursor  : camera_Vectors.Cursor := the_world_Info.Cameras.First;
+            begin
+               the_world_Info.World.wait_on_evolve;
 
-         declare
-            use world_Vectors;
-            world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
-            all_Cameras      : gel.Camera.views (1 .. 1000);
-            all_cameras_Last : Natural                     := 0;
-
-         begin
-            while has_Element (world_Cursor)
-            loop
-               declare
-                  use camera_Vectors;
-                  the_world_Info : world_Info            renames Element (world_Cursor).all;
-                  camera_Cursor  : camera_Vectors.Cursor :=      the_world_Info.Cameras.First;
-               begin
-                  the_world_Info.World.wait_on_evolve;
-
-                  if Window_is_active
-                  then
-                     while has_Element (camera_Cursor)
-                     loop
-                        all_cameras_Last               := all_cameras_Last + 1;
-                        all_Cameras (all_cameras_Last) := Element (camera_Cursor);
-
-                        Element (camera_Cursor).render (the_world_Info.World,
-                                                        to => Self.Window.Surface);
-                        next (camera_Cursor);
-                     end loop;
-                  end if;
-
-               end;
-
-               next (world_Cursor);
-            end loop;
-
-            loop
-               declare
-                  culls_Completed : Boolean := True;
-               begin
-                  for i in 1 .. all_cameras_Last
+               if Window_is_active
+               then
+                  while has_Element (camera_Cursor)
                   loop
-                     culls_Completed := culls_Completed and all_Cameras (i).cull_Completed;
-                  end loop;
+                     all_cameras_Last               := all_cameras_Last + 1;
+                     all_Cameras (all_cameras_Last) := Element (camera_Cursor);
 
-                  exit when culls_Completed;
-                  delay Duration'Small;
-               end;
-            end loop;
-         end;
+                     Element (camera_Cursor).render (the_world_Info.World,
+                                                     To => Self.Window.Surface);
+                     next (camera_Cursor);
+                  end loop;
+               end if;
+            end;
+
+            next (world_Cursor);
+         end loop;
+
+         loop
+            declare
+               culls_Completed : Boolean := True;
+            begin
+               for i in 1 .. all_cameras_Last
+               loop
+                  culls_Completed :=     culls_Completed
+                                     and all_Cameras (i).cull_Completed;
+               end loop;
+
+               exit when culls_Completed;
+               delay Duration'Small;
+            end;
+         end loop;
+      end;
 
       Self.Renderer.render;
    end freshen;
@@ -511,28 +485,25 @@ is
 
    procedure add (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
+      child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
    begin
       --  Add children and their joints.
       --
-      declare
-         child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
-      begin
-         for Each in child_Joints'Range
-         loop
-            Self          .add (the_Sprite.child_Joints (Each).Sprite_B.all'Access);
-            Self.World (1).add (the_Sprite.child_Joints (Each));
-         end loop;
-      end;
+      for i in child_Joints'Range
+      loop
+         Self          .add (the_Sprite.child_Joints (i).Sprite_B);
+         Self.World (1).add (the_Sprite.child_Joints (i));
+      end loop;
    end add;
 
 
 
    procedure add (Self : in out Item;   the_Sprite : in gel.Sprite.view;
-                                        at_site    : in math.Vector_3)
+                                        at_site    : in Vector_3)
    is
    begin
       the_Sprite.Site_is (at_site);
-      Self      .add     (the_Sprite);
+      Self.add (the_Sprite);
    end add;
 
 
@@ -545,7 +516,7 @@ is
 
 
 
-   procedure request_Quit    (Self : in out Item)
+   procedure request_Quit (Self : in out Item)
    is
    begin
       Self.quit_Requested := True;
@@ -556,10 +527,8 @@ is
    procedure toggle_video_Capture (Self : in out Item'Class)
    is
    begin
-      raise Program_Error with "to be implemented";
+      raise Error with "TODO";
    end toggle_video_Capture;
-
-
 
 
    ----------------------
@@ -567,9 +536,10 @@ is
    --
 
    overriding
-   procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.item'Class)
    is
-      use gel.Keyboard, gel.Dolly;
+      use gel.Keyboard,
+          gel.Dolly;
 
       the_Event     :          gel.Keyboard.key_press_Event renames gel.Keyboard.key_press_Event (to_Event);
       the_Dolly     : constant gel.Dolly.view               :=      Self.Applet.Dolly;
@@ -626,7 +596,6 @@ is
          end if;
       end if;
 
-
       if    the_Modifiers (lCtrl)
       then
          null;
@@ -636,15 +605,12 @@ is
          null;
 
       else
-         if    the_Key = F11      then   Self.Applet.take_Screenshot  ("./screenshot.bmp");
-         elsif the_Key = F12      then   Self.Applet.toggle_video_Capture;
+         if    the_Key = F11 then   Self.Applet.take_Screenshot  ("./screenshot.bmp");
+         elsif the_Key = F12 then   Self.Applet.toggle_video_Capture;
          end if;
       end if;
 
    end respond;
-
-
-
 
 
    overriding
@@ -662,7 +628,6 @@ is
       then
          return;
       end if;
-
 
       if the_Key = up
       then
@@ -705,13 +670,11 @@ is
 
 
 
-
    procedure Dolly_is (Self : access Item;   Now : in gel.Dolly.view)
    is
    begin
       Self.Dolly := Now;
    end Dolly_is;
-
 
 
 
@@ -726,16 +689,14 @@ is
 
       lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                   lace.Subject .view (Self.Keyboard),
-                                  Self.key_press_Response  'Unchecked_Access,
+                                  Self.key_press_Response'unchecked_Access,
                                   to_Kind (gel.Keyboard.key_press_Event'Tag));
 
       lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                   lace.Subject .view (Self.Keyboard),
-                                  Self.key_release_Response'Unchecked_Access,
+                                  Self.key_release_Response'unchecked_Access,
                                   to_Kind (gel.Keyboard.key_release_Event'Tag));
    end enable_simple_Dolly;
-
-
 
 
 
@@ -743,21 +704,18 @@ is
    is
       the_Dolly : constant gel.Dolly.following.view := new gel.Dolly.following.item;
    begin
-      the_Dolly.follow (the_sprite => Follow);
+      the_Dolly.follow (the_Sprite => Follow);
 
       Self.Dolly := the_Dolly.all'Access;
       Self.Dolly.add_Camera (Self.Camera (1, 1));
    end enable_following_Dolly;
 
 
-
-
-
    --------------------------
    --- Mouse Button Responses
    --
 
-   type button_press_raycast_Context is new lace.Any.limited_Item with
+   type button_press_raycast_Context is new lace.Any.limited_item with
       record
          is_Motion : Boolean;
          is_Press  : Boolean;
@@ -765,7 +723,6 @@ is
       end record;
 
    type button_press_raycast_Context_view is access all button_press_raycast_Context'Class;
-
 
 
    overriding
@@ -784,16 +741,16 @@ is
          if the_Context.is_Press
          then
             declare
-               collide_Event : constant gel.events.sprite_click_down_Event := (mouse_button => the_Context.Button_Id,
-                                                                               world_site   => the_Event.Site_world);
+               collide_Event : constant gel.events.sprite_click_down_Event := (mouse_Button => the_Context.button_Id,
+                                                                               world_Site   => the_Event.Site_world);
             begin
                the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
             end;
 
          else   -- Is a button release.
             declare
-               collide_Event : constant gel.events.sprite_click_up_Event := (mouse_button => the_Context.Button_Id,
-                                                                             world_site   => the_Event.Site_world);
+               collide_Event : constant gel.events.sprite_click_up_Event := (mouse_Button => the_Context.button_Id,
+                                                                             world_Site   => the_Event.Site_world);
             begin
                the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
             end;
@@ -804,18 +761,16 @@ is
    end respond;
 
 
-
    type mouse_button_collision_Event is new gel.World.raycast_collision_Event with null record;
 
 
-
    overriding
-   procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.item'Class)
    is
       use world_Vectors,
           gel.Mouse;
 
-      the_Event       : gel.mouse.button_press_Event renames gel.mouse.button_press_Event (to_Event);
+      the_Event       : gel.mouse.button_press_Event renames gel.Mouse.button_press_Event (to_Event);
       Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
       the_world_Info  : world_Info_view;
 
@@ -827,25 +782,24 @@ is
          declare
             use gel.World;
 
-            the_Camera        : constant        gel.Camera.view              := the_world_Info.Cameras.first_Element;
+            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
 
-            Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
-                                                                                 Real (the_Event.Site (2)),
-                                                                                 1.0);
-            Site_world_space  : constant        Vector_3                     := the_Camera.to_world_Site (Site_window_space);
-            the_Context       : constant access button_press_raycast_Context := new button_press_raycast_Context;
-            event_Kind        :                 mouse_button_collision_Event;
+            Site_window_space : constant Vector_3 := (Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0);
+            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+
+            the_Context : constant access button_press_raycast_Context := new button_press_raycast_Context;
+            event_Kind  :                 mouse_button_collision_Event;
 
          begin
             the_Context.is_Motion := False;
             the_Context.is_Press  := True;
             the_Context.button_Id := the_Event.Button;
 
-            the_world_Info.World.cast_Ray (from     => the_Camera.Site,
-                                           to       => Site_world_space,
-                                           observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
-                                           context  => the_Context,
-                                           Event_Kind => event_Kind);
+            the_world_Info.World.cast_Ray (From     => the_Camera.Site,
+                                           To       => Site_world_space,
+                                           Observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
+                                           Context  => the_Context,
+                                           event_Kind => event_Kind);
          end;
 
          next (Cursor);
@@ -855,12 +809,12 @@ is
 
 
    overriding
-   procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.item'Class)
    is
       use world_Vectors,
           gel.Mouse;
 
-      the_Event      : gel.mouse.button_release_Event renames gel.mouse.button_release_Event (to_Event);
+      the_Event      : gel.Mouse.button_release_Event renames gel.Mouse.button_release_Event (to_Event);
       Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
 
@@ -870,24 +824,24 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera        : constant        gel.Camera.view               := the_world_Info.Cameras.first_Element;
-            Site_window_space : constant        Vector_3                      := (Real (the_Event.Site (1)),
-                                                                                  Real (the_Event.Site (2)),
-                                                                                  1.0);
-            Site_world_space  : constant        Vector_3                      := the_Camera.to_world_Site (Site_window_space);
-            the_Context       : constant access button_press_raycast_Context  := new button_press_raycast_Context;
-            event_Kind        :                 mouse_button_collision_Event;
+            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
+
+            Site_window_space : constant Vector_3 := (Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0);
+            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+
+            the_Context : constant access button_press_raycast_Context := new button_press_raycast_Context;
+            event_Kind  :                 mouse_button_collision_Event;
 
          begin
             the_Context.is_Motion := False;
             the_Context.is_Press  := False;
             the_Context.button_Id := the_Event.Button;
 
-            the_world_Info.World.cast_Ray (from     => the_Camera.Site,
-                                           to       => Site_world_space,
-                                           observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
-                                           context  => the_Context,
-                                           Event_Kind => event_Kind);
+            the_world_Info.World.cast_Ray (From     => the_Camera.Site,
+                                           To       => Site_world_space,
+                                           Observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
+                                           Context  => the_Context,
+                                           event_Kind => event_Kind);
          end;
 
          next (Cursor);
@@ -911,12 +865,12 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera        : constant        gel.Camera.view              := the_world_Info.Cameras.first_Element;
-            Site_window_space : constant        Vector_3                     := (Real (the_Event.Site (1)),
-                                                                                 Real (the_Event.Site (2)),
-                                                                                 1.0);
-            Site_world_space  : constant        Vector_3                     := the_Camera.to_world_Site (Site_window_space);
-            the_Context       : constant access button_press_raycast_Context := new button_press_raycast_Context;
+            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
+
+            Site_window_space : constant Vector_3 := (Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0);
+            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+
+            the_Context : constant access button_press_raycast_Context := new button_press_raycast_Context;
 
          begin
             the_Context.is_Motion := True;
@@ -928,20 +882,18 @@ is
    end respond;
 
 
-
    --------------------------
    --- Window Resize Response
    --
 
    overriding
-   procedure respond (Self : in out resize_event_Response;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out resize_event_Response;   to_Event : in lace.Event.item'Class)
    is
-      pragma Unreferenced (to_Event);
+      pragma unreferenced (to_Event);
       use world_Vectors;
 
       Cursor         : world_Vectors.Cursor := Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
-
    begin
       while has_Element (Cursor)
       loop
@@ -957,8 +909,6 @@ is
          next (Cursor);
       end loop;
    end respond;
-
-
 
 
    ---------
@@ -979,7 +929,6 @@ is
       Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (gel.Mouse.button_press_Event  'Tag));
       Self.Mouse.register (lace.Observer.view (Self.local_Subject_and_Observer),  to_Kind (gel.Mouse.button_release_Event'Tag));
 
-
       if detect_Motion
       then
          lace.Event.Utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
@@ -995,22 +944,19 @@ is
 
          Cursor         : world_Vectors.Cursor := Self.Worlds.First;
          the_world_Info : world_Info_view;
-
       begin
          while has_Element (Cursor)
          loop
             the_world_Info := Element (Cursor);
 
-            Self.local_Subject_and_Observer.add (the_response => Self.mouse_click_raycast_Response'unchecked_Access,
-                                                 to_kind      => lace.event.Utility.to_Kind (mouse_button_collision_Event'Tag),
-                                                 from_subject => the_world_Info.World.Name);
+            Self.local_Subject_and_Observer.add (the_Response => Self.mouse_click_raycast_Response'unchecked_Access,
+                                                 to_Kind      => lace.event.Utility.to_Kind (mouse_button_collision_Event'Tag),
+                                                 from_Subject => the_world_Info.World.Name);
             next (Cursor);
          end loop;
       end;
 
    end enable_Mouse;
-
-
 
 
    ----------------
