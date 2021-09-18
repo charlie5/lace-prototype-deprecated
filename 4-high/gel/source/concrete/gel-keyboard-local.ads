@@ -1,13 +1,11 @@
 with
      lace.Subject.local;
 
-
 package gel.Keyboard.local
 --
 --  Provides a concrete keyboard.
 --
 is
-
    type Item is limited new lace.Subject.local.item
                         and gel.Keyboard.item with private;
 
@@ -25,16 +23,16 @@ is
    procedure free (Self : in out View);
 
 
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
    function Modifiers (Self : in Item) return Modifier_Set;
 
 
-
-   --  Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -45,11 +43,10 @@ is
 
 
 
-
 private
 
    type Item is limited new lace.Subject.local.item
-                        and gel.Keyboard      .item with
+                        and gel.Keyboard.item with
       record
          Modifiers : Modifier_Set := no_Modifiers;
       end record;

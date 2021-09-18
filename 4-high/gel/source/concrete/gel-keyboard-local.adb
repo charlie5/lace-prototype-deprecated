@@ -1,10 +1,8 @@
 with
      ada.unchecked_Deallocation;
 
-
 package body gel.Keyboard.local
 is
-
 
    package body Forge
    is
@@ -24,6 +22,7 @@ is
       begin
          return new Item' (to_Keyboard (of_Name));
       end new_Keyboard;
+
    end Forge;
 
 
@@ -37,9 +36,20 @@ is
    end free;
 
 
+   --------------
+   --- Attributes
+   --
+
+   overriding
+   function Modifiers (Self : in Item) return Modifier_Set
+   is
+   begin
+      return Self.Modifiers;
+   end Modifiers;
 
 
-   --  Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -49,58 +59,49 @@ is
       the_key_press_Event : key_press_Event;
    begin
       case Key is
-         when LSHIFT    => self.Modifiers (LSHIFT) := True;
-         when RSHIFT    => self.Modifiers (RSHIFT) := True;
-         when LCTRL     => self.Modifiers (LCTRL)  := True;
-         when RCTRL     => self.Modifiers (RCTRL)  := True;
-         when LALT      => self.Modifiers (LALT)   := True;
-         when RALT      => self.Modifiers (RALT)   := True;
-         when LMETA     => self.Modifiers (LMETA)  := True;
-         when RMETA     => self.Modifiers (RMETA)  := True;
-         when NUMLOCK   => self.Modifiers (NUM)    := True;
-         when CAPSLOCK  => self.Modifiers (CAPS)   := True;
-         when MODE      => self.Modifiers (MODE)   := True;
+         when LSHIFT    => Self.Modifiers (LSHIFT) := True;
+         when RSHIFT    => Self.Modifiers (RSHIFT) := True;
+         when LCTRL     => Self.Modifiers (LCTRL)  := True;
+         when RCTRL     => Self.Modifiers (RCTRL)  := True;
+         when LALT      => Self.Modifiers (LALT)   := True;
+         when RALT      => Self.Modifiers (RALT)   := True;
+         when LMETA     => Self.Modifiers (LMETA)  := True;
+         when RMETA     => Self.Modifiers (RMETA)  := True;
+         when NUMLOCK   => Self.Modifiers (NUM)    := True;
+         when CAPSLOCK  => Self.Modifiers (CAPS)   := True;
+         when MODE      => Self.Modifiers (MODE)   := True;
          when others    => null;
       end case;
 
-      the_key_press_Event := ((Key, self.Modifiers),  key_Code);
-      self.emit (the_key_press_Event);
+      the_key_press_Event := ((Key, Self.Modifiers),  key_Code);
+      Self.emit (the_key_press_Event);
    end emit_key_press_Event;
 
 
 
    overriding
-   procedure emit_key_release_Event (Self : in out Item;   Key      : in keyboard.Key)
+   procedure emit_key_release_Event (Self : in out Item;   Key : in keyboard.Key)
    is
       the_key_release_Event : key_release_Event;
    begin
       case Key is
-         when LSHIFT    => self.Modifiers (LSHIFT) := False;
-         when RSHIFT    => self.Modifiers (RSHIFT) := False;
-         when LCTRL     => self.Modifiers (LCTRL)  := False;
-         when RCTRL     => self.Modifiers (RCTRL)  := False;
-         when LALT      => self.Modifiers (LALT)   := False;
-         when RALT      => self.Modifiers (RALT)   := False;
-         when LMETA     => self.Modifiers (LMETA)  := False;
-         when RMETA     => self.Modifiers (RMETA)  := False;
-         when NUMLOCK   => self.Modifiers (NUM)    := False;
-         when CAPSLOCK  => self.Modifiers (CAPS)   := False;
-         when MODE      => self.Modifiers (MODE)   := False;
+         when LSHIFT    => Self.Modifiers (LSHIFT) := False;
+         when RSHIFT    => Self.Modifiers (RSHIFT) := False;
+         when LCTRL     => Self.Modifiers (LCTRL)  := False;
+         when RCTRL     => Self.Modifiers (RCTRL)  := False;
+         when LALT      => Self.Modifiers (LALT)   := False;
+         when RALT      => Self.Modifiers (RALT)   := False;
+         when LMETA     => Self.Modifiers (LMETA)  := False;
+         when RMETA     => Self.Modifiers (RMETA)  := False;
+         when NUMLOCK   => Self.Modifiers (NUM)    := False;
+         when CAPSLOCK  => Self.Modifiers (CAPS)   := False;
+         when MODE      => Self.Modifiers (MODE)   := False;
          when others    => null;
       end case;
 
-      the_key_release_Event := (modified_Key => (Key, self.Modifiers));
-      self.emit (the_key_release_Event);
+      the_key_release_Event := (modified_Key => (Key, Self.Modifiers));
+      Self.emit (the_key_release_Event);
    end emit_key_release_Event;
-
-
-
-   overriding
-   function Modifiers (Self : in Item) return Modifier_Set
-   is
-   begin
-      return self.Modifiers;
-   end Modifiers;
 
 
 end gel.Keyboard.local;
