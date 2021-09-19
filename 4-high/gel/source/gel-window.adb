@@ -188,7 +188,7 @@ is
 
       --  Generate a 'resize' event.
       --
-      Self.emit (gel.Events.window_resize_Request'(Width, Height));
+      Self.emit (gel.Events.window_resize_Request' (Width, Height));
    end Size_is;
 
 
