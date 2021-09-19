@@ -72,11 +72,11 @@ is
       --
       declare
          procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
-         procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
+         --  procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
          procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
       begin
          physics.Space.free (Self.physics_Space);
-         free (Self.Commands);
+         --  free (Self.Commands);
       end;
 
       lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
@@ -309,32 +309,32 @@ is
    --- Engine Commands
    --
 
-   protected body safe_command_Set
-   is
-      function is_Empty return Boolean
-      is
-      begin
-         return the_Count = 0;
-      end is_Empty;
-
-
-      procedure add (the_Command : in Command)
-      is
-      begin
-         the_Count       := the_Count + 1;
-         Set (the_Count) := the_Command;
-      end add;
-
-
-      procedure fetch (To    : out Commands;
-                       Count : out Natural)
-      is
-      begin
-         To (1 .. the_Count) := Set (1 .. the_Count);
-         Count               := the_Count;
-         the_Count           := 0;
-      end Fetch;
-   end safe_command_Set;
+   --  protected body safe_command_Set
+   --  is
+   --     function is_Empty return Boolean
+   --     is
+   --     begin
+   --        return the_Count = 0;
+   --     end is_Empty;
+   --
+   --
+   --     procedure add (the_Command : in Command)
+   --     is
+   --     begin
+   --        the_Count       := the_Count + 1;
+   --        Set (the_Count) := the_Command;
+   --     end add;
+   --
+   --
+   --     procedure fetch (To    : out Commands;
+   --                      Count : out Natural)
+   --     is
+   --     begin
+   --        To (1 .. the_Count) := Set (1 .. the_Count);
+   --        Count               := the_Count;
+   --        the_Count           := 0;
+   --     end Fetch;
+   --  end safe_command_Set;
 
 
    --------------------
@@ -470,25 +470,25 @@ is
       begin
          Cycle := Cycle + 1;
 
-         do_engine_Commands:
-         declare
-            the_Commands  : World.Commands;
-            Count         : Natural;
-            command_Count : array (command_Kind) of Natural := (others => 0);
+         --  do_engine_Commands:
+         --  declare
+            --  the_Commands  : World.Commands;
+            --  Count         : Natural;
+            --  command_Count : array (command_Kind) of Natural := (others => 0);
 
-         begin
-            the_World.Commands.fetch (the_Commands, Count);
+         --  begin
+            --  the_World.Commands.fetch (the_Commands, Count);
 
-            for Each in 1 .. Count
-            loop
-               declare
-                  use Physics.Engine;
-                  the_Command : World.Command renames the_Commands (Each);
-               begin
-                  command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
+            --  for Each in 1 .. Count
+            --  loop
+            --     declare
+            --        use Physics.Engine;
+                  --  the_Command : World.Command renames the_Commands (Each);
+               --  begin
+                  --  command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
 
-                  case the_Command.Kind
-                  is
+                  --  case the_Command.Kind
+                  --  is
 --                       when scale_Sprite =>
 --                          the_World.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
 --                                                                                     Sprite => the_Command.Sprite.Solid,
@@ -504,9 +504,9 @@ is
 --                          the_World.physics_Space.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
 
 
-                     when update_Site =>
-                        the_World.physics_Engine.update_Site (the_Command.Sprite.Solid,
-                                                              the_Command.Site);
+                     --  when update_Site =>
+                     --     the_World.physics_Engine.update_Site (the_Command.Sprite.Solid,
+                     --                                           the_Command.Site);
 --                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
 
 
@@ -518,107 +518,107 @@ is
 --                          std_physics.Object.view (the_Command.Sprite.Solid).xy_Spin_is (the_Command.xy_Spin);
 
 
-                     when add_Sprite =>
-                        declare
-                           procedure add (the_Sprite : in Sprite.view)
-                           is
-                           begin
-                              if the_Sprite.Id = null_sprite_Id
-                              then
-                                 raise Program_Error;
-                              end if;
-
-                              the_World.add (the_Sprite.graphics_Model);
-                              the_World.add (the_Sprite. physics_Model);
-
-                              the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
-
-                              the_Sprite.Solid.user_Data_is (the_Sprite);
-                              the_Sprite.Solid.Model_is (the_Sprite.physics_Model);
-
-                              if the_Sprite.physics_Model.is_Tangible
-                              then
-                                 the_World.physics_Engine.add (physics.Object.view (the_Sprite.Solid));
-                              end if;
-
-                              the_World.sprite_Count                     := the_World.sprite_Count + 1;
-                              the_World.Sprites (the_World.sprite_Count) := the_Sprite;
-                           end add;
-
-                        begin
-                           add (the_Command.Sprite);
-                        end;
-
-
-                     when rid_Sprite =>
-                        declare
-                           function find (the_Sprite : in Sprite.view) return Index
-                           is
-                           begin
-                              for i in 1 .. the_World.sprite_Count
-                              loop
-                                 if the_World.Sprites (i) = the_Sprite
-                                 then
-                                    return i;
-                                 end if;
-                              end loop;
-
-                              raise constraint_Error with "No such sprite in world.";
-                              return 0;
-                           end find;
+                     --  when add_Sprite =>
+                     --     declare
+                     --        procedure add (the_Sprite : in Sprite.view)
+                     --        is
+                     --        begin
+                     --           if the_Sprite.Id = null_sprite_Id
+                     --           then
+                     --              raise Program_Error;
+                     --           end if;
+                     --
+                     --           the_World.add (the_Sprite.graphics_Model);
+                     --           the_World.add (the_Sprite. physics_Model);
+                     --
+                     --           the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
+                     --
+                     --           the_Sprite.Solid.user_Data_is (the_Sprite);
+                     --           the_Sprite.Solid.Model_is (the_Sprite.physics_Model);
+                     --
+                     --           if the_Sprite.physics_Model.is_Tangible
+                     --           then
+                     --              the_World.physics_Engine.add (physics.Object.view (the_Sprite.Solid));
+                     --           end if;
+                     --
+                     --           the_World.sprite_Count                     := the_World.sprite_Count + 1;
+                     --           the_World.Sprites (the_World.sprite_Count) := the_Sprite;
+                     --        end add;
+                     --
+                     --     begin
+                     --        add (the_Command.Sprite);
+                     --     end;
 
 
-                           procedure rid (the_Sprite : in Sprite.view)
-                           is
-                              use type physics.Object.view;
-                           begin
-                              if the_Sprite.Solid /= null
-                              then
-                                 if the_Sprite.physics_Model.is_Tangible
-                                 then
-                                    the_World.physics_Engine.rid (the_Sprite.Solid);
-                                 end if;
-
-                                 if the_sprite_Transforms.contains (the_Sprite) then
-                                    the_sprite_Transforms.delete   (the_Sprite);
-                                 end if;
-
-                              else
-                                 raise program_Error;
-                              end if;
-
-                              declare
-                                 Id : Index;
-                              begin
-                                 Id := find (the_Sprite);
-
-                                 if Id <= the_World.sprite_Count
-                                 then
-                                    the_World.Sprites (1 .. the_World.sprite_Count - 1)
-                                      :=   the_World.Sprites (     1 .. Id - 1)
-                                         & the_World.Sprites (Id + 1 .. the_World.sprite_Count);
-                                 end if;
-
-                                 the_World.sprite_Count := the_World.sprite_Count - 1;
-                              end;
-                           end rid;
-
-                        begin
-                           rid (the_Command.Sprite);
-                        end;
+                     --  when rid_Sprite =>
+                     --     declare
+                     --        function find (the_Sprite : in Sprite.view) return Index
+                     --        is
+                     --        begin
+                     --           for i in 1 .. the_World.sprite_Count
+                     --           loop
+                     --              if the_World.Sprites (i) = the_Sprite
+                     --              then
+                     --                 return i;
+                     --              end if;
+                     --           end loop;
+                     --
+                     --           raise constraint_Error with "No such sprite in world.";
+                     --           return 0;
+                     --        end find;
+                     --
+                     --
+                     --        procedure rid (the_Sprite : in Sprite.view)
+                     --        is
+                     --           use type physics.Object.view;
+                     --        begin
+                     --           if the_Sprite.Solid /= null
+                     --           then
+                     --              if the_Sprite.physics_Model.is_Tangible
+                     --              then
+                     --                 the_World.physics_Engine.rid (the_Sprite.Solid);
+                     --              end if;
+                     --
+                     --              if the_sprite_Transforms.contains (the_Sprite) then
+                     --                 the_sprite_Transforms.delete   (the_Sprite);
+                     --              end if;
+                     --
+                     --           else
+                     --              raise program_Error;
+                     --           end if;
+                     --
+                     --           declare
+                     --              Id : Index;
+                     --           begin
+                     --              Id := find (the_Sprite);
+                     --
+                     --              if Id <= the_World.sprite_Count
+                     --              then
+                     --                 the_World.Sprites (1 .. the_World.sprite_Count - 1)
+                     --                   :=   the_World.Sprites (     1 .. Id - 1)
+                     --                      & the_World.Sprites (Id + 1 .. the_World.sprite_Count);
+                     --              end if;
+                     --
+                     --              the_World.sprite_Count := the_World.sprite_Count - 1;
+                     --           end;
+                     --        end rid;
+                     --
+                     --     begin
+                     --        rid (the_Command.Sprite);
+                     --     end;
 
 
 --                       when apply_Force =>
 --                          the_Command.Sprite.Solid.apply_Force (the_Command.Force);
 
 
-                     when destroy_Sprite =>
-                        declare
-                           the_free_Set : free_Set renames the_World.free_Sets (the_World.current_free_Set);
-                        begin
-                           the_free_Set.Count                        := the_free_Set.Count + 1;
-                           the_free_Set.Sprites (the_free_Set.Count) := the_Command.Sprite;
-                        end;
+                     --  when destroy_Sprite =>
+                     --     declare
+                     --        the_free_Set : free_Set renames the_World.free_Sets (the_World.current_free_Set);
+                     --     begin
+                     --        the_free_Set.Count                        := the_free_Set.Count + 1;
+                     --        the_free_Set.Sprites (the_free_Set.Count) := the_Command.Sprite;
+                     --     end;
 
 
 --                       when add_Joint =>
@@ -635,78 +635,78 @@ is
 --                                                                          the_Command.is_Anchor_A,
 --                                                                          the_Command.local_Anchor);
 
-                     when free_Joint =>
-                        gel.Joint.free (the_Command.Joint);
+                     --  when free_Joint =>
+                     --     gel.Joint.free (the_Command.Joint);
 
 
-                     when cast_Ray =>
-                        declare
-                           function cast_Ray (Self : in Item'Class;   From, To : in Vector_3) return ray_Collision
-                           is
-                              use type physics.Object.view;
+                     --  when cast_Ray =>
+                     --     declare
+                     --        function cast_Ray (Self : in Item'Class;   From, To : in Vector_3) return ray_Collision
+                     --        is
+                     --           use type physics.Object.view;
+                     --
+                     --           physics_Collision : constant physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
+                     --        begin
+                     --           if physics_Collision.near_Object = null
+                     --           then
+                     --              return ray_Collision' (near_Sprite => null,
+                     --                                     others      => <>);
+                     --           else
+                     --              return ray_Collision' (to_GEL (physics_Collision.near_Object),
+                     --                                     physics_Collision.hit_Fraction,
+                     --                                     physics_Collision.Normal_world,
+                     --                                     physics_Collision.  Site_world);
+                     --           end if;
+                     --        end cast_Ray;
+                     --
+                     --        the_Collision : constant ray_Collision := cast_Ray (the_World.all,
+                     --                                                            the_Command.From,
+                     --                                                            the_Command.To);
+                     --     begin
+                     --        if        the_Collision.near_Sprite = null
+                     --          or else the_Collision.near_Sprite.is_Destroyed
+                     --        then
+                     --           free (the_Command.Context);
+                     --
+                     --        else
+                     --           declare
+                     --              no_Params : aliased no_Parameters;
+                     --              the_Event :         raycast_collision_Event'Class
+                     --                := raycast_collision_Event_dispatching_Constructor (the_Command.event_Kind,
+                     --                                                                    no_Params'Access);
+                     --           begin
+                     --              the_Event.Context     := the_Command.Context;
+                     --              the_Event.near_Sprite := the_Collision.near_Sprite;
+                     --              the_Event.Site_world  := the_Collision.Site_world;
+                     --
+                     --              the_Command.Observer.receive (the_Event, from_Subject => the_World.Name);
+                     --           end;
+                     --        end if;
+                     --     end;
 
-                              physics_Collision : constant physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
-                           begin
-                              if physics_Collision.near_Object = null
-                              then
-                                 return ray_Collision' (near_Sprite => null,
-                                                        others      => <>);
-                              else
-                                 return ray_Collision' (to_GEL (physics_Collision.near_Object),
-                                                        physics_Collision.hit_Fraction,
-                                                        physics_Collision.Normal_world,
-                                                        physics_Collision.  Site_world);
-                              end if;
-                           end cast_Ray;
 
-                           the_Collision : constant ray_Collision := cast_Ray (the_World.all,
-                                                                               the_Command.From,
-                                                                               the_Command.To);
-                        begin
-                           if        the_Collision.near_Sprite = null
-                             or else the_Collision.near_Sprite.is_Destroyed
-                           then
-                              free (the_Command.Context);
-
-                           else
-                              declare
-                                 no_Params : aliased no_Parameters;
-                                 the_Event :         raycast_collision_Event'Class
-                                   := raycast_collision_Event_dispatching_Constructor (the_Command.event_Kind,
-                                                                                       no_Params'Access);
-                              begin
-                                 the_Event.Context     := the_Command.Context;
-                                 the_Event.near_Sprite := the_Collision.near_Sprite;
-                                 the_Event.Site_world  := the_Collision.Site_world;
-
-                                 the_Command.Observer.receive (the_Event, from_Subject => the_World.Name);
-                              end;
-                           end if;
-                        end;
-
-
-                     when new_impact_Response =>
-                        declare
-                           the_impact_Responder      : constant impact_Responder_view := new impact_Responder;
-                           the_responses_done_Signal : constant Signal_Object_view    := new signal_Object;
-                        begin
-                           the_filtered_impact_Response_Set.insert ((the_Command.Filter,
-                                                                     the_Command.Response,
-                                                                     the_impact_Responder,
-                                                                     the_responses_done_Signal));
-                           the_impact_Responder.start (the_World,
-                                                       the_Command.Filter,
-                                                       the_Command.Response,
-                                                       the_responses_done_Signal);
-                        end;
+                     --  when new_impact_Response =>
+                     --     declare
+                     --        the_impact_Responder      : constant impact_Responder_view := new impact_Responder;
+                     --        the_responses_done_Signal : constant Signal_Object_view    := new signal_Object;
+                     --     begin
+                     --        the_filtered_impact_Response_Set.insert ((the_Command.Filter,
+                     --                                                  the_Command.Response,
+                     --                                                  the_impact_Responder,
+                     --                                                  the_responses_done_Signal));
+                     --        the_impact_Responder.start (the_World,
+                     --                                    the_Command.Filter,
+                     --                                    the_Command.Response,
+                     --                                    the_responses_done_Signal);
+                     --     end;
 
 
 --                       when set_Gravity =>
 --                          the_World.physics_Space.Gravity_is (the_Command.Gravity);
-                  end case;
-               end;
-            end loop;
-         end do_engine_Commands;
+                  --  end case;
+               --  end;
+            --  end loop;
+         --  end do_engine_Commands;
 
 
          --  Evolve the physics.
@@ -841,10 +841,10 @@ is
 
                -- Evolve the world til there are no commands left.
                --
-               while not the_World.Commands.is_Empty
-               loop
-                  evolve;
-               end loop;
+               --  while not the_World.Commands.is_Empty
+               --  loop
+               --     evolve;
+               --  end loop;
 
                --  Stop all impact responders tasks.
                --
@@ -1108,9 +1108,10 @@ is
    begin
 --      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
 
-      Self.Commands.add ((Kind   => update_Site,
-                          Sprite => of_Sprite,
-                          Site   => To));
+      --  Self.Commands.add ((Kind   => update_Site,
+      --                      Sprite => of_Sprite,
+      --                      Site   => To));
+      null;
    end update_Site;
 
 
@@ -1203,13 +1204,14 @@ is
                                          event_Kind : in     raycast_collision_Event'Class)
    is
    begin
-      Self.Commands.add ((Kind     => cast_Ray,
-                          Sprite   => null,
-                          From     => From,
-                          To       => To,
-                          Observer => Observer,
-                          Context  => Context,
-                          event_Kind => event_Kind'Tag));
+      null;
+      --  Self.Commands.add ((Kind     => cast_Ray,
+      --                      Sprite   => null,
+      --                      From     => From,
+      --                      To       => To,
+      --                      Observer => Observer,
+      --                      Context  => Context,
+      --                      event_Kind => event_Kind'Tag));
    end cast_Ray;
 
 
@@ -1255,8 +1257,9 @@ is
    procedure destroy (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
    begin
-      Self.Commands.add ((Kind   => destroy_Sprite,
-                          Sprite => the_Sprite));
+      null;
+      --  Self.Commands.add ((Kind   => destroy_Sprite,
+      --                      Sprite => the_Sprite));
    end destroy;
 
 
@@ -1354,9 +1357,10 @@ is
    procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
-      Self.Commands.add ((kind   => free_Joint,
-                          sprite => null,
-                          joint  => the_Joint));
+      null;
+      --  Self.Commands.add ((kind   => free_Joint,
+      --                      sprite => null,
+      --                      joint  => the_Joint));
    end destroy;
 
 
@@ -1580,9 +1584,9 @@ is
       procedure add_the_Sprite (the_Sprite : in out Sprite.item'Class)
       is
       begin
-         Self.Commands.add ((Kind         => add_Sprite,
-                             Sprite       => the_Sprite'unchecked_Access,
-                             add_Children => False));
+         --  Self.Commands.add ((Kind         => add_Sprite,
+         --                      Sprite       => the_Sprite'unchecked_Access,
+         --                      add_Children => False));
 
          Self.id_Map_of_Sprite.insert (the_Sprite.Id,
                                        the_Sprite'unchecked_Access);
@@ -1621,9 +1625,9 @@ is
       procedure rid_the_Sprite (the_Sprite : in out Sprite.item'Class)
       is
       begin
-         Self.Commands.add ((Kind         => rid_Sprite,
-                             Sprite       => the_Sprite'unchecked_Access,
-                             rid_Children => False));
+         --  Self.Commands.add ((Kind         => rid_Sprite,
+         --                      Sprite       => the_Sprite'unchecked_Access,
+         --                      rid_Children => False));
 
          Self.id_Map_of_Sprite.delete (the_Sprite.Id);
       end rid_the_Sprite;
@@ -2034,10 +2038,11 @@ is
                                                         Response : in impact_Response)
    is
    begin
-      Self.Commands.add ((new_impact_Response,
-                          null,
-                          Filter,
-                          Response));
+      null;
+      --  Self.Commands.add ((new_impact_Response,
+      --                      null,
+      --                      Filter,
+      --                      Response));
    end add_impact_Response;
 
 
