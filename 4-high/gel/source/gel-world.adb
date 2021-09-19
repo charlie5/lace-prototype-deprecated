@@ -254,6 +254,8 @@ is
       Self.Renderer     := Renderer;
       Self.sprite_Count := 0;
 
+      Self.physics_Space := physics.Forge.new_Space (space_Kind);
+
 --        Self.physics_Engine := new std_Physics.Engine.item;
    end define;
 
