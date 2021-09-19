@@ -444,7 +444,7 @@ is
                the_world_Info : world_Info       renames Element (world_Cursor).all;
                camera_Cursor  : camera_Vectors.Cursor := the_world_Info.Cameras.First;
             begin
-               the_world_Info.World.wait_on_evolve;
+               --  the_world_Info.World.wait_on_evolve;
 
                if Window_is_active
                then
