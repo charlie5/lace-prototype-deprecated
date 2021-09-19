@@ -68,7 +68,8 @@ is
    procedure define (Self : in View;   use_Window : in gel.Window.view)
    is
    begin
-      Self.Window := use_Window;
+      Self.Window   := use_Window;
+      global_Window := use_Window;
 
       -- Add window resize event repsonse.
       --
