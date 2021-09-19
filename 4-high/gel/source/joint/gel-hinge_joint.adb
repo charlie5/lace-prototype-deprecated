@@ -1,27 +1,21 @@
 with
      physics.Object,
-     ada.Unchecked_Deallocation;
-
+     ada.unchecked_Deallocation;
 
 package body gel.hinge_Joint
 is
-   use gel.Joint,
-       Math;
+   use gel.Joint;
 
 
-   package std_Physics renames Standard.Physics;
-
-
-
-   procedure define (Self : access Item;  in_Space           : in     Standard.physics.Space.view;
-                                          Sprite_A, Sprite_B : access gel.Sprite.item'class;
-                                          pivot_Axis         : in     math.Vector_3;
-                                          pivot_Anchor       : in     math.Vector_3)
+   procedure define (Self : access Item;  in_Space           : in     std_physics.Space.view;
+                                          Sprite_A, Sprite_B : access gel.Sprite.item'Class;
+                                          pivot_Axis         : in     Vector_3;
+                                          pivot_Anchor       : in     Vector_3)
    is
-      pivot_in_A : aliased constant Vector_3 := (pivot_Anchor - Sprite_A.Site);
-      pivot_in_B : aliased constant Vector_3 := (pivot_Anchor - Sprite_B.Site);
+      pivot_in_A : constant Vector_3 := (pivot_Anchor - Sprite_A.Site);
+      pivot_in_B : constant Vector_3 := (pivot_Anchor - Sprite_B.Site);
 
-      the_Axis   : aliased constant Vector_3 := pivot_Axis;
+      the_Axis   : constant Vector_3 := pivot_Axis;
 
    begin
       Self.define (in_Space,
@@ -35,87 +29,85 @@ is
 
 
 
-   procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access gel.Sprite.item'class;
-                                           pivot_Axis         : in     math.Vector_3)
+   procedure define (Self : access Item;   in_Space           : in     std_physics.Space.view;
+                                           Sprite_A, Sprite_B : access gel.Sprite.item'Class;
+                                           pivot_Axis         : in     Vector_3)
    is
-      Midpoint : constant math.Vector_3 := (Sprite_A.Site + Sprite_B.Site) / 2.0;
+      Midpoint : constant Vector_3 := (Sprite_A.Site + Sprite_B.Site) / 2.0;
    begin
-      define (Self,  in_Space,  Sprite_A, Sprite_B,  pivot_Axis,  pivot_anchor => Midpoint);
+      define (Self, in_Space, Sprite_A, Sprite_B, pivot_Axis, pivot_anchor => Midpoint);
    end define;
 
 
 
-   procedure define (Self : access Item;   in_Space              : in     Standard.physics.Space.view;
-                                           Sprite_A,  Sprite_B   : access gel.Sprite.item'class;
-                                           Frame_A,   Frame_B    : in     math.Matrix_4x4;
-                                           low_Limit             : in     math.Real := math.to_Radians (-180.0);
-                                           high_Limit            : in     math.Real := math.to_Radians ( 180.0);
+   procedure define (Self : access Item;   in_Space              : in     std_physics.Space.view;
+                                           Sprite_A,  Sprite_B   : access gel.Sprite.item'Class;
+                                           Frame_A,   Frame_B    : in     Matrix_4x4;
+                                           low_Limit             : in     Real := to_Radians (-180.0);
+                                           high_Limit            : in     Real := to_Radians ( 180.0);
                                            collide_Conected      : in     Boolean)
    is
-      the_Frame_A : aliased constant Matrix_4x4 := Frame_A;
-      the_Frame_B : aliased constant Matrix_4x4 := Frame_B;
+      A_Frame : constant Matrix_4x4 := Frame_A;
+      B_Frame : constant Matrix_4x4 := Frame_B;
 
-      type joint_Cast is access all gel.Joint.Item;
+      type Joint_cast is access all gel.Joint.item;
 
       sprite_A_Solid,
-      sprite_B_Solid : standard.physics.Object.view;
+      sprite_B_Solid : std_physics.Object.view;
 
    begin
       if   Sprite_A = null
         or Sprite_B = null
       then
-         raise Program_Error;
+         raise Error with "Sprite is null.";
       end if;
 
-      sprite_A_Solid := standard.physics.Object.view (Sprite_A.Solid);
-      sprite_B_Solid := standard.physics.Object.view (Sprite_B.Solid);
+      sprite_A_Solid := std_physics.Object.view (Sprite_A.Solid);
+      sprite_B_Solid := std_physics.Object.view (Sprite_B.Solid);
 
-      joint.define (joint_Cast (Self),   Sprite_A, Sprite_B);   -- Define base class.
+      joint.define (Joint_cast (Self),  Sprite_A, Sprite_B);   -- Define base class.
 
       Self.Physics := in_Space.new_hinge_Joint (sprite_A_Solid,  sprite_B_Solid,
-                                                the_Frame_A,     the_Frame_B,
+                                                A_Frame,         B_Frame,
                                                 low_Limit,       high_Limit,
                                                 collide_Conected);
    end define;
 
 
 
-
-   procedure define (Self : access Item;   in_Space  : in     Standard.physics.Space.view;
-                                           Sprite_A  : access gel.Sprite.item'class;
-                                           Frame_A   : in     math.Matrix_4x4)
+   procedure define (Self : access Item;   in_Space  : in     std_physics.Space.view;
+                                           Sprite_A  : access gel.Sprite.item'Class;
+                                           Frame_A   : in     Matrix_4x4)
    is
-      type joint_Cast is access all gel.Joint.Item;
+      type Joint_cast is access all gel.Joint.item;
 
-      the_Frame_A    : aliased constant Matrix_4x4 := Frame_A;
-      sprite_A_Solid : standard.physics.Object.view;
+      A_Frame        : constant Matrix_4x4 := Frame_A;
+      sprite_A_Solid : std_physics.Object.view;
 
    begin
-      joint.define (joint_Cast (Self),   Sprite_A, null);     -- Define base class.
+      joint.define (Joint_cast (Self), Sprite_A, null);     -- Define base class.
 
-      sprite_A_Solid := standard.physics.Object.view (Sprite_A.Solid);
-      Self.Physics   := in_Space.new_hinge_Joint     (sprite_A_Solid,
-                                                      the_Frame_A);
+      sprite_A_Solid := std_physics.Object.view  (Sprite_A.Solid);
+      Self.Physics   := in_Space.new_hinge_Joint (sprite_A_Solid,
+                                                  A_Frame);
    end define;
 
 
 
-
-   procedure define (Self : access Item;   in_Space         : in     Standard.physics.Space.view;
+   procedure define (Self : access Item;   in_Space         : in     std_physics.Space.view;
                                            Sprite_A,
-                                           Sprite_B         : access gel.Sprite.item'class;
-                                           pivot_Axis       : in     math.Vector_3;
-                                           Anchor_in_A      : in     math.Vector_3;
-                                           Anchor_in_B      : in     math.Vector_3;
+                                           Sprite_B         : access gel.Sprite.item'Class;
+                                           pivot_Axis       : in     Vector_3;
+                                           Anchor_in_A      : in     Vector_3;
+                                           Anchor_in_B      : in     Vector_3;
                                            low_Limit,
                                            high_Limit       : in     Real;
                                            collide_Conected : in     Boolean)
    is
-      type joint_Cast is access all gel.Joint.Item;
+      type Joint_cast is access all gel.Joint.item;
 
       sprite_A_Solid,
-      sprite_B_Solid : standard.physics.Object.view;
+      sprite_B_Solid : std_physics.Object.view;
 
    begin
       if   Sprite_A = null
@@ -124,10 +116,10 @@ is
          raise Program_Error;
       end if;
 
-      sprite_A_Solid := standard.physics.Object.view (Sprite_A.Solid);
-      sprite_B_Solid := standard.physics.Object.view (Sprite_B.Solid);
+      sprite_A_Solid := std_physics.Object.view (Sprite_A.Solid);
+      sprite_B_Solid := std_physics.Object.view (Sprite_B.Solid);
 
-      joint.define (joint_Cast (Self),   Sprite_A, Sprite_B);     -- Define base class.
+      joint.define (Joint_cast (Self), Sprite_A, Sprite_B);     -- Define base class.
 
       Self.Physics := in_Space.new_hinge_Joint  (sprite_A_Solid,  sprite_B_Solid,
                                                  Anchor_in_A,     Anchor_in_B,
@@ -137,13 +129,12 @@ is
    end define;
 
 
-
    overriding
    procedure destroy (Self : in out Item)
    is
       my_Physics : std_physics.Joint.view := std_physics.Joint.view (Self.Physics);
 
-      procedure deallocate is new ada.Unchecked_Deallocation (std_physics.Joint.item'Class,
+      procedure deallocate is new ada.unchecked_Deallocation (std_physics.Joint.item'Class,
                                                               std_physics.Joint.view);
    begin
       my_Physics.destruct;
@@ -153,52 +144,46 @@ is
    end destroy;
 
 
-
-
-
+   --------------
    --- Attributes
    --
 
    overriding
    function Degrees_of_freedom (Self : in Item) return joint.degree_of_Freedom
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return 1;
    end Degrees_of_freedom;
 
 
 
-
-   function  Angle (Self : in     Item'Class) return math.Real
+   function Angle (Self : in Item'Class) return Real
    is
    begin
-      raise Constraint_Error with "TBD";
+      raise Error with "TODO";
       return 0.0;
    end Angle;
 
 
-
    overriding
-   function  Frame_A    (Self : in     Item) return math.Matrix_4x4
+   function Frame_A (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_A;
    end Frame_A;
 
 
-
    overriding
-   function  Frame_B    (Self : in     Item) return math.Matrix_4x4
+   function Frame_B (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_B;
    end Frame_B;
 
 
-
    overriding
-   procedure Frame_A_is (Self : in out Item;   Now  : in math.Matrix_4x4)
+   procedure Frame_A_is (Self : in out Item;   Now  : in Matrix_4x4)
    is
    begin
       Self.Physics.Frame_A_is (Now);
@@ -206,31 +191,29 @@ is
 
 
    overriding
-   procedure Frame_B_is (Self : in out Item;   Now  : in math.Matrix_4x4)
+   procedure Frame_B_is (Self : in out Item;   Now  : in Matrix_4x4)
    is
    begin
       Self.Physics.Frame_B_is (Now);
    end Frame_B_is;
 
 
-
    overriding
-   function Physics (Self : in     Item) return Joint.Physics_view
+   function Physics (Self : in Item) return joint.Physics_view
    is
    begin
       return Joint.Physics_view (Self.Physics);
    end Physics;
 
 
-
-
+   ----------------
    --- Joint Limits
    --
 
-   procedure Limits_are (Self : in out Item'Class;   Low, High         : in math.Real;
-                                                     Softness          : in math.Real := 0.9;
-                                                     bias_Factor       : in math.Real := 0.3;
-                                                     relaxation_Factor : in math.Real := 1.0)
+   procedure Limits_are (Self : in out Item'Class;   Low, High         : in Real;
+                                                     Softness          : in Real := 0.9;
+                                                     bias_Factor       : in Real := 0.3;
+                                                     relaxation_Factor : in Real := 1.0)
    is
    begin
       Self.low_Bound         := Low;
@@ -239,6 +222,7 @@ is
       Self.bias_Factor       := bias_Factor;
       Self.relaxation_Factor := relaxation_Factor;
    end Limits_are;
+
 
 
    procedure apply_Limits (Self : in out Item)
@@ -252,99 +236,91 @@ is
    end apply_Limits;
 
 
-
-
-   ---  Bounds - limits the range of motion for a Degree of freedom.
+   --  Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
-   function  low_Bound    (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom) return math.Real
+   function low_Bound (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real
    is
-      use type gel.Joint.Degree_of_freedom;
+      use type joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
-         raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
-      return self.low_Bound;
+      return Self.low_Bound;
    end low_Bound;
 
 
-
    overriding
-   procedure low_Bound_is (Self       : access Item;   for_Degree : in     joint.Degree_of_freedom;
-                                                       Now        : in     math.Real)
+   procedure low_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                 Now        : in Real)
    is
-      use type gel.Joint.Degree_of_freedom;
+      use type joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
-         raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
-      self.low_Bound := Now;
-      self.apply_Limits;
+      Self.low_Bound := Now;
+      Self.apply_Limits;
    end low_Bound_is;
 
 
-
    overriding
-   function  high_Bound    (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom) return math.Real
+   function high_Bound (Self : access Item;  for_Degree : in joint.Degree_of_freedom) return Real
    is
-      use type gel.Joint.Degree_of_freedom;
+      use type joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
-         raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
-      return self.high_Bound;
+      return Self.high_Bound;
    end high_Bound;
 
 
-
    overriding
-   procedure high_Bound_is (Self       : access Item;  for_Degree : in     joint.Degree_of_freedom;
-                                                       Now        : in     math.Real)
+   procedure high_Bound_is (Self : access Item;  for_Degree : in joint.Degree_of_freedom;
+                                                 Now        : in Real)
    is
-      use type gel.Joint.Degree_of_freedom;
+      use type joint.Degree_of_freedom;
 
-      Span : math.Real := abs (Now) * 2.0;
+      Span : Real := abs (Now) * 2.0;
    begin
       if for_Degree /= Revolve then
-         raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
-      self.high_Bound := Now;
-      self.apply_Limits;
+      Self.high_Bound := Now;
+      Self.apply_Limits;
    end high_Bound_is;
 
 
-
    overriding
-   function Extent (Self : in     Item;   for_Degree : in     Degree_of_freedom) return math.Real
+   function Extent (Self : in Item;   for_Degree : in Degree_of_freedom) return Real
    is
-      use type gel.Joint.Degree_of_freedom;
+      use type joint.Degree_of_freedom;
    begin
       if for_Degree /= Revolve then
-         raise constraint_Error with "invalid Degree of freedom: " & joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
-      return self.Angle;
+      return Self.Angle;
    end Extent;
 
 
-
    overriding
-   function is_Bound (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
+   function is_Bound (Self : in Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
    is
    begin
-      return self.Physics.is_Limited (for_Degree);
+      return Self.Physics.is_Limited (for_Degree);
    end is_Bound;
 
 
-
    overriding
-   procedure Velocity_is   (Self : in     Item;   for_Degree : in     joint.Degree_of_freedom;
-                                                  Now        : in     math.Real)
+   procedure Velocity_is (Self : in Item;   for_Degree : in joint.Degree_of_freedom;
+                                            Now        : in Real)
    is
    begin
       self.Physics.Velocity_is (Now, for_Degree);
