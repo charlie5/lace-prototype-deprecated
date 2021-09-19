@@ -59,7 +59,7 @@ is
    is
    begin
       Self.sprite_transform_Updater.stop;
-      Self.physics_Engine          .stop;
+      --  Self.physics_Engine          .stop;
       --  Self.Engine                  .stop;
 
       --  while not Self.Engine                  'Terminated
@@ -1095,7 +1095,8 @@ is
    procedure update_Bounds (Self : in out Item;   of_Sprite : in gel.Sprite.view)
    is
    begin
-      Self.physics_Engine.update_Bounds (of_Sprite.Solid);
+      null;
+      --  Self.physics_Engine.update_Bounds (of_Sprite.Solid);
 
 --        Self.Commands.add ((kind   => update_Bounds,
 --                            sprite => of_Sprite));
@@ -1121,7 +1122,8 @@ is
                                               To        : in Vector_3)
    is
    begin
-      Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
+      null;
+      --  Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
 
 --        Self.Commands.add ((kind   => set_Speed,
 --                            sprite => of_Sprite,
@@ -1134,7 +1136,8 @@ is
                                                 To        : in Radians)
    is
    begin
-      Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
+      null;
+      --  Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
 
 --        Self.Commands.add ((kind    => set_xy_Spin,
 --                            sprite  => of_Sprite,
@@ -1146,7 +1149,8 @@ is
                                                  To        : in Vector_3)
    is
    begin
-      Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
+      null;
+      --  Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
 
 --        Self.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
 --                                                              Sprite => the_Command.Sprite.Solid,
@@ -1162,7 +1166,8 @@ is
                                                 Force     : in Vector_3)
    is
    begin
-      Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
+      null;
+      --  Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
 
 --        Self.Commands.add ((kind   => apply_Force,
 --                            sprite => to_Sprite,
@@ -1190,7 +1195,8 @@ is
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.physics_Engine.set_Gravity (to => Now);
+      null;
+      --  Self.physics_Engine.set_Gravity (to => Now);
 
 --        Self.Commands.add ((kind    => set_Gravity,
 --                            sprite  => null,
@@ -1370,9 +1376,10 @@ is
                                                           To        : in Vector_3)
    is
    begin
-      Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-                                            to          => To,
-                                            is_Anchor_A => True);
+      null;
+      --  Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+      --                                        to          => To,
+      --                                        is_Anchor_A => True);
 
 --        the_World.physics_Space.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
 --                                                        the_Command.is_Anchor_A,
@@ -1392,9 +1399,10 @@ is
                                                           To        : in Vector_3)
    is
    begin
-      Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-                                            To          => To,
-                                            is_Anchor_A => False);
+      null;
+      --  Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+      --                                        To          => To,
+      --                                        is_Anchor_A => False);
 
 --        Self.Commands.add ((Kind         => set_Joint_local_Anchor,
 --                            Sprite       => null,
@@ -1605,7 +1613,8 @@ is
             begin
                if the_Sprite.parent_Joint /= null
                then
-                  Self.physics_Engine.add (the_Sprite.parent_Joint.Physics.all'Access);
+                  null;
+                  --  Self.physics_Engine.add (the_Sprite.parent_Joint.Physics.all'Access);
                end if;
             end add_the_Joint;
 
@@ -1691,7 +1700,7 @@ is
    is
    begin
       the_Joint.Physics.user_Data_is (the_Joint);
-      Self.physics_Engine.add        (the_Joint.Physics.all'Access);
+      --  Self.physics_Engine.add        (the_Joint.Physics.all'Access);
 
 --        Self.Commands.add ((kind   => add_Joint,
 --                            sprite => null,
@@ -1703,7 +1712,8 @@ is
    procedure rid (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
-      Self.physics_Engine.rid (the_Joint.Physics.all'Access);
+      null;
+      --  Self.physics_Engine.rid (the_Joint.Physics.all'Access);
 
 --        Self.Commands.add ((kind   => rid_Joint,
 --                            sprite => null,
@@ -1718,8 +1728,9 @@ is
    procedure start (Self : access Item)
    is
    begin
+      null;
       --  Self.Engine        .start (Self.space_Kind);
-      Self.physics_Engine.start (Self.physics_Space);
+      --  Self.physics_Engine.start (Self.physics_Space);
    end start;
 
 

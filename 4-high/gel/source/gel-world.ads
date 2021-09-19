@@ -6,7 +6,7 @@ with
      openGL.Model,
 
      physics.Space,
-     physics.Engine,
+     --  physics.Engine,
      physics.Model,
 
      lace.Event,
@@ -539,7 +539,7 @@ private
 
          space_Kind      :         physics.space_Kind;
          physics_Space   : aliased physics.Space.view;
-         physics_Engine  : aliased physics.Engine.item;
+         --  physics_Engine  : aliased physics.Engine.item;
 
          Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
