@@ -2,7 +2,6 @@ with
      gel.Sprite,
      gel.World;
 
-
 package gel.Terrain
 --
 --  Provides a constructor for heightmap terrain.

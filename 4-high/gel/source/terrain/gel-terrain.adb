@@ -5,21 +5,19 @@ with
      openGL.Model.terrain,
      openGL.IO,
 
-     ada.Unchecked_Deallocation,
-     ada.Unchecked_Conversion;
-
+     ada.unchecked_Deallocation,
+     ada.unchecked_Conversion;
 
 package body gel.Terrain
 is
    type Heightfield_view is access all physics.Heightfield;
 
    type height_Map_view is access all opengl.height_Map;
-   type height_map_Grid is array (math.Index range <>, math.Index range <>) of height_Map_view;
+   type height_map_Grid is array (math.Index range <>,
+                                  math.Index range <>) of height_Map_view;
 
 
-
-
-   function Width  (Self : in opengl.height_Map) return math.Real
+   function Width (Self : in opengl.height_Map) return math.Real
    is
    begin
       return math.Real (self'Length (2) - 1);
@@ -34,16 +32,14 @@ is
 
 
 
-
-   function new_Terrain (World        : gel.World.view;
-                         heights_File : in     String;
-                         texture_File : in     String        := "";
-                         Scale        : in     math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid
+   function new_Terrain (World        : in gel.World.view;
+                         heights_File : in String;
+                         texture_File : in String        := "";
+                         Scale        : in math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid
    is
       use Math;
 
-      the_Pixels  :          opengl.io.height_Map_view
-                                      := opengl.io.to_height_Map (openGL.to_Asset (heights_File));
+      the_Pixels  : opengl.IO.height_Map_view := opengl.IO.to_height_Map (openGL.to_Asset (heights_File));
 
       tile_Width  : constant Positive := 8 * 32 - 1;
       tile_Depth  : constant Positive := 8 * 32 - 1;
@@ -63,36 +59,36 @@ is
       end Grid_last;
 
 
-      the_heightmap_Grid  :          height_map_Grid (1  ..  Grid_last (the_Pixels'Length (1), tile_Depth),
-                                                      1  ..  Grid_last (the_Pixels'Length (2), tile_Width));
+      the_heightmap_Grid : height_map_Grid (1  ..  Grid_last (the_Pixels'Length (1), tile_Depth),
+                                            1  ..  Grid_last (the_Pixels'Length (2), tile_Width));
 
-      the_Sprite_Grid     : constant gel.Sprite.Grid_view := new gel.Sprite.Grid (the_heightmap_Grid'Range (1),
-                                                                                  the_heightmap_Grid'Range (2));
+      the_Sprite_Grid    : constant gel.Sprite.Grid_view := new gel.Sprite.Grid (the_heightmap_Grid'Range (1),
+                                                                                 the_heightmap_Grid'Range (2));
 
-      procedure free is new ada.Unchecked_Deallocation (opengl.height_Map, opengl.IO.height_Map_view);
+      procedure free is new ada.unchecked_Deallocation (opengl.height_Map,
+                                                        opengl.IO.height_Map_view);
 
-
-      procedure flip (Self : opengl.io.height_Map_view)
+      procedure flip (Self : opengl.IO.height_Map_view)
       is
          use type opengl.Index_t;
 
-         Pad : opengl.io.height_Map_view := new opengl.height_Map' (Self.all);
+         the_Map : opengl.IO.height_Map_view := new opengl.height_Map' (Self.all);
 
       begin
          for Row in Self'Range (1)
          loop
             for Col in Self'Range (2)
             loop
-               Self (Row, Col) := Pad (Self'Last (1) - Row + 1,  Col);
+               Self (Row, Col) := the_Map (Self'Last (1) - Row + 1,  Col);
             end loop;
          end loop;
 
-         free (Pad);
+         free (the_Map);
       end flip;
 
 
    begin
-      flip (the_Pixels.all'Unchecked_Access);
+      flip (the_Pixels.all'unchecked_Access);
 
       --  Create each grid elements 'heightmap'.
       --
@@ -100,7 +96,7 @@ is
          use openGL;
 
          row_First, row_Last,
-         col_First, col_Last  : math.Index;   -- Row and col ranges for each sub-matrix.
+         col_First, col_Last : math.Index;     -- Row and col ranges for each sub-matrix.
 
       begin
          for Row in the_sprite_Grid'Range (1)
@@ -121,8 +117,6 @@ is
             end loop;
          end loop;
       end;
-
-
 
       --  Create the Sprite for each grid element.
       --
@@ -152,13 +146,12 @@ is
 
                declare
                   the_Region       : constant height_Map_view := the_heightmap_Grid (Row, Col);
-
                   the_height_Range : constant opengl.Vector_2 := openGL.height_Extent (the_Region.all);
 
-                  Tiling           : constant opengl.texture_Transform_2d
-                    :=  (s => (opengl.Real (tile_X_Offset / total_Width) / opengl.Real (tile_X_Scale * Scale (1)),
+                  Tiling : constant opengl.texture_Transform_2d
+                    :=  (S => (opengl.Real (tile_X_Offset / total_Width) / opengl.Real (tile_X_Scale * Scale (1)),
                                opengl.Real (tile_X_Scale * Scale (1))),
-                         t => (opengl.Real (tile_Z_Offset / total_Depth) / opengl.Real (tile_Z_Scale * Scale (3)),
+                         T => (opengl.Real (tile_Z_Offset / total_Depth) / opengl.Real (tile_Z_Scale * Scale (3)),
                                opengl.Real (tile_Z_Scale * Scale (3))));
 
                   the_ground_Model : constant access openGL.Model.terrain.item
@@ -170,12 +163,13 @@ is
                                                        color_map     => openGL.to_Asset (texture_File),
                                                        tiling        => Tiling);
 
-                  function to_Physics is new ada.Unchecked_Conversion (height_Map_view, Heightfield_view);
+                  function to_Physics is new ada.unchecked_Conversion (height_Map_view,
+                                                                       Heightfield_view);
 
-                  the_ground_physics_Model : aliased constant  physics.Model.view
-                    := new physics.Model.item' (id          => physics.null_model_Id,
-                                                site => Origin_3d,
-                                                scale       => Scale,
+                  the_ground_physics_Model : constant physics.Model.view
+                    := new physics.Model.item' (Id          => physics.null_model_Id,
+                                                Site        => Origin_3d,
+                                                Scale       => Scale,
                                                 shape_Info  => (physics.Model.Heightfield,
                                                                 Heights      => to_Physics (the_Region),
                                                                 height_range => (the_height_Range (1),
@@ -187,24 +181,24 @@ is
                                                 is_Tangible => True);
 
                   the_height_Extents : constant opengl.Vector_2 := opengl.height_Extent (the_Region.all);
-                  the_Sprite         : gel.Sprite.view     renames the_sprite_Grid      (Row, Col);
+                  the_Sprite         : gel.Sprite.view     renames the_sprite_Grid (Row, Col);
                   the_Site           : vector_3;
                begin
                   the_ground_Model.Scale := (Scale (1),
                                              Scale (2),
                                              Scale (3));
 
-                  the_Sprite    := gel.Sprite.Forge.new_Sprite ("Terrain" & Integer'Image (Row) & Integer'Image (Col),
-                                                                sprite.World_view (World),
-                                                                the_ground_Model,
-                                                                the_ground_physics_Model,
-                                                                owns_Graphics => True,
-                                                                owns_Physics  => True);
+                  the_Sprite := gel.Sprite.Forge.new_Sprite ("Terrain" & Row'Image & Col'Image,
+                                                             sprite.World_view (World),
+                                                             the_ground_Model,
+                                                             the_ground_physics_Model,
+                                                             owns_Graphics => True,
+                                                             owns_Physics  => True);
 
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
 
-                  the_Site      := (0.0, 0.0, 0.0);
+                  the_Site := (0.0, 0.0, 0.0);
 
                   the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
 
@@ -218,7 +212,6 @@ is
                   end if;
                end;
             end loop;
-
 
             if Row /= the_sprite_Grid'Last (1)
             then
