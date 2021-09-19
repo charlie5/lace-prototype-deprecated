@@ -1,22 +1,20 @@
 with
-     ada.characters.Latin_1;
-
+     ada.Characters.latin_1;
 
 package body gel.Keyboard
 is
 
-
    function Image (Self : in modified_Key) return Character
    is
-      use ada.Characters.Latin_1;
+      use ada.Characters.latin_1;
 
-      key_Map_of_Character : constant array (Key) of Character
-        := (SPACE      => ' ',
-            QUOTE      => ''',
-            COMMA      => ',',
-            MINUS      => '-',
-            PERIOD     => '.',
-            SLASH      => '/',
+      key_Map_of_character : constant array (Key) of Character
+        := (SPACE  => ' ',
+            QUOTE  => ''',
+            COMMA  => ',',
+            MINUS  => '-',
+            PERIOD => '.',
+            SLASH  => '/',
 
             '0' => '0',
             '1' => '1',
@@ -82,17 +80,16 @@ is
             KP_ENTER    => NUL,
             KP_EQUALS   => '=',
 
-            others    => NUL);
+            others => NUL);
 
 
-
-      shifted_key_Map_of_Character : constant array (Key) of Character
-        := (SPACE      => ' ',
-            QUOTE      => '"',
-            COMMA      => '<',
-            MINUS      => '_',
-            PERIOD     => '>',
-            SLASH      => '?',
+      shifted_key_Map_of_character : constant array (Key) of Character
+        := (SPACE  => ' ',
+            QUOTE  => '"',
+            COMMA  => '<',
+            MINUS  => '_',
+            PERIOD => '>',
+            SLASH  => '?',
 
             '0' => ')',
             '1' => '!',
@@ -158,7 +155,7 @@ is
             KP_ENTER    => NUL,
             KP_EQUALS   => '=',
 
-            others    => NUL);
+            others => NUL);
 
    begin
       if        Self.modifier_Set (LShift)
@@ -169,7 +166,6 @@ is
          return         key_Map_of_Character (Self.Key);
       end if;
    end Image;
-
 
 
 

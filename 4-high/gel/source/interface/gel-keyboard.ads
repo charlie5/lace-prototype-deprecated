@@ -2,7 +2,6 @@ with
      lace.Event,
      lace.Subject;
 
-
 package gel.Keyboard
 --
 --  Provides an interface for a keyboard.
@@ -15,7 +14,7 @@ is
    type View is access all Item'class;
 
 
-
+   --------
    --- Keys
    --
 
@@ -93,7 +92,7 @@ is
    function is_Graphic (Self : in Key) return Boolean;
 
 
-
+   -------------
    --- Modifiers
    --
 
@@ -114,7 +113,6 @@ is
    no_Modifiers : constant modifier_Set;
 
 
-
    type modified_Key is
       record
          Key          : keyboard.Key;
@@ -124,9 +122,8 @@ is
    function Image (Self : in modified_Key) return Character;
 
 
-
-
-   ---  Events
+   ----------
+   --- Events
    --
 
    type key_press_Event is new lace.Event.item with
@@ -141,24 +138,20 @@ is
       end record;
 
 
-
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
 
-   function Modifiers     (Self : in Item) return Modifier_Set   is abstract;
+   function Modifiers (Self : in Item) return Modifier_Set is abstract;
 
 
-
-
-   --  Operations
+   --------------
+   --- Operations
    --
 
    procedure emit_key_press_Event   (Self : in out Item;   Key      : in keyboard.Key;
-                                                           key_Code : in Integer)        is abstract;
-
-   procedure emit_key_release_Event (Self : in out Item;   Key      : in keyboard.Key)   is abstract;
-
+                                                           key_Code : in Integer)      is abstract;
+   procedure emit_key_release_Event (Self : in out Item;   Key      : in keyboard.Key) is abstract;
 
 
 
