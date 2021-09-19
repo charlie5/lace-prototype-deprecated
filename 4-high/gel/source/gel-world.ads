@@ -305,18 +305,18 @@ private
    --- Engine
    --
 
-   task
-   type Engine (the_World : access gel.World.item'Class)
-   is
-      entry start (space_Kind : in physics.space_Kind);
-      entry stop;
-
-      entry reset_Age;
-
-      pragma storage_Size (20_000_000);
-   end Engine;
-
-   type Engine_view is access all Engine;
+   --  task
+   --  type Engine (the_World : access gel.World.item'Class)
+   --  is
+   --     entry start (space_Kind : in physics.space_Kind);
+   --     entry stop;
+   --
+   --     entry reset_Age;
+   --
+   --     pragma storage_Size (20_000_000);
+   --  end Engine;
+   --
+   --  type Engine_view is access all Engine;
 
 
    -----------------
@@ -588,7 +588,7 @@ private
 
          --  Engine
          --
-         Engine : World.Engine (Item'Access);
+         --  Engine : World.Engine (Item'Access);
       end record;
 
 

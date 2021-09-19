@@ -60,10 +60,11 @@ is
    begin
       Self.sprite_transform_Updater.stop;
       Self.physics_Engine          .stop;
-      Self.Engine                  .stop;
+      --  Self.Engine                  .stop;
 
-      while not Self.Engine                  'Terminated
-        and not Self.sprite_transform_Updater'Terminated
+      --  while not Self.Engine                  'Terminated
+      --    and not Self.sprite_transform_Updater'Terminated
+      while not Self.sprite_transform_Updater'Terminated
       loop
          delay 0.01;
       end loop;
@@ -73,7 +74,7 @@ is
       declare
          procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
          --  procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
-         procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
+         --  procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
       begin
          physics.Space.free (Self.physics_Space);
          --  free (Self.Commands);
@@ -416,59 +417,59 @@ is
    --- Engine
    --
 
-   task body Engine
-   is
-      use type gel.Joint.view,
-               ada.Containers.Count_type;
-
-      Stopped          : Boolean                   := True;
-      Cycle            : ada.Containers.Count_type := 0;
-      next_render_Time : ada.Calendar.Time;
-
-      the_filtered_impact_Response_Set : filtered_impact_Response_Sets.Set;
-
-      max_joint_Force,
-      max_joint_Torque : Real := 0.0;
-
-
-      procedure free_Sprites
-      is
-         the_free_Sprites : gel.Sprite.views := the_World.free_sprite_Set;
-      begin
-         for i in the_free_Sprites'Range
-         loop
-            log ("Engine is freeing sprite id:" & the_free_Sprites (i).Id'Image);
-
-            if the_free_Sprites (i).owns_Graphics
-            then
-               the_World.Renderer.free (the_free_Sprites (i).Visual.Model);
-            end if;
-
-            gel.Sprite.free (the_free_Sprites (i));
-         end loop;
-      end free_Sprites;
+   --  task body Engine
+   --  is
+   --     use type gel.Joint.view,
+   --              ada.Containers.Count_type;
+   --
+   --     Stopped          : Boolean                   := True;
+   --     Cycle            : ada.Containers.Count_type := 0;
+   --     next_render_Time : ada.Calendar.Time;
+   --
+   --     the_filtered_impact_Response_Set : filtered_impact_Response_Sets.Set;
+   --
+   --     max_joint_Force,
+   --     max_joint_Torque : Real := 0.0;
 
 
-
-      procedure free_graphics_Models
-      is
-         use id_Maps_of_model;
-         Cursor : id_Maps_of_model.Cursor := the_World.graphics_Models.First;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_World.Renderer.free (Element (Cursor));
-            next (Cursor);
-         end loop;
-      end free_graphics_Models;
+      --  procedure free_Sprites
+      --  is
+      --     the_free_Sprites : gel.Sprite.views := the_World.free_sprite_Set;
+      --  begin
+      --     for i in the_free_Sprites'Range
+      --     loop
+      --        log ("Engine is freeing sprite id:" & the_free_Sprites (i).Id'Image);
+      --
+      --        if the_free_Sprites (i).owns_Graphics
+      --        then
+      --           the_World.Renderer.free (the_free_Sprites (i).Visual.Model);
+      --        end if;
+      --
+      --        gel.Sprite.free (the_free_Sprites (i));
+      --     end loop;
+      --  end free_Sprites;
 
 
 
-      procedure evolve
-      is
-         the_sprite_Transforms : sprite_Maps_of_transforms.Map := the_World.all_sprite_Transforms.Fetch;
-      begin
-         Cycle := Cycle + 1;
+      --  procedure free_graphics_Models
+      --  is
+      --     use id_Maps_of_model;
+      --     Cursor : id_Maps_of_model.Cursor := the_World.graphics_Models.First;
+      --  begin
+      --     while has_Element (Cursor)
+      --     loop
+      --        the_World.Renderer.free (Element (Cursor));
+      --        next (Cursor);
+      --     end loop;
+      --  end free_graphics_Models;
+
+
+
+      --  procedure evolve
+      --  is
+      --     the_sprite_Transforms : sprite_Maps_of_transforms.Map := the_World.all_sprite_Transforms.Fetch;
+      --  begin
+      --     Cycle := Cycle + 1;
 
          --  do_engine_Commands:
          --  declare
@@ -717,127 +718,127 @@ is
 --           end if;
 
 
-         --  Contact Manifolds
+         --  --  Contact Manifolds
+         --  --
+         --  declare
+         --     Count : Natural := 0;
+         --  begin
+         --     for i in 1 .. the_World.physics_Space.manifold_Count
+         --     loop
+         --        declare
+         --           function to_Integer is new ada.unchecked_Conversion (physics_Object_view, Integer);
          --
-         declare
-            Count : Natural := 0;
-         begin
-            for i in 1 .. the_World.physics_Space.manifold_Count
-            loop
-               declare
-                  function to_Integer is new ada.unchecked_Conversion (physics_Object_view, Integer);
-
-                  the_physics_Manifold : constant physics.Space.a_Manifold
-                    := the_World.physics_Space.Manifold (i);
-               begin
-                  Count                       := Count + 1;
-                  the_World.Manifolds (Count) := (sprites => (to_GEL (the_physics_Manifold.Objects (1)),
-                                                              to_GEL (the_physics_Manifold.Objects (2))),
-                                                  contact => (Site => the_physics_Manifold.Contact.Site));
-               exception
-                  when others =>
-                     put_Line ("Error in 'gel.world.Engine.evolve' contact manifolds.");
-                     Count := Count - 1;
-               end;
-            end loop;
-
-            the_World.manifold_Count := the_World.physics_Space.manifold_Count;
-
-         exception
-            when E : others =>
-               put_Line ("'gel.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
-               put_Line (exception_Information (E));
-         end;
-
-
-         --  For each registered impact response, tell the associated responder task to respond.
+         --           the_physics_Manifold : constant physics.Space.a_Manifold
+         --             := the_World.physics_Space.Manifold (i);
+         --        begin
+         --           Count                       := Count + 1;
+         --           the_World.Manifolds (Count) := (sprites => (to_GEL (the_physics_Manifold.Objects (1)),
+         --                                                       to_GEL (the_physics_Manifold.Objects (2))),
+         --                                           contact => (Site => the_physics_Manifold.Contact.Site));
+         --        exception
+         --           when others =>
+         --              put_Line ("Error in 'gel.world.Engine.evolve' contact manifolds.");
+         --              Count := Count - 1;
+         --        end;
+         --     end loop;
          --
-         declare
-            use filtered_impact_Response_Sets;
-            Cursor : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
-
-         begin
-            while has_Element (Cursor)
-            loop
-               Element (Cursor).Responder.respond;
-               next (Cursor);
-            end loop;
-
-            --  Wait for all responders to complete.
-            --
-            Cursor := the_filtered_impact_Response_Set.First;
-
-            while has_Element (Cursor)
-            loop
-               select
-                  Element (Cursor).responses_Done.wait;
-               or
-                  delay Duration'Last;
-               end select;
-
-               next (Cursor);
-            end loop;
-
-         exception
-            when E : others =>
-               put_Line ("'gel.World.local.Engine.impact response' has an unhandled exception ...");
-               put_Line (exception_Information (E));
-         end;
-
-
-         --  Update sprite transforms.
+         --     the_World.manifold_Count := the_World.physics_Space.manifold_Count;
          --
-         declare
-            use sprite_Maps_of_transforms;
-
-            Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite : gel.Sprite.view;
-         begin
-            while has_Element (Cursor)
-            loop
-               the_Sprite := Key (Cursor);
-               declare
-                  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
-               begin
-                  the_sprite_Transforms.replace_Element (Cursor, the_Transform);
-               end;
-               next (Cursor);
-            end loop;
-         end;
-
-         the_World.all_sprite_Transforms.set (To => the_sprite_Transforms);
-
-         free_Sprites;
-      end evolve;
+         --  exception
+         --     when E : others =>
+         --        put_Line ("'gel.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
+         --        put_Line (exception_Information (E));
+         --  end;
 
 
-      use type physics.Space.view;
+         --  --  For each registered impact response, tell the associated responder task to respond.
+         --  --
+         --  declare
+         --     use filtered_impact_Response_Sets;
+         --     Cursor : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
+         --
+         --  begin
+         --     while has_Element (Cursor)
+         --     loop
+         --        Element (Cursor).Responder.respond;
+         --        next (Cursor);
+         --     end loop;
+         --
+         --     --  Wait for all responders to complete.
+         --     --
+         --     Cursor := the_filtered_impact_Response_Set.First;
+         --
+         --     while has_Element (Cursor)
+         --     loop
+         --        select
+         --           Element (Cursor).responses_Done.wait;
+         --        or
+         --           delay Duration'Last;
+         --        end select;
+         --
+         --        next (Cursor);
+         --     end loop;
+         --
+         --  exception
+         --     when E : others =>
+         --        put_Line ("'gel.World.local.Engine.impact response' has an unhandled exception ...");
+         --        put_Line (exception_Information (E));
+         --  end;
 
-   begin
-      accept start (space_Kind : in physics.space_Kind)
-      do
-         Stopped                 := False;
-         the_World.physics_Space := physics.Forge.new_Space (space_Kind);
-      end start;
 
-      next_render_Time := ada.Calendar.Clock;
+         --  --  Update sprite transforms.
+         --  --
+         --  declare
+         --     use sprite_Maps_of_transforms;
+         --
+         --     Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+         --     the_Sprite : gel.Sprite.view;
+         --  begin
+         --     while has_Element (Cursor)
+         --     loop
+         --        the_Sprite := Key (Cursor);
+         --        declare
+         --           the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+         --        begin
+         --           the_sprite_Transforms.replace_Element (Cursor, the_Transform);
+         --        end;
+         --        next (Cursor);
+         --     end loop;
+         --  end;
+         --
+         --  the_World.all_sprite_Transforms.set (To => the_sprite_Transforms);
+         --
+         --  free_Sprites;
+      --  end evolve;
 
-      loop
-         select
-            accept stop
-            do
-               Stopped := True;
 
-               -- Add 'destroy' commands for all sprites.
-               --
-               declare
-                  the_Sprites : Sprite.views renames the_World.Sprites;
-               begin
-                  for i in 1 .. the_World.sprite_Count
-                  loop
-                     the_Sprites (i).destroy (and_Children => False);
-                  end loop;
-               end;
+      --  use type physics.Space.view;
+      --
+   --  begin
+   --     accept start (space_Kind : in physics.space_Kind)
+   --     do
+   --        Stopped                 := False;
+   --        the_World.physics_Space := physics.Forge.new_Space (space_Kind);
+   --     end start;
+
+      --  next_render_Time := ada.Calendar.Clock;
+
+      --  loop
+      --     select
+      --        accept stop
+      --        do
+      --           Stopped := True;
+      --
+      --           -- Add 'destroy' commands for all sprites.
+      --           --
+      --           declare
+      --              the_Sprites : Sprite.views renames the_World.Sprites;
+      --           begin
+      --              for i in 1 .. the_World.sprite_Count
+      --              loop
+      --                 the_Sprites (i).destroy (and_Children => False);
+      --              end loop;
+      --           end;
 
                -- Evolve the world til there are no commands left.
                --
@@ -848,129 +849,129 @@ is
 
                --  Stop all impact responders tasks.
                --
-               declare
-                  use filtered_impact_Response_Sets;
-
-                  procedure free is new ada.unchecked_Deallocation (Signal_Object,
-                                                                    Signal_Object_view);
-
-                  Cursor        : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
-
-                  the_Responder : impact_Responder_view;
-                  the_Signal    : Signal_Object_view;
-
-               begin
-                  while has_Element (Cursor)
-                  loop
-                     the_Signal    := Element (Cursor).responses_Done;
-                     the_Responder := Element (Cursor).Responder;
-                     the_Responder.stop;
-
-                     while not the_Responder.all'Terminated
-                     loop
-                        delay 0.01;
-                     end loop;
-
-                     free (the_Responder);
-                     free (the_Signal);
-
-                     next (Cursor);
-                  end loop;
-               end;
+               --  declare
+               --     use filtered_impact_Response_Sets;
+               --
+               --     procedure free is new ada.unchecked_Deallocation (Signal_Object,
+               --                                                       Signal_Object_view);
+               --
+               --     Cursor        : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
+               --
+               --     the_Responder : impact_Responder_view;
+               --     the_Signal    : Signal_Object_view;
+               --
+               --  begin
+               --     while has_Element (Cursor)
+               --     loop
+               --        the_Signal    := Element (Cursor).responses_Done;
+               --        the_Responder := Element (Cursor).Responder;
+               --        the_Responder.stop;
+               --
+               --        while not the_Responder.all'Terminated
+               --        loop
+               --           delay 0.01;
+               --        end loop;
+               --
+               --        free (the_Responder);
+               --        free (the_Signal);
+               --
+               --        next (Cursor);
+               --     end loop;
+               --  end;
 
                -- Free both sets of freeable sprites.
                --
-               free_Sprites;
-               free_Sprites;
-            end stop;
+               --  free_Sprites;
+               --  free_Sprites;
+            --  end stop;
 
-            exit when Stopped;
-
-         or
-            accept reset_Age
-            do
-               the_World.Age_is (0.0);
-            end reset_Age;
-
-         else
-            null;
-         end select;
-
-
-         if not the_World.is_a_Mirror
-         then
-            evolve;
-         end if;
-
-
-         the_World.new_sprite_transforms_Available.signal;
-         the_World.evolver_Done                   .signal;
-
-
-         -- Check for joint breakage.
+            --  exit when Stopped;
+            --
+         --  or
+         --     accept reset_Age
+         --     do
+         --        the_World.Age_is (0.0);
+         --     end reset_Age;
          --
-         if the_World.broken_joints_Allowed
-         then
-            declare
-               use gel.Joint,
-                   physics.Space;
-
-               the_Joint       : gel.Joint.view;
-               reaction_Force,
-               reaction_Torque : Real;
-
-               Cursor          : physics.Space.joint_Cursor'Class := the_World.physics_Space.first_Joint;
-            begin
-               while has_Element (Cursor)
-               loop
-                  the_Joint := to_GEL (Element (Cursor));
-
-                  if the_Joint /= null
-                  then
-                     reaction_Force  := abs (the_Joint.reaction_Force);
-                     reaction_Torque := abs (the_Joint.reaction_Torque);
-
-                     if   reaction_Force  >  50.0 / 8.0
-                       or reaction_Torque > 100.0 / 8.0
-                     then
-                        begin
-                           the_World.physics_Space      .rid (the_Joint.Physics.all'Access);
-                           the_World.broken_Joints.add (the_Joint);
-
-                        exception
-                           when no_such_Child =>
-                              put_Line ("Error when breaking joint due to reaction Force:  no_such_Child.");
-                        end;
-                     end if;
-
-                     if reaction_Force > max_joint_Force
-                     then
-                        max_joint_Force := reaction_Force;
-                     end if;
-
-                     if reaction_Torque > max_joint_Torque
-                     then
-                        max_joint_Torque := reaction_Torque;
-                     end if;
-                  end if;
-
-                  next (Cursor);
-               end loop;
-            end;
-         end if;
-
-         next_render_Time := next_render_Time + Duration (1.0 / 60.0);
-      end loop;
-
-   exception
-      when E : others =>
-         new_Line (2);
-         put_Line ("Error in gel.World.Engine");
-         new_Line;
-         put_Line (exception_Information (E));
-         put_Line ("Engine has terminated !");
-         new_Line (2);
-   end Engine;
+         --  else
+         --     null;
+         --  end select;
+         --
+         --
+         --  if not the_World.is_a_Mirror
+         --  then
+         --     evolve;
+         --  end if;
+         --
+         --
+         --  the_World.new_sprite_transforms_Available.signal;
+         --  the_World.evolver_Done                   .signal;
+         --
+         --
+         --  -- Check for joint breakage.
+         --  --
+         --  if the_World.broken_joints_Allowed
+         --  then
+         --     declare
+         --        use gel.Joint,
+         --            physics.Space;
+         --
+         --        the_Joint       : gel.Joint.view;
+         --        reaction_Force,
+         --        reaction_Torque : Real;
+         --
+         --        Cursor          : physics.Space.joint_Cursor'Class := the_World.physics_Space.first_Joint;
+         --     begin
+         --        while has_Element (Cursor)
+         --        loop
+         --           the_Joint := to_GEL (Element (Cursor));
+         --
+         --           if the_Joint /= null
+         --           then
+         --              reaction_Force  := abs (the_Joint.reaction_Force);
+         --              reaction_Torque := abs (the_Joint.reaction_Torque);
+         --
+         --              if   reaction_Force  >  50.0 / 8.0
+         --                or reaction_Torque > 100.0 / 8.0
+         --              then
+         --                 begin
+         --                    the_World.physics_Space      .rid (the_Joint.Physics.all'Access);
+         --                    the_World.broken_Joints.add (the_Joint);
+         --
+         --                 exception
+         --                    when no_such_Child =>
+         --                       put_Line ("Error when breaking joint due to reaction Force:  no_such_Child.");
+         --                 end;
+         --              end if;
+         --
+         --              if reaction_Force > max_joint_Force
+         --              then
+         --                 max_joint_Force := reaction_Force;
+         --              end if;
+         --
+         --              if reaction_Torque > max_joint_Torque
+         --              then
+         --                 max_joint_Torque := reaction_Torque;
+         --              end if;
+         --           end if;
+         --
+         --           next (Cursor);
+         --        end loop;
+         --     end;
+         --  end if;
+         --
+         --  next_render_Time := next_render_Time + Duration (1.0 / 60.0);
+      --  end loop;
+      --
+   --  exception
+   --     when E : others =>
+   --        new_Line (2);
+   --        put_Line ("Error in gel.World.Engine");
+   --        new_Line;
+   --        put_Line (exception_Information (E));
+   --        put_Line ("Engine has terminated !");
+   --        new_Line (2);
+   --  end Engine;
 
 
 
@@ -1717,7 +1718,7 @@ is
    procedure start (Self : access Item)
    is
    begin
-      Self.Engine        .start (Self.space_Kind);
+      --  Self.Engine        .start (Self.space_Kind);
       Self.physics_Engine.start (Self.physics_Space);
    end start;
 
