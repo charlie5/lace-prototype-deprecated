@@ -1,45 +1,27 @@
 with
-     physics.Object,
-
-     interfaces.C,
-     ada.Text_IO;   -- for debug only
-
+     physics.Object;
 
 package body GEL.ball_Joint
 is
-   use Math,
-       Interfaces;
-
-   package std_Physics renames Standard.Physics;
-
-
 
    ----------
    ---  Forge
    --
 
-   procedure define (Self : access Item;   in_Space                : in     Standard.physics.Space.view;
-                                           Sprite_A,    Sprite_B   : access gel.Sprite.Item'Class;
-                                           Pivot_in_A,  Pivot_in_B : in     Math.Vector_3)
+   procedure define (Self : access Item;   in_Space                : in     std_physics.Space.view;
+                                           Sprite_A,    Sprite_B   : access gel.Sprite.item'Class;
+                                           Pivot_in_A,  Pivot_in_B : in     Vector_3)
    is
-      use      math.Algebra.linear.d3;
-      use type Real;
-
-      type joint_Cast is access all GEL.Joint.Item;
+      type Joint_cast is access all gel.Joint.Item;
 
       sprite_A_Solid,
       sprite_B_Solid : std_physics.Object.view;
 
    begin
-      if Sprite_A /= null then
-         sprite_A_Solid := std_physics.Object.view (Sprite_A.Solid);
-      end if;
+      if Sprite_A /= null then   sprite_A_Solid := std_physics.Object.view (Sprite_A.Solid);   end if;
+      if Sprite_B /= null then   sprite_B_Solid := std_physics.Object.view (Sprite_B.Solid);   end if;
 
-      if Sprite_B /= null then
-         sprite_B_Solid := std_physics.Object.view (Sprite_B.Solid);
-      end if;
-
-      Joint.define (joint_Cast (Self), Sprite_A, Sprite_B);   -- Define base class.
+      Joint.define (Joint_cast (Self), Sprite_A, Sprite_B);     -- Define base class.
 
       Self.Physics := in_Space.new_ball_Joint (sprite_A_Solid,
                                                sprite_B_Solid,
@@ -48,22 +30,20 @@ is
    end define;
 
 
-
    overriding
-   procedure destroy (Self : in out Item) is
+   procedure destroy (Self : in out Item)
+   is
    begin
-      raise Program_Error with "TBD";
+      raise Error with "TODO";
    end destroy;
 
 
-
-
-
+   --------------
    --- Attributes
    --
 
    overriding
-   function Frame_A (Self : in Item) return Math.Matrix_4x4
+   function Frame_A (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_A;
@@ -71,7 +51,7 @@ is
 
 
    overriding
-   function Frame_B (Self : in Item) return Math.Matrix_4x4
+   function Frame_B (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_B;
@@ -79,7 +59,7 @@ is
 
 
    overriding
-   procedure Frame_A_is (Self : in out Item; Now : in Math.Matrix_4x4)
+   procedure Frame_A_is (Self : in out Item; Now : in Matrix_4x4)
    is
    begin
       Self.Physics.Frame_A_is (Now);
@@ -87,7 +67,7 @@ is
 
 
    overriding
-   procedure Frame_B_is (Self : in out Item; Now : in Math.Matrix_4x4)
+   procedure Frame_B_is (Self : in out Item; Now : in Matrix_4x4)
    is
    begin
       Self.Physics.Frame_B_is (Now);
@@ -95,32 +75,29 @@ is
 
 
    overriding
-   function Physics (Self : in Item) return GEL.Joint.Physics_view
+   function Physics (Self : in Item) return gel.joint.Physics_view
    is
    begin
-      return GEL.Joint.Physics_view (Self.Physics);
+      return Self.Physics;
    end Physics;
 
 
    overriding
-   function Degrees_of_freedom (Self : in     Item) return Joint.Degree_of_freedom
+   function Degrees_of_freedom (Self : in Item) return joint.Degree_of_freedom
    is
-      pragma Unreferenced (Self);
+      pragma unreferenced (Self);
    begin
       return 6;
    end Degrees_of_freedom;
 
 
-
-
-
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   ----------
+   --- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
-   function is_Bound (Self : in Item;   for_Degree : in Joint.Degree_of_freedom) return Boolean
+   function is_Bound (Self : in Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
    is
-      use type C.unsigned_char;
    begin
       if for_Degree in Sway .. Surge then
          return False;
@@ -130,16 +107,14 @@ is
    end is_Bound;
 
 
-
    overriding
-   function low_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
+   function low_Bound (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real
    is
-      use type Math.Real, C.C_float;
    begin
       case for_Degree
       is
          when Sway .. Surge =>
-            raise Program_Error with "unhandled Degree of freedom: " & Joint.Degree_of_freedom'Image (for_Degree);
+            raise Error with "Unhandled degree of freedom:" & for_Degree'Image;
 
          when Pitch .. Roll =>
             return Self.Physics.lower_Limit (for_Degree);
@@ -147,27 +122,23 @@ is
    end low_Bound;
 
 
-
    overriding
-   procedure low_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                 Now        : in Math.Real)
+   procedure low_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                 Now        : in Real)
    is
-      use type Math.Real, C.int;
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
 
 
-
    overriding
-   function high_Bound (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
+   function high_Bound (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real
    is
-      use type Math.Real, C.C_float;
    begin
       case for_Degree
       is
          when Sway .. Surge =>
-            raise Program_Error with "unhandled Degree of freedom: " & Joint.Degree_of_freedom'Image (for_Degree);
+            raise Error with "Unhandled degree of freedom:" & for_Degree'Image;
 
          when Pitch .. Roll =>
             return Self.Physics.upper_Limit (for_Degree);
@@ -175,43 +146,39 @@ is
    end high_Bound;
 
 
-
    overriding
-   procedure high_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                  Now        : in Math.Real)
+   procedure high_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in Real)
    is
-      use type Math.Real, C.int;
    begin
       Self.Physics.upper_Limit_is (Now, for_Degree);
    end high_Bound_is;
 
 
-
-
-   --  Extent
+   ----------
+   --- Extent
    --
 
    overriding
-   function Extent (Self : in Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real
+   function Extent (Self : in Item;   for_Degree : in joint.Degree_of_freedom) return Real
    is
    begin
       if for_Degree in Sway .. Surge
       then
-         raise Program_Error with "unhandled Degree of freedom: " & Joint.Degree_of_freedom'Image (for_Degree);
+         raise Error with "Unhandled Degree of freedom:" & for_Degree'Image;
       end if;
 
       return Self.Physics.Extent (for_Degree);
    end Extent;
 
 
-
-
-   --  Motor velocity
+   ------------------
+   --- Motor Velocity
    --
 
    overriding
-   procedure Velocity_is (Self : in Item;   for_Degree : in Joint.Degree_of_freedom;
-                                            Now        : in Math.Real)
+   procedure Velocity_is (Self : in Item;   for_Degree : in joint.Degree_of_freedom;
+                                            Now        : in Real)
    is
    begin
       Self.Physics.Velocity_is (Now, for_Degree);
