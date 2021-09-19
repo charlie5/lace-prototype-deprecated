@@ -5,20 +5,17 @@ with
      physics.Joint.DoF6,
      physics.Space;
 
-
 package gel.cone_twist_Joint
 --
 --  Allows sprites to be connected via 'cone-twist' joint.
 --
 is
-
-   type Item  is new GEL.Joint.Item with private;
+   type Item  is new gel.Joint.item with private;
    type View  is access all Item'Class;
-   type Views is array (Math.Index range <>) of View;
+   type Views is array (math.Index range <>) of View;
 
 
-
-   Sway  : constant Joint.Degree_of_freedom := 1;
+   Sway  : constant Joint.Degree_of_freedom := 1;     -- TODO: These are duplicated in other joints.
    Heave : constant Joint.Degree_of_freedom := 2;
    Surge : constant Joint.Degree_of_freedom := 3;
 
@@ -27,88 +24,86 @@ is
    Roll  : constant Joint.Degree_of_freedom := 6;
 
 
-   --  Forge
+   package std_physics renames standard.Physics;
+   use Math;
+
+
+   ---------
+   --- Forge
    --
 
-   procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
-                                           pivot_Anchor       : in     math.Vector_3;
-                                           pivot_Axis         : in     math.Matrix_3x3);
+   procedure define  (Self : access Item;   in_Space           : in     std_physics.Space.view;
+                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
+                                            pivot_Anchor       : in     Vector_3;
+                                            pivot_Axis         : in     Matrix_3x3);
 
-   procedure define (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                           Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
-                                           Frame_A,  Frame_B  : in     Math.Matrix_4x4);
-
+   procedure define  (Self : access Item;   in_Space           : in     std_physics.Space.view;
+                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
+                                            Frame_A,  Frame_B  : in     Matrix_4x4);
    overriding
    procedure destroy (Self : in out Item);
 
 
-
-   --  Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
-   function  Physics            (Self : in     Item) return gel.Joint.Physics_view;
+   function  Physics    (Self : in     Item) return gel.joint.Physics_view;
 
    overriding
-   function  Frame_A            (Self : in     Item) return Math.Matrix_4x4;
+   function  Frame_A    (Self : in     Item) return Matrix_4x4;
    overriding
-   function  Frame_B            (Self : in     Item) return Math.Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is         (Self : in out Item; Now : in Math.Matrix_4x4);
-   overriding
-   procedure Frame_B_is         (Self : in out Item; Now : in Math.Matrix_4x4);
+   function  Frame_B    (Self : in     Item) return Matrix_4x4;
 
    overriding
-   function  Degrees_of_freedom (Self : in     Item) return Joint.Degree_of_freedom;
+   procedure Frame_A_is (Self : in out Item; Now : in Matrix_4x4);
+   overriding
+   procedure Frame_B_is (Self : in out Item; Now : in Matrix_4x4);
+
+   overriding
+   function  Degrees_of_freedom (Self : in Item) return joint.Degree_of_freedom;
 
 
-
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   --  Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
-   function  is_Bound       (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Boolean;
+   function  is_Bound      (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return Boolean;
 
    overriding
-   function  low_Bound      (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   function  low_Bound     (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real;
    overriding
-   procedure low_Bound_is   (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
-
+   procedure low_Bound_is  (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in Real);
    overriding
-   function  high_Bound     (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   function  high_Bound    (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real;
    overriding
-   procedure high_Bound_is  (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
-
+   procedure high_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in Real);
    overriding
-   function  Extent         (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   function  Extent        (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return Real;
 
    overriding
-   procedure Velocity_is    (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
+   procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in Real);
 
-
-
-   --  Operations
+   --------------
+   --- Operations
    --
 
    -- Nil.
 
 
 
-
 private
 
-   type physics_DoF6_Joint_view is access all Standard.Physics.Joint.DoF6.Item'Class;
+   type physics_DoF6_Joint_view is access all std_physics.Joint.DoF6.item'Class;
 
 
    type Item is new GEL.Joint.Item with
       record
-         Physics : access standard.physics.Joint.DoF6.item'Class;
+         Physics : access std_physics.Joint.DoF6.item'Class;
    end record;
-
 
 end gel.cone_twist_Joint;
