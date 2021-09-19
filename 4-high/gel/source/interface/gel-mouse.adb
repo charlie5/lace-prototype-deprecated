@@ -1,19 +1,20 @@
 package body gel.Mouse
 is
 
+   --------------
    --- Attributes
    --
 
    -- Nil.
 
 
-
+   ---------------
    ---  Operations
    --
 
-   procedure emit_button_press_Event   (Self : in out Item'Class;   Button       : in mouse   .button_Id;
-                                                                    Modifiers    : in keyboard.modifier_Set;
-                                                                    Site         : in mouse.Site)
+   procedure emit_button_press_Event (Self : in out Item'Class;   Button    : in mouse.button_Id;
+                                                                  Modifiers : in keyboard.modifier_Set;
+                                                                  Site      : in mouse.Site)
    is
    begin
       self.emit (button_press_Event' (Button, Modifiers, Site));
@@ -21,7 +22,8 @@ is
 
 
 
-   procedure emit_button_release_Event (Self : in out Item'Class;   Button    : in mouse   .button_Id;
+
+   procedure emit_button_release_Event (Self : in out Item'Class;   Button    : in mouse.button_Id;
                                                                     Modifiers : in keyboard.modifier_Set;
                                                                     Site      : in mouse.Site)
    is
