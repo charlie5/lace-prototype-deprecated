@@ -5,7 +5,9 @@ with
 
      GL.Binding,
      GL.lean,
-     GL.Pointers;
+     GL.Pointers,
+
+     ada.unchecked_Deallocation;
 
 package body openGL.Texture
 is
@@ -111,7 +113,7 @@ is
    procedure destroy (Self : in out Object)
    is
    begin
-      free (Self.Name);
+      free (Self.Name);     -- Release the GL texture name.
    end destroy;
 
 
@@ -119,7 +121,7 @@ is
    procedure free (Self : in out Object)
    is
    begin
-      free (Self.Pool.all, Self);
+      free (Self.Pool.all, Self);     -- Release 'Self' from it's pool for later re-use.
    end free;
 
 
@@ -323,16 +325,17 @@ is
 
    procedure destroy (the_Pool : in out Pool)
    is
---        procedure free is new ada.unchecked_Deallocation (pool_texture_List, pool_texture_List_view);
+      procedure deallocate is new ada.unchecked_Deallocation (pool_texture_List,
+                                                              pool_texture_List_view);
    begin
-      raise Program_Error with "destroy texture pool ~ TODO";
---        for i in the_Pool.unused_Textures_for_size'Range (1)
---        loop
---           for j in the_Pool.unused_Textures_for_size'Range (2)
---           loop
---              free (the_Pool.unused_Textures_for_size (i, j));
---           end loop;
---        end loop;
+      for Each of the_Pool.Map
+      loop
+         for i in 1 .. Each.Last
+         loop
+            destroy    (Each.Textures (i));
+            deallocate (Each);
+         end loop;
+      end loop;
    end destroy;
 
 
