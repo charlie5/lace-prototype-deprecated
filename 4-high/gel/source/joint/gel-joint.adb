@@ -1,23 +1,19 @@
 with
      gel.Sprite,
      gel.World,
-
      ada.unchecked_Deallocation;
-
 
 package body gel.Joint
 is
 
-
-   function to_GEL (the_Joint : standard.Physics.Joint.view) return gel.Joint.view
+   function to_GEL (the_Joint : standard.physics.Joint.view) return gel.Joint.view
    is
    begin
       return gel.Joint.view (the_Joint.user_Data);
    end to_GEL;
 
 
-
-
+   ---------
    --- Forge
    --
 
@@ -30,7 +26,7 @@ is
 
 
 
-   procedure free    (Self : in out View)
+   procedure free (Self : in out View)
    is
       procedure deallocate is new ada.unchecked_Deallocation (Joint.item'Class, Joint.view);
    begin
@@ -42,31 +38,30 @@ is
    end free;
 
 
-
-
+   --------------
    --- Attributes
    --
 
-   function  Sprite_A (Self : in Item'Class) return access gel.Sprite.item'class
+   function Sprite_A (Self : in Item'Class) return access gel.Sprite.item'class
    is
    begin
       return Self.Sprite_A;
    end Sprite_A;
 
 
-   function  Sprite_B (Self : in Item'Class) return access gel.Sprite.item'class
+
+   function Sprite_B (Self : in Item'Class) return access gel.Sprite.item'class
    is
    begin
       return Self.Sprite_B;
    end Sprite_B;
 
 
-
-
+   ----------
    --- Hinges
    --
 
-   function  local_Anchor_on_A    (Self : in     Item) return math.Vector_3
+   function local_Anchor_on_A (Self : in Item) return Vector_3
    is
    begin
       return Self.local_Anchor_on_A;
@@ -74,7 +69,7 @@ is
 
 
 
-   function  local_Anchor_on_B    (Self : in     Item) return math.Vector_3
+   function local_Anchor_on_B (Self : in Item) return Vector_3
    is
    begin
       return Self.local_Anchor_on_B;
@@ -82,35 +77,35 @@ is
 
 
 
-   procedure local_Anchor_on_A_is (Self :    out Item;   Now : in math.Vector_3)
+   procedure local_Anchor_on_A_is (Self : out Item;   Now : in Vector_3)
    is
    begin
       Self.local_Anchor_on_A := Now;
 
       if Self.Sprite_A.World /= null
       then
-         Self.Sprite_A.World.set_local_Anchor_on_A (for_joint => Self'unchecked_Access,
-                                                    to        => Now);
+         Self.Sprite_A.World.set_local_Anchor_on_A (for_Joint => Self'unchecked_Access,
+                                                    To        => Now);
       end if;
    end local_Anchor_on_A_is;
 
 
 
-   procedure local_Anchor_on_B_is (Self :    out Item;   Now : in math.Vector_3)
+   procedure local_Anchor_on_B_is (Self : out Item;   Now : in Vector_3)
    is
    begin
       Self.local_Anchor_on_B := Now;
 
       if Self.Sprite_B.World /= null
       then
-         Self.Sprite_B.World.set_local_Anchor_on_B (for_joint => Self'unchecked_Access,
-                                                    to        => Now);
+         Self.Sprite_B.World.set_local_Anchor_on_B (for_Joint => Self'unchecked_Access,
+                                                    To        => Now);
       end if;
    end local_Anchor_on_B_is;
 
 
 
-   function  reaction_Force (Self : in     Item'Class) return math.Vector_3
+   function reaction_Force (Self : in Item'Class) return Vector_3
    is
    begin
       return Self.Physics.reaction_Force;
@@ -118,7 +113,7 @@ is
 
 
 
-   function  reaction_Torque(Self : in     Item'Class) return math.Real
+   function reaction_Torque (Self : in Item'Class) return Real
    is
    begin
       return Self.Physics.reaction_Torque;
