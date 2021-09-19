@@ -5,17 +5,14 @@ with
      physics.Joint.DoF6,
      physics.Space;
 
-
 package GEL.any_Joint
 --
 --  Allows sprites to be connected via '6 degree of freedom' joint.
 --
 is
-
-   type Item is new GEL.Joint.Item with private;
-   type View is access all Item'Class;
+   type Item  is new GEL.Joint.Item with private;
+   type View  is access all Item'Class;
    type Views is array (Math.Index range <>) of View;
-
 
 
    Sway  : constant Joint.Degree_of_freedom := 1;
@@ -27,93 +24,86 @@ is
    Roll  : constant Joint.Degree_of_freedom := 6;
 
 
+   package std_physics renames standard.Physics;
+
 
    ---------
-   --  Forge
+   --- Forge
    --
 
-   procedure define  (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                            Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
+   procedure define  (Self : access Item;   in_Space           : in     std_physics.Space.view;
+                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
                                             pivot_Anchor       : in     math.Vector_3;
                                             pivot_Axis         : in     math.Matrix_3x3);
 
-   procedure define  (Self : access Item;   in_Space           : in     Standard.physics.Space.view;
-                                            Sprite_A, Sprite_B : access gel.Sprite.Item'Class;
-                                            Frame_A,  Frame_B  : in     Math.Matrix_4x4);
+   procedure define  (Self : access Item;   in_Space           : in     std_physics.Space.view;
+                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
+                                            Frame_A,  Frame_B  : in     math.Matrix_4x4);
 
    overriding
    procedure destroy (Self : in out Item);
 
 
-
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
-   function Physics            (Self : in     Item) return GEL.Joint.Physics_view;
+   function  Physics    (Self : in     Item) return gel.Joint.Physics_view;
 
    overriding
-   function Frame_A            (Self : in     Item) return Math.Matrix_4x4;
+   function  Frame_A    (Self : in     Item) return math.Matrix_4x4;
    overriding
-   function Frame_B            (Self : in     Item) return Math.Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is        (Self : in out Item; Now : in Math.Matrix_4x4);
-   overriding
-   procedure Frame_B_is        (Self : in out Item; Now : in Math.Matrix_4x4);
+   function  Frame_B    (Self : in     Item) return math.Matrix_4x4;
 
    overriding
-   function Degrees_of_freedom (Self : in     Item) return Joint.Degree_of_freedom;
+   procedure Frame_A_is (Self : in out Item;   Now : in math.Matrix_4x4);
+   overriding
+   procedure Frame_B_is (Self : in out Item;   Now : in math.Matrix_4x4);
+
+   overriding
+   function  Degrees_of_freedom (Self : in     Item) return joint.Degree_of_freedom;
 
 
-
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   --  Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
-   function  is_Bound       (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Boolean;
+   function  is_Bound      (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return Boolean;
 
    overriding
-   function  low_Bound      (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
+   function  low_Bound     (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return math.Real;
    overriding
-   procedure low_Bound_is   (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
+   procedure low_Bound_is  (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                   Now        : in math.Real);
+   overriding
+   function  high_Bound    (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return math.Real;
+   overriding
+   procedure high_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in math.Real);
+   overriding
+   function  Extent        (Self : in     Item;   for_Degree : in joint.Degree_of_freedom) return math.Real;
 
    overriding
-   function  high_Bound     (Self : access Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
-   overriding
-   procedure high_Bound_is  (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
-
-   overriding
-   function  Extent         (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom) return Math.Real;
-
-   overriding
-   procedure Velocity_is    (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom;
-                                                   Now        : in Math.Real);
-
-
+   procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
+                                                  Now        : in math.Real);
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    -- Nil.
 
 
 
-
 private
 
-   type physics_DoF6_Joint_view is access all Standard.Physics.Joint.DoF6.Item'Class;
+   type physics_DoF6_Joint_view is access all std_physics.Joint.DoF6.item'Class;
 
 
-   type Item is new GEL.Joint.Item with
+   type Item is new gel.Joint.item with
       record
-         Physics : access standard.physics.Joint.DoF6.item'Class;
+         Physics : access std_physics.Joint.DoF6.item'Class;
    end record;
-
 
 end GEL.any_Joint;
