@@ -29,6 +29,8 @@ bin
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
 
+4-high/gel/source/platform/sdl/attic
+
 
 ## Assets
 **/assets/opengl
