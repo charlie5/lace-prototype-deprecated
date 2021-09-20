@@ -195,15 +195,6 @@ is
 --
 --
 --
---     procedure Quit_Handler (Event : in standard.Lumen.Events.Event_Data)
---     is
---     begin
---        null;
---        --the_Window.is_Open := False;
---     end Quit_Handler;
---
---
---
 --
 --     procedure Expose_Handler (Event : in standard.Lumen.Events.Event_Data)
 --     is
@@ -403,6 +394,8 @@ is
       Success : Boolean;
    begin
       Success := std_Lumen.Window.process_Events (Self.Window_Handle);
+
+      Self.is_Open := Success;
 
 --        std_Lumen.Events.animate.process_current_Events
 --          (Win   => Self.the_window_Handle,
