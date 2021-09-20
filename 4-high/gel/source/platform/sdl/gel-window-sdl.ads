@@ -1,27 +1,24 @@
 private
-with SDL.Video.Windows,
-     SDL.Video.GL;
-
-
+with
+     sdl.Video.Windows,
+     sdl.Video.GL;
 
 package gel.Window.sdl
 --
---
+-- Provides an SDL implementation of a window.
 --
 is
-
    type Item is new gel.Window.item with private;
    type View is access all Item'Class;
 
 
-
-
-   --- construction
+   ---------
+   --- Forge
    --
 
    procedure define  (Self : in View;   Title  : in String;
-                                            Width  : in Natural;
-                                            Height : in Natural);
+                                        Width  : in Natural;
+                                        Height : in Natural);
    overriding
    procedure destroy (Self : in out Item);
 
@@ -34,15 +31,8 @@ is
    end Forge;
 
 
-
-
-   --- attributes
-   --
-
-
-
-
-   --- operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -58,12 +48,10 @@ is
 
 private
 
-
    type Item is new gel.Window.item with
       record
-         window_Handle : standard.SDL.Video.Windows.Window;
-         GL_Context    : standard.SDL.Video.GL.Contexts;
+         window_Handle : standard.sdl.Video.Windows.Window;
+         GL_Context    : standard.sdl.Video.GL.Contexts;
       end record;
-
 
 end gel.Window.sdl;
