@@ -1,6 +1,5 @@
 --  with lumen.Events.Animate;
 with
-     SDL.Video.GL,
      SDL.Events.Keyboards,
      SDL.Video.Windows.Makers,
      SDL.Events.Events,
@@ -40,13 +39,14 @@ is
 
 
 
+   overriding
    procedure swap_GL (Self : in out Item)
    is
       use std_SDL.Video.GL;
    begin
       swap (Self.window_Handle);
 --        std_SDL.Video.Windows.swap (Self.window_Handle);
-   end;
+   end swap_GL;
 
 
 
@@ -77,7 +77,6 @@ is
                                             Width  : in Natural;
                                             Height : in Natural)
    is
-      use type std_SDL.Video.Windows.Window;
 --        Attrs : std_SDL.Window.Context_Attributes := ((std_SDL.Window.Attr_Red_Size,    8),
 --                                                        (std_SDL.Window.Attr_Green_Size,  8),
 --                                                        (std_SDL.Window.Attr_Blue_Size,   8),
@@ -126,6 +125,7 @@ is
 
 
 
+   overriding
    procedure destroy (Self : in out Item)
    is
    begin
@@ -134,7 +134,7 @@ is
       std_SDL.Finalise;
 
       destroy (gel.Window.item (Self));                     -- Destroy base class.
-   end;
+   end destroy;
 
 
 
@@ -150,17 +150,17 @@ is
          do
             define (Self'unchecked_Access,  Title, Width, Height);
          end return;
-      end;
+      end to_Window;
 
 
       function new_Window (Title  : in String;
                            Width  : in Natural;
                            Height : in Natural) return Window.sdl.view
       is
-         Self : gel.Window.sdl.view := new Window.sdl.item' (to_Window (Title, Width, Height));
+         Self : constant gel.Window.sdl.view := new Window.sdl.item' (to_Window (Title, Width, Height));
       begin
          return Self;
-      end;
+      end new_Window;
    end Forge;
 
 
@@ -313,6 +313,7 @@ is
 
 
 
+   overriding
    procedure emit_Events  (Self : in out Item)
    is
       --  use std_SDL;
@@ -322,7 +323,6 @@ is
 
 --        function to_SDL_EventType is new ada.Unchecked_Conversion (Interfaces.Unsigned_8, SDL_EventType);
 
-      use type std_SDL.Events.Event_Types;
       use type std_SDL.Events.Keyboards.Key_Codes;
 
    begin
@@ -440,7 +440,7 @@ is
 --        end loop;
 --
 --        SDL_GL_SwapBuffers;
-   end;
+   end emit_Events;
 
 
 
@@ -466,22 +466,24 @@ is
 
 
 
+   overriding
    procedure enable_GL    (Self : in     Item)
    is
    begin
       std_SDL.Video.gl.set_Current (Self.GL_Context, to => Self.window_Handle);
 --        standard.lumen.Window.make_current (Self.window_Handle);
-   end;
+   end enable_GL;
 
 
 
+   overriding
    procedure disable_GL    (Self : in     Item)
    is
       null_Context : standard.SDL.Video.GL.Contexts;
    begin
       std_SDL.Video.gl.set_Current (null_Context, to => Self.window_Handle);
 --        standard.lumen.Window.make_non_current (Self.window_Handle);
-   end;
+   end disable_GL;
 
 
 
@@ -532,7 +534,7 @@ is
       end case;
 
       return gel.Keyboard.Key'First;
-   end;
+   end to_gel_Key;
 
 
 
@@ -547,7 +549,7 @@ is
    is
    begin
       return gel.Window.view (Forge.new_Window (Name, Width, Height));
-   end;
+   end window_Creator;
 
 
 begin

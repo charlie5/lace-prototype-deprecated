@@ -45,9 +45,13 @@ is
    --- operations
    --
 
+   overriding
    procedure emit_Events  (Self : in out Item);
+   overriding
    procedure enable_GL    (Self : in     Item);
+   overriding
    procedure disable_GL   (Self : in     Item);
+   overriding
    procedure swap_GL      (Self : in out Item);
 
 
