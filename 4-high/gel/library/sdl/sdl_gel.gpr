@@ -18,4 +18,8 @@ is
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
 
+   package Linker is
+      for Linker_Options use ("-g", "-lSDL2");
+   end Linker;
+
 end SDL_GEL;
