@@ -15,9 +15,7 @@ is
    package Binder   renames Lace_shared.Binder;
 
    package Linker is
-      for Default_Switches ("ada") use ("-L/usr/local/lib", "-lEGL", "-lGL", "-lexpat", "-lX11", "-lX11-xcb", "-lxcb", "-lxcb-render", "-lxcb-glx", "-lfreetype");
---      for Default_Switches ("ada") use ("-g", "-lGL", "-lexpat", "-lX11-xcb", "-lX11", "-lxcb", "-lxcb-glx", "-lxcb-render");
---      for Default_Switches ("ada") use ("-g", "-lGL", "-lexpat", "-lX11-xcb", "-lX11", "-lxcb", "-lxcb-glx", "-lxcb-render");
+      for Default_Switches ("ada") use ("-lGL");
    end Linker;
 
 end Hello_SDL_GEL;
