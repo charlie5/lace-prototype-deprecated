@@ -6,12 +6,12 @@ with
      SDL.Events.Events,
      SDL.Log;
 
-with interfaces.C;
+--  with interfaces.C;
 
 with ada.Unchecked_Conversion;
 with ada.Text_IO; use Ada.Text_IO;
 
-with interfaces.c;
+--  with interfaces.c;
 --  with lumen.Window;
 --  with lumen.Events.Keys;
 with ada.Characters.Latin_1;
@@ -19,13 +19,13 @@ with SDL.Events.Mice;
 
 
 
-package body mmi.Window.sdl
+package body gel.Window.sdl
 --
 --
 --
 is
-   use -- standard.Lumen.Events,
-       Interfaces, Interfaces.C;
+   --  use -- standard.Lumen.Events,
+   --      Interfaces, Interfaces.C;
 
 
 
@@ -35,7 +35,7 @@ is
 
    program_Exit      : exception;
 
---     the_Window        : mmi.Window.lumen.view;
+--     the_Window        : gel.Window.lumen.view;
 --     the_window_Handle : standard.lumen.Window.handle;
 
 
@@ -54,8 +54,8 @@ is
    use std_SDL,
        std_SDL.Events;
 
---     function to_mmi_Key (From : in Interfaces.Unsigned_8) return mmi.keyboard.Key;
-   function to_mmi_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return mmi.keyboard.Key;
+--     function to_gel_Key (From : in Interfaces.Unsigned_8) return gel.keyboard.Key;
+   function to_gel_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return gel.keyboard.Key;
 
    ----------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ is
    Letter_q  : constant sdl_Keyboard_Events.Key_Codes := sdl_Keyboard_Events.Key_Codes (Character'Pos (Ada.Characters.Latin_1.LC_Q));
 
 
-   the_Window : mmi.Window.sdl.view;
+   the_Window : gel.Window.sdl.view;
 
 
    --- construction
@@ -87,15 +87,15 @@ is
 
       if std_SDL.Initialise = False
       then
-         raise mmi.Error with "unable to initialise SDL";
+         raise gel.Error with "unable to initialise SDL";
       end if;
 
       std_SDL.Video.Windows.Makers.Create (Win    => Self.window_Handle,
                                            Title  => Title,
                                            X      => 100,
                                            Y      => 100,
-                                           Width  => Width,
-                                           Height => Height);
+                                           Width  => C.int (Width),
+                                           Height => C.int (Height));
 
       std_SDL.Video.GL.create (Self.GL_Context, from => Self.window_Handle);
 
@@ -133,7 +133,7 @@ is
       Self.window_Handle.Finalize;
       std_SDL.Finalise;
 
-      destroy (mmi.Window.item (Self));                     -- Destroy base class.
+      destroy (gel.Window.item (Self));                     -- Destroy base class.
    end;
 
 
@@ -142,10 +142,10 @@ is
    is
       function  to_Window (Title  : in String;
                            Width  : in Natural;
-                           Height : in Natural) return mmi.Window.sdl.item
+                           Height : in Natural) return gel.Window.sdl.item
       is
       begin
-         return Self : mmi.Window.sdl.item := (mmi.Window.private_Forge.to_Window (Title, Width, Height)
+         return Self : gel.Window.sdl.item := (gel.Window.private_Forge.to_Window (Title, Width, Height)
                                                with others => <>)
          do
             define (Self'unchecked_Access,  Title, Width, Height);
@@ -157,7 +157,7 @@ is
                            Width  : in Natural;
                            Height : in Natural) return Window.sdl.view
       is
-         Self : mmi.Window.sdl.view := new Window.sdl.item' (to_Window (Title, Width, Height));
+         Self : gel.Window.sdl.view := new Window.sdl.item' (to_Window (Title, Width, Height));
       begin
          return Self;
       end;
@@ -176,7 +176,7 @@ is
    --  Operations
    --
 
-   use mmi.Keyboard;
+   use gel.Keyboard;
 
 
 
@@ -185,7 +185,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Keyboard.accept_key_press_Event   (to_mmi_Key (Event.key_Data.Key));
+--        --the_Window.Keyboard.accept_key_press_Event   (to_gel_Key (Event.key_Data.Key));
 --     end;
 --
 --
@@ -195,7 +195,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Keyboard.accept_key_release_Event (to_mmi_Key (Event.key_Data.Key));
+--        --the_Window.Keyboard.accept_key_release_Event (to_gel_Key (Event.key_Data.Key));
 --     end;
 --
 --
@@ -204,7 +204,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Mouse.emit_button_press_Event (mmi.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
+--        --the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
 --          --                                        the_Window.Keyboard.Modifiers,
 --            --                                      (Integer (event.button_Data.x), Integer (event.button_Data.y)));
 --
@@ -216,7 +216,7 @@ is
 --     is
 --     begin
 --        null;
---        --the_Window.Mouse.emit_button_release_Event (mmi.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
+--        --the_Window.Mouse.emit_button_release_Event (gel.mouse.button_Id (button'Pos (event.button_Data.Changed) + 1),
 --          --                                          the_Window.Keyboard.Modifiers,
 --            --                                        (Integer (event.button_Data.x), Integer (event.button_Data.y)));
 --     end;
@@ -315,7 +315,7 @@ is
 
    procedure emit_Events  (Self : in out Item)
    is
-      use std_SDL;
+      --  use std_SDL;
 
       event      : aliased std_SDL.Events.Events.Events;
 --        event_Type :         SDL_EventType;
@@ -336,7 +336,7 @@ is
 
             when std_SDL.Events.Keyboards.Key_Down =>
 
-               the_Window.Keyboard.emit_key_press_Event (to_mmi_Key (Event.Keyboard.Key_Sym.Key_Code),
+               the_Window.Keyboard.emit_key_press_Event (to_gel_Key (Event.Keyboard.Key_Sym.Key_Code),
                                                          Integer (Event.Keyboard.Key_Sym.Key_Code));
 
 
@@ -351,7 +351,7 @@ is
                   Self.is_Open := False;
                end if;
 
-               the_Window.Keyboard.emit_key_release_Event (to_mmi_Key (Event.Keyboard.Key_Sym.Key_Code));
+               the_Window.Keyboard.emit_key_release_Event (to_gel_Key (Event.Keyboard.Key_Sym.Key_Code));
 
 --              when std_SDL.Events.Joysticks.Axis_Motion =>
 --                 std_SDL.Log.Put_Debug
@@ -363,8 +363,8 @@ is
             when std_SDL.Events.Mice.Button_Down =>
                put_Line ("Mouse Button Down !" & std_SDL.Events.Mice.Buttons'Image (Event.Mouse_Button.Button));
 
---                 the_Window.Mouse.emit_button_press_Event (mmi.mouse.button_Id (std_SDL.Window.Button_Enum'Pos (Event.Mouse.Button) + 1),
-               the_Window.Mouse.emit_button_press_Event (mmi.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
+--                 the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_SDL.Window.Button_Enum'Pos (Event.Mouse.Button) + 1),
+               the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
                                                          the_Window.Keyboard.Modifiers,
                                                          (Integer (Event.Mouse_Button.X),
                                                           Integer (Event.Mouse_Button.Y)));
@@ -374,7 +374,7 @@ is
             when std_SDL.Events.Mice.Button_Up =>
                put_Line ("Mouse Button Up !");
 
-               the_Window.Mouse.emit_button_release_Event (mmi.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
+               the_Window.Mouse.emit_button_release_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
                                                            the_Window.Keyboard.Modifiers,
                                                            (Integer (Event.Mouse_Button.X),
                                                             Integer (Event.Mouse_Button.Y)));
@@ -418,12 +418,12 @@ is
 --                                                Integer (event.button.y)));
 --
 --              when SDL_MOUSEBUTTONDOWN =>
---                 self.Mouse.emit_button_press_Event (mmi.mouse.button_Id (event.button.button),
+--                 self.Mouse.emit_button_press_Event (gel.mouse.button_Id (event.button.button),
 --                                                     self.Keyboard.Modifiers,
 --                                                     (Integer (event.button.x), Integer (event.button.y)));
 --
 --              when SDL_MOUSEBUTTONUP =>
---                 self.Mouse.emit_button_release_Event (mmi.mouse.button_Id (event.button.button),
+--                 self.Mouse.emit_button_release_Event (gel.mouse.button_Id (event.button.button),
 --                                                         self.Keyboard.Modifiers,
 --                                                         (Integer (event.button.x), Integer (event.button.y)));
 --
@@ -485,7 +485,7 @@ is
 
 
 
-   function to_mmi_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return mmi.keyboard.Key
+   function to_gel_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return gel.keyboard.Key
    is
       use type std_SDL.events.keyboards.Key_Codes;
    begin
@@ -494,14 +494,14 @@ is
       put_Line ("FOUND Key: " & std_SDL.Events.Keyboards.Key_Codes'Image (From));
 
       case From is
-         when std_SDL.Events.Keyboards.code_Return        => return mmi.Keyboard.Enter;
-         when 27        => return mmi.Keyboard.Escape;
-         when 32        => return mmi.Keyboard.Space;
-         when 43        => return mmi.Keyboard.KP_PLUS;
+         when std_SDL.Events.Keyboards.code_Return        => return gel.Keyboard.Enter;
+         when 27        => return gel.Keyboard.Escape;
+         when 32        => return gel.Keyboard.Space;
+         when 43        => return gel.Keyboard.KP_PLUS;
 
-         when 48 ..  59 => return mmi.keyboard.Key'Val (From - 48 + mmi.keyboard.Key'Pos (KP0));
-         when 65 ..  90 => return mmi.keyboard.Key'Val (From - 65 + mmi.keyboard.Key'Pos (a));
-         when 97 .. 122 => return mmi.keyboard.Key'Val (From - 97 + mmi.keyboard.Key'Pos (a));
+         when 48 ..  59 => return gel.keyboard.Key'Val (From - 48 + gel.keyboard.Key'Pos (KP0));
+         when 65 ..  90 => return gel.keyboard.Key'Val (From - 65 + gel.keyboard.Key'Pos (a));
+         when 97 .. 122 => return gel.keyboard.Key'Val (From - 97 + gel.keyboard.Key'Pos (a));
 
          when 65505   => return lShift;
          when 65506   => return rShift;
@@ -516,7 +516,7 @@ is
          when 65363   => return Right;
          when 65364   => return Down;
 
-         when std_SDL.Events.Keyboards.code_Left => return mmi.Keyboard.LEFT;
+         when std_SDL.Events.Keyboards.code_Left => return gel.Keyboard.LEFT;
 --           when 65565   => return PAGEUP;
 --           when 65566   => return PAGEDOWN;
          when 65365   => return PAGEUP;
@@ -531,7 +531,7 @@ is
             end if;
       end case;
 
-      return mmi.Keyboard.Key'First;
+      return gel.Keyboard.Key'First;
    end;
 
 
@@ -543,15 +543,15 @@ is
 
    function window_Creator (Name : in String;
                             Width,
-                            Height : in Positive) return mmi.Window.view
+                            Height : in Positive) return gel.Window.view
    is
    begin
-      return mmi.Window.view (Forge.new_Window (Name, Width, Height));
+      return gel.Window.view (Forge.new_Window (Name, Width, Height));
    end;
 
 
 begin
 
-   mmi.Window.use_create_Window (window_Creator'Access);
+   gel.Window.use_create_Window (window_Creator'Access);
 
-end mmi.Window.sdl;
+end gel.Window.sdl;

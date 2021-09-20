@@ -4,13 +4,13 @@ with SDL.Video.Windows,
 
 
 
-package mmi.Window.sdl
+package gel.Window.sdl
 --
 --
 --
 is
 
-   type Item is new mmi.Window.item with private;
+   type Item is new gel.Window.item with private;
    type View is access all Item'Class;
 
 
@@ -55,11 +55,11 @@ is
 private
 
 
-   type Item is new mmi.Window.item with
+   type Item is new gel.Window.item with
       record
          window_Handle : standard.SDL.Video.Windows.Window;
          GL_Context    : standard.SDL.Video.GL.Contexts;
       end record;
 
 
-end mmi.Window.sdl;
+end gel.Window.sdl;

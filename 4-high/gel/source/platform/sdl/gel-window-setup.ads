@@ -1,6 +1,6 @@
 with
-     mmi.Window.sdl;
+     gel.Window.sdl;
 
-package mmi.Window.setup
-   renames mmi.Window.sdl;
+package gel.Window.setup
+   renames gel.Window.sdl;
 
