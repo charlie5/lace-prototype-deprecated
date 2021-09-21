@@ -1,11 +1,11 @@
 with
-     mmi.Window.setup,
-     mmi.Applet.gui_world,
-     mmi.Camera,
-     mmi.Mouse,
-     mmi.Sprite,
-     mmi.Events,
-     mmi.Forge,
+     gel.Window.setup,
+     gel.Applet.gui_world,
+     gel.Camera,
+     gel.Mouse,
+     gel.Sprite,
+     gel.Events,
+     gel.Forge,
 
      Physics,
      float_Math,
@@ -16,7 +16,7 @@ with
      Ada.Text_IO,
      Ada.Exceptions;
 
-pragma Unreferenced (mmi.Window.setup);
+pragma unreferenced (gel.Window.setup);
 
 
 procedure launch_mouse_Selection
@@ -29,20 +29,20 @@ is
        ada.Text_IO;
 begin
    lace.Event.utility.use_text_Logger ("event.log");
-   lace.Event.utility.Logger.ignore (to_Kind (mmi.Mouse.motion_Event'Tag));
+   lace.Event.utility.Logger.ignore (to_Kind (gel.Mouse.motion_Event'Tag));
 
    declare
-      use mmi.Applet,
+      use gel.Applet,
           ada.Calendar;
 
-      the_Applet : constant mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("mouse Selection",
+      the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("mouse Selection",
                                                                                     space_Kind => physics.Bullet);
-      the_Ball   : constant mmi.Sprite.view           := mmi.Forge.new_ball_Sprite (the_Applet.World (1),
+      the_Ball   : constant gel.Sprite.view           := gel.Forge.new_ball_Sprite (the_Applet.World (1),
                                                                                     mass => 0.0);
 
       type retreat_Sprite is new lace.Response.item with
          record
-            Sprite : mmi.Sprite.view;
+            Sprite : gel.Sprite.view;
          end record;
 
       overriding
@@ -59,7 +59,7 @@ begin
 
       type advance_Sprite is new lace.Response.item with
          record
-            Sprite : mmi.Sprite.view;
+            Sprite : gel.Sprite.view;
          end record;
 
       overriding
@@ -78,11 +78,11 @@ begin
 
    begin
       the_Ball.add (advance_Sprite_Response'unchecked_access,
-                    to_Kind (mmi.events.sprite_click_down_Event'Tag),
+                    to_Kind (gel.events.sprite_click_down_Event'Tag),
                     the_Applet.Name);
 
       the_Ball.add (retreat_Sprite_Response'unchecked_access,
-                    to_Kind (mmi.events.sprite_click_up_Event'Tag),
+                    to_Kind (gel.events.sprite_click_up_Event'Tag),
                     the_Applet.Name);
 
       the_Applet.gui_world .add      (the_Ball, and_Children => False);
