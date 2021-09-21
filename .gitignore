@@ -51,6 +51,7 @@ launch_opengl_model
 launch_large_terrain_demo
 launch_many_boxes_demo
 launch_model_scaling
+launch_mouse_selection
 launch_render_arrows
 launch_render_asteroids
 launch_render_billboards
