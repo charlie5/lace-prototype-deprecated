@@ -57,20 +57,24 @@ is
                                         Width  : in Natural;
                                         Height : in Natural)
    is
+      use std_SDL;
+      use type Video.Windows.Window_Flags;
    begin
       if not std_SDL.initialise
       then
          raise gel.Error with "Unable to initialise SDL.";
       end if;
 
-      std_SDL.Video.Windows.Makers.create (Win    => Self.window_Handle,
-                                           Title  => Title,
-                                           X      => 100,
-                                           Y      => 100,
-                                           Width  => C.int (Width),
-                                           Height => C.int (Height));
+      Video.Windows.Makers.create (Win    => Self.window_Handle,
+                                   Title  => Title,
+                                   X      => 100,
+                                   Y      => 100,
+                                   Width  => C.int (Width),
+                                   Height => C.int (Height),
+                                   Flags  =>    Video.Windows.openGL
+                                             or Video.Windows.Resizable);
 
-      std_SDL.Video.GL.create (Self.GL_Context, From => Self.window_Handle);
+      Video.GL.create (Self.GL_Context, From => Self.window_Handle);
 
       if the_Window = null
       then
