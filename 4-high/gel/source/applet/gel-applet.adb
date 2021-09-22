@@ -445,6 +445,7 @@ is
                camera_Cursor  : camera_Vectors.Cursor := the_world_Info.Cameras.First;
             begin
                --  the_world_Info.World.wait_on_evolve;
+               the_world_Info.World.evolve (By => 1.0/60.0);
 
                if Window_is_active
                then
