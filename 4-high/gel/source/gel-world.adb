@@ -1592,16 +1592,33 @@ is
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
-      procedure add_the_Sprite (the_Sprite : in out Sprite.item'Class)
+      procedure add_single_Sprite (Single : in out Sprite.item'Class)
       is
       begin
-         --  Self.Commands.add ((Kind         => add_Sprite,
-         --                      Sprite       => the_Sprite'unchecked_Access,
-         --                      add_Children => False));
+         if Single.Id = null_sprite_Id
+         then
+            raise Error with "Null sprite detected.";
+         end if;
 
-         Self.id_Map_of_Sprite.insert (the_Sprite.Id,
-                                       the_Sprite'unchecked_Access);
-      end add_the_Sprite;
+         Self.add (Single.graphics_Model);
+         Self.add (Single. physics_Model);
+
+         --  the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
+
+         Single.Solid.user_Data_is (Single'Access);
+         Single.Solid.    Model_is (Single.physics_Model);
+
+         if Single.physics_Model.is_Tangible
+         then
+            Self.physics_Space.add (physics.Object.view (Single.Solid));
+         end if;
+
+         Self.sprite_Count                := Self.sprite_Count + 1;
+         Self.Sprites (Self.sprite_Count) := Single'unchecked_Access;
+
+         Self.id_Map_of_Sprite.insert (Single.Id,
+                                       Single'unchecked_Access);
+      end add_single_Sprite;
 
    begin
       pragma assert (the_Sprite.World = Self, "Trying to add sprite to the wrong world.");
@@ -1621,11 +1638,11 @@ is
             end add_the_Joint;
 
          begin
-            the_Sprite.apply (add_the_Sprite'unrestricted_Access);
+            the_Sprite.apply (add_single_Sprite'unrestricted_Access);
             the_Sprite.apply (add_the_Joint 'unrestricted_Access);
          end;
       else
-         add_the_Sprite (the_Sprite.all);
+         add_single_Sprite (the_Sprite.all);
       end if;
    end add;
 
