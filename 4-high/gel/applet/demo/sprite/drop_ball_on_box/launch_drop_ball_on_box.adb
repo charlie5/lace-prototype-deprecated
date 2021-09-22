@@ -1,17 +1,17 @@
 with
-     mmi.Window.setup,
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.Sprite,
-     mmi.World,
-     mmi.Camera,
+     gel.Window.setup,
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.Sprite,
+     gel.World,
+     gel.Camera,
 
      Physics,
 
      Ada.Text_IO,
      Ada.Exceptions;
 
-pragma Unreferenced (mmi.Window.setup);
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_drop_Ball_on_Box
@@ -19,30 +19,30 @@ procedure launch_drop_Ball_on_Box
 --  Drops a ball onto a box 'terrain'.
 --
 is
-   use mmi.Applet,
-       mmi.Applet.gui_world,
+   use gel.Applet,
+       gel.Applet.gui_world,
        Ada.Text_IO;
 
-   the_Applet :  mmi.Applet.gui_world.view := mmi.Forge.new_gui_Applet  ("drop Ball on Box",
+   the_Applet :  gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("drop Ball on Box",
                                                                          space_Kind => physics.Bullet);
 
-   function gui_World return mmi.World.view
+   function gui_World return gel.World.view
    is
    begin
-      return the_Applet.World (mmi.Applet.gui_world.gui_world_Id);
+      return the_Applet.World (gel.Applet.gui_world.gui_world_Id);
    end gui_World;
 
 
-   function gui_Camera return mmi.Camera.view
+   function gui_Camera return gel.Camera.view
    is
    begin
-      return the_Applet.Camera (mmi.Applet.gui_world.gui_world_Id,
-                                mmi.Applet.gui_world.gui_camera_Id);
+      return the_Applet.Camera (gel.Applet.gui_world.gui_world_Id,
+                                gel.Applet.gui_world.gui_camera_Id);
    end gui_Camera;
 
 
-   the_Ball   : constant mmi.Sprite.view     := mmi.Forge.new_ball_Sprite (gui_World);
-   the_Box    : constant mmi.Sprite.view     := mmi.Forge.new_box_Sprite  (gui_World,
+   the_Ball   : constant gel.Sprite.view     := gel.Forge.new_ball_Sprite (gui_World);
+   the_Box    : constant gel.Sprite.view     := gel.Forge.new_box_Sprite  (gui_World,
                                                                            mass => 0.0,
                                                                            size => (20.0, 1.0, 20.0));
 begin
