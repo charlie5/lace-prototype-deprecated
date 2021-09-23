@@ -58,8 +58,7 @@ begin
 
    while the_Applet.is_open
    loop
-      Put_Line ("Ball site: " & gel.math.Image (the_Ball.Site));
-      the_Applet.freshen;                      -- Handle any new events and update the screen.
+      the_Applet.freshen;     -- Handle any new events and update the screen.
    end loop;
 
    free (the_Applet);
