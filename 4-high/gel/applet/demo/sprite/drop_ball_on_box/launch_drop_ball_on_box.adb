@@ -41,10 +41,10 @@ is
    end gui_Camera;
 
 
-   the_Ball   : constant gel.Sprite.view     := gel.Forge.new_ball_Sprite (gui_World);
-   the_Box    : constant gel.Sprite.view     := gel.Forge.new_box_Sprite  (gui_World,
-                                                                           mass => 0.0,
-                                                                           size => (20.0, 1.0, 20.0));
+   the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (gui_World);
+   the_Box  : constant gel.Sprite.view := gel.Forge.new_box_Sprite  (gui_World,
+                                                                     Mass => 0.0,
+                                                                     Size => (20.0, 1.0, 20.0));
 begin
    gui_Camera.Site_is ((0.0, 2.0, 20.0));      -- Position the camera.
 
@@ -55,14 +55,11 @@ begin
    the_Ball.Site_is ((0.0, 10.0, 0.0));
    gui_World.add (the_Ball);                   -- Add ball.
    gui_World.add (the_Box);                    -- Add box.
-   --  the_Ball.Site_is ((0.0, 10.0, 0.0));
 
 
    while the_Applet.is_open
-   --  for i in 1 .. 10
    loop
       Put_Line ("Ball site: " & gel.math.Image (the_Ball.Site));
-      --  gui_World.evolve (by => 1.0 / 60.0);
       the_Applet.freshen;                      -- Handle any new events and update the screen.
    end loop;
 
