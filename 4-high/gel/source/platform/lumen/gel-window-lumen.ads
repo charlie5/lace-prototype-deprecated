@@ -1,26 +1,22 @@
 private
 with lumen.Window;
 
-
-
 package gel.Window.lumen
 --
---
+-- Provides a window which uses 'Lumen' as the backend.
 --
 is
-
    type Item is new gel.Window.item with private;
    type View is access all Item'Class;
 
 
-
-
-   --- construction
+   ---------
+   --- Forge
    --
 
    procedure define  (Self : in View;   Title  : in String;
-                                            Width  : in Natural;
-                                            Height : in Natural);
+                                        Width  : in Natural;
+                                        Height : in Natural);
    overriding
    procedure destroy (Self : in out Item);
 
@@ -34,34 +30,33 @@ is
 
 
 
-
-   --- attributes
+   --------------
+   --- Attributes
    --
 
+   -- Nil.
 
 
-
-   --- operations
+   --------------
+   --- Operations
    --
 
    overriding
-   procedure emit_Events  (Self : in out Item);
+   procedure emit_Events (Self : in out Item);
    overriding
-   procedure enable_GL    (Self : in     Item);
+   procedure enable_GL   (Self : in     Item);
    overriding
-   procedure disable_GL   (Self : in     Item);
+   procedure disable_GL  (Self : in     Item);
    overriding
-   procedure swap_GL      (Self : in out Item);
+   procedure swap_GL     (Self : in out Item);
 
 
 
 private
 
-
    type Item is new gel.Window.item with
       record
-         window_Handle : standard.lumen.Window.Window_Handle;
+         Window_handle : standard.lumen.Window.Window_handle;
       end record;
-
 
 end gel.Window.lumen;
