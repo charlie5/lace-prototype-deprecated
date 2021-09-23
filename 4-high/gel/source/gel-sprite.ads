@@ -320,16 +320,16 @@ private
    package joint_Vectors is new ada.Containers.Vectors (Positive, Joint.view);
 
 
-   protected
-   type safe_Matrix_4x4
-   is
-      function  Value       return Matrix_4x4;
-      procedure Value_is (Now : in Matrix_4x4);
-      procedure Site_is  (Now : in Vector_3);
-
-   private
-      the_Value : Matrix_4x4 := Identity_4x4;
-   end safe_Matrix_4x4;
+   --  protected
+   --  type safe_Matrix_4x4
+   --  is
+   --     function  Value       return Matrix_4x4;
+   --     procedure Value_is (Now : in Matrix_4x4);
+   --     procedure Site_is  (Now : in Vector_3);
+   --
+   --  private
+   --     the_Value : Matrix_4x4 := Identity_4x4;
+   --  end safe_Matrix_4x4;
 
 
    type Item is limited new lace.Subject_and_deferred_Observer.item with
@@ -348,7 +348,8 @@ private
          Solid                   : physics_Object_view;
          is_Kinematic            : Boolean;
 
-         Transform               : safe_Matrix_4x4;
+         --  Transform               : safe_Matrix_4x4;
+         --  Transform               : Matrix_4x4;
 
          Depth_in_camera_space   : Real;
 

@@ -119,7 +119,7 @@ is
       Self.owns_Physics   := owns_Physics;
 
       Self.is_Kinematic   := is_Kinematic;
-      Self.Transform.Site_is (physics_Model.Site);
+      --  set_Translation (Self.Transform, To => physics_Model.Site);
 
       --  Physics
       --
@@ -484,9 +484,10 @@ is
 
    function Site (Self : in Item) return Vector_3
    is
-      Transform : constant Matrix_4x4 := Self.Transform.Value;
+      --  Transform : constant Matrix_4x4 := Self.Transform;
    begin
-      return get_Translation (Transform);
+      --  return get_Translation (Self.Transform);
+      return Self.Solid.Site;
    end Site;
 
 
@@ -494,15 +495,16 @@ is
    procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
       use type physics.Model.view;
-      Transform : Matrix_4x4 := Self.Transform.Value;
+      --  Transform : Matrix_4x4 := Self.Transform.Value;
    begin
-      set_Translation   (Transform, Now);
-      Self.Transform_is (Transform);
+      Self.Solid.Site_is (Now);
+      --  set_Translation (Self.Transform, Now);
+      --  Self.Transform_is (Transform);
 
-      if Self.physics_Model /= null
-      then
-         Self.World.update_Site (Self'unchecked_Access, Now);
-      end if;
+      --  if Self.physics_Model /= null
+      --  then
+      --     Self.World.update_Site (Self'unchecked_Access, Now);
+      --  end if;
    end Site_is;
 
 
@@ -553,14 +555,14 @@ is
    procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
       use type Physics.Object.view;
-      Transform : Matrix_4x4 := Self.Transform.Value;
+      --  Transform : Matrix_4x4 := Self.Transform.Value;
    begin
-      set_Rotation      (Transform, Now);
-      Self.Transform_is (Transform);
+      --  set_Rotation      (Self.Transform, Now);
+      --  Self.Transform_is (Transform);
 
-      if Self.Solid /= null then
-         Self.Solid.Spin_is (Now);
-      end if;
+      --  if Self.Solid /= null then
+      Self.Solid.Spin_is (Now);
+      --  end if;
    end Spin_is;
 
 
@@ -619,7 +621,8 @@ is
    function Transform (Self : in Item) return Matrix_4x4
    is
    begin
-      return Self.Transform.Value;
+      --  return Self.Transform.Value;
+      return Self.Solid.Transform;
    end Transform;
 
 
@@ -627,7 +630,8 @@ is
    procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
    begin
-      Self.Transform.Value_is (Now);
+      --  Self.Transform.Value_is (Now);
+      Self.Solid.Transform_is (Now);
    end Transform_is;
 
 
@@ -1088,29 +1092,29 @@ is
 
 
 
-   protected
-   body safe_Matrix_4x4
-   is
-      function Value return Matrix_4x4
-      is
-      begin
-         return the_Value;
-      end Value;
-
-      procedure Value_is (Now : in Matrix_4x4)
-      is
-      begin
-         the_Value := Now;
-      end Value_is;
-
-      procedure Site_is (Now : in Vector_3)
-      is
-      begin
-         the_Value (4, 1) := Now (1);
-         the_Value (4, 2) := Now (2);
-         the_Value (4, 3) := Now (3);
-      end Site_is;
-   end safe_Matrix_4x4;
+   --  protected
+   --  body safe_Matrix_4x4
+   --  is
+   --     function Value return Matrix_4x4
+   --     is
+   --     begin
+   --        return the_Value;
+   --     end Value;
+   --
+   --     procedure Value_is (Now : in Matrix_4x4)
+   --     is
+   --     begin
+   --        the_Value := Now;
+   --     end Value_is;
+   --
+   --     procedure Site_is (Now : in Vector_3)
+   --     is
+   --     begin
+   --        the_Value (4, 1) := Now (1);
+   --        the_Value (4, 2) := Now (2);
+   --        the_Value (4, 3) := Now (3);
+   --     end Site_is;
+   --  end safe_Matrix_4x4;
 
 
 end gel.Sprite;
