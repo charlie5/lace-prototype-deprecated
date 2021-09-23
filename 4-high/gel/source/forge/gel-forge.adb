@@ -183,7 +183,7 @@ is
         := openGL.Model.sphere.lit_colored.new_Sphere (Radius, (Color, openGL.Opaque));
 
       the_physics_Model  : constant physics.Model.view
-        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius / 2.0),
+        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
                                                   Mass       => Mass);
    begin
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
