@@ -65,35 +65,41 @@ is
    --
 
    function new_ball_Sprite      (in_World     : in gel.World.view;
-                                  Mass         : in math.Real    := 1.0;
-                                  Radius       : in math.Real    := 0.5;
-                                  Color        : in openGL.Color := opengl.Palette.White) return gel.Sprite.view;
+                                  Site         : in math.Vector_3 := math.Origin_3d;
+                                  Mass         : in math.Real     := 1.0;
+                                  Radius       : in math.Real     := 0.5;
+                                  Color        : in openGL.Color  := opengl.Palette.White) return gel.Sprite.view;
 
    subtype box_Colors is openGL.Colors (1 .. 6);
 
    function new_box_Sprite       (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3 := math.Origin_3d;
                                   Mass         : in math.Real     := 1.0;
                                   Size         : in math.Vector_3 := (1.0, 1.0, 1.0);
                                   Colors       : in box_Colors    := (others => opengl.Palette.random_Color);
                                   is_Kinematic : in Boolean       := False) return gel.Sprite.view;
 
    function new_box_Sprite       (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3 := math.Origin_3d;
                                   Mass         : in math.Real     := 1.0;
                                   Size         : in math.Vector_3 := (1.0, 1.0, 1.0);
                                   Texture      : in openGL.asset_Name) return gel.Sprite.view;
 
    function new_billboard_Sprite (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3     := math.Origin_3d;
                                   Mass         : in math.Real         := 1.0;
                                   Size         : in math.Vector_3     := (1.0, 1.0, 1.0);
                                   Texture      : in openGL.asset_Name := openGL.null_Asset) return gel.Sprite.view;
 
    function new_billboard_Sprite (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3     := math.Origin_3d;
                                   Color        : in openGL.lucid_Color;
                                   Mass         : in math.Real         := 1.0;
                                   Size         : in math.Vector_3     := (1.0, 1.0, 1.0);
                                   Texture      : in openGL.asset_Name := openGL.null_Asset) return gel.Sprite.view;
 
    function new_arrow_Sprite     (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3      := math.Origin_3d;
                                   Mass         : in math.Real          := 0.0;
                                   Size         : in math.Vector_3      := (1.0, 1.0, 1.0);
                                   Texture      : in openGL.asset_Name  := openGL.null_Asset;
@@ -101,6 +107,7 @@ is
                                   line_Width   : in openGL.Real        := openGL.Primitive.unused_line_Width) return gel.Sprite.view;
 
    function new_line_Sprite      (in_World     : in gel.World.view;
+                                  Site         : in math.Vector_3      := math.Origin_3d;
                                   Mass         : in math.Real          := 0.0;
                                   Size         : in math.Vector_3      := (1.0, 1.0, 1.0);
                                   Texture      : in openGL.asset_Name  := openGL.null_Asset;
@@ -108,6 +115,7 @@ is
                                   line_Width   : in openGL.Real        := openGL.Primitive.unused_line_Width) return gel.Sprite.view;
 
    function new_segment_line_Sprite (in_World     : in gel.World.view;
+                                     Site         : in math.Vector_3      := math.Origin_3d;
                                      Mass         : in math.Real          := 0.0;
                                      Size         : in math.Vector_3      := (1.0, 1.0, 1.0);
                                      Texture      : in openGL.asset_Name  := openGL.null_Asset;
@@ -117,6 +125,7 @@ is
    --
 
    function new_text_Sprite (in_World : in gel.World.view;
+                             Site     : in math.Vector_3 := math.Origin_3d;
                              Text     : in String;
                              Font     : in openGL.Font.font_Id;
                              Color    : in openGL.Color  := opengl.Palette.Black;

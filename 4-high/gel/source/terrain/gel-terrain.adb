@@ -168,7 +168,7 @@ is
 
                   the_ground_physics_Model : constant physics.Model.view
                     := new physics.Model.item' (Id          => physics.null_model_Id,
-                                                Site        => Origin_3d,
+                                                --  Site        => Origin_3d,
                                                 Scale       => Scale,
                                                 shape_Info  => (physics.Model.Heightfield,
                                                                 Heights      => to_Physics (the_Region),
@@ -188,8 +188,11 @@ is
                                              Scale (2),
                                              Scale (3));
 
+                  the_Site := (0.0, 0.0, 0.0);
+
                   the_Sprite := gel.Sprite.Forge.new_Sprite ("Terrain" & Row'Image & Col'Image,
                                                              sprite.World_view (World),
+                                                             the_Site,
                                                              the_ground_Model,
                                                              the_ground_physics_Model,
                                                              owns_Graphics => True,
@@ -197,8 +200,6 @@ is
 
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
-
-                  the_Site := (0.0, 0.0, 0.0);
 
                   the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
 

@@ -55,6 +55,7 @@ is
    --
 
    procedure define  (Self : access Item;   World          : in     World_view;
+                                            at_Site        : in     Vector_3;
                                             graphics_Model : access openGL. Model.item'Class;
                                             physics_Model  : access physics.Model.item'Class;
                                             owns_Graphics  : in     Boolean;
@@ -70,6 +71,7 @@ is
    is
       function  to_Sprite (Name           : in     String;
                            World          : in     World_view;
+                           at_Site        : in     Vector_3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
                            owns_Graphics  : in     Boolean;
@@ -78,6 +80,7 @@ is
 
       function new_Sprite (Name           : in     String;
                            World          : in     World_view;
+                           at_Site        : in     Vector_3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
                            owns_Graphics  : in     Boolean := True;
@@ -308,7 +311,7 @@ is
    --- Physics
    --
    procedure rebuild_Shape (Self : in out Item);
-   procedure rebuild_Solid (Self : in out Item);
+   procedure rebuild_Solid (Self : in out Item;   at_Site : in Vector_3);
 
 
 
