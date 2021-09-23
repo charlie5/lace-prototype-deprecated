@@ -33,6 +33,37 @@ is
    the_Window : gel.Window.lumen.view;
 
 
+   -------------
+   --- Callbacks
+   --
+   procedure resize_Handler         (Height    : in Integer;
+                                     Width     : in Integer);
+   procedure key_Handler            (Category  : in std_Lumen.Events.key_Category;
+                                     Symbol    : in std_Lumen.Events.key_Symbol;
+                                     Modifiers : in std_Lumen.Events.modifier_Set);
+   procedure key_release_Handler    (Category  : in std_Lumen.Events.Key_Category;
+                                     Symbol    : in std_Lumen.Events.Key_Symbol;
+                                     Modifiers : in std_Lumen.Events.Modifier_Set);
+   procedure button_Handler         (X         : in Integer;
+                                     Y         : in Integer;
+                                     Button    : in std_Lumen.Window.Button_enum;
+                                     Modifiers : in Events.modifier_Set);
+   procedure button_release_Handler (X         : in Integer;
+                                     Y         : in Integer;
+                                     Button    : in std_Lumen.Window.Button_enum;
+                                     Modifiers : in events.modifier_Set);
+   procedure drag_Handler           (X         : in Integer;
+                                     Y         : in Integer;
+                                     Modifiers : in Events.modifier_Set);
+   procedure expose_Handler         (Top       : in Integer;
+                                     Left      : in Integer;
+                                     Height    : in Natural;
+                                     Width     : in Natural);
+   procedure unexpose_Handler       (Top       : in Integer;
+                                     Left      : in Integer;
+                                     Height    : in Natural;
+                                     Width     : in Natural);
+
    ---------
    --- Forge
    --
@@ -66,6 +97,15 @@ is
       else
          raise Error with "Attempt to define Lumen window twice.";
       end if;
+
+      Self.Window_handle.Exposed     := expose_Handler        'unrestricted_Access;
+      Self.Window_handle.Unexposed   := unexpose_Handler      'unrestricted_Access;
+      Self.Window_handle.Resize      := resize_Handler        'unrestricted_Access;
+      Self.Window_handle.Key_press   := key_Handler           'unrestricted_Access;
+      Self.Window_handle.Key_release := key_release_Handler   'unrestricted_Access;
+      Self.Window_handle.Mouse_down  := button_Handler        'unrestricted_Access;
+      Self.Window_handle.Mouse_up    := button_release_Handler'unrestricted_Access;
+      Self.Window_handle.Mouse_move  := drag_Handler          'unrestricted_Access;
    end define;
 
 
@@ -406,16 +446,7 @@ is
 --                     Close_Window   => Quit_Handler          'unrestricted_Access,
 --                     others         => No_Callback));
 
-      Self.Window_handle.Exposed     := expose_Handler        'unrestricted_Access;
-      Self.Window_handle.Unexposed   := unexpose_Handler      'unrestricted_Access;
-      Self.Window_handle.Resize      := resize_Handler        'unrestricted_Access;
-      Self.Window_handle.Key_press   := key_Handler           'unrestricted_Access;
-      Self.Window_handle.Key_release := key_release_Handler   'unrestricted_Access;
-      Self.Window_handle.Mouse_down  := button_Handler        'unrestricted_Access;
-      Self.Window_handle.Mouse_up    := button_release_Handler'unrestricted_Access;
-      Self.Window_handle.Mouse_move  := drag_Handler          'unrestricted_Access;
-
-      std_Lumen.Window.Swap (Self.Window_handle);
+      --  std_Lumen.Window.Swap (Self.Window_handle);
    end emit_Events;
 
 
