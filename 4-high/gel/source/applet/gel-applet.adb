@@ -420,6 +420,7 @@ is
 
    begin
       Self.Window.emit_Events;
+      Self.Window.swap_GL;
 
       Self                           .respond;
       Self.local_Subject_and_Observer.respond;
