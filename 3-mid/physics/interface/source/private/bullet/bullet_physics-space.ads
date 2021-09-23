@@ -6,6 +6,7 @@ private
 with
      bullet_c,
      bullet_c.Pointers,
+     bullet_Physics.Object,
 
      physics.Shape,
      physics.Object,
@@ -13,7 +14,9 @@ with
      physics.Joint.slider,
      physics.Joint.hinge,
      physics.Joint.cone_twist,
-     physics.Joint.DoF6;
+     physics.Joint.DoF6,
+
+     ada.Containers.hashed_Maps;
 
 package bullet_Physics.Space
 --
@@ -36,9 +39,19 @@ is
 
 private
 
+   function Hash (the_C_Object : in bullet_c.Pointers.Object_Pointer) return ada.Containers.Hash_type;
+   use type bullet_c.Pointers.Object_pointer;
+   use type bullet_Physics.Object.view;
+   package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => bullet_c.Pointers.Object_Pointer,
+                                                                      Element_type    => bullet_Physics.Object.view,
+                                                                      Hash            => Hash,
+                                                                      equivalent_Keys => "=",
+                                                                      "="             => "=");
+
    type Item is new physics.Space.item with
       record
-         C : bullet_c.Pointers.Space_Pointer;
+         C          : bullet_c.Pointers.Space_Pointer;
+         object_Map : c_Object_Maps_of_Object.Map;
       end record;
 
    use Math;

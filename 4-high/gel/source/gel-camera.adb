@@ -2,6 +2,8 @@ with
      openGL.Visual,
      ada.unchecked_Deallocation;
 
+with ada.Text_IO; use ada.Text_IO;
+
 package body gel.Camera
 is
    use linear_Algebra_3D;

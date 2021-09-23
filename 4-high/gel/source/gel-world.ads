@@ -369,6 +369,9 @@ private
    protected
    type all_sprite_Transforms
    is
+      procedure add (the_Sprite : in Sprite.view;
+                     Transform  : in Matrix_4x4);
+
       procedure set (To : in sprite_Maps_of_transforms.Map);
       function  fetch return sprite_Maps_of_transforms.Map;
 

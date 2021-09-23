@@ -270,6 +270,14 @@ is
    protected
    body all_sprite_Transforms
    is
+      procedure add (the_Sprite : in Sprite.view;
+                     Transform  : in Matrix_4x4)
+      is
+      begin
+         sprite_Map_of_transforms.insert (the_Sprite, Transform);
+      end add;
+
+
       procedure set (To : in sprite_Maps_of_transforms.Map)
       is
       begin
@@ -1110,6 +1118,8 @@ is
                                                 To        : in Vector_3)
    is
    begin
+      of_Sprite.Solid.Site_is (To);
+
 --      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
 
       --  Self.Commands.add ((Kind   => update_Site,
@@ -1603,7 +1613,7 @@ is
          Self.add (Single.graphics_Model);
          Self.add (Single. physics_Model);
 
-         --  the_sprite_Transforms.insert  (the_Sprite, Identity_4x4);
+         Self.all_sprite_Transforms.add (the_Sprite, the_Sprite.Transform);
 
          Single.Solid.user_Data_is (Single'Access);
          Single.Solid.    Model_is (Single.physics_Model);
@@ -1831,6 +1841,42 @@ is
       use sprite_Maps_of_transforms;
    begin
       Self.Age := Self.Age + By;
+
+      --  Evolve the physics.
+      --
+      if not Self.is_a_Mirror
+      then
+         Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
+      end if;
+
+
+      --  Update sprite transforms.
+      --
+      declare
+         use sprite_Maps_of_transforms;
+         the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.Fetch;
+
+         Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+         the_Sprite : gel.Sprite.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Sprite := Key (Cursor);
+            declare
+               the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+            begin
+               Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
+               the_sprite_Transforms.replace_Element (Cursor, the_Transform);
+            end;
+            next (Cursor);
+         end loop;
+
+         Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
+      end;
+
+      Self.new_sprite_transforms_Available.signal;
+      Self.evolver_Done                   .signal;
+
 
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;

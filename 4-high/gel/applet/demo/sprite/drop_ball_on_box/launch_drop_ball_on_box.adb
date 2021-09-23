@@ -52,14 +52,17 @@ begin
 
    gui_World.Gravity_is ((0.0, -9.8, 0.0));
 
-   gui_World.add (the_Box);                    -- Add box.
-   gui_World.add (the_Ball);                   -- Add ball.
---
    the_Ball.Site_is ((0.0, 10.0, 0.0));
+   gui_World.add (the_Ball);                   -- Add ball.
+   gui_World.add (the_Box);                    -- Add box.
+   --  the_Ball.Site_is ((0.0, 10.0, 0.0));
+
 
    while the_Applet.is_open
+   --  for i in 1 .. 10
    loop
-      gui_World.evolve (by => 1.0 / 60.0);
+      Put_Line ("Ball site: " & gel.math.Image (the_Ball.Site));
+      --  gui_World.evolve (by => 1.0 / 60.0);
       the_Applet.freshen;                      -- Handle any new events and update the screen.
    end loop;
 

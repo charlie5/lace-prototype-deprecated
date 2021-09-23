@@ -218,6 +218,14 @@ is
    ------------
    ---  Objects
    --
+   function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type
+   is
+      function convert is new ada.unchecked_Conversion (bullet_c.Pointers.Object_pointer,
+                                                        ada.Containers.Hash_type);
+   begin
+      return convert (the_C_Object);
+   end Hash;
+
 
    overriding
    function  new_Object (Self : access Item;   of_Shape     : in physics.Shape .view;
@@ -412,6 +420,22 @@ is
    is
    begin
       bullet_c.Binding.b3d_Space_evolve (Self.C, C.C_float (By));
+
+      -- Update each objects dynamics.
+      --
+      declare
+         use c_Object_Maps_of_Object;
+         Cursor     : c_Object_Maps_of_Object.Cursor := Self.object_Map.First;
+         the_Object : bullet_Physics.Object.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Object := Element (Cursor);
+            the_Object.update_Dynamics;
+
+            next (Cursor);
+         end loop;
+      end;
    end evolve;
 
 

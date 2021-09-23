@@ -15,6 +15,8 @@ with
      ada.unchecked_Deallocation,
      ada.Text_IO;
 
+use ada.Text_IO;
+
 package body gel.Applet
 is
    use lace.Event.utility,
@@ -453,7 +455,6 @@ is
                   loop
                      all_cameras_Last               := all_cameras_Last + 1;
                      all_Cameras (all_cameras_Last) := Element (camera_Cursor);
-
                      Element (camera_Cursor).render (the_world_Info.World,
                                                      To => Self.Window.Surface);
                      next (camera_Cursor);
