@@ -1866,7 +1866,7 @@ is
             declare
                the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
             begin
-               Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
+               --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
                the_sprite_Transforms.replace_Element (Cursor, the_Transform);
             end;
             next (Cursor);
