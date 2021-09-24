@@ -67,6 +67,10 @@ is
                                      the_box_graphics_Model,
                                      the_box_physics_Model);
 begin
+   new_Line;
+   put_Line ("Use arrow keys and PgUp/PgDn to move the camera.");
+   new_Line;
+
    the_Applet.gui_Camera.Site_is ((0.0, 5.0, 15.0));      -- Position the camera.
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
    the_Applet.enable_Mouse (detect_Motion => False);      -- Enable the mouse.
