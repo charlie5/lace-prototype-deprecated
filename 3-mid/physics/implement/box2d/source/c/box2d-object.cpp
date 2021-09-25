@@ -1,15 +1,12 @@
 #include "box2d-object.h"
 #include "box2d-object-private.h"
 #include <box2d/box2d.h>
-#include <cmath>
 
+#include <cmath>
 #include <stdio.h>
 
 
-
-extern "C"
-{
-
+extern "C" {
 
 struct Object*
 b2d_new_Object (Vector_2*   Site,
@@ -49,12 +46,12 @@ b2d_free_Object (Object*   Self)
 
 
 void
-b2d_Object_Scale_is (Object*   Self,   Vector_2*   Now)
+b2d_Object_Scale_is (Object*     Self,
+                     Vector_2*   Now)
 {
-  b2Vec2      old_Scale = Self->Scale;
+  b2Vec2     old_Scale = Self->Scale;
 
   Self->Scale = b2Vec2 (Now->x, Now->y);
-
 
   //  Shape
   //
@@ -69,12 +66,13 @@ b2d_Object_Scale_is (Object*   Self,   Vector_2*   Now)
       b2PolygonShape*   the_Polygon = (b2PolygonShape*) the_Shape;
 
       for (int i = 0;  i < the_Polygon->m_count;  i++)
-	{
-	  the_Polygon->m_vertices [i].x = the_Polygon->m_vertices [i].x / old_Scale.x * Self->Scale.x;
-	  the_Polygon->m_vertices [i].y = the_Polygon->m_vertices [i].y / old_Scale.x * Self->Scale.y;
-	}
+	      {
+	         the_Polygon->m_vertices [i].x = the_Polygon->m_vertices [i].x / old_Scale.x * Self->Scale.x;
+	         the_Polygon->m_vertices [i].y = the_Polygon->m_vertices [i].y / old_Scale.x * Self->Scale.y;
+	      }
 
-      the_Polygon->Set (the_Polygon->m_vertices, the_Polygon->m_count);
+        the_Polygon->Set (the_Polygon->m_vertices,
+                          the_Polygon->m_count);
     }
 
 
@@ -85,8 +83,6 @@ b2d_Object_Scale_is (Object*   Self,   Vector_2*   Now)
       Self->body->DestroyFixture (Self->body->GetFixtureList());
       Self->body->CreateFixture  (&Self->fixtureDef);
     }
-
-
 }
 
 
@@ -99,7 +95,6 @@ b2d_Object_Shape (Object*   Self)
 
 
 
-
 void*
 b2d_Object_user_Data (Object*   Self)
 {
@@ -108,8 +103,8 @@ b2d_Object_user_Data (Object*   Self)
 
 
 
-void
-b2d_Object_user_Data_is   (Object*   Self,   void*   Now)
+void b2d_Object_user_Data_is (Object*   Self,
+                              void*     Now)
 {
   Self->userData = Now;
 }
@@ -128,7 +123,8 @@ b2d_Object_Mass (Object*   Self)
 
 
 void
-b2d_Object_Friction_is    (Object*   Self,   Real   Now)
+b2d_Object_Friction_is (Object*   Self,
+                        Real      Now)
 {
   Self->fixtureDef.friction = Now;
 }
@@ -136,26 +132,25 @@ b2d_Object_Friction_is    (Object*   Self,   Real   Now)
 
 
 void
-b2d_Object_Restitution_is    (Object*   Self,   Real   Now)
+b2d_Object_Restitution_is (Object*   Self,
+                           Real      Now)
 {
   Self->fixtureDef.restitution = Now;
 }
 
 
 
-
 Vector_3
 b2d_Object_Site (Object*   Self)
 {
-  Vector_3       the_Site;
+  Vector_3     the_Site;
 
   if (Self->body)
     {
-      b2Vec2   Pos = Self->body->GetPosition();
+      b2Vec2     Pos = Self->body->GetPosition();
 
       the_Site.x = Pos.x;
       the_Site.y = Pos.y;
-/* 	b2d_dump (Self); */
     }
   else
     {
@@ -171,11 +166,12 @@ b2d_Object_Site (Object*   Self)
 
 
 void
-b2d_Object_Site_is (Object*   Self,   Vector_3*   Now)
+b2d_Object_Site_is (Object*     Self,
+                    Vector_3*   Now)
 {
   if (Self->body)
     {
-      b2Vec2   the_Site;
+      b2Vec2     the_Site;
 
       the_Site.x = Now->x;
       the_Site.y = Now->y;
@@ -194,13 +190,13 @@ b2d_Object_Site_is (Object*   Self,   Vector_3*   Now)
 Matrix_3x3
 b2d_Object_Spin (Object*   Self)
 {
-  b2Vec2        x_Axis;
-  b2Vec2        y_Axis;
-  b2Rot         b2_Rotation;
+  b2Vec2     x_Axis;
+  b2Vec2     y_Axis;
+  b2Rot      b2_Rotation;
 
   if (Self->body)
     {
-      b2Transform   b2_Transform = Self->body->GetTransform();
+      b2Transform     b2_Transform = Self->body->GetTransform();
 
       b2_Rotation = b2_Transform.q;
     }
@@ -214,17 +210,17 @@ b2d_Object_Spin (Object*   Self)
 
   return Matrix_3x3 (x_Axis (0),  x_Axis (1),  0.0,
                      y_Axis (0),  y_Axis (1),  0.0,
-                            0.0,         0.0,  0.0);
+                            0.0,         0.0,  1.0);
 }
 
 
 
 void
-b2d_Object_Spin_is (Object*   Self,   Matrix_3x3*   Now)
+b2d_Object_Spin_is (Object*       Self,
+                    Matrix_3x3*   Now)
 {
-  b2Vec2    Pos   = b2Vec2 (Now->m20, Now->m21);
-  float     Angle = atan2  (Now->m10, Now->m00);
-
+  b2Vec2     Pos   = b2Vec2 (Now->m20, Now->m21);
+  float      Angle = atan2  (Now->m10, Now->m00);
 
   if (Self->body)
     {
@@ -242,9 +238,9 @@ b2d_Object_Spin_is (Object*   Self,   Matrix_3x3*   Now)
 Real
 b2d_Object_xy_Spin (Object*   Self)
 {
-  b2Vec2        x_Axis;
-  b2Vec2        y_Axis;
-  b2Rot         b2_Rotation;
+  b2Vec2     x_Axis;
+  b2Vec2     y_Axis;
+  b2Rot      b2_Rotation;
 
   if (Self->body)
     {
@@ -258,13 +254,13 @@ b2d_Object_xy_Spin (Object*   Self)
 
 
 
-void
-b2d_Object_xy_Spin_is (Object*   Self,   Real   Now)
+void b2d_Object_xy_Spin_is (Object*   Self,
+                            Real      Now)
 {
   if (Self->body)
     {
-    Self->body->SetTransform (Self->body->GetPosition(),
-                              Now);
+      Self->body->SetTransform (Self->body->GetPosition(),
+                                Now);
     }
   else
     {
@@ -277,9 +273,8 @@ b2d_Object_xy_Spin_is (Object*   Self,   Real   Now)
 Matrix_4x4
 b2d_Object_Transform (Object*   Self)
 {
-  b2Transform   T;
-  Matrix_4x4    M;
-
+  b2Transform     T;
+  Matrix_4x4      M;
 
   if (Self->body)
     {
@@ -287,13 +282,12 @@ b2d_Object_Transform (Object*   Self)
     }
   else
     {
-      T = b2Transform (       Self->bodyDef.position,
-	               b2Rot (Self->bodyDef.angle));
+      T = b2Transform (Self->bodyDef.position,
+	                     b2Rot (Self->bodyDef.angle));
     }
 
-  b2Vec2   x_Axis = T.q.GetXAxis();
-  b2Vec2   y_Axis = T.q.GetYAxis();
-
+  b2Vec2     x_Axis = T.q.GetXAxis();
+  b2Vec2     y_Axis = T.q.GetYAxis();
 
   M.m00 = x_Axis (0);   M.m01 = x_Axis (1);   M.m02 = 0.0;   M.m03 = 0.0;
   M.m10 = y_Axis (0);   M.m11 = y_Axis (1);   M.m12 = 0.0;   M.m13 = 0.0;
@@ -306,10 +300,11 @@ b2d_Object_Transform (Object*   Self)
 
 
 void
-b2d_Object_Transform_is (Object*   Self,   Matrix_4x4*   Now)
+b2d_Object_Transform_is (Object*       Self,
+                         Matrix_4x4*   Now)
 {
-  b2Vec2    Pos   = b2Vec2 (Now->m30, Now->m31);
-  float     Angle = atan2  (Now->m10, Now->m00);
+  b2Vec2     Pos   = b2Vec2 (Now->m30, Now->m31);
+  float      Angle = atan2  (Now->m10, Now->m00);
 
   if (Self->body)
     {
@@ -327,7 +322,7 @@ b2d_Object_Transform_is (Object*   Self,   Matrix_4x4*   Now)
 Vector_3
 b2d_Object_Speed (Object*   Self)
 {
-  Vector_3       the_Speed;
+  Vector_3     the_Speed;
 
   if (Self->body)
     {
@@ -350,7 +345,8 @@ b2d_Object_Speed (Object*   Self)
 
 
 void
-b2d_Object_Speed_is (Object*   Self,   Vector_3*   Now)
+b2d_Object_Speed_is (Object*     Self,
+                     Vector_3*   Now)
 {
   if (Self->body)
     {
@@ -363,39 +359,47 @@ b2d_Object_Speed_is (Object*   Self,   Vector_3*   Now)
 Vector_3
 b2d_Object_Gyre (Object*   Self)
 {
-  Vector_3       the_Gyre;
+  Vector_3     the_Gyre;     // TODO
 
+  1/0;                       // Force an error.
   return the_Gyre;
 }
 
 
 
 void
-b2d_Object_Gyre_is (Object*   Self,   Vector_3*   Now)
+b2d_Object_Gyre_is (Object*     Self,
+                    Vector_3*   Now)
 {
-  // todo
+  // TODO
+  1/0;                       // Force an error.
 }
 
 
 
 void
-b2d_Object_apply_Torque (Object*   Self,   Vector_3*   Torque)
+b2d_Object_apply_Torque (Object*     Self,
+                         Vector_3*   Torque)
 {
-  // todo
+  // TODO
+  1/0;                       // Force an error.
 }
 
 
 
 void
-b2d_Object_apply_Torque_impulse (Object*   Self,   Vector_3*   Torque)
+b2d_Object_apply_Torque_impulse (Object*     Self,
+                                 Vector_3*   Torque)
 {
-  // todo
+  // TODO
+  1/0;                       // Force an error.
 }
 
 
 
 void
-b2d_Object_apply_Force (Object*   Self,   Vector_3*   Force)
+b2d_Object_apply_Force (Object*     Self,
+                        Vector_3*   Force)
 {
   Self->body->ApplyForceToCenter (b2Vec2 (Force->x, Force->y), 1);
 }
@@ -409,4 +413,4 @@ b2d_dump (Object*   Self)
 }
 
 
-} // extern "C"
+} // end extern "C"
