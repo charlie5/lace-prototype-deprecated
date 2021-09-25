@@ -1651,7 +1651,7 @@ is
 
          begin
             the_Sprite.apply (add_single_Sprite'unrestricted_Access);
-            the_Sprite.apply (add_the_Joint 'unrestricted_Access);
+            the_Sprite.apply (add_the_Joint    'unrestricted_Access);
          end;
       else
          add_single_Sprite (the_Sprite.all);
