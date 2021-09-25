@@ -248,11 +248,11 @@ b2d_Object_xy_Spin (Object*   Self)
 
   if (Self->body)
     {
-      return Self->body->GetAngularVelocity();
+      return Self->body->GetAngle();
     }
   else
     {
-      return 0.0;
+      return Self->bodyDef.angle;
     }
 }
 
@@ -263,10 +263,12 @@ b2d_Object_xy_Spin_is (Object*   Self,   Real   Now)
 {
   if (Self->body)
     {
-      Self->body->SetAngularVelocity (Now);
+    Self->body->SetTransform (Self->body->GetPosition(),
+                              Now);
     }
   else
     {
+      Self->bodyDef.angle = Now;
     }
 }
 
