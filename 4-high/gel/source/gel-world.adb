@@ -1149,7 +1149,8 @@ is
                                                 To        : in Radians)
    is
    begin
-      null;
+      of_Sprite.Solid.xy_Spin_is (To);
+
       --  Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
 
 --        Self.Commands.add ((kind    => set_xy_Spin,
