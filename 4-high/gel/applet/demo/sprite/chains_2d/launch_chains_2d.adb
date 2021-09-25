@@ -111,7 +111,7 @@ begin
          end loop;
       end;
 
-      the_Applet.gui_World.add (the_root_Ball, and_children => True);
+      the_Applet.gui_World.add (the_root_Ball, and_Children => True);
 
 
       declare
@@ -172,8 +172,6 @@ begin
 
             end if;
 
-            --  Put_Line (Image (the_Ground.Site));
-            Put_Line (the_Ground.xy_Spin'Image);
             the_Applet.freshen;     -- Handle any new events and update the screen.
          end loop;
       end;
