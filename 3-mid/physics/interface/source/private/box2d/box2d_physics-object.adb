@@ -342,7 +342,7 @@ is
    procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_item'Class)
    is
    begin
-      Self.user_Data := Now;
+      Self.user_Data := Now.all'unchecked_Access;
    end user_Data_is;
 
 
