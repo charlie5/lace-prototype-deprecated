@@ -935,9 +935,11 @@ is
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
-      the_Joint.define (Self.World.Space,
-                        Self,        the_Child,
-                        pivot_Axis,  pivot_Anchor);
+      the_Joint.define (in_Space     => Self.World.Space,
+                        Sprite_A     => Self,
+                        Sprite_B     => the_Child,
+                        pivot_Axis   => pivot_Axis,
+                        pivot_Anchor => pivot_Anchor);
 
       the_Joint.Limits_are (low_Limit, high_Limit);
 
@@ -956,9 +958,10 @@ is
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
-      the_Joint.define (Self.World.Space,
-                        Self, the_Child,
-                        pivot_Axis);
+      the_Joint.define (in_Space   => Self.World.Space,
+                        Sprite_A   => Self,
+                        Sprite_B   => the_Child,
+                        pivot_Axis => pivot_Axis);
 
       the_Joint.Limits_are (low_Limit, high_Limit);
 
