@@ -1641,11 +1641,12 @@ is
             procedure add_the_Joint (the_Sprite : in out Sprite.item'Class)
             is
                use type gel.Joint.view;
+               the_Joint : gel.Joint.view := the_Sprite.parent_Joint;
             begin
-               if the_Sprite.parent_Joint /= null
+               if the_Joint /= null
                then
-                  null;
-                  --  Self.physics_Engine.add (the_Sprite.parent_Joint.Physics.all'Access);
+                  Self.physics_Space.add         (the_Joint.Physics.all'Access);
+                  the_Joint.Physics.user_Data_is (the_Joint);
                end if;
             end add_the_Joint;
 
