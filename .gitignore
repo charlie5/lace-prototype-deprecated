@@ -28,8 +28,10 @@ bin
 3-mid/impact/contrib
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
+3-mid/physics/implement/box2d/contrib
 
 4-high/gel/source/platform/sdl/attic
+
 
 
 ## Assets
@@ -67,6 +69,7 @@ launch_hello_physics_interface_3d_demo
 launch_drop_ball_on_box
 launch_drop_box_on_box
 launch_hello_gel
+launch_chains_2d
 launch_text_sprite_demo
 launch_impact_hello_3d_demo
 launch_camera_demo
