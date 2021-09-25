@@ -1615,7 +1615,7 @@ is
          Self.add (Single.graphics_Model);
          Self.add (Single. physics_Model);
 
-         Self.all_sprite_Transforms.add (the_Sprite, the_Sprite.Transform);
+         Self.all_sprite_Transforms.add (Single'unchecked_Access, Single.Transform);
 
          Single.Solid.user_Data_is (Single'Access);
          Single.Solid.    Model_is (Single.physics_Model);
