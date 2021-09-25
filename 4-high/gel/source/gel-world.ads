@@ -339,13 +339,13 @@ private
    --- sprite_transform_Updater
    --
 
-   task
-   type sprite_transform_Updater (the_World : access gel.World.item'Class)
-   is
-      entry stop;
-   end sprite_transform_Updater;
-
-   type sprite_transform_Updater_view is access all sprite_transform_Updater;
+   --  task
+   --  type sprite_transform_Updater (the_World : access gel.World.item'Class)
+   --  is
+   --     entry stop;
+   --  end sprite_transform_Updater;
+   --
+   --  type sprite_transform_Updater_view is access all sprite_transform_Updater;
 
 
    ---------------------
@@ -556,7 +556,7 @@ private
 
          all_sprite_Transforms           : World.all_sprite_Transforms;
          new_sprite_transforms_Available : Signal_Object;
-         sprite_transform_Updater        : World.sprite_transform_Updater (Item'Access);
+         --  sprite_transform_Updater        : World.sprite_transform_Updater (Item'Access);
 
          evolver_Done : Signal_Object;
 

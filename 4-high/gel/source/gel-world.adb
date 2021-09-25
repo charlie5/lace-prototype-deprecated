@@ -58,21 +58,21 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-      Self.sprite_transform_Updater.stop;
+      --  Self.sprite_transform_Updater.stop;
       --  Self.physics_Engine          .stop;
       --  Self.Engine                  .stop;
 
       --  while not Self.Engine                  'Terminated
       --    and not Self.sprite_transform_Updater'Terminated
-      while not Self.sprite_transform_Updater'Terminated
-      loop
-         delay 0.01;
-      end loop;
+      --  while not Self.sprite_transform_Updater'Terminated
+      --  loop
+      --     delay 0.01;
+      --  end loop;
 
       --  Free record components.
       --
       declare
-         procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
+         --  procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
          --  procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
          --  procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
       begin
@@ -1004,55 +1004,55 @@ is
 
 
 
-   task body sprite_transform_Updater
-   is
-      Stopped : Boolean := False;
-
-   begin
-      while not the_World.is_a_Mirror
-      loop
-         select
-            accept stop
-            do
-               Stopped := True;
-            end stop;
-         else
-            null;
-         end select;
-
-         exit when Stopped;
-
-         begin
-            select
-               the_World.new_sprite_transforms_Available.wait;
-
-               declare
-                  use sprite_Maps_of_transforms;
-
-                  the_sprite_Transforms : constant sprite_Maps_of_transforms.Map
-                    := the_World.all_sprite_Transforms.fetch;
-
-                  Cursor                :          sprite_Maps_of_transforms.Cursor
-                    := the_sprite_Transforms.First;
-               begin
-                  while has_Element (Cursor)
-                  loop
-                     Key  (Cursor).Transform_is (Element (Cursor));
-                     next (Cursor);
-                  end loop;
-               end;
-            or
-               delay 0.5;
-            end select;
-         end;
-      end loop;
-
-   exception
-      when E : others =>
-         put_Line ("sprite_transform_Updater unhandled exception ...");
-         put_Line (exception_Information (E));
-         put_Line ("sprite_transform_Updater has terminated !");
-   end sprite_transform_Updater;
+   --  task body sprite_transform_Updater
+   --  is
+   --     Stopped : Boolean := False;
+   --
+   --  begin
+   --     while not the_World.is_a_Mirror
+   --     loop
+   --        select
+   --           accept stop
+   --           do
+   --              Stopped := True;
+   --           end stop;
+   --        else
+   --           null;
+   --        end select;
+   --
+   --        exit when Stopped;
+   --
+   --        begin
+   --           select
+   --              the_World.new_sprite_transforms_Available.wait;
+   --
+   --              declare
+   --                 use sprite_Maps_of_transforms;
+   --
+   --                 the_sprite_Transforms : constant sprite_Maps_of_transforms.Map
+   --                   := the_World.all_sprite_Transforms.fetch;
+   --
+   --                 Cursor                :          sprite_Maps_of_transforms.Cursor
+   --                   := the_sprite_Transforms.First;
+   --              begin
+   --                 while has_Element (Cursor)
+   --                 loop
+   --                    Key  (Cursor).Transform_is (Element (Cursor));
+   --                    next (Cursor);
+   --                 end loop;
+   --              end;
+   --           or
+   --              delay 0.5;
+   --           end select;
+   --        end;
+   --     end loop;
+   --
+   --  exception
+   --     when E : others =>
+   --        put_Line ("sprite_transform_Updater unhandled exception ...");
+   --        put_Line (exception_Information (E));
+   --        put_Line ("sprite_transform_Updater has terminated !");
+   --  end sprite_transform_Updater;
 
 
 
