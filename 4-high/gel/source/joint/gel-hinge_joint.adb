@@ -22,9 +22,9 @@ is
                    Sprite_A,   Sprite_B,
                    the_Axis,
                    pivot_in_A, pivot_in_B,
-                   low_Limit               => to_Radians (-180.0),
-                   high_Limit              => to_Radians ( 180.0),
-                   collide_Conected        => False);
+                   low_Limit        => to_Radians (-180.0),
+                   high_Limit       => to_Radians ( 180.0),
+                   collide_Conected => False);
    end define;
 
 
@@ -35,7 +35,11 @@ is
    is
       Midpoint : constant Vector_3 := (Sprite_A.Site + Sprite_B.Site) / 2.0;
    begin
-      define (Self, in_Space, Sprite_A, Sprite_B, pivot_Axis, pivot_anchor => Midpoint);
+      Self.define (in_Space,
+                   Sprite_A,
+                   Sprite_B,
+                   pivot_Axis,
+                   pivot_anchor => Midpoint);
    end define;
 
 
@@ -98,7 +102,7 @@ is
                                            Sprite_A,
                                            Sprite_B         : access gel.Sprite.item'Class;
                                            pivot_Axis       : in     Vector_3;
-                                           Anchor_in_A      : in     Vector_3;
+                                           Anchor_in_A,
                                            Anchor_in_B      : in     Vector_3;
                                            low_Limit,
                                            high_Limit       : in     Real;
@@ -113,13 +117,13 @@ is
       if   Sprite_A = null
         or Sprite_B = null
       then
-         raise Program_Error;
+         raise Error with "Attempt to join a null sprite.";
       end if;
 
       sprite_A_Solid := std_physics.Object.view (Sprite_A.Solid);
       sprite_B_Solid := std_physics.Object.view (Sprite_B.Solid);
 
-      joint.define (Joint_cast (Self), Sprite_A, Sprite_B);     -- Define base class.
+      Joint.define (Joint_cast (Self), Sprite_A, Sprite_B);     -- Define base class.
 
       Self.Physics := in_Space.new_hinge_Joint  (sprite_A_Solid,  sprite_B_Solid,
                                                  Anchor_in_A,     Anchor_in_B,
