@@ -3,6 +3,7 @@ with
      Physics,
      float_Math.Geometry.D2,
      float_Math.Geometry.D3,
+     float_Math.Algebra.linear.D2,
      float_Math.Algebra.linear.D3;
 
 package GEL
@@ -23,6 +24,7 @@ is
    package Geometry_3d       renames Geometry.D3;
    package Algebra           renames math.Algebra;
    package linear_Algebra    renames Algebra.linear;
+   package linear_Algebra_2D renames linear_Algebra.D2;
    package linear_Algebra_3D renames linear_Algebra.D3;
 
 
