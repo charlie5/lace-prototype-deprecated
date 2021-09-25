@@ -44,16 +44,16 @@ is
 
 
    the_Applet : gel.Applet.gui_World.view := new_gui_Applet     ("Chains 2D",
-                                                                 1920, 1200,
+                                                                 1536, 864,
                                                                  space_Kind => physics.Box2D);
    the_Ground : gel.Sprite          .view := new_rectangle_Sprite (the_Applet.gui_World,
                                                                    mass   =>   0.0,
-                                                                   width  => 200.0,
+                                                                   width  => 100.0,
                                                                    height =>   1.0,
                                                                    color  => apple_Green);
 begin
-   the_Applet.gui_World .Gravity_is    ((0.0, -10.0,  0.0));
-   the_Applet.gui_Camera.Site_is       ((0.0, -30.0, 70.0));
+   the_Applet.gui_World .Gravity_is    ((0.0, -10.0,   0.0));
+   the_Applet.gui_Camera.Site_is       ((0.0, -30.0, 100.0));
    the_Applet.Renderer  .Background_is (Grey);
    the_Applet.enable_simple_Dolly      (in_world => gui_world.gui_world_Id);
 
