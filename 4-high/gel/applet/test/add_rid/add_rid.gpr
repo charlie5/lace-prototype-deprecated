@@ -1,0 +1,17 @@
+with
+     "lumen_gel",
+     "lace_shared";
+
+project add_rid
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_add_rid.adb");
+   for Languages  use ("Ada");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end add_rid;
