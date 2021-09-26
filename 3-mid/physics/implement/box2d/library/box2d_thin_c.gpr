@@ -1,5 +1,6 @@
 with
      "../../c_math/library/c_math_thin_c",
+     "../contrib/box2d-2.4.1/box2d_git",
      "lace_shared";
 
 library
@@ -22,11 +23,13 @@ is
    package Binder  renames Lace_shared.Binder;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/box2d", "-I/usr/local/include/box2d");
+      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I../contrib/box2d-2.4.1/include");
+--      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/box2d");
    end Compiler;
 
-   package Linker is
-      for Linker_Options use ("-lbox2d");
-   end Linker;
+--   package Linker is
+--      for Linker_Options use ("-lbox2d_git");
+--      for Linker_Options use ("-L../contrib/box2d-2.4.1/lib", "-lbox2d");
+--   end Linker;
 
 end Box2d_Thin_C;
