@@ -1731,12 +1731,8 @@ is
    procedure add (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
    begin
+      Self.physics_Space.add         (the_Joint.Physics.all'Access);
       the_Joint.Physics.user_Data_is (the_Joint);
-      --  Self.physics_Engine.add        (the_Joint.Physics.all'Access);
-
---        Self.Commands.add ((kind   => add_Joint,
---                            sprite => null,
---                            joint  => the_Joint));
    end add;
 
 
