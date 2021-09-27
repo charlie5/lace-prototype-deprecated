@@ -11,10 +11,10 @@ with
 
      float_math.Algebra.linear.d3,
 
-     Ada.Text_IO,
-     Ada.Exceptions;
+     ada.Text_IO,
+     ada.Exceptions;
 
-pragma Unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.lumen);
 
 
 procedure launch_hinged_Box
@@ -24,13 +24,12 @@ procedure launch_hinged_Box
 is
    package Math renames float_Math;
 
-   use gel.Applet,  openGL.Model.box,
-       openGL,      opengl.Palette,
-       Ada.Text_IO;
+   use openGL,
+       openGL.Model.box,
+       opengl.Palette,
+       ada.Text_IO;
 
-   use type openGL.Real;
-
-   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("hinged Box", 1920, 1200);
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("hinged Box", 1536, 864);
    X          :          float_math.Real           := 0.0;
 
 begin
@@ -48,31 +47,22 @@ begin
       --  Box
       --
       the_box_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.new_Box (size  => (bs, bs, bs),
-                                             faces => (front => (colors => (others => (Red,     Opaque))),
-                                                       rear  => (colors => (others => (Blue,    Opaque))),
-                                                       upper => (colors => (others => (Violet,  Opaque))),
-                                                       lower => (colors => (others => (Yellow,  Opaque))),
-                                                       left  => (colors => (others => (Cyan,    Opaque))),
-                                                       right => (colors => (others => (Magenta, Opaque)))));
+        := openGL.Model.box.colored.new_Box (Size  => (bs, bs, bs),
+                                             Faces => (Front => (colors => (others => (Red,     Opaque))),
+                                                       Rear  => (colors => (others => (Blue,    Opaque))),
+                                                       Upper => (colors => (others => (Violet,  Opaque))),
+                                                       Lower => (colors => (others => (Yellow,  Opaque))),
+                                                       Left  => (colors => (others => (Cyan,    Opaque))),
+                                                       Right => (colors => (others => (Magenta, Opaque)))));
       the_static_box_physics_Model : constant physics.Model.view
-        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
-                                                                 half_extents => the_box_Model.Scale));
+        := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
+                                                                 half_Extents => the_box_Model.Scale));
       the_dynamic_box_physics_Model : constant physics.Model.view
-        := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
-                                                                 half_extents => the_box_Model.Scale),
-                                                  mass       => 1.0);
-      the_Box : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box",
-                                        the_Applet.gui_World.all'Access,
-                                        math.Origin_3d,
-                                        the_box_Model.all'Access,
-                                        the_dynamic_box_physics_Model,
-                                        owns_Graphics => True,
-                                        owns_Physics  => True);
-
+        := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
+                                                                 half_Extents => the_box_Model.Scale / 2.0),
+                                                  Mass       => 1.0);
       the_Box_1 : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box1",
+        := gel.Sprite.forge.new_Sprite ("demo.Box.static.1",
                                         the_Applet.gui_World.all'Access,
                                         math.Origin_3d,
                                         the_box_Model.all'Access,
@@ -81,7 +71,7 @@ begin
                                         owns_Physics  => True);
 
       the_Box_2 : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box2",
+        := gel.Sprite.forge.new_Sprite ("demo.Box.dynamic.2",
                                         the_Applet.gui_World.all'Access,
                                         math.Origin_3d,
                                         the_box_Model.all'Access,
@@ -89,46 +79,55 @@ begin
                                         owns_Graphics => False,
                                         owns_Physics  => False);
 
-      the_Joint   : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
+      the_Box_3 : constant gel.Sprite.view
+        := gel.Sprite.forge.new_Sprite ("demo.Box.dynamic.3",
+                                        the_Applet.gui_World.all'Access,
+                                        math.Origin_3d,
+                                        the_box_Model.all'Access,
+                                        the_dynamic_box_physics_Model,
+                                        owns_Graphics => True,
+                                        owns_Physics  => True);
+
+      the_Joint_1 : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
       the_Joint_2 : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
 
    begin
       the_Applet.gui_World.Gravity_is ((0.0, -10.0, 0.0));
 
-      the_Applet.gui_World.add (the_Box);                    -- Add box.
-      the_Applet.gui_World.add (the_Box_1);                    -- Add box.
-      the_Applet.gui_World.add (the_Box_2);                    -- Add box.
+      the_Applet.gui_World.add (the_Box_1);
+      the_Applet.gui_World.add (the_Box_2);
+      the_Applet.gui_World.add (the_Box_3);
 
-      the_Box  .Site_is (( 10.0, 10.0, 0.0));
-      the_Box_1.Site_is (( 0.0, 0.0, 0.0));
-      the_Box_2.Site_is ((-1.0, 2.0, 0.0));
-
-      the_Applet.freshen;
+      the_Box_1.Site_is ((  0.0,  0.0, 0.0));
+      the_Box_2.Site_is (( -1.0,  2.0, 0.0));
+      the_Box_3.Site_is (( 10.0, 10.0, 0.0));
+      --  the_Box_3.Site_is (( 10.0, 10.0, 0.0));
 
       declare
          use math.Algebra.linear.d3,
              math.Vectors;
 
-         Frame   : math.Matrix_4x4 := math.Identity_4x4;
-         Frame_A : math.Matrix_4x4 := math.Identity_4x4;
-         Frame_B : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_1 : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_2 : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_3 : math.Matrix_4x4 := math.Identity_4x4;
 
          y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (180.0));
       begin
-         set_Translation (Frame,   (  8.0, 8.0, 0.0));
-         set_Translation (Frame_B, (  2.0, 2.0, 0.0));
+         set_Translation (Frame_2, (2.0, 2.0, 0.0));
+         set_Translation (Frame_3, (8.0, 8.0, 0.0));
+         --  set_Translation (Frame_3, (8.0, 8.0, 0.0));
 --           set_Translation (Frame_B, y_Rot * math.Vector_3'( -2.0, 0.0, 0.0));
 --
 --           set_Rotation    (Frame_A, x_Rotation_from (to_Radians (0.0)));
 --           set_Rotation    (Frame_B, y_Rot);
 
-         the_Joint.define (the_Applet.gui_World.Space,
-                           the_Box,
-                           Frame);
+         the_Joint_1.define (the_Applet.gui_World.Space,
+                             the_Box_3,
+                             Frame_3);
 
          the_Joint_2.define (the_Applet.gui_World.Space,
-                             the_Box_1,   the_Box_2,
-                             Frame_A,     Frame_B,
+                             the_Box_1, the_Box_2,
+                             Frame_1,   Frame_2,
                              low_Limit        => to_Radians (-360.0),
                              high_Limit       => to_Radians ( 360.0),
                              collide_Conected => False);
@@ -142,10 +141,9 @@ begin
 --           the_Joint.high_Bound_is (Roll,  0.0);
       end;
 
-      the_Applet.gui_World.add (the_Joint  .all'Access);        -- Add joint to the world.
+      the_Applet.gui_World.add (the_Joint_1.all'Access);        -- Add joint to the world.
       the_Applet.gui_World.add (the_Joint_2.all'Access);        -- Add joint to the world.
    end;
-
 
    while the_Applet.is_open
    loop
@@ -154,11 +152,10 @@ begin
 
    the_Applet.destroy;
 
-
 exception
    when E : others =>
       new_Line;
       put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
+      put_Line (ada.Exceptions.exception_Information (E));
       new_Line;
 end launch_hinged_Box;
