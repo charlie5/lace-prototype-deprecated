@@ -132,6 +132,11 @@ begin
                              high_Limit       => to_Radians ( 360.0),
                              collide_Conected => False);
 
+         -- TODO:
+         --  the_Joint_2.define (the_Applet.gui_World.Space,
+         --                      the_Box_1, the_Box_2,
+         --                      pivot_Axis => (0.0, 0.0, 0.0));
+
 --           the_Joint.low_Bound_is (Pitch, 0.0);
 --           the_Joint.low_Bound_is (Yaw,   0.0);
 --           the_Joint.low_Bound_is (Roll,  0.0);
