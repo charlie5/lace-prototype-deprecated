@@ -41,6 +41,7 @@ bin
 
 
 ## Binaries
+#
 launch_simple_instant_events_demo
 launch_simple_deferred_events_demo
 launch_simple_chat_client
@@ -71,6 +72,7 @@ launch_drop_box_on_box
 launch_hello_gel
 launch_chains_2d
 launch_hinged_box
+launch_mixed_joints
 launch_text_sprite_demo
 launch_impact_hello_3d_demo
 launch_camera_demo
