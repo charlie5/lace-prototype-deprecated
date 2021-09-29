@@ -1,22 +1,22 @@
 with
-     mmi.Window.lumen,
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.Sprite,
-     mmi.Terrain,
-     mmi.physics_Model,
+     gel.Window.lumen,
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.Sprite,
+     gel.Terrain,
+     physics.Model,
 
      openGL.Model.box.colored,
      openGL.Model.sphere.lit_colored_textured,
      openGL.Model.capsule.lit_colored_textured,
-     openGL.Model.open_gl,
+     openGL.Model.any,
      openGL.Palette,
 
      Physics,
 
      float_Math.Algebra.linear;
 
-pragma Unreferenced (mmi.Window.lumen);
+pragma Unreferenced (gel.Window.lumen);
 
 
 procedure launch_mixed_Shapes
@@ -24,12 +24,12 @@ procedure launch_mixed_Shapes
 --  Drops a variety of shapes onto a terrain.
 --
 is
-   use mmi.Applet,  openGL.Model.box,
+   use gel.Applet,  openGL.Model.box,
        openGL,      opengl.Palette;
 
    use type openGL.Real;
 
-   the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("mixed Shapes", 1920, 1200);
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("mixed Shapes", 1920, 1200);
    X          :          float_math.Real           := 0.0;
 
 
@@ -40,19 +40,19 @@ is
    --  Plane
    --
    the_plane_Model : constant openGL.Model.box.colored.view
-     := openGL.Model.box.colored.forge.new_Box (size => (1000.0, 0.05, 1000.0),
-                                                      faces => (front => (colors => (others => (Red,     Opaque))),
-                                                                rear  => (colors => (others => (Blue,    Opaque))),
-                                                                upper => (colors => (others => (Green,   Opaque))),
-                                                                lower => (colors => (others => (Yellow,  Opaque))),
-                                                                left  => (colors => (others => (Cyan,    Opaque))),
-                                                                right => (colors => (others => (Magenta, Opaque)))));
-   the_plane_physics_Model : constant mmi.physics_Model.view
-     := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Plane,
-                                                                  plane_Normal => (0.00, 1.0, 0.00),
-                                                                  plane_Offset =>  0.0));
---     the_Plane : constant mmi.Sprite.view
---       := mmi.Sprite.forge.new_Sprite ("demo.Plane",
+     := openGL.Model.box.colored.new_Box (size => (1000.0, 0.05, 1000.0),
+                                          faces => (front => (colors => (others => (Red,     Opaque))),
+                                                    rear  => (colors => (others => (Blue,    Opaque))),
+                                                    upper => (colors => (others => (Green,   Opaque))),
+                                                    lower => (colors => (others => (Yellow,  Opaque))),
+                                                    left  => (colors => (others => (Cyan,    Opaque))),
+                                                    right => (colors => (others => (Magenta, Opaque)))));
+   the_plane_physics_Model : constant physics.Model.view
+     := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Plane,
+                                                              plane_Normal => (0.00, 1.0, 0.00),
+                                                              plane_Offset =>  0.0));
+--     the_Plane : constant gel.Sprite.view
+--       := gel.Sprite.forge.new_Sprite ("demo.Plane",
 --                                       the_Applet.gui_World,
 --                                       the_plane_Model.all'Access,
 --                                       the_plane_physics_Model);
@@ -80,34 +80,34 @@ is
 
    --           hs : constant := 4.0 * 2.0;
    --
-   --           gl_Heights : openGL.IO.height_Map_view := opengl.IO.to_height_Map (image_Filename => "assets/mmi/kidwelly_128x128.tga",
+   --           gl_Heights : openGL.IO.height_Map_view := opengl.IO.to_height_Map (image_Filename => "assets/gel/kidwelly_128x128.tga",
    --                                                                              scale          => 4.0);
    --
-   --           the_Heightfield_Model : constant mmi.graphics_Model.terrain.view
-   --             := new mmi.graphics_Model.terrain.item' (row => 1,
+   --           the_Heightfield_Model : constant gel.graphics_Model.terrain.view
+   --             := new gel.graphics_Model.terrain.item' (row => 1,
    --                                                      col => 1,
-   --                                                      heights => mmi.graphics_Model.terrain.height_Map_view (gl_Heights),
+   --                                                      heights => gel.graphics_Model.terrain.height_Map_view (gl_Heights),
    --                                                      scale   => (hs, hs*2.0, hs),
    --                                                      tiling => (s => (0.0, 1.0),
    --                                                                 t => (0.0, 1.0)),
    --                                                      others => <>);
    --
-   --           the_Heightfield_physics_Model : constant mmi.physics_Model.view
-   --             := mmi.physics_Model.Forge.new_physics_Model (shape_info => (kind    => mmi.physics_Model.Heightfield,
+   --           the_Heightfield_physics_Model : constant gel.physics_Model.view
+   --             := gel.physics_Model.Forge.new_physics_Model (shape_info => (kind    => gel.physics_Model.Heightfield,
    --                                                                          heights => new physics.Heightfield' (to_Heightfield (gl_Heights.all))),
    --                                                           scale      =>  (hs, 1.0, hs));
-   --           the_Heightfield : constant mmi.Sprite.local.view
-   --             := mmi.Sprite.local.forge.new_Sprite ("demo.Hull",
+   --           the_Heightfield : constant gel.Sprite.local.view
+   --             := gel.Sprite.local.forge.new_Sprite ("demo.Hull",
    --                                                   the_Applet.gui_World,
-   --                                                   mmi.Sprite.local.physics_Space_view (the_Applet.gui_World.Physics),
+   --                                                   gel.Sprite.local.physics_Space_view (the_Applet.gui_World.Physics),
    --                                                   the_Heightfield_Model.all'Access,
    --                                                   the_Heightfield_physics_Model,
    --                                                   mass => 0.0);
 
-   the_terrain_Grid : constant access mmi.Sprite.Grid
-     := mmi.Terrain.new_Terrain (World        => the_Applet.gui_World,
-                                 heights_File => "assets/mmi/kidwelly_255x255.tga",
-                                 texture_File => "assets/mmi/kidwelly_255x255.tga",
+   the_terrain_Grid : constant access gel.Sprite.Grid
+     := gel.Terrain.new_Terrain (World        => the_Applet.gui_World,
+                                 heights_File => "assets/gel/kidwelly_255x255.tga",
+                                 texture_File => "assets/gel/kidwelly_255x255.tga",
                                  scale        => (1.0, 64.0, 1.0));
 
  begin
@@ -121,8 +121,8 @@ is
 
 --     -- Terrain.
 --     --
---     the_Ground := mmi.terrain.new_Terrain (the_Applet.gui_World,
---                                            mmi.Sprite.local.physics_Space_view (the_Applet.gui_World.Physics),
+--     the_Ground := gel.terrain.new_Terrain (the_Applet.gui_World,
+--                                            gel.Sprite.local.physics_Space_view (the_Applet.gui_World.Physics),
 --                                            "./assets/terrain/kidwelly/kidwelly-terrain.png",
 --                                            "./assets/terrain/kidwelly/kidwelly-terrain-texture.png");
 --     for Row in the_Ground'range (1) loop
@@ -153,146 +153,151 @@ is
          --  Box
          --
          the_box_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.forge.new_Box (size => (1.0, 2.0, 4.0),
-                                                      faces => (front => (colors => (others => (Red,     Opaque))),
-                                                                rear  => (colors => (others => (Blue,    Opaque))),
-                                                                upper => (colors => (others => (Violet,  Opaque))),
-                                                                lower => (colors => (others => (Yellow,  Opaque))),
-                                                                left  => (colors => (others => (Cyan,    Opaque))),
-                                                                right => (colors => (others => (Magenta, Opaque)))));
-         the_box_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cube,
-                                                                        half_extents => the_box_Model.Scale / 2.0),
-                                                         mass       => 1.0);
+           := openGL.Model.box.colored.new_Box (size => (1.0, 2.0, 4.0),
+                                                faces => (front => (colors => (others => (Red,     Opaque))),
+                                                          rear  => (colors => (others => (Blue,    Opaque))),
+                                                          upper => (colors => (others => (Violet,  Opaque))),
+                                                          lower => (colors => (others => (Yellow,  Opaque))),
+                                                          left  => (colors => (others => (Cyan,    Opaque))),
+                                                          right => (colors => (others => (Magenta, Opaque)))));
+         the_box_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.Cube,
+                                                                    half_extents => the_box_Model.Scale / 2.0),
+                                                     mass       => 1.0);
 
-         the_Box : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Box",
-                                           the_Applet.gui_World,
+         the_Box : constant gel.Sprite.view
+           := gel.Sprite.Forge.new_Sprite ("demo.Box",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
                                            the_box_Model.all'Access,
                                            the_box_physics_Model);
 
          --  Ball
          --
-         the_ball_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => mmi.physics_Model.a_Sphere,
-                                                                        sphere_radius => 1.0),
-                                                         mass       => 1.0);
+         the_ball_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind          => physics.Model.a_Sphere,
+                                                                    sphere_radius => 1.0),
+                                                     mass       => 1.0);
 
          the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
-           := openGL.Model.sphere.lit_colored_textured.Forge.new_Sphere (radius => 1.0,
-                                                                         image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
-         the_Ball : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Ball",
-                                           the_Applet.gui_World,
+           := openGL.Model.sphere.lit_colored_textured.new_Sphere (radius => 1.0,
+                                                                   image  => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"));
+         the_Ball : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.Ball",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
                                            the_ball_Model,
                                            the_ball_physics_Model);
 
          --  Cone
          --
-         the_cone_Model : constant openGL.Model.open_gl.view
-           := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0) * 1.0,
-                                                    Model            => openGL.to_Asset ("assets/mmi/model/unit_cone.obj"),
-                                                    math_model       => null,
-                                                    Texture          => openGL.null_Asset,
-                                                    Texture_is_lucid => False);
-         the_cone_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind => mmi.physics_Model.Cone),
-                                                         mass       => 1.0);
+         the_cone_Model : constant openGL.Model.any.view
+           := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0) * 1.0,
+                                          Model            => openGL.to_Asset ("assets/gel/model/unit_cone.obj"),
+                                          Texture          => openGL.null_Asset,
+                                          Texture_is_lucid => False);
+         the_cone_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind => physics.Model.Cone),
+                                                     mass       => 1.0);
 
-         the_Cone : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Cone",
-                                           the_Applet.gui_World,
+         the_Cone : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.Cone",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
                                            the_cone_Model.all'Access,
                                            the_cone_physics_Model);
 
          --  Cylinder
          --
-         the_cylinder_Model : constant openGL.Model.open_gl.view
-           := openGL.Model.open_gl.Forge.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                                    Model            => openGL.to_Asset ("assets/mmi/model/unit_cylinder.obj"),
-                                                    math_model       => null,
-                                                    Texture          => openGL.null_Asset,
-                                                    Texture_is_lucid => False);
+         the_cylinder_Model : constant openGL.Model.any.view
+           := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                          Model            => openGL.to_Asset ("assets/gel/model/unit_cylinder.obj"),
+                                          Texture          => openGL.null_Asset,
+                                          Texture_is_lucid => False);
 
-         the_cylinder_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.Cylinder,
-                                                                        half_extents => the_cylinder_Model.Scale / 2.0),
-                                                         mass       => 1.0);
+         the_cylinder_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.cylinder,
+                                                                    half_extents => the_cylinder_Model.Scale / 2.0),
+                                                     mass       => 1.0);
 
-         the_Cylinder : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Cylinder",
-                                           the_Applet.gui_World,
+         the_Cylinder : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.Cylinder",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
                                            the_cylinder_Model.all'Access,
                                            the_cylinder_physics_Model);
 
          --  Capsule
          --
          the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-           := openGL.Model.capsule.lit_colored_textured.Forge.new_Capsule (radius => 0.5,
-                                                                           height => 1.0,
-                                                                           color  => (palette.Green, Opaque));
+           := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
+                                                                     height => 1.0,
+                                                                     color  => (palette.Green, Opaque));
 
-         the_capsule_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => mmi.physics_Model.a_Capsule,
-                                                                        lower_radius => 0.5,
-                                                                        upper_radius => 0.5,
-                                                                        height       => 1.0),
-                                                         mass       => 1.0);
-         the_Capsule : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Capsule",
-                                                 the_Applet.gui_World,
-                                                 the_capsule_Model.all'Access,
-                                                 the_capsule_physics_Model);
+         the_capsule_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind         => physics.Model.a_Capsule,
+                                                                    lower_radius => 0.5,
+                                                                    upper_radius => 0.5,
+                                                                    height       => 1.0),
+                                                     mass       => 1.0);
+         the_Capsule : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.Capsule",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
+                                           the_capsule_Model.all'Access,
+                                           the_capsule_physics_Model);
 
          --  multi_Sphere
          --
          the_multi_Sphere_Model : constant openGL.Model.capsule.lit_colored_textured.view
-           := openGL.Model.capsule.lit_colored_textured.Forge.new_Capsule (radius => 0.5,
-                                                                           height => 1.0,
-                                                                           color  => (palette.Green, Opaque),
-                                                                           image  => openGL.to_Asset ("assets/mmi/golf_green-16x16.tga"));
+           := openGL.Model.capsule.lit_colored_textured.new_Capsule (radius => 0.5,
+                                                                     height => 1.0,
+                                                                     color  => (palette.Green, Opaque),
+                                                                     image  => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"));
 
-         the_multi_Sphere_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind  => mmi.physics_Model.multi_Sphere,
-                                                                        sites => new physics.Vector_3_array' ((0.0, 0.0, -0.5),
-                                                                                                              (0.0, 0.0,  0.5)),
-                                                                        radii => new float_math.Vector' (1 => 0.5,
-                                                                                                         2 => 0.5)),
-                                                         mass       => 1.0);
+         the_multi_Sphere_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind  => physics.Model.multi_Sphere,
+                                                                    sites => new physics.Vector_3_array' ((0.0, 0.0, -0.5),
+                                                                                                          (0.0, 0.0,  0.5)),
+                                                                    radii => new float_math.Vector' (1 => 0.5,
+                                                                                                     2 => 0.5)),
+                                                     mass       => 1.0);
 
-         the_multi_Sphere : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.multi_Sphere",
-                                                 the_Applet.gui_World,
-                                                 the_multi_Sphere_Model.all'Access,
-                                                 the_multi_Sphere_physics_Model);
+         the_multi_Sphere : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.multi_Sphere",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
+                                           the_multi_Sphere_Model.all'Access,
+                                           the_multi_Sphere_physics_Model);
 
          --  Hull
          --
          s              : constant := 0.5;
          the_hull_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.forge.new_Box (size  => (s*2.0, s*2.0, s*2.0),
-                                                      faces => (front => (colors => (others => (Shade_of (Grey, 1.0), Opaque))),
-                                                                rear  => (colors => (others => (Shade_of (Grey, 0.5), Opaque))),
-                                                                upper => (colors => (others => (Shade_of (Grey, 0.4), Opaque))),
-                                                                lower => (colors => (others => (Shade_of (Grey, 0.3), Opaque))),
-                                                                left  => (colors => (others => (Shade_of (Grey, 0.2), Opaque))),
-                                                                right => (colors => (others => (Shade_of (Grey, 0.1), Opaque)))));
-         the_Hull_physics_Model : constant mmi.physics_Model.view
-           := mmi.physics_Model.Forge.new_physics_Model (shape_Info => (kind   => mmi.physics_Model.Hull,
-                                                                        points => new physics.Vector_3_array'
-                                                                          ((-s, -s,  s),
-                                                                           ( s, -s,  s),
-                                                                           ( s,  s,  s),
-                                                                           (-s,  s,  s),
+           := openGL.Model.box.colored.new_Box (size  => (s*2.0, s*2.0, s*2.0),
+                                                faces => (front => (colors => (others => (Shade_of (Grey, 1.0), Opaque))),
+                                                          rear  => (colors => (others => (Shade_of (Grey, 0.5), Opaque))),
+                                                          upper => (colors => (others => (Shade_of (Grey, 0.4), Opaque))),
+                                                          lower => (colors => (others => (Shade_of (Grey, 0.3), Opaque))),
+                                                          left  => (colors => (others => (Shade_of (Grey, 0.2), Opaque))),
+                                                          right => (colors => (others => (Shade_of (Grey, 0.1), Opaque)))));
+         the_Hull_physics_Model : constant physics.Model.view
+           := physics.Model.Forge.new_physics_Model (shape_Info => (kind   => physics.Model.Hull,
+                                                                    points => new physics.Vector_3_array'
+                                                                                     ((-s, -s,  s),
+                                                                                      ( s, -s,  s),
+                                                                                      ( s,  s,  s),
+                                                                                      (-s,  s,  s),
 
-                                                                           (-s, -s, -s),
-                                                                           ( s, -s, -s),
-                                                                           ( s,  s, -s),
-                                                                           (-s,  s, -s))),
-                                                         mass       => 1.0);
-         the_Hull : constant mmi.Sprite.view
-           := mmi.Sprite.forge.new_Sprite ("demo.Hull",
-                                           the_Applet.gui_World,
+                                                                                      (-s, -s, -s),
+                                                                                      ( s, -s, -s),
+                                                                                      ( s,  s, -s),
+                                                                                      (-s,  s, -s))),
+                                                     mass       => 1.0);
+         the_Hull : constant gel.Sprite.view
+           := gel.Sprite.forge.new_Sprite ("demo.Hull",
+                                           the_Applet.gui_World.all'Access,
+                                           Origin_3d,
                                            the_Hull_Model.all'Access,
                                            the_Hull_physics_Model);
 
