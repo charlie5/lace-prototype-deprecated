@@ -73,6 +73,7 @@ launch_hello_gel
 launch_chains_2d
 launch_hinged_box
 launch_mixed_joints
+launch_mixed_joints_2d
 launch_text_sprite_demo
 launch_impact_hello_3d_demo
 launch_camera_demo
