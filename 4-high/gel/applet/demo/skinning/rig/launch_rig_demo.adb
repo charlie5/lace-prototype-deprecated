@@ -1,9 +1,4 @@
 with
-     --  collada.Document,
-     --  collada.Library.geometries,
-     --  collada.Library.animations,
-     --  collada.Library.controllers,
-
      gel.Window.setup,
      gel.Applet.gui_world,
      gel.Camera,
@@ -11,18 +6,12 @@ with
      gel.Rig,
      gel.Forge,
 
-     openGL.Model,
-     --  openGL.Model.box,
      openGL.Model.any,
-     --  opengl.Palette,
-     --  opengl.IO,
 
      ada.Calendar,
-     --  ada.Strings.fixed,
      ada.Strings.unbounded;
 
-with ada.Text_IO;    use ada.Text_IO;
-with ada.Exceptions; use ada.Exceptions;
+with ada.Text_IO;    use ada.Text_IO;     -- For debugging.
 
 pragma unreferenced (gel.Window.setup);
 
@@ -33,48 +22,36 @@ procedure launch_rig_Demo
 --
 --
 is
-   use -- gel.Applet,
-       gel.Rig,
+   use gel.Rig,
        gel.Math,
        gel.linear_Algebra_3D,
-
-       --  openGL.Model.box,
        openGL,
-       --  opengl.Palette,
-
        ada.Calendar;
-       --  ada.Strings;
-       --  ada.Strings.fixed;
 
-   --  use type math.Real;
-            --  opengl.Real;
-
-
+   -----------
    --- Utility
    --
-
-   --  function "+" (From : in ada.strings.unbounded.unbounded_String) return String
-   --    renames ada.strings.unbounded.to_String;
 
    function "+" (From : in String) return ada.strings.unbounded.unbounded_String
      renames ada.strings.unbounded.To_unbounded_String;
 
+   -------------
+   --- Variables
+   --
+   the_Applet    : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("animated box Model", 1536, 864);
 
-   the_Applet       : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("animated box Model", 1536, 864);
+   the_Ground    : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
+                                                                                   Mass => 0.0,
+                                                                                   Size => (50.0, 1.0, 50.0));
 
-   the_Ground       : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
-                                                                                      Mass => 0.0,
-                                                                                      Size => (50.0, 1.0, 50.0));
+   the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                                                                         --  Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
+                                                                                         Model            => openGL.to_Asset ("./box_1_bone.dae"),
+                                                                                         Texture          => openGL.null_Asset,
+                                                                                         Texture_is_lucid => False);
+   the_Rig       : aliased  gel.Rig.item;
 
-   the_rig_Model    : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                                                                            Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
-                                                                                            Texture          => openGL.null_Asset,
-                                                                                            Texture_is_lucid => False);
-   the_Rig          : aliased  gel.Rig.item;
-
-   Counter          :         Integer          := 0;
-   next_render_Time :         ada.calendar.Time;
-   --  start_Time       :         ada.Calendar.Time;
+   next_render_Time : ada.calendar.Time;
 
 begin
    the_Applet.gui_Camera.Site_is ((0.0, 0.0, 10.0));     -- Position the camera
@@ -132,15 +109,11 @@ begin
 
    the_Rig.enable_Graphics;
 
-
-   --  start_Time       := ada.calendar.Clock;
    next_render_Time := ada.Calendar.clock;
 
    while the_Applet.is_open
    loop
-      Counter := Counter + 1;
-
-      the_Applet.gui_World.evolve (by => 1.0/60.0);                            -- Evolve the world.
+      the_Applet.gui_World.evolve (By        => 1.0/60.0);                     -- Evolve the world.
       the_Rig             .evolve (world_Age => the_Applet.gui_World.Age);     -- Evolve the rig.
       the_Applet.freshen;                                                      -- Handle any new events and update the screen.
 
@@ -149,8 +122,4 @@ begin
    end loop;
 
    the_Applet.destroy;
-
-exception
-   when E : others =>
-      put_Line (Exception_Information (E));
 end launch_rig_Demo;
