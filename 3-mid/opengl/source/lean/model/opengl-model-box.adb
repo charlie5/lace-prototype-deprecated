@@ -26,4 +26,12 @@ is
    end vertex_Sites;
 
 
+
+   function Size (Self : in Item) return Vector_3
+   is
+   begin
+      return Self.Size;
+   end Size;
+
+
 end openGL.Model.box;

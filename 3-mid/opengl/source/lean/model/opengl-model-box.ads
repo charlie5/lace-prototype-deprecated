@@ -9,6 +9,9 @@ is
                  Upper, Lower,
                  Left,  Right);
 
+   function Size (Self : in Item) return Vector_3;
+
+
 
 private
 
