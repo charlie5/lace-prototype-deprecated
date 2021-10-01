@@ -3,14 +3,14 @@ with collada.Document,
      collada.Library.animations,
      collada.Library.controllers;
 
-with mmi.Rig;
+with gel.Rig;
 
-with mmi.Window.setup,
-     mmi.Applet.gui_world,
-     mmi.Camera;
+with gel.Window.setup,
+     gel.Applet.gui_world,
+     gel.Camera;
 
-with mmi.Sprite,
-     mmi.Forge,
+with gel.Sprite,
+     gel.Forge,
      openGL.Model,
      openGL.Model.box,
      openGL.Model.any;
@@ -36,7 +36,7 @@ procedure launch_rig_Demo
 is
    package Math renames float_Math;
 
-   use mmi.Applet,    openGL.Model.box,  mmi.Rig,
+   use gel.Applet,    openGL.Model.box,  gel.Rig,
        openGL,        opengl.Palette,
        Math,
        ada.Calendar,  ada.Strings,    ada.Strings.fixed;
@@ -55,9 +55,9 @@ is
 
 
 
-   the_Applet       : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("animated box Model", 1920, 1200);
+   the_Applet       : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("animated box Model", 1920, 1200);
 
-   the_Ground       : constant mmi.Sprite.view           := mmi.Forge.new_box_Sprite (the_Applet.gui_World,
+   the_Ground       : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
                                                                                       mass => 0.0,
                                                                                       size => (50.0, 1.0, 50.0));
 
@@ -65,7 +65,7 @@ is
                                                                                     Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
                                                                                     Texture          => openGL.null_Asset,
                                                                                     Texture_is_lucid => False);
-   the_Rig          : aliased  mmi.Rig.item;
+   the_Rig          : aliased  gel.Rig.item;
 
    Counter          :         Integer          := 0;
    next_render_Time :         ada.calendar.Time;
