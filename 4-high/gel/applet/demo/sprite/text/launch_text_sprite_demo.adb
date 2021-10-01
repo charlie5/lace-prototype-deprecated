@@ -1,15 +1,15 @@
 with
-     mmi.Window.lumen,
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.Sprite,
+     gel.Window.lumen,
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.Sprite,
 
      openGL.Palette,
      openGL.Model.text.lit_colored_textured,
 
      Physics;
 
-pragma Unreferenced (mmi.Window.lumen);
+pragma Unreferenced (gel.Window.lumen);
 
 
 procedure launch_text_sprite_Demo
@@ -17,18 +17,21 @@ procedure launch_text_sprite_Demo
 --  Shows a few text sprite.
 --
 is
-   use mmi.Applet,
+   use gel.Applet,
+       gel.Math,
        openGL.Palette;
 
-   the_Applet : constant mmi.Applet.gui_World.view := mmi.Forge.new_gui_Applet ("text sprite Demo",
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("text sprite Demo",
                                                                                 space_Kind => physics.Bullet);
 
-   the_Text_1 : constant mmi.Sprite.view := mmi.Forge.new_text_Sprite (the_Applet.gui_World,
+   the_Text_1 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (the_Applet.gui_World,
+                                                                       Origin_3D,
                                                                        "Howdy",
                                                                        the_Applet.Font,
                                                                        Green);
 
-   the_Text_2 : constant mmi.Sprite.view := mmi.Forge.new_text_Sprite (the_Applet.gui_World,
+   the_Text_2 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (the_Applet.gui_World,
+                                                                       Origin_3D,
                                                                        "Doody",
                                                                        the_Applet.Font,
                                                                        Green);
@@ -47,7 +50,7 @@ begin
    loop
       Counter := Counter + 1;
 
-      if Counter mod 20 = 0
+      if Counter mod 200 = 0
       then
          if openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model).Text.all = "Yay"
          then
