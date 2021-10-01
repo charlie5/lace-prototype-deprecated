@@ -2,7 +2,7 @@ Lace
 ====
 
 - Provides a set of general Ada components intended to ease the development of game, sim and GUI Ada applications.
-- Components range from low-level 'events' and 'math' to high-level 'user interface' (ala GTK and QT).
+- Components range from low-level ('events' and 'math') to high-level ('game engine').
 - Potential applications areas include: 3d simulations, games, visualisations and editors.
 - Supports distributed applications (DSA - see Annex E of the Ada Language Reference Manual).
 - Portable across desktop and embedded platforms.
@@ -22,8 +22,8 @@ Content
 
 |Tier    |Component  |Description                                                      |
 |--------|-----------|-----------------------------------------------------------------|
-|5 ~ Top |User Applet|The user application                                             |
-|4 ~ High|mmi        |Man Machine Interface (with OpenGL based rendering).             |
+|5 ~ Top |User Applet|The user application.                                            |
+|4 ~ High|gel        |Game Engine Library.                                             |
 |3 ~ Mid |opengl     |OpenGL rendering support (2d/3d).                                |
 |        |physics    |Physics space/dynamics support (2d/3d).                          |
 |2 ~ Low |collada    |Provides a Collada parser.                                       |
@@ -105,15 +105,15 @@ Lace/opengl contains a set of assets (fonts, shaders, etc). These need to be ava
 
 Lace/mmi contains a set of assets (fonts, etc). These need to be available in each mmi demo folder.
 
-- `$ cd $LACE/4-high/mmi/applet`
-- `$ sudo cp create_mmi_assets.sh /usr/local/bin`
+- `$ cd $LACE/4-high/gel/applet`
+- `$ sudo cp create_gel_assets.sh /usr/local/bin`
 
 
 Testing
 =======
 
-* `$ cd $LACE/4-high/mmi/applet/demo/skinning/rig`
+* `$ cd $LACE/4-high/gel/applet/demo/skinning/rig`
 * `$ create_opengl_assets.sh`
-* `$ create_mmi_assets.sh`
+* `$ create_gel_assets.sh`
 * `$ gprbuild -P rig_demo.gpr`
 * `$ ./launch_rig_demo`
