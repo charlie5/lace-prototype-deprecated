@@ -1,6 +1,7 @@
 with
      openGL.Program,
      openGL.Tasks,
+     openGL.Errors,
      GL.lean,
      GL.Pointers,
      interfaces.C.Strings;
@@ -25,6 +26,7 @@ is
 
       Self.gl_Variable := glGetUniformLocation (Program.gl_Program,
                                                 to_GLchar_access (the_Name));
+      Errors.log;
       C.Strings.free (the_Name);
 
       if Self.gl_Variable = -1
@@ -55,6 +57,7 @@ is
       Tasks.check;
       glUniform1i (Self.gl_Variable,
                    Boolean'Pos (Now));
+      Errors.log;
    end Value_is;
 
 
@@ -66,6 +69,7 @@ is
       Tasks.check;
       glUniform1i (Self.gl_Variable,
                    gl.GLint (Now));
+      Errors.log;
    end Value_is;
 
 
@@ -78,6 +82,7 @@ is
       glUniform1fv (Self.gl_Variable,
                     1,
                     Now'Address);
+      Errors.log;
    end Value_is;
 
 
@@ -91,6 +96,7 @@ is
       glUniform3fv (Self.gl_Variable,
                     1,
                     Now (1)'Address);
+      Errors.log;
    end Value_is;
 
 
@@ -104,6 +110,7 @@ is
       glUniform4fv (Self.gl_Variable,
                     1,
                     Now (1)'Address);
+      Errors.log;
    end Value_is;
 
 
@@ -118,6 +125,7 @@ is
                           1,
                           gl.GL_FALSE,
                           Now (1, 1)'Address);
+      Errors.log;
    end Value_is;
 
 
@@ -132,6 +140,7 @@ is
                           1,
                           gl.GL_FALSE,
                           Now (1, 1)'Address);
+      Errors.log;
    end Value_is;
 
 
