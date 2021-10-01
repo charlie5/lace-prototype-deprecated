@@ -1,31 +1,30 @@
-with collada.Document,
-     collada.Library.geometries,
-     collada.Library.animations,
-     collada.Library.controllers;
+with
+     --  collada.Document,
+     --  collada.Library.geometries,
+     --  collada.Library.animations,
+     --  collada.Library.controllers,
 
-with gel.Rig;
-
-with gel.Window.setup,
+     gel.Window.setup,
      gel.Applet.gui_world,
-     gel.Camera;
-
-with gel.Sprite,
+     gel.Camera,
+     gel.Sprite,
+     gel.Rig,
      gel.Forge,
+
      openGL.Model,
-     openGL.Model.box,
-     openGL.Model.any;
+     --  openGL.Model.box,
+     openGL.Model.any,
+     --  opengl.Palette,
+     --  opengl.IO,
 
-with opengl.Palette,
-     opengl.IO,
      ada.Calendar,
-     ada.Strings.fixed;
+     --  ada.Strings.fixed,
+     ada.Strings.unbounded;
 
-with float_math.algebra.linear.d3;   use  float_math.algebra.linear.d3;
+with ada.Text_IO;    use ada.Text_IO;
+with ada.Exceptions; use ada.Exceptions;
 
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Strings.Unbounded;
-with Ada.Exceptions; use Ada.Exceptions;
-
+pragma unreferenced (gel.Window.setup);
 
 
 procedure launch_rig_Demo
@@ -34,50 +33,56 @@ procedure launch_rig_Demo
 --
 --
 is
-   package Math renames float_Math;
+   use -- gel.Applet,
+       gel.Rig,
+       gel.Math,
+       gel.linear_Algebra_3D,
 
-   use gel.Applet,    openGL.Model.box,  gel.Rig,
-       openGL,        opengl.Palette,
-       Math,
-       ada.Calendar,  ada.Strings,    ada.Strings.fixed;
+       --  openGL.Model.box,
+       openGL,
+       --  opengl.Palette,
 
-   use type math.Real,  opengl.Real;
+       ada.Calendar;
+       --  ada.Strings;
+       --  ada.Strings.fixed;
+
+   --  use type math.Real;
+            --  opengl.Real;
 
 
    --- Utility
    --
 
-   function "+" (From : in ada.strings.unbounded.unbounded_String) return String
-     renames ada.strings.unbounded.to_String;
+   --  function "+" (From : in ada.strings.unbounded.unbounded_String) return String
+   --    renames ada.strings.unbounded.to_String;
 
    function "+" (From : in String) return ada.strings.unbounded.unbounded_String
      renames ada.strings.unbounded.To_unbounded_String;
 
 
-
-   the_Applet       : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("animated box Model", 1920, 1200);
+   the_Applet       : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("animated box Model", 1536, 864);
 
    the_Ground       : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
-                                                                                      mass => 0.0,
-                                                                                      size => (50.0, 1.0, 50.0));
+                                                                                      Mass => 0.0,
+                                                                                      Size => (50.0, 1.0, 50.0));
 
-   the_rig_Model    : aliased  openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                                                                    Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
-                                                                                    Texture          => openGL.null_Asset,
-                                                                                    Texture_is_lucid => False);
+   the_rig_Model    : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+                                                                                            Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
+                                                                                            Texture          => openGL.null_Asset,
+                                                                                            Texture_is_lucid => False);
    the_Rig          : aliased  gel.Rig.item;
 
    Counter          :         Integer          := 0;
    next_render_Time :         ada.calendar.Time;
-   start_Time       :         ada.Calendar.Time;
+   --  start_Time       :         ada.Calendar.Time;
 
 begin
-   the_Applet.gui_Camera.Site_is ((0.0, 0.0, 10.0));             -- Position the camera
+   the_Applet.gui_Camera.Site_is ((0.0, 0.0, 10.0));     -- Position the camera
 
-   the_Applet.enable_simple_Dolly (1);                           -- Enable user camera control via keyboards
+   the_Applet.enable_simple_Dolly (1);                   -- Enable user camera control via keyboards
    the_Applet.Dolly.Speed_is (0.05);
 
-   the_Applet.enable_Mouse (detect_Motion => False);             -- Enable mouse events.
+   the_Applet.enable_Mouse (detect_Motion => False);     -- Enable mouse events.
 
    the_Applet.gui_World.Gravity_is ((0.0, -0.5, 0.0));
 
@@ -109,10 +114,9 @@ begin
                                                                            to_Radians ( 40.0))));
 
       leaf_bone_Lengths.insert (+"upper_arm_L", to_Details (yaw_Limits   => (to_Radians (-40.0),
-                                                                           to_Radians ( 40.0)),
-                                                          pitch_Limits => (to_Radians (-40.0),
-                                                                           to_Radians ( 40.0))));
-
+                                                                             to_Radians ( 40.0)),
+                                                            pitch_Limits => (to_Radians (-40.0),
+                                                                             to_Radians ( 40.0))));
       the_Rig.define (the_Applet.gui_World,
                       the_rig_Model.all'Access,
                       mass         => 1.0,
@@ -129,7 +133,7 @@ begin
    the_Rig.enable_Graphics;
 
 
-   start_Time       := ada.calendar.Clock;
+   --  start_Time       := ada.calendar.Clock;
    next_render_Time := ada.Calendar.clock;
 
    while the_Applet.is_open
