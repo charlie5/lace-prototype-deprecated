@@ -9,60 +9,56 @@ with
 
      Physics;
 
-pragma Unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.lumen);
 
 
 procedure launch_text_sprite_Demo
 --
---  Shows a few text sprite.
+--  Shows a few text sprites.
 --
 is
    use gel.Applet,
        gel.Math,
        openGL.Palette;
 
-   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("text sprite Demo",
+   the_Applet : constant gel.Applet.gui_World.view := gel.forge.new_gui_Applet ("text sprite Demo",
                                                                                 space_Kind => physics.Bullet);
 
-   the_Text_1 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (the_Applet.gui_World,
+   the_Text_1 : constant gel.Sprite.view := gel.forge.new_text_Sprite (the_Applet.gui_World,
                                                                        Origin_3D,
                                                                        "Howdy",
                                                                        the_Applet.Font,
                                                                        Green);
 
-   the_Text_2 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (the_Applet.gui_World,
+   the_Text_2 : constant gel.Sprite.view := gel.forge.new_text_Sprite (the_Applet.gui_World,
                                                                        Origin_3D,
                                                                        "Doody",
                                                                        the_Applet.Font,
                                                                        Green);
-   Counter    : Integer := 0;
-
+   text_1_Model : constant openGL.Model.text.lit_colored_textured.view
+                                         := openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model);
 begin
    the_Applet.gui_Camera.Site_is ((0.0, 0.0, 50.0));      -- Position the camera.
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
 
-   the_Applet.gui_World.add (the_Text_1);                 -- Add text.
-   the_Applet.gui_World.add (the_Text_2);                 -- Add text.
+   the_Applet.gui_World.add (the_Text_1);
+   the_Applet.gui_World.add (the_Text_2);
 
    the_Text_2.Site_is ((0.0, 10.0, 0.0));
 
    while the_Applet.is_open
    loop
-      Counter := Counter + 1;
-
-      if Counter mod 200 = 0
+      if text_1_Model.Text.all = "Yay"
       then
-         if openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model).Text.all = "Yay"
-         then
-            openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model).Text_is ("Howdy");
-         else
-            openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model).Text_is ("Yay");
-         end if;
-
+         text_1_Model.Text_is ("Howdy");
+      else
+         text_1_Model.Text_is ("Yay");
       end if;
 
       the_Applet.gui_World.evolve (by => 1.0 / 60.0);
       the_Applet.freshen;                                 -- Handle any new events and update the screen.
+
+      delay 0.5;
    end loop;
 
    the_Applet.destroy;
