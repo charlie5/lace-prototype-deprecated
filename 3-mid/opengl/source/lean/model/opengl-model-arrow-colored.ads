@@ -20,7 +20,7 @@ is
    function new_Arrow (Color      : in openGL.Color := Palette.White;
                        line_Width : in Real         := 1.0;
                        End_1,
-                       End_2      : in Vector_3     := Origin_3d) return View;
+                       End_2      : in Vector_3     := Origin_3D) return View;
 
    --------------
    --- Attributes

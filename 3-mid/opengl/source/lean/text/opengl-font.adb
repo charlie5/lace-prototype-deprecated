@@ -148,8 +148,8 @@ is
 
    function BBox (Self : access Item;   Text     : in String;
                                         Length   : in Integer  := -1;
-                                        Position : in Vector_3 := Origin_3d;
-                                        Spacing  : in Vector_3 := Origin_3d) return Bounds
+                                        Position : in Vector_3 := Origin_3D;
+                                        Spacing  : in Vector_3 := Origin_3D) return Bounds
    is
    begin
       return Self.impl.BBox (Text, Length, Position, Spacing);
@@ -191,7 +191,7 @@ is
 
    function Advance (Self : access Item;   Text    : in String;
                                            Length  : in Integer  := -1;
-                                           Spacing : in Vector_3 := Origin_3d) return Real
+                                           Spacing : in Vector_3 := Origin_3D) return Real
    is
    begin
       return Self.impl.Advance (Text, Length, Spacing);

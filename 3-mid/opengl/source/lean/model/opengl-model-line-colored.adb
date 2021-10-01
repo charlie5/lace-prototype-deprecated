@@ -9,7 +9,7 @@ is
 
    function to_line_Model (Color : in openGL.Color;
                            End_1,
-                           End_2 : in Vector_3 := Origin_3d) return Item
+                           End_2 : in Vector_3 := Origin_3D) return Item
    is
       Self : Item;
    begin
@@ -26,7 +26,7 @@ is
 
    function new_line_Model (Color : in openGL.Color;
                             End_1,
-                            End_2 : in Vector_3 := Origin_3d) return View
+                            End_2 : in Vector_3 := Origin_3D) return View
    is
    begin
       return new Item' (to_line_Model (Color, End_1, End_2));

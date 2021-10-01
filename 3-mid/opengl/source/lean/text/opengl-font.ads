@@ -140,8 +140,8 @@ is
 
    function BBox (Self : access Item;   Text     : in String;
                                         Length   : in Integer  := -1;
-                                        Position : in Vector_3 := Origin_3d;
-                                        Spacing  : in Vector_3 := Origin_3d) return Bounds;
+                                        Position : in Vector_3 := Origin_3D;
+                                        Spacing  : in Vector_3 := Origin_3D) return Bounds;
    --
    --  Get the bounding box for a string.
    --
@@ -197,7 +197,7 @@ is
 
    function Advance (Self : access Item;   Text    : in String;
                                            Length  : in Integer  := -1;
-                                           Spacing : in Vector_3 := Origin_3d) return Real;
+                                           Spacing : in Vector_3 := Origin_3D) return Real;
    --
    --  Get the advance for a string.
    --
@@ -217,8 +217,8 @@ is
 
    function check_Glyphs (Self : access Item;   Text     : in String;
                                                 Length   : in Integer             := -1;
-                                                Position : in Vector_3            := math.Origin_3d;
-                                                Spacing  : in Vector_3            := math.Origin_3d;
+                                                Position : in Vector_3            := math.Origin_3D;
+                                                Spacing  : in Vector_3            := math.Origin_3D;
                                                 Mode     : in fontImpl.RenderMode := fontImpl.RENDER_ALL) return Vector_3;
    --
    --  Render a string of characters.

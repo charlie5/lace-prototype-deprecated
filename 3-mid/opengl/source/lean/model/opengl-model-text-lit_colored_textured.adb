@@ -108,7 +108,7 @@ is
          --- Procedure to 'add' a character.
          --
 
-         pen_Site       : Vector_3     := Origin_3d;
+         pen_Site       : Vector_3     := Origin_3D;
 
          indices_Count  : long_Index_t := 0;
          vertex_Count   :      Index_t := 0;

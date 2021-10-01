@@ -273,16 +273,16 @@ is
    --
    --  The 'Golden' ratio.
 
-   Origin_2d : constant Vector_2;
-   Origin_3d : constant Vector_3;
+   Origin_2D : constant Vector_2;
+   Origin_3D : constant Vector_3;
 
 
 
 private
    Infinity     : constant Real := Real'Last;
 
-   Origin_2d    : constant Vector_2 := (0.0, 0.0);
-   Origin_3d    : constant Vector_3 := (0.0, 0.0, 0.0);
+   Origin_2D    : constant Vector_2 := (0.0, 0.0);
+   Origin_3D    : constant Vector_3 := (0.0, 0.0, 0.0);
 
    Identity_2x2 : aliased constant Matrix_2x2 := ((1.0, 0.0),
                                                   (0.0, 1.0));
