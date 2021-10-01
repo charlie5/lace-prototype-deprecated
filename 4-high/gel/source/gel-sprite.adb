@@ -114,7 +114,7 @@ is
       Self.Id             := World.new_sprite_Id;
       Self.World          := World;
 
-      Self.Visual.Model_is (openGL.Model.view (graphics_Model));
+      Self.Visual.Model_is (graphics_Model.all'unchecked_Access);
       Self.physics_Model  := physics.Model.view (physics_Model);
       Self.owns_Graphics  := owns_Graphics;
       Self.owns_Physics   := owns_Physics;
