@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
@@ -10,7 +10,7 @@ fi
 mkdir -p assets
 cd       assets
 
-ln -s $LACE/4-high/mmi/assets  mmi
+ln -s $LACE/4-high/gel/applet/assets  gel
 
 
 echo Done.
