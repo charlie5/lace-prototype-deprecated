@@ -4,9 +4,8 @@ package collada.Library.controllers
 --
 is
 
-   type Inputs_view    is access all library.Inputs;
+   type Inputs_view    is access all Library.Inputs;
    type int_Array_view is access all int_Array;
-
 
 
    ----------
@@ -25,14 +24,14 @@ is
 
    type vertex_Weights is
       record
-         Count  : Natural;
-         Inputs : Inputs_view;
+         Count   : Natural;
+         Inputs  : Inputs_view;
 
          v_Count : int_Array_view;
          v       : int_Array_view;
       end record;
 
-   function joint_Offset_of  (Self : in vertex_Weights) return math.Index;
+   function  joint_Offset_of (Self : in vertex_Weights) return math.Index;
    function weight_Offset_of (Self : in vertex_Weights) return math.Index;
 
 
