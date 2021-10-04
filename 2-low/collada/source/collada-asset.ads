@@ -1,10 +1,9 @@
 with
-     ada.calendar;
-
+     ada.Calendar;
 
 package collada.Asset
 --
--- Models a collada Asset.
+-- Models a collada asset.
 --
 is
 
@@ -29,8 +28,8 @@ is
    type Item is
       record
          Contributor : asset.Contributor;
-         Created     : ada.calendar.Time;
-         Modified    : ada.calendar.Time;
+         Created     : ada.Calendar.Time;
+         Modified    : ada.Calendar.Time;
          Unit        : asset.Unit;
          up_Axis     : up_Direction;
       end record;
