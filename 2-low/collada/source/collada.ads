@@ -2,13 +2,11 @@ with
      float_Math,
      ada.Strings.unbounded;
 
-
 package Collada
 --
 -- Provides a namespace and core types for the Collada package family.
 --
 is
-
    -------
    -- Text
    --
@@ -25,7 +23,6 @@ is
    type Text_array is array (Positive range <>) of Text;
 
 
-
    -------
    -- Math
    --
@@ -37,7 +34,6 @@ is
 
    subtype Float_array      is math.Vector;
    subtype   Int_array      is math.Integers;
-
 
    subtype Vector_3         is math.Vector_3;
    subtype Vector_4         is math.Vector_4;
@@ -55,7 +51,6 @@ is
 
 
    Error : exception;
-
 
 
 
