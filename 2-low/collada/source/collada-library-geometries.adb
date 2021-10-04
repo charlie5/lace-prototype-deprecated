@@ -9,14 +9,13 @@ is
      renames ada.Strings.unbounded.to_String;
 
 
-
    -------------
    --- Primitive
    --
 
    function vertex_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all,  Vertex);
+      the_Input : constant Input_t := find_in (Self.Inputs.all, Vertex);
    begin
       return math.Index (the_Input.Offset);
    end vertex_Offset_of;
@@ -25,7 +24,7 @@ is
 
    function normal_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all,  Normal);
+      the_Input : constant Input_t := find_in (Self.Inputs.all, Normal);
    begin
       return math.Index (the_Input.Offset);
    end normal_Offset_of;
@@ -34,7 +33,7 @@ is
 
    function coord_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all,  TexCoord);
+      the_Input : constant Input_t := find_in (Self.Inputs.all, TexCoord);
    begin
       if the_Input = null_Input
       then
@@ -43,8 +42,6 @@ is
 
       return math.Index (the_Input.Offset);
    end coord_Offset_of;
-
-
 
 
    --------
@@ -56,11 +53,11 @@ is
    is
       use ada.Strings.unbounded;
    begin
-      for Each in Self.Sources'Range
+      for i in Self.Sources'Range
       loop
-         if Self.Sources (Each).Id = source_Name (source_Name'First+1 .. source_Name'Last)
+         if Self.Sources (i).Id = source_Name (source_Name'First+1 .. source_Name'Last)
          then
-            return Self.Sources (Each);
+            return Self.Sources (i);
          end if;
       end loop;
 
@@ -70,7 +67,6 @@ is
          return null_Source;
       end;
    end Source_of;
-
 
 
 
@@ -92,12 +88,11 @@ is
 
 
 
-
    function Normals_of (Self          : in Mesh;
                         for_Primitive : in Primitive) return access float_Array
    is
-      the_Primitive :          Primitive renames for_Primitive;
-      the_Input     : constant Input_t   :=      find_in (the_Primitive.Inputs.all,  Normal);
+      the_Primitive : Primitive   renames for_Primitive;
+      the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, Normal);
 
    begin
       if the_Input = null_Input then
@@ -113,12 +108,11 @@ is
 
 
 
-
    function Coords_of (Self          : in Mesh;
                        for_Primitive : in Primitive) return access float_Array
    is
-      the_Primitive :          Primitive renames for_Primitive;
-      the_Input     : constant Input_t   :=      find_in (the_Primitive.Inputs.all,  TexCoord);
+      the_Primitive : Primitive   renames for_Primitive;
+      the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, TexCoord);
 
    begin
       if the_Input = null_Input
