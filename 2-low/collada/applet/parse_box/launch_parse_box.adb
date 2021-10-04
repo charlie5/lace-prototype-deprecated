@@ -1,16 +1,12 @@
 with
-     collada.Document,
-
-     ada.Strings.unbounded,
-     ada.Text_IO;
-
+     collada.Document;
 
 procedure launch_parse_Box
 --
--- Loads an xml file, parses it into a collada Document.
+-- Loads an xml file, parses it into a collada document.
 --
 is
    the_Asset : collada.Document.item := collada.document.to_Document ("./box.dae");
 begin
    null;
-end;
+end launch_parse_Box;
