@@ -22,10 +22,6 @@ is
    function "+" (From : in String) return unbounded_String
      renames to_unbounded_String;
 
-   function "+" (From : in unbounded_String) return String
-     renames to_String;
-
-
 
    function to_Time (From : in String) return ada.Calendar.Time
    is
@@ -457,7 +453,6 @@ is
       the_collada_Tree : constant access xml.Element := the_xml_Tree.Child (named => "COLLADA");
 
       the_Document     : Document.item;
-      Depth            : Natural := 0;
 
    begin
       parse_the_asset_Element:
