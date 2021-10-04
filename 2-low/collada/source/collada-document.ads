@@ -2,13 +2,11 @@ with
      collada.Asset,
      collada.Libraries;
 
-
 package collada.Document
 --
--- Provides a namespace and core types for the Collada package family.
+-- Models a colada document.
 --
 is
-
    type Item is tagged private;
 
    function to_Document (Filename : in String) return Item;
@@ -16,7 +14,6 @@ is
 
    function Asset     (Self : in Item) return collada.Asset    .item;
    function Libraries (Self : in Item) return collada.Libraries.item;
-
 
 
 
