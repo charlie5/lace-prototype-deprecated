@@ -4,10 +4,9 @@ with
      collada.Library.animations,
      collada.Library.visual_scenes;
 
-
 package collada.Libraries
 --
--- Provides a Container for the specific collada library packages.
+-- Provides a container for the specific collada library packages.
 --
 is
 
