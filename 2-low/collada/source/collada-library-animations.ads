@@ -4,9 +4,8 @@ package collada.Library.animations
 --
 is
 
-   type Inputs_view    is access all library.Inputs;
+   type Inputs_view    is access all Library.Inputs;
    type int_Array_view is access all int_Array;
-
 
 
    -----------

@@ -1,14 +1,11 @@
 package body collada.Library.animations
 is
-
    -----------
    --- Utility
    --
 
    function "+" (From : in ada.Strings.unbounded.unbounded_String) return String
      renames ada.Strings.unbounded.to_String;
-
-
 
 
    -------------
@@ -20,11 +17,11 @@ is
    is
       use ada.Strings.unbounded;
    begin
-      for Each in Self.Sources'Range
+      for i in Self.Sources'Range
       loop
-         if Self.Sources (Each).Id = source_Name (source_Name'First+1 .. source_Name'Last)
+         if Self.Sources (i).Id = source_Name (source_Name'First+1 .. source_Name'Last)
          then
-            return Self.Sources (Each);
+            return Self.Sources (i);
          end if;
       end loop;
 
@@ -39,7 +36,7 @@ is
 
    function find_Inputs_of (Self : in Animation;   for_Semantic : in Semantic) return access float_Array
    is
-      the_Input : constant Input_t := find_in (Self.Sampler.Inputs.all,  for_Semantic);
+      the_Input : constant Input_t := find_in (Self.Sampler.Inputs.all, for_Semantic);
    begin
       if the_Input = null_Input
       then
@@ -52,7 +49,6 @@ is
          return the_Source.Floats;
       end;
    end find_Inputs_of;
-
 
 
 
