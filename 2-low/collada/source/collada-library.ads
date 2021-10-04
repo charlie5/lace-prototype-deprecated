@@ -1,24 +1,22 @@
 package collada.Library
 --
--- Provides a namespace and core types for the specific collada library packages.
+-- Provides a namespace and core types for the specific collada library child packages.
 --
 is
-
    ----------
    -- Sources
    --
 
    type Source is
       record
-         Id       :        Text;
-         array_Id :        Text;
+         Id       : Text;
+         array_Id : Text;
 
          Floats   : access float_Array;
          Texts    : access Text_array;
       end record;
 
    type Sources is array (Positive range <>) of Source;
-
 
 
    ----------
@@ -63,8 +61,6 @@ is
 
 
    function find_in (Self : Inputs;   the_Semantic : in library.Semantic) return Input_t;
-
-
 
 
 
