@@ -257,6 +257,9 @@ is
                                     then   the_gl_Vertex.Bones (4) := the_Weights (4);
                                     else   the_gl_Vertex.Bones (4) := (0, 0.0);
                                     end if;
+
+                                 else
+                                    raise constraint_Error with "Bone weights array has no elements.";
                                  end if;
                               end;
 
