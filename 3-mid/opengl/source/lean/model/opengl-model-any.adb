@@ -329,7 +329,7 @@ is
          pragma assert (tri_indices_Count = tri_indices_Last);
 
 
-         --  Decide which geometry class is required and create the geometry.
+         --  Determine which geometry class is required and create the geometry.
          --
          if the_Model.Weights = null
          then
@@ -380,7 +380,7 @@ is
                Self.Geometry := Geometry.view (my_Geometry);
             end;
 
-         else
+         else   -- Is skinned.
             declare
                use Geometry.lit_colored_textured_skinned;
 
