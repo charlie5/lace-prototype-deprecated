@@ -10,6 +10,8 @@ is
 
    function new_Geometry return access Geometry.lit_colored_textured_skinned.item'Class;
 
+   procedure define_Program;
+
 
    ----------
    --  Vertex

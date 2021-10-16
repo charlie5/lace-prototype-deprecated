@@ -4,6 +4,7 @@ with
      openGL.Camera,
      openGL.Palette,
      openGL.Model.billboard.textured,
+     openGL.Geometry.lit_colored_textured_skinned,
      openGL.Font.texture,
      openGL.Server,
      openGL.Tasks,
@@ -246,6 +247,8 @@ is
             Done := True;
          end Stop;
       end select;
+
+      openGL.Geometry.lit_colored_textured_skinned.define_Program;
 
 
       -- Setup the default light.
