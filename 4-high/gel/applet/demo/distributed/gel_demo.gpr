@@ -1,8 +1,8 @@
 with 
-     "lumen_mmi",
+     "lumen_gel",
      "lace_shared";
 
-project mmi_Demo
+project gel_Demo
 is
     for Create_Missing_Dirs use "True";
 
@@ -18,4 +18,4 @@ is
       for Default_Switches ("ada") use ("-g");
    end Linker;
 
-end mmi_Demo;
+end gel_Demo;

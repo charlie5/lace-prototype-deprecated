@@ -1,4 +1,4 @@
-package mmi_demo_Client
+package gel_demo_Client
 --
 -- Provides a client.
 --
@@ -9,4 +9,4 @@ is
       entry start;
    end Item;
 
-end mmi_demo_Client;
+end gel_demo_Client;

@@ -1,5 +1,5 @@
 with 
-     mmi_demo_Server;
+     gel_demo_Server;
 
 
 procedure launch_Server
@@ -8,6 +8,6 @@ procedure launch_Server
 --
 is
 begin
-   mmi_demo_Server.item.start;
-end;
+   gel_demo_Server.item.start;
+end launch_Server;
 

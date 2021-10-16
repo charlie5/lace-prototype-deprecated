@@ -1,9 +1,9 @@
 with
-     mmi.Applet,
-     mmi.World,
-     mmi.Camera,
-     mmi.Forge,
-     mmi.Sprite,
+     gel.Applet,
+     gel.World,
+     gel.Camera,
+     gel.Forge,
+     gel.Sprite,
      openGL.Model;
 
 with opengl.Palette,
@@ -17,34 +17,34 @@ with ada.Exceptions;
 
 
 
-package body mmi_demo_Server
+package body gel_demo_Server
 is
    package Math renames float_Math;
 
 
    task body Item
    is
-      use mmi.Applet;
+      use gel.Applet;
       use type math.Real;
 
-      the_World : mmi.World.view;
+      the_World : gel.World.view;
 
    begin
       accept start
       do
-         the_World        := mmi.World.forge.new_World ("server", 1, physics.Bullet, null);
+         the_World        := gel.World.forge.new_World ("server", 1, physics.Bullet, null);
          the_server_World := the_World.all'Access;
       end;
       the_World.start;
 
       declare
---           use mmi.box_Model, openGL, opengl.Palette, Math;
+--           use gel.box_Model, openGL, opengl.Palette, Math;
          use type math.Real, math.Index;
 
-         the_Box          : mmi.Sprite.view := mmi.Forge.new_box_Sprite (the_World,
+         the_Box          : gel.Sprite.view := gel.Forge.new_box_Sprite (the_World,
                                                                          size => (20.0, 1.0, 20.0),
                                                                          mass => 0.0);
-         the_Ball         : mmi.Sprite.view := mmi.Forge.new_ball_Sprite (the_World,
+         the_Ball         : gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World,
                                                                           mass => 1.0);
 
          next_render_Time : ada.calendar.Time;
@@ -99,4 +99,4 @@ is
    end Item;
 
 
-end mmi_demo_Server;
+end gel_demo_Server;

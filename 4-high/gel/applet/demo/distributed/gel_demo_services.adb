@@ -1,14 +1,14 @@
 with
-     mmi_demo_Server;
+     gel_demo_Server;
 
 
-package body mmi_demo_Services
+package body gel_demo_Services
 is
 
-   function World return mmi.remote.World.view
+   function World return gel.remote.World.view
    is
    begin
-      return mmi_demo_Server.the_server_World.all'access;
-   end;
+      return gel_demo_Server.the_server_World.all'access;
+   end World;
 
-end mmi_demo_Services;
+end gel_demo_Services;

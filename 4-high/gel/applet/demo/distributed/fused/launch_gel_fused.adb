@@ -1,14 +1,14 @@
-with 
-     mmi_demo_Server,
-     mmi_demo_Client;
+with
+     gel_demo_Server,
+     gel_demo_Client;
 
 
-procedure launch_MMI_fused
+procedure launch_GEL_fused
 --
 -- Launches the fused version.
 --
 is
 begin
-   mmi_demo_Server.item.start;
-   mmi_demo_Client.item.start;
-end;
+   gel_demo_Server.item.start;
+   gel_demo_Client.item.start;
+end launch_GEL_fused;

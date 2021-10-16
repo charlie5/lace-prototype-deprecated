@@ -1,6 +1,8 @@
 with 
-     "lumen_mmi",
-     "../mmi_demo";
+     "lumen_gel",
+     "../gel_demo",
+     "lace_shared";
+
 
 project Demo_dsa
 is

@@ -1,14 +1,14 @@
 with
-     "lumen_mmi",
-     "../mmi_demo",
+     "lumen_gel",
+     "../gel_demo",
      "lace_shared";
 
-project MMI_Fused
+project GEL_fused
 is
    for Source_Dirs use (".");
    for Object_Dir  use "build";
    for Exec_Dir    use ".";
-   for Main        use ("launch_mmi_fused.adb");
+   for Main        use ("launch_gel_fused.adb");
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
@@ -19,4 +19,4 @@ is
       for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lGLU", "-lX11", "-lm");
    end Linker;
 
-end MMI_Fused;
+end GEL_fused;

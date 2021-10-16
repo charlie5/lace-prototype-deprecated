@@ -1,5 +1,5 @@
 with 
-     mmi_demo_Client;
+     gel_demo_Client;
 
 
 procedure launch_Client
@@ -8,6 +8,6 @@ procedure launch_Client
 --
 is
 begin
-   mmi_demo_Client.item.start;
-end;
+   gel_demo_Client.item.start;
+end launch_Client;
 
