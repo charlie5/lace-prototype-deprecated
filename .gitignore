@@ -1,4 +1,5 @@
 ## Gnat build artifacts
+#
 *.o
 *.ali
 *-loc.xml
@@ -12,14 +13,19 @@ auto.cgpr
 .clang-format
 .clangd
 .#*
+*.deps
+*.d
+
 
 ## Build folders
+#
 build
 **/dsa/x86_64-unknown-linux-gnu
 bin
 
 
 ## Source
+#
 2-low/neural/source/attic
 2-low/neural/source/attic2
 2-low/neural/implement
@@ -35,6 +41,7 @@ bin
 
 
 ## Assets
+#
 **/assets/opengl
 **/assets/gel
 **/assets/attic
@@ -42,6 +49,7 @@ bin
 
 ## Binaries
 #
+box2d_HelloWorld
 launch_simple_instant_events_demo
 launch_simple_deferred_events_demo
 launch_simple_chat_client
@@ -93,11 +101,14 @@ test_environ_general
 HelloWorld*
 5-all/applet/build_all/build_all
 
+
 ## Old Code
+#
 *-old
 old-events
 
 
 ## Misc
+#
 *.project
 gel_chains_demo.ogv
