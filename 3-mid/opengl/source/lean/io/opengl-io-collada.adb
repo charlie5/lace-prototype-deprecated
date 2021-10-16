@@ -94,7 +94,7 @@ is
 
             collada_Weights : constant access std_Collada.Float_array := Weights_of (the_Skin);
 
-            V               : std_Collada.Int_array renames the_Skin.vertex_Weights.V.all;
+            V               : std_Collada.Int_array renames the_Skin.vertex_Weights.V      .all;
             v_Count         : std_Collada.Int_array renames the_Skin.vertex_Weights.v_Count.all;
             v_Cursor        :          math.Index        := 0;
             inputs_Count    : constant math.Index        := the_Skin.vertex_Weights.Inputs'Length;
