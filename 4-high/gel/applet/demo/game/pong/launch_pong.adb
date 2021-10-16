@@ -1,11 +1,11 @@
 with
-     mmi.Window.setup,
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.Sprite,
-     mmi.World,
-     mmi.Camera,
-     mmi.Keyboard,
+     gel.Window.setup,
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.Sprite,
+     gel.World,
+     gel.Camera,
+     gel.Keyboard,
 
      Physics,
      openGL.Palette,
@@ -20,7 +20,7 @@ with
      Ada.Text_IO,
      Ada.Exceptions;
 
-pragma Unreferenced (mmi.Window.setup);
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_Pong
@@ -28,10 +28,10 @@ procedure launch_Pong
 --  Basic pong game.
 --
 is
-   use mmi.Applet,
-       mmi.Applet.gui_world,
-       mmi.Keyboard,
-       mmi.Math,
+   use gel.Applet,
+       gel.Applet.gui_world,
+       gel.Keyboard,
+       gel.Math,
        openGL.Palette,
        Ada.Text_IO;
 
@@ -40,15 +40,15 @@ is
 
    --- Applet
    --
-   the_Applet : mmi.Applet.gui_world.view
-     := mmi.Forge.new_gui_Applet (Named         => "Pong",
+   the_Applet : gel.Applet.gui_world.view
+     := gel.Forge.new_gui_Applet (Named         => "Pong",
                                   window_Width  => 800,
                                   window_Height => 600,
                                   space_Kind    => physics.Box2d);
    --- Ball
    --
-   the_Ball : constant mmi.Sprite.view
-     := mmi.Forge.new_circle_Sprite (in_World => the_Applet.World,
+   the_Ball : constant gel.Sprite.view
+     := gel.Forge.new_circle_Sprite (in_World => the_Applet.World,
                                      Site     => (0.0, 0.0),
                                      Mass     => 1.0,
                                      Bounce   => 1.0,
@@ -60,12 +60,12 @@ is
    --
    type Player is
       record
-         Paddle      : mmi.Sprite.view;
+         Paddle      : gel.Sprite.view;
          moving_Up   : Boolean         := False;
          moving_Down : Boolean         := False;
 
          Score       : Natural         := 0;
-         score_Text  : mmi.Sprite.view;
+         score_Text  : gel.Sprite.view;
          score_Model : openGL.Model.text.view;
       end record;
 
@@ -81,7 +81,7 @@ is
       the_Player :          Player renames the_Players (Id);
       score_Site : constant Vector_2    := Site + (0.0, stadium_Height / 2.0 + 0.8);
    begin
-      the_Player.Paddle := mmi.Forge.new_rectangle_Sprite (the_Applet.World,
+      the_Player.Paddle := gel.Forge.new_rectangle_Sprite (the_Applet.World,
                                                            Site     => Site,
                                                            Mass     => 0.0,
                                                            Bounce   => 1.0,
@@ -90,7 +90,8 @@ is
                                                            Height   => 3.0,
                                                            Color    => Red);
 
-      the_Player.score_Text  := mmi.Forge.new_text_Sprite (the_Applet.World,
+      the_Player.score_Text  := gel.Forge.new_text_Sprite (the_Applet.World,
+                                                           Origin_3D,
                                                            " 0",
                                                            the_Applet.Font,
                                                            Green);
@@ -109,8 +110,8 @@ is
                        Width,
                        Height : in Real)
    is
-      the_Wall : constant mmi.Sprite.view
-        := mmi.Forge.new_rectangle_Sprite (the_Applet.World,
+      the_Wall : constant gel.Sprite.view
+        := gel.Forge.new_rectangle_Sprite (the_Applet.World,
                                            Site     => Site,
                                            Mass     => 0.0,
                                            Bounce   => 1.0,
@@ -137,8 +138,8 @@ is
    procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
-      the_Event :          mmi.Keyboard.key_press_Event renames mmi.Keyboard.key_press_Event (to_Event);
-      the_Key   : constant mmi.keyboard.Key := the_Event.modified_Key.Key;
+      the_Event :          gel.Keyboard.key_press_Event renames gel.Keyboard.key_press_Event (to_Event);
+      the_Key   : constant gel.keyboard.Key := the_Event.modified_Key.Key;
    begin
       case the_Key
       is
@@ -159,8 +160,8 @@ is
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
-      the_Event :          mmi.Keyboard.key_release_Event renames mmi.Keyboard.key_release_Event (to_Event);
-      the_Key   : constant mmi.keyboard.Key := the_Event.modified_Key.Key;
+      the_Event :          gel.Keyboard.key_release_Event renames gel.Keyboard.key_release_Event (to_Event);
+      the_Key   : constant gel.keyboard.Key := the_Event.modified_Key.Key;
    begin
       case the_Key
       is
@@ -219,12 +220,12 @@ begin
    connect ( the_Applet.local_Observer,
              the_Applet.Keyboard.all'Access,
              the_key_press_Response'unchecked_Access,
-            +mmi.Keyboard.key_press_Event'Tag);
+            +gel.Keyboard.key_press_Event'Tag);
 
    connect ( the_Applet.local_Observer,
              the_Applet.Keyboard.all'Access,
              the_key_release_Response'unchecked_Access,
-            +mmi.Keyboard.key_release_Event'Tag);
+            +gel.Keyboard.key_release_Event'Tag);
 
 
    --- Main loop.
@@ -264,11 +265,11 @@ begin
       then
          the_Ball.Site_is ((0.0, 0.0, 0.0));
          declare
-            the_Force : Vector_3 := (mmi.Math.Random.random_Real (50.0, 200.0),
-                                     mmi.Math.Random.random_Real ( 5.0,  20.0),
+            the_Force : Vector_3 := (gel.Math.Random.random_Real (50.0, 200.0),
+                                     gel.Math.Random.random_Real ( 5.0,  20.0),
                                      0.0);
          begin
-            if mmi.Math.Random.random_Boolean
+            if gel.Math.Random.random_Boolean
             then
                the_Force := -the_Force;
             end if;
