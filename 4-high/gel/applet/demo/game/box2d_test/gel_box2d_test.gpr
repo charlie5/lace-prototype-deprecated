@@ -1,4 +1,4 @@
-project mmi_box2d_Test
+project gel_box2d_Test
 is
    for Source_Dirs use (".");
    for Object_Dir  use "obj";
@@ -14,4 +14,4 @@ is
       for Switches ("c++") use ("-lbox2d");
    end Linker;
 
-end mmi_box2d_Test;
+end gel_box2d_Test;
