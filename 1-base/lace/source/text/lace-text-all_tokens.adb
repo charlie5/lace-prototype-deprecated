@@ -11,9 +11,16 @@ is
    is
       Cursor : Positive renames From;
    begin
-      if Self.Data (Cursor) = Delimiter then
+      if Self.Data (Cursor) = Delimiter
+      then
          Cursor := Cursor + 1;
          return "";
+
+      elsif Cursor = Self.Length
+      then
+         Cursor := Cursor + 1;
+         return Self.Data (Cursor - 1 .. Cursor - 1);
+
       else
          declare
             First : constant Positive := Cursor;
