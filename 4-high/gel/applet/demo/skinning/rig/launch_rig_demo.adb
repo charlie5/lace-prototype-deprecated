@@ -7,6 +7,7 @@ with
      gel.Forge,
 
      openGL.Model.any,
+     openGL.Light.directional,
 
      ada.Calendar,
      ada.Strings.unbounded;
@@ -61,7 +62,16 @@ begin
 
    the_Applet.enable_Mouse (detect_Motion => False);     -- Enable mouse events.
 
-   the_Applet.gui_World.Gravity_is ((0.0, -0.5, 0.0));
+   the_Applet.gui_World.Gravity_is ((0.0, -0.0, 0.0));
+
+   -- Set the lights position.
+   --
+   declare
+      Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
+   begin
+      Light.Site_is ((1000.0, 1000.0, 1000.0));
+      the_Applet.Renderer.Light_is (Id => 1, Now => Light);
+   end;
 
 
    declare
@@ -96,7 +106,7 @@ begin
                                                                              to_Radians ( 40.0))));
       the_Rig.define (the_Applet.gui_World,
                       the_rig_Model.all'Access,
-                      mass         => 1.0,
+                      Mass         => 0.0,
                       bone_Details => leaf_bone_Lengths,
                       is_Kinematic => False);
    end;
@@ -105,7 +115,7 @@ begin
    the_Rig   .Spin_is (x_Rotation_from (to_Radians (-90.0)));
 
    the_Applet.gui_World.add (the_Rig.base_Sprite, and_Children => True);     -- Add the rigs armature sprite.
-   the_Applet.gui_World.add (the_Ground,          and_Children => False);    -- Add the ground        sprite.
+   --  the_Applet.gui_World.add (the_Ground,          and_Children => False);    -- Add the ground        sprite.
 
    the_Rig.enable_Graphics;
 
