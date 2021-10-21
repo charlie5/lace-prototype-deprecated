@@ -259,11 +259,11 @@ is
             append (the_Image, "/" & id_Image (the_Vertices (i).coord_Id));
          end if;
 
-         if the_Vertices (i).normal_Id /= null_Id
-         then
-            append (the_Image,
-                    "/" & id_Image (the_Vertices (i).normal_Id));
-         end if;
+         --  if the_Vertices (i).normal_Id /= null_Id
+         --  then
+         --     append (the_Image,
+         --             "/" & id_Image (the_Vertices (i).normal_Id));
+         --  end if;
 
          append (the_Image, " ");
       end loop;
@@ -299,10 +299,6 @@ is
    end Image;
 
 
-   --------------
-   --- Deprecated ~ TODO: Rid this.
-   --
-
    type wf_Faces_view is access all wavefront.Faces;
 
 
@@ -311,19 +307,24 @@ is
       use ada.Strings.fixed,
           ada.Text_IO;
 
-      the_File     : File_Type;
+      the_material_Library : Text;
+      the_material_Name    : Text;
+      the_object_Name      : Text;
+      the_group_Name       : Text;
 
-      the_Sites    : Sites (Index_t);
+      the_Sites    : Sites (1 .. 50_000);
       site_Count   : Index_t := 0;
 
-      the_Coords   : Coordinates_2D (Index_t);
+      the_Coords   : Coordinates_2D (1 .. 50_000);
       coord_Count  : Index_t := 0;
 
-      the_Normals  : Normals (Index_t);
+      the_Normals  : Normals (1 .. 50_000);
       normal_Count : Index_t := 0;
 
-      the_Faces    : wf_Faces_view := new Faces'(1 .. 50_000 => <>);
+      the_Faces    : wf_Faces_view := new Faces' (1 .. 100_000 => <>);
       face_Count   : long_Index_t  := 0;
+
+      the_File     : File_Type;
 
    begin
       Open (the_File, In_File, model_Path);
@@ -331,13 +332,17 @@ is
       while not End_Of_File (the_File)
       loop
          declare
+            use ada.Strings.unbounded;
             the_Line : constant String := Get_Line (the_File);
          begin
             if the_Line'Length = 0 or else the_Line (1) = '#' then
                null;
 
             elsif Head (the_Line, 6) = "mtllib" then
-               null;   -- tbd
+               the_material_Library := to_unbounded_String (the_Line (8 .. the_Line'Last));
+
+            elsif Head (the_Line, 6) = "usemtl" then
+               the_material_Name := to_unbounded_String (the_Line (8 .. the_Line'Last));
 
             elsif Head (the_Line, 2) = "f " then
                face_Count             := face_Count + 1;
@@ -357,16 +362,18 @@ is
                the_Normals (normal_Count) := to_Vector_3 (the_Line (4 .. the_Line'Last));
 
             elsif Head (the_Line, 2) = "o " then
-               face_Count             := face_Count + 1;
-               the_Faces (face_Count) := (a_Group,
-                                          (object_Name,
-                                           object_Name => to_Text (the_Line (3 .. the_Line'Last))));
+               the_object_Name := to_unbounded_String (the_Line (3 .. the_Line'Last));
+               --  face_Count             := face_Count + 1;
+               --  the_Faces (face_Count) := (a_Group,
+               --                             (object_Name,
+               --                              object_Name => to_Text (the_Line (3 .. the_Line'Last))));
 
             elsif Head (the_Line, 2) = "g " then
-               face_Count             := face_Count + 1;
-               the_Faces (face_Count) := (a_Group,
-                                          (group_Name,
-                                           group_Name => to_Text (the_Line (3 .. the_Line'Last))));
+               the_group_Name := to_unbounded_String (the_Line (3 .. the_Line'Last));
+               --  face_Count             := face_Count + 1;
+               --  the_Faces (face_Count) := (a_Group,
+               --                             (group_Name,
+               --                              group_Name => to_Text (the_Line (3 .. the_Line'Last))));
 
             elsif Head (the_Line, 2) = "s " then
                declare
@@ -404,7 +411,12 @@ is
          free (the_Faces);
 
          return
-           (Sites   => new openGL.Sites'(the_Sites (1 .. site_Count)),
+           (material_Library => the_material_Library,
+            material_Name    => the_material_Name,
+            object_Name      => the_object_Name,
+            group_Name       => the_group_Name,
+
+            Sites   => new openGL.Sites'(the_Sites (1 .. site_Count)),
             Coords  => new Coordinates_2D'(the_Coords (1 .. coord_Count)),
             Normals => new openGL.Normals'(the_Normals (1 .. normal_Count)),
             Faces   => used_Faces);
@@ -415,13 +427,26 @@ is
 
    procedure write (the_Model : in wavefront.Model;   to_File : in String)
    is
-      use ada.Text_IO;
+      use ada.Strings.unbounded,
+          ada.Text_IO;
 
       the_File : File_type;
 
       use Real_text_IO;
    begin
       Create (the_File, Out_File, Name => to_File);
+
+      if the_Model.material_Library /= ""
+      then
+         put_Line (the_File, "mtllib " & to_String (the_Model.material_Library));
+         new_Line (the_File);
+      end if;
+
+      if the_Model.object_Name /= ""
+      then
+         put_Line (the_File, "o " & to_String (the_Model.object_Name));
+         new_Line (the_File);
+      end if;
 
       --  Write sites.
       --
@@ -451,26 +476,38 @@ is
          New_Line (the_File);
       end loop;
 
-      New_Line (the_File);
+      --  New_Line (the_File);
 
       --  Write normals.
       --
-      for Each in the_Model.Normals'Range
-      loop
-         Put (the_File,  "vn ");
-         Put (the_File,  the_Model.Normals (Each) (1), Aft => 19, Exp => 0);
-         Put (the_File,  " ");
-         Put (the_File,  the_Model.Normals (Each) (2), Aft => 19, Exp => 0);
-         Put (the_File,  " ");
-         Put (the_File,  the_Model.Normals (Each) (3), Aft => 19, Exp => 0);
-
-         New_Line (the_File);
-      end loop;
+      --  for Each in the_Model.Normals'Range
+      --  loop
+      --     Put (the_File,  "vn ");
+      --     Put (the_File,  the_Model.Normals (Each) (1), Aft => 19, Exp => 0);
+      --     Put (the_File,  " ");
+      --     Put (the_File,  the_Model.Normals (Each) (2), Aft => 19, Exp => 0);
+      --     Put (the_File,  " ");
+      --     Put (the_File,  the_Model.Normals (Each) (3), Aft => 19, Exp => 0);
+      --
+      --     New_Line (the_File);
+      --  end loop;
 
       New_Line (the_File);
 
       --  Write faces.
       --
+      if the_Model.group_Name /= ""
+      then
+         put_Line (the_File, "g " & to_String (the_Model.group_Name));
+         new_Line (the_File);
+      end if;
+
+      if the_Model.material_Name /= ""
+      then
+         put_Line (the_File, "usemtl " & to_String (the_Model.material_Name));
+         new_Line (the_File);
+      end if;
+
       for Each in the_Model.Faces'Range
       loop
          Put_Line (the_File,  Image (the_Model.Faces (Each)));

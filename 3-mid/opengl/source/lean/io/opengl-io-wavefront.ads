@@ -45,12 +45,13 @@ is
    function to_Model (model_File : in String)         return IO.Model;
 
 
-   --------------
-   --  Deprecated
-   --
-
    type Model is
       record
+         material_Library : Text;
+         material_Name    : Text;
+         object_Name      : Text;
+         group_Name       : Text;
+
          Sites   : access openGL.Sites;
          Coords  : access openGL.Coordinates_2D;
          Normals : access openGL.Normals;
@@ -61,5 +62,15 @@ is
 
    procedure write    (the_Model  : in wavefront.Model;
                        to_File    : in String);
+
+
+   -----------
+   --  Utility
+   --
+
+   function to_Vector_3   (Self : in String) return Vector_3;
+   function to_Coordinate (Self : in String) return Coordinate_2D;
+   function to_Text       (Self : in String) return Text;
+
 
 end openGL.IO.wavefront;
