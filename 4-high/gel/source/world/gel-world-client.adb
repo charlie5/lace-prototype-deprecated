@@ -10,7 +10,8 @@ with
      lace.Response,
      lace.Event.utility,
 
-     ada.unchecked_Deallocation;
+     ada.unchecked_Deallocation,
+     ada.Text_IO;
 
 
 package body gel.World.client
@@ -20,8 +21,8 @@ is
 
 
    procedure log (Message : in String)
---                    renames ada.text_IO.put_Line;
-   is null;
+                  renames ada.text_IO.put_Line;
+--     is null;
 
 
    ---------
@@ -433,6 +434,9 @@ is
 
             the_Sprite.desired_Site_is (new_Site);
             the_Sprite.desired_Spin_is (new_Spin);
+
+            --  the_Sprite.Site_is (new_Site);
+            --  the_Sprite.Solid.Site_is (new_Site);
          end;
       end loop;
    end motion_Updates_are;
@@ -463,6 +467,10 @@ is
          while has_Element (Cursor)
          loop
             the_Sprite := Sprite.view (Key (Cursor));
+
+            new_Transform := Element (Cursor);
+            log ("********* Site: " & Image (get_Translation (new_Transform)));
+
 
             the_Sprite.interpolate_Motion;
 

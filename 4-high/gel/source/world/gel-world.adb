@@ -32,8 +32,8 @@ is
 
 
    procedure log (Message : in String)
---                    renames ada.text_IO.put_Line;
-   is null;
+                  renames ada.Text_IO.put_Line;
+--     is null;
 
 
    ---------
@@ -1210,7 +1210,10 @@ is
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      null;
+      log ("Gravity_is " & Now (2)'Image);
+      Self.physics_Space.Gravity_is (Now);
+
+      log ("Gravity_is");
       --  Self.physics_Engine.set_Gravity (to => Now);
 
 --        Self.Commands.add ((kind    => set_Gravity,
@@ -1358,7 +1361,7 @@ is
             then
                Count                         := Count + 1;
                the_sprite_Transforms (Count) := (Sprite    => the_Sprite,
-                                                 Transform => Element (Cursor));
+                                                 Transform => the_Sprite.Transform); -- Element (Cursor));
             end if;
          exception
             when others =>
@@ -1761,7 +1764,8 @@ is
          loop
             the_Sprite := Key (Cursor);
             declare
-               the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+               --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+               the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
             begin
                --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
                the_sprite_Transforms.replace_Element (Cursor, the_Transform);

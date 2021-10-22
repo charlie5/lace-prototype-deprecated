@@ -340,7 +340,7 @@ is
       --  Update sprite transforms.
       --
       declare
-         the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.Fetch;
+         the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.fetch;
 
          Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
          the_Sprite : gel.Sprite.view;
@@ -349,7 +349,8 @@ is
          loop
             the_Sprite := Key (Cursor);
             declare
-               the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+               --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+               the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
             begin
                --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
                the_sprite_Transforms.replace_Element (Cursor, the_Transform);
@@ -408,38 +409,40 @@ is
          the_Sprite               :          gel.Sprite.view;
 
          is_a_mirrored_World      : constant Boolean                          := not Self.Mirrors.Is_Empty;
-         mirror_Updates_are_due   : constant Boolean                          := Self.Age >= Self.Age_at_last_mirror_update + 0.25;
+         mirror_Updates_are_due   : constant Boolean                          := True; -- Self.Age >= Self.Age_at_last_mirror_update + 0.25;
          updates_Count            :          Natural                          := 0;
 
          the_sprite_id_Transforms :          remote.World.motion_Updates (1 .. Integer (the_sprite_Transforms.Length));
 
       begin
-         while has_Element (Cursor)
-         loop
-            begin
-               the_Sprite := Sprite.view (Key (Cursor));
+         if    is_a_mirrored_World
+           and mirror_Updates_are_due
+         then
+            while has_Element (Cursor)
+            loop
+               declare
+                  the_Transform : Matrix_4x4 := Element (Cursor);
+               begin
+                  Put_Line ("Dynamics-2: Site => " & Image (get_Translation (the_Transform)));
 
-               if         is_a_mirrored_World
-                 and then mirror_Updates_are_due
-               then
+                  the_Sprite := Sprite.view (Key (Cursor));
+
                   updates_Count                            := updates_Count + 1;
                   the_sprite_id_Transforms (updates_Count) := (the_Sprite.Id,
-                                                               coarsen (the_Sprite.Site),
+                                                               coarsen (get_Translation (the_Transform)),
+                                                               --  coarsen (the_Sprite.Site),
+
                                                                coarsen (to_Quaternion (the_Sprite.Spin)));
-               end if;
+               exception
+                  when others =>
+                     put_Line ("Exception during update of mirrored sprite transforms.");
+               end;
 
-            exception
-               when others =>
-                  put_Line ("Exception during update of mirrored sprite transforms.");
-            end;
+               next (Cursor);
+            end loop;
 
-            next (Cursor);
-         end loop;
-
-         --  Send updated sprite motions to any registered client worlds.
-         --
-         if mirror_Updates_are_due
-         then
+            --  Send updated sprite motions to any registered client worlds.
+            --
             Self.Age_at_last_mirror_update := Self.Age;
 
             if updates_Count > 0
@@ -459,6 +462,7 @@ is
                   end loop;
                end;
             end if;
+
          end if;
       end;
 
