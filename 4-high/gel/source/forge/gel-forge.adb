@@ -14,6 +14,7 @@ with
      physics.Model,
      gel.Window;
 
+
 package body gel.Forge
 is
 
@@ -57,6 +58,46 @@ is
    begin
       return the_Applet;
    end new_gui_and_sim_Applet;
+
+
+
+   function new_server_Applet (Named         : in String;
+                               window_Width  : in Positive := 500;
+                               window_Height : in Positive := 500;
+                               space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.server_world.view
+   is
+      the_Window : constant gel.Window.view
+        := gel.Window.Forge.new_Window (Named,
+                                        window_Width,
+                                        window_Height);
+
+      the_Applet : constant gel.Applet.server_world.view
+        := gel.Applet.server_World.forge.new_Applet ("Applet." & Named,
+                                                     the_Window,
+                                                     space_Kind);
+   begin
+      return the_Applet;
+   end new_server_Applet;
+
+
+
+   function new_client_Applet (Named         : in String;
+                               window_Width  : in Positive := 500;
+                               window_Height : in Positive := 500;
+                               space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.client_world.view
+   is
+      the_Window : constant gel.Window.view
+        := gel.Window.Forge.new_Window (Named,
+                                        window_Width,
+                                        window_Height);
+
+      the_Applet : constant gel.Applet.client_world.view
+        := gel.Applet.client_World.forge.new_Applet ("Applet." & Named,
+                                                     the_Window,
+                                                     space_Kind);
+   begin
+      return the_Applet;
+   end new_client_Applet;
 
 
    -----------

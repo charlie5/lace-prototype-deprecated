@@ -1,6 +1,8 @@
 with
      gel.Applet.gui_world,
      gel.Applet.gui_and_sim_world,
+     gel.Applet.server_world,
+     gel.Applet.client_world,
      gel.Sprite,
      gel.World,
 
@@ -29,6 +31,16 @@ is
                                     window_Width  : in Positive           := 500;
                                     window_Height : in Positive           := 500;
                                     space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.gui_and_sim_World.view;
+
+   function      new_server_Applet (Named         : in String;
+                                    window_Width  : in Positive           := 500;
+                                    window_Height : in Positive           := 500;
+                                    space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.server_world.view;
+
+   function      new_client_Applet (Named         : in String;
+                                    window_Width  : in Positive           := 500;
+                                    window_Height : in Positive           := 500;
+                                    space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.client_world.view;
    -----------
    --- Sprites
    --
