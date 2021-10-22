@@ -159,7 +159,7 @@ is
       my_Transform : Matrix_4x4 := to_transform_Matrix (Translation => my_Site,
                                                         Rotation    => my_Spin);
    begin
-      RETURN my_Transform;
+      return my_Transform;
       put_Line (Self.Site (2)'Image);
       return Self.Dynamics.get;
    end get_Dynamics;
