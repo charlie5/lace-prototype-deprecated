@@ -24,7 +24,8 @@ is
                             "../source/joint", 
                             "../source/model/physics",
                             "../source/applet",
-                            "../source/terrain");
+                            "../source/terrain",
+                            "../source/world");
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

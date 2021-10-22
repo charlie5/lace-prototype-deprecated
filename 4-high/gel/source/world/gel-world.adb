@@ -17,6 +17,7 @@ with
      ada.unchecked_Deallocation,
      ada.Containers.hashed_Sets;
 
+
 package body gel.World
 is
    use gel.Sprite,
@@ -1521,86 +1522,6 @@ is
    type physics_Model_view       is access all Standard.physics.Model       .item'Class;
 
 
-
-   procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view)
-   is
-   begin
-      Self.is_a_Mirror := True;
-
-      the_new_model_Response.World := Self.all'Access;
-
-      Self.add (the_new_model_Response'Access,
-                to_Kind (remote.World.new_model_Event'Tag),
-                of_World.Name);
-
-      define   (the_my_new_sprite_Response, World  => Self.all'Access,
-                                            Models => Self.graphics_Models'Access);
-
-      Self.add (the_my_new_sprite_Response'Access,
-                to_Kind (gel.Events.my_new_sprite_added_to_world_Event'Tag),
-                of_World.Name);
-
-      --  Obtain and make a local copy of models, sprites and humans from the mirrored world.
-      --
-      declare
-         use remote.World.id_Maps_of_model_plan;
-
-         the_server_Models         : constant remote.World.graphics_Model_Set := of_World.graphics_Models;    -- Fetch graphics models from the server.
-         the_server_physics_Models : constant remote.World.physics_model_Set  := of_World.physics_Models;     -- Fetch physics  models from the server.
-      begin
-         --  Create our local graphics models.
-         --
-         declare
-            Cursor    : remote.World.Id_Maps_of_Model_Plan.Cursor := the_server_Models.First;
-            new_Model : graphics_Model_iFace_view;
-         begin
-            while has_Element (Cursor)
-            loop
-               new_Model := new openGL.remote_Model.item'Class' (Element (Cursor));
-               Self.add (openGL.Model.view (new_Model));
-
-               next (Cursor);
-            end loop;
-         end;
-
-         --  Create our local physics models.
-         --
-         declare
-            use remote.World.id_Maps_of_physics_model_plan;
-
-            Cursor    : remote.World.id_Maps_of_physics_model_plan.Cursor := the_server_physics_Models.First;
-            new_Model : physics_Model_iFace_view;
-
-         begin
-            while has_Element (Cursor)
-            loop
-               new_Model := new physics.remote.Model.item'Class' (Element (Cursor));
-               Self.add (physics.Model.view (new_Model));
-
-               next (Cursor);
-            end loop;
-         end;
-
-         --  Fetch sprites from the server.
-         --
-         declare
-            the_Sprite         :          gel.Sprite.view;
-            the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
-         begin
-            for i in the_server_Sprites'Range
-            loop
-               the_Sprite := to_Sprite (the_server_Sprites (i),
-                                        Self.graphics_Models,
-                                        Self. physics_Models,
-                                        gel.World.view (Self));
-               Self.add (the_Sprite, and_Children => False);
-            end loop;
-         end;
-      end;
-   end is_a_Mirror;
-
-
-
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
@@ -1762,42 +1683,23 @@ is
    end start;
 
 
+   --------------------
+   ---  World Mirroring
+   --
+
    overriding
-   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
-   is
-   begin
-      for i in Now'Range
-      loop
-         declare
-            use remote.World;
+   procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view) is null;
+   overriding
+   procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view) is null;
 
-            the_Id             : constant gel.sprite_Id := Now (i).Id;
-            the_Sprite         :          Sprite.view;
-
-            new_Site           : constant Vector_3   := refined (Now (i).Site);
-            site_Delta         :          Vector_3;
-
-            min_teleport_Delta : constant            := 20.0;
-            new_Spin           : constant Quaternion := refined (Now (i).Spin);
-
-         begin
-            the_Sprite := Self.id_Map_of_sprite.Element (the_Id);
-            site_Delta := new_Site - the_Sprite.desired_Site;
-
-            if        abs site_Delta (1) > min_teleport_Delta
-              or else abs site_Delta (2) > min_teleport_Delta
-              or else abs site_Delta (3) > min_teleport_Delta
-            then
-               the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
-            end if;                             -- to prevent later interpolation.
-
-            the_Sprite.desired_Site_is (new_Site);
-            the_Sprite.desired_Spin_is (new_Spin);
-         end;
-      end loop;
-   end motion_Updates_are;
+   overriding
+   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates) is null;
 
 
+   ----------
+   --- Joints
+   --
 
    procedure allow_broken_Joints (Self : out Item)
    is
@@ -1843,10 +1745,7 @@ is
 
       --  Evolve the physics.
       --
-      if not Self.is_a_Mirror
-      then
-         Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
-      end if;
+      Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
 
 
       --  Update sprite transforms.
@@ -1910,130 +1809,7 @@ is
          end;
       end loop;
 
-
-      if Self.is_a_Mirror
-      then
-         --  Interpolate sprite transforms.
-         --
-         declare
-            the_sprite_Transforms : sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-            Cursor                : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite            : gel.Sprite.view;
-
-            new_Transform         : Matrix_4x4;
-         begin
-            while has_Element (Cursor)
-            loop
-               the_Sprite := Sprite.view (Key (Cursor));
-
-               the_Sprite.interpolate_Motion;
-
-               set_Translation (new_Transform, the_Sprite.Site);
-               set_Rotation    (new_Transform, the_Sprite.Spin);
-
-               the_sprite_Transforms.replace_Element (Cursor, new_Transform);
-
-               next (Cursor);
-            end loop;
-
-            Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
-         end;
-
-      else
-         --  Update all_sprite_Transforms.
-         --
-         declare
-            use remote.World;
-
-            the_sprite_Transforms    : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-            Cursor                   :          sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-            the_Sprite               :          gel.Sprite.view;
-
-            is_a_mirrored_World      : constant Boolean                          := not Self.Mirrors.Is_Empty;
-            mirror_Updates_are_due   : constant Boolean                          := Self.Age >= Self.Age_at_last_mirror_update + 0.25;
-            updates_Count            :          Natural                          := 0;
-
-            the_sprite_id_Transforms :          remote.World.motion_Updates (1 .. Integer (the_sprite_Transforms.Length));
-
-         begin
-            while has_Element (Cursor)
-            loop
-               begin
-                  the_Sprite := Sprite.view (Key (Cursor));
-
-                  if         is_a_mirrored_World
-                    and then mirror_Updates_are_due
-                  then
-                     updates_Count                            := updates_Count + 1;
-                     the_sprite_id_Transforms (updates_Count) := (the_Sprite.Id,
-                                                                  coarsen (the_Sprite.Site),
-                                                                  coarsen (to_Quaternion (the_Sprite.Spin)));
-                  end if;
-
-               exception
-                  when others =>
-                     put_Line ("Exception during update of mirrored sprite transforms.");
-               end;
-
-               next (Cursor);
-            end loop;
-
-            --  Send updated sprite motions to any registered mirror worlds.
-            --
-            if         is_a_mirrored_World
-              and then mirror_Updates_are_due
-            then
-               Self.Age_at_last_mirror_update := Self.Age;
-
-               if updates_Count > 0
-               then
-                  declare
-                     use World.world_Vectors;
-
-                     Cursor     : world_Vectors.Cursor := Self.Mirrors.First;
-                     the_Mirror : remote.World.view;
-                  begin
-                     while has_Element (Cursor)
-                     loop
-                        the_Mirror := Element (Cursor);
-                        the_Mirror.motion_Updates_are (the_sprite_id_Transforms (1 .. updates_Count));
-
-                        next (Cursor);
-                     end loop;
-                  end;
-               end if;
-            end if;
-         end;
-
-      end if;
-
    end evolve;
-
-
-   -----------------------
-   --- Mirror Registration
-   --
-
-   overriding
-   procedure register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                             Mirror_as_observer : in lace.Observer.view)
-   is
-   begin
-      Self.Mirrors.append (the_Mirror);
-
-      Self.register (Mirror_as_observer,  to_Kind (remote.World.                 new_model_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (gel.events.my_new_sprite_added_to_world_Event'Tag));
-   end register;
-
-
-
-   overriding
-   procedure deregister (Self : access Item;   the_Mirror : in remote.World.view)
-   is
-   begin
-      Self.Mirrors.delete (Self.Mirrors.find_Index (the_Mirror));
-   end deregister;
 
 
    overriding

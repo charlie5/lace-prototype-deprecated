@@ -24,6 +24,7 @@ limited
 with
      openGL.Renderer.lean;
 
+
 package gel.World
 --
 --  Provides a gel world.
@@ -165,8 +166,6 @@ is
    --- Operations
    --
 
-   procedure is_a_Mirror          (Self : access Item'Class;   of_World : in gel.remote.World.view);
-
    procedure add                  (Self : in out Item;   the_Model    : in openGL .Model.view);
    procedure add                  (Self : in out Item;   the_Model    : in physics.Model.view);
 
@@ -182,12 +181,17 @@ is
    procedure start                (Self : access Item);
    procedure evolve               (Self : in out Item;   By           : in Duration);
 
+
+   ----------
+   --- Joints
+   --
+
    procedure  allow_broken_Joints (Self :    out Item);
    procedure handle_broken_Joints (Self : in out Item;   the_Joints   : in Joint.views);
    --
    -- Detaches any broken joints from associated sprites.
    -- Override this to do custom handling of broken joints.
-   -- tbd: This should be in private section and only available to child packages.
+   -- TODO: This should be in private section and only available to child packages.
 
 
    ---------------
@@ -243,7 +247,6 @@ is
                                                Mirror_as_observer : in lace.Observer.view);
    overriding
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view);
-
 
    overriding
    procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates);
@@ -397,10 +400,10 @@ private
    -----------
    --- Mirrors
    --
-   use type remote.World.View;
-
-   package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
-   subtype world_Vector  is     world_Vectors.Vector;
+   --  use type remote.World.View;
+   --
+   --  package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
+   --  subtype world_Vector  is     world_Vectors.Vector;
 
 
    -------------------
@@ -531,8 +534,6 @@ private
    --- World Item
    --
 
-   -- TODO: refactor into two subclasses 'local' and 'mirror'.
-
    type Item is limited new lace.Subject_and_deferred_Observer.item
                         and gel.remote.World.item with
       record
@@ -562,9 +563,9 @@ private
 
          --  Mirrors
          --
-         is_a_Mirror                : Boolean  := False;
-         Age_at_last_mirror_update  : Duration := 0.0;
-         Mirrors                    : World_vector;             -- Used by a master world.
+         --  is_a_Mirror                : Boolean  := False;
+         --  Age_at_last_mirror_update  : Duration := 0.0;
+         --  Mirrors                    : World_vector;             -- Used by a master world.
          id_Map_of_Sprite           : id_Maps_of_sprite.Map;
 
          --  Ids
