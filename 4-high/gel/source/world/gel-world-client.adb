@@ -216,16 +216,16 @@ is
 
 
 
-   overriding
-   procedure wait_on_Evolve (Self : in out Item)
-   is
-   begin
-      select
-         Self.evolver_Done.Wait;
-      or
-         delay Duration'Last;
-      end select;
-   end wait_on_Evolve;
+   --  overriding
+   --  procedure wait_on_Evolve (Self : in out Item)
+   --  is
+   --  begin
+   --     select
+   --        Self.evolver_Done.Wait;
+   --     or
+   --        delay Duration'Last;
+   --     end select;
+   --  end wait_on_Evolve;
 
 
 
@@ -445,12 +445,11 @@ is
    overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
-      use sprite_Maps_of_transforms;
    begin
       Self.Age := Self.Age + By;
 
-      Self.new_sprite_transforms_Available.signal;
-      Self.evolver_Done                   .signal;
+      --  Self.new_sprite_transforms_Available.signal;
+      --  Self.evolver_Done                   .signal;
 
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
@@ -458,26 +457,30 @@ is
       --  Interpolate sprite transforms.
       --
       declare
-         the_sprite_Transforms : sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-         Cursor                : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-         the_Sprite            : gel.Sprite.view;
+         use id_Maps_of_sprite;
 
-         new_Transform         : Matrix_4x4;
+         --  the_sprite_Transforms : sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
+         --  Cursor                : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+
+         all_Sprites   : id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         Cursor        : id_Maps_of_sprite.Cursor := all_Sprites.First;
+         the_Sprite    : gel.Sprite.view;
+
+         new_Transform : Matrix_4x4;
       begin
          while has_Element (Cursor)
          loop
-            the_Sprite := Sprite.view (Key (Cursor));
+            the_Sprite := Sprite.view (Element (Cursor));
 
-            new_Transform := Element (Cursor);
-            log ("********* Site: " & Image (get_Translation (new_Transform)));
-
+            --  new_Transform := Element (Cursor);
+            --  log ("********* Site: " & Image (get_Translation (new_Transform)));
 
             the_Sprite.interpolate_Motion;
 
-            set_Translation (new_Transform, the_Sprite.Site);
-            set_Rotation    (new_Transform, the_Sprite.Spin);
-
-            the_sprite_Transforms.replace_Element (Cursor, new_Transform);
+            --  set_Translation (new_Transform, the_Sprite.Site);
+            --  set_Rotation    (new_Transform, the_Sprite.Spin);
+            --
+            --  the_sprite_Transforms.replace_Element (Cursor, new_Transform);
 
             next (Cursor);
          end loop;

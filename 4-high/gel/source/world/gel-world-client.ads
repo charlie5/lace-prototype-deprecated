@@ -45,8 +45,8 @@ is
 
    overriding
    procedure evolve         (Self : in out Item;   By : in Duration);
-   overriding
-   procedure wait_on_evolve (Self : in out Item);
+   --  overriding
+   --  procedure wait_on_evolve (Self : in out Item);
 
 
    --------------------

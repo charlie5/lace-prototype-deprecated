@@ -1076,15 +1076,15 @@ is
    --- Attributes
    --
 
-   procedure wait_on_Evolve (Self : in out Item)
-   is
-   begin
-      select
-         Self.evolver_Done.Wait;
-      or
-         delay Duration'Last;
-      end select;
-   end wait_on_Evolve;
+   --  procedure wait_on_Evolve (Self : in out Item)
+   --  is
+   --  begin
+   --     select
+   --        Self.evolver_Done.Wait;
+   --     or
+   --        delay Duration'Last;
+   --     end select;
+   --  end wait_on_Evolve;
 
 
 
@@ -1343,19 +1343,24 @@ is
 
    function sprite_Transforms (Self : in Item) return sprite_transform_Pairs
    is
-      use sprite_Maps_of_transforms;
+      use id_Maps_of_sprite;
 
-      all_sprite_Transforms : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-      Cursor                :          sprite_Maps_of_transforms.Cursor := all_sprite_Transforms.First;
+      --  all_sprite_Transforms : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
+      --  Cursor                :          sprite_Maps_of_transforms.Cursor := all_sprite_Transforms.First;
 
-      the_sprite_Transforms :          sprite_transform_Pairs (1 .. Natural (all_sprite_Transforms.Length)) := (others => <>);
-      Count                 :          Natural := 0;
+      all_Sprites : constant id_Maps_of_sprite.Map    := Self.id_Map_of_Sprite;
+      Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+
+      --  the_sprite_Transforms : sprite_transform_Pairs (1 .. Natural (all_sprite_Transforms.Length)) := (others => <>);
+      the_sprite_Transforms : sprite_transform_Pairs (1 .. Natural (all_Sprites.Length)) := (others => <>);
+      Count                 : Natural := 0;
 
    begin
       while has_Element (Cursor)
       loop
          declare
-            the_Sprite : constant Sprite.view := Key (Cursor);
+            --  the_Sprite : constant Sprite.view := Key (Cursor);
+            the_Sprite : constant Sprite.view := Element (Cursor);
          begin
             if not the_Sprite.is_Destroyed
             then
@@ -1539,7 +1544,7 @@ is
          Self.add (Single.graphics_Model);
          Self.add (Single. physics_Model);
 
-         Self.all_sprite_Transforms.add (Single'unchecked_Access, Single.Transform);
+         --  Self.all_sprite_Transforms.add (Single'unchecked_Access, Single.Transform);
 
          Single.Solid.user_Data_is (Single'Access);
          Single.Solid.    Model_is (Single.physics_Model);
@@ -1751,33 +1756,33 @@ is
       Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
 
 
-      --  Update sprite transforms.
+      --  --  Update sprite transforms.
+      --  --
+      --  declare
+      --     use sprite_Maps_of_transforms;
+      --     the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.Fetch;
       --
-      declare
-         use sprite_Maps_of_transforms;
-         the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.Fetch;
+      --     Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+      --     the_Sprite : gel.Sprite.view;
+      --  begin
+      --     while has_Element (Cursor)
+      --     loop
+      --        the_Sprite := Key (Cursor);
+      --        declare
+      --           --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+      --           the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
+      --        begin
+      --           --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
+      --           the_sprite_Transforms.replace_Element (Cursor, the_Transform);
+      --        end;
+      --        next (Cursor);
+      --     end loop;
+      --
+      --     Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
+      --  end;
 
-         Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-         the_Sprite : gel.Sprite.view;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_Sprite := Key (Cursor);
-            declare
-               --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
-               the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
-            begin
-               --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
-               the_sprite_Transforms.replace_Element (Cursor, the_Transform);
-            end;
-            next (Cursor);
-         end loop;
-
-         Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
-      end;
-
-      Self.new_sprite_transforms_Available.signal;
-      Self.evolver_Done                   .signal;
+      --  Self.new_sprite_transforms_Available.signal;
+      --  Self.evolver_Done                   .signal;
 
 
       Self.respond;

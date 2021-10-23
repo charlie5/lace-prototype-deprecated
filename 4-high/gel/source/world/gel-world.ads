@@ -290,7 +290,7 @@ is
    ---------
    ---  Misc
    --
-   procedure wait_on_Evolve (Self : in out Item);
+   --  procedure wait_on_Evolve (Self : in out Item);
 
 
    ------------------
@@ -419,10 +419,10 @@ private
          Sprites         : gel.Sprite.views (1 .. 100_000);
          sprite_Count    : Index;
 
-         all_sprite_Transforms           : World.all_sprite_Transforms;
-         new_sprite_transforms_Available : Signal_Object;
-
-         evolver_Done : Signal_Object;
+         --  all_sprite_Transforms           : World.all_sprite_Transforms;
+         --  new_sprite_transforms_Available : Signal_Object;
+         --
+         --  evolver_Done : Signal_Object;
 
          id_Map_of_Sprite           : id_Maps_of_sprite.Map;
 

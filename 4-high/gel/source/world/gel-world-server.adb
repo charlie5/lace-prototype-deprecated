@@ -339,30 +339,30 @@ is
 
       --  Update sprite transforms.
       --
-      declare
-         the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.fetch;
+      --  declare
+      --     the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.fetch;
+      --
+      --     Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+      --     the_Sprite : gel.Sprite.view;
+      --  begin
+      --     while has_Element (Cursor)
+      --     loop
+      --        the_Sprite := Key (Cursor);
+      --        declare
+      --           --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
+      --           the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
+      --        begin
+      --           --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
+      --           the_sprite_Transforms.replace_Element (Cursor, the_Transform);
+      --        end;
+      --        next (Cursor);
+      --     end loop;
+      --
+      --     Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
+      --  end;
 
-         Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-         the_Sprite : gel.Sprite.view;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_Sprite := Key (Cursor);
-            declare
-               --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
-               the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
-            begin
-               --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
-               the_sprite_Transforms.replace_Element (Cursor, the_Transform);
-            end;
-            next (Cursor);
-         end loop;
-
-         Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
-      end;
-
-      Self.new_sprite_transforms_Available.signal;
-      Self.evolver_Done                   .signal;
+      --  Self.new_sprite_transforms_Available.signal;
+      --  Self.evolver_Done                   .signal;
 
 
       Self.respond;
@@ -402,17 +402,23 @@ is
       --  Update all_sprite_Transforms.
       --
       declare
-         use remote.World;
+         use id_Maps_of_sprite,
+             remote.World;
 
-         the_sprite_Transforms    : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-         Cursor                   :          sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+         --  the_sprite_Transforms    : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
+         --  Cursor                   :          sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
+
+         all_Sprites              : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         Cursor                   :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+
+
          the_Sprite               :          gel.Sprite.view;
 
          is_a_mirrored_World      : constant Boolean                          := not Self.Mirrors.Is_Empty;
          mirror_Updates_are_due   : constant Boolean                          := True; -- Self.Age >= Self.Age_at_last_mirror_update + 0.25;
          updates_Count            :          Natural                          := 0;
 
-         the_sprite_id_Transforms :          remote.World.motion_Updates (1 .. Integer (the_sprite_Transforms.Length));
+         the_motion_Updates       :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));
 
       begin
          if    is_a_mirrored_World
@@ -420,28 +426,16 @@ is
          then
             while has_Element (Cursor)
             loop
-               declare
-                  the_Transform : Matrix_4x4 := Element (Cursor);
-               begin
-                  Put_Line ("Dynamics-2: Site => " & Image (get_Translation (the_Transform)));
+               the_Sprite := Sprite.view (Element (Cursor));
 
-                  the_Sprite := Sprite.view (Key (Cursor));
-
-                  updates_Count                            := updates_Count + 1;
-                  the_sprite_id_Transforms (updates_Count) := (the_Sprite.Id,
-                                                               coarsen (get_Translation (the_Transform)),
-                                                               --  coarsen (the_Sprite.Site),
-
-                                                               coarsen (to_Quaternion (the_Sprite.Spin)));
-               exception
-                  when others =>
-                     put_Line ("Exception during update of mirrored sprite transforms.");
-               end;
-
+               updates_Count                      := updates_Count + 1;
+               the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
+                                                      Site => coarsen (the_Sprite.Site),
+                                                      Spin => coarsen (to_Quaternion (the_Sprite.Spin)));
                next (Cursor);
             end loop;
 
-            --  Send updated sprite motions to any registered client worlds.
+            --  Send updated sprite motions to all registered client worlds.
             --
             Self.Age_at_last_mirror_update := Self.Age;
 
@@ -456,7 +450,7 @@ is
                   while has_Element (Cursor)
                   loop
                      the_Mirror := Element (Cursor);
-                     the_Mirror.motion_Updates_are (the_sprite_id_Transforms (1 .. updates_Count));
+                     the_Mirror.motion_Updates_are (the_motion_Updates (1 .. updates_Count));
 
                      next (Cursor);
                   end loop;
