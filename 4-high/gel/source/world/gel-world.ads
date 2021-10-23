@@ -287,12 +287,6 @@ is
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map;
 
 
-   ---------
-   ---  Misc
-   --
-   --  procedure wait_on_Evolve (Self : in out Item);
-
-
    ------------------
    ---  Testing/Debug
    --
@@ -404,27 +398,24 @@ private
       record
          local_Subject_and_deferred_Observer : lace.Subject_and_deferred_Observer.view;
 
-         Id : world_Id;
+         Id  : world_Id;
+         Age : Duration := 0.0;
 
          space_Kind      :         physics.space_Kind;
          physics_Space   : aliased physics.Space.view;
 
          Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
-         Age             :         Duration := 0.0;
-
+         --  Models
+         --
          graphics_Models : aliased id_Maps_of_model        .Map;
          physics_Models  : aliased id_Maps_of_physics_model.Map;
 
-         Sprites         : gel.Sprite.views (1 .. 100_000);
-         sprite_Count    : Index;
-
-         --  all_sprite_Transforms           : World.all_sprite_Transforms;
-         --  new_sprite_transforms_Available : Signal_Object;
+         --  Sprites
          --
-         --  evolver_Done : Signal_Object;
-
-         id_Map_of_Sprite           : id_Maps_of_sprite.Map;
+         Sprites          : gel.Sprite.views (1 .. 100_000);
+         sprite_Count     : Index;
+         id_Map_of_Sprite : id_Maps_of_sprite.Map;
 
          --  Ids
          --
