@@ -1,7 +1,6 @@
 with
      gel.Events,
      gel.Camera.forge,
-     gel.World.server,
      lace.Event.utility,
      ada.unchecked_Deallocation;
 

@@ -39,8 +39,8 @@ is
 
 
 
-   task body Evolver is
-      use Math;
+   task body Evolver
+   is
       use type physics.Joint.view,
                ada.Containers.Count_type;
 

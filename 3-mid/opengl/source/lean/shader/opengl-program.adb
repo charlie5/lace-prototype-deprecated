@@ -5,17 +5,14 @@ with
      GL.lean,
 
      ada.Characters.latin_1,
-     ada.Strings.unbounded,
-     ada.Text_IO,
 
-     Interfaces.C.Strings;
+     interfaces.C.Strings;
 
 
 package body openGL.Program
 is
    use gl.lean,
-       Interfaces,
-       ada.Text_IO;
+       Interfaces;
 
    compiling_in_debug_Mode : constant Boolean := True;
 

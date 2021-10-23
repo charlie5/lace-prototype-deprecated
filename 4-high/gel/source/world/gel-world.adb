@@ -9,9 +9,7 @@ with
      openGL.Renderer.lean,
 
      lace.Response,
-     lace.Event.utility,
 
-     ada.Calendar,
      ada.Text_IO,
      ada.Exceptions,
      ada.unchecked_Deallocation,
@@ -23,10 +21,8 @@ is
    use gel.Sprite,
        linear_Algebra_3D,
 
-       lace.Event.utility,
        lace.Event,
 
-       ada.Calendar,
        ada.Exceptions,
        ada.Text_IO;
 
@@ -719,98 +715,6 @@ is
    end set_local_anchor_on_B;
 
 
-   ----------------------
-   --- new_model_Response
-   --
-
-   type new_model_Response is new lace.Response.item with
-      record
-         World : gel.World.view;
-      end record;
-
-
-   overriding
-   function Name (Self : in new_model_Response) return String;
-
-
-
-   overriding
-   procedure respond (Self : in out new_model_Response;   to_Event : in lace.Event.Item'Class)
-   is
-      the_Event : constant remote.World.new_model_Event := remote.World.new_model_Event (to_Event);
-   begin
-      Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
-   end respond;
-
-
-
-   overriding
-   function Name (Self : in new_model_Response) return String
-   is
-      pragma unreferenced (Self);
-   begin
-      return "new_model_Response";
-   end Name;
-
-
-   the_new_model_Response : aliased new_model_Response;
-
-
-   --------------------------
-   --- my_new_sprite_Response
-   --
-   type my_new_sprite_Response is new lace.Response.item with
-      record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
-      end record;
-
-
-   overriding
-   function Name (Self : in my_new_sprite_Response) return String;
-
-
-
-   overriding
-   procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
-   is
-      the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
-        := gel.events.my_new_sprite_added_to_world_Event (to_Event);
-
-      the_Sprite : constant gel.Sprite.view
-        := to_Sprite (the_Event.Pair,
-                      Self.Models.all,
-                      Self.physics_Models.all,
-                      Self.World);
-   begin
-      Self.World.add (the_Sprite, and_Children => False);
-   end respond;
-
-
-
-   procedure define (Self : in out my_new_sprite_Response;   World  : in     gel.World.view;
-                                                             Models : access id_Maps_of_model.Map)
-   is
-   begin
-      Self.World  := World;
-      Self.Models := Models;
-   end define;
-
-
-
-   overriding
-   function Name (Self : in my_new_sprite_Response) return String
-   is
-      pragma unreferenced (Self);
-   begin
-      return "my_new_sprite_Response";
-   end Name;
-
-
-   the_my_new_sprite_Response : aliased my_new_sprite_Response;
-
-
 
    type graphics_Model_iface_view is access all openGL.remote_Model.item'Class;
    type graphics_Model_view       is access all openGL.       Model.item'Class;
@@ -857,7 +761,7 @@ is
             procedure add_the_Joint (the_Sprite : in out Sprite.item'Class)
             is
                use type gel.Joint.view;
-               the_Joint : gel.Joint.view := the_Sprite.parent_Joint;
+               the_Joint : constant gel.Joint.view := the_Sprite.parent_Joint;
             begin
                if the_Joint /= null
                then
@@ -1033,7 +937,6 @@ is
 
    procedure evolve (Self : in out Item;   By : in Duration)
    is
-      use sprite_Maps_of_transforms;
    begin
       Self.Age := Self.Age + By;
 

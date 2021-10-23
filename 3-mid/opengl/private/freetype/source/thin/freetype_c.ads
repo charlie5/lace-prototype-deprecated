@@ -1,7 +1,7 @@
 with
-     Interfaces.C.Pointers,
-     Interfaces.C.Strings,
+     interfaces.C,
      System;
+
 
 package Freetype_C
 --

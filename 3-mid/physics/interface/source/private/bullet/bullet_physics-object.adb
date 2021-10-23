@@ -9,8 +9,6 @@ with
      c_math_c.Matrix_3x3,
      c_math_c.Matrix_4x4,
 
-     float_Math.Algebra.linear.D3,
-
      Swig,
      interfaces.C,
 
@@ -153,14 +151,7 @@ is
    overriding
    function get_Dynamics (Self : in Item) return Matrix_4x4
    is
-      use float_Math.Algebra.linear.D3;
-      my_Site : Vector_3   := Self.Site;
-      my_Spin : Matrix_3x3 := Self.Spin;
-      my_Transform : Matrix_4x4 := to_transform_Matrix (Translation => my_Site,
-                                                        Rotation    => my_Spin);
    begin
-      return my_Transform;
-      put_Line (Self.Site (2)'Image);
       return Self.Dynamics.get;
    end get_Dynamics;
 

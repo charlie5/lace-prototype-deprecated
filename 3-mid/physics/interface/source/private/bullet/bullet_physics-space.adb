@@ -8,7 +8,6 @@ with
 
      bullet_physics.Shape,
      bullet_physics.Joint,
-     bullet_physics.Object,
 
      Swig,
      lace.Any,

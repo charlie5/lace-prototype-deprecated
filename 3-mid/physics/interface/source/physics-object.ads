@@ -8,8 +8,6 @@ package physics.Object
 -- Provide an interface for physics objects.
 --
 is
-   use Math;
-
    type Item is  limited interface
              and lace.Any.limited_item;
 

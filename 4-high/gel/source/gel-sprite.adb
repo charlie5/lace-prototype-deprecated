@@ -488,9 +488,7 @@ is
 
    function Site (Self : in Item) return Vector_3
    is
-      --  Transform : constant Matrix_4x4 := Self.Transform;
    begin
-      --  return get_Translation (Self.Transform);
       return Self.Solid.Site;
    end Site;
 
@@ -499,16 +497,8 @@ is
    procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
       use type physics.Model.view;
-      --  Transform : Matrix_4x4 := Self.Transform.Value;
    begin
       Self.Solid.Site_is (Now);
-      --  set_Translation (Self.Transform, Now);
-      --  Self.Transform_is (Transform);
-
-      --  if Self.physics_Model /= null
-      --  then
-      --     Self.World.update_Site (Self'unchecked_Access, Now);
-      --  end if;
    end Site_is;
 
 

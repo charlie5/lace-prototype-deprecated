@@ -13,9 +13,6 @@ is
    type View is access all Item'Class;
 
 
-   use Math;
-
-
    type Degree_of_freedom is range 1 .. 6;
 
    procedure destruct    (Self : in out Item)                            is abstract;

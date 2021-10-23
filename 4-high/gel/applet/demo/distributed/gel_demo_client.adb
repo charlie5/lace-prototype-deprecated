@@ -2,14 +2,9 @@ with
      gel_demo_Services,
      gel_demo_Server,
 
-     gel.Window.lumen,
      gel.Applet.client_World,
-     gel.World,
      gel.Forge,
      gel.Camera,
-     gel.Sprite,
-
-     float_Math,
 
      ada.Text_IO,
      ada.Exceptions;
@@ -19,14 +14,9 @@ package body gel_demo_Client
 is
    use ada.Text_IO;
 
-   package Math renames float_Math;
-
-
 
    task body Item
    is
-      use gel.Applet;
-
       the_Applet : gel.Applet.client_World.view;
    begin
       accept start;

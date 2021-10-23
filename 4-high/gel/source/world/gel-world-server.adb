@@ -22,9 +22,7 @@ is
        linear_Algebra_3D,
 
        lace.Event.utility,
-       lace.Event,
-
-       ada.Text_IO;
+       lace.Event;
 
 
    procedure log (Message : in String)
@@ -135,59 +133,6 @@ is
    end to_Sprite;
 
 
-   --------------------------------
-   --- 'create_new_Sprite' Response
-   --
-
-   type create_new_Sprite is new lace.Response.item with
-      record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
-      end record;
-
-
-   overriding
-   function Name (Self : in create_new_Sprite) return String;
-
-
-
-   overriding
-   procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
-   is
-   begin
-      declare
-         the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
-         the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
-                                                                         Self.Models.all,
-                                                                         Self.physics_Models.all,
-                                                                         Self.World);
-      begin
-         Self.World.add (the_Sprite, and_children => False);
-      end;
-   end respond;
-
-
-
-   procedure define (Self : in out create_new_Sprite;    World  : in     gel.World.view;
-                                                         Models : access id_Maps_of_model.Map)
-   is
-   begin
-      Self.World  := World;
-      Self.Models := Models;
-   end define;
-
-
-
-   overriding
-   function Name (Self : in create_new_Sprite) return String
-   is
-      pragma Unreferenced (Self);
-   begin
-      return "create_new_Sprite";
-   end Name;
-
-
    ----------
    --- Define
    --
@@ -210,94 +155,6 @@ is
    end define;
 
 
-   ----------------------
-   --- new_model_Response
-   --
-
-   type new_model_Response is new lace.Response.item with
-      record
-         World : gel.World.view;
-      end record;
-
-
-   overriding
-   function Name (Self : in new_model_Response) return String;
-
-
-   overriding
-   procedure respond (Self : in out new_model_Response;   to_Event : in lace.Event.Item'Class)
-   is
-      the_Event : constant remote.World.new_model_Event := remote.World.new_model_Event (to_Event);
-   begin
-      Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
-   end respond;
-
-
-   overriding
-   function Name (Self : in new_model_Response) return String
-   is
-      pragma unreferenced (Self);
-   begin
-      return "new_model_Response";
-   end Name;
-
-
-   the_new_model_Response : aliased new_model_Response;
-
-
-   --------------------------
-   --- my_new_sprite_Response
-   --
-   type my_new_sprite_Response is new lace.Response.item with
-      record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
-      end record;
-
-
-   overriding
-   function Name (Self : in my_new_sprite_Response) return String;
-
-
-   overriding
-   procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
-   is
-      the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
-        := gel.events.my_new_sprite_added_to_world_Event (to_Event);
-
-      the_Sprite : constant gel.Sprite.view
-        := to_Sprite (the_Event.Pair,
-                      Self.Models.all,
-                      Self.physics_Models.all,
-                      Self.World);
-   begin
-      Self.World.add (the_Sprite, and_Children => False);
-   end respond;
-
-
-
-   procedure define (Self : in out my_new_sprite_Response;   World  : in     gel.World.view;
-                                                             Models : access id_Maps_of_model.Map)
-   is
-   begin
-      Self.World  := World;
-      Self.Models := Models;
-   end define;
-
-
-
-   overriding
-   function Name (Self : in my_new_sprite_Response) return String
-   is
-      pragma unreferenced (Self);
-   begin
-      return "my_new_sprite_Response";
-   end Name;
-
-   the_my_new_sprite_Response : aliased my_new_sprite_Response;
-
-
 
    --------------
    --- Operations
@@ -306,7 +163,6 @@ is
    overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
-      use sprite_Maps_of_transforms;
    begin
       gel.World.item (Self).evolve (by);     -- Evolve the base class.
 

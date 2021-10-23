@@ -1,6 +1,6 @@
 with
-     gel.Camera.forge,
-     physics.Forge;
+     gel.Camera.forge;
+
 
 package body gel.Applet.sim_2D_world
 is

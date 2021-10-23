@@ -8,8 +8,6 @@ package GL.Pointers
 --  Provides pointer conversions.
 --
 is
-   use Interfaces;
-
    function to_GLvoid_access (From : in     system.Address)      return access GLvoid;
    function to_GLvoid_access (From : access C.unsigned_char)     return access GLvoid;
    function to_GLchar_access (From : in     C.Strings.chars_ptr) return access lean.GLchar;

@@ -1,5 +1,5 @@
 #ifndef C_BULLET_JOINT_H
-#define C_BULLET_Joint_H
+#define C_BULLET_JOINT_H
 
 #include "bullet.h"
 #include "bullet-object.h"

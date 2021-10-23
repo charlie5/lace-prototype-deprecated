@@ -16,7 +16,6 @@ with
 
      ada.Tags.generic_dispatching_Constructor,
      ada.unchecked_Conversion,
-     ada.Containers.Vectors,
      ada.Containers.hashed_Maps;
 
 limited

@@ -420,9 +420,9 @@ is
       declare
          use id_Maps_of_sprite;
 
-         all_Sprites   : id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
-         Cursor        : id_Maps_of_sprite.Cursor := all_Sprites.First;
-         the_Sprite    : gel.Sprite.view;
+         all_Sprites   : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         Cursor        :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+         the_Sprite    :          gel.Sprite.view;
 
          new_Transform : Matrix_4x4;
       begin

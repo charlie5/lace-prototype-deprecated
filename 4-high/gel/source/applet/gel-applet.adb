@@ -17,10 +17,10 @@ with
 
 use ada.Text_IO;
 
+
 package body gel.Applet
 is
-   use lace.Event.utility,
-       ada.Text_IO;
+   use lace.Event.utility;
 
 
    procedure my_context_Setter
@@ -323,8 +323,8 @@ is
    function Camera (Self : in Item;   world_Id  : in gel.world_Id  := 1;
                                       camera_Id : in gel.camera_Id := 1) return gel.Camera.view
    is
-      w : Integer := Integer (world_Id);
-      c : Integer := Integer (world_Id);
+      w : constant Integer := Integer ( world_Id);
+      c : constant Integer := Integer (camera_Id);
    begin
       return Self.Worlds.Element (w).Cameras.Element (c);
    end Camera;

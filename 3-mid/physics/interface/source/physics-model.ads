@@ -7,8 +7,6 @@ package physics.Model
 --  Provides a model describing physical properties.
 --
 is
-   use Math;
-
    type shape_Kind is (Cylinder,  Cone,    Cube,  a_Sphere,  a_Capsule,  Heightfield,  Hull,  Mesh,  multi_Sphere, Plane,     -- 3D
                        Circle,    Polygon);                                                                                   -- 2D
 

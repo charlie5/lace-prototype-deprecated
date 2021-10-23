@@ -1,9 +1,8 @@
 with
      openGL.Primitive.indexed,
      openGL.Geometry.lit_colored_textured,
-     openGL.Model.hexagon,
+     openGL.Model.hexagon;
 
-     float_math.Algebra.linear.d3;
 
 package body openGL.Model.Hexagon_Column.lit_colored_textured_faceted
 is

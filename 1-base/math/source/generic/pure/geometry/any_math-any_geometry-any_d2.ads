@@ -3,8 +3,6 @@ with
 
 
 generic
-   with package linear_Algebra_2D is new any_Math.any_Algebra.any_linear;
-
 package any_Math.any_Geometry.any_d2
 --
 --  Provides a namespace and core types for 2D geometry.
