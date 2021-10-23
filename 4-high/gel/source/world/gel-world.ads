@@ -34,7 +34,7 @@ is
    with private;
 
    type View  is access all Item'Class;
-   type Views is array (math.Index range <>) of View;     -- TODO: Use a Positive type instead of 'math.Index'.
+   type Views is array (Positive range <>) of View;
 
    use Math;
 
