@@ -28,8 +28,7 @@ is
 
 
    procedure log (Message : in String)
---                    renames ada.text_IO.put_Line;
-   is null;
+                  renames ada.text_IO.put_Line;
 
 
    ---------
@@ -54,27 +53,7 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-      --  Self.sprite_transform_Updater.stop;
-      --  Self.physics_Engine          .stop;
-      --  Self.Engine                  .stop;
-
-      --  while not Self.Engine                  'Terminated
-      --    and not Self.sprite_transform_Updater'Terminated
-      --  while not Self.sprite_transform_Updater'Terminated
-      --  loop
-      --     delay 0.01;
-      --  end loop;
-
-      --  Free record components.
-      --
-      declare
-         --  procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
-         --  procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
-         --  procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
-      begin
-         physics.Space.free (Self.physics_Space);
-         --  free (Self.Commands);
-      end;
+      physics.Space.free (Self.physics_Space);
 
       lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
       lace.Subject_and_deferred_Observer.free (Self.local_Subject_and_deferred_Observer);
@@ -228,8 +207,6 @@ is
       Self.sprite_Count := 0;
 
       Self.physics_Space := physics.Forge.new_Space (space_Kind);
-
---        Self.physics_Engine := new std_Physics.Engine.item;
    end define;
 
 
@@ -309,6 +286,7 @@ is
    end define;
 
 
+
    overriding
    function Name (Self : in my_new_sprite_Response) return String
    is
@@ -335,35 +313,6 @@ is
       --  Evolve the physics.
       --
       Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
-
-
-      --  Update sprite transforms.
-      --
-      --  declare
-      --     the_sprite_Transforms : sprite_Maps_of_transforms.Map := Self.all_sprite_Transforms.fetch;
-      --
-      --     Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-      --     the_Sprite : gel.Sprite.view;
-      --  begin
-      --     while has_Element (Cursor)
-      --     loop
-      --        the_Sprite := Key (Cursor);
-      --        declare
-      --           --  the_Transform : constant Matrix_4x4 := the_Sprite.Solid.get_Dynamics;
-      --           the_Transform : constant Matrix_4x4 := the_Sprite.Transform;
-      --        begin
-      --           --  Put_Line ("Dynamics: Site => " & Image (get_Translation (the_Transform)));
-      --           the_sprite_Transforms.replace_Element (Cursor, the_Transform);
-      --        end;
-      --        next (Cursor);
-      --     end loop;
-      --
-      --     Self.all_sprite_Transforms.set (To => the_sprite_Transforms);
-      --  end;
-
-      --  Self.new_sprite_transforms_Available.signal;
-      --  Self.evolver_Done                   .signal;
-
 
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
@@ -405,20 +354,17 @@ is
          use id_Maps_of_sprite,
              remote.World;
 
-         --  the_sprite_Transforms    : constant sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-         --  Cursor                   :          sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
-
-         all_Sprites              : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
-         Cursor                   :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+         all_Sprites            : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         Cursor                 :          id_Maps_of_sprite.Cursor := all_Sprites.First;
 
 
-         the_Sprite               :          gel.Sprite.view;
+         the_Sprite             :          gel.Sprite.view;
 
-         is_a_mirrored_World      : constant Boolean                          := not Self.Mirrors.Is_Empty;
-         mirror_Updates_are_due   : constant Boolean                          := True; -- Self.Age >= Self.Age_at_last_mirror_update + 0.25;
-         updates_Count            :          Natural                          := 0;
+         is_a_mirrored_World    : constant Boolean := not Self.Clients.Is_Empty;
+         mirror_Updates_are_due : constant Boolean := Self.Age >= Self.Age_at_last_Clients_update + 0.25;
+         updates_Count          :          Natural := 0;
 
-         the_motion_Updates       :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));
+         the_motion_Updates     :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));
 
       begin
          if    is_a_mirrored_World
@@ -437,14 +383,14 @@ is
 
             --  Send updated sprite motions to all registered client worlds.
             --
-            Self.Age_at_last_mirror_update := Self.Age;
+            Self.Age_at_last_clients_update := Self.Age;
 
             if updates_Count > 0
             then
                declare
                   use World.server.world_Vectors;
 
-                  Cursor     : world_Vectors.Cursor := Self.Mirrors.First;
+                  Cursor     : world_Vectors.Cursor := Self.Clients.First;
                   the_Mirror : remote.World.view;
                begin
                   while has_Element (Cursor)
@@ -464,7 +410,7 @@ is
 
 
    -----------------------
-   --- Mirror Registration
+   --- Client Registration
    --
 
    overriding
@@ -472,7 +418,7 @@ is
                                              Mirror_as_observer : in lace.Observer.view)
    is
    begin
-      Self.Mirrors.append (the_Mirror);
+      Self.Clients.append (the_Mirror);
 
       Self.register (Mirror_as_observer,  to_Kind (remote.World.                 new_model_Event'Tag));
       Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));
@@ -485,7 +431,7 @@ is
    procedure deregister (Self : access Item;   the_Mirror : in remote.World.view)
    is
    begin
-      Self.Mirrors.delete (Self.Mirrors.find_Index (the_Mirror));
+      Self.Clients.delete (Self.Clients.find_Index (the_Mirror));
    end deregister;
 
 

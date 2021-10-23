@@ -18,7 +18,7 @@ is
    with private;
 
    type View  is access all Item'Class;
-   type Views is array (math.Index range <>) of View;     -- TODO: Use a Positive type instead of 'math.Index'.
+   type Views is array (Positive range <>) of View;
 
 
    ---------
@@ -61,7 +61,7 @@ is
 private
 
    -----------
-   --- Mirrors
+   --- Clients
    --
    use type remote.World.view;
    package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
@@ -73,10 +73,8 @@ private
    --
    type Item is limited new gel.World.item with
       record
-         --  Mirrors
-         --
-         Age_at_last_mirror_update  : Duration := 0.0;
-         Mirrors                    : World_vector;
+         Age_at_last_Clients_update : Duration := 0.0;
+         Clients                    : World_vector;
       end record;
 
 end gel.World.server;
