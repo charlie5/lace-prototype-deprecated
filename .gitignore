@@ -78,6 +78,7 @@ launch_hello_physics_interface_2d_demo
 launch_hello_physics_interface_3d_demo
 launch_drop_ball_on_box
 launch_drop_box_on_box
+launch_gel_fused
 launch_hello_gel
 launch_chains_2d
 launch_hinged_box
