@@ -1,5 +1,5 @@
 with
-     gel.World;
+     gel.World.server;
 
 
 package gel_demo_Server
@@ -7,7 +7,7 @@ package gel_demo_Server
 -- Provides the server.
 --
 is
-   the_server_World : gel.World.view;
+   the_server_World : gel.World.server.view;
 
    task Item
    is

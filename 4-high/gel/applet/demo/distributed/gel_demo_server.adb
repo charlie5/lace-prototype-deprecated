@@ -1,24 +1,28 @@
 with
      gel.Applet,
-     gel.World,
+     gel.World.server,
      gel.Camera,
      gel.Forge,
      gel.Sprite,
-     openGL.Model;
-
-with opengl.Palette,
+     
+     openGL.Model,
+     opengl.Palette,
+     
      physics.Forge,
      float_Math,
-     ada.Calendar;
-
-with ada.Calendar;            use ada.Calendar;
-with ada.text_IO;             use ada.text_IO;
-with ada.Exceptions;
-
+     
+     ada.Calendar,
+     ada.Text_IO,
+     ada.Exceptions;
 
 
 package body gel_demo_Server
 is
+   use ada.Calendar,
+       ada.Text_IO,
+       ada.Exceptions;
+
+
    package Math renames float_Math;
 
 
@@ -27,58 +31,69 @@ is
       use gel.Applet;
       use type math.Real;
 
-      the_World : gel.World.view;
+      the_World : gel.World.server.view;
 
    begin
       accept start
       do
-         the_World        := gel.World.forge.new_World ("server", 1, physics.Bullet, null);
+         the_World        := gel.World.server.forge.new_World ("Server", 1, physics.Bullet, null);
          the_server_World := the_World.all'Access;
       end;
+      
       the_World.start;
 
       declare
 --           use gel.box_Model, openGL, opengl.Palette, Math;
          use type math.Real, math.Index;
 
-         the_Box          : gel.Sprite.view := gel.Forge.new_box_Sprite (the_World,
-                                                                         size => (20.0, 1.0, 20.0),
-                                                                         mass => 0.0);
-         the_Ball         : gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World,
-                                                                          mass => 1.0);
+         the_Box          : gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
+                                                                          Site => math.Origin_3D,
+                                                                          Size => (20.0, 1.0, 20.0),
+                                                                          Mass => 0.0);
+
+         --  the_Ball          : gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
+         --                                                                   Site => math.Origin_3D,
+         --                                                                   Size => (20.0, 1.0, 20.0),
+         --                                                                   Mass => 1.0);
+
+         the_Ball         : gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World.all'Access,
+                                                                          Mass => 1.0);
 
          next_render_Time : ada.calendar.Time;
          Counter          : Natural          := 0;
       begin
-         --- setup
+         --- Setup.
          --
          the_World.Gravity_is ((0.0, -10.0, 0.0));
 
          the_World.add     (the_Ball, and_Children => False);
          the_Ball .Site_is ((0.0,  10.0,  0.0));
+         the_Ball.Solid.activate;
+         
+         --  the_World.add     (the_Box,  and_Children => False);
+         --  the_Box  .Site_is ((0.0,  -1.0,  0.0));
 
-         the_World.add     (the_Box,  and_Children => False);
-         the_Box  .Site_is ((0.0,  -1.0,  0.0));
 
-
-         --- begin processing
+         --- Begin processing.
          --
          next_render_Time := ada.Calendar.clock;
 
+         delay 1.0;
+         
          while True
          loop
             the_World.evolve (by => 1.0/60.0);
-            the_World.wait_on_evolve;
+            --  the_World.wait_on_evolve;
 
             Counter := Counter + 1;
 
-            if Counter = 5 * 60 
-            then
-               Counter := 0;
-               the_Ball.Site_is  ((0.0,  25.0,  0.0));
-            end if;
+            --  if Counter = 5 * 60
+            --  then
+            --     Counter := 0;
+            --     the_Ball.Site_is  ((0.0,  25.0,  0.0));
+            --  end if;
 
---              put_Line ("Ball: " & math.Image (the_Ball.Site));
+            --  put_Line ("Ball: " & math.Image (the_Ball.Site));
 
             next_render_Time := next_render_Time + 1.0/60.0;
             delay until next_render_Time;
