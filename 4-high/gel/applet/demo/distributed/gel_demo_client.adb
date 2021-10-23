@@ -3,7 +3,6 @@ with
      gel_demo_Server,
 
      gel.Window.lumen,
-     -- gel.Window.sdl,
      gel.Applet.client_World,
      gel.World,
      gel.Forge,
@@ -33,14 +32,12 @@ is
       accept start;
 
       the_Applet := gel.Forge.new_client_Applet ("distributed Demo ~ Client", 1920, 1200);
---        the_Applet.gui_World.start;
 
       -- Register the client world as a mirror of the server world.
       --
-      the_Applet.client_World.is_a_Mirror (of_World => gel_demo_Services.World);
-
-      gel_demo_Services.World.register (the_Mirror         => the_Applet.client_World.all'Access,
-                                        Mirror_as_observer => the_Applet.client_World.all'Access);
+      the_Applet.client_World.is_a_Mirror (of_World           => gel_demo_Services.World);
+      gel_demo_Services.World.register    (the_Mirror         => the_Applet.client_World.all'Access,
+                                           Mirror_as_observer => the_Applet.client_World.all'Access);
 
       --  Setup.
       --
@@ -51,7 +48,6 @@ is
       --
       while the_Applet.is_open
       loop
-         --  the_Applet.client_World.evolve (by => 1.0/60.0);
          the_Applet.freshen;
       end loop;
 
@@ -59,8 +55,6 @@ is
       --
       gel_demo_services.World.deregister (the_mirror => the_Applet.client_World.all'access);
       the_Applet.destroy;
-      --           Client_is_running := False;
-
       gel_demo_Server.item.stop;
 
       put_Line ("Client done.");

@@ -43,7 +43,6 @@ is
       the_World.start;
 
       declare
---           use gel.box_Model, openGL, opengl.Palette, Math;
          use type math.Real, math.Index;
 
          the_Box          : gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
@@ -51,14 +50,8 @@ is
                                                                           Size => (20.0, 1.0, 20.0),
                                                                           Mass => 0.0);
 
-         --  the_Ball          : gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
-         --                                                                   Site => math.Origin_3D,
-         --                                                                   Size => (20.0, 1.0, 20.0),
-         --                                                                   Mass => 1.0);
-
          the_Ball         : gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World.all'Access,
                                                                           Mass => 1.0);
-
          next_render_Time : ada.calendar.Time;
          Counter          : Natural := 0;
          Done             : Boolean := False;          
@@ -68,11 +61,11 @@ is
          the_World.Gravity_is ((0.0, -10.0, 0.0));
 
          the_World.add     (the_Ball, and_Children => False);
-         the_Ball .Site_is ((0.0,  10.0,  0.0));
+         the_Ball .Site_is ((0.0, 10.0, 0.0));
          the_Ball.Solid.activate;
          
-         --  the_World.add     (the_Box,  and_Children => False);
-         --  the_Box  .Site_is ((0.0,  -1.0,  0.0));
+         the_World.add   (the_Box, and_Children => False);
+         the_Box.Site_is ((0.0, -1.0, 0.0));
 
 
          --- Begin processing.
@@ -94,24 +87,21 @@ is
             end select;
             
             the_World.evolve (by => 1.0/60.0);
-            --  the_World.wait_on_evolve;
 
             Counter := Counter + 1;
 
-            --  if Counter = 5 * 60
-            --  then
-            --     Counter := 0;
-            --     the_Ball.Site_is  ((0.0,  25.0,  0.0));
-            --  end if;
-
-            --  put_Line ("Ball: " & math.Image (the_Ball.Site));
+            if Counter = 5 * 60
+            then
+               Counter := 0;
+               the_Ball.Site_is  ((0.0,  25.0,  0.0));
+            end if;
 
             next_render_Time := next_render_Time + 1.0/60.0;
             delay until next_render_Time;
          end loop;
 
 
-         --- close
+         --- Close
          --
          the_World.destroy;
       end;
