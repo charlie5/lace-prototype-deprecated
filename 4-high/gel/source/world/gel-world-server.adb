@@ -308,45 +308,7 @@ is
    is
       use sprite_Maps_of_transforms;
    begin
-      Self.Age := Self.Age + By;
-
-      --  Evolve the physics.
-      --
-      Self.physics_Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
-
-      Self.respond;
-      Self.local_Subject_and_deferred_Observer.respond;
-
-      -- Broken joints.
-      --
-      declare
-         the_Joints : safe_Joints;
-         Count      : Natural;
-      begin
-         Self.broken_Joints.fetch  (the_Joints, Count);
-         Self.handle_broken_Joints (the_Joints (1 .. Count));
-      end;
-
-      --  Perform responses to events, for all sprites.
-      --
-      for i in 1 .. Self.sprite_Count
-      loop
-         begin
-            if not Self.Sprites (i).is_Destroyed
-            then
-               Self.Sprites (i).respond;
-            end if;
-
-         exception
-            when E : others =>
-               new_Line (2);
-               put_Line ("Error in gel.World.local.evolve ~ Self.Sprites (" & i'Image & ").respond;");
-               new_Line;
-               put_Line (ada.Exceptions.exception_Information (E));
-               new_Line (2);
-         end;
-      end loop;
-
+      gel.World.item (Self).evolve (by);     -- Evolve the base class.
 
       --  Update dynamics in client worlds.
       --
