@@ -14,7 +14,7 @@ is
    type Item  is limited new gel.World.item with private;
 
    type View  is access all Item'Class;
-   type Views is array (math.Index range <>) of View;     -- TODO: Use a Positive type instead of 'math.Index'.
+   type Views is array (Positive range <>) of View;
 
 
    ---------
@@ -50,7 +50,7 @@ is
 
 
    --------------------
-   ---  World Mirroring
+   --- Server Mirroring
    --
 
    procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view);

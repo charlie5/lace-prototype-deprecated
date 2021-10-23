@@ -22,7 +22,6 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
---     is null;
 
 
    ---------
@@ -46,27 +45,7 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-      --  Self.sprite_transform_Updater.stop;
-      --  Self.physics_Engine          .stop;
-      --  Self.Engine                  .stop;
-
-      --  while not Self.Engine                  'Terminated
-      --    and not Self.sprite_transform_Updater'Terminated
-      --  while not Self.sprite_transform_Updater'Terminated
-      --  loop
-      --     delay 0.01;
-      --  end loop;
-
-      --  Free record components.
-      --
-      declare
-         --  procedure free is new ada.unchecked_Deallocation (sprite_transform_Updater, sprite_transform_Updater_view);
-         --  procedure free is new ada.unchecked_Deallocation (safe_command_Set,         safe_command_Set_view);
-         --  procedure free is new ada.unchecked_Deallocation (Engine,                   Engine_view);
-      begin
-         physics.Space.free (Self.physics_Space);
-         --  free (Self.Commands);
-      end;
+      physics.Space.free (Self.physics_Space);
 
       lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
       lace.Subject_and_deferred_Observer.free (Self.local_Subject_and_deferred_Observer);
@@ -148,6 +127,7 @@ is
    end to_Sprite;
 
 
+
    --------------------------------
    --- 'create_new_Sprite' Response
    --
@@ -210,22 +190,7 @@ is
       Self.sprite_Count := 0;
 
       Self.physics_Space := physics.Forge.new_Space (space_Kind);
-
---        Self.physics_Engine := new std_Physics.Engine.item;
    end define;
-
-
-
-   --  overriding
-   --  procedure wait_on_Evolve (Self : in out Item)
-   --  is
-   --  begin
-   --     select
-   --        Self.evolver_Done.Wait;
-   --     or
-   --        delay Duration'Last;
-   --     end select;
-   --  end wait_on_Evolve;
 
 
 
@@ -399,6 +364,7 @@ is
    end is_a_Mirror;
 
 
+
    --------------
    --- Operations
    --
@@ -434,12 +400,10 @@ is
 
             the_Sprite.desired_Site_is (new_Site);
             the_Sprite.desired_Spin_is (new_Spin);
-
-            --  the_Sprite.Site_is (new_Site);
-            --  the_Sprite.Solid.Site_is (new_Site);
          end;
       end loop;
    end motion_Updates_are;
+
 
 
    overriding
@@ -448,9 +412,6 @@ is
    begin
       Self.Age := Self.Age + By;
 
-      --  Self.new_sprite_transforms_Available.signal;
-      --  Self.evolver_Done                   .signal;
-
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
 
@@ -458,9 +419,6 @@ is
       --
       declare
          use id_Maps_of_sprite;
-
-         --  the_sprite_Transforms : sprite_Maps_of_transforms.Map    := Self.all_sprite_Transforms.Fetch;
-         --  Cursor                : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
 
          all_Sprites   : id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
          Cursor        : id_Maps_of_sprite.Cursor := all_Sprites.First;
@@ -471,16 +429,7 @@ is
          while has_Element (Cursor)
          loop
             the_Sprite := Sprite.view (Element (Cursor));
-
-            --  new_Transform := Element (Cursor);
-            --  log ("********* Site: " & Image (get_Translation (new_Transform)));
-
             the_Sprite.interpolate_Motion;
-
-            --  set_Translation (new_Transform, the_Sprite.Site);
-            --  set_Rotation    (new_Transform, the_Sprite.Spin);
-            --
-            --  the_sprite_Transforms.replace_Element (Cursor, new_Transform);
 
             next (Cursor);
          end loop;
