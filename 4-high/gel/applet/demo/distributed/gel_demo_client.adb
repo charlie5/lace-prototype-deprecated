@@ -1,5 +1,6 @@
 with
      gel_demo_Services,
+     gel_demo_Server,
 
      gel.Window.lumen,
      -- gel.Window.sdl,
@@ -56,9 +57,11 @@ is
 
       --  Close.
       --
-      --  gel_demo_services.World.deregister (the_mirror => the_Applet.client_World.all'access);
+      gel_demo_services.World.deregister (the_mirror => the_Applet.client_World.all'access);
       the_Applet.destroy;
       --           Client_is_running := False;
+
+      gel_demo_Server.item.stop;
 
       put_Line ("Client done.");
 

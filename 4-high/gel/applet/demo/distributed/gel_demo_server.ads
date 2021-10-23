@@ -12,6 +12,7 @@ is
    task Item
    is
       entry start;
+      entry stop;
    end Item;
 
 end gel_demo_Server;

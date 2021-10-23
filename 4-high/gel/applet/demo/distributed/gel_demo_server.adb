@@ -60,7 +60,8 @@ is
                                                                           Mass => 1.0);
 
          next_render_Time : ada.calendar.Time;
-         Counter          : Natural          := 0;
+         Counter          : Natural := 0;
+         Done             : Boolean := False;          
       begin
          --- Setup.
          --
@@ -80,8 +81,18 @@ is
 
          delay 1.0;
          
-         while True
+         while not Done
          loop
+            select
+               accept stop
+               do
+                  Done := True;
+               end;
+               
+            else 
+               null;
+            end select;
+            
             the_World.evolve (by => 1.0/60.0);
             --  the_World.wait_on_evolve;
 
