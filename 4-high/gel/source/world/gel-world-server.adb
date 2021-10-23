@@ -399,7 +399,7 @@ is
       end loop;
 
 
-      --  Update all_sprite_Transforms.
+      --  Update dynamics in client worlds.
       --
       declare
          use id_Maps_of_sprite,
