@@ -30,6 +30,7 @@ is
                 QUOTEDBL,
                 HASH,
                 DOLLAR,
+                Percent,
                 AMPERSAND,
                 QUOTE,
                 LEFTPAREN,
