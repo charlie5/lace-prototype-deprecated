@@ -18,7 +18,7 @@ is
    --- Keys
    --
 
-   type Key is (Nil,
+   type Key is (Nil,                   -- TODO: Better names.
                 BACKSPACE,
                 TAB,
                 CLEAR,
@@ -73,7 +73,7 @@ is
                 HOME, END_key,
                 PAGEUP, PAGEDOWN,
                 F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, F13, F14, F15,
-                NUMLOCK, CAPSLOCK, SCROLLOCK,
+                NUMLOCK, CAPSLOCK, SCROLLLOCK,
                 RSHIFT,  LSHIFT,
                 RCTRL,   LCTRL,
                 RALT,    LALT,
@@ -97,7 +97,7 @@ is
    --- Modifiers
    --
 
-   type Modifier is (LSHIFT,
+   type Modifier is (LSHIFT,                 -- TODO: Better names.
                      RSHIFT,
                      LCTRL,
                      RCTRL,
