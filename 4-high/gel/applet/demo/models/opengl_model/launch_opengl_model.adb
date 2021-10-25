@@ -83,27 +83,28 @@ is
    next_render_Time : ada.calendar.Time;
 
 begin
-   the_Applet.gui_World.Gravity_is ((0.0, 0.0, 0.0));
+   the_Applet.gui_World.Gravity_is ((0.0, -9.8, 0.0));
 
-   --  the_Applet.gui_World.add (the_Ground);              -- Add ground.
+   the_Applet.gui_World.add (the_Ground);                  -- Add ground.
 
-   --  the_Applet.gui_World.add (the_Human);               -- Add human.
-   --  the_Human.Site_is ((0.0,  5.0,  0.0));              --
+   the_Applet.gui_World.add (the_Human);                   -- Add human.
+   the_Human.Site_is ((0.0, 5.0, 0.0));                    --
 
-   the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
-   the_Cobra.Site_is ((0.0,  5.0,  0.0));              --
+   --  the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
+   --  the_Cobra.Site_is ((0.0,  5.0,  0.0));              --
 
-   --  the_Applet.gui_Camera.Site_is ((0.0, 1.5, 2.6));    -- Position the camera.
-   the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.
-   the_Applet.enable_simple_Dolly (in_World => 1);     -- Enable user camera control via keyboards.
-   the_Applet.Dolly.Speed_is (0.5);                   -- Slow down the rate at which the dolly moves.
+   the_Applet.gui_Camera.Site_is ((0.0, 1.5, 2.6));        -- Position the camera.
+   --  the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.
+   the_Applet.enable_simple_Dolly (in_World => 1);         -- Enable user camera control via keyboards.
+   the_Applet.Dolly.Speed_is (0.1);                        -- Slow down the rate at which the dolly moves.
+   --  the_Applet.Dolly.Speed_is (0.5);                    -- Slow down the rate at which the dolly moves.
 
    -- Set the lights position.
    --
    declare
       Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
    begin
-      Light.Site_is ((0.0, 1000.0, 0.0));
+      Light.Site_is ((0.0, 1000.0, 1000.0));
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);
    end;
 
