@@ -1,5 +1,5 @@
 with
-     "lumen_mmi",
+     "sdl_gel",
      "lace_shared";
 
 project add_rid_Sprite_Test
@@ -13,7 +13,6 @@ is
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
-   package Linker   renames Lace_shared.Linker;
 
    package Linker is
       for Default_Switches ("ada") use ("-lGL", "-lX11", "-lexpat", "-g");

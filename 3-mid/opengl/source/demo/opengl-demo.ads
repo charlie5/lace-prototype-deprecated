@@ -1,23 +1,28 @@
 with
-     lumen.Window,
      openGL.Model,
      openGL.Visual,
      openGL.Renderer.lean,
      openGL.Camera,
      openGL.Dolly,
-     openGL.frame_Counter;
+     openGL.frame_Counter,
+
+     sdl.Video.Windows,
+     sdl.Video.GL;
+
 
 package openGL.Demo
 --
 -- Provides a convenient method of setting up a simple openGL demo.
 --
 is
-   Window       :         lumen.Window.Window_handle;
-   Renderer     : aliased openGL.Renderer.lean.item;
-   Camera       : aliased openGL.Camera.item;
-   Dolly        :         openGL.Dolly.item (camera => Camera'unchecked_Access);
-   FPS_Counter  :         openGL.frame_Counter.item;
-   Done         :         Boolean := False;
+   Window     : standard.sdl.Video.Windows.Window;
+   GL_Context : standard.sdl.Video.GL.Contexts;
+
+   Renderer    : aliased openGL.Renderer.lean.item;
+   Camera      : aliased openGL.Camera.item;
+   Dolly       :         openGL.Dolly.item (camera => Camera'unchecked_Access);
+   FPS_Counter :         openGL.frame_Counter.item;
+   Done        :         Boolean := False;
 
    function Models return openGL.Model.views;
    --

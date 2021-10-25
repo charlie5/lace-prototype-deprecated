@@ -1,5 +1,5 @@
 with
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,
@@ -8,11 +8,12 @@ with
      physics.Forge,
 
      opengl.Palette,
-     float_math.Algebra.linear.d3;
+     float_math.Algebra.linear.d3,
 
-pragma Unreferenced (gel.Window.lumen);
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Exceptions;
+     ada.Text_IO,
+     ada.Exceptions;
+
+pragma Unreferenced (gel.Window.sdl);
 
 
 
@@ -28,7 +29,8 @@ is
        gel.Applet,
        opengl.Palette,
        gel.Math,
-       gel.linear_Algebra_2D;
+       gel.linear_Algebra_2D,
+       ada.Text_IO;
 
    use type openGL.Real;
 

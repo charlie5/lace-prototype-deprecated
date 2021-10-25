@@ -1,7 +1,8 @@
 with
      openGL.Visual,
      openGL.Demo,
-     openGL.Model;
+     openGL.Model.terrain;
+
 
 procedure launch_Model_scaling
 --
@@ -24,6 +25,7 @@ begin
       --  The visuals.
       --
       the_Visuals : openGL.Visual.views (the_Models'Range);
+      ground_Id   : Positive;
 
       --  Scaling
       --
@@ -34,9 +36,15 @@ begin
       for i in the_Visuals'Range
       loop
          the_Visuals (i) := Visual.Forge.new_Visual (the_Models (i));
+
+         if the_Models (i).all in openGL.Model.terrain.item'Class
+         then
+            ground_Id := i;
+         end if;
       end loop;
 
       Demo.layout (the_Visuals);
+      the_Visuals (ground_Id).Site_is (the_Visuals (ground_Id).Site_of + (0.0, -15.0, 0.0));
 
 
       --  Main loop.

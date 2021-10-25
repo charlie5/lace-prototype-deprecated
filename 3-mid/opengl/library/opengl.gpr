@@ -55,5 +55,11 @@ is
       for Default_Switches ("ada")           use Lace_shared.Compiler_Options;
       for         Switches ("opengl-io.adb") use ("-O0");
    end Compiler;
+   
+   package Linker
+   is
+      for Linker_Options use ("-g", "-lGL", "-lGLU", "-lglut", "-lSDL2");   
+   end Linker;
+   
 
 end Opengl;

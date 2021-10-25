@@ -1,7 +1,8 @@
 with
      gel.Applet.gui_world,
      gel.Forge,
-     gel.Window.setup,     -- This makes GEL use the GL window system selected by the 'opengl_platform' scenario variable.
+     gel.Window.setup,
+
      ada.Text_IO,
      ada.Exceptions;
 

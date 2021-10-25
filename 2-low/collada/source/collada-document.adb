@@ -8,7 +8,9 @@ with
 
      ada.Calendar.formatting,
      ada.Strings.fixed,
-     ada.Characters.latin_1;
+     ada.Characters.latin_1,
+     ada.Text_IO;
+
 
 package body collada.Document
 is
@@ -45,7 +47,7 @@ is
    is
       use ada.Strings.fixed;
 
-      the_Array : int_Array (1 .. 40_000);
+      the_Array : int_Array (1 .. 500_000);
       Count     : math.Index := 0;
 
       Start     : Natural := 1;
@@ -93,7 +95,7 @@ is
       declare
          use ada.Strings.fixed;
 
-         the_Array : float_Array (1 .. 40_000);
+         the_Array : float_Array (1 .. 500_000);
          Count     : math.Index := 0;
 
          Start     : Integer    := 1;
@@ -800,10 +802,10 @@ is
 
                                  elsif the_Child.Name = "instance_geometry"
                                  then
-                                    raise collada.Error with "TODO: Handle instance_geometry.";
+                                    ada.Text_IO.put_Line ("TODO: Handle instance_geometry.");
 
                                  else
-                                    raise collada.Error with "Unhandled collada 'visual scene element' found: " & the_Child.Name & ".";
+                                    ada.Text_IO.put_Line ("TODO: Unhandled collada 'visual scene element' found: " & the_Child.Name & ".");
                                  end if;
                               end loop;
                            end;

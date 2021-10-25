@@ -1,5 +1,5 @@
 with
-     "lumen_gel",
+     "sdl_gel",
      "lace_shared";
 
 project opengl_Model

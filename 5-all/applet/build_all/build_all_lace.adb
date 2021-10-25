@@ -46,8 +46,8 @@ with
      launch_render_Screenshot,
      launch_render_Text,
      launch_two_cameras_Demo,
-     --  launch_egl_linkage_Test,
      launch_freetype_linkage_Test,
+     --  launch_egl_linkage_Test,
      --  launch_gl_linkage_Test,
 
      launch_Test_2d,
@@ -58,7 +58,7 @@ with
      launch_Client,
      launch_Server,
      launch_Pong,
-     launch_Hello_mmi,
+     launch_Hello_gel,
      --  launch_opengl_Model,
      launch_Mouse_motion,
      launch_Mouse_selection,
@@ -133,7 +133,7 @@ begin
    launch_Client;
    launch_Server;
    launch_Pong;
-   launch_Hello_mmi;
+   launch_Hello_gel;
    --  launch_opengl_Model;
    launch_Mouse_motion;
    launch_Mouse_selection;

@@ -1,9 +1,9 @@
 with
      openGL.Visual,
      openGL.Terrain,
-     openGL.Demo;
+     openGL.Demo,
+     openGL.Light.directional;
 
-with openGL.Light.directional;
 
 procedure launch_large_Terrain_Demo
 --

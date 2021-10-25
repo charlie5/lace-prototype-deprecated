@@ -1,5 +1,5 @@
 with
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,

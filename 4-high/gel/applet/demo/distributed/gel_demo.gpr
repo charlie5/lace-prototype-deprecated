@@ -1,5 +1,5 @@
 with 
-     "lumen_gel",
+     "sdl_gel",
      "lace_shared";
 
 project gel_Demo

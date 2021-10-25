@@ -54,7 +54,7 @@ begin
 
          --  Render all sprites.
          --
-         Demo.Camera.render (the_Visuals => (1 => the_Sprite));
+         Demo.Camera.render (Visuals => (1 => the_Sprite));
 
          while not Demo.Camera.cull_Completed
          loop

@@ -17,7 +17,6 @@ GPR_PROJECT_PATH=$LACE/3-mid/physics/implement/impact/library:$GPR_PROJECT_PATH
 
 
 GPR_PROJECT_PATH=$LACE/4-high/gel/library:$GPR_PROJECT_PATH
-GPR_PROJECT_PATH=$LACE/4-high/gel/library/lumen:$GPR_PROJECT_PATH
 GPR_PROJECT_PATH=$LACE/4-high/gel/library/sdl:$GPR_PROJECT_PATH
 
 

@@ -1,5 +1,5 @@
 with
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,
@@ -8,7 +8,7 @@ with
      Physics,
      openGL.Palette;
 
-pragma unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.sdl);
 
 
 procedure launch_Chains_2d

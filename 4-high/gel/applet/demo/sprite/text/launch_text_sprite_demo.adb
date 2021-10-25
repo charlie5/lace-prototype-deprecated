@@ -1,5 +1,5 @@
 with
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,
@@ -9,7 +9,7 @@ with
 
      Physics;
 
-pragma unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.sdl);
 
 
 procedure launch_text_sprite_Demo

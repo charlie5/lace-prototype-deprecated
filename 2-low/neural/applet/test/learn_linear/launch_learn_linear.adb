@@ -1,5 +1,3 @@
-
-
 with linear_Net;
 
 with Neural.Set;
@@ -8,7 +6,7 @@ with Neural.Net;
 with float_Math;
 
 
-with lace.Environ;
+with lace.Environ.Paths;
 
 with ada.calendar;            use ada.calendar;
 with ada.Strings.unbounded;   use ada.Strings.unbounded;
@@ -30,7 +28,8 @@ is
 begin
 
    declare
-      use Math;
+      use Math,
+          lace.Environ.Paths;
       use type math.Real;
       use type neural.Signal;
 
@@ -45,18 +44,18 @@ begin
       --        Training            :          Boolean          := False;
       Signal              : math.Real := 0.0;
    begin
-      --- setup
+      --- Setup.
       --
       if Training
       then
-         lace.Environ.rid_Folder ("./velocity.net");
+         lace.Environ.Paths.rid_Folder (+"./velocity.net");
       end if;
 
       the_Net.define ("velocity");
 
       if Training
       then
-         --- collect net trainng data
+         --- Collect net trainng data.
          --
          for each_Pattern in 1 .. pattern_Count
          loop
@@ -65,7 +64,7 @@ begin
          end loop;
 
 
-         --- train the net
+         --- Train the net.
          --
          the_Net.Patterns_are (the_Patterns);
          the_Net.train  (Max_Epochs => 150_000,
@@ -87,17 +86,10 @@ begin
          --              end if;
 
       end if;
-      --           else
 
-      --- test the net
+      --- Test the net.
       --
-
       put_Line ("Net's output estimate: " & Real'Image (the_Net.Output_for (5.55)));
-
-
-
-
-
 
    exception
       when E : others =>

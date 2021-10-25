@@ -1,6 +1,6 @@
 with
      gel.Forge,
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
      gel.Camera,
      gel.Sprite,

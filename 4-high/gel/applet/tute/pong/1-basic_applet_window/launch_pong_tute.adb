@@ -1,13 +1,13 @@
 with
-     mmi.Window.setup,
-     mmi.Applet.gui_world,
-     mmi.Forge,
-     mmi.World,
-     mmi.Camera,
+     gel.Window.setup,
+     gel.Applet.gui_world,
+     gel.Forge,
+     gel.World,
+     gel.Camera,
 
      Physics;
 
-pragma Unreferenced (mmi.Window.setup);
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_Pong_Tute
@@ -15,14 +15,14 @@ procedure launch_Pong_Tute
 --  Basic pong game.
 --
 is
-   use mmi.Applet,
-       mmi.Applet.gui_world,
-       mmi.Math;
+   use gel.Applet,
+       gel.Applet.gui_world,
+       gel.Math;
 
    --- Applet
    --
-   the_Applet : mmi.Applet.gui_world.view
-     := mmi.Forge.new_gui_Applet (Named         => "Pong",
+   the_Applet : gel.Applet.gui_world.view
+     := gel.Forge.new_gui_Applet (Named         => "Pong",
                                   window_Width  => 800,
                                   window_Height => 600,
                                   space_Kind    => physics.Box2d);

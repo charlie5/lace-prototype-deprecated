@@ -1,5 +1,5 @@
 with
-     gel.Window.lumen,
+     gel.Window.sdl,
      gel.Applet.gui_world,
 
      gel.Forge,
@@ -17,7 +17,7 @@ with
 
      float_math.Algebra.linear.d3;
 
-pragma Unreferenced (gel.Window.lumen);
+pragma Unreferenced (gel.Window.sdl);
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Exceptions;
 with Physics.Forge;

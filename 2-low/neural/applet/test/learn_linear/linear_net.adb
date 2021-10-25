@@ -1,49 +1,39 @@
 
-with Neural.Set;
-with Neural.Net;
+with
+     neural.Set,
+     neural.Net,
+     lace.Environ.Paths,
 
---  with opengl.IO;
-
---  with Math;
-
---  with lace.text.Cursor;
-with lace.Environ;
+     ada.Strings.fixed,
+     ada.Text_Io;
 
 
-with ada.Strings.Fixed;
-with ada.Text_Io;
-
-
-
-package body linear_Net is
+package body linear_Net
+is
 
 
    use Math, Ada.Text_IO;
-   use type -- opengl.Real,
-       neural.signal;
-
+   use type neural.signal;
 
 --     input_neuron_Count : constant := 1;
-
 
    subtype nn_Real is neural.signal;
 
 
-
-
-   -- definition
+   -- Forge
    --
 
    procedure define (Self :    out Item;
                      Name : in     String)
    is
-      use Neural.Net, Neural, lace.Environ;
+      use Neural.Net,
+          Neural,
+          lace.Environ.Paths;
 
---        the_Environ : lace.Environ.item;
-      net_Name    : String           := Name & ".net";
+      net_Name : String := Name & ".net";
    begin
-      lace.Environ.verify_Folder (net_Name);
-      define (neural.Net.Item (Self),  net_Name);        -- define base class
+      lace.Environ.Paths.ensure_Folder (+net_Name);
+      define (neural.Net.Item (Self), net_Name);        -- Define base class.
 
    exception
       when No_Net_Error =>
@@ -58,12 +48,11 @@ package body linear_Net is
 
 
 
-   function Pattern_For (Self : in Item;   the_Input     : in math.Real;
-                                           Inputs_Only   : in Boolean        := False;
-                                           the_Output    : in math.Real      := 0.0  ) return Neural.Pattern
+   function Pattern_For (Self : in Item;   the_Input   : in math.Real;
+                                           Inputs_Only : in Boolean   := False;
+                                           the_Output  : in math.Real := 0.0) return Neural.Pattern
    is
       use Neural;
---            opengl, opengl.IO;
 
       the_Inputs  : Signals (1 .. self.input_Count);
       the_Outputs : Signals (1 .. self.output_Count);

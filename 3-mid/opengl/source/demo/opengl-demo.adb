@@ -6,7 +6,7 @@ with
      openGL.Model.billboard.        textured,
      openGL.Model.billboard.colored_textured,
      openGL.Model.box      .colored,
-     openGL.Model.box      .textured,
+     openGL.Model.box      .        textured,
      openGL.Model.box      .lit_colored_textured,
      openGL.Model.capsule  .lit_colored_textured,
      openGL.Model.grid,
@@ -22,22 +22,30 @@ with
      openGL.Model.sphere        .lit_colored_textured,
      openGL.Model.Text          .lit_colored_textured,
      openGL.Model.terrain,
+
+     SDL.Video.Windows.Makers,
      ada.Text_IO;
+
 
 package body openGL.Demo
 is
+   package std_SDL renames standard.SDL;
+
+
 
    procedure my_context_Setter
    is
    begin
-      Lumen.Window.make_Current (Window);
+      std_SDL.Video.gl.set_Current (GL_Context, To => Window);
    end my_context_Setter;
 
 
    procedure my_Swapper
    is
+      use std_SDL.Video.GL;
    begin
-      Lumen.Window.swap (Window);
+      --  Lumen.Window.swap (Window);
+      swap (Window);
    end my_Swapper;
 
 
@@ -47,19 +55,33 @@ is
    is
       use Palette,
           linear_Algebra_3d;
+      use std_SDL;
+      use type Video.Windows.Window_Flags;
+
+      null_Context : standard.SDL.Video.GL.Contexts;
+
    begin
-      Lumen.Window.Create (Window,
-                           width    => Width,
-                           height   => Height,
-                           name     => Name,
-                           animated => True);
+      if not std_SDL.initialise
+      then
+         raise Error with "Unable to initialise SDL.";
+      end if;
+
+      Video.Windows.Makers.create (Win    => Window,
+                                   Title  => "openGL Demo",
+                                   X      => 100,
+                                   Y      => 100,
+                                   Width  => C.int (Width),
+                                   Height => C.int (Height),
+                                   Flags  =>    Video.Windows.openGL
+                                             or Video.Windows.Resizable);
+
+      Video.GL.create (GL_Context, From => Window);
 
       Renderer.define;
       Renderer.Background_is (Grey);
       Renderer.Swapper_is    (my_Swapper'unrestricted_Access);
 
-      Lumen.Window.Make_Non_Current (Window);
-
+      std_SDL.Video.gl.set_Current (null_Context, To => Window);
       Renderer.Context_Setter_is (my_context_Setter'unrestricted_Access);
       Renderer.start_Engine;
 
@@ -71,6 +93,7 @@ is
       Camera.Viewport_is (width  => Width,
                           height => Height);
    end define;
+
 
 
    procedure destroy

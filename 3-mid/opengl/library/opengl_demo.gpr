@@ -1,6 +1,6 @@
 with
      "opengl",
-     "lumen",
+     "sdlada",
      "lace_shared";
 
 library
@@ -15,7 +15,8 @@ is
 
    package Builder renames Lace_shared.Builder;
 
-   package Compiler is
+   package Compiler
+   is
       for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
       for         Switches ("opengl-images.adb") use ("-O0");
    end Compiler;
