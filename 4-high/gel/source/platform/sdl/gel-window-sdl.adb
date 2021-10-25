@@ -226,46 +226,72 @@ is
 
    function to_gel_Key (From : in std_SDL.Events.Keyboards.key_Codes) return gel.keyboard.Key
    is
-      use type std_SDL.events.keyboards.key_Codes;
+      package Key renames std_SDL.Events.keyboards;
+      use type Key.key_Codes;
    begin
       case From
       is
-         when std_SDL.Events.Keyboards.Code_return
-                        => return gel.Keyboard.Enter;
-         when 27        => return gel.Keyboard.Escape;
-         when 32        => return gel.Keyboard.Space;
-         when 43        => return gel.Keyboard.KP_PLUS;
+         when Key.Code_return            => return gel.Keyboard.Enter;
+         when Key.Code_escape            => return gel.Keyboard.Escape;
+         when Key.Code_backspace         => return gel.Keyboard.BackSpace;
+         when Key.Code_tab               => return gel.Keyboard.Tab;
+         when Key.Code_space             => return gel.Keyboard.Space;
+         when Key.Code_exclamation       => return gel.Keyboard.Exclaim;
+         when Key.Code_double_quote      => return gel.Keyboard.QuoteDbl;
+         when Key.Code_hash              => return gel.Keyboard.Hash;
+         when Key.Code_percent           => return gel.Keyboard.Percent;
+         when Key.Code_dollar            => return gel.Keyboard.Dollar;
+         when Key.Code_ampersand         => return gel.Keyboard.Ampersand;
+         when Key.Code_quote             => return gel.Keyboard.Quote;
+         when Key.Code_left_parenthesis  => return gel.Keyboard.leftParen;
+         when Key.Code_right_parenthesis => return gel.Keyboard.rightParen;
+         when Key.Code_asterisk          => return gel.Keyboard.Asterisk;
+         when Key.Code_plus              => return gel.Keyboard.Plus;
+         when Key.Code_comma             => return gel.Keyboard.Comma;
+         when Key.Code_minus             => return gel.Keyboard.Minus;
+         when Key.Code_period            => return gel.Keyboard.Period;
+         when Key.Code_slash             => return gel.Keyboard.Slash;
 
-         when 48 ..  59 => return gel.keyboard.Key'Val (From - 48 + gel.keyboard.Key'Pos (KP0));
-         when 65 ..  90 => return gel.keyboard.Key'Val (From - 65 + gel.keyboard.Key'Pos (a));
-         when 97 .. 122 => return gel.keyboard.Key'Val (From - 97 + gel.keyboard.Key'Pos (a));
+         when Key.Code_0 => return gel.Keyboard.'0';
+         when Key.Code_1 => return gel.Keyboard.'1';
+         when Key.Code_2 => return gel.Keyboard.'2';
+         when Key.Code_3 => return gel.Keyboard.'3';
+         when Key.Code_4 => return gel.Keyboard.'4';
+         when Key.Code_5 => return gel.Keyboard.'5';
+         when Key.Code_6 => return gel.Keyboard.'6';
+         when Key.Code_7 => return gel.Keyboard.'7';
+         when Key.Code_8 => return gel.Keyboard.'8';
+         when Key.Code_9 => return gel.Keyboard.'9';
 
-         when 65505   => return lShift;
-         when 65506   => return rShift;
+         when Key.Code_colon      => return gel.Keyboard.Colon;
+         when Key.Code_semi_colon => return gel.Keyboard.semiColon;
+         when Key.Code_less       => return gel.Keyboard.Less;
+         when Key.Code_equals     => return gel.Keyboard.Equals;
+         when Key.Code_greater    => return gel.Keyboard.Greater;
+         when Key.Code_question   => return gel.Keyboard.Question;
+         when Key.Code_at         => return gel.Keyboard.At_key;
 
-         when 65507   => return lCtrl;
-         when 65508   => return rCtrl;
+         when Key.Code_kp_plus       => return gel.Keyboard.KP_PLUS;
 
-         when 65513   => return lAlt;
-         when 65514   => return rAlt;
+         when Key.Code_left_shift    => return lShift;
+         when Key.Code_right_shift   => return rShift;
 
-         when 65362   => return Up;
-         when 65363   => return Right;
-         when 65364   => return Down;
+         when Key.Code_left_control  => return lCtrl;
+         when Key.Code_right_control => return rCtrl;
 
-         when std_SDL.Events.Keyboards.Code_left
-                      => return gel.Keyboard.LEFT;
-         when 65365   => return PAGEUP;
-         when 65366   => return PAGEDOWN;
+         when Key.Code_left_alt      => return lAlt;
+         when Key.Code_right_alt     => return rAlt;
 
-         when others  =>
-            if From = std_SDL.Events.Keyboards.Code_left
-            then
-               return Left;
-            else
-               ada.Text_IO.put_Line ("SDL window unhandled key: " & From'Image);     -- TODO: remaning key codes.
-               -- raise Error with "Unhandled key: " & From'Image;
-            end if;
+         when Key.Code_up            => return Up;
+         when Key.Code_down          => return Down;
+
+         when Key.Code_left          => return Left;
+         when Key.Code_right         => return Right;
+         when Key.Code_page_up       => return PageUp;
+         when Key.Code_page_down     => return PageDown;
+
+         when others =>
+            ada.Text_IO.put_Line ("SDL window unhandled key: " & From'Image);     -- TODO: remaning key codes.
       end case;
 
       return gel.Keyboard.Key'First;
