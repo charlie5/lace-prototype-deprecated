@@ -6,7 +6,7 @@ Lace
 - Potential applications areas include: 3d simulations, games, visualisations and editors.
 - Supports distributed applications (DSA - see Annex E of the Ada Language Reference Manual).
 - Portable across desktop and embedded platforms.
-- Portable across X11 platforms (with ability to slot in Wayland/Windows/OS2 support, at need).
+- Portable across OS platforms.
 - Requires an Ada12 compiler.
 - Requires an implementation of the Ada POSIX API (i.e. FLORIST).
 - Several additional components are in a private prototype repository.
@@ -34,7 +34,7 @@ Content
 
 
 Lace/Events additionally:
-- Provides Subject, Observer, Event and Response abstractions.
+- Provides Subject/Observer and Event/Response abstractions.
 - Is task safe.
 - Supports DSA.
 - See  http://en.wikipedia.org/wiki/Event-driven_architecture
@@ -50,18 +50,13 @@ The development packages for the following projects need to be installed on your
 - Florist
 - Freetype
 - Expat
-- X11
+- SDL
 
 Example for Debian/Ubuntu:
 
 ```
-apt-get install libbullet-dev libbox2d-dev libflorist2016-dev libfreetype6-dev libexpat1-dev libx11-dev
+apt-get install libbullet-dev libbox2d-dev libflorist2016-dev libfreetype6-dev libexpat1-dev libsdl2-dev
 ```
-
-The Lumen project is also required:
-
-`$ git clone https://github.com/karakalo/lumen.git`
-
 
 The cBound ada bindings project is also required:
 
@@ -77,9 +72,6 @@ export restrictions=xgc
 export OS=Linux
 export FLORIST_BUILD=default
 
-export LUMEN=/path/to/lumen
-GPR_PROJECT_PATH=$LUMEN:$GPR_PROJECT_PATH
-
 export CBOUND=/path/to/cBound
 source $CBOUND/cbound-gpr_paths.sh
 
@@ -90,12 +82,6 @@ source $LACE/lace-gpr_paths.sh
 Of course, substitute  /path/to  with the actual paths you use.
 
 This should allow any Lace component to be 'with'ed in a user applications gnat project file.
-
-
-Lumen requires the application of a few patches.
-
-- `$ cd $LACE/install`
-- `$ ./apply_patches.sh`
 
 
 Lace/openGL contains a set of assets (fonts, shaders, etc). These need to be available in each openGL demo folder.
@@ -113,8 +99,8 @@ Lace/mmi contains a set of assets (fonts, etc). These need to be available in ea
 Testing
 =======
 
-* `$ cd $LACE/4-high/gel/applet/demo/skinning/rig`
+* `$ cd $LACE/4-high/gel/applet/demo/sprite/mixed_shapes`
 * `$ create_opengl_assets.sh`
 * `$ create_gel_assets.sh`
-* `$ gprbuild -P rig_demo.gpr`
-* `$ ./launch_rig_demo`
+* `$ gprbuild -P mixed_shapes.gpr`
+* `$ ./launch_mixed_shapes`
