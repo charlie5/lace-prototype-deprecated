@@ -141,7 +141,8 @@ is
                              Text     : in String;
                              Font     : in openGL.Font.font_Id;
                              Color    : in openGL.Color  := opengl.Palette.Black;
-                             Scale    : in math.Vector_3 := (1.0, 1.0, 1.0);
+                             --  Scale    : in math.Vector_3 := (1.0, 1.0, 1.0);
+                             Size     : in math.Vector_3 := (1.0, 1.0, 1.0);
                              Centered : in Boolean       := True) return gel.Sprite.view;
 
 end gel.Forge;

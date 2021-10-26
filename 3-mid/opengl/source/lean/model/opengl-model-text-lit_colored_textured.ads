@@ -26,8 +26,7 @@ is
    --- Forge
    --
 
-   function new_Text (Scale    : in Vector_3;
-                      Text     : in String;
+   function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
                       Color    : in lucid_Color;
                       Centered : in Boolean := True) return View;

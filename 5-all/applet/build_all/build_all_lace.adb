@@ -53,23 +53,23 @@ with
      launch_Test_2d,
 
      --  launch_hello_physics_interface_Demo,
-     --  launch_test_Engine,
+     launch_test_Engine,
 
      launch_Client,
      launch_Server,
      launch_Pong,
      launch_Hello_gel,
-     --  launch_opengl_Model,
+     launch_opengl_Model,
      launch_Mouse_motion,
      launch_Mouse_selection,
      launch_Rig_Demo,
      launch_Chains_2d,
      launch_drop_Ball_on_Box,
-     --  launch_drop_Box_on_Box,
-     --  launch_hinged_Box,
-     --  launch_mixed_Joints,
+     launch_drop_Box_on_Box,
+     launch_hinged_Box,
+     launch_mixed_Joints,
      launch_mixed_Joints_2d,
-     --  launch_mixed_Shapes,
+     launch_mixed_Shapes,
      launch_text_Sprite_Demo,
      launch_add_rid_Sprite_Test,
      launch_pong_Tute,
@@ -125,26 +125,26 @@ begin
    launch_freetype_linkage_Test;
    --  launch_gl_linkage_Test;
 
-   launch_Test_2d;
+   launch_Test_2D;
 
    --  launch_hello_physics_interface_Demo;
-   --  launch_test_Engine;
+   launch_Test_Engine;
 
    launch_Client;
    launch_Server;
    launch_Pong;
    launch_Hello_gel;
-   --  launch_opengl_Model;
+   launch_opengl_Model;
    launch_Mouse_motion;
    launch_Mouse_selection;
    launch_Rig_Demo;
    launch_Chains_2d;
    launch_drop_Ball_on_Box;
-   --  launch_drop_Box_on_Box;
-   --  launch_hinged_Box;
-   --  launch_mixed_Joints;
+   launch_drop_Box_on_Box;
+   launch_hinged_Box;
+   launch_mixed_Joints;
    launch_mixed_Joints_2d;
-   --  launch_mixed_Shapes;
+   launch_mixed_Shapes;
    launch_text_Sprite_Demo;
    launch_add_rid_Sprite_Test;
    launch_pong_Tute;

@@ -32,7 +32,7 @@ begin
       --  The model.
       --
       the_Text_Model : constant Model.Text.lit_colored_textured.view
-        := Model.Text.lit_colored_textured.new_Text (Scale    => (1.0, 1.0, 1.0),
+        := Model.Text.lit_colored_textured.new_Text (--Scale    => (1.0, 1.0, 1.0),
                                                      Text     => "Howdy",
                                                      Font     => the_font_Id,
                                                      Color    => (Red, Opaque),

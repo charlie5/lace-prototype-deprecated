@@ -1,14 +1,30 @@
 package body openGL.Model.sphere
 is
 
+   ---------
+   --- Forge
+   --
+
+   procedure define (Self : out Item;   Radius : Real)
+   is
+   begin
+      Self.Radius := Radius;
+   end define;
+
+
+
+   --------------
+   --- Attributes
+   --
+
    overriding
    function Bounds (Self : in Item) return openGL.Bounds
    is
-      Radius : constant Real := Self.Scale (1) / 2.0;
    begin
-      return (Ball => Radius,
-              Box  => (Lower => (-Radius, -Radius, -Radius),
-                       Upper => ( Radius,  Radius,  Radius)));
+      return (Ball => Self.Radius,
+              Box  => (Lower => (-Self.Radius, -Self.Radius, -Self.Radius),
+                       Upper => ( Self.Radius,  Self.Radius,  Self.Radius)));
    end Bounds;
+
 
 end openGL.Model.sphere;

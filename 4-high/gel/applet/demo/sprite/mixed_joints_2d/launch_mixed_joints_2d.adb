@@ -37,7 +37,7 @@ is
 
    use type openGL.Real;
 
-   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("hinged Box",
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Mixed 2D Joints",
                                                                                 1920, 1200,
                                                                                 space_Kind => Physics.Box2D);
    Counter    :          Natural                   := 0;

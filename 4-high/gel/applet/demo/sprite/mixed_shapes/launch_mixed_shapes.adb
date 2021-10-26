@@ -16,7 +16,7 @@ with
      openGL.Light.directional,
      openGL.Palette;
 
-pragma unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.sdl);
 
 
 procedure launch_mixed_Shapes
@@ -179,8 +179,7 @@ begin
          --  Cone
          --
          the_cone_Model : constant openGL.Model.any.view
-           := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0) * 1.0,
-                                          Model            => openGL.to_Asset ("assets/gel/model/unit_cone.obj"),
+           := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cone.obj"),
                                           Texture          => openGL.null_Asset,
                                           Texture_is_lucid => False);
 
@@ -196,14 +195,13 @@ begin
          --  Cylinder
          --
          the_cylinder_Model : constant openGL.Model.any.view
-           := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                          Model            => openGL.to_Asset ("assets/gel/model/unit_cylinder.obj"),
+           := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cylinder.obj"),
                                           Texture          => openGL.null_Asset,
                                           Texture_is_lucid => False);
 
          the_cylinder_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cylinder,
-                                                                    half_Extents => the_cylinder_Model.Scale / 2.0),
+                                                                    half_Extents => (1.0, 1.0, 1.0) / 2.0),
                                                      Mass       => 1.0);
 
          the_Cylinder : constant gel.Sprite.view

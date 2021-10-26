@@ -61,7 +61,7 @@ begin
 
          for Each of the_Visuals
          loop
-            Each.Model.Scale := Scale;
+            Each.Scale_is (Scale);
          end loop;
 
          -- Handle user commands.

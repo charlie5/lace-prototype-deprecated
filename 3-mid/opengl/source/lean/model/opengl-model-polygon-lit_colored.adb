@@ -15,7 +15,6 @@ is
       Self.Vertices (Vertices'Range) := Vertices;
       Self.vertex_Count              := Vertices'Length;
 
-      Self.define (Scale => (1.0, 1.0, 1.0));
       return Self;
    end new_Polygon;
 

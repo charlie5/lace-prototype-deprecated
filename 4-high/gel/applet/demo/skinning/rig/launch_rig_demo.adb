@@ -45,7 +45,7 @@ is
                                                                                    Mass => 0.0,
                                                                                    Size => (50.0, 1.0, 50.0));
 
-   the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+   the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
                                                                                          --  Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
                                                                                          Model            => openGL.to_Asset ("./box_1_bone.dae"),
                                                                                          Texture          => openGL.null_Asset,

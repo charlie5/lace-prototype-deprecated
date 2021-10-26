@@ -16,10 +16,9 @@ is
    is
       Self : constant View := new Item;
    begin
+      Self.define (Radius);
       Self.Image  := Image;
-      Self.define (Scale => (Radius * 2.0,                -- TODO: Don't use scale to size the sphere.
-                             Radius * 2.0,
-                             Radius * 2.0));
+
       return Self;
    end new_Sphere;
 

@@ -14,7 +14,7 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
-pragma unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.sdl);
 
 
 procedure launch_hinged_Box
@@ -42,12 +42,12 @@ begin
    declare
       use float_Math;
 
-      bs : constant := 1.0;
+      box_Size : constant gel.Math.Vector_3 := (1.0, 1.0, 1.0);
 
       --  Box
       --
       the_box_Model : constant openGL.Model.box.colored.view
-        := openGL.Model.box.colored.new_Box (Size  => (bs, bs, bs),
+        := openGL.Model.box.colored.new_Box (Size  => box_Size,
                                              Faces => (Front => (colors => (others => (Red,     Opaque))),
                                                        Rear  => (colors => (others => (Blue,    Opaque))),
                                                        Upper => (colors => (others => (Violet,  Opaque))),
@@ -56,10 +56,10 @@ begin
                                                        Right => (colors => (others => (Magenta, Opaque)))));
       the_static_box_physics_Model : constant physics.Model.view
         := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
-                                                                 half_Extents => the_box_Model.Scale));
+                                                                 half_Extents => box_Size));
       the_dynamic_box_physics_Model : constant physics.Model.view
         := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
-                                                                 half_Extents => the_box_Model.Scale / 2.0),
+                                                                 half_Extents => box_Size / 2.0),
                                                   Mass       => 1.0);
       the_Box_1 : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("demo.Box.static.1",

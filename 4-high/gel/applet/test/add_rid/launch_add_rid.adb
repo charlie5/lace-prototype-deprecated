@@ -45,7 +45,7 @@ is
 --     my_Test : Tests := destroy_Object;
 
 
-   the_Applet : gel.Applet.gui_World.view := new_gui_Applet     ("Chains 2D",
+   the_Applet : gel.Applet.gui_World.view := new_gui_Applet     ("Add/Rid Test",
                                                                  1536, 864,
                                                                  space_Kind => physics.Box2D);
    the_Ground : gel.Sprite          .view := new_rectangle_Sprite (the_Applet.gui_World,

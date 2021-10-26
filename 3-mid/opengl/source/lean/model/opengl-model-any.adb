@@ -29,8 +29,7 @@ is
    --- Forge
    --
 
-   function to_Model (Scale            : in Vector_3;
-                      Model            : in asset_Name;
+   function to_Model (Model            : in asset_Name;
                       Texture          : in asset_Name;
                       Texture_is_lucid : in Boolean) return openGL.Model.any.item
    is
@@ -41,19 +40,17 @@ is
                                               Texture_is_lucid,
                                               Geometry => null)
       do
-         Self.define (Scale);
          Self.Bounds.Ball := 1.0;
       end return;
    end to_Model;
 
 
-   function new_Model (Scale            : in Vector_3;
-                       Model            : in asset_Name;
+   function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view
    is
    begin
-      return new openGL.Model.any.item' (to_Model (Scale, Model, Texture, Texture_is_lucid));
+      return new openGL.Model.any.item' (to_Model (Model, Texture, Texture_is_lucid));
    end new_Model;
 
 
@@ -213,8 +210,7 @@ is
                            the_io_Vertex :  io.Vertex renames the_io_Vertices (v);
                            the_gl_Vertex : any_Vertex renames the_Vertices (vertex_Count);
                         begin
-                           the_gl_Vertex.Site := Scaled (the_Model.Sites (the_io_Vertex.site_Id),
-                                                         by => Self.Scale);   -- TODO: Shouldn't scale here, since the vertex shaders do scaling.
+                           the_gl_Vertex.Site := the_Model.Sites (the_io_Vertex.site_Id);
 
                            Self.Bounds.Box  := Self.Bounds.Box or the_gl_Vertex.Site;
                            Self.Bounds.Ball := Real'Max (Self.Bounds.Ball,

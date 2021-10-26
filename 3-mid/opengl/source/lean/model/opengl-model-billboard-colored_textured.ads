@@ -32,7 +32,7 @@ is
    --- Forge
    --
 
-   function new_Billboard (Scale   : in Vector_3;
+   function new_Billboard (Size    : in Size_t         := default_Size;
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
                            Texture : in asset_Name) return View;
@@ -47,7 +47,6 @@ is
 
    procedure Color_is           (Self : in out Item;   Now : in lucid_Color);
    procedure Texture_Coords_are (Self : in out Item;   Now : in Coordinates);
-   procedure Scale_is           (Self : in out Item;   Now : in Vector_3);
 
    overriding
    procedure modify      (Self : in out Item);

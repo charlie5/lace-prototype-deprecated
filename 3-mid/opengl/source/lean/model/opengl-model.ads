@@ -4,6 +4,7 @@ with
      openGL.Texture,
      openGL.Geometry;
 
+
 package openGL.Model
 --
 --  Provides an abstract base class for 3D models.
@@ -20,7 +21,7 @@ is
    -- Forge
    --
 
-   procedure define  (Self : in out Item;   Scale : in Vector_3);
+   procedure define  (Self :    out Item);     -- TODO: Rid this.
    procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
 

@@ -184,9 +184,9 @@ is
                   the_Sprite         : gel.Sprite.view     renames the_sprite_Grid (Row, Col);
                   the_Site           : vector_3;
                begin
-                  the_ground_Model.Scale := (Scale (1),
-                                             Scale (2),
-                                             Scale (3));
+                  --  the_ground_Model.Scale := (Scale (1),
+                  --                             Scale (2),
+                  --                             Scale (3));
 
                   the_Site := (0.0, 0.0, 0.0);
 
@@ -201,7 +201,9 @@ is
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
 
-                  the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
+                  --  the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
+                  the_Sprite. Site_is (the_Site + base_Centre);
+                  the_Sprite.Scale_is (Scale);
 
                   tile_X_Offset := tile_X_Offset + Width (the_heightmap_Grid (Row, Col).all) * Scale (1);
 

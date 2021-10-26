@@ -13,7 +13,7 @@ with
 
      float_Math.Algebra.linear.d3;
 
-pragma unreferenced (gel.Window.lumen);
+pragma unreferenced (gel.Window.sdl);
 
 
 procedure launch_mixed_Joints

@@ -26,8 +26,7 @@ is
    --- Forge
    --
 
-   function new_Model (Scale            : in Vector_3;
-                       Model            : in asset_Name;
+   function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view;
 

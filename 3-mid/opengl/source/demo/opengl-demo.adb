@@ -127,12 +127,12 @@ is
         := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
 
       the_billboard_Model : constant Model.billboard.textured.view
-        := Model.billboard.textured.forge.new_Billboard (Scale   => (1.0, 1.0, 1.0),
+        := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
                                                          Plane   => Billboard.xy,
                                                          Texture => the_Texture);
 
       the_colored_billboard_Model : constant Model.billboard.colored_textured.view
-        := Model.billboard.colored_textured.new_Billboard (Scale   => (1.0, 1.0, 1.0),
+        := Model.billboard.colored_textured.new_Billboard (Size    => (1.0, 1.0),
                                                            Plane   => Billboard.xy,
                                                            Color   => (Green, Opaque),
                                                            Texture => the_Texture);
@@ -216,13 +216,13 @@ is
                                               End_2 => (5.0, 5.0, 0.0));
 
       the_collada_Model : constant Model.any.view
-        := Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+        := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
                                 Model            => to_Asset ("assets/opengl/model/human.dae"),
                                 Texture          => the_Texture,
                                 Texture_is_lucid => False);
 
       the_wavefront_Model : constant Model.any.view
-        := Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
+        := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
                                 Model            => to_Asset ("assets/opengl/model/human.obj"),
                                 Texture          => the_Texture,
                                 Texture_is_lucid => False);
@@ -232,15 +232,14 @@ is
                                                   Color    => (Red, Opaque));
 
       the_text_Model : constant Model.Text.lit_colored_textured.view
-        := Model.Text.lit_colored_textured.new_Text (Scale => (1.0, 1.0, 1.0),
+        := Model.Text.lit_colored_textured.new_Text (--Scale => (1.0, 1.0, 1.0),
                                                      Text     => "Howdy",
                                                      Font     => the_font_Id,
                                                      Color    => (Green, Opaque),
                                                      Centered => False);
 
       the_segment_line_Model : constant Model.segment_line.view
-        := Model.segment_line.new_segment_line_Model (Scale => (1.0, 1.0, 1.0),
-                                                      Color => Green);
+        := Model.segment_line.new_segment_line_Model (Color => Green);
 
       -- Terrain
       --

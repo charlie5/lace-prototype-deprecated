@@ -20,8 +20,7 @@ is
    --- Forge
    --
 
-   function new_segment_line_Model (Scale : in Vector_3;
-                                    Color : in openGL.Color) return View;
+   function new_segment_line_Model (Color : in openGL.Color) return View;
 
 
    -----------

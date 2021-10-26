@@ -67,7 +67,8 @@ is
    is
       use type openGL.Visual.view;
 
-      Width : constant Real := Target.Model.Bounds.Ball * 2.00;
+      Width  : constant Real := Target.Model.Bounds.Ball * 2.00;
+      Height : constant Real := Target.Model.Bounds.Ball * 2.00;
 
    begin
       if Self.Visual = null
@@ -78,7 +79,8 @@ is
       Self.Target     := Target;
       Self.is_Terrain := Target.is_Terrain;
 
-      Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Scale   => (Width, Width, 0.01),
+      Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Size    => (Width  => Width,
+                                                                                      Height => Height),
                                                                           Plane   => Model.billboard.xy,
                                                                           Texture => null_Asset).all'Access);
       Self.Visual.Transform_is (Target.Transform);

@@ -3,9 +3,12 @@ with
      gel_demo_Server,
 
      gel.Applet.client_World,
+     gel.Window.sdl,
+
      gel.Forge,
      gel.Camera,
 
+     ada.Calendar,
      ada.Text_IO,
      ada.Exceptions;
 
@@ -17,7 +20,11 @@ is
 
    task body Item
    is
-      the_Applet : gel.Applet.client_World.view;
+      use type ada.Calendar.Time;
+
+      the_Applet       : gel.Applet.client_World.view;
+      next_render_Time : ada.calendar.Time;
+
    begin
       accept start;
 
@@ -34,11 +41,16 @@ is
       the_Applet.client_Camera.Site_is ((0.0, 0.0, 20.0));
       the_Applet.enable_simple_Dolly (1);
 
+      next_render_Time := ada.Calendar.clock;
+
       --  Begin processing.
       --
       while the_Applet.is_open
       loop
          the_Applet.freshen;
+
+         next_render_Time := next_render_Time + 1.0/60.0;
+         delay until next_render_Time;
       end loop;
 
       --  Close.

@@ -12,7 +12,7 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
-pragma unreferenced (gel.window.lumen);
+pragma unreferenced (gel.window.sdl);
 
 procedure launch_drop_Box_on_Box
 --

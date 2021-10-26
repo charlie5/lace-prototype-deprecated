@@ -19,9 +19,8 @@ is
       Self.Image        := Image;
       Self.is_Skysphere := is_Skysphere;
 
-      Self.define (Scale => (Radius * 2.0,            -- TODO: Don't use scale to size the sphere.
-                             Radius * 2.0,
-                             Radius * 2.0));
+      Self.define (Radius);
+
       return Self;
    end new_Sphere;
 
@@ -169,7 +168,6 @@ is
          end loop;
       end;
 
-
       if Self.Image /= null_Asset
       then
          set_Texture:
@@ -181,14 +179,6 @@ is
             the_Geometry.Texture_is (the_Texture);
          end set_Texture;
       end if;
-
-
-      for i in the_Vertices'Range
-      loop
-         the_Vertices (i).Site := Scaled (the_Vertices (i).Site,
-                                          by => Self.Scale);
-      end loop;
-
 
       the_Geometry.is_Transparent (False);   -- TODO: Base this on vertex data.
       the_Geometry.Vertices_are   (the_Vertices);

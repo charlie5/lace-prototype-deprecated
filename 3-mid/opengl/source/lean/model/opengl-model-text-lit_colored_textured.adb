@@ -7,6 +7,7 @@ with
 
      ada.Directories;
 
+
 package body openGL.Model.Text.lit_colored_textured
 is
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
@@ -16,8 +17,7 @@ is
    --- Forge
    --
 
-   function new_Text (Scale    : in Vector_3;
-                      Text     : in String;
+   function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
                       Color    : in lucid_Color;
                       Centered : in Boolean := True) return View
@@ -38,8 +38,6 @@ is
          Self.Color    := Color;
          Self.Centered := Centered;
          Self.Bounds   := null_Bounds;
-
-         Self.define (Scale);
 
          return Self;
       end;

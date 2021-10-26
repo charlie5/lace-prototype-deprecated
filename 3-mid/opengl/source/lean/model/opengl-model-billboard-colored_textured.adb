@@ -10,17 +10,18 @@ is
    --- Forge
    --
 
-   function new_Billboard (Scale   : in Vector_3;
+   function new_Billboard (Size    : in Size_t         := default_Size;
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
                            Texture : in asset_Name) return View
    is
       Self : constant View := new Item;
    begin
+      Self.define (Size);
+
       Self.Plane        := Plane;
       Self.Color        := Color;
       Self.Texture_Name := Texture;
-      Self.define (Scale);
 
       return Self;
    end new_Billboard;
@@ -42,8 +43,8 @@ is
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
-                                                                       Self.Scale (1),
-                                                                       Self.Scale (2));
+                                                                       Self.Width,
+                                                                       Self.Height);
 
       function new_Face (Vertices : access Geometry.colored_textured.Vertex_array) return Geometry_view
       is
@@ -114,14 +115,6 @@ is
       Self.needs_Rebuild  := True;
    end Texture_Coords_are;
 
-
-
-   procedure Scale_is (Self : in out Item;   Now : in Vector_3)
-   is
-   begin
-      Self.Scale         := Now;
-      Self.needs_Rebuild := True;
-   end Scale_is;
 
 
    overriding

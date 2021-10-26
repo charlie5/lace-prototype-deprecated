@@ -127,12 +127,8 @@ is
                   the_Visual         :          Visual.view renames the_Visual_Grid (Row, Col);
                   the_Site           :          Vector_3;
                begin
-                  the_ground_Model.Scale := (Scale (1),
-                                             Scale (2),
-                                             Scale (3));
-
                   the_Visual := Visual.Forge.new_Visual (Model      => the_ground_Model.all'Access,
-                                                         Scale      => (1.0, 1.0, 1.0),
+                                                         Scale      => Scale,
                                                          is_Terrain => True);
 
                   site_Y_Offset :=    the_height_Extents (1)

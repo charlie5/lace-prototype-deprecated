@@ -52,7 +52,7 @@ is
    function Scale (Self : in Item) return Vector_3
    is
    begin
-      return Scaled (Self.Scale,  by => Self.Model.Scale);
+      return Self.Scale;
    end Scale;
 
 

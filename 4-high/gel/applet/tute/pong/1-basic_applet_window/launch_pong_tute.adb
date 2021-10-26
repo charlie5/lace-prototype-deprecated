@@ -22,7 +22,7 @@ is
    --- Applet
    --
    the_Applet : gel.Applet.gui_world.view
-     := gel.Forge.new_gui_Applet (Named         => "Pong",
+     := gel.Forge.new_gui_Applet (Named         => "Pong Tutorial",
                                   window_Width  => 800,
                                   window_Height => 600,
                                   space_Kind    => physics.Box2d);

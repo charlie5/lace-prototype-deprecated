@@ -7,10 +7,8 @@ with
 package body openGL.Model.segment_line
 is
 
-   function to_segment_line_Model (Scale : in Vector_3;
-                                   Color : in openGL.Color) return Item
+   function to_segment_line_Model (Color : in openGL.Color) return Item
    is
-      pragma unreferenced (Scale);
       Self : constant Item := (Model.item with
                                Color,
                                site_Vectors.empty_Vector,
@@ -21,11 +19,10 @@ is
 
 
 
-   function new_segment_line_Model (Scale : in Vector_3;
-                                    Color : in openGL.Color) return View
+   function new_segment_line_Model (Color : in openGL.Color) return View
    is
    begin
-      return new Item' (to_segment_line_Model (Scale, Color));
+      return new Item' (to_segment_line_Model (Color));
    end new_segment_line_Model;
 
 

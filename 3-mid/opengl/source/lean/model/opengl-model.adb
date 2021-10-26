@@ -7,11 +7,7 @@ is
    --- Forge
    --
 
-   procedure define (Self : in out Item;   Scale : in Vector_3)
-   is
-   begin
-      Self.Scale := Scale;
-   end define;
+   procedure define (Self : out Item) is null;
 
 
    procedure deallocate is new ada.unchecked_Deallocation (Geometry.views,

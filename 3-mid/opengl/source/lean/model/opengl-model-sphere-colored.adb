@@ -14,9 +14,8 @@ is
       Self : constant View := new Item;
    begin
       Self.Color := Color;
-      Self.define (Scale => (Radius * 2.0,
-                             Radius * 2.0,
-                             Radius * 2.0));
+      Self.define (Radius);
+
       return Self;
    end new_Sphere;
 

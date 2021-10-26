@@ -2,6 +2,7 @@ with
      openGL.Geometry,
      openGL.Texture;
 
+
 package openGL.Model.billboard.textured
 --
 --  Models a textured billboard.
@@ -34,10 +35,10 @@ is
 
    package Forge
    is
-      function new_Billboard (Scale   : in Vector_3;
+      function new_Billboard (Size    : in Size_t         := default_Size;
                               Plane   : in billboard.Plane;
                               Texture : in asset_Name;
-                              Lucid   : in Boolean := False) return View;
+                              Lucid   : in Boolean        := False) return View;
    end Forge;
 
 
@@ -50,7 +51,7 @@ is
                                                        Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
    procedure Texture_Coords_are (Self : in out Item;   Now : in Coordinates);
-   procedure Scale_is           (Self : in out Item;   Now : in Vector_3);
+   procedure Size_is            (Self : in out Item;   Now : in Size_t);
 
    procedure Image_is           (Self : in out Item;   Now : in       Image);
    procedure Image_is           (Self : in out Item;   Now : in lucid_Image);

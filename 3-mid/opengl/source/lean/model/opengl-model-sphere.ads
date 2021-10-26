@@ -6,10 +6,18 @@ is
 
    type Item is abstract new Model.item with
       record
-         null;
+         Radius : Real;
       end record;
 
    type View is access all Item'Class;
+
+
+   ---------
+   --- Forge
+   --
+
+   procedure define (Self : out Item;   Radius : Real);
+
 
    --------------
    --- Attributes

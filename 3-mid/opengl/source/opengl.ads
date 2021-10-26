@@ -91,7 +91,7 @@ is
    -----------
    --  Extents
    --
-   type Extent_2d is
+   type Extent_2D is
       record
          Width  : Natural;
          Height : Natural;

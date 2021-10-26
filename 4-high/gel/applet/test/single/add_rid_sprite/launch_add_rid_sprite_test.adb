@@ -31,7 +31,7 @@ is
    use type math.Real;
 
    the_Applet : constant gel.Applet.gui_world.view
-     := gel.forge.new_gui_Applet ("memory leak Test", 500, 500); --the_Window);
+     := gel.forge.new_gui_Applet ("Add/Rid Sprite Test", 500, 500);
 
    the_Box : constant gel.Sprite.view
      := gel.forge.new_box_Sprite (the_Applet.gui_World, mass => 0.0);

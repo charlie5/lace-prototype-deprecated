@@ -16,16 +16,16 @@ is
 
    package body Forge
    is
-      function new_Billboard (Scale   : in Vector_3;
+      function new_Billboard (Size    : in Size_t         := default_Size;
                               Plane   : in billboard.Plane;
                               Texture : in asset_Name;
-                              Lucid   : in Boolean := False) return View
+                              Lucid   : in Boolean        := False) return View
       is
          Self : constant View := new Item (Lucid);
       begin
          Self.Plane        := Plane;
          Self.Texture_Name := Texture;
-         Self.define (Scale);
+         Self.define (Size);
 
          return Self;
       end new_Billboard;
@@ -48,8 +48,8 @@ is
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
-                                                                       Self.Scale (1),
-                                                                       Self.Scale (2));
+                                                                       Self.Width,
+                                                                       Self.Height);
 
       function new_Face (Vertices : access Geometry.textured.Vertex_array) return Geometry_view
       is
@@ -126,12 +126,12 @@ is
 
 
 
-   procedure Scale_is (Self : in out Item;   Now : in Vector_3)
+   procedure Size_is (Self : in out Item;   Now : in Size_t)
    is
    begin
-      Self.Scale         := Now;
+      Self.Size          := Now;
       Self.needs_Rebuild := True;
-   end Scale_is;
+   end Size_is;
 
 
 
