@@ -90,13 +90,13 @@ is
                                                                                Scale          => 2.0);
 
    the_heightfield_Model : constant openGL.Model.terrain.view
-     := openGL.Model.terrain.new_Item (heights_Asset => terrain_Heights,
-                                       Row           => 1,
-                                       Col           => 1,
-                                       Heights       => openGL.Model.terrain.height_Map_view (gl_Heights),
-                                       color_Map     => terrain_Texture,
-                                       Tiling        => (s => (0.0, 1.0),
-                                                         t => (0.0, 1.0)));
+     := openGL.Model.terrain.new_Terrain (heights_Asset => terrain_Heights,
+                                          Row           => 1,
+                                          Col           => 1,
+                                          Heights       => openGL.Model.terrain.height_Map_view (gl_Heights),
+                                          color_Map     => terrain_Texture,
+                                          Tiling        => (s => (0.0, 1.0),
+                                                            t => (0.0, 1.0)));
 
    the_heightfield_physics_Model : constant physics.Model.view
      := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.heightfield,

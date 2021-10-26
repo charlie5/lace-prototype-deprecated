@@ -64,7 +64,7 @@ begin
                case Command
                is
                when ' ' =>
-                  if the_Text_Model.Text.all = "Howdy"
+                  if the_Text_Model.Text = "Howdy"
                   then
                      the_Text_Model.Text_is ("Doody");
                   else

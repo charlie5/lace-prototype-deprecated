@@ -58,8 +58,14 @@ is
    --- Attributes
    --
 
-   use openGL.IO;
+   function model_Name (Self : in Item) return asset_Name
+   is
+   begin
+      return Self.Model;
+   end model_Name;
 
+
+   use openGL.IO;
 
    function Hash (Self : in io.Vertex) return ada.Containers.Hash_type
    is

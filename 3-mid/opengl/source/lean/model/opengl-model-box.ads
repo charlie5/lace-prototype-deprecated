@@ -3,7 +3,7 @@ package openGL.Model.box
 --  Provides an abstract model of a box.
 --
 is
-   type Item is abstract new openGL.Model.item with private;
+   type Item is abstract new Model.item with private;
 
    type Side is (Front, Rear,
                  Upper, Lower,
@@ -15,7 +15,7 @@ is
 
 private
 
-   type Item is abstract new openGL.Model.item with
+   type Item is abstract new Model.item with
       record
          Size : Vector_3;
       end record;

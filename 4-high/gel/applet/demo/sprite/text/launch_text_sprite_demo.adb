@@ -48,7 +48,7 @@ begin
 
    while the_Applet.is_open
    loop
-      if text_1_Model.Text.all = "Yay"
+      if text_1_Model.Text = "Yay"
       then
          text_1_Model.Text_is ("Howdy");
       else

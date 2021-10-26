@@ -32,46 +32,38 @@ is
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("openGL Model", 500, 500);
 
 
-   the_human_graphics_Model : aliased openGL.Model.any.item
-     := (openGL.Model.item with
-         model   => openGL.to_Asset ("./assets/opengl/model/human.obj"),
-         texture => openGL.null_Asset,
-         has_lucid_Texture => False,
-         others => <>);
+   the_human_graphics_Model : aliased openGL.Model.any.view
+     := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/opengl/model/human.obj"),
+                                    Texture          => openGL.null_Asset,
+                                    Texture_is_lucid => False);
 
    the_human_physics_Model : constant physics.Model.view
      := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                               half_Extents => (4.0, 1.0, 2.0)),
                                                Mass       => 1.0);
-
-
-   the_Human : gel.Sprite.view
+   the_Human : constant gel.Sprite.view
      := gel.Sprite.forge.new_Sprite (Name           => "Clarence",
                                      World          => the_Applet.gui_World.all'Access,
                                      at_Site        => gel.Math.Origin_3D,
-                                     graphics_Model => the_human_graphics_Model'unchecked_Access,
+                                     graphics_Model => the_human_graphics_Model,
                                      physics_Model  => the_human_physics_Model);
 
 
 
-   the_cobra_Model : aliased openGL.Model.any.item
-     := (openGL.Model.item with
-         model   => openGL.to_Asset ("./assets/oolite_cobra3.obj"),
-         texture => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png"),
-         has_lucid_Texture => False,
-         others => <>);
+   the_cobra_graphics_Model : aliased constant openGL.Model.any.view
+     := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/oolite_cobra3.obj"),
+                                    Texture          => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png"),
+                                    Texture_is_lucid => False);
 
    the_cobra_physics_Model : constant physics.Model.view
      := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                               half_Extents => (4.0, 1.0, 2.0)),
                                                Mass       => 0.0);
-
-
-   the_Cobra : gel.Sprite.view
+   the_Cobra : constant gel.Sprite.view
      := gel.Sprite.forge.new_Sprite (Name           => "Cobra",
                                      World          => the_Applet.gui_World.all'Access,
                                      at_Site        => gel.Math.Origin_3D,
-                                     graphics_Model => the_cobra_Model'unchecked_Access,
+                                     graphics_Model => the_cobra_graphics_Model,
                                      physics_Model  => the_cobra_physics_Model);
 
 

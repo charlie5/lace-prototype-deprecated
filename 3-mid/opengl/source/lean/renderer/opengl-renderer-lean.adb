@@ -469,9 +469,9 @@ is
               or else Natural (the_Update.current_Height_pixels) /= the_Model.Texture.Size.Height
             then
                free (Self.texture_Pool, the_Model.Texture);
-               the_Model.Texture := new_Texture (Self.texture_Pool'Access,
-                                                 (Natural (texture_Width),
-                                                  Natural (texture_Height)));
+               the_Model.Texture_is (new_Texture (From => Self.texture_Pool'Access,
+                                                  Size => (Natural (texture_Width),
+                                                           Natural (texture_Height))));
             end if;
 
             -- Set texture coordinates.

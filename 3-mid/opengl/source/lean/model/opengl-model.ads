@@ -9,10 +9,11 @@ package openGL.Model
 --
 --  Provides an abstract base class for 3D models.
 --
+--  TODO: Make subprograms and 'with's private where possible.
 is
    use Geometry_3d;
 
-   type Item  is abstract new openGL.remote_Model.item with private;
+   type Item  is abstract new remote_Model.item with private;
    type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
 
@@ -69,7 +70,7 @@ is
 
 private
 
-   type Item is abstract new openGL.remote_Model.item with
+   type Item is abstract new remote_Model.item with
       record
          opaque_Geometries : access_Geometry_views;
          lucid_Geometries  : access_Geometry_views;

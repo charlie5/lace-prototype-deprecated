@@ -1,10 +1,12 @@
 with
      openGL.Geometry.colored;
 
+
 package openGL.Model.grid
 --
 --  Models a grid.
 --
+--  TODO: Rename to 'line_Grid'.
 is
    type Item is new Model.item with private;
    type View is access all Item'Class;

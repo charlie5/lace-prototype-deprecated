@@ -155,13 +155,12 @@ is
                                opengl.Real (tile_Z_Scale * Scale (3))));
 
                   the_ground_Model : constant access openGL.Model.terrain.item
-                    := new openGL.Model.terrain.item '(openGL.Model.item with
-                                                       heights_asset => openGL.to_Asset (heights_File),
-                                                       row           => Row,
-                                                       col           => Col,
-                                                       heights       => the_Region.all'Access,
-                                                       color_map     => openGL.to_Asset (texture_File),
-                                                       tiling        => Tiling);
+                    := openGL.Model.terrain.new_Terrain (heights_Asset => openGL.to_Asset (heights_File),
+                                                         Row           => Row,
+                                                         Col           => Col,
+                                                         Heights       => the_Region.all'Access,
+                                                         color_Map     => openGL.to_Asset (texture_File),
+                                                         Tiling        => Tiling);
 
                   function to_Physics is new ada.unchecked_Conversion (height_Map_view,
                                                                        Heightfield_view);

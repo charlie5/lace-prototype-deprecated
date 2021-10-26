@@ -2,23 +2,13 @@ with
      openGL.Font.texture,
      openGL.Geometry;
 
+
 package openGL.Model.Text.lit_colored_textured
 --
 --  Models lit, colored, textured text.
 --
 is
-
-   type Item is new Model.text.item with
-      record
-         Text     : access String;
-
-         Font_Id  : openGL.Font.font_Id;
-         Font     : openGL.Font.texture.view;
-
-         Color    : lucid_Color;
-         Centered : Boolean;
-      end record;
-
+   type Item is new Model.text.item with private;
    type View is access all Item'Class;
 
 
@@ -46,5 +36,20 @@ is
 
    overriding
    function  Font    (Self : in     Item) return openGL.Font.view;
+
+
+
+private
+
+   type Item is new Model.text.item with
+      record
+         Text     : access String;
+
+         Font_Id  : openGL.Font.font_Id;
+         Font     : openGL.Font.texture.view;
+
+         Color    : lucid_Color;
+         Centered : Boolean;
+      end record;
 
 end openGL.Model.Text.lit_colored_textured;

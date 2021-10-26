@@ -2,12 +2,12 @@ with
      openGL.Geometry,
      openGL.Texture;
 
+
 package openGL.Model.hexagon_Column.lit_colored_textured_faceted
 --
 --  Models a lit, colored and textured column with 6 faceted shaft sides.
 --
 is
-
    type Item is new Model.hexagon_Column.Item with private;
    type View is access all Item'Class;
 

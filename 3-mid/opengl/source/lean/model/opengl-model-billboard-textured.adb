@@ -37,14 +37,14 @@ is
    --
 
    overriding
-   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+   function to_GL_Geometries (Self : access Item;   Textures : access openGL.Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
       pragma unreferenced (Textures, Fonts);
 
       use Geometry,
           Geometry.textured,
-          Texture;
+          openGL.Texture;
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
@@ -91,7 +91,7 @@ is
                then
                   set_Image (Self.Texture, Self.lucid_Image.all);
                else
-                  Self.Texture := Texture.Forge.to_Texture (Self.lucid_Image.all);
+                  Self.Texture := openGL.Texture.Forge.to_Texture (Self.lucid_Image.all);
                end if;
             end if;
          else
@@ -99,9 +99,9 @@ is
             then
                if Self.Texture /= null_Object
                then
-                  Texture.set_Image (Self.Texture, Self.Image.all);
+                  Self.Texture.set_Image (Self.Image.all);
                else
-                  Self.Texture := Texture.Forge.to_Texture (Self.Image.all);
+                  Self.Texture := openGL.Texture.Forge.to_Texture (Self.Image.all);
                end if;
             end if;
          end if;
@@ -114,6 +114,21 @@ is
 
       return (1 => the_Face.all'Access);
    end to_GL_Geometries;
+
+
+
+   procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
+   is
+   begin
+      Self.Texture := Now;
+   end Texture_is;
+
+
+   function Texture (Self : in Item) return openGL.Texture.Object
+   is
+   begin
+      return Self.Texture;
+   end Texture;
 
 
 

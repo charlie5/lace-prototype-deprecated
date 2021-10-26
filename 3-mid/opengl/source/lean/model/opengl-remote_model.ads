@@ -1,9 +1,8 @@
-package openGL.remote_Model
+package openGL.remote_Model with remote_Types
 --
 --  Provides a DSA friendly base class for 3D models.
 --
 is
-   pragma remote_Types;
 
    type Item is abstract tagged
       record

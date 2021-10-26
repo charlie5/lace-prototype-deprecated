@@ -13,6 +13,8 @@ is
          Height : Real;
       end record;
 
+   type Coordinates is array (1 .. 4) of Coordinate_2D;
+
 
    ---------
    --- Forge

@@ -324,13 +324,14 @@ is
       use collada.Document,
           collada.Library,
           collada.Library.visual_Scenes,
+
           ada.Strings.unbounded,
           ada.Strings;
 
       type any_Model_view is access all openGL.Model.any.item;
 
       the_Model    : constant any_Model_view        := any_Model_view (Model);
-      the_Document : constant collada.Document.item := to_Document (openGL.to_String (the_Model.Model));
+      the_Document : constant collada.Document.item := to_Document (openGL.to_String (the_Model.model_Name));
 
 
       function get_root_Joint return visual_Scenes.Node_view

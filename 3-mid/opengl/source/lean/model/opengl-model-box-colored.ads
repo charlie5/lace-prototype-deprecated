@@ -2,6 +2,7 @@ with
      openGL.Font,
      openGL.Geometry;
 
+
 package openGL.Model.box.colored
 --
 --  Models a colored box.
@@ -9,9 +10,9 @@ package openGL.Model.box.colored
 --  Each face may be separately colored via each of its 4 vertices.
 --
 is
+   type Item is new Model.box.item with private;
+   type View is access all Item'Class;
 
-   --------
-   --- Face
 
    type Face is
       record
@@ -19,18 +20,6 @@ is
       end record;
 
    type Faces is array (Side) of Face;
-
-
-   -------
-   --- Box
-   --
-
-   type Item is new Model.box.item with     -- TODO: Make private.
-      record
-         Faces : colored.Faces;
-      end record;
-
-   type View is access all Item'Class;
 
 
    ---------
@@ -49,5 +38,13 @@ is
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
+
+
+private
+
+   type Item is new Model.box.item with
+      record
+         Faces : colored.Faces;
+      end record;
 
 end openGL.Model.box.colored;

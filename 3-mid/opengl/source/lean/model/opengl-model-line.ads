@@ -3,8 +3,7 @@ package openGL.Model.line
 --  Provides an abstract class for line models.
 --
 is
-
-   type Item is abstract new openGL.Model.item with private;
+   type Item is abstract new Model.item with private;
 
 
 

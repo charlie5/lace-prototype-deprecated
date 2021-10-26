@@ -15,12 +15,12 @@ is
    -- Forge
    --
 
-   function new_Item (heights_Asset : in asset_Name;
-                      Row, Col      : in Integer;
-                      Heights       : in height_Map_view;
-                      color_Map     : in asset_Name;
-                      Tiling        : in texture_Transform_2d := (S => (0.0, 1.0),
-                                                                  T => (0.0, 1.0))) return View
+   function new_Terrain (heights_Asset : in asset_Name;
+                         Row, Col      : in Integer;
+                         Heights       : in height_Map_view;
+                         color_Map     : in asset_Name;
+                         Tiling        : in texture_Transform_2d := (S => (0.0, 1.0),
+                                                                     T => (0.0, 1.0))) return View
    is
       the_Model : constant View := new Item' (Model.item with
                                               heights_Asset => heights_Asset,
@@ -32,7 +32,7 @@ is
    begin
       the_Model.set_Bounds;
       return the_Model;
-   end new_Item;
+   end new_Terrain;
 
 
 

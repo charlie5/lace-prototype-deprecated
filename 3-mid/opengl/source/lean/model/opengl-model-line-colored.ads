@@ -2,12 +2,12 @@ private
 with
      openGL.Geometry.colored;
 
+
 package openGL.Model.line.colored
 --
 --  Models a colored line.
 --
 is
-
    type Item is new Model.line.item with private;
    type View is access all Item'Class;
 

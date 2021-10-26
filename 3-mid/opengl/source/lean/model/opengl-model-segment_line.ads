@@ -6,12 +6,12 @@ with
      openGL.Geometry.colored,
      ada.Containers.Vectors;
 
+
 package openGL.Model.segment_line
 --
 --  Models a segmented line.
 --
 is
-
    type Item is new Model.item with private;
    type View is access all Item'Class;
 
@@ -35,9 +35,7 @@ is
 
    type Segments_t is array (Positive range <>) of aliased Segment;
 
-
    function Angle_in_xz_plane (the_Segment : in Segment) return Radians;
-
 
 
    --------------
@@ -84,6 +82,5 @@ private
 
          Geometry     : access openGL.Geometry.colored.item'Class;
       end record;
-
 
 end openGL.Model.segment_line;

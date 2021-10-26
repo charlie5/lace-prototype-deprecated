@@ -249,14 +249,13 @@ is
       the_Region   : constant IO.height_Map_view   := IO.to_height_Map (heights_File, 10.0);
       Tiling       : constant texture_Transform_2d := (S => (0.0, 1.0),
                                                        T => (0.0, 1.0));
-      the_ground_Model : constant access Model.terrain.item
-        := new Model.terrain.item' (openGL.Model.item with
-                                    heights_Asset => heights_File,
-                                    Row           => 1,
-                                    Col           => 1,
-                                    Heights       => the_Region.all'Access,
-                                    Color_Map     => texture_File,
-                                    Tiling        => Tiling);
+      the_ground_Model : constant Model.terrain.view
+        := Model.Terrain.new_Terrain (heights_Asset => heights_File,
+                                      Row           => 1,
+                                      Col           => 1,
+                                      Heights       => the_Region.all'Access,
+                                      Color_Map     => texture_File,
+                                      Tiling        => Tiling);
    begin
       Demo.Renderer.add_Font (the_font_Id);
 
