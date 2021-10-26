@@ -96,6 +96,11 @@ launch_render_models
 launch_hello_physics_interface_demo
 launch_test_engine
 launch_strings_demo
+launch_add_rid
+launch_add_rid_sprite_test
+launch_pong_tute
+build_all_lace
+
 test_environ_compression
 test_text_replace
 test_environ_general
