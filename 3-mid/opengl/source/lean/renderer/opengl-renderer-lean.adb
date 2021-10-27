@@ -4,6 +4,7 @@ with
      openGL.Camera,
      openGL.Palette,
      openGL.Model.billboard.textured,
+     openGL.Geometry.        lit_textured_skinned,
      openGL.Geometry.lit_colored_textured_skinned,
      openGL.Font.texture,
      openGL.Server,
@@ -248,6 +249,7 @@ is
          end Stop;
       end select;
 
+      openGL.Geometry.        lit_textured_skinned.define_Program;
       openGL.Geometry.lit_colored_textured_skinned.define_Program;
 
 

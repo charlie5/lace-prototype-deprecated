@@ -25,6 +25,7 @@ uniform   mat4                bone_Matrices[120];
 
 attribute vec3   aSite;
 attribute vec3   aNormal;
+attribute vec4   aColor;
 attribute vec2   aCoords;
 
 attribute vec4   bone_Ids;
@@ -53,11 +54,11 @@ directional_light_color (in vec3                normal,     // 'normal' has been
    NdotL = max (c_zero,  dot (normal, light.direction));
    NdotH = max (c_zero,  dot (normal, light.halfplane));
 
-   computed_color += (        light.ambient_color);
-   computed_color += (NdotL * light.diffuse_color);
+   computed_color += (        light.ambient_color * aColor);
+   computed_color += (NdotL * light.diffuse_color * aColor);
    
    if (NdotH > c_zero)
-      computed_color += (pow (NdotH, uShine) * light.specular_color);
+      computed_color += (pow (NdotH, uShine) * aColor * light.specular_color);
 
    return computed_color;
 }

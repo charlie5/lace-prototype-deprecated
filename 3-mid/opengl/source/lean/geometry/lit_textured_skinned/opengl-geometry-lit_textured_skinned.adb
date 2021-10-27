@@ -15,14 +15,14 @@ with
      System.storage_Elements;
 
 
-package body openGL.Geometry.lit_colored_textured_skinned
+package body openGL.Geometry.lit_textured_skinned
 is
    --  Globals
    --
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
-   the_Program     : aliased openGL.Program.lit_colored_textured_skinned.item;
+   the_Program     : aliased openGL.Program.lit_textured_skinned.item;
    is_Defined      :         Boolean := False;
 
    white_Texture   : openGL.Texture.Object;
@@ -34,16 +34,8 @@ is
 
    function is_Transparent (Self : in Vertex_array) return Boolean   -- TODO: Replace this with the generic (check that all similar functions use the generic).
    is
-      use type color_Value;
+      pragma Unreferenced (Self);
    begin
-      for Each in Self'Range
-      loop
-         if Self (Each).Color.Opacity /= Opaque
-         then
-            return True;
-         end if;
-      end loop;
-
       return False;
    end is_Transparent;
 
@@ -52,12 +44,12 @@ is
    --  Forge
    --
 
-   type Geometry_view is access all Geometry.lit_colored_textured_skinned.item'Class;
+   type Geometry_view is access all Geometry.lit_textured_skinned.item'Class;
 
 
-   function new_Geometry return access Geometry.lit_colored_textured_skinned.item'Class
+   function new_Geometry return access Geometry.lit_textured_skinned.item'Class
    is
-      Self : constant Geometry_view := new Geometry.lit_colored_textured_skinned.item;
+      Self : constant Geometry_view := new Geometry.lit_textured_skinned.item;
    begin
       Self.Program_is (the_Program'Access);
       return Self;
@@ -78,24 +70,21 @@ is
 
       Attribute_1_Name : aliased C.char_array := "aSite";
       Attribute_2_Name : aliased C.char_array := "aNormal";
-      Attribute_3_Name : aliased C.char_array := "aColor";
-      Attribute_4_Name : aliased C.char_array := "aCoords";
-      Attribute_5_Name : aliased C.char_array := "bone_Ids";
-      Attribute_6_Name : aliased C.char_array := "bone_Weights";
+      Attribute_3_Name : aliased C.char_array := "aCoords";
+      Attribute_4_Name : aliased C.char_array := "bone_Ids";
+      Attribute_5_Name : aliased C.char_array := "bone_Weights";
 
       Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'unchecked_Access);
       Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'unchecked_Access);
       Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'unchecked_Access);
       Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'unchecked_Access);
       Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'unchecked_Access);
-      Attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'unchecked_Access);
 
       Attribute_1 : openGL.Attribute.view;
       Attribute_2 : openGL.Attribute.view;
       Attribute_3 : openGL.Attribute.view;
       Attribute_4 : openGL.Attribute.view;
       Attribute_5 : openGL.Attribute.view;
-      Attribute_6 : openGL.Attribute.view;
 
       white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
 
@@ -104,7 +93,7 @@ is
 
       if is_Defined
       then
-         raise Error with "The lit_colored_textured_skinned program has already been defined.";
+         raise Error with "The 'lit_textured_skinned' program has already been defined.";
       end if;
 
       is_Defined := True;
@@ -113,8 +102,8 @@ is
       --
       white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
 
-      vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_colored_textured_skinned.vert");
-      fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_colored_textured_skinned.frag");
+      vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
+      fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
 
       the_Program.define (  vertex_Shader'Access,
                           fragment_Shader'Access);
@@ -124,7 +113,7 @@ is
                                     gl_Location => the_Program.attribute_Location ("aSite"),
                                     Size        => 3,
                                     data_Kind   => Attribute.GL_FLOAT,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Stride      => lit_textured_skinned.Vertex'Size / 8,
                                     Offset      => 0,
                                     Normalized  => False);
 
@@ -132,52 +121,42 @@ is
                                     gl_Location => the_Program.attribute_Location ("aNormal"),
                                     Size        => 3,
                                     data_Kind   => Attribute.GL_FLOAT,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Stride      => lit_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Normal (1)'Address
-                                    - Sample.Site   (1)'Address,
+                                                   - Sample.Site   (1)'Address,
                                     Normalized  => False);
 
-      Attribute_3 := new_Attribute (Name        => "aColor",
-                                    gl_Location => the_Program.attribute_Location ("aColor"),
-                                    Size        => 4,
-                                    data_Kind   => Attribute.GL_UNSIGNED_BYTE,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
-                                    Offset      =>   Sample.Color.Primary.Red'Address
-                                    - Sample.Site (1)         'Address,
-                                    Normalized  => True);
-
-      Attribute_4 := new_Attribute (Name        => "aCoords",
+      Attribute_3 := new_Attribute (Name        => "aCoords",
                                     gl_Location => the_Program.attribute_Location ("aCoords"),
                                     Size        => 2,
                                     data_Kind   => Attribute.GL_FLOAT,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Stride      => lit_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Coords.S'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
-      Attribute_5 := new_Attribute (Name        => "bone_Ids",
+      Attribute_4 := new_Attribute (Name        => "bone_Ids",
                                     gl_Location => the_Program.attribute_Location ("bone_Ids"),
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_FLOAT,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Stride      => lit_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.bone_Ids (1)'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
-      Attribute_6 := new_Attribute (Name        => "bone_Weights",
+      Attribute_5 := new_Attribute (Name        => "bone_Weights",
                                     gl_Location => the_Program.attribute_Location ("bone_Weights"),
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_FLOAT,
-                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Stride      => lit_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.bone_Weights (1)'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
       the_Program.add (Attribute_1);
       the_Program.add (Attribute_2);
       the_Program.add (Attribute_3);
       the_Program.add (Attribute_4);
       the_Program.add (Attribute_5);
-      the_Program.add (Attribute_6);
 
       glBindAttribLocation (program => the_Program.gl_Program,
                             index   => the_Program.Attribute (named => "aSite").gl_Location,
@@ -190,23 +169,18 @@ is
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aColor").gl_Location,
+                            index   => the_Program.Attribute (named => "aCoords").gl_Location,
                             name    => +Attribute_3_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aCoords").gl_Location,
+                            index   => the_Program.Attribute (named => "bone_Ids").gl_Location,
                             name    => +Attribute_4_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "bone_Ids").gl_Location,
-                            name    => +Attribute_5_Name_ptr);
-      Errors.log;
-
-      glBindAttribLocation (program => the_Program.gl_Program,
                             index   => the_Program.Attribute (named => "bone_Weights").gl_Location,
-                            name    => +Attribute_6_Name_ptr);
+                            name    => +Attribute_5_Name_ptr);
       Errors.log;
    end define_Program;
 
@@ -215,7 +189,7 @@ is
    --  Attributes
    --
 
-   function Program return openGL.Program.lit_colored_textured_skinned.view
+   function Program return openGL.Program.lit_textured_skinned.view
    is
    begin
       return the_Program'Access;
@@ -228,7 +202,7 @@ is
                                                  for_Facia : in Positive)
    is
    begin
-      raise Error with "openGL.Geometry.lit_coloured_textured_skinned - 'Indices_are' ~ TODO";
+      raise Error with "openGL.Geometry.lit_textured_skinned - 'Indices_are' ~ TODO";
    end Indices_are;
 
 
@@ -291,4 +265,4 @@ is
    end enable_Texture;
 
 
-end openGL.Geometry.lit_colored_textured_skinned;
+end openGL.Geometry.lit_textured_skinned;
