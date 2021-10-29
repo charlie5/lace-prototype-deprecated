@@ -23,7 +23,11 @@ is
    package Binder  renames Lace_shared.Binder;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I../contrib/box2d-2.4.1/include");
+      for Default_Switches ("c++") use ("-g", 
+                                        "-Wno-return-type-c-linkage",
+                                        "-I../../../c_math/source/c",
+                                        "-I../contrib/box2d-2.4.1/include");
+                                        
 --      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/box2d");
    end Compiler;
 

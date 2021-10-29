@@ -17,7 +17,9 @@ is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-I../source/c");
+      for Default_Switches ("c++") use ("-g",
+                                        "-Wno-return-type-c-linkage",
+                                        "-I../source/c");
    end Compiler;
 
    package Ide      renames Lace_shared.Ide;

@@ -22,6 +22,7 @@ is
 
    package Compiler is
       for Default_Switches ("c++") use ("-g",
+                                        "-Wno-return-type-c-linkage",
                                         "-I../../../c_math/source/c",
                                         "-I/usr/include/bullet",
                                         "-I/usr/local/include/bullet");
