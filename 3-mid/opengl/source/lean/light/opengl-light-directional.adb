@@ -3,6 +3,24 @@ with
 
 package body openGL.Light.directional
 is
+   -----------
+   --- Utility
+   --
+
+   function to_light_Color (From : in Vector_4) return light_Color
+   is
+   begin
+      return (Red     => From (1),
+              Green   => From (2),
+              Blue    => From (3),
+              Opacity => From (4));
+   end to_light_Color;
+
+
+
+   --------------
+   --- Attributes
+   --
 
    procedure inverse_view_Transform_is (Self : in out Item;   Now : in Matrix_3x3)
    is
@@ -28,26 +46,53 @@ is
 
 
 
-   function ambient_Color (Self : in Item) return Vector_4
+   procedure  ambient_Color_is (Self : in out Item;   Now : light_Color)
+   is
+      use openGL.conversions;
+   begin
+      Self. ambient_Color := to_Vector_4 (Now);
+   end ambient_Color_is;
+
+
+
+   procedure  diffuse_Color_is (Self : in out Item;   Now : light_Color)
+   is
+      use openGL.conversions;
+   begin
+      Self. diffuse_Color := to_Vector_4 (Now);
+   end diffuse_Color_is;
+
+
+
+   procedure specular_Color_is (Self : in out Item;   Now : light_Color)
+   is
+      use openGL.conversions;
+   begin
+      Self.specular_Color := to_Vector_4 (Now);
+   end specular_Color_is;
+
+
+
+   function ambient_Color (Self : in Item) return light_Color
    is
    begin
-      return Self.ambient_Color;
+      return to_light_Color (Self.ambient_Color);
    end ambient_Color;
 
 
 
-   function diffuse_Color (Self : in Item) return Vector_4
+   function diffuse_Color (Self : in Item) return light_Color
    is
    begin
-      return Self.diffuse_Color;
+      return to_light_Color (Self.diffuse_Color);
    end diffuse_Color;
 
 
 
-   function specular_Color (Self : in Item) return Vector_4
+   function specular_Color (Self : in Item) return light_Color
    is
    begin
-      return Self.specular_Color;
+      return to_light_Color (Self.specular_Color);
    end specular_Color;
 
 

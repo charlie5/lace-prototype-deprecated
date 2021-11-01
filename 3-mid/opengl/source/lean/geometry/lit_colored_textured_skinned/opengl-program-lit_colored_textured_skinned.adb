@@ -1,6 +1,8 @@
 with
      openGL.Texture,
+     openGL.Conversions,
      ada.Strings.fixed;
+
 
 package body openGL.Program.lit_colored_textured_skinned
 is
@@ -215,6 +217,8 @@ is
             if Light.is_On
             then
                declare
+                  use openGL.Conversions;
+
                   the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
                   the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
 
@@ -225,9 +229,9 @@ is
                   the_light_direction_Uniform.Value_is (Light.Direction);
                   the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
 
-                  the_light_ambient_color_Uniform .Value_is (Light.ambient_Color);
-                  the_light_diffuse_color_Uniform .Value_is (Light.diffuse_Color);
-                  the_light_specular_color_Uniform.Value_is (Light.specular_Color);
+                  the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
+                  the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
+                  the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
                end;
             end if;
          end;

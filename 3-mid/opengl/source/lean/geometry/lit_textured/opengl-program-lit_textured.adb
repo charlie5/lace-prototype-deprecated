@@ -1,6 +1,8 @@
 with
      openGL.Tasks,
+     openGL.Conversions,
      ada.Strings.fixed;
+
 
 package body openGL.Program.lit_textured
 is
@@ -45,6 +47,8 @@ is
             if Light.is_On
             then
                declare
+                  use openGL.Conversions;
+
                   light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
                   light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
 
@@ -55,9 +59,9 @@ is
                   light_direction_Uniform     .Value_is (Light.Direction);
                   light_halfplane_Uniform     .Value_is (Light.halfplane_Vector);
 
-                  light_ambient_color_Uniform .Value_is (Light. ambient_Color);
-                  light_diffuse_color_Uniform .Value_is (Light. diffuse_Color);
-                  light_specular_color_Uniform.Value_is (Light.specular_Color);
+                  light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
+                  light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
+                  light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
                end;
             end if;
          end;
