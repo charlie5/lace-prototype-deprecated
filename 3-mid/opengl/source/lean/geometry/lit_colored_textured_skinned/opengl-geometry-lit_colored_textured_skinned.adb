@@ -134,7 +134,7 @@ is
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Normal (1)'Address
-                                    - Sample.Site   (1)'Address,
+                                                   - Sample.Site   (1)'Address,
                                     Normalized  => False);
 
       Attribute_3 := new_Attribute (Name        => "aColor",
@@ -143,7 +143,7 @@ is
                                     data_Kind   => Attribute.GL_UNSIGNED_BYTE,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Color.Primary.Red'Address
-                                    - Sample.Site (1)         'Address,
+                                                   - Sample.Site (1)         'Address,
                                     Normalized  => True);
 
       Attribute_4 := new_Attribute (Name        => "aCoords",
@@ -152,7 +152,7 @@ is
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Coords.S'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
       Attribute_5 := new_Attribute (Name        => "bone_Ids",
@@ -161,7 +161,7 @@ is
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.bone_Ids (1)'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
       Attribute_6 := new_Attribute (Name        => "bone_Weights",
@@ -170,7 +170,7 @@ is
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.bone_Weights (1)'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
       the_Program.add (Attribute_1);
       the_Program.add (Attribute_2);

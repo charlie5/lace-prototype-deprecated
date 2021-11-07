@@ -18,6 +18,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Model.any
 is
 
@@ -94,15 +95,15 @@ is
                                                            any_Vertex_array_view);
 
 
-   function to_lit_textured_Vertices (Self : in any_Vertex_array) return Geometry.lit_textured.Vertex_array
+   function to_lit_textured_Vertices (From : in any_Vertex_array) return Geometry.lit_textured.Vertex_array
    is
-      Result : Geometry.lit_textured.Vertex_array (Self'Range);
+      Result : Geometry.lit_textured.Vertex_array (From'Range);
    begin
-      for i in Self'Range
+      for i in From'Range
       loop
-         Result (i) := (site   => Self (i).Site,
-                        normal => Self (i).Normal,
-                        coords => Self (i).Coords);
+         Result (i) := (site   => From (i).Site,
+                        normal => From (i).Normal,
+                        coords => From (i).Coords);
       end loop;
 
       return Result;
@@ -110,25 +111,25 @@ is
 
 
 
-   function to_lit_textured_skinned_Vertices (Self : in any_Vertex_array) return Geometry.lit_colored_textured_skinned.Vertex_array
+   function to_lit_textured_skinned_Vertices (From : in any_Vertex_array) return Geometry.lit_colored_textured_skinned.Vertex_array
    is
       use Palette;
-      Result : Geometry.lit_colored_textured_skinned.Vertex_array (Self'Range);
+      Result : Geometry.lit_colored_textured_skinned.Vertex_array (From'Range);
    begin
-      for i in Self'Range
+      for i in From'Range
       loop
-         Result (i) := (site         => Self (i).Site,
-                        normal       => Self (i).Normal,
-                        coords       => Self (i).Coords,
-                        color        => (White, Opaque),
-                        bone_Ids     => (1 => Real (Self (i).Bones (1).Bone),
-                                         2 => Real (Self (i).Bones (2).Bone),
-                                         3 => Real (Self (i).Bones (3).Bone),
-                                         4 => Real (Self (i).Bones (4).Bone)),
-                        bone_Weights => (1 =>       Self (i).Bones (1).Weight,
-                                         2 =>       Self (i).Bones (2).Weight,
-                                         3 =>       Self (i).Bones (3).Weight,
-                                         4 =>       Self (i).Bones (4).Weight));
+         Result (i) := (Site         => From (i).Site,
+                        Normal       => From (i).Normal,
+                        Coords       => From (i).Coords,
+                        Color        => (White, Opaque),
+                        bone_Ids     => (1 => Real (From (i).Bones (1).Bone),
+                                         2 => Real (From (i).Bones (2).Bone),
+                                         3 => Real (From (i).Bones (3).Bone),
+                                         4 => Real (From (i).Bones (4).Bone)),
+                        bone_Weights => (1 =>       From (i).Bones (1).Weight,
+                                         2 =>       From (i).Bones (2).Weight,
+                                         3 =>       From (i).Bones (3).Weight,
+                                         4 =>       From (i).Bones (4).Weight));
       end loop;
 
       return Result;
