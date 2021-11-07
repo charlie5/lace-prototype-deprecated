@@ -2,7 +2,7 @@ with
      "box2d_thin_c",
      "lace_shared";
 
-library
+--library
 project Box2d_Thin_Cxx
 is
    for Languages       use ("C++");
@@ -10,7 +10,7 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "box2d_thin_cxx";
+--   for Library_Name    use "box2d_thin_cxx";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
@@ -25,7 +25,8 @@ is
       for Default_Switches ("c++") use ("-g", 
                                         "-fPIC",
                                         "-Wno-return-type-c-linkage",
-                                        "-I../../../c_math/source/c");
+                                        "-I../../../c_math/source/c",
+                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
    end Compiler;
 
 end Box2d_Thin_Cxx;

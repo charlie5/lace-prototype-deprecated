@@ -2,7 +2,7 @@ with
      "c_math_thin_c",
      "lace_shared";
 
-library
+--library
 project c_Math_Thin_Cxx
 is
    for Languages       use ("c++");
@@ -10,7 +10,7 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "c_Math_Thin_Cxx";
+--   for Library_Name    use "c_Math_Thin_Cxx";
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";
@@ -21,7 +21,7 @@ is
       for Default_Switches ("c++") use ("-g", 
                                         "-fPIC",
                                         "-Wno-return-type-c-linkage",
-                                        "-I.");
+                                        "-I../source/c");
    end Compiler;
 
    package Ide      renames Lace_shared.Ide;

@@ -4,7 +4,7 @@ with
      "math",
      "lace_shared";
      
-library
+--library
 project Opengl_Core
 is
    type Platform is ("egl", "glx", "osmesa");
@@ -14,7 +14,7 @@ is
 
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
-   for Library_Name use "opengl_core";
+--   for Library_Name use "opengl_core";
 
 
    case The_Platform is 

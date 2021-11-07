@@ -4,14 +4,15 @@ with
      "c_math_thin",
      "lace_shared";
 
-library
+--library
 project Physics
 is
    for Create_Missing_Dirs use "True";
 
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
-   for Library_Name use "lace_physics";
+--   for Library_Name use "lace_physics";
+
    for Source_Dirs  use ("../source", 
                          "../source/private/box2d",
                          "../source/private/bullet");

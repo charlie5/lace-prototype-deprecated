@@ -3,7 +3,7 @@ with
      "sdlada",
      "lace_shared";
 
-library
+--library
 project openGL_Demo
 is
    for Create_Missing_Dirs use "True";
@@ -11,7 +11,7 @@ is
    for Source_Dirs  use ("../source/demo");
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
-   for Library_Name use "openGL_Demo";
+--   for Library_Name use "openGL_Demo";
 
    package Builder renames Lace_shared.Builder;
 

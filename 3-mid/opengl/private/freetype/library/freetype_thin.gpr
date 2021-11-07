@@ -14,7 +14,8 @@ is
    package Binder   renames Lace_shared.Binder;
 
    package Linker is
-      for Linker_Options use ("-g", "-L./lib", "-lfreetype_c", "-lfreetype");
+--      for Linker_Options use ("-g", "-L./lib", "-lfreetype_c", "-lfreetype");
+      for Linker_Options use ("-g", "-L./lib", "-lfreetype");
    end Linker;
 
 end FreeType_thin;

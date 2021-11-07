@@ -3,7 +3,7 @@ with
      "sdlada",
      "lace_shared";
 
-library
+--library
 project SDL_GEL
 is
    for Create_Missing_Dirs use "True";
@@ -12,7 +12,7 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "SDL_GEL";
+--   for Library_Name    use "SDL_GEL";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

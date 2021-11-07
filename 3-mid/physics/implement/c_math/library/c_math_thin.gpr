@@ -4,7 +4,7 @@ with
      "math",
      "lace_shared";
 
-library
+--library
 project c_Math_thin 
 is
    for Languages       use ("Ada");
@@ -12,7 +12,7 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "c_Math_thin";
+--   for Library_Name    use "c_Math_thin";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;

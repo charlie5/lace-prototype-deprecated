@@ -4,7 +4,7 @@ with
      "collada",
      "lace_shared";
 
-library
+--library
 project Opengl
 is
    type Profile is ("safe", "lean", "desk");
@@ -14,7 +14,7 @@ is
 
    for Object_Dir   use "build";
    for Library_Dir  use "lib";
-   for Library_Name use "opengl";
+--   for Library_Name use "opengl";
 
    case The_Profile is
       when "safe" =>
@@ -60,6 +60,5 @@ is
    is
       for Linker_Options use ("-g", "-lGL", "-lGLU", "-lglut", "-lSDL2");   
    end Linker;
-   
 
 end Opengl;

@@ -5,7 +5,7 @@ with
      "math",
      "lace_shared";
 
-library
+--library
 project Box2d_thin
 is
    for Languages       use ("Ada");
@@ -13,7 +13,7 @@ is
    for Object_Dir      use "build";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
-   for Library_Name    use "Box2d_thin";
+--   for Library_Name    use "Box2d_thin";
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
