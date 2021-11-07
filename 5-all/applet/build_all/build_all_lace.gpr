@@ -85,7 +85,7 @@ with
      "../../../4-high/gel/applet/demo/models/opengl_model/opengl_model",
      "../../../4-high/gel/applet/demo/mouse/mouse_motion/mouse_motion",
      "../../../4-high/gel/applet/demo/mouse/mouse_selection/mouse_selection",
-     "../../../4-high/gel/applet/demo/skinning/rig/rig_demo",
+     "../../../4-high/gel/applet/demo/skinning/rig/box_rig/rig_demo",
      "../../../4-high/gel/applet/demo/sprite/chains_2d/chains_2d",
      "../../../4-high/gel/applet/demo/sprite/drop_ball_on_box/drop_ball_on_box",
      "../../../4-high/gel/applet/demo/sprite/drop_box_on_box/drop_box_on_box",

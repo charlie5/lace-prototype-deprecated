@@ -1,0 +1,80 @@
+Custom Human Rigs
+~~~~~~~~~~~~~~~~~
+
+
+Dependencies:
+
+- makeHuman v1.02+
+- Blender   v2.76+
+- Blender MoCap Addons (for animations)
+- Blender MakeHuman imports Addon
+
+
+Workflow:
+
+   Creating a basic, default human:
+
+   1) ~ makeHuman
+   - Start makeHuman.
+   - Go to Geometries/Eyes panel, select 'None'.
+   - Go to Pose/Animate    panel, select 'game.json'.
+   - Go to Files/Export    panel, set 'Mesh Format' to 'Blender exchange',
+                                  turn off 'Feet on Ground' option,
+                                  set 'Scale Units' to 'meter',
+                                  set 'Filename' field to 'human',
+                                  click the 'Export' button (next to the Filename field).
+   - Close makeHuman.
+
+   2.0) ~ Blender
+      2.1)
+      - Start blender.
+      - Press 'a' 'a' 'Delete' keys, then confirm that all should be deleted.
+      - In the 'File' menu, select 'Import' and then select 'MakeHuman' in the subMenu.
+      - This will bring up a dialog which asks for the location of the 'MakeHuman/Blender Export' file we have formerly created with the makeHuman app.
+      - By default, this file is usually located at ~/makehuman/v1/exports/human.mhx
+      - Once the file has been imported into Blender, we should see the skin and bones of the model (zoom in via mouse wheel for better view).
+      2.2)
+      - In the 'File' menu, select 'Export' and then select 'Collada' in the subMenu.
+      - Set 'Filename' field to 'human.dae'.
+      - Click the 'Export Collada' button (next to the Filename field).
+
+   3) ~ Lace/MMI
+   - The generated Collada .dae file can now be imported as an MMI Rig (whose motion is controlled by phsyical forces ... ie gravity, etc).
+
+
+
+   Creating a basic, default animated human:
+
+   1) As above.
+
+   2.0) ~ Blender
+      2.1)
+      -  As above. 
+      2.2)
+      - In the 'File' menu, select 'Import' and then select 'Motion Capture' in the subMenu.
+      - Navigate to the folder which contains the desired motion capture file, select it and click the 'Import BVH' button.
+      - In the 'Poperties' panel, select the 'Object' icon (a little orange cube).
+      - Use the mouse wheel to zoom out, until you see the imported BVH rig, and then select it with right mouse button.
+      - Use the mouse wheel to zoom in,  until you see the the original human model, and then add it to the selection set with <shift> right mouse button.
+      - You should see in the 'Properties' panel (under the MoCap tools) a means of mapping from the imported 'MoCap BVH' rig bones to our 'makeHuman rig' bones.
+      - Before we do the bone mapping, we must click the MoCap tools 'AutoScale' button. This scales the 'MoCap BVH' rig to match the scale of our makeHuman model.
+      - Now we do the bone mapping:
+         - Click the 'Guess Hierachy Mapping' button in 'MoCap Tools' panel. This will attempt to do as much of the mapping as it can 'guess' (based on bone name similarity).
+         - Go thru each remaining 'unguessed' BVH bone and assign the equivalent bone in the makeHuman rig. If there is no matching bone, ignore it.
+         - Mark any 'feet' bones by clicking on the 'little man with one foot on ground' icon. This allows the Retarget to prevent 'skating'.
+         - When bone mapping between BVH rig and makeHuman rig is done, click the 'Save Mapping' button and then save the blender file (for future use).
+
+      - Click the 'Advanced Retargetting' checkbox and then click the 'RETARGET' button ... this might take some time 5..20 mins depending on your cpu speed.
+
+      - Now we get rid of the BVH rig, as it's animation info has been placed into the Human rig.
+         - Select the BVH rig (in Blenders Object mode) and press 'Delete'.
+
+      2.3)
+      - In the 'File' menu, select 'Export' and then select 'Collada' in the subMenu.
+      - Set 'Filename' field to 'animated_human.dae'.
+      - Click the 'Export Collada' button (next to the Filename field).
+
+   3) ~ Lace/MMI
+   - The generated Collada .dae file can now be imported as an MMI Rig with ability to animate as per BVH motions, as well as via normal physics.
+
+
