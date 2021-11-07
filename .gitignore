@@ -50,6 +50,7 @@ bin
 ## Binaries
 #
 box2d_HelloWorld
+launch_box_rig_1_bone_demo
 launch_simple_instant_events_demo
 launch_simple_deferred_events_demo
 launch_simple_chat_client
@@ -82,6 +83,8 @@ launch_gel_fused
 launch_hello_gel
 launch_chains_2d
 launch_hinged_box
+launch_human_model
+launch_human_model_v1
 launch_mixed_joints
 launch_mixed_joints_2d
 launch_mixed_shapes
@@ -93,6 +96,7 @@ launch_render_capsules
 launch_rig_demo
 launch_crunch
 launch_render_models
+launch_simple_animation
 launch_hello_physics_interface_demo
 launch_test_engine
 launch_strings_demo
@@ -116,6 +120,7 @@ old-events
 
 ## Misc
 #
+*.ogv
 *.project
 gel_chains_demo.ogv
 attic
