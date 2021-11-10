@@ -39,8 +39,8 @@ begin
    loop
       Cycle := Cycle + 1;
 
-      the_Applet.World.evolve (by => 1.0 / 60.0);     -- Advance the world by 1/60th of a second.
-      the_Applet.freshen;                             -- Handle any new events and update the screen.
+      the_Applet.World.evolve;     -- Advance the world.
+      the_Applet.freshen;          -- Handle any new events and update the screen.
    end loop;
 
    free (the_Applet);

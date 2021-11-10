@@ -1,6 +1,7 @@
 with
      gel.Window.setup,
      gel.Applet.gui_world,
+     gel.World,
      gel.Camera,
      gel.Mouse,
      gel.Sprite,
@@ -11,7 +12,7 @@ with
      float_Math,
      lace.Response,
      lace.Event.utility,
-     
+
      Ada.Calendar,
      Ada.Text_IO,
      Ada.Exceptions;
@@ -95,11 +96,11 @@ begin
 
       while the_Applet.is_open
       loop
-         the_Applet.gui_World.evolve (by => 1.0/60.0);
+         the_Applet.gui_World.evolve;
          the_Ball.respond;
          the_Applet.freshen;
 
-         next_render_Time := next_render_Time + 1.0/60.0;
+         next_render_Time := next_render_Time + gel.World.evolve_Period;
          delay until next_render_Time;
       end loop;
 

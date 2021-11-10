@@ -4,6 +4,7 @@ with
 with gel.Forge,
      gel.Window.sdl,
      gel.Applet.gui_world,
+     gel.World,
      gel.Camera;
 
 with gel.Sprite,
@@ -59,7 +60,7 @@ begin
 
    for Each in 1 .. 100
    loop
-      the_Applet.gui_World.evolve (by => 1.0 / 60.0);    -- Evolve the world.
+      the_Applet.gui_World.evolve;                       -- Evolve the world.
       the_Applet.freshen;                                -- Handle any new events and update the screen.
    end loop;
 
@@ -75,10 +76,10 @@ begin
 
    while the_Applet.is_open
    loop
-      the_Applet.gui_World.evolve (by => 1.0/60.0);       -- Evolve the world.
+      the_Applet.gui_World.evolve;                        -- Evolve the world.
       the_Applet.freshen;                                 -- Handle any new events and update the screen.
 
-      next_render_Time := next_render_Time + 1.0/60.0;
+      next_render_Time := next_render_Time + gel.World.evolve_Period;
       delay until next_render_Time;
    end loop;
 

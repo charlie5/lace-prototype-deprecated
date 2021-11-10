@@ -935,14 +935,14 @@ is
 
 
 
-   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period)
+   procedure evolve (Self : in out Item)
    is
    begin
-      Self.Age := Self.Age + By;
+      Self.Age := Self.Age + evolve_Period;
 
       --  Evolve the physics.
       --
-      Self.physics_Space.evolve (By);     -- Evolve the physics space.
+      Self.physics_Space.evolve (evolve_Period);     -- Evolve the physics space.
 
       --  Handle evnts.
       --

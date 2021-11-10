@@ -78,7 +78,7 @@ is
                null;
             end select;
 
-            the_World.evolve (by => 1.0/60.0);
+            the_World.evolve;
 
             Counter := Counter + 1;
 
@@ -88,7 +88,7 @@ is
                the_Ball.Site_is  ((0.0,  25.0,  0.0));
             end if;
 
-            next_render_Time := next_render_Time + 1.0/60.0;
+            next_render_Time := next_render_Time + gel.World.evolve_Period;
             delay until next_render_Time;
          end loop;
 

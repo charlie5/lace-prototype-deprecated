@@ -722,7 +722,7 @@ is
    is
    begin
       Self.desired_Site         := Now;
-      Self.interpolation_Vector := (Self.desired_Site - Self.Site) / 15.0;
+      Self.interpolation_Vector := (Self.desired_Site - Self.Site) / gel.World.interpolation_Steps;
    end desired_Site_is;
 
 
@@ -745,7 +745,7 @@ is
       end if;
 
       declare
-         current_Distance : constant Vector_3 := (Self.desired_Site - Self.Site) / 15.0;     -- TODO: Where does 15.0 come from ?
+         current_Distance : constant Vector_3 := (Self.desired_Site - Self.Site) / gel.World.interpolation_Steps;
       begin
          if         abs (current_Distance (1)) < 0.005   -- Prevent drift due to very small interpolation vectors.
            and then abs (current_Distance (2)) < 0.005
@@ -759,7 +759,7 @@ is
 
       if Self.interpolation_spin_Time < 1.0
       then -- Interpolation is not yet complete.
-         Self.interpolation_spin_Time := Self.interpolation_spin_Time + 1.0/15.0;
+         Self.interpolation_spin_Time := Self.interpolation_spin_Time + 1.0 / gel.World.interpolation_Steps;
 
          Self.Spin_is (Transpose (to_Matrix (slerp (Self.initial_spin,
                                                     Self.desired_Spin,

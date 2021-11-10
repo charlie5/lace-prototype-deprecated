@@ -54,7 +54,7 @@ is
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view);
 
    overriding
-   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period);
+   procedure evolve     (Self : in out Item);
 
 
 

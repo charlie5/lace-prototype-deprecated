@@ -161,10 +161,10 @@ is
    --
 
    overriding
-   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period)
+   procedure evolve (Self : in out Item)
    is
    begin
-      gel.World.item (Self).evolve (By);     -- Evolve the base class.
+      gel.World.item (Self).evolve;     -- Evolve the base class.
 
       --  Update dynamics in client worlds.
       --
@@ -179,7 +179,7 @@ is
          the_Sprite             :          gel.Sprite.view;
 
          is_a_mirrored_World    : constant Boolean := not Self.Clients.Is_Empty;
-         mirror_Updates_are_due : constant Boolean := Self.Age >= Self.Age_at_last_Clients_update + 0.25;
+         mirror_Updates_are_due : constant Boolean := Self.Age >= Self.Age_at_last_Clients_update + client_update_Period;
          updates_Count          :          Natural := 0;
 
          the_motion_Updates     :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));

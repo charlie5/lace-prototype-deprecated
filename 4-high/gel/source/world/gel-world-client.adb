@@ -395,6 +395,7 @@ is
               or else abs site_Delta (2) > min_teleport_Delta
               or else abs site_Delta (3) > min_teleport_Delta
             then
+               log ("Teleport.");
                the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
             end if;                             -- to prevent later interpolation.
 
@@ -407,10 +408,10 @@ is
 
 
    overriding
-   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period)
+   procedure evolve (Self : in out Item)
    is
    begin
-      Self.Age := Self.Age + By;
+      Self.Age := Self.Age + evolve_Period;
 
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;

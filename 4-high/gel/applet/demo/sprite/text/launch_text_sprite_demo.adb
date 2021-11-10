@@ -55,7 +55,7 @@ begin
          text_1_Model.Text_is ("Yay");
       end if;
 
-      the_Applet.gui_World.evolve (by => 1.0 / 60.0);
+      the_Applet.gui_World.evolve;
       the_Applet.freshen;                                 -- Handle any new events and update the screen.
 
       delay 0.5;

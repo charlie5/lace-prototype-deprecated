@@ -179,7 +179,7 @@ is
    procedure rid    (Self : in out Item;   the_Joint    : in gel.Joint.view);
 
    procedure start  (Self : access Item);
-   procedure evolve (Self : in out Item;   By           : in Duration := evolve_Period);
+   procedure evolve (Self : in out Item);
 
 
    ----------
