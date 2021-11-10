@@ -1,8 +1,9 @@
 with
+     SDL.Events.Windows,
      SDL.Events.Keyboards,
-     SDL.Video.Windows.Makers,
      SDL.Events.Events,
      SDL.Events.Mice,
+     SDL.Video.Windows.Makers,
      SDL.Log,
 
      ada.Characters.latin_1,
@@ -57,7 +58,6 @@ is
                                         Width  : in Natural;
                                         Height : in Natural)
    is
-      use std_SDL;
       use type Video.Windows.Window_Flags;
    begin
       if not std_SDL.initialise
@@ -131,18 +131,6 @@ is
    use gel.Keyboard;
 
 
-   -- Callback triggered by the Resized event; tell OpenGL that the
-   -- user has resized the window.
-   --
-   procedure resize_Handler (Height : in Integer;
-                             Width  : in Integer)
-   is
-   begin
-      the_Window.Size_is (Width, Height);
-   end Resize_Handler;
-
-
-
    overriding
    procedure emit_Events (Self : in out Item)
    is
@@ -193,9 +181,16 @@ is
             when std_SDL.Events.Mice.Wheel =>
                null;
 
---              when SDL_VIDEORESIZE =>
---                 self.Size_is (Integer (event.resize.w),
---                               Integer (event.resize.h));
+            when std_SDL.Events.Windows.Window =>
+               declare
+                  use std_SDL.Events.Windows;
+               begin
+                  if Event.Window.Event_ID = Windows.Resized
+                  then
+                     Self.Size_is (Integer (Event.Window.Data_1),
+                                   Integer (Event.Window.Data_2));
+                  end if;
+               end;
 
             when others =>
                null;
