@@ -6,48 +6,18 @@ with
      SDL.Video.Windows.Makers,
      SDL.Log,
 
-     ada.Characters.latin_1,
      ada.Text_IO;
+
 
 package body gel.Window.sdl
 is
-   package std_SDL             renames standard.SDL;
-   package sdl_Keyboard_Events renames std_SDL.Events.Keyboards;
-
-
-   program_Exit : exception;
-
-
-   overriding
-   procedure swap_GL (Self : in out Item)
-   is
-      use std_SDL.Video.GL;
-   begin
-      swap (Self.window_Handle);
-   end swap_GL;
-
-
+   package std_SDL renames standard.SDL;
 
    use std_SDL,
        std_SDL.Events;
 
    function to_gel_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return gel.keyboard.Key;
 
-   -------------
-   --- Constants
-   --
-
-   -- Keystrokes we care about.
-
-   Escape    : constant sdl_Keyboard_Events.Key_Codes := sdl_Keyboard_Events.Key_Codes (Character'Pos (Ada.Characters.Latin_1.ESC));
-   Letter_q  : constant sdl_Keyboard_Events.Key_Codes := sdl_Keyboard_Events.Key_Codes (Character'Pos (Ada.Characters.Latin_1.LC_Q));
-
-
-   -----------
-   --- Globals
-   --
-
-   the_Window : gel.Window.sdl.view;
 
 
    ---------
@@ -117,6 +87,7 @@ is
    end Forge;
 
 
+
    --------------
    --- Operations
    --
@@ -140,39 +111,40 @@ is
                Self.is_Open := False;
 
             when std_SDL.Events.Keyboards.Key_Down =>
-               Self.Keyboard.emit_key_press_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code),
-                                                   Integer    (Event.keyboard.key_Sym.key_Code));
+               Self.Keyboard.emit_key_press_Event (Key      => to_gel_Key (Event.keyboard.key_Sym.key_Code),
+                                                   key_Code => Integer    (Event.keyboard.key_Sym.key_Code));
 
             when std_SDL.Events.Keyboards.Key_Up =>
                std_SDL.Log.put_Debug ("Key up event: " & Event.keyboard.key_Sym. key_Code'Image &
                                       "   Scan code: " & Event.keyboard.key_Sym.scan_Code'Image);
 
-               if Event.keyboard.key_Sym.key_Code = std_SDL.Events.Keyboards.Code_escape
+               if Event.keyboard.key_Sym.key_Code = std_SDL.Events.Keyboards.Code_escape     -- TODO: Make this user-configurable.
                then
                   Self.is_Open := False;
                end if;
 
-               Self.Keyboard.emit_key_release_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code));
+               Self.Keyboard.emit_key_release_Event (Key => to_gel_Key (Event.keyboard.key_Sym.key_Code));
 
             when std_SDL.Events.Mice.Button_Down =>
-               Self.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.mouse_Button.Button) + 1),
-                                                   Self.Keyboard.Modifiers,
-                                                   (Integer (Event.mouse_Button.X),
-                                                    Integer (Event.mouse_Button.Y)));
+               Self.Mouse.emit_button_press_Event (Button    => gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.mouse_Button.Button) + 1),
+                                                   Modifiers => Self.Keyboard.Modifiers,
+                                                   Site      => (Integer (Event.mouse_Button.X),
+                                                                 Integer (Event.mouse_Button.Y)));
 
             when std_SDL.Events.Mice.Button_Up =>
-               Self.Mouse.emit_button_release_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
-                                                     Self.Keyboard.Modifiers,
-                                                     (Integer (Event.mouse_Button.X),
-                                                      Integer (Event.mouse_Button.Y)));
+               Self.Mouse.emit_button_release_Event (Button    => gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
+                                                     Modifiers => Self.Keyboard.Modifiers,
+                                                     Site      => (Integer (Event.mouse_Button.X),
+                                                                   Integer (Event.mouse_Button.Y)));
 
             when std_SDL.Events.Mice.Motion =>
-               Self.Mouse.emit_motion_Event (site => (Integer (Event.Mouse_Motion.x),
+               Self.Mouse.emit_motion_Event (Site => (Integer (Event.Mouse_Motion.x),
                                                       Integer (Event.Mouse_Motion.y)));
 
 
-            when std_SDL.Events.Mice.Wheel =>
+            when std_SDL.Events.Mice.Wheel =>     -- TODO
                null;
+
 
             when std_SDL.Events.Windows.Window =>
                declare
@@ -185,13 +157,14 @@ is
                   end if;
                end;
 
-            when others =>
+            when others =>     -- TODO
                null;
          end case;
       end loop;
 
 --        SDL_GL_SwapBuffers;
    end emit_Events;
+
 
 
    overriding
@@ -202,20 +175,30 @@ is
    end enable_GL;
 
 
+
    overriding
    procedure disable_GL (Self : in Item)
    is
       null_Context : standard.SDL.Video.GL.Contexts;
    begin
-      std_SDL.Video.gl.set_Current (null_Context, to => Self.window_Handle);
+      std_SDL.Video.gl.set_Current (null_Context, To => Self.window_Handle);
    end disable_GL;
+
+
+
+   overriding
+   procedure swap_GL (Self : in out Item)
+   is
+      use std_SDL.Video.GL;
+   begin
+      swap (Self.window_Handle);
+   end swap_GL;
 
 
 
    function to_gel_Key (From : in std_SDL.Events.Keyboards.key_Codes) return gel.keyboard.Key
    is
       package Key renames std_SDL.Events.keyboards;
-      use type Key.key_Codes;
    begin
       case From
       is
@@ -470,7 +453,7 @@ is
          --  when Key.Code_sleep               => return gel.Keyboard.;
 
          when others =>
-            ada.Text_IO.put_Line ("SDL window unhandled key: " & From'Image);     -- TODO: Remaning key codes.
+            ada.Text_IO.put_Line ("SDL window unhandled key: " & From'Image);     -- TODO: Remaining key codes.
       end case;
 
       return gel.Keyboard.Key'First;

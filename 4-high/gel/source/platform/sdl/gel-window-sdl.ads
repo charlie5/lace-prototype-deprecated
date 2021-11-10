@@ -16,9 +16,9 @@ is
    --- Forge
    --
 
-   procedure define  (Self : in View;   Title  : in String;
-                                        Width  : in Natural;
-                                        Height : in Natural);
+   procedure define  (Self : in     View;   Title  : in String;
+                                            Width  : in Natural;
+                                            Height : in Natural);
    overriding
    procedure destroy (Self : in out Item);
 
@@ -36,13 +36,13 @@ is
    --
 
    overriding
-   procedure emit_Events  (Self : in out Item);
+   procedure emit_Events (Self : in out Item);
    overriding
-   procedure enable_GL    (Self : in     Item);
+   procedure enable_GL   (Self : in     Item);
    overriding
-   procedure disable_GL   (Self : in     Item);
+   procedure disable_GL  (Self : in     Item);
    overriding
-   procedure swap_GL      (Self : in out Item);
+   procedure swap_GL     (Self : in out Item);
 
 
 
