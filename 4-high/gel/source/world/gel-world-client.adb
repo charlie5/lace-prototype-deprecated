@@ -407,7 +407,7 @@ is
 
 
    overriding
-   procedure evolve (Self : in out Item;   By : in Duration)
+   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period)
    is
    begin
       Self.Age := Self.Age + By;

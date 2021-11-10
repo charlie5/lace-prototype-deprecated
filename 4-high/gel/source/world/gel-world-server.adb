@@ -161,10 +161,10 @@ is
    --
 
    overriding
-   procedure evolve (Self : in out Item;   By : in Duration)
+   procedure evolve (Self : in out Item;   By : in Duration := evolve_Period)
    is
    begin
-      gel.World.item (Self).evolve (by);     -- Evolve the base class.
+      gel.World.item (Self).evolve (By);     -- Evolve the base class.
 
       --  Update dynamics in client worlds.
       --

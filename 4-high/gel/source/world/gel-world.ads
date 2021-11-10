@@ -164,6 +164,8 @@ is
    --- Operations
    --
 
+   evolve_Period : constant Duration;
+
    procedure add    (Self : in out Item;   the_Model    : in openGL .Model.view);
    procedure add    (Self : in out Item;   the_Model    : in physics.Model.view);
 
@@ -177,7 +179,7 @@ is
    procedure rid    (Self : in out Item;   the_Joint    : in gel.Joint.view);
 
    procedure start  (Self : access Item);
-   procedure evolve (Self : in out Item;   By           : in Duration);
+   procedure evolve (Self : in out Item;   By           : in Duration := evolve_Period);
 
 
    ----------
@@ -295,6 +297,9 @@ is
 
 
 private
+
+   evolve_Period        : constant Duration := 1.0 / 60.0;
+
 
    -----------------
    --- Signal Object
