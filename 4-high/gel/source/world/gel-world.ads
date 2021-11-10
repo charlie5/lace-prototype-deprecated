@@ -242,6 +242,8 @@ is
    ---  World Mirroring
    --
 
+   interpolation_Steps  : constant Real;
+
    overriding
    procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view);
@@ -298,7 +300,15 @@ is
 
 private
 
-   evolve_Period        : constant Duration := 1.0 / 60.0;
+   type Hertz is new Real;
+
+   evolve_Hz            : constant Hertz    := 60.0;
+   client_update_Hz     : constant Hertz    :=  4.0;
+
+   evolve_Period        : constant Duration := 1.0 / Duration (evolve_Hz);
+   client_update_Period : constant Duration := 1.0 / Duration (client_update_Hz);
+
+   interpolation_Steps  : constant Real     := Real (evolve_Hz / client_update_Hz);
 
 
    -----------------
