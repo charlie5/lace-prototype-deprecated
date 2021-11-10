@@ -352,6 +352,50 @@ is
 
 
 
+   function to_Triangles (From : in xml.Element) return collada.Library.geometries.Primitive
+   is
+      use collada.Library,
+          collada.Library.geometries;
+
+      the_xml_Count    : constant access xml.Attribute_t := From.Attribute ("count");
+      the_xml_Material : constant access xml.Attribute_t := From.Attribute ("material");
+
+      the_xml_Inputs   : constant        xml.Elements    := From.Children ("input");
+      the_xml_Ps       : constant        xml.Elements    := From.Children ("p");
+
+      the_Triangles    : geometries.Primitive (Triangles);
+
+   begin
+      the_Triangles.Count := Natural'Value (the_xml_Count.Value);
+
+      if the_xml_Material /= null
+      then
+         the_Triangles.Material := +the_xml_Material.Value;
+      end if;
+
+      -- Do inputs.
+      --
+      the_Triangles.Inputs := new Inputs (the_xml_Inputs'Range);
+
+      for i in the_xml_Inputs'Range
+      loop
+         the_Triangles.Inputs (i) := to_Input (the_xml_Inputs (i).all);
+      end loop;
+
+      -- Do P list.
+      --
+      the_Triangles.P_List := new int_array_List (1 .. the_xml_Ps'Length);
+
+      for i in the_Triangles.P_List'Range
+      loop
+         the_Triangles.P_List (i) := new int_Array' (to_int_Array (the_xml_Ps (i).Data));
+      end loop;
+
+      return the_Triangles;
+   end to_Triangles;
+
+
+
    function to_Joints (From : in xml.Element) return collada.Library.controllers.Joints
    is
       use collada.Library,
@@ -574,10 +618,12 @@ is
                         declare
                            the_xml_Polylists : constant xml.Elements := the_xml_Mesh.Children (named => "polylist");
                            the_xml_Polygons  : constant xml.Elements := the_xml_Mesh.Children (named => "polygons");
+                           the_xml_Triangles : constant xml.Elements := the_xml_Mesh.Children (named => "triangles");
 
                            primitive_Count   :          Natural := 0;
                            primitive_Total   : constant Natural :=   the_xml_Polylists'Length
-                                                                   + the_xml_Polygons 'Length;
+                                                                   + the_xml_Polygons 'Length
+                                                                   + the_xml_Triangles'Length;
                         begin
                            the_Geometry.Mesh.Primitives := new Primitives (1 .. primitive_Total);
 
@@ -595,6 +641,14 @@ is
                            loop
                               primitive_Count                                := primitive_Count + 1;
                               the_Geometry.Mesh.Primitives (primitive_Count) := to_Polygon (the_xml_Polygons (i).all);
+                           end loop;
+
+                           -- Triangles
+                           --
+                           for i in the_xml_Triangles'Range
+                           loop
+                              primitive_Count                                := primitive_Count + 1;
+                              the_Geometry.Mesh.Primitives (primitive_Count) := to_Triangles (the_xml_Triangles (i).all);
                            end loop;
                         end;
                      end parse_Mesh;
