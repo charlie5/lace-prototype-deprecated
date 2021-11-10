@@ -75,13 +75,6 @@ is
                                              or Video.Windows.Resizable);
 
       Video.GL.create (Self.GL_Context, From => Self.window_Handle);
-
-      if the_Window = null
-      then
-         the_Window := Self;
-      else
-         raise program_Error with "Attempt to define SDL window twice.";
-      end if;
    end define;
 
 
@@ -147,8 +140,8 @@ is
                Self.is_Open := False;
 
             when std_SDL.Events.Keyboards.Key_Down =>
-               the_Window.Keyboard.emit_key_press_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code),
-                                                         Integer    (Event.keyboard.key_Sym.key_Code));
+               Self.Keyboard.emit_key_press_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code),
+                                                   Integer    (Event.keyboard.key_Sym.key_Code));
 
             when std_SDL.Events.Keyboards.Key_Up =>
                std_SDL.Log.put_Debug ("Key up event: " & Event.keyboard.key_Sym. key_Code'Image &
@@ -159,23 +152,23 @@ is
                   Self.is_Open := False;
                end if;
 
-               the_Window.Keyboard.emit_key_release_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code));
+               Self.Keyboard.emit_key_release_Event (to_gel_Key (Event.keyboard.key_Sym.key_Code));
 
             when std_SDL.Events.Mice.Button_Down =>
-               the_Window.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.mouse_Button.Button) + 1),
-                                                         the_Window.Keyboard.Modifiers,
-                                                         (Integer (Event.mouse_Button.X),
-                                                          Integer (Event.mouse_Button.Y)));
+               Self.Mouse.emit_button_press_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.mouse_Button.Button) + 1),
+                                                   Self.Keyboard.Modifiers,
+                                                   (Integer (Event.mouse_Button.X),
+                                                    Integer (Event.mouse_Button.Y)));
 
             when std_SDL.Events.Mice.Button_Up =>
-               the_Window.Mouse.emit_button_release_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
-                                                           the_Window.Keyboard.Modifiers,
-                                                           (Integer (Event.mouse_Button.X),
-                                                            Integer (Event.mouse_Button.Y)));
+               Self.Mouse.emit_button_release_Event (gel.mouse.button_Id (std_SDL.Events.Mice.Buttons'Pos (Event.Mouse_Button.Button) + 1),
+                                                     Self.Keyboard.Modifiers,
+                                                     (Integer (Event.mouse_Button.X),
+                                                      Integer (Event.mouse_Button.Y)));
 
             when std_SDL.Events.Mice.Motion =>
-               the_Window.Mouse.emit_motion_Event (site => (Integer (Event.Mouse_Motion.x),
-                                                            Integer (Event.Mouse_Motion.y)));
+               Self.Mouse.emit_motion_Event (site => (Integer (Event.Mouse_Motion.x),
+                                                      Integer (Event.Mouse_Motion.y)));
 
 
             when std_SDL.Events.Mice.Wheel =>
