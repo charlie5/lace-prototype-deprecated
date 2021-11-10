@@ -196,6 +196,7 @@ is
                end loop;
             end parse_polyList;
 
+
          when Polygons =>
             parse_Polygons:
             declare
@@ -249,6 +250,54 @@ is
 
                end loop;
             end parse_Polygons;
+
+
+         when Triangles =>
+            parse_Triangles:
+            declare
+               inputs_Count : constant Natural      :=      the_Primitive.Inputs'Length;
+               P_Indices    : std_Collada.Int_array renames the_Primitive.P_List (1).all;
+               Base         : math.Index            :=      1;
+
+            begin
+               for each_Tri in 1 .. the_Primitive.Count
+               loop
+                  declare
+                     vertex_Count : constant := 3;
+                     the_Vertices : Vertices (1 .. vertex_Count);
+
+                     the_Face     : IO.Face;
+                  begin
+                     for vertex_Id in the_Vertices'Range
+                     loop
+                        the_Vertices (vertex_Id).site_Id   :=   1
+                                                              + long_Index_t (P_Indices (  Base
+                                                                                         + vertex_Offset_of (the_Primitive)));
+                        the_Vertices (vertex_Id).normal_Id :=   1
+                                                              + long_Index_t (P_Indices (  Base
+                                                                                         + normal_Offset_of (the_Primitive)));
+                        if collada_Coords /= null
+                        then
+                           the_Vertices (vertex_Id).coord_Id :=   1
+                                                                + long_Index_t (P_Indices (  Base
+                                                                                           + coord_Offset_of (the_Primitive)));
+                        else
+                           the_Vertices (vertex_Id).coord_Id := null_Id;
+                        end if;
+
+                        the_Vertices (vertex_Id).weights_Id := the_Vertices (vertex_Id).site_Id;
+
+                        Base := Base + inputs_Count;
+                     end loop;
+
+                     the_Face               := (Triangle, the_Vertices);
+                     face_Count             := face_Count + 1;
+                     the_Faces (face_Count) := the_Face;
+                  end;
+
+               end loop;
+            end parse_Triangles;
+
 
          when others =>
             put_Line ("Warning: ignoring unimplemented primitive kind: " & the_Primitive.Kind'Image);
