@@ -3,6 +3,7 @@ with
      gel.Camera,
      gel.Window;
 
+
 package gel.Applet.gui_world
 --
 --  Provides a gel applet configured with a single window and a single GUI world.

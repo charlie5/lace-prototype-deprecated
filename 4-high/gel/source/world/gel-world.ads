@@ -28,8 +28,8 @@ package gel.World
 --  Provides a gel world.
 --
 is
-   type Item  is limited new lace.Subject_and_deferred_Observer.item
-                         and gel.remote.World.item
+   type Item  is abstract limited new lace.Subject_and_deferred_Observer.item
+                                  and gel.remote.World.item
    with private;
 
    type View  is access all Item'Class;
@@ -41,19 +41,6 @@ is
    ---------
    --  Forge
    --
-
-   package Forge
-   is
-      function to_World  (Name       : in     String;
-                          Id         : in     world_Id;
-                          space_Kind : in     physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.item;
-
-      function new_World (Name       : in     String;
-                          Id         : in     world_Id;
-                          space_Kind : in     physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.view;
-   end Forge;
 
    overriding
    procedure destroy (Self : in out Item);
@@ -97,10 +84,33 @@ is
    function  new_sprite_Id   (Self : access Item)                              return sprite_Id;
    function  free_sprite_Set (Self : access Item)                              return gel.Sprite.views;
    function  Sprites         (Self : in     Item)                              return gel.Sprite.views;
-   function  fetch_Sprite    (Self : in out Item;   Id         : in sprite_Id) return gel.Sprite.view;
-   procedure destroy         (Self : in out Item;   the_Sprite : in gel.Sprite.view);
-   procedure set_Scale       (Self : in out Item;   for_Sprite : in gel.Sprite.view;
-                                                    To         : in Vector_3);
+   function  fetch_Sprite    (Self : in out Item'Class;   Id         : in sprite_Id) return gel.Sprite.view;
+   procedure destroy         (Self : in out Item;         the_Sprite : in gel.Sprite.view);
+   procedure set_Scale       (Self : in out Item;         for_Sprite : in gel.Sprite.view;
+                                                          To         : in Vector_3);
+
+   ---------------------
+   --- id_Maps_of_sprite
+   --
+   use type Sprite.view;
+   function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.Containers.Hash_type);
+   package  id_Maps_of_sprite is new ada.Containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
+                                                                 Hash            => Hash,
+                                                                 equivalent_Keys => "=");
+   --------------
+   --- sprite_Map
+   --
+
+   type sprite_Map is abstract tagged limited null record;
+
+   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map   is abstract;
+   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
+   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
+
+
+   function all_Sprites (Self : access Item) return access sprite_Map'Class is abstract;
+
+
 
    type sprite_transform_Pair is
       record
@@ -166,17 +176,17 @@ is
 
    evolve_Period : constant Duration;
 
-   procedure add    (Self : in out Item;   the_Model    : in openGL .Model.view);
-   procedure add    (Self : in out Item;   the_Model    : in physics.Model.view);
+   procedure add    (Self : in out Item;         the_Model    : in openGL .Model.view);
+   procedure add    (Self : in out Item;         the_Model    : in physics.Model.view);
 
-   procedure add    (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                           and_Children : in Boolean := False);
+   procedure add    (Self : access Item;         the_Sprite   : in gel.Sprite.view;
+                                                 and_Children : in Boolean := False);
 
-   procedure add    (Self : in out Item;   the_Joint    : in gel.Joint.view);
+   procedure add    (Self : in out Item;         the_Joint    : in gel.Joint.view);
 
-   procedure rid    (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
-                                                         and_Children : in Boolean := False);
-   procedure rid    (Self : in out Item;   the_Joint    : in gel.Joint.view);
+   procedure rid    (Self : in out Item'Class;   the_Sprite   : in gel.Sprite.view;
+                                                 and_Children : in Boolean := False);
+   procedure rid    (Self : in out Item;         the_Joint    : in gel.Joint.view);
 
    procedure start  (Self : access Item);
    procedure evolve (Self : in out Item);
@@ -327,15 +337,6 @@ private
    type signal_Object_view is access all signal_Object;
 
 
-   ---------------------
-   --- id_Maps_of_sprite
-   --
-   use type Sprite.view;
-   function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.Containers.Hash_type);
-   package  id_Maps_of_sprite is new ada.Containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
-                                                                 Hash            => Hash,
-                                                                 equivalent_Keys => "=");
-
    -----------------------------
    --- sprite_Maps_of_transforms
    --
@@ -405,23 +406,11 @@ private
 
 
    --------------
-   --- sprite_Map
-   --
-
-   type sprite_Map is abstract tagged limited null record;
-
-   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map   is abstract;
-   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
-   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
-
-
-
-   --------------
    --- World Item
    --
 
-   type Item is limited new lace.Subject_and_deferred_Observer.item
-                        and gel.remote.World.item with
+   type Item is abstract limited new lace.Subject_and_deferred_Observer.item
+                                 and gel.remote.World.item with
       record
          local_Subject_and_deferred_Observer : lace.Subject_and_deferred_Observer.view;
 
@@ -465,10 +454,6 @@ private
          broken_Joints         : safe_joint_Set;
          broken_joints_Allowed : Boolean := False;
       end record;
-
-
-   function all_Sprites (Self : access Item) return access sprite_Map'Class;
-
 
 
 end gel.World;

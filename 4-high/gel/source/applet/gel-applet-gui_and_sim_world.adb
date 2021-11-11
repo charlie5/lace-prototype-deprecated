@@ -1,8 +1,10 @@
 with
+     gel.World.simple,
      gel.Camera.forge,
      gel.Events,
 
      lace.Event.utility;
+
 
 package body gel.Applet.gui_and_sim_world
 is
@@ -16,10 +18,10 @@ is
          the_world_Info : constant world_Info_view  := new world_Info;
          the_Camera     : constant gel.Camera.view  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := gel.World.forge.new_World (Name,
-                                                            gui_world_Id,
-                                                            space_Kind => physics.Bullet,
-                                                            Renderer   => Self.Renderer);
+         the_world_Info.World := gel.World.simple.forge.new_World (Name,
+                                                                   gui_world_Id,
+                                                                   space_Kind => physics.Bullet,
+                                                                   Renderer   => Self.Renderer).all'Access;
 
          the_world_Info.World.register (Self.all'unchecked_Access,
                                         to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
@@ -41,10 +43,10 @@ is
          the_world_Info : constant world_Info_view  := new world_Info;
          the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
       begin
-         the_world_Info.World := gel.World.forge.new_World (Name       => Name,
-                                                            Id         => sim_world_Id,
-                                                            space_Kind => physics.Bullet,
-                                                            Renderer   => Self.Renderer);
+         the_world_Info.World := gel.World.simple.forge.new_World (Name       => Name,
+                                                                   Id         => sim_world_Id,
+                                                                   space_Kind => physics.Bullet,
+                                                                   Renderer   => Self.Renderer).all'Access;
 
          the_world_Info.World.register (the_Observer => Self.all'unchecked_Access,
                                         of_Kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));

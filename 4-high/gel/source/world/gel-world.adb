@@ -63,44 +63,6 @@ is
 
 
 
-   package body Forge
-   is
-
-      function to_World (Name       : in     String;
-                         Id         : in     world_Id;
-                         space_Kind : in     physics.space_Kind;
-                         Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.item
-      is
-         use lace.Subject_and_deferred_Observer.Forge;
-      begin
-         return Self : gel.World.item := (to_Subject_and_Observer (Name => Name & " world" & Id'Image)
-                                          with others => <>)
-         do
-            Self.define (Name, Id, space_Kind, Renderer);
-         end return;
-      end to_World;
-
-
-
-      function new_World (Name       : in     String;
-                          Id         : in     world_Id;
-                          space_Kind : in     physics.space_Kind;
-                          Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.view
-      is
-         use lace.Subject_and_deferred_Observer.Forge;
-
-         Self : constant gel.World.view
-           := new gel.World.item' (to_Subject_and_Observer (name => Name & " world" & Id'Image)
-                                   with others => <>);
-      begin
-         Self.define (Name, Id, space_Kind, Renderer);
-         return Self;
-      end new_World;
-
-   end Forge;
-
-
-
    function local_Observer (Self : in Item) return lace.Observer.view
    is
    begin
@@ -607,7 +569,7 @@ is
 
 
 
-   function fetch_Sprite (Self : in out Item;   Id : in sprite_Id) return gel.Sprite.view
+   function fetch_Sprite (Self : in out Item'Class;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
       return Self.all_Sprites.fetch.Element (Id);
@@ -780,8 +742,8 @@ is
 
 
 
-   procedure rid (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean := False)
+   procedure rid (Self : in out Item'Class;   the_Sprite   : in gel.Sprite.view;
+                                              and_Children : in Boolean := False)
    is
       procedure rid_single_Sprite (Single : in out Sprite.item'Class)
       is
@@ -1042,13 +1004,6 @@ is
 
 
 
-   function all_Sprites (Self : access Item) return access sprite_Map'Class
-   is
-   begin
-      return null;
-   end all_Sprites;
-
-
    --------------
    --- Collisions
    --
@@ -1167,7 +1122,7 @@ is
    overriding
    procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.sprite_Id)
    is
-      the_Sprite : constant gel.Sprite.view := Self.all_Sprites.fetch.Element (sprite_Id);
+      the_Sprite : constant gel.Sprite.view := Item'Class (Self).all_Sprites.fetch.Element (sprite_Id);
    begin
       the_Sprite.Speed_is ((0.0, 10.0, 0.0));
    end kick_Sprite;
