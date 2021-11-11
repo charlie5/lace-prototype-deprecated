@@ -893,7 +893,10 @@ is
                loop
                   declare
                      the_Animation     :        Animation   renames the_document.Libraries.animations.Contents (Each);
-                     the_xml_Animation : access xml.Element renames the_Animations (Each);
+
+                     child_Animation   : access xml.Element := the_Animations (Each).Child ("animation");
+                     the_xml_Animation : access xml.Element := (if child_Animation = null then the_Animations (Each) else child_Animation);
+                     --  the_xml_Animation : access xml.Element renames the_Animations (Each); --.Child ("animation");
 
                      the_xml_Id   : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("id");
                      the_xml_Name : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("name");
