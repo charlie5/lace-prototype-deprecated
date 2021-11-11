@@ -48,8 +48,8 @@ is
    the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
                                                                                          -- Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
                                                                                          -- Model            => openGL.to_Asset ("./box_1_bone.dae"),
-                                                                                         Model            => openGL.to_Asset ("./box_1_bone-animated.dae"),
-                                                                                         -- Model            => openGL.to_Asset ("./human-default-animated-01_01.dae"),
+                                                                                         --  Model            => openGL.to_Asset ("./box_1_bone-animated.dae"),
+                                                                                          Model            => openGL.to_Asset ("./human-default-animated-01_01.dae"),
                                                                                          --  Model            => openGL.to_Asset ("./box_2_bone.dae"),
                                                                                          --  Model            => openGL.to_Asset ("./box_3_bone.dae"),
                                                                                          Texture          => openGL.null_Asset,
@@ -73,8 +73,11 @@ begin
    declare
       Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
    begin
-      Light.ambient_Color_is ((0.5, 0.9, 0.5, 0.5));
-      Light.Site_is          ((1000.0, 1000.0, 1000.0));
+      Light.ambient_Color_is ((255.0 / 255.0,
+                               153.0 / 255.0,
+                               102.0 / 255.0,
+                                 1.0));
+      Light.Site_is          ((1000.0, 000.0, 1000.0));
 
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);
    end;
@@ -121,7 +124,7 @@ begin
    the_Rig   .Spin_is (x_Rotation_from (to_Radians (-90.0)));
 
    the_Applet.gui_World.add (the_Rig.base_Sprite, and_Children => True);     -- Add the rigs armature sprite.
-   the_Applet.gui_World.add (the_Ground,          and_Children => False);    -- Add the ground        sprite.
+   --  the_Applet.gui_World.add (the_Ground,          and_Children => False);    -- Add the ground        sprite.
 
    the_Rig.enable_Graphics;
    the_Rig.motion_Mode_is (Animation);
@@ -131,7 +134,7 @@ begin
 
    while the_Applet.is_open
    loop
-      the_Applet.gui_World.evolve (By        => 1.0/60.0);                     -- Evolve the world.
+      the_Applet.gui_World.evolve;                                             -- Evolve the world.
       the_Rig             .evolve (world_Age => the_Applet.gui_World.Age);     -- Evolve the rig.
       the_Rig.assume_Pose;
       the_Applet.freshen;                                                      -- Handle any new events and update the screen.
