@@ -82,6 +82,13 @@ is
                                   Radius       : in math.Real     := 0.5;
                                   Color        : in openGL.Color  := opengl.Palette.White) return gel.Sprite.view;
 
+   function new_ball_Sprite      (in_World : in gel.World.view;
+                                  Site     : in math.Vector_3 := math.Origin_3D;
+                                  Mass     : in math.Real     := 1.0;
+                                  Radius   : in math.Real     := 0.5;
+                                  Color    : in openGL.Color  := opengl.Palette.White;
+                                  Texture  : in openGL.asset_Name) return gel.Sprite.view;
+
    subtype box_Colors is openGL.Colors (1 .. 6);
 
    function new_box_Sprite       (in_World     : in gel.World.view;

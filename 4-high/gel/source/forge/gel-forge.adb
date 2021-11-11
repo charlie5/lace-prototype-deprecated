@@ -239,6 +239,32 @@ is
 
 
 
+   function new_ball_Sprite (in_World : in gel.World.view;
+                             Site     : in math.Vector_3 := math.Origin_3D;
+                             Mass     : in math.Real     := 1.0;
+                             Radius   : in math.Real     := 0.5;
+                             Color    : in openGL.Color  := opengl.Palette.White;
+                             Texture  : in openGL.asset_Name) return gel.Sprite.view
+   is
+      the_graphics_Model : constant openGL.Model.sphere.lit_colored_textured.view
+        := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius, Texture);
+
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
+                                                  Mass       => Mass);
+   begin
+      return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
+                                          sprite.World_view (in_World),
+                                          Site,
+                                          the_graphics_Model,
+                                          the_physics_Model,
+                                          owns_Graphics => True,
+                                          owns_Physics  => True,
+                                          is_Kinematic  => False);
+   end new_ball_Sprite;
+
+
+
    function new_box_Sprite (in_World     : in gel.World.view;
                             Site         : in math.Vector_3 := math.Origin_3D;
                             Mass         : in math.Real     := 1.0;
