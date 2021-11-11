@@ -101,7 +101,7 @@ is
       Self.Id           := Id;
       Self.space_Kind   := space_Kind;
       Self.Renderer     := Renderer;
-      Self.sprite_Count := 0;
+      --  Self.sprite_Count := 0;
 
       Self.physics_Space := physics.Forge.new_Space (space_Kind);
    end define;

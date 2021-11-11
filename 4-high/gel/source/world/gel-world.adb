@@ -192,7 +192,6 @@ is
       Self.Id            := Id;
       Self.space_Kind    := space_Kind;
       Self.Renderer      := Renderer;
-      Self.sprite_Count  := 0;
       Self.physics_Space := physics.Forge.new_Space (space_Kind);
    end define;
 
@@ -561,14 +560,6 @@ is
 
 
 
-   function Sprites (Self : in Item) return gel.Sprite.views
-   is
-   begin
-      return Self.Sprites (1 .. Self.sprite_Count);
-   end Sprites;
-
-
-
    function fetch_Sprite (Self : in out Item'Class;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
@@ -706,9 +697,6 @@ is
          then
             Self.physics_Space.add (physics.Object.view (Single.Solid));
          end if;
-
-         Self.sprite_Count                := Self.sprite_Count + 1;
-         Self.Sprites (Self.sprite_Count) := Single'unchecked_Access;
 
          Item'Class (Self.all).all_Sprites.add (Single'unchecked_Access);
       end add_single_Sprite;
@@ -922,23 +910,35 @@ is
 
       --  Perform responses to events for all sprites.
       --
-      for i in 1 .. Self.sprite_Count
-      loop
-         begin
-            if not Self.Sprites (i).is_Destroyed
-            then
-               Self.Sprites (i).respond;
-            end if;
+      declare
+         use id_Maps_of_sprite;
 
-         exception
-            when E : others =>
-               new_Line (2);
-               put_Line ("Error in gel.World.local.evolve ~ Self.Sprites (" & i'Image & ").respond;");
-               new_Line;
-               put_Line (ada.Exceptions.exception_Information (E));
-               new_Line (2);
-         end;
-      end loop;
+         all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
+         Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+         the_Sprite  :          Sprite.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Sprite := Element (Cursor);
+
+            begin
+               if not the_Sprite.is_Destroyed
+               then
+                  the_Sprite.respond;
+               end if;
+
+            exception
+               when E : others =>
+                  new_Line (2);
+                  put_Line ("Error in 'gel.World.evolve' sprite response.");
+                  new_Line;
+                  put_Line (ada.Exceptions.exception_Information (E));
+                  new_Line (2);
+            end;
+
+            next (Cursor);
+         end loop;
+      end;
 
    end evolve;
 
@@ -985,18 +985,28 @@ is
 
 
    overriding
-   function Sprites (Self : in Item) return remote.World.sprite_model_Pairs
+   function Sprites (Self : in out Item) return remote.World.sprite_model_Pairs
    is
-      the_Pairs : remote.World.sprite_model_Pairs (1 .. Self.sprite_Count);
+      use id_Maps_of_sprite;
+
+      all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
+      Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+      the_Pairs   :          remote.World.sprite_model_Pairs (1 .. Natural (all_Sprites.Length));
+      the_Sprite  :          Sprite.view;
+      i           :          Natural := 0;
    begin
-      for i in the_Pairs'Range
+      while has_Element (Cursor)
       loop
-         the_Pairs (i) := (sprite_Id         => Self.Sprites (i).Id,
-                           graphics_model_Id => Self.Sprites (i).graphics_Model.Id,
-                           physics_model_Id  => Self.Sprites (i). physics_Model.Id,
-                           Mass              => Self.Sprites (i).Mass,
-                           Transform         => Self.Sprites (i).Transform,
-                           is_Visible        => Self.Sprites (i).is_Visible);
+         i          := i + 1;
+         the_Sprite := Element (Cursor);
+
+         the_Pairs (i) := (sprite_Id         => the_Sprite.Id,
+                           graphics_model_Id => the_Sprite.graphics_Model.Id,
+                           physics_model_Id  => the_Sprite. physics_Model.Id,
+                           Mass              => the_Sprite.Mass,
+                           Transform         => the_Sprite.Transform,
+                           is_Visible        => the_Sprite.is_Visible);
+         next (Cursor);
       end loop;
 
       return the_Pairs;

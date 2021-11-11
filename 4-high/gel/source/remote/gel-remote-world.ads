@@ -121,7 +121,7 @@ is
 
    type sprite_model_Pairs is array (math.Index range <>) of sprite_model_Pair;
 
-   function Sprites (Self : in Item) return sprite_model_Pairs is abstract;
+   function Sprites (Self : in out Item) return sprite_model_Pairs is abstract;
 
 
    -------------------------

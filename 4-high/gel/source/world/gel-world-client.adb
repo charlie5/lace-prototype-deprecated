@@ -184,11 +184,9 @@ is
    begin
       Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & Id'Image);
 
-      Self.Id           := Id;
-      Self.space_Kind   := space_Kind;
-      Self.Renderer     := Renderer;
-      Self.sprite_Count := 0;
-
+      Self.Id            := Id;
+      Self.space_Kind    := space_Kind;
+      Self.Renderer      := Renderer;
       Self.physics_Space := physics.Forge.new_Space (space_Kind);
    end define;
 

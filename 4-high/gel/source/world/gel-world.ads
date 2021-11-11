@@ -81,9 +81,8 @@ is
    -----------
    --  Sprites
    --
-   function  new_sprite_Id   (Self : access Item)                              return sprite_Id;
-   function  free_sprite_Set (Self : access Item)                              return gel.Sprite.views;
-   function  Sprites         (Self : in     Item)                              return gel.Sprite.views;
+   function  new_sprite_Id   (Self : access Item)                                    return sprite_Id;
+   function  free_sprite_Set (Self : access Item)                                    return gel.Sprite.views;
    function  fetch_Sprite    (Self : in out Item'Class;   Id         : in sprite_Id) return gel.Sprite.view;
    procedure destroy         (Self : in out Item;         the_Sprite : in gel.Sprite.view);
    procedure set_Scale       (Self : in out Item;         for_Sprite : in gel.Sprite.view;
@@ -271,7 +270,7 @@ is
    overriding
    function  physics_Models  (Self : in Item) return remote.World.physics_Model_Set;
    overriding
-   function  Sprites         (Self : in Item) return remote.World.sprite_model_Pairs;
+   function  Sprites         (Self : in out Item) return remote.World.sprite_model_Pairs;
 
 
    ----------
@@ -426,12 +425,6 @@ private
          --
          graphics_Models : aliased id_Maps_of_model        .Map;
          physics_Models  : aliased id_Maps_of_physics_model.Map;
-
-         --  Sprites
-         --
-         Sprites          : gel.Sprite.views (1 .. 100_000);
-         sprite_Count     : Index;
-         --  id_Map_of_Sprite : id_Maps_of_sprite.Map;
 
          --  Ids
          --
