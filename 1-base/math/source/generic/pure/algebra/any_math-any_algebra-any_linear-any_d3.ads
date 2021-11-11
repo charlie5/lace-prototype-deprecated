@@ -154,8 +154,8 @@ is
    --
    -- Return the quaternion which is the result of Spherical Linear Interpolation between Initial and Final.
    -- Percent is the ratio between Initial and Final to interpolate.
-   -- If Percent = 0.0 the result is Initial.
-   -- If Percent = 1.0 the result is Final.
+   -- If Percent =   0.0 the result is Initial.
+   -- If Percent = 100.0 the result is Final.
    -- Slerp interpolates assuming constant velocity.
 
 
