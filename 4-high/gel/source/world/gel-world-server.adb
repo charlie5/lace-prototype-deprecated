@@ -172,7 +172,7 @@ is
          use id_Maps_of_sprite,
              remote.World;
 
-         all_Sprites            : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         all_Sprites            : constant id_Maps_of_sprite.Map    := Self.all_Sprites.fetch;
          Cursor                 :          id_Maps_of_sprite.Cursor := all_Sprites.First;
 
 
@@ -225,6 +225,43 @@ is
       end;
 
    end evolve;
+
+
+
+   overriding
+   function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
+   is
+   begin
+      return From.Map;
+   end fetch;
+
+
+
+   overriding
+   procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      To.Map.insert (the_Sprite.Id, the_Sprite);
+   end add;
+
+
+
+   overriding
+   procedure rid (From : in out sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      From.Map.delete (the_Sprite.Id);
+   end rid;
+
+
+
+   overriding
+   function all_Sprites (Self : access Item) return access World.sprite_Map'Class
+   is
+   begin
+      return Self.all_Sprites'Access;
+   end all_Sprites;
+
 
 
    -----------------------

@@ -97,7 +97,7 @@ is
    function  new_sprite_Id   (Self : access Item)                              return sprite_Id;
    function  free_sprite_Set (Self : access Item)                              return gel.Sprite.views;
    function  Sprites         (Self : in     Item)                              return gel.Sprite.views;
-   function  fetch_Sprite    (Self : in     Item;   Id         : in sprite_Id) return gel.Sprite.view;
+   function  fetch_Sprite    (Self : in out Item;   Id         : in sprite_Id) return gel.Sprite.view;
    procedure destroy         (Self : in out Item;   the_Sprite : in gel.Sprite.view);
    procedure set_Scale       (Self : in out Item;   for_Sprite : in gel.Sprite.view;
                                                     To         : in Vector_3);
@@ -110,7 +110,7 @@ is
 
    type sprite_transform_Pairs is array (Positive range <>) of sprite_transform_Pair;
 
-   function  sprite_Transforms (Self : in Item) return sprite_transform_Pairs;
+   function  sprite_Transforms (Self : in out Item'Class) return sprite_transform_Pairs;
 
 
    ----------
@@ -335,6 +335,7 @@ private
    package  id_Maps_of_sprite is new ada.Containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
                                                                  Hash            => Hash,
                                                                  equivalent_Keys => "=");
+
    -----------------------------
    --- sprite_Maps_of_transforms
    --
@@ -404,6 +405,18 @@ private
 
 
    --------------
+   --- sprite_Map
+   --
+
+   type sprite_Map is abstract tagged limited null record;
+
+   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map   is abstract;
+   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
+   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
+
+
+
+   --------------
    --- World Item
    --
 
@@ -429,7 +442,7 @@ private
          --
          Sprites          : gel.Sprite.views (1 .. 100_000);
          sprite_Count     : Index;
-         id_Map_of_Sprite : id_Maps_of_sprite.Map;
+         --  id_Map_of_Sprite : id_Maps_of_sprite.Map;
 
          --  Ids
          --
@@ -452,6 +465,10 @@ private
          broken_Joints         : safe_joint_Set;
          broken_joints_Allowed : Boolean := False;
       end record;
+
+
+   function all_Sprites (Self : access Item) return access sprite_Map'Class;
+
 
 
 end gel.World;

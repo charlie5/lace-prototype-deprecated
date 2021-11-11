@@ -44,6 +44,10 @@ is
    --
 
    overriding
+   procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
+                                        and_Children : in Boolean := False);
+
+   overriding
    procedure evolve (Self : in out Item);
 
    --  overriding
@@ -65,6 +69,36 @@ is
 
 private
 
+   protected
+   type safe_id_Map_of_sprite
+   is
+      procedure add (the_Sprite : in Sprite.view);
+      procedure rid (the_Sprite : in Sprite.view);
+
+      function  fetch (Id : in sprite_Id) return Sprite.view;
+      function  fetch_all return id_Maps_of_sprite.Map;
+
+   private
+      Map : id_Maps_of_sprite.Map;
+   end safe_id_Map_of_sprite;
+
+
+
+   type sprite_Map is limited new World.sprite_Map with
+      record
+         Map : safe_id_Map_of_sprite;
+      end record;
+
+   overriding
+   function  fetch (From : in sprite_Map) return id_Maps_of_sprite.Map;
+
+   overriding
+   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
+
+   overriding
+   procedure rid   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
+
+
    --------------
    --- World Item
    --
@@ -72,6 +106,12 @@ private
    type Item is limited new gel.World.item with
       record
          Age_at_last_mirror_update : Duration := 0.0;
+         all_Sprites               : aliased sprite_Map;
       end record;
+
+
+   overriding
+   function all_Sprites (Self : access Item) return access World.sprite_Map'Class;
+
 
 end gel.World.client;

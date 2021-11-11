@@ -69,12 +69,37 @@ private
 
 
    --------------
+   --- sprite_Map
+   --
+   type sprite_Map is limited new World.sprite_Map with
+      record
+         Map : id_Maps_of_sprite.Map;
+      end record;
+
+   overriding
+   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map;
+
+   overriding
+   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
+
+   overriding
+   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view);
+
+
+   --------------
    --- World Item
    --
    type Item is limited new gel.World.item with
       record
          Age_at_last_Clients_update : Duration := 0.0;
          Clients                    : World_vector;
+
+         all_Sprites : aliased sprite_Map;
       end record;
+
+
+   overriding
+   function all_Sprites (Self : access Item) return access World.sprite_Map'Class;
+
 
 end gel.World.server;

@@ -607,10 +607,10 @@ is
 
 
 
-   function fetch_Sprite (Self : in Item;   Id : in sprite_Id) return gel.Sprite.view
+   function fetch_Sprite (Self : in out Item;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
-      return Self.id_Map_of_Sprite.Element (Id);
+      return Self.all_Sprites.fetch.Element (Id);
    end fetch_Sprite;
 
 
@@ -629,11 +629,11 @@ is
 
 
 
-   function sprite_Transforms (Self : in Item) return sprite_transform_Pairs
+   function sprite_Transforms (Self : in out Item'Class) return sprite_transform_Pairs
    is
       use id_Maps_of_sprite;
 
-      all_Sprites : constant  id_Maps_of_sprite.Map    := Self.id_Map_of_Sprite;
+      all_Sprites : constant  id_Maps_of_sprite.Map    := Self.all_Sprites.fetch;
       Cursor      :           id_Maps_of_sprite.Cursor := all_Sprites.First;
 
       the_sprite_Transforms : sprite_transform_Pairs (1 .. Natural (all_Sprites.Length)) := (others => <>);
@@ -748,8 +748,7 @@ is
          Self.sprite_Count                := Self.sprite_Count + 1;
          Self.Sprites (Self.sprite_Count) := Single'unchecked_Access;
 
-         Self.id_Map_of_Sprite.insert (Single.Id,
-                                       Single'unchecked_Access);
+         Item'Class (Self.all).all_Sprites.add (Single'unchecked_Access);
       end add_single_Sprite;
 
    begin
@@ -784,22 +783,22 @@ is
    procedure rid (Self : in out Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
-      procedure rid_the_Sprite (the_Sprite : in out Sprite.item'Class)
+      procedure rid_single_Sprite (Single : in out Sprite.item'Class)
       is
       begin
          --  Self.Commands.add ((Kind         => rid_Sprite,
          --                      Sprite       => the_Sprite'unchecked_Access,
          --                      rid_Children => False));
 
-         Self.id_Map_of_Sprite.delete (the_Sprite.Id);   -- TODO: Handle grandchildren and so on.
-      end rid_the_Sprite;
+         Self.all_Sprites.rid (Single'unchecked_Access);     -- TODO: Handle grandchildren and so on.
+      end rid_single_Sprite;
 
    begin
       if and_Children
       then
-         the_Sprite.apply (rid_the_Sprite'unrestricted_Access);
+         the_Sprite.apply (rid_single_Sprite'unrestricted_Access);
       else
-         rid_the_Sprite (the_Sprite.all);
+         rid_single_Sprite (the_Sprite.all);
       end if;
    end rid;
 
@@ -1042,6 +1041,14 @@ is
    end Sprites;
 
 
+
+   function all_Sprites (Self : access Item) return access sprite_Map'Class
+   is
+   begin
+      return null;
+   end all_Sprites;
+
+
    --------------
    --- Collisions
    --
@@ -1160,7 +1167,7 @@ is
    overriding
    procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.sprite_Id)
    is
-      the_Sprite : constant gel.Sprite.view := Self.id_Map_of_Sprite.Element (sprite_Id);
+      the_Sprite : constant gel.Sprite.view := Self.all_Sprites.fetch.Element (sprite_Id);
    begin
       the_Sprite.Speed_is ((0.0, 10.0, 0.0));
    end kick_Sprite;

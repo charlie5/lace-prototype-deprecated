@@ -156,7 +156,7 @@ is
                                                                          Self.physics_Models.all,
                                                                          Self.World);
       begin
-         Self.World.add (the_Sprite, and_children => False);
+         Self.World.add (the_Sprite);
       end;
    end respond;
 
@@ -244,6 +244,7 @@ is
    function Name (Self : in my_new_sprite_Response) return String;
 
 
+
    overriding
    procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
    is
@@ -256,7 +257,7 @@ is
                       Self.physics_Models.all,
                       Self.World);
    begin
-      Self.World.add (the_Sprite, and_Children => False);
+      Self.World.add (the_Sprite);
    end respond;
 
 
@@ -357,7 +358,7 @@ is
                                         Self.graphics_Models,
                                         Self. physics_Models,
                                         gel.World.view (Self));
-               Self.add (the_Sprite, and_Children => False);
+               Self.add (the_Sprite);
             end loop;
          end;
       end;
@@ -370,8 +371,20 @@ is
    --
 
    overriding
+   procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
+                                        and_Children : in Boolean := False)
+   is
+   begin
+      Self.all_Sprites.Map.add (the_Sprite);
+   end add;
+
+
+
+   overriding
    procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
    is
+      all_Sprites : constant id_Maps_of_sprite.Map := Self.all_Sprites.Map.fetch_all;
+
    begin
       for i in Now'Range
       loop
@@ -379,16 +392,16 @@ is
             use remote.World;
 
             the_Id             : constant gel.sprite_Id := Now (i).Id;
-            the_Sprite         :          Sprite.view;
+            the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
 
-            new_Site           : constant Vector_3   := refined (Now (i).Site);
+            new_Site           : constant Vector_3      := refined (Now (i).Site);
             site_Delta         :          Vector_3;
 
-            min_teleport_Delta : constant            := 20.0;
-            new_Spin           : constant Quaternion := refined (Now (i).Spin);
+            min_teleport_Delta : constant               := 20.0;
+            new_Spin           : constant Quaternion    := refined (Now (i).Spin);
 
          begin
-            the_Sprite := Self.id_Map_of_sprite.Element (the_Id);
+            --  the_Sprite := Self.id_Map_of_sprite.Element (the_Id);
             site_Delta := new_Site - the_Sprite.desired_Site;
 
             if        abs site_Delta (1) > min_teleport_Delta
@@ -421,11 +434,11 @@ is
       declare
          use id_Maps_of_sprite;
 
-         all_Sprites   : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         --  all_Sprites   : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
+         all_Sprites   : constant id_Maps_of_sprite.Map    := Self.all_Sprites.Map.fetch_all;
          Cursor        :          id_Maps_of_sprite.Cursor := all_Sprites.First;
          the_Sprite    :          gel.Sprite.view;
 
-         new_Transform : Matrix_4x4;
       begin
          while has_Element (Cursor)
          loop
@@ -436,6 +449,81 @@ is
          end loop;
       end;
    end evolve;
+
+
+
+   overriding
+   function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
+   is
+   begin
+      return From.Map.fetch_all;
+   end fetch;
+
+
+
+   overriding
+   procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      To.Map.add (the_Sprite);
+   end add;
+
+
+
+   overriding
+   procedure rid (To : in out sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      To.Map.rid (the_Sprite);
+   end rid;
+
+
+
+   overriding
+   function all_Sprites (Self : access Item) return access World.sprite_Map'Class
+   is
+   begin
+      return Self.all_Sprites'Access;
+   end all_Sprites;
+
+
+
+   --------------
+   --  Containers
+   --
+
+   protected
+   body safe_id_Map_of_sprite
+   is
+      procedure add (the_Sprite : in Sprite.view)
+      is
+      begin
+         Map.insert (the_Sprite.Id,
+                     the_Sprite);
+      end add;
+
+
+      procedure rid (the_Sprite : in Sprite.view)
+      is
+      begin
+         Map.delete (the_Sprite.Id);
+      end rid;
+
+
+      function fetch (Id : in sprite_Id) return Sprite.view
+      is
+      begin
+         return Map.Element (Id);
+      end fetch;
+
+
+      function fetch_all return id_Maps_of_sprite.Map
+      is
+      begin
+         return Map;
+      end fetch_all;
+
+   end safe_id_Map_of_sprite;
 
 
 end gel.World.client;
