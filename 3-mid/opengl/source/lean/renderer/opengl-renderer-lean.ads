@@ -248,7 +248,7 @@ private
       entry Screenshot (Filename   : in String;
                         with_Alpha : in Boolean := False);
 
-      pragma Storage_Size (50_000_000);
+      pragma Storage_Size (100_000_000);
    end Engine;
 
 
