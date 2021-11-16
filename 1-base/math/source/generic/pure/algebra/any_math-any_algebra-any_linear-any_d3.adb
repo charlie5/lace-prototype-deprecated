@@ -56,9 +56,9 @@ is
 
 
    function Interpolated (From, To : in Vector_3;
-                          Percent  : in Percentage) return Vector_3
+                          Percent  : in unit_Percentage) return Vector_3
    is
-      P : constant Real := Percent / 100.0;
+      P : constant Real := to_Real (Percent);
       S : constant Real := 1.0 - P;
    begin
       return (S * From (1)  +  P * To (1),
@@ -753,12 +753,11 @@ is
 
    function Slerp (Initial,
                    Final   : in Quaternion;
-                   Percent : in Percentage) return Quaternion
+                   Percent : in unit_Percentage) return Quaternion
    is
-      P : constant Real := Percent / 100.0;
    begin
-      if    P  = 0.0 then   return Initial;
-      elsif P >= 1.0 then   return Final;
+      if    Percent  =   0.0 then   return Initial;
+      elsif Percent  = 100.0 then   return Final;
       end if;
 
       declare
@@ -769,6 +768,7 @@ is
          Dot           : Real     := Q1 * Q2;
          Dot_Threshold : constant := 0.9995;
 
+         P : constant Real := to_Real (Percent);
       begin
          if Dot < 0.0
          then     -- Ensure we take the short path.

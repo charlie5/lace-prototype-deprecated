@@ -89,6 +89,53 @@ is
    end clamp;
 
 
+   -------------
+   -- Percentage
+   --
+
+   function to_Percentage (From : in Real) return Percentage
+   is
+   begin
+      return Percentage (From * Real' (100.0));
+   end to_Percentage;
+
+
+   function to_Real (Percent : in Percentage) return Real
+   is
+   begin
+      return Real (Percent / 100.0);
+   end to_Real;
+
+
+   function Image (Percent   : in Percentage;
+                   Precision : in Natural := 5) return String
+   is
+   begin
+      return Image (Real (Percent),
+                    Precision)
+           & "%";
+   end Image;
+
+
+   function apply (Left, Right : in Percentage) return Percentage
+   is
+   begin
+      return Percentage (Real (Left) * Real (Right) / 100.0**2);
+   end apply;
+   --
+   -- Named "apply" (rather than "*") to prevent silently overriding the "*" function of the Real type.
+
+
+   function apply (Percent : in Percentage;
+                   To      : in Real) return Real
+   is
+   begin
+      return to_Real (Percent) * To;
+   end apply;
+   --
+   -- Named "apply" (rather than "*") to prevent ambiguous expressions when numeric literals are used.
+
+
    ---------
    -- Angles
    --
@@ -96,7 +143,7 @@ is
    function to_Radians (Self : in Degrees) return Radians
    is
    begin
-      return Radians (Self) * Pi / 180.0;
+      return Radians (Self * Pi / 180.0);
    end to_Radians;
 
 

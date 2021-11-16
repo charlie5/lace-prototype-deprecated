@@ -10,7 +10,7 @@ is
    function  Distance     (From, To : in Vector_3)   return Real;
    function  Midpoint     (From, To : in Vector_3)   return Vector_3;
    function  Interpolated (From, To : in Vector_3;
-                           Percent  : in Percentage) return Vector_3;
+                           Percent  : in unit_Percentage) return Vector_3;
 
    function  Angle_between_pre_Norm (U, V : in Vector_3) return Radians;
    --

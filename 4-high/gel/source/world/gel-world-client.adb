@@ -120,8 +120,12 @@ is
       the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
       the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
 
-      the_Sprite.desired_Site_is (the_Sprite.Site);
-      the_Sprite.desired_Spin_is (to_Quaternion (get_Rotation (the_Sprite.Transform)));
+
+      the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
+                                       Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
+
+      --  the_Sprite.desired_Site_is (the_Sprite.Site);
+      --  the_Sprite.desired_Spin_is (to_Quaternion (get_Rotation (the_Sprite.Transform)));
 
       return the_Sprite;
    end to_Sprite;
@@ -393,25 +397,40 @@ is
             the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
 
             new_Site           : constant Vector_3      := refined (Now (i).Site);
-            site_Delta         :          Vector_3;
+            --  site_Delta         :          Vector_3;
+            --  min_teleport_Delta : constant               := 20.0;
 
-            min_teleport_Delta : constant               := 20.0;
             new_Spin           : constant Quaternion    := refined (Now (i).Spin);
+            --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
 
+            use linear_Algebra_3D;
          begin
-            --  the_Sprite := Self.id_Map_of_sprite.Element (the_Id);
-            site_Delta := new_Site - the_Sprite.desired_Site;
+            --  site_Delta := new_Site - the_Sprite.desired_Site;
+            --
+            --  if        abs site_Delta (1) > min_teleport_Delta
+            --    or else abs site_Delta (2) > min_teleport_Delta
+            --    or else abs site_Delta (3) > min_teleport_Delta
+            --  then
+            --     log ("Teleport.");
+            --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
+            --  end if;                             -- to prevent later interpolation.
 
-            if        abs site_Delta (1) > min_teleport_Delta
-              or else abs site_Delta (2) > min_teleport_Delta
-              or else abs site_Delta (3) > min_teleport_Delta
-            then
-               log ("Teleport.");
-               the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
-            end if;                             -- to prevent later interpolation.
+            null;
 
-            the_Sprite.desired_Site_is (new_Site);
-            the_Sprite.desired_Spin_is (new_Spin);
+            --  the_Sprite.Site_is (new_Site);
+            --  the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
+            --                                   Angle => new_Spin.R));
+
+            --  the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
+
+            --  the_Sprite.desired_Dynamics_are (Site => new_Site,
+            --                                   Spin => to_Quaternion (new_Spin));
+
+            the_Sprite.desired_Dynamics_are (Site => new_Site,
+                                             Spin => new_Spin);
+
+            --  the_Sprite.desired_Site_is (new_Site);
+            --  the_Sprite.desired_Spin_is (new_Spin);
          end;
       end loop;
    end motion_Updates_are;

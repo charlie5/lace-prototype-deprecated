@@ -6,7 +6,7 @@ is
    -----------
    -- Vector_2
    --
-   function  Interpolated           (From, To : in Vector_2;   Percent : in Percentage) return Vector_2;
+   function  Interpolated           (From, To : in Vector_2;   Percent : in unit_Percentage) return Vector_2;
    function  Distance               (From, To : in Vector_2) return Real;
    function  Midpoint               (From, To : in Vector_2) return Vector_2;
    function  Angle_between_pre_Norm (U, V     : in Vector_2) return Radians;

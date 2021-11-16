@@ -47,7 +47,6 @@ is
    -- Reals
    --
    subtype Real          is Real_t;
-   subtype Percentage    is Real range 0.0 .. 100.0;
    subtype unit_Interval is Real range 0.0 ..   1.0;
 
    function  almost_Zero (Self : in     Real) return Boolean;
@@ -57,6 +56,21 @@ is
 
    function  Image       (Self : in     Real;   Precision : in Natural := 5) return String;
 
+
+   -------------
+   -- Percentage
+   --
+   type         Percentage is new Real;
+   subtype unit_Percentage is Percentage range 0.0 .. 100.0;
+
+   function to_Percentage (From      : in Real)         return Percentage;
+   function to_Real       (Percent   : in Percentage)   return Real;
+   function Image         (Percent   : in Percentage;
+                           Precision : in Natural := 5) return String;
+   function apply         (Percent   : in Percentage;
+                           To        : in Real)         return Real;
+   function apply         (Left,
+                           Right     : in Percentage) return Percentage;
 
    ------------
    -- Functions

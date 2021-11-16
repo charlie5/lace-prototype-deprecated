@@ -37,9 +37,9 @@ is
 
 
    function Interpolated (From, To : in Vector_2;
-                          Percent  : in Percentage) return Vector_2
+                          Percent  : in unit_Percentage) return Vector_2
    is
-      P : constant Real := Percent / 100.0;
+      P : constant Real := to_Real (Percent);
       S : constant Real := 1.0 - P;
    begin
       return (S * From (1) + P * To (1),
