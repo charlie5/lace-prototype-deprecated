@@ -751,19 +751,19 @@ is
 
 
 
-   function Slerp (Initial,
-                   Final   : in Quaternion;
-                   Percent : in unit_Percentage) return Quaternion
+   function Interpolated (From,
+                          To      : in Quaternion;
+                          Percent : in unit_Percentage) return Quaternion
    is
    begin
-      if    Percent  =   0.0 then   return Initial;
-      elsif Percent  = 100.0 then   return Final;
+      if    Percent  =   0.0 then   return From;
+      elsif Percent  = 100.0 then   return To;
       end if;
 
       declare
          --  Q1 and Q2 should be unit length or else something broken will happen.
-         Q1  : Quaternion :=      Initial;
-         Q2  : Quaternion renames Final;
+         Q1  : Quaternion :=      From;
+         Q2  : Quaternion renames To;
 
          Dot           : Real     := Q1 * Q2;
          Dot_Threshold : constant := 0.9995;
@@ -792,7 +792,7 @@ is
             return Q1 * Cos (theta)  +  Q3 * Sin (theta);
          end;
       end;
-   end slerp;
+   end Interpolated;
 
 
 

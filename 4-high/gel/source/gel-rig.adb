@@ -1514,9 +1514,9 @@ is
 
             if Elapsed < Duration (the_Channel.Times (the_Channel.Times'Last))
             then
-               set_Rotation (new_Transform, to_Matrix (Slerp (Initial.Rotation,
-                                                              the_Channel.current_Transform.Rotation,
-                                                              the_Channel.slerp_Time)));
+               set_Rotation (new_Transform, to_Matrix (Interpolated (Initial.Rotation,
+                                                                     the_Channel.current_Transform.Rotation,
+                                                                     Percent => to_Percentage (the_Channel.slerp_Time))));
                the_Channel.slerp_Time :=   the_Channel.slerp_Time
                                          + the_Channel.Transform_interp_Delta;
             end if;

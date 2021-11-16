@@ -149,14 +149,15 @@ is
 
    function  "*"      (Left  : in Quaternion;   Right   : in Real)       return Quaternion;
 
-   function  Slerp    (Initial,
-                       Final : in Quaternion;   Percent : in Percentage) return Quaternion;
+   function  Interpolated (From,
+                           To      : in Quaternion;
+                           Percent : in unit_Percentage) return Quaternion;
    --
-   -- Return the quaternion which is the result of Spherical Linear Interpolation between Initial and Final.
-   -- Percent is the ratio between Initial and Final to interpolate.
+   -- Return the quaternion which is the result of spherical linear interpolation (Slerp) between Initial and Final.
+   -- Percent is the ratio between 'From' and 'To' to interpolate.
    -- If Percent =   0.0 the result is Initial.
    -- If Percent = 100.0 the result is Final.
-   -- Slerp interpolates assuming constant velocity.
+   -- Interpolates assuming constant velocity.
 
 
    ------------
