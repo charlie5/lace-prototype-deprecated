@@ -163,7 +163,7 @@ is
 
 
 
-   procedure slerp_Test
+   procedure quaternion_interpolation_Test
    is
       use float_Math,
           float_Math.Algebra.linear.d3;
@@ -175,26 +175,26 @@ is
 --        put_Line (Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.0)))));
 --        put_Line (Degrees'Image (to_Degrees (Angle (Initial))));
 
-      assert (almost_Equal (slerp (Initial, Desired, 0.0), Initial),   "almost_Equal (slerp (Initial, Desired, 0.0), Initial) ... failed !");
-      assert (almost_Equal (slerp (Initial, Desired, 1.0), Desired),   "almost_Equal (slerp (Initial, Desired, 1.0), Desired) ... failed !");
+      assert (almost_Equal (Interpolated (Initial, Desired, to_Percentage (0.0)), Initial),   "almost_Equal (Interpolated (Initial, Desired, 0.0), Initial) ... failed !");
+      assert (almost_Equal (Interpolated (Initial, Desired, to_Percentage (1.0)), Desired),   "almost_Equal (Interpolated (Initial, Desired, 1.0), Desired) ... failed !");
 
 --        new_Line;
---        put_Line ("0.01   " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.01)))));
---        put_Line ("0.1    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.1)))));
---        put_Line ("0.2    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.2)))));
---        put_Line ("0.3    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.3)))));
---        put_Line ("0.4    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.4)))));
---        put_Line ("0.5    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.5)))));
---        put_Line ("0.6    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.6)))));
---        put_Line ("0.7    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.7)))));
---        put_Line ("0.8    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.8)))));
---        put_Line ("0.9    " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.9)))));
---        put_Line ("0.99   " & Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.99)))));
+--        put_Line ("0.01   " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.01))))));
+--        put_Line ("0.1    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.1))))));
+--        put_Line ("0.2    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.2))))));
+--        put_Line ("0.3    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.3))))));
+--        put_Line ("0.4    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.4))))));
+--        put_Line ("0.5    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.5))))));
+--        put_Line ("0.6    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.6))))));
+--        put_Line ("0.7    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.7))))));
+--        put_Line ("0.8    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.8))))));
+--        put_Line ("0.9    " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.9))))));
+--        put_Line ("0.99   " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.99))))));
 
 --        put_Line (Degrees'Image (to_Degrees (to_Radians (90.0))));
 
-      assert (almost_Equal (Angle (slerp (Initial, Desired, 0.5)),  to_Radians (135.0)),   "Angle (slerp (Initial, Desired, 0.5)) = to_Radians (135.0) ... failed !");
-   end slerp_Test;
+      assert (almost_Equal (Angle (Interpolated (Initial, Desired, 0.5)),  to_Radians (135.0)),   "Angle (slerp (Initial, Desired, 0.5)) = to_Radians (135.0) ... failed !");
+   end quaternion_interpolation_Test;
 
 
 
@@ -202,10 +202,10 @@ is
    begin
       T.set_Name ("Linear Algebra (3D) Tests");
 
-      Framework.add_test_Routine (T, translation_Matrix_Test'Access, "translation_Matrix_Test");
-      Framework.add_test_Routine (T,    rotation_Matrix_Test'Access,    "rotation_Matrix_Test");
-      Framework.add_test_Routine (T,          transform_Test'Access,          "transform_Test");
-      Framework.add_test_Routine (T,              slerp_Test'Access,              "slerp_Test");
+      Framework.add_test_Routine (T,       translation_Matrix_Test'Access,       "translation_Matrix_Test");
+      Framework.add_test_Routine (T,          rotation_Matrix_Test'Access,          "rotation_Matrix_Test");
+      Framework.add_test_Routine (T,                transform_Test'Access,                "transform_Test");
+      Framework.add_test_Routine (T, quaternion_interpolation_Test'Access, "quaternion_interpolation_Test");
    end Initialize;
 
 
