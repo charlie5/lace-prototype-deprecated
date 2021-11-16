@@ -213,11 +213,9 @@ is
    --- Mirrored Dynamics
    --
 
-   function  desired_Site       (Self : in     Item)     return Vector_3;
-   procedure desired_Site_is    (Self : in out Item;   Now : in Vector_3);
-   procedure desired_Spin_is    (Self : in out Item;   Now : in Quaternion);
-
-   procedure interpolate_Motion (Self : in out Item'Class);
+   procedure desired_Dynamics_are (Self : in out Item;   Site : in Vector_3;
+                                                         Spin : in Quaternion);
+   procedure interpolate_Motion   (Self : in out Item'Class);
 
 
    --- Hierachy
@@ -335,6 +333,52 @@ private
    --  end safe_Matrix_4x4;
 
 
+   -----------------
+   --- Interpolation
+   --
+
+   type site_Interpolation is
+      record
+         Initial : Vector_3;
+         Desired : Vector_3;
+      end record;
+
+   type spin_Interpolation is
+      record
+         Initial : Quaternion;
+         Desired : Quaternion;
+      end record;
+
+   type Interpolation is
+      record
+         Site    : site_Interpolation;
+         Spin    : spin_Interpolation;
+         Percent : unit_Percentage;
+      end record;
+
+
+   protected
+   type safe_Interpolation
+   is
+      procedure set (desired_Site : in Vector_3;
+                     desired_Spin : in Quaternion);
+      procedure get (Site : out Vector_3;
+                     Spin : out Quaternion);
+   private
+      Safe : Interpolation := (Site    => (Initial => Origin_3D,
+                                           Desired => Origin_3D),
+                               Spin    => (Initial => (R =>  0.0,
+                                                       V => (0.0, 1.0, 0.0)),
+                                           Desired => (R =>  0.0,
+                                                       V => (0.0, 1.0, 0.0))),
+                               Percent => 0.0);
+   end safe_Interpolation;
+
+
+   ---------------
+   --- Sprite Item
+   --
+
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
          Id                      : gel.sprite_Id := null_sprite_Id;
@@ -356,12 +400,7 @@ private
 
          Depth_in_camera_space   : Real;
 
-         desired_Site            : Vector_3;
-         interpolation_Vector    : Vector_3;
-
-         initial_Spin            : Quaternion := (0.0, (0.0, 1.0, 0.0));
-         desired_Spin            : Quaternion := (0.0, (0.0, 1.0, 0.0));
-         interpolation_spin_Time : Real       := 0.0;
+         Interpolation           : safe_Interpolation;
 
          parent_Joint            : gel.Joint.view;
          child_Joints            : joint_Vectors.Vector;

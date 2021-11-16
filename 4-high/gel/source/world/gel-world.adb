@@ -116,9 +116,8 @@ is
       the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
       the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
 
-      the_Sprite.desired_Site_is (the_Sprite.Site);
-      the_Sprite.desired_Spin_is (to_Quaternion (get_Rotation (the_Sprite.Transform)));
-
+      the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
+                                       Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
       return the_Sprite;
    end to_Sprite;
 

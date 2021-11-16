@@ -251,7 +251,7 @@ is
    ---  World Mirroring
    --
 
-   interpolation_Steps  : constant Real;
+   interpolation_Steps  : constant Natural;
 
    overriding
    procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
@@ -317,7 +317,7 @@ private
    evolve_Period        : constant Duration := 1.0 / Duration (evolve_Hz);
    client_update_Period : constant Duration := 1.0 / Duration (client_update_Hz);
 
-   interpolation_Steps  : constant Real     := Real (evolve_Hz / client_update_Hz);
+   interpolation_Steps  : constant Natural  := Positive (evolve_Hz / client_update_Hz);
 
 
    -----------------

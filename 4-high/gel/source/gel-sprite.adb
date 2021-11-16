@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 with
      gel.hinge_Joint,
      gel.  any_Joint,
@@ -710,30 +711,56 @@ is
    --  Mirrored Dynamics
    --
 
-   function desired_Site (Self : in Item) return Vector_3
+   protected
+   body safe_Interpolation
+   is
+      procedure set (desired_Site : in Vector_3;
+                     desired_Spin : in Quaternion)
+      is
+      begin
+         Safe.Site.initial := Safe.Site.desired;
+         Safe.Site.desired := desired_Site;
+
+         Safe.Spin.initial := Safe.Spin.desired;
+         Safe.Spin.desired := desired_Spin;
+
+         Safe.Percent      := 0.0;
+      end set;
+
+
+      procedure get (Site : out Vector_3;
+                     Spin : out Quaternion)
+      is
+      begin
+         Site := Interpolated (Safe.Site.initial,
+                               Safe.Site.desired,
+                               Safe.Percent);
+
+         Spin := Interpolated (Safe.Spin.initial,
+                               Safe.Spin.desired,
+                               Safe.Percent);
+
+         if gel.World.interpolation_Steps = 0
+         then
+            Safe.Percent := 100.0;
+         else
+            Safe.Percent := Percentage'Min (  Safe.Percent
+                                            + to_Percentage (1.0 / Real (gel.World.interpolation_Steps + 1)),
+                                              unit_Percentage'Last);
+         end if;
+      end get;
+
+   end safe_Interpolation;
+
+
+
+   procedure desired_Dynamics_are (Self : in out Item;   Site : in Vector_3;
+                                                         Spin : in Quaternion)
    is
    begin
-      return Self.desired_Site;
-   end desired_Site;
-
-
-
-   procedure desired_Site_is (Self : in out Item;   Now : in Vector_3)
-   is
-   begin
-      Self.desired_Site         := Now;
-      Self.interpolation_Vector := (Self.desired_Site - Self.Site) / gel.World.interpolation_Steps;
-   end desired_Site_is;
-
-
-
-   procedure desired_Spin_is   (Self : in out Item;   Now : in Quaternion)
-   is
-   begin
-      Self.initial_Spin            := to_Quaternion (Transpose (Self.Spin));
-      Self.desired_Spin            := Now;
-      Self.interpolation_spin_Time := 0.0;
-   end desired_Spin_is;
+      Self.Interpolation.set (desired_Site => Site,
+                              desired_Spin => Spin);
+   end desired_Dynamics_are;
 
 
 
@@ -745,27 +772,16 @@ is
       end if;
 
       declare
-         current_Distance : constant Vector_3 := (Self.desired_Site - Self.Site) / gel.World.interpolation_Steps;
+         new_Site : Vector_3;
+         new_Spin : Quaternion;
       begin
-         if         abs (current_Distance (1)) < 0.005   -- Prevent drift due to very small interpolation vectors.
-           and then abs (current_Distance (2)) < 0.005
-           and then abs (current_Distance (3)) < 0.005
-         then
-            Self.interpolation_Vector := (0.0, 0.0, 0.0);
-         end if;
+         Self.Interpolation.get (new_Site,
+                                 new_Spin);
+         Self.Site_is (new_Site);
+         Self.Spin_is (Transpose (to_Matrix (new_Spin)));
       end;
-
-      Self.Site_is (Self.Site + Self.interpolation_Vector);
-
-      if Self.interpolation_spin_Time < 1.0
-      then -- Interpolation is not yet complete.
-         Self.interpolation_spin_Time := Self.interpolation_spin_Time + 1.0 / gel.World.interpolation_Steps;
-
-         Self.Spin_is (Transpose (to_Matrix (slerp (Self.initial_spin,
-                                                    Self.desired_Spin,
-                                                    Self.interpolation_spin_Time))));
-      end if;
    end interpolate_Motion;
+
 
 
    --------------
