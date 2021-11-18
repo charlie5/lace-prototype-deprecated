@@ -38,7 +38,7 @@ is
 
    function to_World_Site (Self : in Item'Class;   Window_Site : in math.Vector_3) return math.Vector_3
    is
-      perspective_Transform : constant math.Matrix_4x4 := to_Perspective (FoVy   => 60.0,
+      perspective_Transform : constant math.Matrix_4x4 := to_Perspective (FoVy   => Self.FoVy,
                                                                           Aspect => Self.Aspect,
                                                                           zNear  => Self.near_Plane_Distance,
                                                                           zFar   => Self. far_Plane_Distance);
