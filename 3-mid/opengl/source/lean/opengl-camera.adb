@@ -114,6 +114,14 @@ is
    end FOVy;
 
 
+   procedure FoVy_is (Self : in out Item'Class;   Now : in math.Degrees)
+   is
+   begin
+      Self.FoVy := Now;
+   end FoVy_is;
+
+
+
    function Aspect (Self : in Item'Class) return math.Real
    is
    begin

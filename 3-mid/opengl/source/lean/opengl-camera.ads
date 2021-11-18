@@ -43,6 +43,7 @@ is
    function  World_Transform          (Self : in     Item)              return math.Matrix_4x4;
 
    function  FoVy                     (Self : in     Item'Class)        return math.Degrees;   -- Field of view angle in the Y direction.
+   procedure FoVy_is                  (Self : in out Item'Class;   Now    : in math.Degrees);
 
    function  Aspect                   (Self : in     Item'Class)        return math.Real;      -- X/Y Aspect ratio.
    procedure Aspect_is                (Self : in out Item'Class;   now    : in math.Real);
