@@ -111,4 +111,4 @@ Testing
 * `$ create_opengl_assets.sh`
 * `$ create_gel_assets.sh`
 * `$ gprbuild -P human_rig_demo.gpr`
-* `$ ./launch_human_rig_demo`
+* `$ ./launch_human_rig_demo golfer`
