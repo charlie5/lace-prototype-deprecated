@@ -10,7 +10,7 @@ package gel.Camera
 -- Models a camera.
 --
 is
-   type Item  is tagged limited private;
+   type Item  is new openGL.Camera.item with private;
    type View  is access all Camera.item'Class;
 
    type Views is array (Positive range <>) of View;
@@ -23,7 +23,7 @@ is
    --
 
    procedure define  (Self : in out Item);
-   procedure destroy (Self : in out Item);
+   --  procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
 
 
@@ -50,10 +50,8 @@ is
    --  Attributes
    --
 
-   procedure Renderer_is            (Self : in out Item'Class;   Now : in openGL.Renderer.lean.view);
-
-   procedure Site_is                (Self : in out Item'Class;   Now : in Vector_3);
-   function  Site                   (Self : in     Item'Class)     return Vector_3;
+   procedure Site_is                (Self : in out Item;   Now : in Vector_3);
+   function  Site                   (Self : in     Item)     return Vector_3;
 
    procedure world_Rotation_is      (Self : in out Item'Class;   Now : in Matrix_3x3);
    function  world_Rotation         (Self : in     Item'Class)     return Matrix_3x3;
@@ -85,7 +83,7 @@ is
 
    function  ModelView_Matrix       (Self : in     Item'Class) return Matrix_4x4;
 
-   function  to_world_Site          (Self : in     Item'Class;   Site : in Vector_3) return Vector_3;
+   function  to_world_Site          (Self : in     Item;   Site : in Vector_3) return Vector_3;
    --
    --  Returns the window space 'Site' transformed to the equivalent world space site.
 
@@ -104,11 +102,8 @@ is
 
 private
 
-   type Item is tagged limited
+   type Item  is new openGL.Camera.item with
       record
-         GL                  : aliased openGL.Camera.item;
-         Renderer            :         openGL.Renderer.lean.view;
-
          Clipper             : aliased Clipping_data;
 
          world_Rotation      :         Matrix_3x3;

@@ -30,10 +30,10 @@ is
    fairly_Far                  : constant         := 100_000.0;
    default_field_of_view_Angle : constant Degrees :=      60.0;
 
-   procedure Renderer_is              (Self : in out Item'Class;   now    : in Renderer.lean.view);
+   procedure Renderer_is              (Self : in out Item;   now    : in Renderer.lean.view);
 
-   procedure Site_is                  (Self : in out Item'Class;   now    : in math.Vector_3);
-   function  Site                     (Self : in     Item'Class)        return math.Vector_3;
+   procedure Site_is                  (Self : in out Item;         now    : in math.Vector_3);
+   function  Site                     (Self : in     Item)              return math.Vector_3;
 
    procedure Spin_is                  (Self : in out Item'Class;   now    : in math.Matrix_3x3);
    function  Spin                     (Self : in     Item'Class)        return math.Matrix_3x3;
@@ -61,7 +61,7 @@ is
    procedure Viewport_is              (Self : in out Item'Class;   Width,
                                                                    Height : in Positive);
 
-   function  to_World_Site            (Self : in     Item'Class;   Window_Site : in math.Vector_3) return math.Vector_3;
+   function  to_World_Site            (Self : in     Item;   Window_Site : in math.Vector_3) return math.Vector_3;
    --
    --  Returns the 'window space' site transformed to the equivalent 'world space' site.
 
