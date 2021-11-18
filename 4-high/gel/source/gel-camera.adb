@@ -271,15 +271,6 @@ is
 
 
 
-   procedure Renderer_is (Self : in out Item;   Now : in openGL.Renderer.lean.view)
-   is
-   begin
-      Self.   Renderer :=  Now;
-      openGL.Camera.item (Self).Renderer_is (Now);
-   end Renderer_is;
-
-
-
    procedure render (Self : in out Item;   the_World : in gel.World.view;
                                            To        : in openGL.Surface.view)
    is

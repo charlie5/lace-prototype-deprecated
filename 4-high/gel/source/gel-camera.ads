@@ -50,8 +50,6 @@ is
    --  Attributes
    --
 
-   procedure Renderer_is            (Self : in out Item;   Now : in openGL.Renderer.lean.view);
-
    procedure Site_is                (Self : in out Item;   Now : in Vector_3);
    function  Site                   (Self : in     Item)     return Vector_3;
 
@@ -106,8 +104,6 @@ private
 
    type Item  is new openGL.Camera.item with
       record
-         Renderer            :         openGL.Renderer.lean.view;
-
          Clipper             : aliased Clipping_data;
 
          world_Rotation      :         Matrix_3x3;
