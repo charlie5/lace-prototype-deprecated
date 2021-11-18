@@ -36,7 +36,7 @@ is
    --  Attributes
    --
 
-   function to_World_Site (Self : in Item'Class;   Window_Site : in math.Vector_3) return math.Vector_3
+   function to_World_Site (Self : in Item;   Window_Site : in math.Vector_3) return math.Vector_3
    is
       perspective_Transform : constant math.Matrix_4x4 := to_Perspective (FoVy   => Self.FoVy,
                                                                           Aspect => Self.Aspect,
@@ -56,7 +56,7 @@ is
 
 
 
-   procedure Site_is (Self : in out Item'Class;   now : in math.Vector_3)
+   procedure Site_is (Self : in out Item;   now : in math.Vector_3)
    is
    begin
       Self.world_Transform := to_transform_Matrix ((Self.Spin,
@@ -65,7 +65,7 @@ is
    end Site_is;
 
 
-   function Site (Self : in Item'Class) return math.Vector_3
+   function Site (Self : in Item) return math.Vector_3
    is
    begin
       return get_Translation (Self.world_Transform);
@@ -224,7 +224,7 @@ is
    end Viewport;
 
 
-   procedure Renderer_is (Self : in out Item'Class;   now : in Renderer.lean.view)
+   procedure Renderer_is (Self : in out Item;   now : in Renderer.lean.view)
    is
    begin
       Self.Renderer := now;

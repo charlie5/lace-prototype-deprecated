@@ -21,16 +21,8 @@ is
                                       Up     => (0.0, 1.0, 0.0));
 
       Self.world_Rotation := y_Rotation_from (0.0);
-      Self.GL.define;
+      openGL.Camera.item (Self).define;
    end define;
-
-
-
-   procedure destroy (Self : in out Item)
-   is
-   begin
-      Self.GL.destroy;
-   end destroy;
 
 
 
@@ -47,7 +39,7 @@ is
    --  Attributes
    --
 
-   function to_world_Site (Self : in Item'Class;   Site : in Vector_3) return Vector_3
+   function to_world_Site (Self : in Item;   Site : in Vector_3) return Vector_3
    is
       the_perspective_Transform : constant Matrix_4x4 := to_Perspective (FoVy   => 60.0,
                                                                          Aspect => Self.Aspect,
@@ -59,7 +51,7 @@ is
                                                      Real (Viewport.Max (2)) - Site (2),
                                                      Site (3));
       Site_world_space      : constant Vector_3  := unProject (Position_window_space,
-                                                               Model      => Self.GL.view_Transform,
+                                                               Model      => Self.view_Transform,
                                                                Projection => the_perspective_Transform,
                                                                Viewport   => Viewport);
    begin
@@ -68,18 +60,18 @@ is
 
 
 
-   procedure Site_is (Self : in out Item'Class;   Now : in Vector_3)
+   procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.Clipper.eye_Position := Now;
       Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
 
-      Self.GL.Site_is (Now);
+      openGL.Camera.item (Self).Site_is (Now);
    end Site_is;
 
 
 
-   function Site (Self : in Item'Class) return Vector_3
+   function Site (Self : in Item) return Vector_3
    is
    begin
       return Self.Clipper.eye_Position;
@@ -95,7 +87,7 @@ is
       Self.world_Rotation       := Spin;
       Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation,
                                                         -Self.Site));
-      Self.GL.Position_is (Site, Spin);
+      openGL.Camera.item (Self).Position_is (Site, Spin);
    end Position_is;
 
 
@@ -106,7 +98,7 @@ is
       Self.world_Rotation := Now;
       Self.view_Transform := to_transform_Matrix ((Self.world_Rotation,
                                                   -Self.Site));
-      Self.GL.Spin_is (Now);
+      Self.Spin_is (Now);
    end world_Rotation_is;
 
 
@@ -164,7 +156,7 @@ is
    function FoVy (Self : in Item'Class) return Degrees
    is
    begin
-      return Self.FOVy;
+      return openGL.Camera.item (Self).FOVy;
    end FOVy;
 
 
@@ -172,7 +164,7 @@ is
    function Aspect (Self : in Item'Class) return Real
    is
    begin
-      return Self.Aspect;
+      return openGL.Camera.item (Self).Aspect;
    end Aspect;
 
 
@@ -188,7 +180,7 @@ is
    function near_plane_Distance (Self : in Item'Class) return Real
    is
    begin
-      return Self.near_plane_Distance;
+      return openGL.Camera.item (Self).near_plane_Distance;
    end near_plane_Distance;
 
 
@@ -196,7 +188,7 @@ is
    function far_plane_Distance (Self : in Item'Class) return Real
    is
    begin
-      return Self.far_plane_Distance;
+      return openGL.Camera.item (Self).far_plane_Distance;
    end far_plane_Distance;
 
 
@@ -213,7 +205,7 @@ is
    is
    begin
       Self.near_plane_Distance := Now;
-      Self.GL.near_plane_Distance_is (Now);
+      openGL.Camera.item (Self).near_plane_Distance_is (Now);
    end near_plane_Distance_is;
 
 
@@ -274,16 +266,16 @@ is
                                                       Aspect => Self.Aspect,
                                                       zNear  => Self.near_plane_Distance,
                                                       zFar   => Self. far_plane_Distance);
-      Self.GL.Viewport_is (Width, Height);
+      Self.Viewport_is (Width, Height);
    end set_viewport_Size;
 
 
 
-   procedure Renderer_is (Self : in out Item'Class;   Now : in openGL.Renderer.lean.view)
+   procedure Renderer_is (Self : in out Item;   Now : in openGL.Renderer.lean.view)
    is
    begin
       Self.   Renderer :=  Now;
-      Self.GL.Renderer_is (Now);
+      openGL.Camera.item (Self).Renderer_is (Now);
    end Renderer_is;
 
 
@@ -312,7 +304,7 @@ is
          end if;
       end loop;
 
-      Self.GL.render (the_Visuals (1 .. Count));
+      Self.render (the_Visuals (1 .. Count));
    end render;
 
 
@@ -320,7 +312,7 @@ is
    function cull_Completed (Self : in Item) return Boolean
    is
    begin
-      return Self.GL.cull_Completed;
+      return openGL.Camera.item (Self).cull_Completed;
    end cull_Completed;
 
 
@@ -329,7 +321,7 @@ is
    is
    begin
       Self.is_Culling := False;
-      Self.GL.disable_Cull;
+      openGL.Camera.item (Self).disable_Cull;
    end disable_Cull;
 
 
