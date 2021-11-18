@@ -104,3 +104,11 @@ Testing
 * `$ create_gel_assets.sh`
 * `$ gprbuild -P mixed_shapes.gpr`
 * `$ ./launch_mixed_shapes`
+
+... or ...
+
+* `$ cd $LACE/4-high/gel/applet/demo/skinning/rig/human_rig`
+* `$ create_opengl_assets.sh`
+* `$ create_gel_assets.sh`
+* `$ gprbuild -P human_rig_demo.gpr`
+* `$ ./launch_human_rig_demo`
