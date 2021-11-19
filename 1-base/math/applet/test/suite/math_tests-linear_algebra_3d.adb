@@ -165,11 +165,11 @@ is
       Desired : constant Quaternion := to_Quaternion (z_Rotation_from (to_Radians (180.0)));
 
    begin
---        put_Line (Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.0)))));
+--        put_Line (Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, 0.0)))));
 --        put_Line (Degrees'Image (to_Degrees (Angle (Initial))));
 
-      assert (almost_Equal (Interpolated (Initial, Desired, to_Percentage (0.0)), Initial),   "almost_Equal (Interpolated (Initial, Desired, 0.0), Initial) ... failed !");
-      assert (almost_Equal (Interpolated (Initial, Desired, to_Percentage (1.0)), Desired),   "almost_Equal (Interpolated (Initial, Desired, 1.0), Desired) ... failed !");
+      assert (almost_Equal (Interpolated (Initial, Desired,   0.0), Initial),   "almost_Equal (Interpolated (Initial, Desired, 0.0), Initial) ... failed !");
+      assert (almost_Equal (Interpolated (Initial, Desired, 100.0), Desired),   "almost_Equal (Interpolated (Initial, Desired, 1.0), Desired) ... failed !");
 
 --        new_Line;
 --        put_Line ("0.01   " & Degrees'Image (to_Degrees (Angle (Interpolated (Initial, Desired, to_Percentage (0.01))))));
@@ -186,7 +186,9 @@ is
 
 --        put_Line (Degrees'Image (to_Degrees (to_Radians (90.0))));
 
-      assert (almost_Equal (Angle (Interpolated (Initial, Desired, 0.5)),  to_Radians (135.0)),   "Angle (slerp (Initial, Desired, 0.5)) = to_Radians (135.0) ... failed !");
+      assert (almost_Equal (Angle (Interpolated (Initial, Desired, 50.0)),
+                            to_Radians (135.0)),
+              "Angle (Interpolated (Initial, Desired, 0.5)) = to_Radians (135.0) ... failed !");
    end quaternion_interpolation_Test;
 
 
