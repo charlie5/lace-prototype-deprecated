@@ -1,11 +1,11 @@
 with
+     gel.Sprite,
      openGL.Visual,
      ada.unchecked_Deallocation;
 
 
 package body gel.Camera
 is
-   use linear_Algebra_3D;
 
    --------
    -- Forge
@@ -33,19 +33,22 @@ is
       the_Visuals : openGL.Visual.views (1 .. all_Sprites'Length);
       Count       : Natural := 0;
 
+      the_Sprite  : gel.Sprite.view;
    begin
       for i in all_Sprites'Range
       loop
-         if         not all_Sprites (i).Sprite.is_Destroyed
-           and then     all_Sprites (i).Sprite.is_Visible
+         the_Sprite := all_Sprites (i).Sprite;
+
+         if         not the_Sprite.is_Destroyed
+           and then     the_Sprite.is_Visible
          then
             Count := Count + 1;
 
-            the_Visuals (Count)            := all_Sprites (i).Sprite.Visual;
+            the_Visuals (Count)            := the_Sprite.Visual;
             the_Visuals (Count).Transform_is (all_Sprites (i).Transform);
             the_Visuals (Count).Scale_is     ((1.0, 1.0, 1.0));
 
-            the_Visuals (Count).program_Parameters_are (all_Sprites (i).Sprite.program_Parameters);
+            the_Visuals (Count).program_Parameters_are (the_Sprite.program_Parameters);
          end if;
       end loop;
 
