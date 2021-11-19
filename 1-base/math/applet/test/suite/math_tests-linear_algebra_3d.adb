@@ -21,6 +21,16 @@ is
 
 
 
+   function almost_Equal (Left, Right : in Vector_3) return Boolean
+   is
+   begin
+      return almost_Equal (Left (1), Right (1))
+        and  almost_Equal (Left (2), Right (2))
+        and  almost_Equal (Left (3), Right (3));
+   end almost_Equal;
+
+
+
    function almost_Equal (Left, Right : in Quaternion) return Boolean
    is
       Tolerance : constant := 0.000_000_1;
@@ -30,7 +40,6 @@ is
         and  almost_Equal (Left.V (2), Right.V (2))
         and  almost_Equal (Left.V (3), Right.V (3));
    end almost_Equal;
-
 
 
 
@@ -95,41 +104,33 @@ is
    begin
       To := From * z_Rotation_from (to_Radians (90.0));
 
-      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (90) failed !");
-      assert (almost_Equal (To (2), -1.0),   Image (To, 16) & "  rotation (90) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (90) failed !");
+      assert (almost_Equal (To, (0.0, -1.0, 0.0)),
+              Image (To, 16) & "  rotation (90) failed !");
 
       To := From * z_Rotation_from (to_Radians (-90.0));
 
-      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (-90) failed !");
-      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  rotation (-90) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-90) failed !");
-
+      assert (almost_Equal (To, (0.0, 1.0, 0.0)),
+              Image (To, 16) & "  rotation (-90) failed !");
 
       To := From * z_Rotation_from (to_Radians (180.0));
 
-      assert (almost_Equal (To (1), -1.0),   Image (To, 16) & "  rotation (180) failed !");
-      assert (almost_Equal (To (2),  0.0),   Image (To, 16) & "  rotation (180) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (180) failed !");
+      assert (almost_Equal (To, (-1.0, 0.0, 0.0)),
+              Image (To, 16) & "  rotation (180) failed !");
 
       To := From * z_Rotation_from (to_Radians (-180.0));
 
-      assert (almost_Equal (To (1), -1.0),   Image (To, 16) & "  rotation (-180) failed !");
-      assert (almost_Equal (To (2),  0.0),   Image (To, 16) & "  rotation (-180) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-180) failed !");
-
+      assert (almost_Equal (To, (-1.0, 0.0, 0.0)),
+              Image (To, 16) & "  rotation (-180) failed !");
 
       To := From * z_Rotation_from (to_Radians (270.0));
 
-      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (270) failed !");
-      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  rotation (270) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (270) failed !");
+      assert (almost_Equal (To, (0.0, 1.0, 0.0)),
+              Image (To, 16) & "  rotation (270) failed !");
 
       To := From * z_Rotation_from (to_Radians (-270.0));
 
-      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  rotation (-270) failed !");
-      assert (almost_Equal (To (2), -1.0),   Image (To, 16) & "  rotation (-270) failed !");
-      assert (              To (3) = 0.0 ,   Image (To, 16) & "  rotation (-270) failed !");
+      assert (almost_Equal (To, (0.0, -1.0, 0.0)),
+              Image (To, 16) & "  rotation (-270) failed !");
    end rotation_Matrix_Test;
 
 
@@ -148,17 +149,14 @@ is
    begin
       To := From * Transform;
 
-      assert (almost_Equal (To (1),  0.0),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (3),  0.0),   Image (To, 16) & "  transform () failed !");
-
+      assert (almost_Equal (To, (0.0, 1.0, 0.0)),
+              Image (To, 16) & "  transform () failed !");
 
       Transform.Translation := (1.0, 0.0, 0.0);
       To := From * Transform;
 
-      assert (almost_Equal (To (1),  1.0),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (3),  0.0),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To, (1.0, 1.0, 0.0)),
+              Image (To, 16) & "  transform () failed !");
    end transform_Test;
 
 
@@ -212,9 +210,8 @@ is
       To := From * Transform;
       To := To   * inverse_Transform (Transform);
 
-      assert (almost_Equal (To (1),  From (1)),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (2),  From (2)),   Image (To, 16) & "  transform () failed !");
-      assert (almost_Equal (To (3),  From (3)),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To, From),
+              Image (To, 16) & "  inverse_Transform failed !");
    end inverse_transform_Test;
 
 
