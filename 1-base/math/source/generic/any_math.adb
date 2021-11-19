@@ -89,6 +89,15 @@ is
    end clamp;
 
 
+   procedure swap (Left, Right : in out Real)
+   is
+      Pad : constant Real := Left;
+   begin
+      Left  := Right;
+      Right := Pad;
+   end swap;
+
+
    -------------
    -- Percentage
    --
