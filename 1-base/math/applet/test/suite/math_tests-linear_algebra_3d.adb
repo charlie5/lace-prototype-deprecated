@@ -2,7 +2,7 @@ with
      Ahven,
      float_Math.Algebra.linear.d3;
 
-with Ada.Text_IO; use Ada.Text_IO;
+--  with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body math_Tests.linear_Algebra_3d
@@ -33,7 +33,6 @@ is
 
    function almost_Equal (Left, Right : in Quaternion) return Boolean
    is
-      Tolerance : constant := 0.000_000_1;
    begin
       return almost_Equal (Left.R,     Right.R)
         and  almost_Equal (Left.V (1), Right.V (1))
@@ -45,11 +44,10 @@ is
 
    procedure translation_Matrix_Test
    is
-      use float_Math,
-          float_Math.Algebra.linear.d3;
+      use float_Math.Algebra.linear.d3;
 
-      From : Vector_3 := (0.0, 0.0, 0.0);
-      To   : Vector_3;
+      From : constant Vector_3 := (0.0, 0.0, 0.0);
+      To   :          Vector_3;
 
    begin
       To := From * to_translation_Matrix ((1.0, 0.0, 0.0));
@@ -95,11 +93,10 @@ is
 
    procedure rotation_Matrix_Test
    is
-      use float_Math,
-          float_Math.Algebra.linear.d3;
+      use float_Math.Algebra.linear.d3;
 
-      From : Vector_3 := (1.0, 0.0, 0.0);
-      To   : Vector_3;
+      From : constant Vector_3 := (1.0, 0.0, 0.0);
+      To   :          Vector_3;
 
    begin
       To := From * z_Rotation_from (to_Radians (90.0));
@@ -137,11 +134,10 @@ is
 
    procedure transform_Test
    is
-      use float_Math,
-          float_Math.Algebra.linear.d3;
+      use float_Math.Algebra.linear.d3;
 
-      From : Vector_3 := (1.0, 0.0, 0.0);
-      To   : Vector_3;
+      From : constant Vector_3 := (1.0, 0.0, 0.0);
+      To   :          Vector_3;
 
       Transform : Transform_3d := (rotation    => z_Rotation_from (to_Radians (90.0)),
                                    translation => (0.0, 0.0, 0.0));
@@ -163,11 +159,10 @@ is
 
    procedure quaternion_interpolation_Test
    is
-      use float_Math,
-          float_Math.Algebra.linear.d3;
+      use float_Math.Algebra.linear.d3;
 
-      Initial : Quaternion := to_Quaternion (z_Rotation_from (to_Radians ( 90.0)));
-      Desired : Quaternion := to_Quaternion (z_Rotation_from (to_Radians (180.0)));
+      Initial : constant Quaternion := to_Quaternion (z_Rotation_from (to_Radians ( 90.0)));
+      Desired : constant Quaternion := to_Quaternion (z_Rotation_from (to_Radians (180.0)));
 
    begin
 --        put_Line (Degrees'Image (to_Degrees (Angle (slerp (Initial, Desired, 0.0)))));
@@ -198,14 +193,13 @@ is
 
    procedure inverse_transform_Test
    is
-      use float_Math,
-          float_Math.Algebra.linear.d3;
+      use float_Math.Algebra.linear.d3;
 
-      From : Vector_3 := (1.0, 1.0, 1.0);
-      To   : Vector_3;
+      From      : constant Vector_3 := (1.0, 1.0, 1.0);
+      To        :          Vector_3;
 
-      Transform : Matrix_4x4 := to_transform_Matrix (Rotation    => z_Rotation_from (to_Radians (90.0)),
-                                                     Translation => (5.0, 5.0, 5.0));
+      Transform : constant Matrix_4x4 := to_transform_Matrix (Rotation    => z_Rotation_from (to_Radians (90.0)),
+                                                              Translation => (5.0, 5.0, 5.0));
    begin
       To := From * Transform;
       To := To   * inverse_Transform (Transform);
@@ -216,6 +210,7 @@ is
 
 
 
+   overriding
    procedure Initialize (T : in out Test) is
    begin
       T.set_Name ("Linear Algebra (3D) Tests");
