@@ -50,11 +50,11 @@ is
    --  Attributes
    --
 
-   procedure world_Rotation_is      (Self : in out Item'Class;   Now : in Matrix_3x3);
-   function  world_Rotation         (Self : in     Item'Class)     return Matrix_3x3;
+   --  procedure world_Rotation_is      (Self : in out Item'Class;   Now : in Matrix_3x3);
+   --  function  world_Rotation         (Self : in     Item'Class)     return Matrix_3x3;
 
-   procedure Position_is            (Self : in out Item'Class;   Site : in Vector_3;
-                                                                 Spin : in Matrix_3x3);
+   --  procedure Position_is            (Self : in out Item'Class;   Site : in Vector_3;
+   --                                                                Spin : in Matrix_3x3);
 
    procedure view_Transform_is      (Self : in out Item'Class;   Now : in Matrix_4x4);
 

@@ -39,35 +39,35 @@ is
    --  Attributes
    --
 
-   procedure Position_is (Self : in out Item'Class;   Site : in Vector_3;
-                                                      Spin : in Matrix_3x3)
-   is
-   begin
-      Self.Clipper.eye_position := Site;
-      Self.world_Rotation       := Spin;
-      Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation,
-                                                        -Self.Site));
-      openGL.Camera.item (Self).Position_is (Site, Spin);
-   end Position_is;
+   --  procedure Position_is (Self : in out Item'Class;   Site : in Vector_3;
+   --                                                     Spin : in Matrix_3x3)
+   --  is
+   --  begin
+   --     Self.Clipper.eye_position := Site;
+   --     Self.world_Rotation       := Spin;
+   --     Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation,
+   --                                                       -Self.Site));
+   --     openGL.Camera.item (Self).Position_is (Site, Spin);
+   --  end Position_is;
 
 
 
-   procedure world_Rotation_is (Self : in out Item'Class;   Now : in Matrix_3x3)
-   is
-   begin
-      Self.world_Rotation := Now;
-      Self.view_Transform := to_transform_Matrix ((Self.world_Rotation,
-                                                  -Self.Site));
-      Self.Spin_is (Now);
-   end world_Rotation_is;
+   --  procedure world_Rotation_is (Self : in out Item'Class;   Now : in Matrix_3x3)
+   --  is
+   --  begin
+   --     Self.world_Rotation := Now;
+   --     Self.view_Transform := to_transform_Matrix ((Self.world_Rotation,
+   --                                                 -Self.Site));
+   --     Self.Spin_is (Now);
+   --  end world_Rotation_is;
 
 
 
-   function world_Rotation (Self : in Item'Class) return Matrix_3x3
-   is
-   begin
-      return Self.world_Rotation;
-   end world_Rotation;
+   --  function world_Rotation (Self : in Item'Class) return Matrix_3x3
+   --  is
+   --  begin
+   --     return Self.world_Rotation;
+   --  end world_Rotation;
 
 
 
