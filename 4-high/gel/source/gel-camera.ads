@@ -57,10 +57,8 @@ is
 
    --  procedure view_Transform_is      (Self : in out Item'Class;   Now : in Matrix_4x4);
 
-   function  FoVy                   (Self : in     Item'Class) return Degrees;             -- Field of view angle in the y direction.
-
-   procedure set_viewport_Size      (Self : in out Item'Class;   Width,
-                                                                 Height : in Integer);
+   --  procedure set_viewport_Size      (Self : in out Item'Class;   Width,
+   --                                                                Height : in Integer);
 
    --  function  near_plane_Distance    (Self : in     Item'Class) return Real;                 -- Distance to the near clipping plane.
    --  function  far_plane_Distance     (Self : in     Item'Class) return Real;                 -- Distance to the far  clipping plane.
@@ -68,7 +66,7 @@ is
    --  procedure far_plane_Distance_is  (Self : in out Item'Class;   Now : in Real);
    --  procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real);
 
-   function  ModelView_Matrix       (Self : in     Item'Class) return Matrix_4x4;
+   --  function  ModelView_Matrix       (Self : in     Item'Class) return Matrix_4x4;
 
 
 
@@ -92,8 +90,6 @@ private
 
          world_Rotation      :         Matrix_3x3;
          --  view_Transform      :         Matrix_4x4;
-
-         FoVy                :         Degrees := default_field_of_view_Angle;
 
          --  near_plane_Distance :         Real := 0.1;
          --  near_plane_Width    :         Real;

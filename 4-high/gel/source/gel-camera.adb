@@ -79,14 +79,6 @@ is
 
 
 
-   function FoVy (Self : in Item'Class) return Degrees
-   is
-   begin
-      return openGL.Camera.item (Self).FOVy;
-   end FOVy;
-
-
-
    --  function near_plane_Distance (Self : in Item'Class) return Real
    --  is
    --  begin
@@ -120,64 +112,52 @@ is
 
 
 
-   function ModelView_Matrix (Self : in Item'Class) return Matrix_4x4
-   is
-      R : Matrix_3x3 renames Self.world_Rotation;
-      S : Vector_3   renames Self.Site;
-   begin
-      return ((R (1, 1),  R (1, 2),  R (1, 3),  0.0),
-              (R (2, 1),  R (2, 2),  R (2, 3),  0.0),
-              (R (3, 1),  R (3, 2),  R (3, 3),  0.0),
-              (  -S (1),    -S (2),    -S (3),  1.0));
-   end ModelView_Matrix;
-
-
    --------------
    --  Operations
    --
 
-   procedure set_viewport_Size (Self : in out Item'Class;   Width, Height : in Integer)
-   is
-      use math.Functions;
-
-      half_FoV_max_Rads        : Real;
-      Tan_of_half_FoV_max_Rads : Real;
-
-   begin
-      Self.Clipper.main_Clipping.Min (1) := 0;
-      Self.Clipper.main_Clipping.Min (2) := 0;
-
-      Self.Clipper.main_Clipping.Max (1) := width  - 1;
-      Self.Clipper.main_Clipping.Max (2) := height - 1;
-
-      if   Width  = 0
-        or Height = 0
-      then   Self.Aspect := 1.0;
-      else   Self.Aspect := Real (Width) / Real (Height);
-      end if;
-
-      half_FoV_max_Rads        := to_Radians (0.5 * Self.FoVy);
-      Tan_of_half_FoV_max_Rads := Tan (half_FoV_max_Rads);
-
-      --  Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
-      --  Self.near_plane_Width    := Self.near_plane_Height   * Self.Aspect;
-      --
-      --  Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_FoV_max_Rads;
-      --  Self.far_plane_Width     := Self.far_plane_Height    * Self.Aspect;
-
-
-      if Self.aspect > 1.0
-      then -- X side angle is broader than Y side angle.
-         half_FoV_max_Rads := arcTan (Self.Aspect * Tan_of_half_FoV_max_Rads);
-      end if;
-
-      Self.Clipper.max_dot_product := Sin (half_FoV_max_Rads);
-      Self.projection_Matrix       := to_Perspective (FoVy   => Self.FoVy,
-                                                      Aspect => Self.Aspect,
-                                                      zNear  => Self.near_plane_Distance,
-                                                      zFar   => Self. far_plane_Distance);
-      Self.Viewport_is (Width, Height);
-   end set_viewport_Size;
+   --  procedure set_viewport_Size (Self : in out Item'Class;   Width, Height : in Integer)
+   --  is
+   --     use math.Functions;
+   --
+   --     half_FoV_max_Rads        : Real;
+   --     Tan_of_half_FoV_max_Rads : Real;
+   --
+   --  begin
+   --     Self.Clipper.main_Clipping.Min (1) := 0;
+   --     Self.Clipper.main_Clipping.Min (2) := 0;
+   --
+   --     Self.Clipper.main_Clipping.Max (1) := width  - 1;
+   --     Self.Clipper.main_Clipping.Max (2) := height - 1;
+   --
+   --     if   Width  = 0
+   --       or Height = 0
+   --     then   Self.Aspect := 1.0;
+   --     else   Self.Aspect := Real (Width) / Real (Height);
+   --     end if;
+   --
+   --     half_FoV_max_Rads        := to_Radians (0.5 * Self.FoVy);
+   --     Tan_of_half_FoV_max_Rads := Tan (half_FoV_max_Rads);
+   --
+   --     --  Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
+   --     --  Self.near_plane_Width    := Self.near_plane_Height   * Self.Aspect;
+   --     --
+   --     --  Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_FoV_max_Rads;
+   --     --  Self.far_plane_Width     := Self.far_plane_Height    * Self.Aspect;
+   --
+   --
+   --     if Self.aspect > 1.0
+   --     then -- X side angle is broader than Y side angle.
+   --        half_FoV_max_Rads := arcTan (Self.Aspect * Tan_of_half_FoV_max_Rads);
+   --     end if;
+   --
+   --     Self.Clipper.max_dot_product := Sin (half_FoV_max_Rads);
+   --     Self.projection_Matrix       := to_Perspective (FoVy   => Self.FoVy,
+   --                                                     Aspect => Self.Aspect,
+   --                                                     zNear  => Self.near_plane_Distance,
+   --                                                     zFar   => Self. far_plane_Distance);
+   --     Self.Viewport_is (Width, Height);
+   --  end set_viewport_Size;
 
 
 
