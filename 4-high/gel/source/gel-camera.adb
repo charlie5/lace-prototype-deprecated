@@ -39,27 +39,6 @@ is
    --  Attributes
    --
 
-   function to_world_Site (Self : in Item;   Site : in Vector_3) return Vector_3
-   is
-      the_perspective_Transform : constant Matrix_4x4 := to_Perspective (FoVy   => 60.0,
-                                                                         Aspect => Self.Aspect,
-                                                                         zNear  => Self.near_plane_Distance,
-                                                                         zFar   => Self. far_plane_Distance);
-
-      Viewport              : constant Rectangle := Self.Clipper.main_Clipping;
-      Position_window_space : constant Vector_3  := (Site (1),
-                                                     Real (Viewport.Max (2)) - Site (2),
-                                                     Site (3));
-      Site_world_space      : constant Vector_3  := unProject (Position_window_space,
-                                                               Model      => Self.view_Transform,
-                                                               Projection => the_perspective_Transform,
-                                                               Viewport   => Viewport);
-   begin
-      return Site_world_space;
-   end to_world_Site;
-
-
-
    procedure Position_is (Self : in out Item'Class;   Site : in Vector_3;
                                                       Spin : in Matrix_3x3)
    is

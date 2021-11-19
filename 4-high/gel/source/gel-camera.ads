@@ -80,9 +80,6 @@ is
 
    function  ModelView_Matrix       (Self : in     Item'Class) return Matrix_4x4;
 
-   function  to_world_Site          (Self : in     Item;   Site : in Vector_3) return Vector_3;
-   --
-   --  Returns the window space 'Site' transformed to the equivalent world space site.
 
 
    --------------
