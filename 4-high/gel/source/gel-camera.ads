@@ -32,7 +32,6 @@ is
    --
 
    fairly_Far                  : constant         := 100_000.0;
-   default_field_of_view_Angle : constant Degrees := 60.0;
 
 
    subtype Rectangle is linear_Algebra_3D.Rectangle;
@@ -62,9 +61,6 @@ is
 
    procedure set_viewport_Size      (Self : in out Item'Class;   Width,
                                                                  Height : in Integer);
-
-   function  Aspect                 (Self : in     Item'Class)     return Real;             -- X/Y aspect ratio.
-   procedure Aspect_is              (Self : in out Item'Class;   Now : in Real);
 
    --  function  near_plane_Distance    (Self : in     Item'Class) return Real;                 -- Distance to the near clipping plane.
    --  function  far_plane_Distance     (Self : in     Item'Class) return Real;                 -- Distance to the far  clipping plane.
@@ -98,7 +94,6 @@ private
          --  view_Transform      :         Matrix_4x4;
 
          FoVy                :         Degrees := default_field_of_view_Angle;
-         Aspect              :         Real    := 1.0;
 
          --  near_plane_Distance :         Real := 0.1;
          --  near_plane_Width    :         Real;

@@ -87,22 +87,6 @@ is
 
 
 
-   function Aspect (Self : in Item'Class) return Real
-   is
-   begin
-      return openGL.Camera.item (Self).Aspect;
-   end Aspect;
-
-
-
-   procedure Aspect_is (Self : in out Item'Class;   Now : in Real)
-   is
-   begin
-      Self.Aspect := Now;
-   end Aspect_is;
-
-
-
    --  function near_plane_Distance (Self : in Item'Class) return Real
    --  is
    --  begin
