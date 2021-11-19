@@ -58,12 +58,6 @@ is
 
    --  procedure view_Transform_is      (Self : in out Item'Class;   Now : in Matrix_4x4);
 
-   procedure rotation_Speed_is      (Self : in out Item'Class;   Now : in Vector_3);
-   function  rotation_Speed         (Self : in     Item'Class)     return Vector_3;
-
-   function  Speed                  (Self : in     Item'Class)     return Vector_3;        -- Linear speed
-   procedure Speed_is               (Self : in out Item'Class;   Now : in Vector_3);
-
    function  FoVy                   (Self : in     Item'Class) return Degrees;             -- Field of view angle in the y direction.
 
    procedure set_viewport_Size      (Self : in out Item'Class;   Width,

@@ -79,40 +79,6 @@ is
 
 
 
-   procedure rotation_Speed_is (Self : in out Item'Class;   Now : Vector_3)
-   is
-   begin
-      null;     -- TODO
-   end rotation_Speed_is;
-
-
-
-   function rotation_Speed (Self : in Item'Class) return Vector_3
-   is
-      pragma unreferenced (Self);
-   begin
-      return (0.0, 0.0, 0.0);     -- TODO
-   end rotation_Speed;
-
-
-
-   function Speed (Self : in Item'Class) return Vector_3
-   is
-      pragma Unreferenced (Self);
-   begin
-      return (0.0, 0.0, 0.0);     -- TODO
-   end Speed;
-
-
-
-   procedure Speed_is (Self : in out Item'Class;   Now : in Vector_3)
-   is
-   begin
-      null;     -- TODO
-   end Speed_is;
-
-
-
    function FoVy (Self : in Item'Class) return Degrees
    is
    begin
