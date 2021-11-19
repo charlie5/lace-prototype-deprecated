@@ -177,36 +177,36 @@ is
 
 
 
-   function near_plane_Distance (Self : in Item'Class) return Real
-   is
-   begin
-      return openGL.Camera.item (Self).near_plane_Distance;
-   end near_plane_Distance;
+   --  function near_plane_Distance (Self : in Item'Class) return Real
+   --  is
+   --  begin
+   --     return openGL.Camera.item (Self).near_plane_Distance;
+   --  end near_plane_Distance;
 
 
 
-   function far_plane_Distance (Self : in Item'Class) return Real
-   is
-   begin
-      return openGL.Camera.item (Self).far_plane_Distance;
-   end far_plane_Distance;
+   --  function far_plane_Distance (Self : in Item'Class) return Real
+   --  is
+   --  begin
+   --     return openGL.Camera.item (Self).far_plane_Distance;
+   --  end far_plane_Distance;
 
 
 
-   procedure far_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
-   is
-   begin
-      Self.far_plane_Distance := Now;
-   end far_plane_Distance_is;
+   --  procedure far_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
+   --  is
+   --  begin
+   --     Self.far_plane_Distance := Now;
+   --  end far_plane_Distance_is;
 
 
 
-   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
-   is
-   begin
-      Self.near_plane_Distance := Now;
-      openGL.Camera.item (Self).near_plane_Distance_is (Now);
-   end near_plane_Distance_is;
+   --  procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real)
+   --  is
+   --  begin
+   --     Self.near_plane_Distance := Now;
+   --     openGL.Camera.item (Self).near_plane_Distance_is (Now);
+   --  end near_plane_Distance_is;
 
 
 
@@ -249,11 +249,11 @@ is
       half_FoV_max_Rads        := to_Radians (0.5 * Self.FoVy);
       Tan_of_half_FoV_max_Rads := Tan (half_FoV_max_Rads);
 
-      Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
-      Self.near_plane_Width    := Self.near_plane_Height   * Self.Aspect;
-
-      Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_FoV_max_Rads;
-      Self.far_plane_Width     := Self.far_plane_Height    * Self.Aspect;
+      --  Self.near_plane_Height   := Self.near_plane_Distance * Tan_of_half_FoV_max_Rads;
+      --  Self.near_plane_Width    := Self.near_plane_Height   * Self.Aspect;
+      --
+      --  Self.far_plane_Height    := Self.far_plane_Distance  * Tan_of_half_FoV_max_Rads;
+      --  Self.far_plane_Width     := Self.far_plane_Height    * Self.Aspect;
 
 
       if Self.aspect > 1.0

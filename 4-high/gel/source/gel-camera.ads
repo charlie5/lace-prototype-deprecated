@@ -75,11 +75,11 @@ is
    function  Aspect                 (Self : in     Item'Class)     return Real;             -- X/Y aspect ratio.
    procedure Aspect_is              (Self : in out Item'Class;   Now : in Real);
 
-   function  near_plane_Distance    (Self : in     Item'Class) return Real;                 -- Distance to the near clipping plane.
-   function  far_plane_Distance     (Self : in     Item'Class) return Real;                 -- Distance to the far  clipping plane.
-
-   procedure far_plane_Distance_is  (Self : in out Item'Class;   Now : in Real);
-   procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real);
+   --  function  near_plane_Distance    (Self : in     Item'Class) return Real;                 -- Distance to the near clipping plane.
+   --  function  far_plane_Distance     (Self : in     Item'Class) return Real;                 -- Distance to the far  clipping plane.
+   --
+   --  procedure far_plane_Distance_is  (Self : in out Item'Class;   Now : in Real);
+   --  procedure near_plane_Distance_is (Self : in out Item'Class;   Now : in Real);
 
    function  ModelView_Matrix       (Self : in     Item'Class) return Matrix_4x4;
 
@@ -112,13 +112,13 @@ private
          FoVy                :         Degrees := default_field_of_view_Angle;
          Aspect              :         Real    := 1.0;
 
-         near_plane_Distance :         Real := 0.1;
-         near_plane_Width    :         Real;
-         near_plane_Height   :         Real;
+         --  near_plane_Distance :         Real := 0.1;
+         --  near_plane_Width    :         Real;
+         --  near_plane_Height   :         Real;
 
-         far_plane_Distance  :         Real := fairly_Far;
-         far_plane_Width     :         Real;
-         far_plane_Height    :         Real;
+         --  far_plane_Distance  :         Real := fairly_Far;
+         --  far_plane_Width     :         Real;
+         --  far_plane_Height    :         Real;
 
          Projection_Matrix   :         Matrix_4x4;
 
