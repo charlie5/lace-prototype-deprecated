@@ -60,25 +60,6 @@ is
 
 
 
-   procedure Site_is (Self : in out Item;   Now : in Vector_3)
-   is
-   begin
-      Self.Clipper.eye_Position := Now;
-      Self.view_Transform       := to_transform_Matrix ((Self.world_Rotation, -Self.Site));
-
-      openGL.Camera.item (Self).Site_is (Now);
-   end Site_is;
-
-
-
-   function Site (Self : in Item) return Vector_3
-   is
-   begin
-      return Self.Clipper.eye_Position;
-   end Site;
-
-
-
    procedure Position_is (Self : in out Item'Class;   Site : in Vector_3;
                                                       Spin : in Matrix_3x3)
    is

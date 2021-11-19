@@ -50,9 +50,6 @@ is
    --  Attributes
    --
 
-   procedure Site_is                (Self : in out Item;   Now : in Vector_3);
-   function  Site                   (Self : in     Item)     return Vector_3;
-
    procedure world_Rotation_is      (Self : in out Item'Class;   Now : in Matrix_3x3);
    function  world_Rotation         (Self : in     Item'Class)     return Matrix_3x3;
 
