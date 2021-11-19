@@ -77,10 +77,6 @@ is
    procedure render         (Self : in out Item;   the_World : in gel.World.view;
                                                    To        : in openGL.Surface.view);
 
-   function  cull_Completed (Self : in     Item) return Boolean;
-   procedure disable_Cull   (Self : in out Item);
-
-
 
 private
 

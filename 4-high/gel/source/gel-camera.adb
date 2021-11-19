@@ -189,21 +189,4 @@ is
    end render;
 
 
-
-   function cull_Completed (Self : in Item) return Boolean
-   is
-   begin
-      return openGL.Camera.item (Self).cull_Completed;
-   end cull_Completed;
-
-
-
-   procedure disable_Cull   (Self : in out Item)
-   is
-   begin
-      Self.is_Culling := False;
-      openGL.Camera.item (Self).disable_Cull;
-   end disable_Cull;
-
-
 end gel.Camera;
