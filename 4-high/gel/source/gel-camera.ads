@@ -22,7 +22,7 @@ is
    --  Forge
    --
 
-   procedure define  (Self : in out Item);
+   --  procedure define  (Self : in out Item);
    --  procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
 
@@ -56,7 +56,7 @@ is
    --  procedure Position_is            (Self : in out Item'Class;   Site : in Vector_3;
    --                                                                Spin : in Matrix_3x3);
 
-   procedure view_Transform_is      (Self : in out Item'Class;   Now : in Matrix_4x4);
+   --  procedure view_Transform_is      (Self : in out Item'Class;   Now : in Matrix_4x4);
 
    procedure rotation_Speed_is      (Self : in out Item'Class;   Now : in Vector_3);
    function  rotation_Speed         (Self : in     Item'Class)     return Vector_3;
@@ -101,7 +101,7 @@ private
          Clipper             : aliased Clipping_data;
 
          world_Rotation      :         Matrix_3x3;
-         view_Transform      :         Matrix_4x4;
+         --  view_Transform      :         Matrix_4x4;
 
          FoVy                :         Degrees := default_field_of_view_Angle;
          Aspect              :         Real    := 1.0;

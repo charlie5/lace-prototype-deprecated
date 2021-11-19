@@ -11,18 +11,18 @@ is
    -- Forge
    --
 
-   procedure define (Self : in out Item)
-   is
-   begin
-      Self.view_Transform := Look_at (Eye    => Self.Clipper.eye_Position,
-                                      Center => (Self.Clipper.eye_Position (1),
-                                                 Self.Clipper.eye_Position (2),
-                                                 -100.0),
-                                      Up     => (0.0, 1.0, 0.0));
-
-      Self.world_Rotation := y_Rotation_from (0.0);
-      openGL.Camera.item (Self).define;
-   end define;
+   --  procedure define (Self : in out Item)
+   --  is
+   --  begin
+      --  Self.view_Transform := Look_at (Eye    => Self.Clipper.eye_Position,
+      --                                  Center => (Self.Clipper.eye_Position (1),
+      --                                             Self.Clipper.eye_Position (2),
+      --                                             -100.0),
+      --                                  Up     => (0.0, 1.0, 0.0));
+      --
+      --  Self.world_Rotation := y_Rotation_from (0.0);
+      --  openGL.Camera.item (Self).define;
+   --  end define;
 
 
 
@@ -71,11 +71,11 @@ is
 
 
 
-   procedure view_Transform_is (Self : in out Item'Class;   Now : in Matrix_4x4)
-   is
-   begin
-      Self.view_Transform := Now;
-   end view_Transform_is;
+   --  procedure view_Transform_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   --  is
+   --  begin
+   --     Self.view_Transform := Now;
+   --  end view_Transform_is;
 
 
 
