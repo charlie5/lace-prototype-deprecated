@@ -198,6 +198,27 @@ is
 
 
 
+   procedure inverse_transform_Test
+   is
+      use float_Math,
+          float_Math.Algebra.linear.d3;
+
+      From : Vector_3 := (1.0, 1.0, 1.0);
+      To   : Vector_3;
+
+      Transform : Matrix_4x4 := to_transform_Matrix (Rotation    => z_Rotation_from (to_Radians (90.0)),
+                                                     Translation => (5.0, 5.0, 5.0));
+   begin
+      To := From * Transform;
+      To := To   * inverse_Transform (Transform);
+
+      assert (almost_Equal (To (1),  From (1)),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (2),  From (2)),   Image (To, 16) & "  transform () failed !");
+      assert (almost_Equal (To (3),  From (3)),   Image (To, 16) & "  transform () failed !");
+   end inverse_transform_Test;
+
+
+
    procedure Initialize (T : in out Test) is
    begin
       T.set_Name ("Linear Algebra (3D) Tests");
@@ -205,6 +226,7 @@ is
       Framework.add_test_Routine (T,       translation_Matrix_Test'Access,       "translation_Matrix_Test");
       Framework.add_test_Routine (T,          rotation_Matrix_Test'Access,          "rotation_Matrix_Test");
       Framework.add_test_Routine (T,                transform_Test'Access,                "transform_Test");
+      Framework.add_test_Routine (T,        inverse_transform_Test'Access,        "inverse_transform_Test");
       Framework.add_test_Routine (T, quaternion_interpolation_Test'Access, "quaternion_interpolation_Test");
    end Initialize;
 
