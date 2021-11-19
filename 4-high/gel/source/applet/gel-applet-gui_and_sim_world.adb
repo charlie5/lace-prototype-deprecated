@@ -26,9 +26,9 @@ is
          the_world_Info.World.register (Self.all'unchecked_Access,
                                         to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
-         the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
-         the_Camera.Renderer_is       (Self.Renderer);
-         the_Camera.Site_is           ((0.0, 5.0, 5.0));
+         the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
+         the_Camera.Renderer_is (Self.Renderer);
+         the_Camera.Site_is     ((0.0, 5.0, 5.0));
 
          the_world_Info.Cameras.append (the_Camera);
          Self.Worlds           .append (the_world_Info);
@@ -51,9 +51,9 @@ is
          the_world_Info.World.register (the_Observer => Self.all'unchecked_Access,
                                         of_Kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
-         the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
-         the_Camera.Renderer_is       (Self.Renderer);
-         the_Camera.Site_is           ((0.0, 5.0, 5.0));
+         the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
+         the_Camera.Renderer_is (Self.Renderer);
+         the_Camera.Site_is     ((0.0, 5.0, 5.0));
 
          the_world_Info.Cameras.append (the_Camera);
          Self.Worlds           .append (the_world_Info);

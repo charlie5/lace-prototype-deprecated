@@ -248,9 +248,9 @@ is
                                                                 space_Kind,
                                                                 Self.Renderer).all'Access;
 
-      the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
-      the_Camera.Renderer_is       (Self.Renderer);
-      the_Camera.Site_is           ((0.0, 5.0, 50.0));
+      the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
+      the_Camera.Renderer_is (Self.Renderer);
+      the_Camera.Site_is     ((0.0, 5.0, 50.0));
 
       the_world_Info.Cameras.append (the_Camera);
 
@@ -907,8 +907,8 @@ is
          declare
             the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
          begin
-            the_Camera.set_viewport_Size (Self.Applet.Window.Width,
-                                          Self.Applet.Window.Height);
+            the_Camera.Viewport_is (Self.Applet.Window.Width,
+                                    Self.Applet.Window.Height);
          end;
 
          next (Cursor);

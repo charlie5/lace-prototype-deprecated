@@ -241,22 +241,57 @@ is
 
 
 
+   --  function Area (Self : in Triangle) return Real
+   --  --
+   --  -- This is an implementation of Heron's formula.
+   --  -- It is numerically unstable with very small angles.
+   --  --
+   --  is
+   --     use Functions;
+   --
+   --     A : constant Real := Distance (Self.Vertices (1),  Self.Vertices (2));
+   --     B : constant Real := Distance (Self.Vertices (2),  Self.Vertices (3));
+   --     C : constant Real := Distance (Self.Vertices (3),  Self.Vertices (1));
+   --
+   --     S : constant Real := (A + B + C) / 2.0;                 -- Semi-perimeter.
+   --
+   --  begin
+   --     return Real (SqRt (S * (S - A) * (S - B) * (S - C)));   -- Herons formula.
+   --  end Area;
+
+
+
    function Area (Self : in Triangle) return Real
    --
-   -- This is an immplementation of Heron's formula.
-   -- It is numerically unstable with very small angles.
+   -- This is a numerically stable implementation of Heron's formula.
+   -- See: https://en.wikipedia.org/wiki/Heron%27s_formula#Numerical_stability.
    --
    is
       use Functions;
 
-      A : constant Real := Distance (Self.Vertices (1),  Self.Vertices (2));
-      B : constant Real := Distance (Self.Vertices (2),  Self.Vertices (3));
-      C : constant Real := Distance (Self.Vertices (3),  Self.Vertices (1));
+      a : Real := Distance (Self.Vertices (1),  Self.Vertices (2));
+      b : Real := Distance (Self.Vertices (2),  Self.Vertices (3));
+      c : Real := Distance (Self.Vertices (3),  Self.Vertices (1));
 
-      S : constant Real := (A + B + C) / 2.0;                 -- Semi-perimeter.
-
+      D : Real;
    begin
-      return Real (SqRt (S * (S - A) * (S - B) * (S - C)));   -- Herons formula.
+      -- Sort the lengths such that a >= b >= c.
+      --
+      if c > b then swap (b, c); end if;
+      if a < b then swap (a, b); end if;
+      if b < c then swap (b, c); end if;
+
+      D :=   (a + (b + c))
+           * (c - (a - b))
+           * (c + (a - b))
+           * (a + (b - c));
+
+      if D <= 0.0
+      then
+         return 0.0;
+      end if;
+
+      return 0.25 * SqRt (D);
    end Area;
 
 

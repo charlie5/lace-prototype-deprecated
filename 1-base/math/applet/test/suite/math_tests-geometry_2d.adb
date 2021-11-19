@@ -65,17 +65,10 @@ is
 
 
       the_Tri := (vertices => ((-0.11073643,  -0.179634809),
-                               (-0.0276841074, 0.705091298),
-                               (-0.0553682148, 0.410182595)));
+                               (-0.0553682148, 0.410182595),
+                               (-0.0276841074, 0.705091298)));
       assert (Area (the_Tri) >= 0.0,
-              "T4 =>  & Image (the_Tri) &  area should be positive ... failed !");
-
-
---        the_Tri := (vertices => ((-0.11073643,  -0.179634809),
---                                 (-0.0553682148, 0.410182595),
---                                 (-0.0276841074, 0.705091298)));
---        assert (Area (the_Tri) > 0.0,
---                "T2 =>  & Image (the_Tri) &  area should be positive ... failed !");
+              "T2 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
 
       the_Tri := (vertices => ((-1.0, -1.0),
@@ -83,6 +76,12 @@ is
                                ( 1.0, -0.999999)));
       assert (Area (the_Tri) > 0.0,
               "T3 =>  & Image (the_Tri) &  area should be positive ... failed !");
+
+      the_Tri := (vertices => ((-0.11073643,  -0.179634809),
+                               (-0.0276841074, 0.705091298),
+                               (-0.0553682148, 0.410182595)));
+      assert (Area (the_Tri) >= 0.0,
+              "T4 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
       -- tbd: Add tests for degenerate triangles.
    end triangle_Area_Test;

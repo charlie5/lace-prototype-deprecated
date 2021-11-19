@@ -82,11 +82,11 @@ is
       --
       if Self.allow_linear_Motion
       then
-         if Self.Motion (Forward)  then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
-         if Self.Motion (Backward) then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.0, 0.1 * Speed);   end if;
+         if Self.Motion (Forward)  then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.Spin * (0.0, 0.0, 0.1 * Speed);   end if;
+         if Self.Motion (Backward) then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.Spin * (0.0, 0.0, 0.1 * Speed);   end if;
 
-         if Self.Motion (Up)       then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
-         if Self.Motion (Down)     then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.world_Rotation * (0.0, 0.1 * Speed, 0.0);   end if;
+         if Self.Motion (Up)       then   Self.sprite_Offset := Self.sprite_Offset + the_Camera.Spin * (0.0, 0.1 * Speed, 0.0);   end if;
+         if Self.Motion (Down)     then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.Spin * (0.0, 0.1 * Speed, 0.0);   end if;
       end if;
 
       --  Orbit.
@@ -98,9 +98,9 @@ is
             Self.camera_y_Spin := Self.camera_y_Spin - 0.01 * Speed;
             Self.sprite_Offset := y_Rotation_from (-0.01 * Speed) * Self.sprite_Offset;
 
-            the_Camera.world_Rotation_is (xyz_Rotation (Self.camera_x_Spin,
-                                                        Self.camera_y_Spin,
-                                                        Self.camera_z_Spin));
+            the_Camera.Spin_is (xyz_Rotation (Self.camera_x_Spin,
+                                              Self.camera_y_Spin,
+                                              Self.camera_z_Spin));
          end if;
 
          if Self.Motion (Right)
@@ -108,9 +108,9 @@ is
             Self.camera_y_Spin := Self.camera_y_Spin + 0.01 * Speed;
             Self.sprite_Offset := y_Rotation_from (0.01 * Speed) * Self.sprite_Offset;
 
-            the_Camera.world_Rotation_is (xyz_Rotation (Self.camera_x_Spin,
-                                                        Self.camera_y_Spin,
-                                                        Self.camera_z_Spin));
+            the_Camera.Spin_is (xyz_Rotation (Self.camera_x_Spin,
+                                              Self.camera_y_Spin,
+                                              Self.camera_z_Spin));
          end if;
       end if;
 

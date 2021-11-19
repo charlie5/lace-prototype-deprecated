@@ -62,6 +62,7 @@ launch_pong
 launch_core_test
 launch_opengl_model
 launch_large_terrain_demo
+launch_math_testsuite
 launch_many_boxes_demo
 launch_model_scaling
 launch_mouse_selection

@@ -33,7 +33,7 @@ is
       orbit_Factor  : constant Real := 0.08;
 
       initial_Site  : constant Vector_3   := Self.Cameras.first_Element.Site;
-      initial_Spin  : constant Matrix_3x3 := Self.Cameras.first_Element.world_Rotation;
+      initial_Spin  : constant Matrix_3x3 := Self.Cameras.first_Element.Spin;
 
       new_Site      : Vector_3;
       new_Spin      : Matrix_3x3;
@@ -140,7 +140,7 @@ is
 
             if spin_Updated
             then
-               the_Camera.world_Rotation_is (new_Spin);
+               the_Camera.Spin_is (new_Spin);
             end if;
 
             next (Cursor);
