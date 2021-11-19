@@ -15,7 +15,7 @@ is
 
    type Views is array (Positive range <>) of View;
 
-   use Math;
+   --  use Math;
 
 
    ---------
@@ -31,18 +31,18 @@ is
    -- Core Types
    --
 
-   fairly_Far                  : constant         := 100_000.0;
-
-
-   subtype Rectangle is linear_Algebra_3D.Rectangle;
-
-   type Clipping_data is
-      record
-         eye_Position    : aliased Vector_3  := (0.0,  0.0,  5.0);
-         view_Direction  :         Vector_3  := (0.0,  0.0, -1.0);
-         max_dot_Product :         Real      := 0.0;                   -- Depends on the field of view.
-         main_Clipping   :         Rectangle := ((0, 0), (0, 0));
-      end record;
+   --  fairly_Far                  : constant         := 100_000.0;
+   --
+   --
+   --  subtype Rectangle is linear_Algebra_3D.Rectangle;
+   --
+   --  type Clipping_data is
+   --     record
+   --        eye_Position    : aliased Vector_3  := (0.0,  0.0,  5.0);
+   --        view_Direction  :         Vector_3  := (0.0,  0.0, -1.0);
+   --        max_dot_Product :         Real      := 0.0;                   -- Depends on the field of view.
+   --        main_Clipping   :         Rectangle := ((0, 0), (0, 0));
+   --     end record;
 
 
    --------------
@@ -82,9 +82,10 @@ private
 
    type Item  is new openGL.Camera.item with
       record
-         Clipper             : aliased Clipping_data;
+         null;
+         --  Clipper             : aliased Clipping_data;
 
-         world_Rotation      :         Matrix_3x3;
+         --  world_Rotation      :         Matrix_3x3;
          --  view_Transform      :         Matrix_4x4;
 
          --  near_plane_Distance :         Real := 0.1;
@@ -95,9 +96,9 @@ private
          --  far_plane_Width     :         Real;
          --  far_plane_Height    :         Real;
 
-         Projection_Matrix   :         Matrix_4x4;
+         --  Projection_Matrix   :         Matrix_4x4;
 
-         is_Culling          :         Boolean := True;
+         --  is_Culling          :         Boolean := True;
       end record;
 
 
