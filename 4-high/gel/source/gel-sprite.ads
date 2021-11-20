@@ -19,13 +19,12 @@ limited
 with
      gel.World;
 
+
 package gel.Sprite
 --
 --  Combines a graphics 'visual' and a physics 'solid'.
 --
 is
-   use Math;
-
    type Item  is limited new lace.Subject_and_deferred_Observer.item with private;
    type View  is access all Item'Class;
 
@@ -37,6 +36,9 @@ is
 
    type physics_Space_view is access all physics.Space.item'Class;
    type World_view         is access all gel.World.item'Class;
+
+
+   use Math;
 
 
    --------------
@@ -104,7 +106,7 @@ is
    procedure Model_is              (Self : in out Item;   Now : in openGL.Model.view);
    function  owns_Graphics         (Self : in     Item)           return Boolean;
 
-   function  physics_Model         (Self : in     Item)     return access physics.Model.item'class;
+   function  physics_Model         (Self : in     Item)     return access physics.Model.item'Class;
    procedure physics_Model_is      (Self : in out Item;   Now : in physics.Model.view);
 
    function  Scale                 (Self : in     Item)     return Vector_3;
@@ -394,9 +396,6 @@ private
          Shape                   : physics_Shape_view;
          Solid                   : physics_Object_view;
          is_Kinematic            : Boolean;
-
-         --  Transform               : safe_Matrix_4x4;
-         --  Transform               : Matrix_4x4;
 
          Depth_in_camera_space   : Real;
 
