@@ -268,7 +268,7 @@ is
    --- Attributes
    --
 
-   function World (Self : in Item'Class) return access gel.World.item'Class
+   function World (Self : in Item) return access gel.World.item'Class
    is
    begin
       return Self.World;
@@ -276,7 +276,7 @@ is
 
 
 
-   function Id (Self : in Item'Class) return gel.sprite_Id
+   function Id (Self : in Item) return gel.sprite_Id
    is
    begin
       return Self.Id;
@@ -284,7 +284,7 @@ is
 
 
 
-   procedure Id_is (Self : in out Item'Class;   Now : in gel.sprite_Id)
+   procedure Id_is (Self : in out Item;   Now : in gel.sprite_Id)
    is
    begin
       Self.Id := Now;
@@ -292,7 +292,7 @@ is
 
 
 
-   function Depth_in_camera_space (Self : in Item'Class) return Real
+   function Depth_in_camera_space (Self : in Item) return Real
    is
    begin
       return Self.Depth_in_camera_space;
@@ -300,7 +300,7 @@ is
 
 
 
-   function Mass (Self : in Item'Class) return Real
+   function Mass (Self : in Item) return Real
    is
    begin
       return Self.physics_Model.Mass;
@@ -308,7 +308,7 @@ is
 
 
 
-   function is_Static (Self : in Item'Class) return Boolean
+   function is_Static (Self : in Item) return Boolean
    is
    begin
       return Self.Mass = 0.0;
@@ -316,7 +316,7 @@ is
 
 
 
-   function is_Kinematic (Self : in Item'Class) return Boolean
+   function is_Kinematic (Self : in Item) return Boolean
    is
    begin
       return Self.is_Kinematic;
@@ -324,7 +324,7 @@ is
 
 
 
-   procedure mvp_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   procedure mvp_Matrix_is (Self : in out Item;   Now : in Matrix_4x4)
    is
    begin
       Self.Visual.mvp_Transform_is (Now);
@@ -333,7 +333,7 @@ is
 
 
 
-   function mvp_Matrix (Self : in Item'Class) return Matrix_4x4
+   function mvp_Matrix (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Visual.mvp_Transform;
@@ -341,7 +341,7 @@ is
 
 
 
-   procedure is_Visible (Self : in out Item'Class;   Now : in Boolean)
+   procedure is_Visible (Self : in out Item;   Now : in Boolean)
    is
    begin
       Self.is_Visible := Now;
@@ -349,7 +349,7 @@ is
 
 
 
-   function is_Visible (Self : in Item'Class) return Boolean
+   function is_Visible (Self : in Item) return Boolean
    is
    begin
       return Self.is_Visible;
@@ -357,7 +357,7 @@ is
 
 
 
-   procedure key_Response_is (Self : in out Item'Class;   Now : in lace.Response.view)
+   procedure key_Response_is (Self : in out Item;   Now : in lace.Response.view)
    is
    begin
       Self.key_Response := Now;
@@ -365,7 +365,7 @@ is
 
 
 
-   function key_Response (Self : in Item'Class) return lace.Response.view
+   function key_Response (Self : in Item) return lace.Response.view
    is
    begin
       return Self.key_Response;
@@ -373,7 +373,7 @@ is
 
 
 
-   function Visual (Self : access Item'Class) return openGL.Visual.view
+   function Visual (Self : access Item) return openGL.Visual.view
    is
    begin
       return Self.Visual;
@@ -381,7 +381,7 @@ is
 
 
 
-   function graphics_Model (Self : in Item'Class) return openGL.Model.view
+   function graphics_Model (Self : in Item) return openGL.Model.view
    is
    begin
       return Self.visual.Model;
@@ -389,7 +389,7 @@ is
 
 
 
-   procedure Model_is (Self : in out Item'Class;   Now : in openGL.Model.view)
+   procedure Model_is (Self : in out Item;   Now : in openGL.Model.view)
    is
    begin
       Self.Visual.Model_is (Now);
@@ -405,7 +405,7 @@ is
 
 
 
-   function physics_Model (Self : in Item'Class) return access physics.Model.item'class
+   function physics_Model (Self : in Item) return access physics.Model.item'class
    is
    begin
       return Self.physics_Model;
@@ -413,7 +413,7 @@ is
 
 
 
-   procedure physics_Model_is (Self : in out Item'Class;   Now : in physics.Model.view)
+   procedure physics_Model_is (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
       Self.physics_Model := Now;
@@ -421,7 +421,7 @@ is
 
 
 
-   procedure Scale_is (Self : in out Item'Class;   Now : in math.Vector_3)
+   procedure Scale_is (Self : in out Item;   Now : in math.Vector_3)
    is
    begin
       Self.physics_Model.Scale_is (Now);
@@ -430,7 +430,7 @@ is
 
 
 
-   function Scale (Self : in Item'Class) return Vector_3
+   function Scale (Self : in Item) return Vector_3
    is
    begin
       return Self.physics_Model.Scale;
@@ -438,7 +438,7 @@ is
 
 
 
-   function Solid (Self : in Item'Class) return physics_Object_view
+   function Solid (Self : in Item) return physics_Object_view
    is
    begin
       return Self.Solid;
@@ -446,7 +446,7 @@ is
 
 
 
-   procedure Solid_is (Self : out Item'Class;   Now : in physics_Object_view)
+   procedure Solid_is (Self : in out Item;   Now : in physics_Object_view)
    is
    begin
       Self.Solid := Now;
@@ -462,7 +462,7 @@ is
 
 
 
-   function Shape (Self : in Item'Class) return physics_Shape_view
+   function Shape (Self : in Item) return physics_Shape_view
    is
    begin
       return Self.Shape;
@@ -764,7 +764,7 @@ is
 
 
 
-   procedure interpolate_Motion (Self : in out Item'Class)
+   procedure interpolate_Motion (Self : in out Item)
    is
    begin
       if Self.is_Static then
@@ -791,7 +791,7 @@ is
    --- Hierachy
    --
 
-   function parent_Joint (Self : in Item'Class) return gel.Joint.view
+   function parent_Joint (Self : in Item) return gel.Joint.view
    is
    begin
       return Self.parent_Joint;
@@ -799,7 +799,7 @@ is
 
 
 
-   function child_Joints (Self : in Item'Class) return gel.Joint.views
+   function child_Joints (Self : in Item) return gel.Joint.views
    is
       the_Joints : Joint.views (1 .. Integer (Self.child_Joints.Length));
    begin
@@ -813,7 +813,7 @@ is
 
 
 
-   function top_Parent (Self : access Item'Class) return gel.Sprite.view
+   function top_Parent (Self : access Item) return gel.Sprite.view
    is
    begin
       if Self.parent_Joint = null
@@ -864,8 +864,8 @@ is
 
 
 
-   procedure attach (Self : access Item'Class;   the_Child : in Sprite.view;
-                                                 the_Joint : in gel.Joint.view)
+   procedure attach (Self : access Item;   the_Child : in Sprite.view;
+                                           the_Joint : in gel.Joint.view)
    is
    begin
       log ("Attaching " & the_Child.Id'Image & " to " & Self.Id'Image);
@@ -905,14 +905,14 @@ is
 
    --  Hinge
    --
-   procedure attach_via_Hinge (Self : access Item'Class;   the_Child         : in      Sprite.view;
-                                                           pivot_Axis        : in      Vector_3;
-                                                           Anchor            : in      Vector_3;
-                                                           child_Anchor      : in      Vector_3;
-                                                           low_Limit         : in      Real;
-                                                           high_Limit        : in      Real;
-                                                           collide_Connected : in      Boolean;
-                                                           new_joint         :     out gel.Joint.view)
+   procedure attach_via_Hinge (Self : access Item;   the_Child         : in      Sprite.view;
+                                                     pivot_Axis        : in      Vector_3;
+                                                     Anchor            : in      Vector_3;
+                                                     child_Anchor      : in      Vector_3;
+                                                     low_Limit         : in      Real;
+                                                     high_Limit        : in      Real;
+                                                     collide_Connected : in      Boolean;
+                                                     new_joint         :     out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
@@ -932,12 +932,12 @@ is
 
 
 
-   procedure attach_via_Hinge (Self : access Item'Class;   the_Child    : in     Sprite.view;
-                                                           pivot_Axis   : in     Vector_3;
-                                                           pivot_Anchor : in     Vector_3;
-                                                           low_Limit    : in     Real;
-                                                           high_Limit   : in     Real;
-                                                           new_joint    :    out gel.Joint.view)
+   procedure attach_via_Hinge (Self : access Item;   the_Child    : in     Sprite.view;
+                                                     pivot_Axis   : in     Vector_3;
+                                                     pivot_Anchor : in     Vector_3;
+                                                     low_Limit    : in     Real;
+                                                     high_Limit   : in     Real;
+                                                     new_joint    :    out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
@@ -956,11 +956,11 @@ is
 
 
 
-   procedure attach_via_Hinge (Self : access Item'Class;   the_Child  : in     Sprite.view;
-                                                           pivot_Axis : in     Vector_3;
-                                                           low_Limit  : in     Real;
-                                                           high_Limit : in     Real;
-                                                           new_joint  :    out gel.Joint.view)
+   procedure attach_via_Hinge (Self : access Item;   the_Child  : in     Sprite.view;
+                                                     pivot_Axis : in     Vector_3;
+                                                     low_Limit  : in     Real;
+                                                     high_Limit : in     Real;
+                                                     new_joint  :    out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
@@ -978,12 +978,12 @@ is
 
 
 
-   procedure attach_via_Hinge (Self : access Item'Class;   the_Child         : in     Sprite.view;
-                                                           Frame_in_parent   : in     Matrix_4x4;
-                                                           Frame_in_child    : in     Matrix_4x4;
-                                                           Limits            : in     DoF_Limits;
-                                                           collide_Connected : in     Boolean;
-                                                           new_joint         :    out gel.Joint.view)
+   procedure attach_via_Hinge (Self : access Item;   the_Child         : in     Sprite.view;
+                                                     Frame_in_parent   : in     Matrix_4x4;
+                                                     Frame_in_child    : in     Matrix_4x4;
+                                                     Limits            : in     DoF_Limits;
+                                                     collide_Connected : in     Boolean;
+                                                     new_joint         :    out gel.Joint.view)
    is
       the_Joint : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
    begin
@@ -1004,11 +1004,11 @@ is
    --  Ball/Socket
    --
 
-   procedure internal_attach_via_ball_Socket (Self : access Item'Class;   the_Child    : in Sprite.view;
-                                                                          pitch_Limits : in DoF_Limits;
-                                                                          yaw_Limits   : in DoF_Limits;
-                                                                          roll_Limits  : in DoF_Limits;
-                                                                          the_Joint    : in gel.any_Joint.view)
+   procedure internal_attach_via_ball_Socket (Self : access Item;   the_Child    : in Sprite.view;
+                                                                    pitch_Limits : in DoF_Limits;
+                                                                    yaw_Limits   : in DoF_Limits;
+                                                                    roll_Limits  : in DoF_Limits;
+                                                                    the_Joint    : in gel.any_Joint.view)
    is
       use gel.any_Joint;
    begin
@@ -1025,13 +1025,13 @@ is
 
 
 
-   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child    : in     Sprite.view;
-                                                                 pivot_Anchor : in     Vector_3;
-                                                                 pivot_Axis   : in     Matrix_3x3;
-                                                                 pitch_Limits : in     DoF_Limits;
-                                                                 yaw_Limits   : in     DoF_Limits;
-                                                                 roll_Limits  : in     DoF_Limits;
-                                                                 new_joint    :    out gel.Joint.view)
+   procedure attach_via_ball_Socket (Self : access Item;   the_Child    : in     Sprite.view;
+                                                           pivot_Anchor : in     Vector_3;
+                                                           pivot_Axis   : in     Matrix_3x3;
+                                                           pitch_Limits : in     DoF_Limits;
+                                                           yaw_Limits   : in     DoF_Limits;
+                                                           roll_Limits  : in     DoF_Limits;
+                                                           new_joint    :    out gel.Joint.view)
    is
       the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
@@ -1049,13 +1049,13 @@ is
 
 
 
-   procedure attach_via_ball_Socket (Self : access Item'Class;   the_Child       : in     Sprite.view;
-                                                                 Frame_in_parent : in     Matrix_4x4;
-                                                                 Frame_in_child  : in     Matrix_4x4;
-                                                                 pitch_Limits    : in     DoF_Limits;
-                                                                 yaw_Limits      : in     DoF_Limits;
-                                                                 roll_Limits     : in     DoF_Limits;
-                                                                 new_joint       :    out gel.Joint.view)
+   procedure attach_via_ball_Socket (Self : access Item;   the_Child       : in     Sprite.view;
+                                                           Frame_in_parent : in     Matrix_4x4;
+                                                           Frame_in_child  : in     Matrix_4x4;
+                                                           pitch_Limits    : in     DoF_Limits;
+                                                           yaw_Limits      : in     DoF_Limits;
+                                                           roll_Limits     : in     DoF_Limits;
+                                                           new_joint       :    out gel.Joint.view)
    is
       the_Joint : constant gel.any_Joint.view := new gel.any_Joint.item;
    begin
@@ -1077,7 +1077,7 @@ is
    --- Graphics
    --
 
-   procedure program_Parameters_are  (Self : in out Item'Class;   Now : in opengl.Program.Parameters_view)
+   procedure program_Parameters_are  (Self : in out Item;   Now : in opengl.Program.Parameters_view)
    is
    begin
       Self.program_Parameters := Now;
@@ -1085,7 +1085,7 @@ is
 
 
 
-   function program_Parameters (Self : in Item'Class) return opengl.Program.Parameters_view
+   function program_Parameters (Self : in Item) return opengl.Program.Parameters_view
    is
    begin
       return Self.program_Parameters;
