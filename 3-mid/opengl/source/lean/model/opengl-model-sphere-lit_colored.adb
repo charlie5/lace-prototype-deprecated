@@ -127,6 +127,12 @@ is
       end set_Sites;
 
 
+      for i in the_Vertices'Range
+      loop
+         the_Vertices (i).Site := the_Vertices (i).Site * Self.Radius;
+      end loop;
+
+
       set_Indices:
       declare
          strip_Id : long_Index_t := 0;
