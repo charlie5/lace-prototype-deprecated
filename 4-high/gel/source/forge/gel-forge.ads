@@ -86,6 +86,7 @@ is
                                   Site     : in math.Vector_3 := math.Origin_3D;
                                   Mass     : in math.Real     := 1.0;
                                   Radius   : in math.Real     := 0.5;
+                                  is_Lit   : in Boolean       := True;
                                   Color    : in openGL.Color  := opengl.Palette.White;
                                   Texture  : in openGL.asset_Name) return gel.Sprite.view;
 

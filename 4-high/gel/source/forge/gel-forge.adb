@@ -2,6 +2,7 @@ with
      openGL.Model.text     .lit_colored_textured,
      openGL.Model.sphere   .lit_colored_textured,
      openGL.Model.sphere   .lit_colored,
+     openGL.Model.sphere   .textured,
      openGL.Model.polygon  .lit_colored,
      openGL.Model.box      .colored,
      openGL.Model.box      .textured,
@@ -243,16 +244,23 @@ is
                              Site     : in math.Vector_3 := math.Origin_3D;
                              Mass     : in math.Real     := 1.0;
                              Radius   : in math.Real     := 0.5;
+                             is_Lit   : in Boolean       := True;
                              Color    : in openGL.Color  := opengl.Palette.White;
                              Texture  : in openGL.asset_Name) return gel.Sprite.view
    is
-      the_graphics_Model : constant openGL.Model.sphere.lit_colored_textured.view
-        := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius, Texture);
+      the_graphics_Model : openGL.Model.sphere.view;
 
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
                                                   Mass       => Mass);
    begin
+      if is_Lit
+      then
+         the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius, Texture).all'Access;
+      else
+         the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius, Texture).all'Access;
+      end if;
+
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
                                           sprite.World_view (in_World),
                                           Site,
