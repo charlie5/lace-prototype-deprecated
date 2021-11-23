@@ -27,8 +27,8 @@ is
    --  Attributes
    --
 
-   fairly_Far                  : constant         := 100_000.0;
-   default_field_of_view_Angle : constant Degrees :=      60.0;
+   fairly_Far                  : constant         := 1_000_000.0;
+   default_field_of_view_Angle : constant Degrees :=        60.0;
 
    procedure Renderer_is              (Self : in out Item;   now    : in Renderer.lean.view);
 
