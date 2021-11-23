@@ -226,6 +226,10 @@ is
    subtype Shine is Real range 1.0 .. Real'Last;
 
 
+   no_Color       : constant Color;
+   no_lucid_Color : constant lucid_Color;
+
+
    -- Conversions
    --
    function to_color_Value (Self : in Primary)     return color_Value;
@@ -365,8 +369,17 @@ private
    ---------
    --  Color
    --
-   Opaque : constant color_Value := color_Value'Last;
-   Lucid  : constant color_Value := color_Value'First;
+   Opaque   : constant color_Value := color_Value'Last;
+   Lucid    : constant color_Value := color_Value'First;
+
+   no_Color : constant Color := (Red   => null_Primary,
+                                 Green => null_Primary,
+                                 Blue  => null_Primary);
+
+   no_lucid_Color : constant lucid_Color := (Primary => (Red   => null_Primary,
+                                                         Green => null_Primary,
+                                                         Blue  => null_Primary),
+                                             Opacity => Opaqueness'First);
 
    function to_Color (R, G, B : in Primary) return rgb_Color;
 
