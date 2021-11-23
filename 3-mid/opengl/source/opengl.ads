@@ -196,7 +196,7 @@ is
    type rgba_Color is
       record
          Primary : rgb_Color;
-         Opacity : color_Value;
+         Alpha   : color_Value;
       end record;
 
    type rgba_Colors is array (Index_t range <>) of rgba_Color;

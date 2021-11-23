@@ -61,10 +61,10 @@ is
 
       set_Colors :
       begin
-         Self.Vertices (1).Color := (primary => Self.Color,  opacity => Opaque);
-         Self.Vertices (2).Color := (primary => Self.Color,  opacity => Opaque);
-         Self.Vertices (3).Color := (primary => Self.Color,  opacity => Opaque);
-         Self.Vertices (4).Color := (primary => Self.Color,  opacity => Opaque);
+         Self.Vertices (1).Color := (primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (2).Color := (primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (3).Color := (primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (4).Color := (primary => Self.Color,  Alpha => Opaque);
       end set_Colors;
 
       Self.Geometry.is_Transparent (False);

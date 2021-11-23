@@ -7,7 +7,7 @@ is
       return (Real (to_Primary (From.Primary.Red)),
               Real (to_Primary (From.Primary.Green)),
               Real (to_Primary (From.Primary.Blue)),
-              Real (to_Primary (From.Opacity)));
+              Real (to_Primary (From.Alpha)));
    end to_Vector_4;
 
 
@@ -29,7 +29,7 @@ is
       return (Primary => (to_Primary (From.Primary.Red),
                           to_Primary (From.Primary.Green),
                           to_Primary (From.Primary.Blue)),
-              Opacity => Opaqueness (to_Primary (From.Opacity)));
+              Opacity => Opaqueness (to_Primary (From.Alpha)));
    end to_lucid_Color;
 
 

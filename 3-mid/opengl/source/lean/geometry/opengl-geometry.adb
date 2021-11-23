@@ -493,7 +493,7 @@ is
    begin
       for i in 1 .. any_Index_t (Count)
       loop
-         if get_Color (i).Opacity /= Opaque
+         if get_Color (i).Alpha /= Opaque
          then
             return True;
          end if;

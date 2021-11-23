@@ -115,14 +115,14 @@ is
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   opacity => Opaque);
+                                                   Alpha => Opaque);
 
             vertex_Count                       := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site  := (half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   opacity => Opaque);
+                                                   Alpha => Opaque);
             if Row = row_Count / 2 + 1
             then
                Color := Self.Color;
@@ -141,14 +141,14 @@ is
                                                    -half_Height,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   opacity => Opaque);
+                                                   Alpha => Opaque);
 
             vertex_Count                       := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site  := (Real (Col - 1) - half_Width + x_Adjust,
                                                    half_Height,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   opacity => Opaque);
+                                                   Alpha => Opaque);
             if Col = col_Count / 2 + 1
             then
                Color := Self.Color;

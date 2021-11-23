@@ -56,8 +56,8 @@ is
 
       set_Sites:
       begin
-         Self.Vertices (1).Color := (Primary => Self.Color,  Opacity => Opaque);
-         Self.Vertices (2).Color := (Primary => Self.Color,  Opacity => Opaque);
+         Self.Vertices (1).Color := (Primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (2).Color := (Primary => Self.Color,  Alpha => Opaque);
       end set_Sites;
 
       the_Indices := (1, 2);

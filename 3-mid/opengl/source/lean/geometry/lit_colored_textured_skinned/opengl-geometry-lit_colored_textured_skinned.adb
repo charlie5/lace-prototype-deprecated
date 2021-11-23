@@ -38,7 +38,7 @@ is
    begin
       for Each in Self'Range
       loop
-         if Self (Each).Color.Opacity /= Opaque
+         if Self (Each).Color.Alpha /= Opaque
          then
             return True;
          end if;

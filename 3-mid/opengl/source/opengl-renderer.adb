@@ -15,7 +15,7 @@ is
    is
    begin
       Self.Background.Primary := Now;
-      Self.Background.Opacity := to_color_Value (Primary (Opacity));
+      Self.Background.Alpha   := to_color_Value (Primary (Opacity));
    end Background_is;
 
 
@@ -36,7 +36,7 @@ is
       glClearColor (GLfloat (to_Primary (Self.Background.Primary.Red)),
                     GLfloat (to_Primary (Self.Background.Primary.Green)),
                     GLfloat (to_Primary (Self.Background.Primary.Blue)),
-                    GLfloat (to_Primary (Self.Background.Opacity)));
+                    GLfloat (to_Primary (Self.Background.Alpha)));
 
       glClear (   GL_COLOR_BUFFER_BIT
                or GL_DEPTH_BUFFER_BIT);

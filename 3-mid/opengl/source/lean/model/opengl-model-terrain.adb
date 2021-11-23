@@ -114,7 +114,7 @@ is
 
                the_Vertices (vert_Id).Site  := the_Sites (vert_Id);
                the_Vertices (vert_Id).Color := (Primary => White,
-                                                Opacity => Opaque);
+                                                Alpha   => Opaque);
             end loop;
          end loop;
 
