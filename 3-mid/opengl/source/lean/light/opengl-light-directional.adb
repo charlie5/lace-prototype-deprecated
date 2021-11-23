@@ -7,13 +7,13 @@ is
    --- Utility
    --
 
-   function to_light_Color (From : in Vector_4) return light_Color
+   function to_light_Color (From : in Vector_4) return lucid_Color
    is
    begin
-      return (Red     => Primary    (From (1)),
-              Green   => Primary    (From (2)),
-              Blue    => Primary    (From (3)),
-              Opacity => Opaqueness (From (4)));
+      return (Primary => (Red   => Primary (From (1)),
+                          Green => Primary (From (2)),
+                          Blue  => Primary (From (3))),
+              Opacity => Opaqueness        (From (4)));
    end to_light_Color;
 
 
@@ -35,7 +35,7 @@ is
 
    procedure Color_is (Self : in out Item;   Ambient,
                                              Diffuse,
-                                             Specular : in light_Color)
+                                             Specular : in lucid_Color)
    is
       use openGL.conversions;
    begin
@@ -46,7 +46,7 @@ is
 
 
 
-   procedure  ambient_Color_is (Self : in out Item;   Now : light_Color)
+   procedure  ambient_Color_is (Self : in out Item;   Now : lucid_Color)
    is
       use openGL.conversions;
    begin
@@ -55,7 +55,7 @@ is
 
 
 
-   procedure  diffuse_Color_is (Self : in out Item;   Now : light_Color)
+   procedure  diffuse_Color_is (Self : in out Item;   Now : lucid_Color)
    is
       use openGL.conversions;
    begin
@@ -64,7 +64,7 @@ is
 
 
 
-   procedure specular_Color_is (Self : in out Item;   Now : light_Color)
+   procedure specular_Color_is (Self : in out Item;   Now : lucid_Color)
    is
       use openGL.conversions;
    begin
@@ -73,7 +73,7 @@ is
 
 
 
-   function ambient_Color (Self : in Item) return light_Color
+   function ambient_Color (Self : in Item) return lucid_Color
    is
    begin
       return to_light_Color (Self.ambient_Color);
@@ -81,7 +81,7 @@ is
 
 
 
-   function diffuse_Color (Self : in Item) return light_Color
+   function diffuse_Color (Self : in Item) return lucid_Color
    is
    begin
       return to_light_Color (Self.diffuse_Color);
@@ -89,7 +89,7 @@ is
 
 
 
-   function specular_Color (Self : in Item) return light_Color
+   function specular_Color (Self : in Item) return lucid_Color
    is
    begin
       return to_light_Color (Self.specular_Color);

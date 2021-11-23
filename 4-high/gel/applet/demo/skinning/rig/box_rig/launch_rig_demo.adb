@@ -71,7 +71,8 @@ begin
    declare
       Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
    begin
-      Light.ambient_Color_is ((0.5, 0.9, 0.5, 0.5));
+      Light.ambient_Color_is ((Primary => (0.5, 0.9, 0.5),
+                               Opacity => 0.5));
       Light.Site_is          ((1000.0, 1000.0, 1000.0));
 
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);

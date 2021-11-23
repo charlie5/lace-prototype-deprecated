@@ -12,15 +12,15 @@ is
 
    procedure Color_is (Self : in out Item;   Ambient,
                                              Diffuse,
-                                             Specular : in light_Color);
+                                             Specular : in lucid_Color);
 
-   procedure  ambient_Color_is (Self : in out Item;   Now : light_Color);
-   procedure  diffuse_Color_is (Self : in out Item;   Now : light_Color);
-   procedure specular_Color_is (Self : in out Item;   Now : light_Color);
+   procedure  ambient_Color_is (Self : in out Item;   Now : lucid_Color);
+   procedure  diffuse_Color_is (Self : in out Item;   Now : lucid_Color);
+   procedure specular_Color_is (Self : in out Item;   Now : lucid_Color);
 
-   function  ambient_Color    (Self : in Item) return light_Color;
-   function  diffuse_Color    (Self : in Item) return light_Color;
-   function specular_Color    (Self : in Item) return light_Color;
+   function  ambient_Color    (Self : in Item) return lucid_Color;
+   function  diffuse_Color    (Self : in Item) return lucid_Color;
+   function specular_Color    (Self : in Item) return lucid_Color;
 
    function  Direction        (Self : in Item) return Vector_3;    -- Normalized light direction in eye space.
    function  halfplane_Vector (Self : in Item) return Vector_3;    -- Normalized half-plane vector.

@@ -259,12 +259,14 @@ is
          Lights : light_Set := Self.Lights.fetch;
       begin
          Lights (1).is_On;
-         Lights (1).Color_is (Ambient  => (0.0, 0.0, 0.0, 1.0),     -- The GL defaults for Light0.
-                              Diffuse  => (1.0, 1.0, 1.0, 1.0),
-                              Specular => (1.0, 1.0, 1.0, 1.0));
-
+         Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
+                                           Opacity => 1.0),
+                              Diffuse  => (Primary => (1.0, 1.0, 1.0),
+                                           Opacity => 1.0),
+                              Specular => (Primary => (1.0, 1.0, 1.0),
+                                           Opacity => 1.0));
          Self.Lights.set (Id => 1,
-                          to => Lights (1));
+                          To => Lights (1));
       end;
 
 

@@ -223,14 +223,6 @@ is
          Opacity : Opaqueness;
       end record;
 
-   type light_Color is
-      record
-         Red     : Primary;
-         Green   : Primary;
-         Blue    : Primary;
-         Opacity : Opaqueness;
-      end record;
-
    subtype Shine is Real range 1.0 .. Real'Last;
 
 
