@@ -23,9 +23,9 @@ is
    function Shade_of (Self : in Color;   Level : in Shade_Level) return Color
    is
    begin
-      return (to_color_Value (to_Real (self.Red)   * Real (Level)),
-              to_color_Value (to_Real (self.Green) * Real (Level)),
-              to_color_Value (to_Real (self.Blue)  * Real (Level)));
+      return (to_color_Value (to_Primary (self.Red)   * Primary (Level)),
+              to_color_Value (to_Primary (self.Green) * Primary (Level)),
+              to_color_Value (to_Primary (self.Blue)  * Primary (Level)));
    end Shade_of;
 
 

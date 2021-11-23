@@ -174,14 +174,18 @@ is
    ---------
    --  Color
    --
+   null_Primary : constant := Real'Adjacent (0.0, -1.0);
+
+   type Primary is new Real range null_Primary .. 1.0;
+
    subtype  grey_Value is gl.GLubyte;
    subtype color_Value is gl.GLubyte;
 
    Opaque : constant color_Value;
    Lucid  : constant color_Value;
 
-   function to_color_Value (Self : in unit_Interval) return color_Value;
-   function to_Real        (Self : in color_Value)   return unit_Interval;
+   function to_color_Value (Self : in Primary)     return color_Value;
+   function to_Primary     (Self : in color_Value) return Primary;
 
 
    type Color is
@@ -203,14 +207,14 @@ is
    type lucid_Colors is array (Index_t range <>) of lucid_Color;
 
 
-   subtype light_color_Value is Real range 0.0 .. 1.0;
+   type Opaqueness is new Real range 0.0 .. 1.0;
 
    type light_Color is
       record
-         Red     : light_color_Value;
-         Green   : light_color_Value;
-         Blue    : light_color_Value;
-         Opacity : light_color_Value;
+         Red     : Primary;
+         Green   : Primary;
+         Blue    : Primary;
+         Opacity : Opaqueness;
       end record;
 
    subtype Shine is Real range 1.0 .. Real'Last;
@@ -352,7 +356,7 @@ private
    Opaque : constant color_Value := color_Value'Last;
    Lucid  : constant color_Value := color_Value'First;
 
-   function to_Color (R, G, B : in unit_Interval) return Color;
+   function to_Color (R, G, B : in Primary) return Color;
 
 
    ----------------------------

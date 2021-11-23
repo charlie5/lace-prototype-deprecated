@@ -57,24 +57,24 @@ is
    --  Colors
    --
 
-   function to_color_Value (Self : in unit_Interval) return color_Value
+   function to_color_Value (Self : in Primary) return color_Value
    is
-      Value : constant Real := Real'Rounding (Self * 255.0);
+      Value : constant Real := Real'Rounding (Real (Self) * 255.0);
    begin
       return color_Value (Value);
    end to_color_Value;
 
 
 
-   function to_Real (Self : in color_Value) return unit_Interval
+   function to_Primary (Self : in color_Value) return Primary
    is
    begin
-      return Real (Self) / 255.0;
-   end to_Real;
+      return Primary (Real (Self) / 255.0);
+   end to_Primary;
 
 
 
-   function to_Color (R, G, B : in unit_Interval) return Color
+   function to_Color (R, G, B : in Primary) return Color
    is
    begin
       return (to_color_Value (R),

@@ -10,10 +10,10 @@ is
    function to_light_Color (From : in Vector_4) return light_Color
    is
    begin
-      return (Red     => From (1),
-              Green   => From (2),
-              Blue    => From (3),
-              Opacity => From (4));
+      return (Red     => Primary    (From (1)),
+              Green   => Primary    (From (2)),
+              Blue    => Primary    (From (3)),
+              Opacity => Opaqueness (From (4)));
    end to_light_Color;
 
 
