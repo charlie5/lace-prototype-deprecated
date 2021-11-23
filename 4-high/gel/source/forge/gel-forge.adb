@@ -258,7 +258,8 @@ is
       then
          the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius, Texture).all'Access;
       else
-         the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius, Texture).all'Access;
+         the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
+                                                                        Texture).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
@@ -270,6 +271,32 @@ is
                                           owns_Physics  => True,
                                           is_Kinematic  => False);
    end new_ball_Sprite;
+
+
+
+   function new_skysphere_Sprite (in_World : in gel.World.view;
+                                  Site     : in math.Vector_3 := math.Origin_3D;
+                                  Radius   : in math.Real     := 1_000_000.0;
+                                  Texture  : in openGL.asset_Name) return gel.Sprite.view
+   is
+      the_graphics_Model : openGL.Model.sphere.view;
+
+      the_physics_Model  : constant physics.Model.view
+        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
+                                                  Mass       => 0.0);
+   begin
+      the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
+                                                                     Texture,
+                                                                     is_Skysphere => True).all'Access;
+      return gel.Sprite.Forge.new_Sprite ("skysphere_Sprite",
+                                          sprite.World_view (in_World),
+                                          Site,
+                                          the_graphics_Model,
+                                          the_physics_Model,
+                                          owns_Graphics => True,
+                                          owns_Physics  => True,
+                                          is_Kinematic  => False);
+   end new_skysphere_Sprite;
 
 
 

@@ -90,6 +90,12 @@ is
                                   Color    : in openGL.Color  := opengl.Palette.White;
                                   Texture  : in openGL.asset_Name) return gel.Sprite.view;
 
+   function new_skysphere_Sprite (in_World : in gel.World.view;
+                                  Site     : in math.Vector_3 := math.Origin_3D;
+                                  Radius   : in math.Real     := 1_000_000.0;
+                                  Texture  : in openGL.asset_Name) return gel.Sprite.view;
+
+
    subtype box_Colors is openGL.Colors (1 .. 6);
 
    function new_box_Sprite       (in_World     : in gel.World.view;
