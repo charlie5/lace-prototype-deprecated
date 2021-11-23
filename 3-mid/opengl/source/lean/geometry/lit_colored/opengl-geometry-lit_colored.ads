@@ -16,7 +16,7 @@ is
       record
          Site   : Vector_3;
          Normal : Vector_3;
-         Color  : lucid_Color;
+         Color  : rgba_Color;
       end record;
 
    type Vertex_array is array (Index_t range <>) of aliased Vertex;

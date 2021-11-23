@@ -9,7 +9,7 @@ is
    --
 
    function new_Sphere (Radius : in Real;
-                        Color  : in lucid_Color) return View
+                        Color  : in rgba_Color) return View
    is
       Self : constant View := new Item;
    begin

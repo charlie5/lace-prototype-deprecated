@@ -15,7 +15,7 @@ is
    type Vertex is
       record
          Site   : Vector_3;
-         Color  : lucid_Color;
+         Color  : rgba_Color;
          Coords : Coordinate_2D;
       end record;
 

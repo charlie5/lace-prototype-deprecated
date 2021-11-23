@@ -139,7 +139,7 @@ is
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
-      function get_Color (Index : in long_Index_t) return lucid_Color
+      function get_Color (Index : in long_Index_t) return rgba_Color
       is (Self (Index).Color);
 
       function my_Transparency is new get_Transparency (any_Index_t => long_Index_t,

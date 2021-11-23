@@ -10,7 +10,7 @@ is
 
 
 
-   function random_Color return Color
+   function random_Color return rgb_Color
    is
    begin
       return (random (the_Generator),
@@ -20,7 +20,7 @@ is
 
 
 
-   function Shade_of (Self : in Color;   Level : in Shade_Level) return Color
+   function Shade_of (Self : in rgb_Color;   Level : in Shade_Level) return rgb_Color
    is
    begin
       return (to_color_Value (to_Primary (self.Red)   * Primary (Level)),
@@ -30,8 +30,8 @@ is
 
 
 
-   function Mixed (Self : in Color;   Other : in Color;
-                                      Mix   : in mix_Factor := 0.5) return Color
+   function Mixed (Self : in rgb_Color;   Other : in rgb_Color;
+                                      Mix   : in mix_Factor := 0.5) return rgb_Color
    is
       function Lerp (Value_1, Value_2 : color_Value) return color_Value     -- Linear interpolate.
       is
@@ -50,7 +50,7 @@ is
 
 
 
-   function is_Similar (Self : in Color;   To         : in Color;
+   function is_Similar (Self : in rgb_Color;   To         : in rgb_Color;
                                            Similarity : in color_Value := 3) return Boolean
    is
       use type color_Value;

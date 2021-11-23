@@ -21,7 +21,7 @@ is
    --- Forge
    --
 
-   function to_grid_Model (Color  : openGL.Color;
+   function to_grid_Model (Color  : openGL.rgb_Color;
                            Width  : Integer;
                            Height : Integer) return Item
    is
@@ -47,7 +47,7 @@ is
    end to_grid_Model;
 
 
-   function new_grid_Model (Color  : openGL.Color;
+   function new_grid_Model (Color  : openGL.rgb_Color;
                             Width  : Integer;
                             Height : Integer) return View
    is
@@ -90,7 +90,7 @@ is
          x_Adjust,
          y_Adjust : Real;
 
-         Color : openGL.Color := Self.Color;
+         Color : openGL.rgb_Color := Self.Color;
 
       begin
          if Self.Width  mod 2 = 0

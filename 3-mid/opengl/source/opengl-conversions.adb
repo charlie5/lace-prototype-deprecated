@@ -1,7 +1,7 @@
 package body openGL.Conversions
 is
 
-   function to_Vector_4 (From : in lucid_Color) return Vector_4
+   function to_Vector_4 (From : in rgba_Color) return Vector_4
    is
    begin
       return (Real (to_Primary (From.Primary.Red)),
@@ -23,7 +23,7 @@ is
 
 
 
-   function to_light_Color (From : in lucid_Color) return light_Color
+   function to_light_Color (From : in rgba_Color) return light_Color
    is
    begin
       return (to_Primary (From.Primary.Red),

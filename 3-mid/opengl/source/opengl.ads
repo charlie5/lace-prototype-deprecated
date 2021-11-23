@@ -188,23 +188,23 @@ is
    function to_Primary     (Self : in color_Value) return Primary;
 
 
-   type Color is
+   type rgb_Color is
       record
          Red   : aliased color_Value;
          Green :         color_Value;
          Blue  :         color_Value;
       end record;
 
-   type Colors is array (Index_t range <>) of Color;
+   type rgb_Colors is array (Index_t range <>) of rgb_Color;
 
 
-   type lucid_Color is
+   type rgba_Color is
       record
-         Primary : Color;
+         Primary : rgb_Color;
          Opacity : color_Value;
       end record;
 
-   type lucid_Colors is array (Index_t range <>) of lucid_Color;
+   type rgba_Colors is array (Index_t range <>) of rgba_Color;
 
 
    type Opaqueness is new Real range 0.0 .. 1.0;
@@ -224,8 +224,8 @@ is
    --  Images
    --
    type  grey_Image is array (Index_t range <>, Index_t range <>) of aliased  grey_Value;
-   type       Image is array (Index_t range <>, Index_t range <>) of aliased       Color;
-   type lucid_Image is array (Index_t range <>, Index_t range <>) of aliased lucid_Color;
+   type       Image is array (Index_t range <>, Index_t range <>) of aliased       rgb_Color;
+   type lucid_Image is array (Index_t range <>, Index_t range <>) of aliased rgba_Color;
 
    function to_Image (From : in lucid_Image) return Image;
 
@@ -356,7 +356,7 @@ private
    Opaque : constant color_Value := color_Value'Last;
    Lucid  : constant color_Value := color_Value'First;
 
-   function to_Color (R, G, B : in Primary) return Color;
+   function to_Color (R, G, B : in Primary) return rgb_Color;
 
 
    ----------------------------

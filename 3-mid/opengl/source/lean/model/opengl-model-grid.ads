@@ -16,7 +16,7 @@ is
    --- Forge
    --
 
-   function new_grid_Model (Color  : openGL.Color;
+   function new_grid_Model (Color  : openGL.rgb_Color;
                             Width  : Integer;
                             Height : Integer) return View;
 
@@ -33,7 +33,7 @@ private
 
    type Item is new Model.item with
       record
-         Color    :        openGL.Color;
+         Color    :        openGL.rgb_Color;
          Vertices : access openGL.Geometry.colored.Vertex_array;
          Geometry : access openGL.Geometry.colored.item'Class;
          Width,

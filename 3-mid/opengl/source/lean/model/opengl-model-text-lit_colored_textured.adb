@@ -19,7 +19,7 @@ is
 
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
-                      Color    : in lucid_Color;
+                      Color    : in rgba_Color;
                       Centered : in Boolean := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);

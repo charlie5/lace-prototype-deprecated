@@ -6,7 +6,7 @@ package body openGL.Model.polygon.lit_colored
 is
 
    function new_Polygon (Vertices : in Vector_2_array;
-                         Color    : in lucid_Color) return View
+                         Color    : in rgba_Color) return View
    is
       Self : constant View := new Item;
    begin

@@ -21,7 +21,7 @@ is
       record
          Site   : Vector_3;
          Normal : Vector_3;
-         Color  : lucid_Color;
+         Color  : rgba_Color;
          Coords : Coordinate_2D;
 
          bone_Ids     : Vector_4;

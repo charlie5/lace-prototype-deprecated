@@ -17,7 +17,7 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
-                         Color  : in lucid_Color;
+                         Color  : in rgba_Color;
                          Image  : in asset_Name := null_Asset) return View;
 
    --------------
@@ -37,7 +37,7 @@ private
          Radius : Real;
          Height : Real;
 
-         Color  : lucid_Color;
+         Color  : rgba_Color;
          Image  : asset_Name := null_Asset;
       end record;
 

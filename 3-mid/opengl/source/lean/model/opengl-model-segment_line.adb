@@ -7,7 +7,7 @@ with
 package body openGL.Model.segment_line
 is
 
-   function to_segment_line_Model (Color : in openGL.Color) return Item
+   function to_segment_line_Model (Color : in openGL.rgb_Color) return Item
    is
       Self : constant Item := (Model.item with
                                Color,
@@ -19,7 +19,7 @@ is
 
 
 
-   function new_segment_line_Model (Color : in openGL.Color) return View
+   function new_segment_line_Model (Color : in openGL.rgb_Color) return View
    is
    begin
       return new Item' (to_segment_line_Model (Color));
@@ -151,7 +151,7 @@ is
 
 
 
-   procedure Color_is (Self : in out Item;   Now     : in Color;
+   procedure Color_is (Self : in out Item;   Now     : in rgb_Color;
                                              for_End : in Integer)
    is
    begin

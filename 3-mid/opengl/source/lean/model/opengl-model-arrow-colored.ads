@@ -17,7 +17,7 @@ is
    --- Forge
    --
 
-   function new_Arrow (Color      : in openGL.Color := Palette.White;
+   function new_Arrow (Color      : in openGL.rgb_Color := Palette.White;
                        line_Width : in Real         := 1.0;
                        End_1,
                        End_2      : in Vector_3     := Origin_3D) return View;
@@ -46,7 +46,7 @@ private
 
    type Item is new openGL.Model.arrow.item with
       record
-         Color       :         openGL.Color;
+         Color       :         openGL.rgb_Color;
          line_Width  :         Real;
 
          Vertices    : aliased Geometry.colored.Vertex_array (1 .. 4);

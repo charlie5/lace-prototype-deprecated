@@ -74,7 +74,7 @@ is
 
 
 
-   function to_Color (R, G, B : in Primary) return Color
+   function to_Color (R, G, B : in Primary) return rgb_Color
    is
    begin
       return (to_color_Value (R),

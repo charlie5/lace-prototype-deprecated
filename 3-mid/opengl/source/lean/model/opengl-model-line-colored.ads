@@ -16,7 +16,7 @@ is
    --- Forge
    --
 
-   function new_line_Model (Color : in openGL.Color;
+   function new_line_Model (Color : in openGL.rgb_Color;
                             End_1,
                             End_2 : in Vector_3 := Origin_3D) return View;
 
@@ -41,7 +41,7 @@ private
 
    type Item is new Model.line.item with
       record
-         Color    :        openGL.Color;
+         Color    :        openGL.rgb_Color;
          Vertices :        Geometry.colored.Vertex_array (end_Id);
          Geometry : access Geometry.colored.item'Class;
       end record;

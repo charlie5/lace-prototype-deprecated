@@ -17,7 +17,7 @@ is
    --- Forge
    --
    function new_Polygon (Vertices : in Vector_2_array;
-                         Color    : in lucid_Color) return View;
+                         Color    : in rgba_Color) return View;
 
    --------------
    --- Attributes
@@ -31,7 +31,7 @@ private
 
    type Item is new Model.polygon.item with
       record
-         Color        : lucid_Color;
+         Color        : rgba_Color;
 
          Vertices     : Vector_2_array (1 .. 8);
          vertex_Count : Natural := 0;

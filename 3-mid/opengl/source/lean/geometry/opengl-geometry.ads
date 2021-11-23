@@ -107,7 +107,7 @@ private
 
    generic
       type any_Index_t is range <>;
-      with function get_Color (Index : in any_Index_t) return lucid_Color;
+      with function get_Color (Index : in any_Index_t) return rgba_Color;
    function get_Transparency (Count : in Natural) return Boolean;
 
 end openGL.Geometry;

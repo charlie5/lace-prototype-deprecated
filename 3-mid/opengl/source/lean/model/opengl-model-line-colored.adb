@@ -7,7 +7,7 @@ is
    --- Forge
    --
 
-   function to_line_Model (Color : in openGL.Color;
+   function to_line_Model (Color : in openGL.rgb_Color;
                            End_1,
                            End_2 : in Vector_3 := Origin_3D) return Item
    is
@@ -24,7 +24,7 @@ is
 
 
 
-   function new_line_Model (Color : in openGL.Color;
+   function new_line_Model (Color : in openGL.rgb_Color;
                             End_1,
                             End_2 : in Vector_3 := Origin_3D) return View
    is

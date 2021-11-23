@@ -18,7 +18,7 @@ is
 
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
-                      Color    : in lucid_Color;
+                      Color    : in rgba_Color;
                       Centered : in Boolean := True) return View;
 
 
@@ -48,7 +48,7 @@ private
          Font_Id  : openGL.Font.font_Id;
          Font     : openGL.Font.texture.view;
 
-         Color    : lucid_Color;
+         Color    : rgba_Color;
          Centered : Boolean;
       end record;
 

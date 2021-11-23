@@ -20,7 +20,7 @@ is
    --- Forge
    --
 
-   function new_segment_line_Model (Color : in openGL.Color) return View;
+   function new_segment_line_Model (Color : in openGL.rgb_Color) return View;
 
 
    -----------
@@ -56,7 +56,7 @@ is
    procedure Site_is          (Self : in out Item;   Now        : in Vector_3;
                                                      for_End    : in Integer);
 
-   procedure Color_is         (Self : in out Item;   Now        : in Color;
+   procedure Color_is         (Self : in out Item;   Now        : in rgb_Color;
                                                      for_End    : in Integer);
 
    function segment_Count     (Self : in     Item) return Natural;
@@ -74,7 +74,7 @@ private
 
    type Item is new Model.item with
       record
-         Color        : openGL.Color;
+         Color        : openGL.rgb_Color;
          Points       : site_Vector;
 
          Vertices     : Vertex_array_view := new Geometry.colored.Vertex_array (1 .. 2);

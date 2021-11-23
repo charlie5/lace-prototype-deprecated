@@ -17,7 +17,7 @@ is
    --
 
    function new_Sphere (Radius : in Real;
-                        Color  : in lucid_Color) return View;
+                        Color  : in rgba_Color) return View;
 
 
    --------------
@@ -34,7 +34,7 @@ private
 
    type Item is new Model.sphere.item with
       record
-         Color : lucid_Color;
+         Color : rgba_Color;
       end record;
 
 end openGL.Model.sphere.lit_colored;
