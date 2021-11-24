@@ -49,7 +49,7 @@ is
 
 
    function is_Similar (Self : in Color;   To         : in Color;
-                                           Similarity : in Primary := to_Primary (3)) return Boolean
+                                           Similarity : in Primary := default_Similarity) return Boolean
    is
    begin
       return     self.Red   <= to.Red   + Similarity

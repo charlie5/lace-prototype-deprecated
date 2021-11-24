@@ -228,36 +228,15 @@ is
 
    subtype Shine is Real range 1.0 .. Real'Last;
 
-
    no_Color       : constant Color;
    no_lucid_Color : constant lucid_Color;
-
-
-   -- Conversions
-   --
-   function to_color_Value (Self : in Primary)     return color_Value;
-   function to_Primary     (Self : in color_Value) return Primary;
-
-   function to_lucid_Color (From : in  rgba_Color) return lucid_Color;
-   function to_rgba_Color  (From : in lucid_Color) return rgba_Color;
-
-   function "+"            (From : in  rgba_Color) return lucid_Color renames to_lucid_Color;
-   function "+"            (From : in lucid_Color) return rgba_Color  renames to_rgba_Color;
-
-
-   function to_Color       (From : in rgb_Color)   return Color;
-   function to_rgb_Color   (From : in     Color)   return rgb_Color;
-
-   function "+"            (From : in rgb_Color)   return Color     renames to_Color;
-   function "+"            (From : in     Color)   return rgb_Color renames to_rgb_Color;
-
 
 
    ----------
    --  Images
    --
-   type  grey_Image is array (Index_t range <>, Index_t range <>) of aliased  grey_Value;
-   type       Image is array (Index_t range <>, Index_t range <>) of aliased       rgb_Color;
+   type  grey_Image is array (Index_t range <>, Index_t range <>) of aliased grey_Value;
+   type       Image is array (Index_t range <>, Index_t range <>) of aliased  rgb_Color;
    type lucid_Image is array (Index_t range <>, Index_t range <>) of aliased rgba_Color;
 
    function to_Image (From : in lucid_Image) return Image;
@@ -404,12 +383,27 @@ private
                                                          Green => null_Primary,
                                                          Blue  => null_Primary),
                                              Opacity => Opaqueness'First);
-
-   function to_Color (R, G, B : in Primary) return rgb_Color;
-
-
+   -- RGB
+   --
    type  rgb_Colors is array (Index_t range <>) of  rgb_Color;
    type rgba_Colors is array (Index_t range <>) of rgba_Color;
+
+
+   -- Conversions
+   --
+   function to_Color (Red, Green, Blue : in Primary) return rgb_Color;
+
+   function to_color_Value (Self : in Primary)     return color_Value;
+   function to_Primary     (Self : in color_Value) return Primary;
+
+   function       to_Color (From : in   rgb_Color) return       Color;
+   function to_lucid_Color (From : in  rgba_Color) return lucid_Color;
+   function  to_rgba_Color (From : in lucid_Color) return  rgba_Color;
+   function   to_rgb_Color (From : in       Color) return   rgb_Color;
+
+   function "+"            (From : in   rgb_Color) return       Color renames      to_Color;
+   function "+"            (From : in lucid_Color) return  rgba_Color renames to_rgba_Color;
+   function "+"            (From : in       Color) return   rgb_Color renames  to_rgb_Color;
 
 
    ----------------------------

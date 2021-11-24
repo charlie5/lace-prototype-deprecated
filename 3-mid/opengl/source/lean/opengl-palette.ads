@@ -36,8 +36,10 @@ is
 
    --  Similarity
    --
+   default_Similarity : constant Primary;
+
    function is_similar (Self : in Color;   To         : in Color;
-                                           Similarity : in Primary := to_Primary (3)) return Boolean;
+                                           Similarity : in Primary := default_Similarity) return Boolean;
    --
    -- Returns true if the none of the red, green, blue components of 'Self'
    -- differ from 'to' by more than 'Similarity'.
@@ -658,6 +660,7 @@ is
 
 
 private
+   default_Similarity : constant Primary := to_Primary (3);
 
    White        : constant Color := (1.0,  1.0,  1.0);
    Black        : constant Color := (0.0,  0.0,  0.0);

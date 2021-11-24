@@ -74,12 +74,12 @@ is
 
 
 
-   function to_Color (R, G, B : in Primary) return rgb_Color
+   function to_Color (Red, Green, Blue : in Primary) return rgb_Color
    is
    begin
-      return (to_color_Value (R),
-              to_color_Value (G),
-              to_color_Value (B));
+      return (to_color_Value (Red),
+              to_color_Value (Green),
+              to_color_Value (Blue));
    end to_Color;
 
 
