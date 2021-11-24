@@ -187,16 +187,12 @@ is
          Blue  :         color_Value;
       end record;
 
-   type rgb_Colors is array (Index_t range <>) of rgb_Color;
-
 
    type rgba_Color is
       record
          Primary : rgb_Color;
          Alpha   : color_Value;
       end record;
-
-   type rgba_Colors is array (Index_t range <>) of rgba_Color;
 
 
    -- Primary
@@ -410,6 +406,10 @@ private
                                              Opacity => Opaqueness'First);
 
    function to_Color (R, G, B : in Primary) return rgb_Color;
+
+
+   type  rgb_Colors is array (Index_t range <>) of  rgb_Color;
+   type rgba_Colors is array (Index_t range <>) of rgba_Color;
 
 
    ----------------------------
