@@ -1,13 +1,19 @@
 with
      openGL.Model.text     .lit_colored_textured,
+
      openGL.Model.sphere   .lit_colored_textured,
      openGL.Model.sphere   .lit_colored,
      openGL.Model.sphere   .textured,
+     openGL.Model.sphere   .colored,
+
      openGL.Model.polygon  .lit_colored,
+
      openGL.Model.box      .colored,
      openGL.Model.box      .textured,
+
      openGL.Model.billboard.textured,
      openGL.Model.billboard.colored_textured,
+
      openGL.Model.arrow    .colored,
      openGL.Model.line     .colored,
      openGL.Model.segment_line,
@@ -132,7 +138,7 @@ is
       if Texture = openGL.null_Asset
       then
          the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
-                                                                           Color => (Color, openGL.Opaque)).all'Access;
+                                                                           Color => +(Color, openGL.Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                     Image => Texture).all'Access;
@@ -216,62 +222,42 @@ is
    --
 
    function new_ball_Sprite (in_World   : in gel.World.view;
-                             Site       : in math.Vector_3    := math.Origin_3D;
-                             Mass       : in math.Real        := 1.0;
-                             Radius     : in math.Real        := 0.5;
-                             lat_Count  : in Positive         := openGL.Model.sphere.default_latitude_Count;
-                             long_Count : in Positive         := openGL.Model.sphere.default_longitude_Count;
-                             Color      : in openGL.rgb_Color := opengl.Palette.White) return gel.Sprite.view
+                             Site       : in math.Vector_3      := math.Origin_3D;
+                             Mass       : in math.Real          := 1.0;
+                             Radius     : in math.Real          := 0.5;
+                             lat_Count  : in Positive           := openGL.Model.sphere.default_latitude_Count;
+                             long_Count : in Positive           := openGL.Model.sphere.default_longitude_Count;
+                             is_Lit     : in Boolean            := True;
+                             Color      : in openGL.lucid_Color := opengl.no_lucid_Color;
+                             Texture    : in openGL.asset_Name  := openGL.null_Asset) return gel.Sprite.view
    is
-      the_graphics_Model : constant openGL.Model.sphere.lit_colored.view
-        := openGL.Model.sphere.lit_colored.new_Sphere (Radius     => Radius,
-                                                       lat_Count  => lat_Count,
-                                                       long_Count => long_Count,
-                                                       Color      => (Color, openGL.Opaque));
+      use type openGL.lucid_Color;
 
-      the_physics_Model  : constant physics.Model.view
-        := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
-                                                  Mass       => Mass);
-   begin
-      return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
-                                          sprite.World_view (in_World),
-                                          Site,
-                                          the_graphics_Model,
-                                          the_physics_Model,
-                                          owns_Graphics => True,
-                                          owns_Physics  => True,
-                                          is_Kinematic  => False);
-   end new_ball_Sprite;
-
-
-
-   function new_ball_Sprite (in_World   : in gel.World.view;
-                             Site       : in math.Vector_3    := math.Origin_3D;
-                             Mass       : in math.Real        := 1.0;
-                             Radius     : in math.Real        := 0.5;
-                             lat_Count  : in Positive         := openGL.Model.sphere.default_latitude_Count;
-                             long_Count : in Positive         := openGL.Model.sphere.default_longitude_Count;
-                             is_Lit     : in Boolean          := True;
-                             Color      : in openGL.rgb_Color := opengl.Palette.White;
-                             Texture    : in openGL.asset_Name) return gel.Sprite.view
-   is
       the_graphics_Model : openGL.Model.sphere.view;
 
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (physics.Model.a_Sphere, Radius),
                                                   Mass       => Mass);
    begin
-      if is_Lit
+      if is_Lit     -- TODO: Remaining combinations.
       then
          the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                     lat_Count  => lat_Count,
                                                                                     long_Count => long_Count,
                                                                                     Image      => Texture).all'Access;
       else
-         the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
-                                                                        lat_Count  => lat_Count,
-                                                                        long_Count => long_Count,
-                                                                        Image      => Texture).all'Access;
+         if Color /= openGL.no_lucid_Color
+         then
+            the_graphics_Model := openGL.Model.sphere.colored.new_Sphere (Radius,
+                                                                          lat_Count  => lat_Count,
+                                                                          long_Count => long_Count,
+                                                                          Color      => Color).all'Access;
+         else
+            the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
+                                                                           lat_Count  => lat_Count,
+                                                                           long_Count => long_Count,
+                                                                           Image      => Texture).all'Access;
+         end if;
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",

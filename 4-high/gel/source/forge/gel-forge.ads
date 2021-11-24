@@ -79,22 +79,14 @@ is
    --
 
    function new_ball_Sprite      (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3    := math.Origin_3D;
-                                  Mass       : in math.Real        := 1.0;
-                                  Radius     : in math.Real        := 0.5;
-                                  lat_Count  : in Positive         := openGL.Model.sphere.default_latitude_Count;
-                                  long_Count : in Positive         := openGL.Model.sphere.default_longitude_Count;
-                                  Color      : in openGL.rgb_Color := opengl.Palette.White) return gel.Sprite.view;
-
-   function new_ball_Sprite      (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3    := math.Origin_3D;
-                                  Mass       : in math.Real        := 1.0;
-                                  Radius     : in math.Real        := 0.5;
-                                  lat_Count  : in Positive         := openGL.Model.sphere.default_latitude_Count;
-                                  long_Count : in Positive         := openGL.Model.sphere.default_longitude_Count;
-                                  is_Lit     : in Boolean          := True;
-                                  Color      : in openGL.rgb_Color := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name) return gel.Sprite.view;
+                                  Site       : in math.Vector_3      := math.Origin_3D;
+                                  Mass       : in math.Real          := 1.0;
+                                  Radius     : in math.Real          := 0.5;
+                                  lat_Count  : in Positive           := openGL.Model.sphere.default_latitude_Count;
+                                  long_Count : in Positive           := openGL.Model.sphere.default_longitude_Count;
+                                  is_Lit     : in Boolean            := True;
+                                  Color      : in openGL.lucid_Color := opengl.no_lucid_Color;
+                                  Texture    : in openGL.asset_Name  := openGL.null_Asset) return gel.Sprite.view;
 
    function new_skysphere_Sprite (in_World : in gel.World.view;
                                   Site     : in math.Vector_3 := math.Origin_3D;
