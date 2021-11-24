@@ -180,9 +180,6 @@ is
    subtype  grey_Value is gl.GLubyte;
    subtype color_Value is gl.GLubyte;
 
-   opaque_Value : constant color_Value;
-   lucid_Value  : constant color_Value;
-
    type rgb_Color is
       record
          Red   : aliased color_Value;
