@@ -1,5 +1,4 @@
 with
-     openGL.Conversions,
      openGL.Light.directional,
      openGL.Visual,
      openGL.Model.Sphere.lit_colored_textured,
@@ -34,7 +33,7 @@ begin
                                                                 Image  => the_Texture);
       the_Ball_2_Model : constant Model.Sphere.lit_colored.view
         := openGL.Model.Sphere.lit_colored.new_Sphere (Radius => 1.0,
-                                                       Color  => (light_Apricot, Opaque));
+                                                       Color  => +(light_Apricot, Opaque));
 
       --  The Visuals.
       --
@@ -74,7 +73,6 @@ begin
          -- Move the light.
          --
          declare
-            use openGL.Conversions;
             Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          begin
             if    Light.Site (1) >  10_000.0

@@ -235,6 +235,12 @@ is
    function to_color_Value (Self : in Primary)     return color_Value;
    function to_Primary     (Self : in color_Value) return Primary;
 
+   function to_lucid_Color (From : in rgba_Color)  return lucid_Color;
+   function to_rgba_Color  (From : in lucid_Color) return rgba_Color;
+
+   function "+"            (From : in rgba_Color)  return lucid_Color renames to_lucid_Color;
+   function "+"            (From : in lucid_Color) return rgba_Color  renames to_rgba_Color;
+
 
    ----------
    --  Images

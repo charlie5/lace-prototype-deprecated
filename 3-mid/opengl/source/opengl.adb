@@ -83,6 +83,30 @@ is
    end to_Color;
 
 
+
+   function to_lucid_Color (From : in rgba_Color) return lucid_Color
+   is
+   begin
+      return (Primary => (to_Primary (From.Primary.Red),
+                          to_Primary (From.Primary.Green),
+                          to_Primary (From.Primary.Blue)),
+              Opacity => Opaqueness (to_Primary (From.Alpha)));
+   end to_lucid_Color;
+
+
+
+   function to_rgba_Color (From : in lucid_Color) return rgba_Color
+   is
+   begin
+      return (Primary => (to_color_Value (From.Primary.Red),
+                          to_color_Value (From.Primary.Green),
+                          to_color_Value (From.Primary.Blue)),
+              Alpha   =>  to_color_Value (Primary (From.Opacity)));
+   end to_rgba_Color;
+
+
+
+
    -------------
    --  Heightmap
    --
