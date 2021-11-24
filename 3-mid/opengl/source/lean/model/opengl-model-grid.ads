@@ -16,7 +16,7 @@ is
    --- Forge
    --
 
-   function new_grid_Model (Color  : openGL.rgb_Color;
+   function new_grid_Model (Color  : openGL.Color;
                             Width  : Integer;
                             Height : Integer) return View;
 

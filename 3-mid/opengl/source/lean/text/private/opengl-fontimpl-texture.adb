@@ -307,7 +307,7 @@ is
          use GL.Pointers;
 
          the_Image : Image (1 .. Index_t (self.textureHeight),
-                            1 .. Index_t (Self.textureWidth)) := (others => (others => Black));
+                            1 .. Index_t (Self.textureWidth)) := (others => (others => +Black));
 
          textID    : aliased openGL.Texture.texture_Name;
       begin

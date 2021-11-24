@@ -106,6 +106,26 @@ is
 
 
 
+   function to_Color (From : in rgb_Color) return Color
+   is
+   begin
+      return (to_Primary (From.Red),
+              to_Primary (From.Green),
+              to_Primary (From.Blue));
+   end to_Color;
+
+
+
+   function to_rgb_Color (From : in Color) return rgb_Color
+   is
+   begin
+      return (to_color_Value (From.Red),
+              to_color_Value (From.Green),
+              to_color_Value (From.Blue));
+   end to_rgb_Color;
+
+
+
 
    -------------
    --  Heightmap

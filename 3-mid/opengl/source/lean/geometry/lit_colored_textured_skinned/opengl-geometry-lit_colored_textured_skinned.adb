@@ -38,7 +38,7 @@ is
    begin
       for Each in Self'Range
       loop
-         if Self (Each).Color.Alpha /= Opaque
+         if Self (Each).Color.Alpha /= opaque_Value
          then
             return True;
          end if;
@@ -97,7 +97,7 @@ is
       Attribute_5 : openGL.Attribute.view;
       Attribute_6 : openGL.Attribute.view;
 
-      white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
+      white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
 
    begin
       Tasks.check;
@@ -278,7 +278,7 @@ is
          then
             declare
                use Palette;
-               white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
+               white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
             begin
                white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
             end;

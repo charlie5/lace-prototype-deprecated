@@ -121,13 +121,13 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => height_Offset,    Normal => Normal,  Color => Self.upper_Face.center_Color,  Coords => (0.0, 0.0)),
-               2 => (Site => upper_Sites (1),  Normal => Normal,  Color => Self.upper_Face.Colors (1),    Coords => (0.0, 0.0)),
-               3 => (Site => upper_Sites (2),  Normal => Normal,  Color => Self.upper_Face.Colors (2),    Coords => (1.0, 0.0)),
-               4 => (Site => upper_Sites (3),  Normal => Normal,  Color => Self.upper_Face.Colors (3),    Coords => (1.0, 1.0)),
-               5 => (Site => upper_Sites (4),  Normal => Normal,  Color => Self.upper_Face.Colors (4),    Coords => (0.0, 1.0)),
-               6 => (Site => upper_Sites (5),  Normal => Normal,  Color => Self.upper_Face.Colors (5),    Coords => (0.0, 1.0)),
-               7 => (Site => upper_Sites (6),  Normal => Normal,  Color => Self.upper_Face.Colors (6),    Coords => (0.0, 1.0)));
+           := (1 => (Site => height_Offset,    Normal => Normal,  Color => +Self.upper_Face.center_Color,  Coords => (0.0, 0.0)),
+               2 => (Site => upper_Sites (1),  Normal => Normal,  Color => +Self.upper_Face.Colors (1),    Coords => (0.0, 0.0)),
+               3 => (Site => upper_Sites (2),  Normal => Normal,  Color => +Self.upper_Face.Colors (2),    Coords => (1.0, 0.0)),
+               4 => (Site => upper_Sites (3),  Normal => Normal,  Color => +Self.upper_Face.Colors (3),    Coords => (1.0, 1.0)),
+               5 => (Site => upper_Sites (4),  Normal => Normal,  Color => +Self.upper_Face.Colors (4),    Coords => (0.0, 1.0)),
+               6 => (Site => upper_Sites (5),  Normal => Normal,  Color => +Self.upper_Face.Colors (5),    Coords => (0.0, 1.0)),
+               7 => (Site => upper_Sites (6),  Normal => Normal,  Color => +Self.upper_Face.Colors (6),    Coords => (0.0, 1.0)));
       begin
          upper_Face := new_hexagon_Face (Vertices => the_Vertices);
 
@@ -141,13 +141,13 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => -height_Offset,     Normal => -Normal,   Color => Self.lower_Face.center_Color,   Coords => (0.0, 0.0)),
-               2 => (Site =>  lower_Sites (1),   Normal => -Normal,   Color => Self.lower_Face.Colors (1),     Coords => (0.0, 0.0)),
-               3 => (Site =>  lower_Sites (2),   Normal => -Normal,   Color => Self.lower_Face.Colors (2),     Coords => (1.0, 0.0)),
-               4 => (Site =>  lower_Sites (3),   Normal => -Normal,   Color => Self.lower_Face.Colors (3),     Coords => (1.0, 1.0)),
-               5 => (Site =>  lower_Sites (4),   Normal => -Normal,   Color => Self.lower_Face.Colors (4),     Coords => (0.0, 1.0)),
-               6 => (Site =>  lower_Sites (5),   Normal => -Normal,   Color => Self.lower_Face.Colors (5),     Coords => (0.0, 1.0)),
-               7 => (Site =>  lower_Sites (6),   Normal => -Normal,   Color => Self.lower_Face.Colors (6),     Coords => (0.0, 1.0)));
+           := (1 => (Site => -height_Offset,     Normal => -Normal,   Color => +Self.lower_Face.center_Color,   Coords => (0.0, 0.0)),
+               2 => (Site =>  lower_Sites (1),   Normal => -Normal,   Color => +Self.lower_Face.Colors (1),     Coords => (0.0, 0.0)),
+               3 => (Site =>  lower_Sites (2),   Normal => -Normal,   Color => +Self.lower_Face.Colors (2),     Coords => (1.0, 0.0)),
+               4 => (Site =>  lower_Sites (3),   Normal => -Normal,   Color => +Self.lower_Face.Colors (3),     Coords => (1.0, 1.0)),
+               5 => (Site =>  lower_Sites (4),   Normal => -Normal,   Color => +Self.lower_Face.Colors (4),     Coords => (0.0, 1.0)),
+               6 => (Site =>  lower_Sites (5),   Normal => -Normal,   Color => +Self.lower_Face.Colors (5),     Coords => (0.0, 1.0)),
+               7 => (Site =>  lower_Sites (6),   Normal => -Normal,   Color => +Self.lower_Face.Colors (6),     Coords => (0.0, 1.0)));
       begin
          lower_Face := new_hexagon_Face (Vertices => the_Vertices,
                                          flip     => True);
@@ -162,7 +162,6 @@ is
       --
       declare
          type shaft_Normals is array (1 .. 6) of Vector_3;
-
 
          function get_Normals return shaft_Normals
          is
@@ -192,22 +191,22 @@ is
             return Result;
          end get_Normals;
 
-
          Normals      : constant shaft_Normals := get_Normals;
+         shaft_Color  : constant rgba_Color    := +Self.Shaft.Color;
 
          the_Vertices : constant Geometry.lit_colored_textured.Vertex_array
-           := ( 1 => (Site => upper_Sites (1),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (0.0, 1.0)),
-                2 => (Site => lower_Sites (1),   Normal => Normals (1),   Color => Self.Shaft.Color,   Coords => (0.0, 0.0)),
-                3 => (Site => upper_Sites (2),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (0.2, 1.0)),
-                4 => (Site => lower_Sites (2),   Normal => Normals (2),   Color => Self.Shaft.Color,   Coords => (0.2, 0.0)),
-                5 => (Site => upper_Sites (3),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (0.4, 1.0)),
-                6 => (Site => lower_Sites (3),   Normal => Normals (3),   Color => Self.Shaft.Color,   Coords => (0.4, 0.0)),
-                7 => (Site => upper_Sites (4),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (0.6, 1.0)),
-                8 => (Site => lower_Sites (4),   Normal => Normals (4),   Color => Self.Shaft.Color,   Coords => (0.6, 0.0)),
-                9 => (Site => upper_Sites (5),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (0.8, 1.0)),
-               10 => (Site => lower_Sites (5),   Normal => Normals (5),   Color => Self.Shaft.Color,   Coords => (0.8, 0.0)),
-               11 => (Site => upper_Sites (6),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (1.0, 1.0)),
-               12 => (Site => lower_Sites (6),   Normal => Normals (6),   Color => Self.Shaft.Color,   Coords => (1.0, 0.0)));
+           := ( 1 => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0, 1.0)),
+                2 => (Site => lower_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0, 0.0)),
+                3 => (Site => upper_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (0.2, 1.0)),
+                4 => (Site => lower_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (0.2, 0.0)),
+                5 => (Site => upper_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (0.4, 1.0)),
+                6 => (Site => lower_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (0.4, 0.0)),
+                7 => (Site => upper_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (0.6, 1.0)),
+                8 => (Site => lower_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (0.6, 0.0)),
+                9 => (Site => upper_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (0.8, 1.0)),
+               10 => (Site => lower_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (0.8, 0.0)),
+               11 => (Site => upper_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0, 1.0)),
+               12 => (Site => lower_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0, 0.0)));
       begin
          shaft_Face := new_shaft_Face (Vertices => the_Vertices);
 

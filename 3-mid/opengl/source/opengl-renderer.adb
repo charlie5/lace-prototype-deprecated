@@ -10,20 +10,20 @@ is
        interfaces.C;
 
 
-   procedure Background_is (Self : in out Item;   Now     : in openGL.rgb_Color;
+   procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
                                                   Opacity : in Opaqueness := 1.0)
    is
    begin
-      Self.Background.Primary := Now;
+      Self.Background.Primary := +Now;
       Self.Background.Alpha   := to_color_Value (Primary (Opacity));
    end Background_is;
 
 
 
-   procedure Background_is (Self : in out Item;   Now : in openGL.rgba_Color)
+   procedure Background_is (Self : in out Item;   Now : in openGL.lucid_Color)
    is
    begin
-      Self.Background := Now;
+      Self.Background := +Now;
    end Background_is;
 
 

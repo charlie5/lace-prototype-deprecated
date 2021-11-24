@@ -82,7 +82,7 @@ is
          Attribute_3 : openGL.Attribute.view;
          Attribute_4 : openGL.Attribute.view;
 
-         white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
+         white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
 
       begin
          white_Texture       := openGL.Texture.Forge.to_Texture (white_Image);

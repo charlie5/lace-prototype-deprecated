@@ -420,9 +420,9 @@ is
 
       the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light. Site_is (light_Site);
-      the_Light.Color_is (Ambient  => +(Palette.White, Opaque),
-                          Diffuse  => +(Palette.White, Opaque),
-                          Specular => +(Palette.White, Opaque));
+      the_Light.Color_is (Ambient  => (Palette.White, Opaque),
+                          Diffuse  => (Palette.White, Opaque),
+                          Specular => (Palette.White, Opaque));
 
       for i in the_Updates'Range
       loop

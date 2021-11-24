@@ -86,7 +86,7 @@ is
       Attribute_4 : openGL.Attribute.view;
       Attribute_5 : openGL.Attribute.view;
 
-      white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
+      white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
 
    begin
       Tasks.check;
@@ -252,7 +252,7 @@ is
          then
             declare
                use Palette;
-               white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => White));
+               white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
             begin
                white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
             end;

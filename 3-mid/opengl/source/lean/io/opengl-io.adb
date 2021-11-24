@@ -266,7 +266,7 @@ is
                   Col := Col + 1;
                end if;
 
-               if Alpha /= Opaque
+               if Alpha /= opaque_Value
                then
                   is_Lucid.all := True;
                end if;

@@ -121,7 +121,7 @@ is
          Result (i) := (Site         => From (i).Site,
                         Normal       => From (i).Normal,
                         Coords       => From (i).Coords,
-                        Color        => (White, Opaque),
+                        Color        => (+White, opaque_Value),
                         bone_Ids     => (1 => Real (From (i).Bones (1).Bone),
                                          2 => Real (From (i).Bones (2).Bone),
                                          3 => Real (From (i).Bones (3).Bone),

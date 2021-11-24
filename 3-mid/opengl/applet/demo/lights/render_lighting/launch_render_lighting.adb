@@ -33,7 +33,7 @@ begin
                                                                 Image  => the_Texture);
       the_Ball_2_Model : constant Model.Sphere.lit_colored.view
         := openGL.Model.Sphere.lit_colored.new_Sphere (Radius => 1.0,
-                                                       Color  => +(light_Apricot, Opaque));
+                                                       Color  => (light_Apricot, Opaque));
 
       --  The Visuals.
       --
@@ -79,17 +79,17 @@ begin
             then
                site_Delta (1) := -1.0;
 
-               Light.Color_is (Ambient  => +(openGL.Palette.dark_Green, Opaque),
-                               Diffuse  => +(openGL.Palette.Grey,       Opaque),
-                               Specular => +(openGL.Palette.White,      Opaque));
+               Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+                               Diffuse  => (openGL.Palette.Grey,       Opaque),
+                               Specular => (openGL.Palette.White,      Opaque));
 
             elsif Light.Site (1) < -10_000.0
             then
                site_Delta (1) :=  1.0;
 
-               Light.Color_is (Ambient  => +(openGL.Palette.dark_Red, Opaque),
-                               Diffuse  => +(openGL.Palette.Grey,     Opaque),
-                               Specular => +(openGL.Palette.White,    Opaque));
+               Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
+                               Diffuse  => (openGL.Palette.Grey,     Opaque),
+                               Specular => (openGL.Palette.White,    Opaque));
             end if;
 
             Light.Site_is (Light.Site + site_Delta);

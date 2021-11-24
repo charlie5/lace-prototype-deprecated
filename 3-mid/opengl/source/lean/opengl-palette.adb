@@ -10,50 +10,47 @@ is
 
 
 
-   function random_Color return rgb_Color
+   function random_Color return Color
    is
    begin
-      return (random (the_Generator),
-              random (the_Generator),
-              random (the_Generator));
+      return +(random (the_Generator),
+               random (the_Generator),
+               random (the_Generator));
    end random_Color;
 
 
 
-   function Shade_of (Self : in rgb_Color;   Level : in Shade_Level) return rgb_Color
+   function Shade_of (Self : in Color;   Level : in Shade_Level) return Color
    is
    begin
-      return (to_color_Value (to_Primary (self.Red)   * Primary (Level)),
-              to_color_Value (to_Primary (self.Green) * Primary (Level)),
-              to_color_Value (to_Primary (self.Blue)  * Primary (Level)));
+      return (self.Red   * Primary (Level),
+              self.Green * Primary (Level),
+              self.Blue  * Primary (Level));
    end Shade_of;
 
 
 
-   function Mixed (Self : in rgb_Color;   Other : in rgb_Color;
-                                      Mix   : in mix_Factor := 0.5) return rgb_Color
+   function Mixed (Self : in Color;   Other : in Color;
+                                      Mix   : in mix_Factor := 0.5) return Color
    is
-      function Lerp (Value_1, Value_2 : color_Value) return color_Value     -- Linear interpolate.
+      function Interpolate (Value_1, Value_2 : in Primary) return Primary     -- Linear interpolate.
       is
-         V1 : constant Real := Real (Value_1);
-         V2 : constant Real := Real (Value_2);
       begin
-         return color_Value (   V1
-                             + (V2 - V1) * Real (Mix));
-      end Lerp;
+         return    Value_1
+                + (Value_2 - Value_1) * Primary (Mix);
+      end Interpolate;
 
    begin
-      return (Lerp (Self.Red,   Other.Red),
-              Lerp (Self.Green, Other.Green),
-              Lerp (Self.Blue,  Other.Blue));
+      return (Interpolate (Self.Red,   Other.Red),
+              Interpolate (Self.Green, Other.Green),
+              Interpolate (Self.Blue,  Other.Blue));
    end Mixed;
 
 
 
-   function is_Similar (Self : in rgb_Color;   To         : in rgb_Color;
-                                           Similarity : in color_Value := 3) return Boolean
+   function is_Similar (Self : in Color;   To         : in Color;
+                                           Similarity : in Primary := to_Primary (3)) return Boolean
    is
-      use type color_Value;
    begin
       return     self.Red   <= to.Red   + Similarity
         and then self.Red   >= to.Red   - Similarity

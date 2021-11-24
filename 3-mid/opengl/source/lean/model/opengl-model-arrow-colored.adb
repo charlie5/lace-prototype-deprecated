@@ -7,7 +7,7 @@ is
    --- Forge
    --
 
-   function to_Arrow (Color      : in openGL.rgb_Color := Palette.White;
+   function to_Arrow (Color      : in openGL.Color := Palette.White;
                       line_Width : in Real         := 1.0;
                       End_1,
                       End_2      : in Vector_3     := Origin_3D) return Item
@@ -29,7 +29,7 @@ is
    end to_Arrow;
 
 
-   function new_Arrow (Color      : in openGL.rgb_Color := Palette.White;
+   function new_Arrow (Color      : in openGL.Color := Palette.White;
                        line_Width : in Real         := 1.0;
                        End_1,
                        End_2      : in Vector_3     := Origin_3D) return View
@@ -51,20 +51,20 @@ is
 
       use openGL.Geometry.colored;
 
-      indices_Count : constant long_Index_t := 2;
-      the_Indices   : aliased  Indices      := (1 .. indices_Count => <>);
+      Color         : constant openGL.rgb_Color := +Self.Color;
+      indices_Count : constant long_Index_t     := 2;
+      the_Indices   : aliased  Indices          := (1 .. indices_Count => <>);
       the_Primitive :          Primitive.indexed.view;
-
    begin
       Geometry.free (Self.Geometry);
       Self.Geometry := Geometry.colored.new_Geometry;
 
-      set_Colors :
+      set_Colors:
       begin
-         Self.Vertices (1).Color := (primary => Self.Color,  Alpha => Opaque);
-         Self.Vertices (2).Color := (primary => Self.Color,  Alpha => Opaque);
-         Self.Vertices (3).Color := (primary => Self.Color,  Alpha => Opaque);
-         Self.Vertices (4).Color := (primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (1).Color := (primary => Color,  Alpha => opaque_Value);
+         Self.Vertices (2).Color := (primary => Color,  Alpha => opaque_Value);
+         Self.Vertices (3).Color := (primary => Color,  Alpha => opaque_Value);
+         Self.Vertices (4).Color := (primary => Color,  Alpha => opaque_Value);
       end set_Colors;
 
       Self.Geometry.is_Transparent (False);

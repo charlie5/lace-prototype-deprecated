@@ -16,7 +16,7 @@ is
    --- Forge
    --
 
-   function new_line_Model (Color : in openGL.rgb_Color;
+   function new_line_Model (Color : in openGL.Color;
                             End_1,
                             End_2 : in Vector_3 := Origin_3D) return View;
 

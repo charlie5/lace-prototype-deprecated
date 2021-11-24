@@ -7,13 +7,13 @@ is
    --- Forge
    --
 
-   function to_line_Model (Color : in openGL.rgb_Color;
+   function to_line_Model (Color : in openGL.Color;
                            End_1,
                            End_2 : in Vector_3 := Origin_3D) return Item
    is
       Self : Item;
    begin
-      Self.Color             := Color;
+      Self.Color             := +Color;
       Self.Vertices (1).Site := End_1;
       Self.Vertices (2).Site := End_2;
 
@@ -24,7 +24,7 @@ is
 
 
 
-   function new_line_Model (Color : in openGL.rgb_Color;
+   function new_line_Model (Color : in openGL.Color;
                             End_1,
                             End_2 : in Vector_3 := Origin_3D) return View
    is
@@ -56,8 +56,8 @@ is
 
       set_Sites:
       begin
-         Self.Vertices (1).Color := (Primary => Self.Color,  Alpha => Opaque);
-         Self.Vertices (2).Color := (Primary => Self.Color,  Alpha => Opaque);
+         Self.Vertices (1).Color := (Primary => Self.Color,  Alpha => opaque_Value);
+         Self.Vertices (2).Color := (Primary => Self.Color,  Alpha => opaque_Value);
       end set_Sites;
 
       the_Indices := (1, 2);

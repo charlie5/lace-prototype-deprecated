@@ -12,7 +12,7 @@ is
 
    function new_Billboard (Size    : in Size_t         := default_Size;
                            Plane   : in billboard.Plane;
-                           Color   : in rgba_Color;
+                           Color   : in lucid_Color;
                            Texture : in asset_Name) return View
    is
       Self : constant View := new Item;
@@ -61,6 +61,7 @@ is
          return the_Geometry;
       end new_Face;
 
+      Color    : constant rgba_Color := +Self.Color;
       the_Face : Geometry_view;
 
    begin
@@ -68,10 +69,10 @@ is
          the_Vertices : constant access Geometry.colored_textured.Vertex_array := Self.Vertices;
       begin
          the_Vertices.all := Geometry.colored_textured.Vertex_array'
-                               (1 => (site => the_Sites (1),    color => Self.Color,  coords => (Self.texture_Coords (1))),
-                                2 => (site => the_Sites (2),    color => Self.Color,  coords => (Self.texture_Coords (2))),
-                                3 => (site => the_Sites (3),    color => Self.Color,  coords => (Self.texture_Coords (3))),
-                                4 => (site => the_Sites (4),    color => Self.Color,  coords => (Self.texture_Coords (4))));
+                               (1 => (site => the_Sites (1),    color => Color,  coords => (Self.texture_Coords (1))),
+                                2 => (site => the_Sites (2),    color => Color,  coords => (Self.texture_Coords (2))),
+                                3 => (site => the_Sites (3),    color => Color,  coords => (Self.texture_Coords (3))),
+                                4 => (site => the_Sites (4),    color => Color,  coords => (Self.texture_Coords (4))));
 
          the_Face := new_Face (Vertices => the_Vertices);
 
@@ -93,14 +94,14 @@ is
 
 
 
-   procedure Color_is (Self : in out Item;   Now : in rgba_Color)
+   procedure Color_is (Self : in out Item;   Now : in lucid_Color)
    is
    begin
       Self.Color := Now;
 
       for i in Self.Vertices'Range
       loop
-         Self.Vertices (i).Color := Now;
+         Self.Vertices (i).Color := +Now;
       end loop;
 
       Self.is_Modified := True;

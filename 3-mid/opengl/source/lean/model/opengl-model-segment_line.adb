@@ -7,10 +7,10 @@ with
 package body openGL.Model.segment_line
 is
 
-   function to_segment_line_Model (Color : in openGL.rgb_Color) return Item
+   function to_segment_line_Model (Color : in openGL.Color) return Item
    is
       Self : constant Item := (Model.item with
-                               Color,
+                               +Color,
                                site_Vectors.empty_Vector,
                                others => <>);
    begin
@@ -19,7 +19,7 @@ is
 
 
 
-   function new_segment_line_Model (Color : in openGL.rgb_Color) return View
+   function new_segment_line_Model (Color : in openGL.Color) return View
    is
    begin
       return new Item' (to_segment_line_Model (Color));
@@ -93,12 +93,12 @@ is
       Self.vertex_Count := Self.vertex_Count + 1;
 
       Self.Vertices (Index_t (Self.vertex_Count)).Site  := start_Site;
-      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, Opaque);
+      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, opaque_Value);
 
       Self.vertex_Count := Self.vertex_Count + 1;
 
       Self.Vertices (Index_t (Self.vertex_Count)).Site  := end_Site;
-      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, Opaque);
+      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, opaque_Value);
 
       Self.needs_Rebuild := True;
    end add_1st_Segment;
@@ -132,7 +132,7 @@ is
       Self.vertex_Count := Self.vertex_Count + 1;
 
       Self.Vertices (Index_t (Self.vertex_Count)).Site  := end_Site;
-      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, Opaque);
+      Self.Vertices (Index_t (Self.vertex_Count)).Color := (Self.Color, opaque_Value);
 
       Self.needs_Rebuild := True;
    end add_Segment;
@@ -151,11 +151,11 @@ is
 
 
 
-   procedure Color_is (Self : in out Item;   Now     : in rgb_Color;
+   procedure Color_is (Self : in out Item;   Now     : in Color;
                                              for_End : in Integer)
    is
    begin
-      Self.Vertices (Index_t (for_End)).Color := (Now, 255);
+      Self.Vertices (Index_t (for_End)).Color := (+Now, opaque_Value);
       Self.needs_Rebuild := True;
    end Color_is;
 

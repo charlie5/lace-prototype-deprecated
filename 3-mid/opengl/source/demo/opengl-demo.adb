@@ -118,10 +118,10 @@ is
         := Model.arrow.colored.new_Arrow (End_2 => (0.0, 1.0, 0.0));
 
       the_ball_1_Model : constant Model.sphere.colored.view
-        := Model.sphere.colored.new_Sphere (Radius => 0.5, Color => to_lucid_Color ((Red, Opaque)));
+        := Model.sphere.colored.new_Sphere (Radius => 0.5, Color => (Red, Opaque));
 
       the_ball_2_Model : constant Model.sphere.lit_colored.view
-        := Model.sphere.lit_colored.new_Sphere (Radius => 1.0, Color => +(Green, Opaque));
+        := Model.sphere.lit_colored.new_Sphere (Radius => 1.0, Color => (Green, Opaque));
 
       the_ball_3_Model : constant Model.sphere.lit_colored_textured.view
         := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, Image => the_Texture);

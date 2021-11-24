@@ -19,7 +19,7 @@ is
 
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
-                      Color    : in rgba_Color;
+                      Color    : in lucid_Color;
                       Centered : in Boolean := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);
@@ -35,7 +35,7 @@ is
       begin
          Self.Text     := new String' (Text);
          Self.Font_Id  := Font;
-         Self.Color    := Color;
+         Self.Color    := +Color;
          Self.Centered := Centered;
          Self.Bounds   := null_Bounds;
 

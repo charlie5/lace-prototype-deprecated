@@ -90,16 +90,16 @@ is
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
-         the_Vertices (the_Vertices'First).Color  := (Primary => White,
-                                                      Alpha   => Opaque);
+         the_Vertices (the_Vertices'First).Color  := (Primary => +White,
+                                                      Alpha   => opaque_Value);
 
          the_Sites (the_Vertices'Last) := south_Pole;
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
          the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
-         the_Vertices (the_Vertices'Last).Color   := (Primary => White,
-                                                      Alpha   => Opaque);
+         the_Vertices (the_Vertices'Last).Color   := (Primary => +White,
+                                                      Alpha   => opaque_Value);
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -114,8 +114,8 @@ is
 
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
-            the_Vertices (vert_Id).Color  := (Primary => White,
-                                              Alpha   => Opaque);
+            the_Vertices (vert_Id).Color  := (Primary => +White,
+                                              Alpha   => opaque_Value);
 
             the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                               T => 1.0 - b / Degrees_180);
@@ -134,8 +134,8 @@ is
 
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
-               the_Vertices (vert_Id).Color  := (Primary => White,
-                                                 Alpha   => Opaque);
+               the_Vertices (vert_Id).Color  := (Primary => +White,
+                                                 Alpha   => opaque_Value);
                the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                                  T => 1.0 - b / Degrees_180);
             end loop;

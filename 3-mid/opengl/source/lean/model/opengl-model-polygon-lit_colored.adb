@@ -6,7 +6,7 @@ package body openGL.Model.polygon.lit_colored
 is
 
    function new_Polygon (Vertices : in Vector_2_array;
-                         Color    : in rgba_Color) return View
+                         Color    : in lucid_Color) return View
    is
       Self : constant View := new Item;
    begin
@@ -23,11 +23,6 @@ is
    type Geometry_view is access all Geometry.lit_colored.item'Class;
 
 
-   --  NB: - An extra vertex is required at the end of each latitude ring.
-   --      - This last vertex has the same site as the rings initial vertex.
-   --      - The  last    vertex has 's' texture coord of 1.0, whereas
-   --        the  initial vertex has 's' texture coord of 0.0.
-   --
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -43,6 +38,7 @@ is
       the_Vertices  : aliased  Geometry.lit_colored.Vertex_array := (1 .. vertex_Count  => <>);
       the_Indices   : aliased  Indices                           := (1 .. indices_Count => <>);
 
+      Color         : constant rgba_Color    := +Self.Color;
       the_Geometry  : constant Geometry_view := Geometry.lit_colored.new_Geometry;
 
    begin
@@ -52,7 +48,7 @@ is
          loop
             the_Vertices (i).Site   := Vector_3 (Self.Vertices (Integer (i)) & 0.0);
             the_Vertices (i).Normal := (0.0, 0.0, 1.0);
-            the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Color  := Color;
          end loop;
       end set_Vertices;
 

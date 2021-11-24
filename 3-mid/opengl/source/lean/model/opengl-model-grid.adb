@@ -21,7 +21,7 @@ is
    --- Forge
    --
 
-   function to_grid_Model (Color  : openGL.rgb_Color;
+   function to_grid_Model (Color  : openGL.Color;
                            Width  : Integer;
                            Height : Integer) return Item
    is
@@ -33,7 +33,7 @@ is
       half_Width   : constant Real := Real (Width)  / 2.0;
       half_Height  : constant Real := Real (Height) / 2.0;
    begin
-      Self.Color  := Color;
+      Self.Color  := +Color;
       Self.Width  := Width;
       Self.Height := Height;
       Self.Bounds := (Ball => <>,
@@ -47,7 +47,7 @@ is
    end to_grid_Model;
 
 
-   function new_grid_Model (Color  : openGL.rgb_Color;
+   function new_grid_Model (Color  : openGL.Color;
                             Width  : Integer;
                             Height : Integer) return View
    is
@@ -107,7 +107,7 @@ is
          loop
             if Row = row_Count / 2 + 1
             then
-               Color := White;
+               Color := +White;
             end if;
 
             vertex_Count                       := vertex_Count + 1;
@@ -115,14 +115,14 @@ is
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => Opaque);
+                                                   Alpha => opaque_Value);
 
             vertex_Count                       := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site  := (half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => Opaque);
+                                                   Alpha   => opaque_Value);
             if Row = row_Count / 2 + 1
             then
                Color := Self.Color;
@@ -133,7 +133,7 @@ is
          loop
             if Col = col_Count / 2 + 1
             then
-               Color := White;
+               Color := +White;
             end if;
 
             vertex_Count                       := vertex_Count + 1;
@@ -141,14 +141,14 @@ is
                                                    -half_Height,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => Opaque);
+                                                   Alpha   => opaque_Value);
 
             vertex_Count                       := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site  := (Real (Col - 1) - half_Width + x_Adjust,
                                                    half_Height,
                                                    0.16);
             Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => Opaque);
+                                                   Alpha => opaque_Value);
             if Col = col_Count / 2 + 1
             then
                Color := Self.Color;

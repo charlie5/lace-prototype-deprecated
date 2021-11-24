@@ -20,7 +20,7 @@ is
    --- Forge
    --
 
-   function new_segment_line_Model (Color : in openGL.rgb_Color) return View;
+   function new_segment_line_Model (Color : in openGL.Color) return View;
 
 
    -----------
@@ -56,7 +56,7 @@ is
    procedure Site_is          (Self : in out Item;   Now        : in Vector_3;
                                                      for_End    : in Integer);
 
-   procedure Color_is         (Self : in out Item;   Now        : in rgb_Color;
+   procedure Color_is         (Self : in out Item;   Now        : in Color;
                                                      for_End    : in Integer);
 
    function segment_Count     (Self : in     Item) return Natural;

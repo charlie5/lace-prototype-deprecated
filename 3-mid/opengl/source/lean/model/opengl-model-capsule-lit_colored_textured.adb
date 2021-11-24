@@ -12,7 +12,7 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
-                         Color  : in rgba_Color;
+                         Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;
@@ -20,7 +20,7 @@ is
       Self.Radius := Radius;
       Self.Height := Height;
 
-      Self.Color := Color;
+      Self.Color := +Color;
       Self.Image := Image;
 
       return Self;

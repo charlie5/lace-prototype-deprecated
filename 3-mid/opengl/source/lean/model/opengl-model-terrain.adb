@@ -113,8 +113,8 @@ is
                                             abs (the_Sites (vert_Id)));
 
                the_Vertices (vert_Id).Site  := the_Sites (vert_Id);
-               the_Vertices (vert_Id).Color := (Primary => White,
-                                                Alpha   => Opaque);
+               the_Vertices (vert_Id).Color := (Primary => +White,
+                                                Alpha   => opaque_Value);
             end loop;
          end loop;
 

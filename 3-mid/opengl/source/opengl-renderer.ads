@@ -10,8 +10,8 @@ is
 
    --  Attributes
    --
-   procedure Background_is (Self : in out Item;   Now     : in openGL.rgba_Color);
-   procedure Background_is (Self : in out Item;   Now     : in openGL.rgb_Color;
+   procedure Background_is (Self : in out Item;   Now     : in openGL.lucid_Color);
+   procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
                                                   Opacity : in Opaqueness := 1.0);
 
    --  Operations

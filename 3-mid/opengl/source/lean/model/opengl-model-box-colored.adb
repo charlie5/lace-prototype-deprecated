@@ -67,10 +67,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Lower_Front),  Color => Self.Faces (Front).Colors (1)),
-               2 => (Site => the_Sites (Right_Lower_Front),  Color => Self.Faces (Front).Colors (2)),
-               3 => (Site => the_Sites (Right_Upper_Front),  Color => Self.Faces (Front).Colors (3)),
-               4 => (Site => the_Sites ( Left_Upper_Front),  Color => Self.Faces (Front).Colors (4)));
+           := (1 => (Site => the_Sites ( Left_Lower_Front),  Color => +Self.Faces (Front).Colors (1)),
+               2 => (Site => the_Sites (Right_Lower_Front),  Color => +Self.Faces (Front).Colors (2)),
+               3 => (Site => the_Sites (Right_Upper_Front),  Color => +Self.Faces (Front).Colors (3)),
+               4 => (Site => the_Sites ( Left_Upper_Front),  Color => +Self.Faces (Front).Colors (4)));
       begin
          front_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -79,10 +79,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Rear),   Color => Self.Faces (Rear).Colors (1)),
-               2 => (Site => the_Sites ( Left_Lower_Rear),   Color => Self.Faces (Rear).Colors (2)),
-               3 => (Site => the_Sites ( Left_Upper_Rear),   Color => Self.Faces (Rear).Colors (3)),
-               4 => (Site => the_Sites (Right_Upper_Rear),   Color => Self.Faces (Rear).Colors (4)));
+           := (1 => (Site => the_Sites (Right_Lower_Rear),   Color => +Self.Faces (Rear).Colors (1)),
+               2 => (Site => the_Sites ( Left_Lower_Rear),   Color => +Self.Faces (Rear).Colors (2)),
+               3 => (Site => the_Sites ( Left_Upper_Rear),   Color => +Self.Faces (Rear).Colors (3)),
+               4 => (Site => the_Sites (Right_Upper_Rear),   Color => +Self.Faces (Rear).Colors (4)));
       begin
          rear_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -91,10 +91,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Upper_Front),  Color => Self.Faces (Upper).Colors (1)),
-               2 => (Site => the_Sites (Right_Upper_Front),  Color => Self.Faces (Upper).Colors (2)),
-               3 => (Site => the_Sites (Right_Upper_Rear),   Color => Self.Faces (Upper).Colors (3)),
-               4 => (Site => the_Sites ( Left_Upper_Rear),   Color => Self.Faces (Upper).Colors (4)));
+           := (1 => (Site => the_Sites ( Left_Upper_Front),  Color => +Self.Faces (Upper).Colors (1)),
+               2 => (Site => the_Sites (Right_Upper_Front),  Color => +Self.Faces (Upper).Colors (2)),
+               3 => (Site => the_Sites (Right_Upper_Rear),   Color => +Self.Faces (Upper).Colors (3)),
+               4 => (Site => the_Sites ( Left_Upper_Rear),   Color => +Self.Faces (Upper).Colors (4)));
       begin
          upper_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -103,10 +103,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),  Color => Self.Faces (Lower).Colors (1)),
-               2 => (Site => the_Sites ( Left_Lower_Front),  Color => Self.Faces (Lower).Colors (2)),
-               3 => (Site => the_Sites ( Left_Lower_Rear),   Color => Self.Faces (Lower).Colors (3)),
-               4 => (Site => the_Sites (Right_Lower_Rear),   Color => Self.Faces (Lower).Colors (4)));
+           := (1 => (Site => the_Sites (Right_Lower_Front),  Color => +Self.Faces (Lower).Colors (1)),
+               2 => (Site => the_Sites ( Left_Lower_Front),  Color => +Self.Faces (Lower).Colors (2)),
+               3 => (Site => the_Sites ( Left_Lower_Rear),   Color => +Self.Faces (Lower).Colors (3)),
+               4 => (Site => the_Sites (Right_Lower_Rear),   Color => +Self.Faces (Lower).Colors (4)));
       begin
          lower_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -115,10 +115,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites (Left_Lower_Rear),    Color => Self.Faces (Left).Colors (1)),
-               2 => (Site => the_Sites (Left_Lower_Front),   Color => Self.Faces (Left).Colors (2)),
-               3 => (Site => the_Sites (Left_Upper_Front),   Color => Self.Faces (Left).Colors (3)),
-               4 => (Site => the_Sites (Left_Upper_Rear),    Color => Self.Faces (Left).Colors (4)));
+           := (1 => (Site => the_Sites (Left_Lower_Rear),    Color => +Self.Faces (Left).Colors (1)),
+               2 => (Site => the_Sites (Left_Lower_Front),   Color => +Self.Faces (Left).Colors (2)),
+               3 => (Site => the_Sites (Left_Upper_Front),   Color => +Self.Faces (Left).Colors (3)),
+               4 => (Site => the_Sites (Left_Upper_Rear),    Color => +Self.Faces (Left).Colors (4)));
       begin
          left_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -127,10 +127,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),  Color => Self.Faces (Right).Colors (1)),
-               2 => (Site => the_Sites (Right_Lower_Rear),   Color => Self.Faces (Right).Colors (2)),
-               3 => (Site => the_Sites (Right_Upper_Rear),   Color => Self.Faces (Right).Colors (3)),
-               4 => (Site => the_Sites (Right_Upper_Front),  Color => Self.Faces (Right).Colors (4)));
+           := (1 => (Site => the_Sites (Right_Lower_Front),  Color => +Self.Faces (Right).Colors (1)),
+               2 => (Site => the_Sites (Right_Lower_Rear),   Color => +Self.Faces (Right).Colors (2)),
+               3 => (Site => the_Sites (Right_Upper_Rear),   Color => +Self.Faces (Right).Colors (3)),
+               4 => (Site => the_Sites (Right_Upper_Front),  Color => +Self.Faces (Right).Colors (4)));
       begin
          right_Face := new_Face (Vertices => the_Vertices'Access);
       end;

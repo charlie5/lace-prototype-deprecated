@@ -180,8 +180,8 @@ is
    subtype  grey_Value is gl.GLubyte;
    subtype color_Value is gl.GLubyte;
 
-   Opaque : constant color_Value;
-   Lucid  : constant color_Value;
+   opaque_Value : constant color_Value;
+   lucid_Value  : constant color_Value;
 
    type rgb_Color is
       record
@@ -215,13 +215,23 @@ is
          Blue    : Primary;
       end record;
 
+   type Colors is array (Index_t range <>) of Color;
+
+
    type Opaqueness is new Real range 0.0 .. 1.0;
+
+   Opaque : constant Opaqueness;
+   Lucid  : constant Opaqueness;
+
 
    type lucid_Color is
       record
          Primary : Color;
          Opacity : Opaqueness;
       end record;
+
+   type lucid_Colors is array (Index_t range <>) of lucid_Color;
+
 
    subtype Shine is Real range 1.0 .. Real'Last;
 
@@ -235,11 +245,19 @@ is
    function to_color_Value (Self : in Primary)     return color_Value;
    function to_Primary     (Self : in color_Value) return Primary;
 
-   function to_lucid_Color (From : in rgba_Color)  return lucid_Color;
+   function to_lucid_Color (From : in  rgba_Color) return lucid_Color;
    function to_rgba_Color  (From : in lucid_Color) return rgba_Color;
 
-   function "+"            (From : in rgba_Color)  return lucid_Color renames to_lucid_Color;
+   function "+"            (From : in  rgba_Color) return lucid_Color renames to_lucid_Color;
    function "+"            (From : in lucid_Color) return rgba_Color  renames to_rgba_Color;
+
+
+   function to_Color       (From : in rgb_Color)   return Color;
+   function to_rgb_Color   (From : in     Color)   return rgb_Color;
+
+   function "+"            (From : in rgb_Color)   return Color     renames to_Color;
+   function "+"            (From : in     Color)   return rgb_Color renames to_rgb_Color;
+
 
 
    ----------
@@ -372,12 +390,19 @@ private
    null_Bounds   : constant Bounds     := (ball => 0.0,
                                            box  => (lower => (Real'Last,  Real'Last,  Real'Last),
                                                     upper => (Real'First, Real'First, Real'First)));
+   -----------
+   --  Opacity
+   --
+   Opaque   : constant Opaqueness := 1.0;
+   Lucid    : constant Opaqueness := 0.0;
+
+   opaque_Value : constant color_Value := color_Value'Last;
+   lucid_Value  : constant color_Value := color_Value'First;
+
+
    ---------
    --  Color
    --
-   Opaque   : constant color_Value := color_Value'Last;
-   Lucid    : constant color_Value := color_Value'First;
-
    no_Color : constant Color := (Red   => null_Primary,
                                  Green => null_Primary,
                                  Blue  => null_Primary);

@@ -18,7 +18,7 @@ is
 
    type Face is
       record
-         Colors       : rgba_Colors (1 .. 4);      -- The color of each faces 4 vertices.
+         Colors       : lucid_Colors (1 .. 4);      -- The color of each faces 4 vertices.
          texture_Name : asset_Name := null_Asset;   -- The texture applied to the face.
       end record;
 

@@ -16,7 +16,7 @@ is
 
    type Face is
       record
-         Colors : rgba_Colors (1 .. 4);     -- The color of each of the faces 4 vertices.
+         Colors : lucid_Colors (1 .. 4);     -- The color of each of the faces 4 vertices.
       end record;
 
    type Faces is array (Side) of Face;

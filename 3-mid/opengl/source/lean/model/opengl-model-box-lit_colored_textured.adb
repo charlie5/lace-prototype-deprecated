@@ -69,10 +69,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => Self.Faces (Front).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => Self.Faces (Front).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Color => Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => Self.Faces (Front).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (4),   Coords => (0.0, 1.0)));
       begin
          front_Face := new_Face (Vertices => the_Vertices'Access);
 
@@ -88,10 +88,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Color => Self.Faces (Rear).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Color => Self.Faces (Rear).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Color => Self.Faces (Rear).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Color => Self.Faces (Rear).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (4),   Coords => (0.0, 1.0)));
       begin
          rear_Face := new_Face (Vertices => the_Vertices'Access);
 
@@ -107,10 +107,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Color => Self.Faces (Upper).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Color => Self.Faces (Upper).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Color => Self.Faces (Upper).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Color => Self.Faces (Upper).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (4),   Coords => (0.0, 1.0)));
       begin
          upper_Face := new_Face (Vertices => the_Vertices'Access);
 
@@ -126,10 +126,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Color => Self.Faces (Lower).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Color => Self.Faces (Lower).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Color => Self.Faces (Lower).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Color => Self.Faces (Lower).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (4),   Coords => (0.0, 1.0)));
       begin
          lower_Face := new_Face (Vertices => the_Vertices'Access);
 
@@ -145,10 +145,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Color => Self.Faces (Left).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Color => Self.Faces (Left).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Color => Self.Faces (Left).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Color => Self.Faces (Left).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (4),   Coords => (0.0, 1.0)));
       begin
          left_Face := new_Face (Vertices => the_Vertices'Access);
 
@@ -164,10 +164,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Color => Self.Faces (Right).Colors (1),   Coords => (0.0, 0.0)),
-               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Color => Self.Faces (Right).Colors (2),   Coords => (1.0, 0.0)),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Color => Self.Faces (Right).Colors (3),   Coords => (1.0, 1.0)),
-               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Color => Self.Faces (Right).Colors (4),   Coords => (0.0, 1.0)));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (1),   Coords => (0.0, 0.0)),
+               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (2),   Coords => (1.0, 0.0)),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (3),   Coords => (1.0, 1.0)),
+               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (4),   Coords => (0.0, 1.0)));
       begin
          right_Face := new_Face (Vertices => the_Vertices'Access);
 
