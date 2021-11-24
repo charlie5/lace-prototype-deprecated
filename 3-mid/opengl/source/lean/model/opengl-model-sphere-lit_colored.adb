@@ -11,7 +11,7 @@ is
    function new_Sphere (Radius     : in Real;
                         lat_Count  : in Positive := default_latitude_Count;
                         long_Count : in Positive := default_longitude_Count;
-                        Color      : in rgba_Color) return View
+                        Color      : in lucid_Color) return View
    is
       Self : constant View := new Item;
    begin
@@ -61,6 +61,7 @@ is
       the_Sites      : aliased  Sites                             := (1 ..  vertex_Count => <>);
       the_Indices    : aliased  Indices                           := (1 .. indices_Count => <>);
 
+      Color          : constant rgba_Color    := to_rgba_Color (Self.Color);
       the_Geometry   : constant Geometry_view := Geometry.lit_colored.new_Geometry;
 
    begin
@@ -84,13 +85,13 @@ is
 
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
-         the_Vertices (the_Vertices'First).Color  := Self.Color;
+         the_Vertices (the_Vertices'First).Color  := Color;
 
          the_Sites (the_Vertices'Last)            := south_Pole;
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
-         the_Vertices (the_Vertices'Last).Color   := Self.Color;
+         the_Vertices (the_Vertices'Last).Color   := Color;
 
 
          for lat_Id in 2 .. lat_Count - 1
@@ -106,7 +107,7 @@ is
 
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
-            the_Vertices (vert_Id).Color  := Self.Color;
+            the_Vertices (vert_Id).Color  := Color;
 
             for long_Id in 1 .. long_Count
             loop
@@ -122,7 +123,7 @@ is
 
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
-               the_Vertices (vert_Id).Color  := Self.Color;
+               the_Vertices (vert_Id).Color  := Color;
             end loop;
 
          end loop;

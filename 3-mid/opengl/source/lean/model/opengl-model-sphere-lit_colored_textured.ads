@@ -26,7 +26,7 @@ is
 
 private
 
-   type Item is new Model.sphere.item with
+   type Item is new Model.sphere.item with     -- TODO: Add 'Color' component.
       record
          Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
       end record;

@@ -1,6 +1,8 @@
 with
      openGL.Geometry .colored,
-     openGL.Primitive.indexed;
+     openGL.Primitive.indexed,
+     openGL.Conversions;
+
 
 package body openGL.Model.sphere.colored
 is
@@ -11,7 +13,7 @@ is
    function new_Sphere (Radius     : in Real;
                         lat_Count  : in Positive := openGL.Model.sphere.default_latitude_Count;
                         long_Count : in Positive := openGL.Model.sphere.default_longitude_Count;
-                        Color      : in rgba_Color) return View
+                        Color      : in openGL.lucid_Color) return View
    is
       Self : constant View := new Item;
    begin
@@ -44,7 +46,8 @@ is
       pragma unreferenced (Textures, Fonts);
 
       use Geometry,
-          Geometry.colored;
+          Geometry.colored,
+          Conversions;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -62,7 +65,8 @@ is
       the_Indices    : aliased  Indices                       := (1 .. indices_Count => <>);
       the_Vertices   : aliased  Geometry.colored.Vertex_array := (1 ..  vertex_Count => <>);
 
-      the_Geometry   : constant Geometry_view := Geometry.colored.new_Geometry;
+      Color          : constant openGL.rgba_Color := to_rgba_Color (Self.Color);
+      the_Geometry   : constant Geometry_view     := Geometry.colored.new_Geometry;
 
    begin
       set_Sites:
@@ -81,11 +85,11 @@ is
       begin
          the_Sites    (the_Vertices'First)       := north_Pole;
          the_Vertices (the_Vertices'First).Site  := north_Pole;
-         the_Vertices (the_Vertices'First).Color := Self.Color;
+         the_Vertices (the_Vertices'First).Color := Color;
 
          the_Sites    (the_Vertices'Last)        := south_Pole;
          the_Vertices (the_Vertices'Last).Site   := south_Pole;
-         the_Vertices (the_Vertices'Last).Color  := Self.Color;
+         the_Vertices (the_Vertices'Last).Color  := Color;
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -99,7 +103,7 @@ is
             the_Sites (vert_Id) := the_Site;                      -- Add 1st point on a line of latitude.
 
             the_Vertices (vert_Id).Site  := the_Site;
-            the_Vertices (vert_Id).Color := Self.Color;
+            the_Vertices (vert_Id).Color := Color;
 
             for long_Id in 1 .. long_Count
             loop
@@ -114,7 +118,7 @@ is
                the_Sites (vert_Id) := the_Site;                    -- Add each succesive point on a line of latitude.
 
                the_Vertices (vert_Id).Site  := the_Site;
-               the_Vertices (vert_Id).Color := Self.Color;
+               the_Vertices (vert_Id).Color := Color;
             end loop;
 
          end loop;

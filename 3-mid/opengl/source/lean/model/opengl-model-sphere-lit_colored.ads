@@ -19,7 +19,7 @@ is
    function new_Sphere (Radius     : in Real;
                         lat_Count  : in Positive := default_latitude_Count;
                         long_Count : in Positive := default_longitude_Count;
-                        Color      : in rgba_Color) return View;
+                        Color      : in lucid_Color) return View;
 
 
    --------------
@@ -36,7 +36,7 @@ private
 
    type Item is new Model.sphere.item with
       record
-         Color : rgba_Color;
+         Color : lucid_Color;
       end record;
 
 end openGL.Model.sphere.lit_colored;
