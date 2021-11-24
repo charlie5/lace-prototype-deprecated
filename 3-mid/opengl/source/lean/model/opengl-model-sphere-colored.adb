@@ -8,12 +8,17 @@ is
    --- Forge
    --
 
-   function new_Sphere (Radius : in Real;
-                        Color  : in rgba_Color) return View
+   function new_Sphere (Radius     : in Real;
+                        lat_Count  : in Positive := openGL.Model.sphere.default_latitude_Count;
+                        long_Count : in Positive := openGL.Model.sphere.default_longitude_Count;
+                        Color      : in rgba_Color) return View
    is
       Self : constant View := new Item;
    begin
-      Self.Color := Color;
+      Self.Color      := Color;
+      Self.lat_Count  := lat_Count;
+      Self.long_Count := long_Count;
+
       Self.define (Radius);
 
       return Self;
@@ -41,20 +46,17 @@ is
       use Geometry,
           Geometry.colored;
 
-      Degrees_360    : constant := Pi * 2.0;
-      Degrees_180    : constant := Pi;
+      lat_Count      : Positive renames Self.lat_Count;
+      long_Count     : Positive renames Self.long_Count;
 
-      lat_Count      : constant :=  2 * 13;
-      long_Count     : constant :=  2 * 26;
-
-      Num_lat_strips : constant := lat_Count - 1;
+      Num_lat_strips : constant Positive := lat_Count - 1;
 
       lat_Spacing    : constant Real := Degrees_180 / Real (lat_Count - 1);
       long_Spacing   : constant Real := Degrees_360 / Real (long_Count);
 
-      indices_Count  : constant long_Index_t := Num_lat_strips * (long_Count + 1) * 2;
-      vertex_Count   : constant      Index_t :=   1 + 1                                 -- North and south pole.
-                                                + (long_Count + 1) * (lat_Count - 2);   -- Each latitude ring.
+      indices_Count  : constant long_Index_t := long_Index_t (Num_lat_strips * (long_Count + 1) * 2);
+      vertex_Count   : constant      Index_t :=   1 + 1                                                  -- North and south pole.
+                                                + Index_t ((long_Count + 1) * (lat_Count - 2));          -- Each latitude ring.
 
       the_Sites      : aliased  Sites                         := (1 ..  vertex_Count => <>);
       the_Indices    : aliased  Indices                       := (1 .. indices_Count => <>);
@@ -150,7 +152,7 @@ is
                Upper := 2;
             end if;
 
-            Lower := Upper + long_Count + 1;
+            Lower := Upper + Index_t (long_Count) + 1;
          end loop;
       end set_Indices;
 

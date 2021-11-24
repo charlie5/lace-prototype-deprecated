@@ -7,6 +7,10 @@ is
    type View is access all Item'Class;
 
 
+   default_latitude_Count  : constant := 26;
+   default_longitude_Count : constant := 52;
+
+
    ---------
    --- Forge
    --
@@ -27,7 +31,15 @@ private
 
    type Item is abstract new Model.item with
       record
-         Radius : Real;
+         Radius     : Real;
+
+         lat_Count  : Positive;
+         long_Count : Positive;
       end record;
+
+
+   Degrees_180 : constant := Pi;
+   Degrees_360 : constant := Pi * 2.0;
+
 
 end openGL.Model.sphere;

@@ -12,8 +12,10 @@ is
    type View is access all Item'Class;
 
 
-   function new_Sphere (Radius : in Real;
-                        Image  : in asset_Name := null_Asset) return View;
+   function new_Sphere (Radius     : in Real;
+                        lat_Count  : in Positive   := default_latitude_Count;
+                        long_Count : in Positive   := default_longitude_Count;
+                        Image      : in asset_Name := null_Asset) return View;
 
 
    overriding

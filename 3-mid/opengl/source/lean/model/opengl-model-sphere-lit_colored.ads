@@ -16,8 +16,10 @@ is
    --- Forge
    --
 
-   function new_Sphere (Radius : in Real;
-                        Color  : in rgba_Color) return View;
+   function new_Sphere (Radius     : in Real;
+                        lat_Count  : in Positive := default_latitude_Count;
+                        long_Count : in Positive := default_longitude_Count;
+                        Color      : in rgba_Color) return View;
 
 
    --------------
