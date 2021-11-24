@@ -284,7 +284,7 @@ is
                                                   Mass       => 0.0);
    begin
       the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
-                                                                     lat_Count    => 234,
+                                                                     lat_Count    => 180,
                                                                      Image        => Texture,
                                                                      is_Skysphere => True).all'Access;
       return gel.Sprite.Forge.new_Sprite ("skysphere_Sprite",
