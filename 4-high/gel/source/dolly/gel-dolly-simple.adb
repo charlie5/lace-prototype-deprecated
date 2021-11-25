@@ -71,14 +71,14 @@ is
       --  Angular Spin
       --
 
-      if Self.Spin (Left)       then   update_Spin (initial_Spin * y_Rotation_from (-rotate_Factor));     end if;
-      if Self.Spin (Right)      then   update_Spin (initial_Spin * y_Rotation_from ( rotate_Factor));     end if;
+      if Self.Spin (Left)       then   update_Spin (y_Rotation_from (-rotate_Factor) * initial_Spin);     end if;
+      if Self.Spin (Right)      then   update_Spin (y_Rotation_from ( rotate_Factor) * initial_Spin);     end if;
 
-      if Self.Spin (Forward)    then   update_Spin (initial_Spin * x_Rotation_from ( rotate_Factor));     end if;
-      if Self.Spin (Backward)   then   update_Spin (initial_Spin * x_Rotation_from (-rotate_Factor));     end if;
+      if Self.Spin (Forward)    then   update_Spin (x_Rotation_from ( rotate_Factor) * initial_Spin);     end if;
+      if Self.Spin (Backward)   then   update_Spin (x_Rotation_from (-rotate_Factor) * initial_Spin);     end if;
 
-      if Self.Spin (Up)         then   update_Spin (initial_Spin * z_Rotation_from (-rotate_Factor));     end if;
-      if Self.Spin (Down)       then   update_Spin (initial_Spin * z_Rotation_from ( rotate_Factor));     end if;
+      if Self.Spin (Up)         then   update_Spin (z_Rotation_from (-rotate_Factor) * initial_Spin);     end if;
+      if Self.Spin (Down)       then   update_Spin (z_Rotation_from ( rotate_Factor) * initial_Spin);     end if;
 
       --  Orbit
       --
