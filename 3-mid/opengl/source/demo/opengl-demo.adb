@@ -67,7 +67,7 @@ is
       end if;
 
       Video.Windows.Makers.create (Win    => Window,
-                                   Title  => "openGL Demo",
+                                   Title  => Name,
                                    X      => 100,
                                    Y      => 100,
                                    Width  => C.int (Width),
