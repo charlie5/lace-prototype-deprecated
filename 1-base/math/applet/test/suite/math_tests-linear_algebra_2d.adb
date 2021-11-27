@@ -137,6 +137,7 @@ is
 
 
 
+   overriding
    procedure Initialize (T : in out Test) is
    begin
       T.set_Name ("Linear Algebra (2D) Tests");

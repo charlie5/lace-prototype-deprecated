@@ -4,7 +4,7 @@ with
      gel.Sprite,
 
      Physics,
-     
+
      float_Math,
 
      ada.Calendar,
@@ -16,7 +16,7 @@ package body gel_demo_Server
 is
    use ada.Calendar,
        ada.Text_IO;
-   
+
 
    package Math renames float_Math;
 
@@ -41,7 +41,7 @@ is
                                                                            Site => math.Origin_3D,
                                                                            Size => (20.0, 1.0, 20.0),
                                                                            Mass => 0.0);
-         
+
          the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World.all'Access,
                                                                            Mass => 1.0);
          next_render_Time : ada.calendar.Time;
@@ -65,7 +65,7 @@ is
          next_render_Time := ada.Calendar.clock;
 
          delay 1.0;
-         
+
          while not Done
          loop
             select

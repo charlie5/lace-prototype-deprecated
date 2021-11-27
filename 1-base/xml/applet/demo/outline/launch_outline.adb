@@ -57,7 +57,7 @@ is
    is
    begin
       put_Line ("my_data_Handler: '" & to_String (Data) & "'");
-   end;
+   end my_data_Handler;
 
 
 begin

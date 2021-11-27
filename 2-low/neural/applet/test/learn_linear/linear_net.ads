@@ -17,6 +17,7 @@ is
 
 
 
+   overriding
    procedure define (Self :    out Item;
                      Name : in     String);
 

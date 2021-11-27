@@ -23,6 +23,7 @@ is
    -- Forge
    --
 
+   overriding
    procedure define (Self :    out Item;
                      Name : in     String)
    is

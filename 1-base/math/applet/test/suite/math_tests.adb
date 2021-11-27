@@ -145,6 +145,7 @@ is
 
 
 
+   overriding
    procedure Initialize (T : in out Test) is
    begin
       T.set_Name ("Core Math Tests");
