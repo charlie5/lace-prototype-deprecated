@@ -7,7 +7,7 @@ with ahven.Text_Runner,
 
 procedure launch_math_Testsuite
 is
-   S : ahven.Framework.test_Suite_access := ahven.Framework.create_Suite ("All Math Tests");
+   S : constant ahven.Framework.test_Suite_access := ahven.Framework.create_Suite ("All Math Tests");
 
 begin
    S.add_Test (new math_Tests                  .Test);

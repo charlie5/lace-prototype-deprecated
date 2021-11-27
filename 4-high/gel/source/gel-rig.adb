@@ -50,6 +50,7 @@ is
               3 => (From (3, 1),  From (3, 2),  From (3, 3),  From (3, 4)),
               4 => (From (4, 1),  From (4, 2),  From (4, 3),  From (4, 4)));
    end to_Math;
+   pragma Unreferenced (to_Math);
 
 
 
@@ -388,6 +389,7 @@ is
                              Scale       : in Vector_3;
                              Mass        : in Real)
       is
+         pragma Unreferenced (Mass);
          use opengl.Palette;
 
          new_Sprite    :          gel.Sprite.view;
@@ -641,6 +643,7 @@ is
                      Self.Channels (Channel).initial_Angle := Self.Channels (Channel).Values (1);
                      Self.Channels (Channel).current_Angle := Self.Channels (Channel).initial_Angle;
                   end setup_Rotation;
+                  pragma Unreferenced (setup_Rotation);
 
 
                   procedure setup_Location (Channel     : in channel_Id;
@@ -657,6 +660,7 @@ is
                                                                Self.Channels (Channel).Values (3));
                      Self.Channels (Channel).initial_Site  := Self.Channels (Channel).current_Site;
                   end setup_Location;
+                  pragma Unreferenced (setup_Location);
 
 
                   procedure setup_Location_x (Channel     : in channel_Id;
@@ -1113,6 +1117,7 @@ is
                                                      * joint_Transform_for (the_Proxy)
                                                      * inv_root_Transform);
       end set_proxy_Transform_for;
+      pragma Unreferenced (set_proxy_Transform_for);
 
 
       use joint_Id_Maps_of_bone_site_offset;
@@ -1262,12 +1267,14 @@ is
                                      To => to_Radians (Degrees (the_Channel.current_Angle)));
          end if;
       end update_rotation_Animation;
+      pragma Unreferenced (update_rotation_Animation);
 
 
 
       procedure update_location_Animation (for_Channel : in channel_Id;
                                            for_Joint   : in scene_joint_Id)
       is
+         pragma Unreferenced (for_Joint);
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
          Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
@@ -1322,12 +1329,14 @@ is
 
          end if;
       end update_location_Animation;
+      pragma Unreferenced (update_location_Animation);
 
 
 
       procedure update_location_X_Animation (for_Channel : in channel_Id;
                                              for_Joint   : in scene_joint_Id)
       is
+         pragma Unreferenced (for_Joint);
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
          Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
@@ -1371,6 +1380,7 @@ is
       procedure update_location_Y_Animation (for_Channel : in channel_Id;
                                              for_Joint   : in scene_joint_Id)
       is
+         pragma Unreferenced (for_Joint);
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
          Cursor      :          Index             renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
@@ -1413,6 +1423,7 @@ is
       procedure update_location_Z_Animation (for_Channel : in channel_Id;
                                              for_Joint   : in scene_joint_Id)
       is
+         pragma Unreferenced (for_Joint);
          the_Channel :          animation_Channel renames Self.Channels (for_Channel);
          Cursor      :          math.Index        renames the_Channel.Cursor;
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
@@ -1456,6 +1467,7 @@ is
       procedure update_full_transform_Animation (for_Channel : in channel_Id;
                                                  for_Joint   : in scene_joint_Id)
       is
+         pragma Unreferenced (for_Joint);
          the_Channel    : animation_Channel renames Self.Channels (for_Channel);
          Cursor         : Index             renames the_Channel.Cursor;
          Cursor_updated : Boolean           :=      False;

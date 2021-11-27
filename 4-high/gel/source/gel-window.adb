@@ -9,6 +9,7 @@ is
    --
 
    procedure free is new ada.unchecked_Deallocation (String, String_view);
+   pragma Unreferenced (free);
 
 
    ----------
@@ -201,6 +202,7 @@ is
    begin
       null;
    end flush;
+   pragma Unreferenced (flush);
 
 
 
@@ -209,6 +211,7 @@ is
    begin
       null;
    end sync;
+   pragma Unreferenced (sync);
 
 
    ----------

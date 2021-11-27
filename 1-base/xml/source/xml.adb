@@ -73,6 +73,7 @@ is
 
       procedure Ender (Name:  in unbounded_String)
       is
+         pragma Unreferenced (Name);
       begin
          element_Stack.delete_Last;
       end Ender;

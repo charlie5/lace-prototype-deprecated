@@ -261,6 +261,7 @@ is
 
    function facet_Count_in is new any_facet_Count_in (any_Index_t => Index_t,
                                                       any_Indices => Indices);
+   pragma Unreferenced (facet_Count_in);
 
 
    ----------
@@ -344,6 +345,7 @@ is
 
    function Facets_of is new any_Facets_of (Index_t,
                                             Indices);
+   pragma Unreferenced (Facets_of);
 
 
    -----------

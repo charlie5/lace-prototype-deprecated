@@ -2,8 +2,6 @@ with
      Ahven,
      float_Math.Geometry.d2;
 
-with Ada.Text_IO; use Ada.Text_IO;
-
 
 package body math_Tests.Geometry_2d
 is
@@ -24,8 +22,7 @@ is
 
    procedure Polygon_is_convex_Test
    is
-      use float_Math,
-          float_Math.Geometry.d2;
+      use float_Math.Geometry.d2;
 
       the_Poly : Polygon := (vertex_Count => 4,
                              vertices     => ((-1.0, -1.0),
@@ -53,8 +50,7 @@ is
 
    procedure triangle_Area_Test
    is
-      use float_Math,
-          float_Math.Geometry.d2;
+      use float_Math.Geometry.d2;
 
       the_Tri : Triangle := (vertices => (( 0.0,  0.0),
                                           ( 1.0,  0.0),

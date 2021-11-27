@@ -1,4 +1,3 @@
-with Ada.Text_IO; use Ada.Text_IO;
 with
      gel.hinge_Joint,
      gel.  any_Joint,
@@ -193,6 +192,7 @@ is
 
       procedure deallocate is new ada.unchecked_Deallocation (Sprite.item'Class, Sprite.view);
       procedure deallocate is new ada.unchecked_Deallocation (Joint.views,       access_Joint_views);
+      pragma Unreferenced (deallocate);
 
       child_Joint : Joint.view;
 
@@ -1102,6 +1102,7 @@ is
    begin
       return Converted (Self);
    end to_Hash;
+   pragma Unreferenced (to_Hash);
 
 
 

@@ -368,6 +368,7 @@ is
    procedure update_Bounds (Self : in out Item;   of_Obect : in physics.Object.view)
    is
       the_c_Object : constant access bullet_c.Object := bullet_physics.Object.view (of_Obect).C;
+      pragma Unreferenced (the_c_Object);
    begin
       raise Error with "TODO";
    end update_Bounds;
@@ -486,6 +487,7 @@ is
    function Manifold (Self : access Item;   Index : in Positive) return physics.space.a_Manifold
    is
       type Any_limited_view is access all lace.Any.limited_item'Class;
+      pragma Unreferenced (Any_limited_view);
       the_Manifold : physics.space.a_Manifold;
    begin
       raise Error with "TODO";

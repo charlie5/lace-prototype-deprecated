@@ -238,6 +238,7 @@ is
          end if;
       end;
    end check;
+   pragma Unreferenced (check);
 
 
 
@@ -574,6 +575,7 @@ is
 
    function Image (Self : in Polygon) return String
    is
+      pragma Unreferenced (Self);
    begin
       return "Polygon image (TODO)";
    end Image;

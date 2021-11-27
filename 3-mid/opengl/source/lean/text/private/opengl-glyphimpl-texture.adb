@@ -17,6 +17,7 @@ is
    --
 
    activeTextureID : openGL.texture.texture_Name;     -- TODO: Check C source for how this is used.
+   pragma Unreferenced (activeTextureID);
    --
    --  The texture index of the currently active texture
    --

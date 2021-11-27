@@ -1,7 +1,6 @@
 with
      openGL.Geometry .colored,
-     openGL.Primitive.indexed,
-     openGL.Conversions;
+     openGL.Primitive.indexed;
 
 
 package body openGL.Model.sphere.colored
@@ -45,9 +44,6 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.colored,
-          Conversions;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;

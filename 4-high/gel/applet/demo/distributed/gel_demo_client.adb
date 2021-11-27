@@ -3,7 +3,6 @@ with
      gel_demo_Server,
 
      gel.Applet.client_World,
-     gel.Window.sdl,
 
      gel.Forge,
      gel.Camera,

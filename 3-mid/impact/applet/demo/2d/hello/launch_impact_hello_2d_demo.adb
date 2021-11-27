@@ -31,17 +31,17 @@ is
 
    --- World
    --
-   gravity       : b2Vec2     := (0.0, -10.0);
+   gravity       : constant b2Vec2     := (0.0, -10.0);
    doSleep       : Boolean    := True;                                           -- Do we want to let bodies sleep ?
-   world         : World_view := new b2World' (to_b2World (gravity));   -- Construct a world object, which will hold and simulate the rigid bodies.
+   world         : constant World_view := new b2World' (to_b2World (gravity));   -- Construct a world object, which will hold and simulate the rigid bodies.
 
 
    --- static Terrain
    --
    groundBox     : aliased b2PolygonShape := to_Polygon;                                     -- Define the ground box shape.
-   groundBodyDef : b2BodyDef              := (position => (0.0, -10.0),                      -- Define the ground body.
+   groundBodyDef : constant b2BodyDef              := (position => (0.0, -10.0),                      -- Define the ground body.
                                               others   => <>          );
-   groundBody    : Solid_view             := Solid_view (world.createBody (groundBodyDef));
+   groundBody    : constant Solid_view             := Solid_view (world.createBody (groundBodyDef));
    --
    -- Call the body factory which allocates memory for the ground body
    -- from a pool and creates the ground box shape (also from a pool).
@@ -52,15 +52,15 @@ is
    --- dyamic Box
    --
    dynamicBox : aliased b2PolygonShape     := to_Polygon;                                     -- Define another box shape for our dynamic body.
-   fixtureDef : fixture.b2FixtureDef := (shape    => dynamicBox'unchecked_access,       -- Define the dynamic body fixture.
+   fixtureDef : constant fixture.b2FixtureDef := (shape    => dynamicBox'unchecked_access,       -- Define the dynamic body fixture.
                                                density  => 1.0,                               -- Set the box density to be non-zero, so it will be dynamic.
                                                friction => 0.3,                               -- Override the default friction.
                                                restitution => 0.0,
                                                others   => <>);
-   solidDef   : b2BodyDef                  := (position => (0.0, 4.0),
+   solidDef   : constant b2BodyDef                  := (position => (0.0, 4.0),
                                                kind     => b2_dynamicBody,
                                                others   => <>            );
-   the_solid  : Solid_view                 := Solid_view (world.createBody (solidDef));        -- Define the dynamic body. We set its position and call the body factory.
+   the_solid  : constant Solid_view                 := Solid_view (world.createBody (solidDef));        -- Define the dynamic body. We set its position and call the body factory.
 
 
    --- misc
@@ -81,9 +81,9 @@ begin
    -- in most game scenarios.
    --
    declare
-      timeStep           : float32 := 1.0 / 60.0;
-      velocityIterations : int32   := 6;
-      positionIterations : int32   := 2;
+      timeStep           : constant float32 := 1.0 / 60.0;
+      velocityIterations : constant int32   := 6;
+      positionIterations : constant int32   := 2;
    begin
       -- This is our little game loop.
       --

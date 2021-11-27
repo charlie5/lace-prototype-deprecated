@@ -22,6 +22,7 @@ is
 
    function to_Any_view    is new ada.unchecked_Conversion (Swig.void_ptr, Any_limited_view);
    function to_Object_view is new ada.unchecked_Conversion (swig.void_ptr, physics.Object.view);
+   pragma Unreferenced (to_Object_view);
 
 
    --  procedure set_b2d_user_Data (Self : in View)
@@ -73,6 +74,7 @@ is
                             Frame_A,  Frame_B  : in Matrix_4x4) return physics.Joint.DoF6.view
    is
       Self       : constant access DoF6 := new DoF6;
+      pragma Unreferenced (Self);
 
       c_Object_A : box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
       c_Object_B : box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_B).C;
@@ -914,6 +916,7 @@ is
    procedure Frame_A_is (Self : in out Hinge;   Now : in Matrix_4x4)
    is
       c_Frame : aliased constant c_math_c.Matrix_4x4.item := +Now;
+      pragma Unreferenced (c_Frame);
    begin
       raise Error with "TODO";
    end Frame_A_is;
@@ -923,6 +926,7 @@ is
    procedure Frame_B_is (Self : in out Hinge;   Now : in Matrix_4x4)
    is
       c_Frame : aliased constant c_math_c.Matrix_4x4.item := +Now;
+      pragma Unreferenced (c_Frame);
    begin
       raise Error with "TODO";
    end Frame_B_is;

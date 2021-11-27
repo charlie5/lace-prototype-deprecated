@@ -134,9 +134,11 @@ is
 
    function Bounds (Self : in Item) return openGL.Bounds
    is
+      pragma Unreferenced (Self);
    begin
       return (others => <>);     -- TODO
    end Bounds;
+   pragma Unreferenced (Bounds);
 
 
    function is_Transparent (Self : in Item) return Boolean

@@ -628,6 +628,7 @@ is
 
       the_Key       : constant gel.keyboard.Key               :=      the_Event.modified_Key.Key;
       the_Modifiers : constant gel.Keyboard.modifier_Set      :=      the_Event.modified_Key.modifier_Set;
+      pragma Unreferenced (the_Modifiers);
    begin
       if the_Dolly = null
       then
@@ -874,6 +875,7 @@ is
 
             Site_window_space : constant Vector_3 := (Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0);
             Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+            pragma Unreferenced (Site_world_space);
 
             the_Context : constant access button_press_raycast_Context := new button_press_raycast_Context;
 

@@ -2,7 +2,6 @@ with
      Ahven,
      float_Math.Algebra.linear.d2;
 
-with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body math_Tests.linear_Algebra_2d
@@ -24,10 +23,10 @@ is
 
    procedure translation_Matrix_Test
    is
-      use float_Math,
+      use
           float_Math.Algebra.linear.d2;
 
-      From : Vector_2 := (0.0, 0.0);
+      From : constant Vector_2 := (0.0, 0.0);
       To   : Vector_2;
 
    begin
@@ -68,10 +67,10 @@ is
 
    procedure rotation_Matrix_Test
    is
-      use float_Math,
+      use
           float_Math.Algebra.linear.d2;
 
-      From : Vector_2 := (1.0, 0.0);
+      From : constant Vector_2 := (1.0, 0.0);
       To   : Vector_2;
 
    begin
@@ -112,10 +111,10 @@ is
 
    procedure transform_Test
    is
-      use float_Math,
+      use
           float_Math.Algebra.linear.d2;
 
-      From : Vector_2 := (1.0, 0.0);
+      From : constant Vector_2 := (1.0, 0.0);
       To   : Vector_2;
 
       Transform : Transform_2d := to_Transform_2d (rotation    => to_Radians (90.0),

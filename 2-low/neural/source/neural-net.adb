@@ -57,6 +57,7 @@ is
    begin
       return Folder_For (Self) & "neural_state";
    end State_Filename_For;
+   pragma Unreferenced (State_Filename_For);
 
 
 
@@ -65,6 +66,7 @@ is
    begin
       return Folder_For (Self) & "neural_weights";
    end Weights_Filename_For;
+   pragma Unreferenced (Weights_Filename_For);
 
 
 
@@ -210,6 +212,7 @@ is
 
       The_File : File_Type;
       Status   : c.int;
+      pragma Unreferenced (Status);
    begin
 --        put_Line ("Storing the net in '" & Net_Filename_For (Self) & "'.");
 

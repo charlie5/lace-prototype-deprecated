@@ -198,6 +198,7 @@ is
       the_xml_text_Array  : constant access xml.Element     := From.Child ("Name_array");
 
       the_array_Length    : Natural;
+      pragma Unreferenced (the_array_Length);
       the_Source          : Library.source;
 
    begin
@@ -894,8 +895,8 @@ is
                   declare
                      the_Animation     :        Animation   renames the_document.Libraries.animations.Contents (Each);
 
-                     child_Animation   : access xml.Element := the_Animations (Each).Child ("animation");
-                     the_xml_Animation : access xml.Element := (if child_Animation = null then the_Animations (Each) else child_Animation);
+                     child_Animation   : constant access xml.Element := the_Animations (Each).Child ("animation");
+                     the_xml_Animation : constant access xml.Element := (if child_Animation = null then the_Animations (Each) else child_Animation);
                      --  the_xml_Animation : access xml.Element renames the_Animations (Each); --.Child ("animation");
 
                      the_xml_Id   : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("id");

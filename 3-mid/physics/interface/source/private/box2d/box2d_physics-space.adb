@@ -355,6 +355,7 @@ is
    procedure update_Bounds (Self : in out Item;   of_Obect : in physics.Object.view)
    is
       the_c_Object : constant access box2d_c.Object := box2d_physics.Object.view (of_Obect).C;
+      pragma Unreferenced (the_c_Object);
    begin
       null;
    end update_Bounds;
@@ -402,6 +403,7 @@ is
          end case;
 
       end rebuild_Shape;
+      pragma Unreferenced (rebuild_Shape);
 
    begin
 --        rebuild_Shape;

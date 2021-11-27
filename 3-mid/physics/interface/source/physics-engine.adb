@@ -252,6 +252,7 @@ is
 
                               declare
                                  Id : Index;
+                                 pragma Unreferenced (Id);
                               begin
                                  Id := find (the_Object);
 

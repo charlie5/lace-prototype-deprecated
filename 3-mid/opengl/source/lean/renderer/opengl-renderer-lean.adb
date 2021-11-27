@@ -11,7 +11,6 @@ with
      openGL.Tasks,
      openGL.IO,
      openGL.Errors,
-     openGL.Conversions,
 
      GL.Binding,
      GL.lean,
@@ -228,6 +227,7 @@ is
    task body Engine
    is
       the_Context : Context.view;
+      pragma Unreferenced (the_Context);
       Done        : Boolean     := False;
 
    begin
@@ -407,8 +407,7 @@ is
                                                      view_Transform         : in Matrix_4x4;
                                                      perspective_Transform  : in Matrix_4x4)
    is
-      use Conversions,
-          linear_Algebra_3D;
+      use linear_Algebra_3D;
 
       inverse_view_Transform : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
 

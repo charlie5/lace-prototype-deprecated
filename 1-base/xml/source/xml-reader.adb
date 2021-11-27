@@ -214,6 +214,7 @@ is
       use C;
 
       XML_STATUS_ERROR : constant C.int := 0;
+      pragma Unreferenced (XML_STATUS_ERROR);
       XML_STATUS_OK    : constant C.int := 1;
 
       Final_Flag       :          C.int;

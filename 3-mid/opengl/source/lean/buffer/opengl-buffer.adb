@@ -30,6 +30,7 @@ is
       Tasks.check;
       glDeleteBuffers (1, Name'unchecked_Access);
    end free;
+   pragma Unreferenced (free);
 
 
    ----------

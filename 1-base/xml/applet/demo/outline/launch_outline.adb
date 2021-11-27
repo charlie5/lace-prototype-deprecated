@@ -48,6 +48,7 @@ is
 
    procedure Ender (Name : in unbounded_String)
    is
+      pragma Unreferenced (Name);
    begin
       Depth := Depth - 1;
    end Ender;

@@ -8,6 +8,7 @@ is
 
    function to_Box_Model (half_Extents : in Vector_3 := (0.5, 0.5, 0.5)) return a_Model
    is
+      pragma Unreferenced (half_Extents);
       Modeller : any_Modeller.item;
    begin
       Modeller.add_Triangle ((0.0, 0.0, 0.0),

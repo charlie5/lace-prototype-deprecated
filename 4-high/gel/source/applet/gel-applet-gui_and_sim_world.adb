@@ -12,6 +12,7 @@ is
    procedure define (Self : access Item;   Name       : in String;
                                            use_Window : in gel.Window.view)
    is
+      pragma Unreferenced (use_Window);
       use lace.Event.utility;
    begin
       declare

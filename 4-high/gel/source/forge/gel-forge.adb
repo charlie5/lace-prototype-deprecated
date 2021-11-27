@@ -54,6 +54,7 @@ is
                                     window_Height : in Positive := 500;
                                     space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.gui_and_sim_World.view
    is
+      pragma Unreferenced (space_Kind);
       the_Window : constant gel.Window.view
         := gel.Window.Forge.new_Window ("Window." & Named,
                                         window_Width,
@@ -453,6 +454,7 @@ is
                               Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                               line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return gel.Sprite.view
    is
+      pragma Unreferenced (Texture);
       use Math;
 
       the_graphics_Model : constant openGL.Model.arrow.colored.view
@@ -487,6 +489,7 @@ is
                               Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                               line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return gel.Sprite.view
    is
+      pragma Unreferenced (Texture, line_Width);
       use Math;
 
       the_graphics_Model : constant openGL.Model.line.colored.view
@@ -520,6 +523,7 @@ is
                                       Color      : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
                                       line_Width : in openGL.Real        := openGL.Primitive.unused_line_Width) return gel.Sprite.view
    is
+      pragma Unreferenced (Texture, line_Width);
       use Math;
 
       the_graphics_Model : constant openGL.Model.segment_line.view

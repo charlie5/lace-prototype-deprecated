@@ -18,20 +18,35 @@ is
        Interfaces;
 
    an_Error           :        FT_Error;
+   pragma Unreferenced (an_Error);
    an_FT_UShort       :        FT_UShort;
+   pragma Unreferenced (an_FT_UShort);
    an_FT_Uint         :        FT_Uint;
+   pragma Unreferenced (an_FT_Uint);
    an_FT_Int          :        FT_Int;
+   pragma Unreferenced (an_FT_Int);
    an_FT_Long         :        FT_Long;
+   pragma Unreferenced (an_FT_Long);
    an_FT_Outline      : access FT_Outline;
+   pragma Unreferenced (an_FT_Outline);
    an_FT_Vector       :        FT_Vector.Item;
+   pragma Unreferenced (an_FT_Vector);
    an_FT_Bitmap       :        FT_Bitmap.Item;
+   pragma Unreferenced (an_FT_Bitmap);
    an_Unsigned        :        interfaces.c.unsigned;
+   pragma Unreferenced (an_Unsigned);
    an_FT_Size_Metrics :        FT_Size_Metrics.Item;
+   pragma Unreferenced (an_FT_Size_Metrics);
    an_FT_Face         : access freetype_c.FT_FaceRec;
+   pragma Unreferenced (an_FT_Face);
    an_FT_SizeRec      : access freetype_c.FT_SizeRec;
+   pragma Unreferenced (an_FT_SizeRec);
    an_FT_BBox         :        FT_BBox.item;
+   pragma Unreferenced (an_FT_BBox);
    an_FT_CharMap      : access freetype_c.FT_CharMapRec.Item;
+   pragma Unreferenced (an_FT_CharMap);
    an_FT_GlyphSlot    : access freetype_c.FT_GlyphSlotRec;
+   pragma Unreferenced (an_FT_GlyphSlot);
 
 begin
    FT_Outline_Get_CBox (null, null);

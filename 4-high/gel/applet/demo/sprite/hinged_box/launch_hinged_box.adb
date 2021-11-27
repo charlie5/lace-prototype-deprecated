@@ -107,7 +107,7 @@ begin
          use math.Algebra.linear.d3,
              math.Vectors;
 
-         Frame_1 : math.Matrix_4x4 := math.Identity_4x4;
+         Frame_1 : constant math.Matrix_4x4 := math.Identity_4x4;
          Frame_2 : math.Matrix_4x4 := math.Identity_4x4;
          Frame_3 : math.Matrix_4x4 := math.Identity_4x4;
 

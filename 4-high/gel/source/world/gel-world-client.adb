@@ -22,6 +22,7 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
+   pragma Unreferenced (log);
 
 
    ---------
@@ -403,7 +404,6 @@ is
             new_Spin           : constant Quaternion    := refined (Now (i).Spin);
             --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
 
-            use linear_Algebra_3D;
          begin
             --  site_Delta := new_Site - the_Sprite.desired_Site;
             --

@@ -3,14 +3,6 @@ with
      launch_simple_chat_Registrar,
      launch_simple_instant_events_demo,
      launch_simple_deferred_events_demo,
-     lace_demo_Events,
-     lace_demo_Keyboard,
-
-     lace.Observer.instant,
-     lace.Subject .local,
-
-     lace.Response,
-     lace.Event.utility,
 
      launch_strings_Demo,
 
@@ -72,9 +64,7 @@ with
      launch_mixed_Shapes,
      launch_text_Sprite_Demo,
      launch_add_rid_Sprite_Test,
-     launch_pong_Tute,
-
-     ada.Text_IO;
+     launch_pong_Tute;
 
 procedure build_all_Lace
 --

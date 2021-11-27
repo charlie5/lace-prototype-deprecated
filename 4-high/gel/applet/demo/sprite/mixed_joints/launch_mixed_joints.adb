@@ -9,9 +9,7 @@ with
      gel.slider_Joint,
      gel.any_Joint,
 
-     openGL.Palette,
-
-     float_Math.Algebra.linear.d3;
+     openGL.Palette;
 
 pragma unreferenced (gel.Window.sdl);
 

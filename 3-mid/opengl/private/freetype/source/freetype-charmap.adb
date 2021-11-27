@@ -1,7 +1,6 @@
 with
      freetype.Face,
-     freeType_C.Binding,
-     freeType_C.FT_CharMapRec;
+     freeType_C.Binding;
 
 package body freetype.charMap
 is

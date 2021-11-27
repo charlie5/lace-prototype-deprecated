@@ -1,18 +1,10 @@
 with
      gel.Events,
-
-     physics.remote.Model,
-     physics.Object,
      physics.Forge,
-
-     openGL.remote_Model,
      openGL.Renderer.lean,
-
-     lace.Response,
      lace.Event.utility,
 
      ada.Text_IO,
-     ada.Exceptions,
      ada.unchecked_Deallocation;
 
 
@@ -27,6 +19,7 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
+   pragma Unreferenced (log);
 
 
    ---------
@@ -134,6 +127,7 @@ is
 
       return the_Sprite;
    end to_Sprite;
+   pragma Unreferenced (to_Sprite);
 
 
    ----------
