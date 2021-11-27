@@ -49,6 +49,12 @@ is
    procedure mvp_Transform_is (Self : in out Item;   Now : in Matrix_4x4);
    function  mvp_Transform    (Self : in     Item)     return Matrix_4x4;
 
+   procedure model_Transform_is (Self : in out Item;   Now : in Matrix_4x4);
+   function  model_Transform    (Self : in     Item)     return Matrix_4x4;
+
+   procedure camera_Transform_is (Self : in out Item;   Now : in Matrix_4x4);
+   function  camera_Transform    (Self : in     Item)     return Matrix_4x4;
+
    procedure Transform_is     (Self : in out Item;   Now : in Matrix_4x4);
    function  Transform        (Self : in     Item)     return Matrix_4x4;
 
@@ -72,8 +78,12 @@ private
       record
          Model                    : openGL.Model.view;
          Scale                    : Vector_3  := (1.0, 1.0, 1.0);
+
+         model_Transform          : Matrix_4x4;
+         camera_Transform         : Matrix_4x4;
          Transform                : Matrix_4x4;
          mvp_Transform            : Matrix_4x4;
+
          inverse_modelview_Matrix : Matrix_3x3;
          program_Parameters       : program.Parameters_view;
 

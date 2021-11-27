@@ -84,6 +84,7 @@ is
                                                                           Plane   => Model.billboard.xy,
                                                                           Texture => null_Asset).all'Access);
       Self.Visual.Transform_is (Target.Transform);
+      --  Self.Visual.model_Transform_is (Target.model_Transform);
    end set_Target;
 
 
@@ -189,6 +190,7 @@ is
 
       Camera_has_moved : constant Boolean :=  the_Camera_Site                         /= Self.prior_camera_Position;
       Target_has_moved : constant Boolean :=  get_Translation (Self.Target.Transform) /= Self.prior_target_Position;
+      --  Target_has_moved : constant Boolean :=  get_Translation (Self.Target.model_Transform) /= Self.prior_target_Position;
 
    begin
       Self.freshen_Count := Self.freshen_Count + 1;
@@ -208,6 +210,7 @@ is
 
       if         Target_has_moved
         and then abs (Angle (get_Translation (Self.Target.Transform),
+        --  and then abs (Angle (get_Translation (Self.Target.model_Transform),
                              Self.prior_camera_Position,
                              Self.prior_target_Position)) > to_Radians (15.0)
       then
@@ -218,6 +221,7 @@ is
       if         Self.prior_pixel_Region.Width  >  40                -- Ignore target rotation triggered updates when target is small on screen.
         and then Self.prior_pixel_Region.Height >  40                --
         and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.Transform)
+        --  and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.model_Transform)
       then
          return True;
       end if;
@@ -245,6 +249,7 @@ is
    is
       use linear_Algebra_3D;
 
+      --  target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.model_Transform)
       target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.Transform)
                                                                     - camera_Site);
 

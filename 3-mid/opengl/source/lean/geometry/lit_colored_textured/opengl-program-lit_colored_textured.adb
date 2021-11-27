@@ -19,6 +19,7 @@ is
         := Self.uniform_Variable ("uShine");
 
    begin
+      --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
 
       the_scale_Uniform.Value_is (Self.Scale);

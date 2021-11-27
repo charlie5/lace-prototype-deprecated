@@ -314,6 +314,22 @@ is
 
 
 
+   --  procedure model_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   --  is
+   --  begin
+   --     Self.model_Matrix := Now;
+   --  end model_Matrix_is;
+
+
+
+   --  procedure camera_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   --  is
+   --  begin
+   --     Self.camera_Matrix := Now;
+   --  end camera_Matrix_is;
+
+
+
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3)
    is
    begin
@@ -353,6 +369,17 @@ is
    begin
       the_mvp_Uniform.Value_is (Self.mvp_Matrix);
    end set_mvp_Uniform;
+
+
+
+   --  procedure set_Uniforms (Self : in Item)
+   --  is
+   --     the_model_Uniform  : constant Variable.uniform.mat4 := Self.uniform_Variable ("model");
+   --     the_camera_Uniform : constant Variable.uniform.mat4 := Self.uniform_Variable ("camera");
+   --  begin
+   --     the_model_Uniform .Value_is (Self.model_Matrix);
+   --     the_camera_Uniform.Value_is (Self.camera_Matrix);
+   --  end set_Uniforms;
 
 
 

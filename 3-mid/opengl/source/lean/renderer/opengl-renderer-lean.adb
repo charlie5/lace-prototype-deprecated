@@ -577,6 +577,7 @@ is
                opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
                lucid_Geometries  : Model.access_Geometry_views renames the_Visual.Model. lucid_Geometries;
             begin
+               --  the_Visual.camera_Transform_is (inverse (camera_world_Transform));
                the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
                the_Visual.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Visual.Transform * view_Transform)));
 
@@ -659,7 +660,11 @@ is
             end if;
 
             current_Program.enable;     -- TODO: Only need to do this when program changes ?
-            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+
+            current_Program.mvp_Matrix_is (the_Couple.Visual.mvp_Transform);
+--              current_Program.model_Matrix_is               (the_Couple.Visual. model_Transform);
+--              current_Program.camera_Matrix_is              (the_Couple.Visual.camera_Transform);
+
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
             current_Program.directional_Light_is        (1, Lights (1));
             current_Program.directional_Light_is        (2, Lights (2));
@@ -695,6 +700,8 @@ is
          begin
             return   Self.all_lucid_Couples (Left) .Visual.Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
                    < Self.all_lucid_Couples (Right).Visual.Transform (4, 3);  --                                forward, so use '<'.
+            --  return   Self.all_lucid_Couples (Left) .Visual.model_Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
+            --         < Self.all_lucid_Couples (Right).Visual.model_Transform (4, 3);  --                                forward, so use '<'.
          end Heap_less_than;
 
          the_Couple      : visual_geometry_Couple;
@@ -723,7 +730,10 @@ is
             current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
 
-            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+          current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+--              current_Program. model_Matrix_is            (the_Couple.Visual. model_Transform);
+--              current_Program.camera_Matrix_is            (the_Couple.Visual.camera_Transform);
+
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
             current_Program.directional_Light_is        (1, Lights (1));
             current_Program.directional_Light_is        (2, Lights (2));

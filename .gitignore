@@ -51,6 +51,7 @@ bin
 #
 box2d_HelloWorld
 launch_box_rig_1_bone_demo
+launch_diffuse_light
 launch_simple_instant_events_demo
 launch_simple_deferred_events_demo
 launch_simple_chat_client

@@ -12,6 +12,8 @@ is
       is
       begin
          return new Visual.item' (Model                    => Model,
+                                  model_Transform          => Identity_4x4,
+                                  camera_Transform         => Identity_4x4,
                                   Transform                => Identity_4x4,
                                   mvp_Transform            => Identity_4x4,
                                   inverse_modelview_Matrix => Identity_3x3,
@@ -153,12 +155,42 @@ is
    end mvp_Transform_is;
 
 
+   function model_Transform (Self : in Item) return Matrix_4x4
+   is
+   begin
+      return Self.model_Transform;
+   end model_Transform;
+
+
+   procedure model_Transform_is (Self : in out Item;   Now : in Matrix_4x4)
+   is
+   begin
+      Self.model_Transform := Now;
+   end model_Transform_is;
+
+
+
+   function camera_Transform (Self : in Item) return Matrix_4x4
+   is
+   begin
+      return Self.camera_Transform;
+   end camera_Transform;
+
+
+   procedure camera_Transform_is (Self : in out Item;   Now : in Matrix_4x4)
+   is
+   begin
+      Self.camera_Transform := Now;
+   end camera_Transform_is;
+
+
 
    procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
       use linear_Algebra_3d;
    begin
       set_Rotation (Self.Transform, Now);
+      --  set_Rotation (Self.model_Transform, Now);
    end Spin_is;
 
 
@@ -167,6 +199,7 @@ is
       use linear_Algebra_3d;
    begin
       return get_Rotation (Self.Transform);
+      --  return get_Rotation (Self.model_Transform);
    end Spin_of;
 
 
@@ -176,6 +209,7 @@ is
       use linear_Algebra_3d;
    begin
       set_Translation (Self.Transform, Now);
+      --  set_Translation (Self.model_Transform, Now);
    end Site_is;
 
 
@@ -184,6 +218,7 @@ is
       use linear_Algebra_3d;
    begin
       return get_Translation (Self.Transform);
+      --  return get_Translation (Self.model_Transform);
    end Site_of;
 
 

@@ -17,7 +17,7 @@ private
 
    type Item is abstract tagged
       record
-         On   : Boolean     := False;
+         On   : Boolean     := True;
          Site : openGL.Site := (0.0, 0.0, 1.0);     -- The GL default.
       end record;
 

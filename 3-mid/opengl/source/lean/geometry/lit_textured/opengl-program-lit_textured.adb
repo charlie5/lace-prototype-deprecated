@@ -18,6 +18,7 @@ is
    begin
       Tasks.check;
 
+      --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
 
       scale_Uniform.Value_is (Self.Scale);

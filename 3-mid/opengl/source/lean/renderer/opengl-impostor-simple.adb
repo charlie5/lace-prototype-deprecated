@@ -38,6 +38,7 @@ is
       --
       Self.current_Camera_look_at_Rotation := get_Rotation (look_at (the_Camera.Site,
                                                                      get_Translation (Self.Target.Transform),
+                                                                     --  get_Translation (Self.Target.model_Transform),
                                                                      (0.0, 1.0, 0.0)));
       Self.current_pixel_Region := Self.get_pixel_Region (camera_Spin                 => Self.current_Camera_look_at_Rotation,
                                                           camera_Site                 => the_Camera.Site,

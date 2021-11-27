@@ -2,6 +2,7 @@ with
      openGL.Shader,
      openGL.Variable.uniform,
      openGL.Attribute,
+     openGL.Light.diffuse,
      openGL.Light.directional;
 
 private
@@ -86,6 +87,10 @@ is
    --
 
    procedure mvp_Matrix_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
+   --  procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
+   --  procedure camera_Matrix_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
+
+
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
    procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
@@ -93,7 +98,8 @@ is
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
    procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
 
-   procedure set_Uniforms                (Self : in     Item)   is null;
+   procedure set_Uniforms                (Self : in     Item) is null;
+   --  procedure set_Uniforms                (Self : in     Item);
 
 
    ----------
@@ -117,9 +123,12 @@ private
          attribute_Count          : Natural := 0;
 
          mvp_Matrix               : Matrix_4x4;
+         --  model_Matrix             : Matrix_4x4;
+         --  camera_Matrix            : Matrix_4x4;
          inverse_modelview_Matrix : Matrix_3x3;
 
-         directional_Light        : Light.directional.items (1 .. 2);
+         directional_Light        : Light.directional.items (1 ..  2);
+         diffuse_Lights           : Light.diffuse    .items (1 ..  1);
 
          Scale                    : Vector_3     := (1.0, 1.0, 1.0);
          Shine                    : openGL.Shine := 1.0;
