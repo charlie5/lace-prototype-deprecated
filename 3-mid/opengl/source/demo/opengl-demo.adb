@@ -369,7 +369,7 @@ is
       put_Line ("                 'd' => Move down");
       put_Line ("                 'W' => Rotate clockwise         about Z-axis");
       put_Line ("                 'Z' => Rotate counter-clockwise about Z-axis");
-      put_Line ("                 'A' => Orbit  clockwise about   about Y-Axis");
+      put_Line ("                 'A' => Orbit  clockwise         about Y-Axis");
       put_Line ("                 'S' => Orbit  counter clockwise about Y-axis");
       put_Line ("                 'E' => Rotate clockwise         about X-axis");
       put_Line ("                 'D' => Rotate counter clockwise about X-axis");
