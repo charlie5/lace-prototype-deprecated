@@ -52,7 +52,7 @@ is
    end ambient_Coefficient;
 
 
-   function cone_Angle (Self : in Item) return Radians
+   function cone_Angle (Self : in Item) return Degrees
    is
    begin
       return Self.cone_Angle;
@@ -96,7 +96,7 @@ is
 
 
 
-   procedure cone_Angle_is (Self : in out Item;   Now : in Radians)
+   procedure cone_Angle_is (Self : in out Item;   Now : in Degrees)
    is
    begin
       Self.cone_Angle := Now;

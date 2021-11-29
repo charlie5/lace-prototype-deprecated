@@ -314,11 +314,19 @@ is
 
 
 
-   --  procedure model_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
-   --  is
-   --  begin
-   --     Self.model_Matrix := Now;
-   --  end model_Matrix_is;
+   procedure camera_Position_is (Self : in out Item'Class;   Now : in Vector_3)
+   is
+   begin
+      Self.camera_Position := Now;
+   end camera_Position_is;
+
+
+
+   procedure model_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   is
+   begin
+      Self.model_Matrix := Now;
+   end model_Matrix_is;
 
 
 
@@ -344,6 +352,15 @@ is
    begin
       Self.directional_Light (light_Id) := Now;
    end directional_Light_is;
+
+
+
+   procedure diffuse_Light_is (Self : in out Item'Class;   light_Id : in Positive;
+                                                           Now      : in Light.diffuse.item)
+   is
+   begin
+      Self.diffuse_Lights (light_Id) := Now;
+   end diffuse_Light_is;
 
 
 

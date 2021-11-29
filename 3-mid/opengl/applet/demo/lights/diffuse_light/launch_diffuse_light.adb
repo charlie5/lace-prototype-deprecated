@@ -48,7 +48,8 @@ begin
 
       -- Light movement.
       --
-      initial_Site : constant openGL.Vector_3 := (-10_000.0, 0.0, 10_000.0);
+      --  initial_Site : constant openGL.Vector_3 := (-10_000.0, 0.0, 10_000.0);
+      initial_Site : constant openGL.Vector_3 := (5.0, 5.0, 5.0);
       site_Delta   :          openGL.Vector_3 := (      1.0, 0.0,      0.0);
 
    begin
@@ -57,10 +58,15 @@ begin
       -- Set the lights initial position to far behind and far to the left.
       --
       declare
-         Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
-         --  Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
+         --  Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+         Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
       begin
+         Light.Color_is (Ambient  => (Grey, Opaque),
+                         Diffuse  => (White, Opaque),
+                         Specular => (White, Opaque));
+
          Light.Site_is (initial_Site);
+
          Demo.Renderer.Light_is (Id => 1, Now => Light);
       end;
 
@@ -76,30 +82,30 @@ begin
 
          -- Move the light.
          --
-         declare
-            Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
-         begin
-            if    Light.Site (1) >  10_000.0
-            then
-               site_Delta (1) := -1.0;
-
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,       Opaque),
-                               Specular => (openGL.Palette.White,      Opaque));
-
-            elsif Light.Site (1) < -10_000.0
-            then
-               site_Delta (1) :=  1.0;
-
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,     Opaque),
-                               Specular => (openGL.Palette.White,    Opaque));
-            end if;
-
-            Light.Site_is (Light.Site + site_Delta);
-
-            Demo.Renderer.Light_is (Id => 1, Now => Light);
-         end;
+         --  declare
+         --     Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
+         --  begin
+         --     if    Light.Site (1) >  10_000.0
+         --     then
+         --        site_Delta (1) := -1.0;
+         --
+         --        Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
+         --                        Diffuse  => (openGL.Palette.Grey,       Opaque),
+         --                        Specular => (openGL.Palette.White,      Opaque));
+         --
+         --     elsif Light.Site (1) < -10_000.0
+         --     then
+         --        site_Delta (1) :=  1.0;
+         --
+         --        Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
+         --                        Diffuse  => (openGL.Palette.Grey,     Opaque),
+         --                        Specular => (openGL.Palette.White,    Opaque));
+         --     end if;
+         --
+         --     Light.Site_is (Light.Site + site_Delta);
+         --
+         --     Demo.Renderer.Light_is (Id => 1, Now => Light);
+         --  end;
 
          --  Render the sprites.
          --

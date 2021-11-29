@@ -91,7 +91,7 @@ ApplyLight (Light   light,
                                    uShine);
                                    // materialShininess);
 
-    vec3 specular = specularCoefficient * materialSpecularColor * light.intensities;
+    vec3   specular = specularCoefficient * materialSpecularColor * light.intensities;
 
     return ambient + attenuation * (diffuse + specular);     // Linear color (before gamma correction).
 }
@@ -100,6 +100,8 @@ ApplyLight (Light   light,
 void
 main()
 {
+//    mat4 my_model;  // = model;
+
     vec3   surfacePos      = vec3 (  model
                                    * vec4 (fragVert, 1));
                                    

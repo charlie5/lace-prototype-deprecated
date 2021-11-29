@@ -226,9 +226,8 @@ is
 
    task body Engine
    is
-      the_Context : Context.view;
-      pragma Unreferenced (the_Context);
-      Done        : Boolean     := False;
+      the_Context : Context.view with unreferenced;
+      Done        : Boolean := False;
 
    begin
       select
@@ -513,7 +512,7 @@ is
                                          clear_Frame            : in Boolean;
                                          to_Surface             : in Surface.view := null)
    is
-      pragma unreferenced (to_Surface, camera_world_Transform);
+      pragma unreferenced (to_Surface);
 
       use linear_Algebra_3D;
 
@@ -523,11 +522,18 @@ is
       inverse_view_Transform         : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
       view_and_perspective_Transform : constant Matrix_4x4 := view_Transform * perspective_Transform;
 
-      Lights : light_Set := Self.Lights.fetch;
+      Lights         : light_Set         := Self.        Lights.fetch;
+      diffuse_Lights : diffuse_Light_Set := Self.diffuse_Lights.fetch;
+
    begin
       Tasks.check;
 
       for Light of Lights
+      loop
+         Light.inverse_view_Transform_is (inverse_view_Transform);
+      end loop;
+
+      for Light of diffuse_Lights
       loop
          Light.inverse_view_Transform_is (inverse_view_Transform);
       end loop;
@@ -579,6 +585,8 @@ is
                --  the_Visual.camera_Transform_is (inverse (camera_world_Transform));
                the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
                the_Visual.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Visual.Transform * view_Transform)));
+
+               the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
 
                if opaque_Geometries /= null
                then
@@ -660,13 +668,21 @@ is
 
             current_Program.enable;     -- TODO: Only need to do this when program changes ?
 
-            current_Program.mvp_Matrix_is (the_Couple.Visual.mvp_Transform);
---              current_Program.model_Matrix_is               (the_Couple.Visual. model_Transform);
+            current_Program.mvp_Matrix_is      (the_Couple.Visual.mvp_Transform);
+            --  current_Program.model_Matrix_is    (the_Couple.Visual.model_Transform);
+            current_Program.model_Matrix_is    (the_Couple.Visual.Transform);
+            current_Program.camera_Position_is (get_Translation (camera_world_Transform));
+
 --              current_Program.camera_Matrix_is              (the_Couple.Visual.camera_Transform);
 
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, Lights (1));
-            current_Program.directional_Light_is        (2, Lights (2));
+
+            --  current_Program.directional_Light_is        (1, Lights (1));
+            --  current_Program.directional_Light_is        (2, Lights (2));
+
+            current_Program.diffuse_Light_is        (1, diffuse_Lights (1));
+            --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
+
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
             current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
 
@@ -729,13 +745,19 @@ is
             current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
 
-          current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
---              current_Program. model_Matrix_is            (the_Couple.Visual. model_Transform);
+            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+            current_Program.camera_Position_is (get_Translation (camera_world_Transform));
+            current_Program. model_Matrix_is            (the_Couple.Visual.Transform);
 --              current_Program.camera_Matrix_is            (the_Couple.Visual.camera_Transform);
 
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.directional_Light_is        (1, Lights (1));
-            current_Program.directional_Light_is        (2, Lights (2));
+
+            --  current_Program.directional_Light_is        (1, Lights (1));
+            --current_Program.directional_Light_is        (2, Lights (2));
+
+            current_Program.    diffuse_Light_is        (1, diffuse_Lights (1));
+            --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
+
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
             current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
 
@@ -757,6 +779,8 @@ is
    -- Lights
    --
 
+   -- Directional
+   --
    procedure Light_is (Self : in out Item;   Id  : in light_Id;
                                              Now : in openGL.Light.directional.item)
    is
@@ -769,6 +793,23 @@ is
    is
    begin
       return Self.Lights.fetch (Id);
+   end Light;
+
+
+   -- Diffuse
+   --
+   procedure Light_is (Self : in out Item;   Id  : in light_Id;
+                                             Now : in openGL.Light.diffuse.item)
+   is
+   begin
+      Self.diffuse_Lights.set (Id, Now);
+   end Light_is;
+
+
+   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse.item
+   is
+   begin
+      return Self.diffuse_Lights.fetch (Id);
    end Light;
 
 
@@ -968,6 +1009,8 @@ is
    -- safe_Lights
    --
 
+   -- Directional.
+   --
    protected
    body safe_Lights
    is
@@ -984,6 +1027,26 @@ is
          return the_Lights;
       end fetch;
    end safe_Lights;
+
+
+   -- Diffuse.
+   --
+   protected
+   body safe_diffuse_Lights
+   is
+      procedure set (Id : in light_Id;
+                     To : in openGL.Light.diffuse.item)
+      is
+      begin
+         the_Lights (Id) := To;
+      end set;
+
+      function fetch return diffuse_Light_Set
+      is
+      begin
+         return the_Lights;
+      end fetch;
+   end safe_diffuse_Lights;
 
 
 end openGL.Renderer.lean;

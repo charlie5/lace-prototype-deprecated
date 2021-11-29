@@ -87,14 +87,19 @@ is
    --
 
    procedure mvp_Matrix_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
-   --  procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
+   procedure camera_Position_is          (Self : in out Item'Class;   Now : in Vector_3);
+   procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
    --  procedure camera_Matrix_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
 
 
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
+
    procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
                                                                       Now      : in Light.directional.item);
+   procedure diffuse_Light_is            (Self : in out Item'Class;   light_Id : in Positive;
+                                                                      Now      : in Light.diffuse.item);
+
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
    procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
 
@@ -123,8 +128,9 @@ private
          attribute_Count          : Natural := 0;
 
          mvp_Matrix               : Matrix_4x4;
-         --  model_Matrix             : Matrix_4x4;
+         model_Matrix             : Matrix_4x4 := Identity_4x4;
          --  camera_Matrix            : Matrix_4x4;
+         camera_Position          : Vector_3;
          inverse_modelview_Matrix : Matrix_3x3;
 
          directional_Light        : Light.directional.items (1 ..  2);
