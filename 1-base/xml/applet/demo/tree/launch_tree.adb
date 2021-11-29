@@ -1,6 +1,5 @@
 with
      XML,
-     ada.Strings.unbounded,
      ada.Text_IO;
 
 
@@ -9,15 +8,15 @@ procedure launch_Tree
 -- Loads an xml file, parses it into a tree and displays the tree.
 --
 is
-   the_Tree : xml.Element := xml.to_XML ("./box.dae");
-   Depth    : Natural     := 0;
+   the_Tree : constant xml.Element := xml.to_XML ("./box.dae");
+   Depth    :          Natural     := 0;
 
 
    procedure show_Element (the_Element : in xml.Element)
    is
-      use ada.Strings.unbounded,  ada.Text_IO;
+      use ada.Text_IO;
 
-      the_Children : xml.Elements := the_Element.Children;
+      the_Children : constant xml.Elements := the_Element.Children;
 
    begin
       Depth := Depth + 1;
@@ -40,4 +39,4 @@ is
 
 begin
    show_Element (the_Tree);
-end;
+end launch_Tree;

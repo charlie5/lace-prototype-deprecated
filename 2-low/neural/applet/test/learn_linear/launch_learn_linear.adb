@@ -1,21 +1,11 @@
 with linear_Net;
-
-with Neural.Set;
 with Neural.Net;
-
-with float_Math;
-
 
 with lace.Environ.Paths;
 
-with ada.calendar;            use ada.calendar;
-with ada.Strings.unbounded;   use ada.Strings.unbounded;
-with ada.Strings.fixed;       use ada.Strings.fixed;
+with ada.Calendar;
 with ada.Text_IO;             use ada.Text_IO;
-with Ada.Exceptions;          use Ada.Exceptions;
---  with opengl.IO; use opengl.IO;
-
-
+with ada.Exceptions;          use ada.Exceptions;
 
 
 procedure launch_learn_Linear
@@ -24,14 +14,11 @@ procedure launch_learn_Linear
 --
 is
    package Math renames Neural.Math;
-   use type math.Real;
 begin
 
    declare
       use Math,
           lace.Environ.Paths;
-      use type math.Real;
-      use type neural.Signal;
 
       the_Net             : aliased  linear_Net.item;
 
@@ -40,7 +27,7 @@ begin
 
 --        the_Environ         :          lace.Environ.item;
 
-      Training            :          Boolean          := True;
+      Training            : constant Boolean          := True;
       --        Training            :          Boolean          := False;
       Signal              : math.Real := 0.0;
    begin

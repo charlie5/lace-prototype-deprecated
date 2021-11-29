@@ -34,7 +34,7 @@ is
       the_World.start;
 
       declare
-         use type math.Real;
+         --  use type math.Real;
 
          the_Box  : constant gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
                                                                            Site => math.Origin_3D,

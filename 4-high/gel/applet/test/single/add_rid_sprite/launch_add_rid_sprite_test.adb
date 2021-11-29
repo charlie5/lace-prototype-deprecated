@@ -1,19 +1,14 @@
 with
-     ada.Streams.stream_IO;
-
-with gel.Forge,
-     gel.Window.sdl,
+     gel.Forge,
+     gel.Window.setup,
      gel.Applet.gui_world,
      gel.World,
-     gel.Camera;
+     gel.Camera,
+     gel.Sprite,
 
-with gel.Sprite,
-     openGL.Model.box.lit_colored_textured,
-     openGL.Model.sphere;
-
-with opengl.Palette,
-     float_Math,
      ada.Calendar;
+
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_add_rid_sprite_Test
@@ -22,14 +17,7 @@ procedure launch_add_rid_sprite_Test
 --
 --
 is
-   use gel.Applet,
-       openGL,
-       opengl.Palette,
-       ada.Calendar;
-
-   package Math renames float_Math;
-
-   use type math.Real;
+   use ada.Calendar;
 
    the_Applet : constant gel.Applet.gui_world.view
      := gel.forge.new_gui_Applet ("Add/Rid Sprite Test", 500, 500);

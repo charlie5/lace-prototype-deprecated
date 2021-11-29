@@ -19,8 +19,9 @@ procedure launch_drop_Box_on_Box
 --  Drops a box onto a box 'terrain'.
 --
 is
-   use gel.Applet,    openGL.Model.box,
-       openGL,        opengl.Palette,
+   use openGL.Model.box,
+       openGL,
+       opengl.Palette,
        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view

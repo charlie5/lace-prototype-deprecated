@@ -104,8 +104,7 @@ begin
       --  the_Box_3.Site_is (( 10.0, 10.0, 0.0));
 
       declare
-         use math.Algebra.linear.d3,
-             math.Vectors;
+         use math.Algebra.linear.d3;
 
          Frame_1 : constant math.Matrix_4x4 := math.Identity_4x4;
          Frame_2 : math.Matrix_4x4 := math.Identity_4x4;

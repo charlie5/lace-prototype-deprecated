@@ -1,44 +1,24 @@
 with
-     gel.Events,
-
-     physics.remote.Model,
-     physics.Object,
      physics.Forge,
-
-     openGL.remote_Model,
-     openGL.Renderer.lean,
-
-     lace.Response,
-     lace.Event.utility,
-
-     ada.Text_IO,
-     ada.Exceptions,
-     ada.unchecked_Deallocation;
+     openGL.Renderer.lean;
 
 
 package body gel.World.simple
 is
-   use gel.Sprite,
-       linear_Algebra_3D,
-
-       lace.Event.utility,
-       lace.Event;
-
-
-   procedure log (Message : in String)
-                  renames ada.text_IO.put_Line;
+   --  procedure log (Message : in String)
+   --                 renames ada.text_IO.put_Line;
 
 
    ---------
    --- Forge
    --
 
-   procedure free (Self : in out View)
-   is
-      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
-   begin
-      deallocate (Self);
-   end free;
+   --  procedure free (Self : in out View)
+   --  is
+   --     procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
+   --  begin
+   --     deallocate (Self);
+   --  end free;
 
 
 

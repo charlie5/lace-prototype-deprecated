@@ -34,7 +34,7 @@ is
        ada.text_IO;
 
 
-   collisionConfiguration : access Collision.Configuration.item'Class
+   collisionConfiguration : constant Collision.Configuration.view
      := new_default_Configuration;
    --
    -- Collision configuration contains default setup for memory, collision setup.
@@ -44,23 +44,23 @@ is
 
    -- Use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded).
    --
-   the_Dispatcher : access Dispatcher.collision.item
+   the_Dispatcher : constant Dispatcher.collision.view
      := new Dispatcher.collision.item' (Dispatcher.collision.to_Dispatcher (collisionConfiguration.all'unchecked_access));
 
 
 
    -- 'btDbvtBroadphase' is a good general purpose broadphase. You can also try out btAxis3Sweep.
    --
-   overlappingPairCache : Collision.Broadphase.bounding_volume_Tree.view
+   overlappingPairCache : constant Collision.Broadphase.bounding_volume_Tree.view
      := Collision.Broadphase.bounding_volume_Tree.new_Broadphase;
 
 
    -- The default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
    --
-   solver : access constraint_Solver.sequential_impulse.item'Class
+   solver : constant constraint_Solver.sequential_impulse.view
      := new constraint_Solver.sequential_impulse.item;
 
-   dynamicsWorld : access Space.dynamic.discrete.item'Class
+   dynamicsWorld : constant Space.dynamic.discrete.view
      := new Space.dynamic.discrete.item' (Space.dynamic.discrete.Forge.to_Space (the_Dispatcher,
                                                                                  overlappingPairCache,
                                                                                  solver.all'access,
@@ -68,10 +68,10 @@ is
 
    -- Create a few basic rigid bodies.
    --
-   groundShape : Shape.convex.internal.polyhedral.box.view
+   groundShape : constant Shape.convex.internal.polyhedral.box.view
      := new Shape.convex.internal.polyhedral.box.item' (Shape.convex.internal.polyhedral.box.to_box_Shape ((50.0, 50.0, 50.0)));
 
-   ballShape   : Shape.convex.internal.sphere.view
+   ballShape   : constant Shape.convex.internal.sphere.view
      := new Shape.convex.internal.sphere.item' (Shape.convex.internal.sphere.to_sphere_Shape (1.0));
 
 
@@ -93,10 +93,10 @@ begin
    groundMotionState := new motion_State.default.item' (motion_State.default.to_motion_State (the_Transform));
 
    declare
-      rbInfo     : access Object.rigid.ConstructionInfo
+      rbInfo     : constant Object.rigid.ConstructionInfo_view
         := new Object.rigid.ConstructionInfo' (Object.rigid.to_ConstructionInfo (0.0,  groundMotionState.all'access,  groundShape,  localInertia));
 
-      the_Ground : impact.d3.Object.rigid.view := Object.rigid.new_rigid_Object (rbInfo.all);
+      the_Ground : constant impact.d3.Object.rigid.view := Object.rigid.new_rigid_Object (rbInfo.all);
 
    begin
       dynamicsWorld.addRigidBody (the_Ground);     -- Add the body to the dynamics world.
@@ -108,7 +108,7 @@ begin
    ballMotionState := new motion_State.default.item' (motion_State.default.to_motion_State (the_Transform));
 
    declare
-      rbInfo : access Object.rigid.ConstructionInfo
+      rbInfo : constant Object.rigid.ConstructionInfo_view
         := new Object.rigid.ConstructionInfo'
           (Object.rigid.to_ConstructionInfo
                (1.0,
@@ -116,7 +116,7 @@ begin
                 ballShape,
                 localInertia));
 
-      the_Ball : Object.rigid.View
+      the_Ball : constant Object.rigid.view
         := Object.rigid.new_rigid_Object (rbInfo.all);
    begin
       dynamicsWorld.addRigidBody (the_Ball);       -- Add the body to the dynamics world.
@@ -146,22 +146,22 @@ begin
 --  /remove the rigidbodies from the dynamics world and delete them
 --  for (i=dynamicsWorld->getNumCollisionObjects()-1; i>=0 ;i--)
 --  {
---  	btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
---  	btRigidBody* body = btRigidBody::upcast(obj);
---  	if (body && body->getMotionState())
---  	{
---  		delete body->getMotionState();
---  	}
---  	dynamicsWorld->removeCollisionObject( obj );
---  	delete obj;
+--    btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+--    btRigidBody* body = btRigidBody::upcast(obj);
+--    if (body && body->getMotionState())
+--    {
+--      delete body->getMotionState();
+--   }
+--    dynamicsWorld->removeCollisionObject( obj );
+--    delete obj;
 --  }
 --
 --  //delete collision shapes
 --  for (int j=0;j<collisionShapes.size();j++)
 --  {
---  	btCollisionShape* shape = collisionShapes[j];
---  	collisionShapes[j] = 0;
---  	delete shape;
+--    btCollisionShape* shape = collisionShapes[j];
+--    collisionShapes[j] = 0;
+--    delete shape;
 --  }
 --
 --  //delete dynamics world

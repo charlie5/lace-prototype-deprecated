@@ -17,8 +17,7 @@ procedure launch_text_sprite_Demo
 --  Shows a few text sprites.
 --
 is
-   use gel.Applet,
-       gel.Math,
+   use gel.Math,
        openGL.Palette;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.forge.new_gui_Applet ("text sprite Demo",

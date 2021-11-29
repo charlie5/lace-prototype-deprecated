@@ -33,8 +33,7 @@ begin
    lace.Event.utility.Logger.ignore (to_Kind (gel.Mouse.motion_Event'Tag));
 
    declare
-      use gel.Applet,
-          ada.Calendar;
+      use ada.Calendar;
 
       the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("mouse Selection",
                                                                                     space_Kind => physics.Bullet);

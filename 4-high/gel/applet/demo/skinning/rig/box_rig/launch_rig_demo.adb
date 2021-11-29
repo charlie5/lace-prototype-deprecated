@@ -13,7 +13,7 @@ with
      ada.Calendar,
      ada.Strings.unbounded;
 
-with ada.Text_IO;    use ada.Text_IO;     -- For debugging.
+--  with ada.Text_IO;    use ada.Text_IO;     -- For debugging.
 
 pragma unreferenced (gel.Window.setup);
 
@@ -26,7 +26,6 @@ procedure launch_rig_Demo
 is
    use gel.Rig,
        gel.Math,
-       gel.linear_Algebra_3D,
        openGL,
        ada.Calendar;
 
@@ -34,8 +33,8 @@ is
    --- Utility
    --
 
-   function "+" (From : in String) return ada.strings.unbounded.unbounded_String
-     renames ada.strings.unbounded.To_unbounded_String;
+   --  function "+" (From : in String) return ada.strings.unbounded.unbounded_String
+   --    renames ada.strings.unbounded.To_unbounded_String;
 
    -------------
    --- Variables
@@ -69,7 +68,7 @@ begin
    -- Set the lights position and ambient color.
    --
    declare
-      Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
+      Light : openGL.Light.directional.item := the_Applet.Renderer.all.Light (Id => 1);
    begin
       Light.ambient_Color_is ((Primary => (0.5, 0.9, 0.5),
                                Opacity => 0.5));

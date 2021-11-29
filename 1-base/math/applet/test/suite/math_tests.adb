@@ -1,6 +1,7 @@
 with Ahven,
      float_Math;
-with Ada.Text_IO; use Ada.Text_IO;
+
+--  with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body math_Tests
@@ -94,7 +95,7 @@ is
       --- Image
       --
       declare
-         the_Real : Real := 1.1111_1111;
+         the_Real : constant Real := 1.1111_1111;
       begin
          assert (Image (the_Real,  0) = " 1",           "Image (a) ... failed ! ... '" & Image (the_Real,  0) & "'");
          assert (Image (the_Real,  1) = " 1.1",         "Image (b) ... failed ! ... '" & Image (the_Real,  1) & "'");

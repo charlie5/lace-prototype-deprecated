@@ -16,8 +16,7 @@ procedure launch_Pong_Tute
 --
 is
    use gel.Applet,
-       gel.Applet.gui_world,
-       gel.Math;
+       gel.Applet.gui_world;
 
    --- Applet
    --

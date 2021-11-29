@@ -21,7 +21,7 @@ is
    use gel.Sprite,
        linear_Algebra_3D,
 
-       lace.Event,
+       --  lace.Event,
 
        ada.Exceptions,
        ada.Text_IO;

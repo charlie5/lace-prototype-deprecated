@@ -1,10 +1,10 @@
 
 with
-     neural.Set,
-     neural.Net,
+     --  neural.Set,
+     --  neural.Net,
      lace.Environ.Paths,
 
-     ada.Strings.fixed,
+     --  ada.Strings.fixed,
      ada.Text_Io;
 
 
@@ -12,8 +12,9 @@ package body linear_Net
 is
 
 
-   use Math, Ada.Text_IO;
-   use type neural.signal;
+   use -- Math,
+       Ada.Text_IO;
+   --  use type neural.signal;
 
 --     input_neuron_Count : constant := 1;
 
@@ -31,7 +32,7 @@ is
           Neural,
           lace.Environ.Paths;
 
-      net_Name : String := Name & ".net";
+      net_Name : constant String := Name & ".net";
    begin
       lace.Environ.Paths.ensure_Folder (+net_Name);
       define (neural.Net.Item (Self), net_Name);        -- Define base class.
@@ -74,8 +75,8 @@ is
 
    function Output_for (Self : access Item;    the_Input     : in math.Real) return math.Real
    is
-      the_Pattern  : neural.Pattern := Pattern_for   (Self.all, the_Input, inputs_only => True);
-      the_response : neural.Signals := self.Response (the_Pattern);
+      the_Pattern  : constant neural.Pattern := Pattern_for   (Self.all, the_Input, inputs_only => True);
+      the_response : constant neural.Signals := self.Response (the_Pattern);
    begin
       return math.Real (the_Response (1));
    end Output_for;

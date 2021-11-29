@@ -1,6 +1,6 @@
 with
      gel.Applet.gui_World,
-     gel.Window.sdl,
+     gel.Window.setup,
      gel.Camera,
      gel.Forge,
      gel.Sprite,
@@ -9,10 +9,11 @@ with
      openGL.Model.any,
      openGL.Light.directional,
 
-     float_Math,
      ada.Calendar,
      ada.Text_IO,
      ada.Exceptions;
+
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_opengl_Model
@@ -22,17 +23,15 @@ procedure launch_opengl_Model
 --
 --
 is
-   use gel.Applet,
-       ada.Calendar, ada.Text_IO, ada.Exceptions;
-
-   package Math renames float_Math;
-   use type math.Real;
+   use ada.Calendar,
+       ada.Text_IO,
+       ada.Exceptions;
 
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("openGL Model", 500, 500);
 
 
-   the_human_graphics_Model : aliased openGL.Model.any.view
+   the_human_graphics_Model : constant openGL.Model.any.view
      := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/opengl/model/human.obj"),
                                     Texture          => openGL.null_Asset,
                                     Texture_is_lucid => False);
@@ -94,7 +93,7 @@ begin
    -- Set the lights position.
    --
    declare
-      Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
+      Light : openGL.Light.directional.item := the_Applet.Renderer.all.Light (Id => 1);
    begin
       Light.Site_is ((0.0, 1000.0, 1000.0));
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);

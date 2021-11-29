@@ -497,7 +497,6 @@ is
 
    procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
-      use type physics.Model.view;
    begin
       Self.Solid.Site_is (Now);
    end Site_is;

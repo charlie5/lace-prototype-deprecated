@@ -7,7 +7,6 @@ with impact.d3.Collision.Configuration.default,
      impact.d3.Space.dynamic.discrete,
 
      impact.d3.Shape.convex.internal.sphere,
-     impact.d3.Shape.convex.internal.polyhedral.box,
 
      impact.d3.Object.rigid,
 
@@ -34,7 +33,7 @@ is
 
 
 
-   collisionConfiguration : access Collision.Configuration.item'Class
+   collisionConfiguration : constant access Collision.Configuration.item'Class
      := new_default_Configuration;
    --
    -- Collision configuration contains default setup for memory, collision setup.
@@ -44,24 +43,24 @@ is
 
    -- Use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded).
    --
-   the_Dispatcher : access Dispatcher.collision.item
+   the_Dispatcher : constant access Dispatcher.collision.item
      := new Dispatcher.collision.item' (Dispatcher.collision.to_Dispatcher (collisionConfiguration.all'unchecked_access));
 
 
 
    -- 'btDbvtBroadphase' is a good general purpose broadphase. You can also try out btAxis3Sweep.
    --
-   overlappingPairCache : Collision.Broadphase.bounding_volume_Tree.view
+   overlappingPairCache : constant Collision.Broadphase.bounding_volume_Tree.view
      := Collision.Broadphase.bounding_volume_Tree.new_Broadphase;
 
 
    -- The default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
    --
-   solver : access constraint_Solver.sequential_impulse.item'Class := new constraint_Solver.sequential_impulse.item;
+   solver : constant access constraint_Solver.sequential_impulse.item'Class := new constraint_Solver.sequential_impulse.item;
 
 
 
-   dynamicsWorld : access Space.dynamic.discrete.item'Class
+   dynamicsWorld : constant access Space.dynamic.discrete.item'Class
      := new Space.dynamic.discrete.item' (Space.dynamic.discrete.Forge.to_Space (the_Dispatcher,
                                                                                  overlappingPairCache,
                                                                                  solver.all'access,
@@ -70,7 +69,7 @@ is
 
    -- Create a few basic rigid bodies.
    --
-   ballShape_1       : Shape.convex.internal.sphere.view
+   ballShape_1       : constant Shape.convex.internal.sphere.view
      := new Shape.convex.internal.sphere.item' (Shape.convex.internal.sphere.to_sphere_Shape (1.0));
 
    the_Ball          : impact.d3.Object.rigid.view;
@@ -93,7 +92,7 @@ begin
 
    declare
       use float_math.Algebra.linear.d3;
-      rbInfo     : access Object.rigid.ConstructionInfo
+      rbInfo     : constant access Object.rigid.ConstructionInfo
         := new Object.rigid.ConstructionInfo' (Object.rigid.to_ConstructionInfo (0.0,  ballMotionState.all'access,  ballShape_1,  localInertia));
 
 
