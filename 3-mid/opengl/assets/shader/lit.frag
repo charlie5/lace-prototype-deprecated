@@ -2,7 +2,7 @@
 
 struct Light
 {
-   vec4    position;
+   vec4    Site;
    vec3    intensities;     // The color of the light.
    float   attenuation;
    float   ambientCoefficient;
@@ -38,20 +38,20 @@ ApplyLight (Light   light,
     vec3    surfaceToLight;
     float   attenuation = 1.0;
     
-    if (light.position.w == 0.0)
+    if (light.Site.w == 0.0)
     {
         // Directional light.
         //
-        surfaceToLight = normalize (light.position.xyz);
+        surfaceToLight = normalize (light.Site.xyz);
         attenuation    = 1.0;     // No attenuation for directional lights.
     } 
     else
     {
         // Point light.
         //
-        float   distanceToLight = length (light.position.xyz - surfacePos);
+        float   distanceToLight = length (light.Site.xyz - surfacePos);
 
-        surfaceToLight = normalize (light.position.xyz - surfacePos);
+        surfaceToLight = normalize (light.Site.xyz - surfacePos);
         attenuation    =   1.0
                          / (  1.0 
                             +   light.attenuation
