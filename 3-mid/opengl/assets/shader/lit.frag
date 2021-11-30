@@ -3,7 +3,7 @@
 struct Light
 {
    vec4    Site;
-   vec3    intensities;     // The color of the light.
+   vec3    Color;
    float   attenuation;
    float   ambientCoefficient;
    float   coneAngle;
@@ -68,11 +68,11 @@ ApplyLight (Light   light,
         }
     }
 
-    vec3    ambient             = light.ambientCoefficient * surfaceColor.rgb * light.intensities;
+    vec3    ambient             = light.ambientCoefficient * surfaceColor.rgb * light.Color;
     float   diffuseCoefficient  = max (0.0, 
                                        dot (normal,
                                             surfaceToLight));                   
-    vec3    diffuse             = diffuseCoefficient * surfaceColor.rgb * light.intensities;
+    vec3    diffuse             = diffuseCoefficient * surfaceColor.rgb * light.Color;
     float   specularCoefficient = 0.0;
 
     if (diffuseCoefficient > 0.0)
@@ -82,7 +82,7 @@ ApplyLight (Light   light,
                                                       normal))),
                                    frag_Shine);
 
-    vec3   specular = specularCoefficient * materialSpecularColor * light.intensities;
+    vec3   specular = specularCoefficient * materialSpecularColor * light.Color;
 
     return ambient + attenuation * (diffuse + specular);     // Linear color (before gamma correction).
 }

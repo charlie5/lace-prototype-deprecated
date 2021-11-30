@@ -38,14 +38,14 @@ is
             end light_Name;
 
             site_Uniform            : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
-            intensities_Uniform         : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".intensities");
+            color_Uniform           : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
             attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".attenuation");
             ambient_Coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambientCoefficient");
             cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".coneAngle");
             cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".coneDirection");
          begin
             site_Uniform           .Value_is (Light.Position);
-            intensities_Uniform        .Value_is (Light.Intensities);
+            color_Uniform          .Value_is (Light.Intensities);
             attenuation_Uniform        .Value_is (Light.Attenuation);
             ambient_Coefficient_Uniform.Value_is (Light.ambient_Coefficient);
             cone_angle_Uniform         .Value_is (Real (Light.cone_Angle));
