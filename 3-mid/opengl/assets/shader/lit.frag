@@ -11,7 +11,7 @@ struct Light
 };
 
 
-uniform mat4           model;
+uniform mat4           model_Matrix;
 uniform vec3           cameraPosition;
 uniform vec3           materialSpecularColor;
 uniform sampler2D      materialTex;
@@ -92,7 +92,7 @@ ApplyLight (Light   light,
 void
 main()
 {
-    vec3   surfacePos      = vec3 (  model
+    vec3   surfacePos      = vec3 (  model_Matrix
                                    * vec4 (frag_Site, 1));
                                    
     vec4   surfaceColor    = (  texture  (materialTex,
@@ -101,7 +101,7 @@ main()
                               / 2.0;
 
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
-    vec3   normal          = normalize (  transpose (inverse (mat3 (model)))
+    vec3   normal          = normalize (  transpose (inverse (mat3 (model_Matrix)))
                                         * frag_Normal);
 
     // Combine color from all the lights.

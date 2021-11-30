@@ -11,7 +11,7 @@ is
       the_scale_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
       the_num_lights_Uniform :  constant Variable.uniform.int := Self.uniform_Variable ("numLights");
       the_camera_position_Uniform :  constant Variable.uniform.vec3 := Self.uniform_Variable ("cameraPosition");
-      the_model_Uniform : constant Variable.uniform.mat4  := Self.uniform_Variable ("model");
+      the_model_matrix_Uniform : constant Variable.uniform.mat4  := Self.uniform_Variable ("model_Matrix");
    begin
       --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
@@ -20,7 +20,7 @@ is
       the_num_lights_Uniform     .Value_is (1);
       the_scale_Uniform          .Value_is (Self.Scale);
       the_camera_position_Uniform.Value_is (Self.camera_Position);
-      the_model_Uniform          .Value_is (Transpose (Self.model_Matrix));
+      the_model_matrix_Uniform   .Value_is (Transpose (Self.model_Matrix));
       --  the_model_Uniform          .Value_is (Self.model_Matrix));
 
       -- Lights.
