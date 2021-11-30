@@ -1,18 +1,6 @@
 #version 150
 
-uniform mat4        model;
-uniform vec3        cameraPosition;
-
-uniform sampler2D   materialTex;
-//uniform float       uShine;     // materialShininess;
-//uniform   float       frag_Shine;
-uniform vec3        materialSpecularColor;
-
-#define MAX_LIGHTS  10
-
-uniform int         numLights;
-
-uniform struct Light
+struct Light
 {
    bool    is_on;
    vec4    position;
@@ -21,18 +9,24 @@ uniform struct Light
    float   ambientCoefficient;
    float   coneAngle;
    vec3    coneDirection;
-}                   uLights [MAX_LIGHTS];
-
-in vec2             fragTexCoord;
-in vec3             fragNormal;
-in vec3             fragVert;
-
-in vec4             frag_Color;
-in float            frag_Shine;
-in float            uShine;
+};
 
 
-out vec4            finalColor;
+uniform mat4           model;
+uniform vec3           cameraPosition;
+uniform float          Shine;
+uniform vec3           materialSpecularColor;
+uniform sampler2D      materialTex;
+uniform int            numLights;
+uniform struct Light   uLights [10];
+
+
+in  vec2   fragTexCoord;
+in  vec3   fragNormal;
+in  vec3   fragVert;
+in  vec4   frag_Color;
+
+out vec4   finalColor;
 
 
 vec3
@@ -87,9 +81,7 @@ ApplyLight (Light   light,
                                         dot (surfaceToCamera, 
                                              reflect (-surfaceToLight,
                                                       normal))),
-                                   //frag_Shine);
-                                   uShine);
-                                   // materialShininess);
+                                   Shine);
 
     vec3   specular = specularCoefficient * materialSpecularColor * light.intensities;
 
@@ -97,11 +89,10 @@ ApplyLight (Light   light,
 }
 
 
+
 void
 main()
 {
-//    mat4 my_model;  // = model;
-
     vec3   surfacePos      = vec3 (  model
                                    * vec4 (fragVert, 1));
                                    
@@ -109,6 +100,7 @@ main()
                                           fragTexCoord)
                               + frag_Color)
                               / 2.0;
+
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
     vec3   normal          = normalize (  transpose (inverse (mat3 (model)))
                                         * fragNormal);
