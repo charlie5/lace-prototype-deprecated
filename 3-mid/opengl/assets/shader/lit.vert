@@ -9,22 +9,22 @@ in vec4        Color;
 in vec2        Coord;
 in float       Shine;
 
-out vec3       fragVert;
-out vec2       fragTexCoord;
-out vec3       fragNormal;
+out vec3       frag_Site;
+out vec3       frag_Normal;
 out vec4       frag_Color;
-out float      vert_Shine;
+out vec2       frag_Coord;
+out float      frag_Shine;
 
 
 void main()
 {
     // Pass some variables to the fragment shader.
     //
-    fragVert     = Site;
-    fragNormal   = Normal;
-    frag_Color   = Color;
-    fragTexCoord = Coord;
-    vert_Shine   = Shine;
+    frag_Site   = Site;
+    frag_Normal = Normal;
+    frag_Color  = Color;
+    frag_Coord  = Coord;
+    frag_Shine  = Shine;
     
     // Apply all matrix transformations to 'Site'.
     //

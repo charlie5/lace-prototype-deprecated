@@ -20,11 +20,11 @@ uniform int            numLights;
 uniform struct Light   uLights [10];
 
 
-in  vec2   fragTexCoord;
-in  vec3   fragNormal;
-in  vec3   fragVert;
+in  vec3   frag_Site;
+in  vec3   frag_Normal;
 in  vec4   frag_Color;
-in  float  vert_Shine;
+in  vec2   frag_Coord;
+in  float  frag_Shine;
 
 out vec4   finalColor;
 
@@ -81,7 +81,7 @@ ApplyLight (Light   light,
                                         dot (surfaceToCamera, 
                                              reflect (-surfaceToLight,
                                                       normal))),
-                                   vert_Shine);
+                                   frag_Shine);
 
     vec3   specular = specularCoefficient * materialSpecularColor * light.intensities;
 
@@ -94,16 +94,16 @@ void
 main()
 {
     vec3   surfacePos      = vec3 (  model
-                                   * vec4 (fragVert, 1));
+                                   * vec4 (frag_Site, 1));
                                    
     vec4   surfaceColor    = (  texture  (materialTex,
-                                          fragTexCoord)
+                                          frag_Coord)
                               + frag_Color)
                               / 2.0;
 
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
     vec3   normal          = normalize (  transpose (inverse (mat3 (model)))
-                                        * fragNormal);
+                                        * frag_Normal);
 
     // Combine color from all the lights.
     //
