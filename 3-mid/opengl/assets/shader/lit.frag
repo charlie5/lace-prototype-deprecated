@@ -4,7 +4,7 @@ struct Light
 {
    vec4    Site;
    vec3    Color;
-   float   attenuation;
+   float   Attenuation;
    float   ambientCoefficient;
    float   coneAngle;
    vec3    coneDirection;
@@ -54,7 +54,7 @@ ApplyLight (Light   light,
         surfaceToLight = normalize (light.Site.xyz - surfacePos);
         attenuation    =   1.0
                          / (  1.0 
-                            +   light.attenuation
+                            +   light.Attenuation
                               * pow (distanceToLight, 2));
 
         // Cone restrictions which affects attenuation.
