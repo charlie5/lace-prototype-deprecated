@@ -5,7 +5,7 @@ struct Light
    vec4    Site;
    vec3    Color;
    float   Attenuation;
-   float   ambientCoefficient;
+   float   ambient_Coefficient;
    float   coneAngle;
    vec3    coneDirection;
 };
@@ -68,7 +68,7 @@ ApplyLight (Light   light,
         }
     }
 
-    vec3    ambient             = light.ambientCoefficient * surfaceColor.rgb * light.Color;
+    vec3    ambient             = light.ambient_Coefficient * surfaceColor.rgb * light.Color;
     float   diffuseCoefficient  = max (0.0, 
                                        dot (normal,
                                             surfaceToLight));                   
