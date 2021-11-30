@@ -45,10 +45,10 @@ is
 
    the_Programs : Programs;
 
-   Name_1 : constant String := "vert";
-   Name_2 : constant String := "vertNormal";
-   Name_3 : constant String := "aColor";
-   Name_4 : constant String := "vertTexCoord";
+   Name_1 : constant String := "Site";
+   Name_2 : constant String := "Normal";
+   Name_3 : constant String := "Color";
+   Name_4 : constant String := "Coord";
    Name_5 : constant String := "Shine";
 
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);

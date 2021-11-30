@@ -3,10 +3,10 @@
 uniform mat4   mvp_Matrix;
 uniform vec3   uScale;
 
-in vec3        vert;
-in vec2        vertTexCoord;
-in vec3        vertNormal;
-in vec4        aColor;
+in vec3        Site;
+in vec3        Normal;
+in vec4        Color;
+in vec2        Coord;
 in float       Shine;
 
 out vec3       fragVert;
@@ -20,13 +20,13 @@ void main()
 {
     // Pass some variables to the fragment shader.
     //
-    frag_Color   = aColor;
-    fragTexCoord = vertTexCoord;
-    fragNormal   = vertNormal;
-    fragVert     = vert;
+    fragVert     = Site;
+    fragNormal   = Normal;
+    frag_Color   = Color;
+    fragTexCoord = Coord;
     vert_Shine   = Shine;
     
-    // Apply all matrix transformations to 'vert'.
+    // Apply all matrix transformations to 'Site'.
     //
-    gl_Position = mvp_Matrix * vec4 (vert * uScale, 1);
+    gl_Position = mvp_Matrix * vec4 (Site * uScale, 1);
 }
