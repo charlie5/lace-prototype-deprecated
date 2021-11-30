@@ -7,7 +7,7 @@ struct Light
    float   Attenuation;
    float   ambient_Coefficient;
    float   cone_Angle;
-   vec3    coneDirection;
+   vec3    cone_Direction;
 };
 
 
@@ -60,7 +60,7 @@ ApplyLight (Light   light,
         // Cone restrictions which affects attenuation.
         //
         float   lightToSurfaceAngle = degrees (acos (dot (-surfaceToLight, 
-                                                          normalize (light.coneDirection))));
+                                                          normalize (light.cone_Direction))));
         
         if (lightToSurfaceAngle > light.cone_Angle)
         {
