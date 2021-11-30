@@ -211,30 +211,21 @@ is
                return "uLights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
-            the_light_on_Uniform : constant Variable.uniform.bool := Self.uniform_Variable (light_Name & ".is_on");
+            use openGL.Conversions;
+
+            the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
+            the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
+
+            the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
+            the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
+            the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
          begin
-            the_light_on_Uniform.Value_is (Light.is_On);
+            the_light_direction_Uniform.Value_is (Light.Direction);
+            the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
 
-            if Light.is_On
-            then
-               declare
-                  use openGL.Conversions;
-
-                  the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
-                  the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
-
-                  the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
-                  the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
-                  the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
-               begin
-                  the_light_direction_Uniform.Value_is (Light.Direction);
-                  the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
-
-                  the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
-                  the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
-                  the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
-               end;
-            end if;
+            the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
+            the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
+            the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
          end;
       end loop;
 

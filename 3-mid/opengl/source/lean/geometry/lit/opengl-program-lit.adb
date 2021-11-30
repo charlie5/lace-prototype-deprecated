@@ -37,28 +37,19 @@ is
                return "uLights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
-            the_light_on_Uniform : constant Variable.uniform.bool := Self.uniform_Variable (light_Name & ".is_on");
+            position_Uniform            : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".position");
+            intensities_Uniform         : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".intensities");
+            attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".attenuation");
+            ambient_Coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambientCoefficient");
+            cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".coneAngle");
+            cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".coneDirection");
          begin
-            the_light_on_Uniform.Value_is (Light.is_On);
-
-            if Light.is_On
-            then
-               declare
-                  position_Uniform            : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".position");
-                  intensities_Uniform         : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".intensities");
-                  attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".attenuation");
-                  ambient_Coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambientCoefficient");
-                  cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".coneAngle");
-                  cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".coneDirection");
-               begin
-                  position_Uniform           .Value_is (Light.Position);
-                  intensities_Uniform        .Value_is (Light.Intensities);
-                  attenuation_Uniform        .Value_is (Light.Attenuation);
-                  ambient_Coefficient_Uniform.Value_is (Light.ambient_Coefficient);
-                  cone_angle_Uniform         .Value_is (Real (Light.cone_Angle));
-                  cone_direction_Uniform     .Value_is (Light.cone_Direction);
-               end;
-            end if;
+            position_Uniform           .Value_is (Light.Position);
+            intensities_Uniform        .Value_is (Light.Intensities);
+            attenuation_Uniform        .Value_is (Light.Attenuation);
+            ambient_Coefficient_Uniform.Value_is (Light.ambient_Coefficient);
+            cone_angle_Uniform         .Value_is (Real (Light.cone_Angle));
+            cone_direction_Uniform     .Value_is (Light.cone_Direction);
          end;
       end loop;
    end set_Uniforms;

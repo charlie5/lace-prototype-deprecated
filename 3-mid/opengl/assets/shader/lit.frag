@@ -2,7 +2,6 @@
 
 struct Light
 {
-   bool    is_on;
    vec4    position;
    vec3    intensities;     // The color of the light.
    float   attenuation;
