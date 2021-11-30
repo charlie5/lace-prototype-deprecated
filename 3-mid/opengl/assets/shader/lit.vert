@@ -1,7 +1,7 @@
 #version 150
 
 uniform mat4   mvp_Matrix;
-uniform vec3   uScale;
+uniform vec3   Scale;
 
 in vec3        Site;
 in vec3        Normal;
@@ -28,5 +28,5 @@ void main()
     
     // Apply all matrix transformations to 'Site'.
     //
-    gl_Position = mvp_Matrix * vec4 (Site * uScale, 1);
+    gl_Position = mvp_Matrix * vec4 (Site * Scale, 1);
 }

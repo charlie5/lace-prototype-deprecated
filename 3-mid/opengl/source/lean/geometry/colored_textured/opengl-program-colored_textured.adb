@@ -5,7 +5,7 @@ is
    procedure set_Uniforms (Self : in Item)
    is
       the_scale_Uniform : constant openGL.Variable.uniform.vec3
-        := Self.uniform_Variable ("uScale");
+        := Self.uniform_Variable ("Scale");
    begin
       --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;

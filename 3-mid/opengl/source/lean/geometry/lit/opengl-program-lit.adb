@@ -8,7 +8,7 @@ is
    overriding
    procedure set_Uniforms (Self : in Item)
    is
-      the_scale_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("uScale");
+      the_scale_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
       the_num_lights_Uniform :  constant Variable.uniform.int := Self.uniform_Variable ("numLights");
       the_camera_position_Uniform :  constant Variable.uniform.vec3 := Self.uniform_Variable ("cameraPosition");
       the_model_Uniform : constant Variable.uniform.mat4  := Self.uniform_Variable ("model");

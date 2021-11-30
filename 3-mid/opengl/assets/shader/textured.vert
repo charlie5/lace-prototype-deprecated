@@ -1,7 +1,7 @@
 #version 120
 
 uniform   mat4   mvp_Matrix;
-uniform   vec3   uScale;
+uniform   vec3   Scale;
 
 
 attribute vec3   aSite;
@@ -18,7 +18,7 @@ const float      c_one  = 1.0;
 
 void main()
 {
-   gl_Position = mvp_Matrix * vec4 (aSite * uScale, 1.0);
+   gl_Position = mvp_Matrix * vec4 (aSite * Scale, 1.0);
    
    vColor  = vec4 (1.0, 1.0, 1.0, 1.0);
    vCoords = aCoords;

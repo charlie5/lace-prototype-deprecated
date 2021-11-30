@@ -12,7 +12,7 @@ is
         := Self.uniform_Variable ("inv_modelview_Matrix");
 
       the_scale_Uniform : constant Variable.uniform.vec3
-        := Self.uniform_Variable ("uScale");
+        := Self.uniform_Variable ("Scale");
 
       the_shine_Uniform : constant Variable.uniform.float
         := Self.uniform_Variable ("uShine");
