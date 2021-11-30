@@ -49,7 +49,7 @@ is
    Attribute_2_Name : aliased C.char_array := "vertNormal";
    Attribute_3_Name : aliased C.char_array := "aColor";
    Attribute_4_Name : aliased C.char_array := "vertTexCoord";
-   Attribute_5_Name : aliased C.char_array := "uShine";
+   Attribute_5_Name : aliased C.char_array := "Shine";
 
    Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
    Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
@@ -134,20 +134,20 @@ is
                                                       - Sample.Site (1)'Address,
                                        Normalized  => False);
 
-         --  Attribute_5 := new_Attribute (Name        => "uShine",
-         --                                gl_Location => the_Program.Program.attribute_Location ("uShine"),
-         --                                Size        => 1,
-         --                                data_Kind   => attribute.GL_FLOAT,
-         --                                Stride      => lit.Vertex'Size / 8,
-         --                                Offset      =>   Sample.Shine   'Address
-         --                                               - Sample.Site (1)'Address,
-         --                                Normalized  => False);
+         Attribute_5 := new_Attribute (Name        => "Shine",
+                                       gl_Location => the_Program.Program.attribute_Location ("Shine"),
+                                       Size        => 1,
+                                       data_Kind   => attribute.GL_FLOAT,
+                                       Stride      => lit.Vertex'Size / 8,
+                                       Offset      =>   Sample.Shine   'Address
+                                                      - Sample.Site (1)'Address,
+                                       Normalized  => False);
 
          the_Program.Program.add (Attribute_1);
          the_Program.Program.add (Attribute_2);
          the_Program.Program.add (Attribute_3);
          the_Program.Program.add (Attribute_4);
-         --  the_Program.Program.add (Attribute_5);
+         the_Program.Program.add (Attribute_5);
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => "vert").gl_Location,
@@ -169,10 +169,10 @@ is
                                Name    => +Attribute_4_Name_ptr);
          Errors.log;
 
-         --  glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
-         --                        Index   =>  the_Program.Program.Attribute (named => "uShine").gl_Location,
-         --                        Name    => +Attribute_5_Name_ptr);
-         --  Errors.log;
+         glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
+                               Index   =>  the_Program.Program.Attribute (named => "Shine").gl_Location,
+                               Name    => +Attribute_5_Name_ptr);
+         Errors.log;
       end define;
 
       Self : constant Geometry_view := new Geometry.lit.item;

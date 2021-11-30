@@ -14,7 +14,6 @@ struct Light
 
 uniform mat4           model;
 uniform vec3           cameraPosition;
-uniform float          Shine;
 uniform vec3           materialSpecularColor;
 uniform sampler2D      materialTex;
 uniform int            numLights;
@@ -25,6 +24,7 @@ in  vec2   fragTexCoord;
 in  vec3   fragNormal;
 in  vec3   fragVert;
 in  vec4   frag_Color;
+in  float  vert_Shine;
 
 out vec4   finalColor;
 
@@ -81,7 +81,7 @@ ApplyLight (Light   light,
                                         dot (surfaceToCamera, 
                                              reflect (-surfaceToLight,
                                                       normal))),
-                                   Shine);
+                                   vert_Shine);
 
     vec3   specular = specularCoefficient * materialSpecularColor * light.intensities;
 

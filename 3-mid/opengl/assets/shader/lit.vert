@@ -7,11 +7,13 @@ in vec3        vert;
 in vec2        vertTexCoord;
 in vec3        vertNormal;
 in vec4        aColor;
+in float       Shine;
 
 out vec3       fragVert;
 out vec2       fragTexCoord;
 out vec3       fragNormal;
 out vec4       frag_Color;
+out float      vert_Shine;
 
 
 void main()
@@ -22,6 +24,7 @@ void main()
     fragTexCoord = vertTexCoord;
     fragNormal   = vertNormal;
     fragVert     = vert;
+    vert_Shine   = Shine;
     
     // Apply all matrix transformations to 'vert'.
     //
