@@ -95,9 +95,8 @@ main()
     vec3   surfacePos      = vec3 (  model_Matrix
                                    * vec4 (frag_Site, 1));
                                    
-    vec4   surfaceColor    = (  texture  (materialTex,
-                                          frag_Coord)
-                              + frag_Color)
+    vec4   surfaceColor    =    (   texture  (materialTex, frag_Coord)
+                                  + frag_Color)
                               / 2.0;
 
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);

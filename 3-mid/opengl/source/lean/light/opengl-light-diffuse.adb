@@ -24,7 +24,7 @@ is
    --- Attributes
    --
 
-   function Position (Self : in Item) return Vector_4
+   function Position (Self : in Item) return Vector_3
    is
    begin
       return Self.Position;
@@ -67,7 +67,7 @@ is
 
 
 
-   procedure Position_is (Self : in out Item;   Now : in Vector_4)
+   procedure Position_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.Position := Now;

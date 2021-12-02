@@ -1,5 +1,4 @@
 with
-     openGL.Light.directional,
      openGL.Light.diffuse,
      openGL.Visual,
      openGL.Model.Box.lit,
@@ -20,7 +19,7 @@ is
    the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 
 begin
-   Demo.print_Usage ("To see the light move, disable 'Sync to VBlank'.");
+   Demo.print_Usage;
    Demo.define ("openGL 'diffuse Light' Demo");
    Demo.Camera.Position_is ((0.0, 0.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
@@ -31,15 +30,13 @@ begin
       --  The Models.
       --
       the_Box : constant Model.Box.lit.view
-        := openGL.Model.Box.lit.new_Box (Size  => (1.0, 1.0, 1.0),
+        := openGL.Model.Box.lit.new_Box (Size  => (4.0, 4.0, 4.0),
                                          Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
                                                    Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
                                                    Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
                                                    Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
                                                    Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
                                                    Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
-
-
       --  The Visuals.
       --
       use openGL.Visual.Forge;
@@ -48,24 +45,37 @@ begin
 
       -- Light movement.
       --
-      --  initial_Site : constant openGL.Vector_3 := (-10_000.0, 0.0, 10_000.0);
-      initial_Site : constant openGL.Vector_3 := (5.0, 5.0, 5.0);
-      site_Delta   :          openGL.Vector_3 := (      1.0, 0.0,      0.0);
+      --  site_Delta   :          openGL.Vector_3 := (1.0, 0.0, 0.0);
+
+      initial_Site   : constant openGL.Vector_3 := (0.1, 0.1, 15.0);
+      cone_Direction : constant openGL.Vector_3 := (0.0, 0.0, -1.0);
+
+      --  initial_Site   : constant openGL.Vector_3 := (0.1, 0.1, -15.0);
+      --  cone_Direction : constant openGL.Vector_3 := (0.0, 0.0,   1.0);
+
+      --  initial_Site   : constant openGL.Vector_3 := (0.0, 0.0,  15.0);
+      --  cone_Direction : constant openGL.Vector_3 := (0.0, 0.0,  -1.0);
 
    begin
-      the_Visuals (1).Site_is ((0.0,  1.0, 0.0));
+      the_Visuals (1).Site_is ((0.0, 0.0, 0.0));
+      --  the_Visuals (1).Site_is ((1.0, 0.0, 0.0));
+      --  the_Visuals (1).Site_is ((0.0, 1.0, 0.0));
+      --  the_Visuals (1).Site_is ((1.0, 1.0, 0.0));
+      --  the_Visuals (1).Site_is ((0.0, 0.0, 10.0));
+
+      --  the_Visuals (1).Spin_is (z_Rotation_from (to_Radians (90.0)));
 
       -- Set the lights initial position to far behind and far to the left.
       --
       declare
-         --  Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
          Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
       begin
-         Light.Color_is (Ambient  => (Grey, Opaque),
+         Light.Color_is (Ambient  => (Grey,  Opaque),
                          Diffuse  => (White, Opaque),
                          Specular => (White, Opaque));
 
-         Light.Site_is (initial_Site);
+         Light.Position_is       (initial_Site);
+         Light.cone_Direction_is (cone_Direction);
 
          Demo.Renderer.Light_is (Id => 1, Now => Light);
       end;
