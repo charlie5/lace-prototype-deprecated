@@ -1,5 +1,6 @@
 #version 150
 
+uniform mat4   model_Matrix;
 uniform mat4   mvp_Matrix;
 uniform vec3   Scale;
 
@@ -9,6 +10,7 @@ in vec4        Color;
 in vec2        Coord;
 in float       Shine;
 
+out mat3       inverse_Model_matrix;
 out vec3       frag_Site;
 out vec3       frag_Normal;
 out vec4       frag_Color;
@@ -20,6 +22,8 @@ void main()
 {
     // Pass some variables to the fragment shader.
     //
+    inverse_Model_matrix = inverse (mat3 (model_Matrix));
+    
     frag_Site   = Site;
     frag_Normal = Normal;
     frag_Color  = Color;

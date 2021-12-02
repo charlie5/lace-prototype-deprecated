@@ -19,6 +19,7 @@ uniform int            numLights;
 uniform struct Light   uLights [10];
 
 
+in  mat3   inverse_Model_matrix;
 in  vec3   frag_Site;
 in  vec3   frag_Normal;
 in  vec4   frag_Color;
@@ -49,9 +50,10 @@ ApplyLight (Light   light,
     {
         // Point light.
         //
-        float   distanceToLight = length (light.Site.xyz - surfacePos);
+        vec3    Surface_to_Light_vector = light.Site.xyz - surfacePos;
+        float   distanceToLight         = length (Surface_to_Light_vector);
 
-        surfaceToLight = normalize (light.Site.xyz - surfacePos);
+        surfaceToLight = normalize (Surface_to_Light_vector);
         attenuation    =   1.0
                          / (  1.0 
                             +   light.Attenuation
@@ -68,11 +70,12 @@ ApplyLight (Light   light,
         }
     }
 
-    vec3    ambient             = light.ambient_Coefficient * surfaceColor.rgb * light.Color;
+    vec3    lit_surface_Color   = surfaceColor * light.Color;
+    vec3    ambient             = light.ambient_Coefficient * lit_surface_Color;
     float   diffuseCoefficient  = max (0.0, 
                                        dot (normal,
                                             surfaceToLight));                   
-    vec3    diffuse             = diffuseCoefficient * surfaceColor.rgb * light.Color;
+    vec3    diffuse             = diffuseCoefficient * lit_surface_Color;
     float   specularCoefficient = 0.0;
 
     if (diffuseCoefficient > 0.0)
@@ -100,8 +103,8 @@ main()
                               / 2.0;
 
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
-    vec3   normal          = normalize (  transpose (inverse (mat3 (model_Matrix)))
-                                        * frag_Normal);
+    vec3   normal          = normalize (  frag_Normal
+                                        * inverse_Model_matrix);
 
     // Combine color from all the lights.
     //
