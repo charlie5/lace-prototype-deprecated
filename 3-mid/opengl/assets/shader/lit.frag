@@ -1,6 +1,6 @@
 #version 150
 
-struct Light
+struct light
 {
    vec4    Site;
    vec3    Color;
@@ -17,7 +17,7 @@ uniform vec3           camera_Site;
 uniform vec3           specular_Color;    // The materials specular color.
 uniform sampler2D      Texture;
 uniform int            light_Count;
-uniform struct Light   Lights [10];
+uniform struct light   Lights [10];
 
 
 in  vec3   frag_Site;
@@ -26,68 +26,68 @@ in  vec4   frag_Color;
 in  vec2   frag_Coord;
 in  float  frag_Shine;
 
-out vec4   finalColor;
+out vec4   final_Color;
 
 
 vec3
-ApplyLight (Light   light, 
-            vec3    surfaceColor, 
-            vec3    normal, 
-            vec3    surfacePos, 
-            vec3    surfaceToCamera)
+apply_Light (light   Light, 
+             vec3    surface_Color, 
+             vec3    Normal, 
+             vec3    surface_Site, 
+             vec3    Surface_to_Camera)
 {
-    vec3    surfaceToLight;
-    float   attenuation = 1.0;
+    vec3    Surface_to_Light;
+    float   Attenuation = 1.0;
     
-    if (light.Site.w == 0.0)
+    if (Light.Site.w == 0.0)
     {
         // Directional light.
         //
-        surfaceToLight = normalize (light.Site.xyz);
-        attenuation    = 1.0;     // No attenuation for directional lights.
+        Surface_to_Light = normalize (Light.Site.xyz);
+        Attenuation      = 1.0;     // No attenuation for directional lights.
     } 
     else
     {
         // Point light.
         //
-        vec3    Surface_to_Light_vector = light.Site.xyz - surfacePos;
-        float   distanceToLight         = length (Surface_to_Light_vector);
+        vec3    Surface_to_Light_vector = Light.Site.xyz - surface_Site;
+        float   Distance_to_Light       = length (Surface_to_Light_vector);
 
-        surfaceToLight = normalize (Surface_to_Light_vector);
-        attenuation    =   1.0
-                         / (  1.0 
-                            +   light.Attenuation
-                              * pow (distanceToLight, 2));
+        Surface_to_Light = normalize (Surface_to_Light_vector);
+        Attenuation      =   1.0
+                           / (  1.0 
+                              +   Light.Attenuation
+                                * pow (Distance_to_Light, 2));
 
         // Cone restrictions which affects attenuation.
         //
-        float   lightToSurfaceAngle = degrees (acos (dot (-surfaceToLight, 
-                                                          normalize (light.cone_Direction))));
+        float   Light_to_Surface_Angle = degrees (acos (dot (-Surface_to_Light, 
+                                                             normalize (Light.cone_Direction))));
         
-        if (lightToSurfaceAngle > light.cone_Angle)
+        if (Light_to_Surface_Angle > Light.cone_Angle)
         {
-            attenuation = 0.0;
+            Attenuation = 0.0;
         }
     }
 
-    vec3    lit_surface_Color   = surfaceColor * light.Color;
-    vec3    ambient             = light.ambient_Coefficient * lit_surface_Color;
-    float   diffuseCoefficient  = max (0.0, 
-                                       dot (normal,
-                                            surfaceToLight));                   
-    vec3    diffuse             = diffuseCoefficient * lit_surface_Color;
-    float   specularCoefficient = 0.0;
+    vec3    lit_surface_Color    = surface_Color * Light.Color;
+    vec3    Ambient              = Light.ambient_Coefficient * lit_surface_Color;
+    float   diffuse_Coefficient  = max (0.0, 
+                                        dot (Normal,
+                                             Surface_to_Light));                   
+    vec3    Diffuse              = diffuse_Coefficient * lit_surface_Color;
+    float   specular_Coefficient = 0.0;
 
-    if (diffuseCoefficient > 0.0)
-        specularCoefficient = pow (max (0.0, 
-                                        dot (surfaceToCamera, 
-                                             reflect (-surfaceToLight,
-                                                      normal))),
-                                   frag_Shine);
+    if (diffuse_Coefficient > 0.0)
+        specular_Coefficient = pow (max (0.0, 
+                                         dot (Surface_to_Camera, 
+                                              reflect (-Surface_to_Light,
+                                                       Normal))),
+                                    frag_Shine);
 
-    vec3   specular = specularCoefficient * specular_Color * light.Color;
+    vec3   Specular = specular_Coefficient * specular_Color * Light.Color;
 
-    return ambient + attenuation * (diffuse + specular);     // Linear color (before gamma correction).
+    return Ambient + Attenuation * (Diffuse + Specular);     // Linear color (before gamma correction).
 }
 
 
@@ -95,33 +95,33 @@ ApplyLight (Light   light,
 void
 main()
 {
-    vec3   surfacePos      = vec3 (  model_Transform
+    vec3   surface_Site    = vec3 (  model_Transform
                                    * vec4 (frag_Site, 1));
                                    
-    vec4   surfaceColor    =    (   texture  (Texture, frag_Coord)
-                                  + frag_Color)
-                              / 2.0;
+    vec4   surface_Color   =   (  texture  (Texture, frag_Coord)
+                                + frag_Color)
+                             / 2.0;
 
-    vec3   surfaceToCamera = normalize (camera_Site - surfacePos);
-    vec3   normal          = normalize (  frag_Normal
-                                        * inverse_model_Rotation);
+    vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
+    vec3   Normal            = normalize (  frag_Normal
+                                          * inverse_model_Rotation);
 
     // Combine color from all the lights.
     //
-    vec3   linearColor = vec3 (0);
+    vec3   linear_Color = vec3 (0);
     
     for (int i = 0;   i < light_Count;   ++i)
     {
-        linearColor += ApplyLight (Lights [i],
-                                   surfaceColor.rgb,
-                                   normal,
-                                   surfacePos,
-                                   surfaceToCamera);
+        linear_Color += apply_Light (Lights [i],
+                                     surface_Color.rgb,
+                                     Normal,
+                                     surface_Site,
+                                     Surface_to_Camera);
     }
     
-    vec3   gamma = vec3 (1.0 / 2.2);
+    vec3   Gamma = vec3 (1.0 / 2.2);
 
-    finalColor = vec4 (pow (linearColor,     // Final color (after gamma correction).
-                            gamma),
-                       surfaceColor.a);
+    final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).
+                             Gamma),
+                        surface_Color.a);
 }
