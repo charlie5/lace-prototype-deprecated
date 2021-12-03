@@ -667,7 +667,7 @@ is
             end if;
 
             current_Program.enable;     -- TODO: Only need to do this when program changes ?
-            current_Program.mvp_Matrix_is      (the_Couple.Visual.mvp_Transform);
+            current_Program.mvp_Transform_is   (the_Couple.Visual.mvp_Transform);
             current_Program.model_Matrix_is    (the_Couple.Visual.Transform);
             current_Program.camera_Position_is (get_Translation (camera_world_Transform));
 
@@ -739,9 +739,9 @@ is
             current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
 
-            current_Program.mvp_Matrix_is               (the_Couple.Visual.mvp_Transform);
+            current_Program.mvp_Transform_is   (the_Couple.Visual.mvp_Transform);
             current_Program.camera_Position_is (get_Translation (camera_world_Transform));
-            current_Program. model_Matrix_is            (the_Couple.Visual.Transform);
+            current_Program. model_Matrix_is   (the_Couple.Visual.Transform);
 --              current_Program.camera_Matrix_is            (the_Couple.Visual.camera_Transform);
 
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);

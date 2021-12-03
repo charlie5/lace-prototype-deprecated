@@ -86,7 +86,7 @@ is
    --  Uniforms
    --
 
-   procedure mvp_Matrix_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
+   procedure mvp_Transform_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
    procedure camera_Position_is          (Self : in out Item'Class;   Now : in Vector_3);
    procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
    --  procedure camera_Matrix_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
@@ -127,7 +127,7 @@ private
          Attributes               : openGL.Attribute.views (1 .. 8);
          attribute_Count          : Natural := 0;
 
-         mvp_Matrix               : Matrix_4x4;
+         mvp_Transform            : Matrix_4x4;
          model_Matrix             : Matrix_4x4 := Identity_4x4;
          --  camera_Matrix            : Matrix_4x4;
          camera_Position          : Vector_3;

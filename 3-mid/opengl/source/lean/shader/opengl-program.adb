@@ -306,11 +306,11 @@ is
 
 
 
-   procedure mvp_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
+   procedure mvp_Transform_is (Self : in out Item'Class;   Now : in Matrix_4x4)
    is
    begin
-      Self.mvp_Matrix := Now;
-   end mvp_Matrix_is;
+      Self.mvp_Transform := Now;
+   end mvp_Transform_is;
 
 
 
@@ -382,9 +382,9 @@ is
 
    procedure set_mvp_Uniform (Self : in Item)
    is
-      the_mvp_Uniform : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Matrix");
+      the_mvp_Uniform : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Transform");
    begin
-      the_mvp_Uniform.Value_is (Self.mvp_Matrix);
+      the_mvp_Uniform.Value_is (Self.mvp_Transform);
    end set_mvp_Uniform;
 
 
