@@ -12,6 +12,7 @@ struct Light
 
 
 uniform mat4           model_Matrix;
+uniform mat3           inverse_model_Rotation;
 uniform vec3           cameraPosition;
 uniform vec3           materialSpecularColor;
 uniform sampler2D      materialTex;
@@ -19,7 +20,6 @@ uniform int            numLights;
 uniform struct Light   uLights [10];
 
 
-in  mat3   inverse_Model_matrix;
 in  vec3   frag_Site;
 in  vec3   frag_Normal;
 in  vec4   frag_Color;
@@ -104,7 +104,7 @@ main()
 
     vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
     vec3   normal          = normalize (  frag_Normal
-                                        * inverse_Model_matrix);
+                                        * inverse_model_Rotation);
 
     // Combine color from all the lights.
     //
