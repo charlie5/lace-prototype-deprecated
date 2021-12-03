@@ -31,16 +31,16 @@ is
    procedure inverse_view_Transform_is (Self : in out Item;   Now : in Matrix_3x3);
 
    procedure Color_is (Self : in out Item;   Ambient,
-                                             Diffuse,
-                                             Specular : in lucid_Color);
+                                             Diffuse : in lucid_Color);
+                                             --  Specular : in lucid_Color);
 
    procedure  ambient_Color_is (Self : in out Item;   Now : lucid_Color);
    procedure  diffuse_Color_is (Self : in out Item;   Now : lucid_Color);
-   procedure specular_Color_is (Self : in out Item;   Now : lucid_Color);
+   --  procedure specular_Color_is (Self : in out Item;   Now : lucid_Color);
 
    function  ambient_Color    (Self : in Item) return lucid_Color;
    function  diffuse_Color    (Self : in Item) return lucid_Color;
-   function specular_Color    (Self : in Item) return lucid_Color;
+   --  function specular_Color    (Self : in Item) return lucid_Color;
 
    function  Direction        (Self : in Item) return Vector_3;    -- Normalized light direction in eye space.
    function  halfplane_Vector (Self : in Item) return Vector_3;    -- Normalized half-plane vector.
@@ -63,7 +63,7 @@ private
 
          ambient_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
          diffuse_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);
-         specular_Color   : Vector_4 := (0.0, 0.0, 0.0, 1.0);
+         --  specular_Color   : Vector_4 := (0.0, 0.0, 0.0, 1.0);
       end record;
 
 end openGL.Light.diffuse;

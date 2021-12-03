@@ -71,8 +71,8 @@ begin
          Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
       begin
          Light.Color_is (Ambient  => (Grey,  Opaque),
-                         Diffuse  => (White, Opaque),
-                         Specular => (White, Opaque));
+                         Diffuse  => (White, Opaque));
+                         --  Specular => (White, Opaque));
 
          Light.Position_is       (initial_Site);
          Light.cone_Direction_is (cone_Direction);

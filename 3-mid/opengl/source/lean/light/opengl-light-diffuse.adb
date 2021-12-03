@@ -135,14 +135,14 @@ is
 
 
    procedure Color_is (Self : in out Item;   Ambient,
-                                             Diffuse,
-                                             Specular : in lucid_Color)
+                                             Diffuse : in lucid_Color)
+                                             --  Specular : in lucid_Color)
    is
       use openGL.conversions;
    begin
       Self. ambient_Color := to_Vector_4 (Ambient);
       Self. diffuse_Color := to_Vector_4 (Diffuse);
-      Self.specular_Color := to_Vector_4 (Specular);
+      --  Self.specular_Color := to_Vector_4 (Specular);
    end Color_is;
 
 
@@ -165,12 +165,12 @@ is
 
 
 
-   procedure specular_Color_is (Self : in out Item;   Now : lucid_Color)
-   is
-      use openGL.conversions;
-   begin
-      Self.specular_Color := to_Vector_4 (Now);
-   end specular_Color_is;
+   --  procedure specular_Color_is (Self : in out Item;   Now : lucid_Color)
+   --  is
+   --     use openGL.conversions;
+   --  begin
+   --     Self.specular_Color := to_Vector_4 (Now);
+   --  end specular_Color_is;
 
 
 
@@ -190,11 +190,11 @@ is
 
 
 
-   function specular_Color (Self : in Item) return lucid_Color
-   is
-   begin
-      return to_light_Color (Self.specular_Color);
-   end specular_Color;
+   --  function specular_Color (Self : in Item) return lucid_Color
+   --  is
+   --  begin
+   --     return to_light_Color (Self.specular_Color);
+   --  end specular_Color;
 
 
 
