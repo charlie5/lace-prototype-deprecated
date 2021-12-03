@@ -14,7 +14,7 @@ struct Light
 uniform mat4           model_Transform;
 uniform mat3           inverse_model_Rotation;
 uniform vec3           camera_Site;
-uniform vec3           materialSpecularColor;
+uniform vec3           specular_Color;    // The materials specular color.
 uniform sampler2D      materialTex;
 uniform int            numLights;
 uniform struct Light   uLights [10];
@@ -85,7 +85,7 @@ ApplyLight (Light   light,
                                                       normal))),
                                    frag_Shine);
 
-    vec3   specular = specularCoefficient * materialSpecularColor * light.Color;
+    vec3   specular = specularCoefficient * specular_Color * light.Color;
 
     return ambient + attenuation * (diffuse + specular);     // Linear color (before gamma correction).
 }
