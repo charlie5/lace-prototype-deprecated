@@ -16,8 +16,8 @@ uniform mat3           inverse_model_Rotation;
 uniform vec3           camera_Site;
 uniform vec3           specular_Color;    // The materials specular color.
 uniform sampler2D      Texture;
-uniform int            numLights;
-uniform struct Light   uLights [10];
+uniform int            light_Count;
+uniform struct Light   Lights [10];
 
 
 in  vec3   frag_Site;
@@ -110,9 +110,9 @@ main()
     //
     vec3   linearColor = vec3 (0);
     
-    for (int i = 0;   i < numLights;   ++i)
+    for (int i = 0;   i < light_Count;   ++i)
     {
-        linearColor += ApplyLight (uLights [i],
+        linearColor += ApplyLight (Lights [i],
                                    surfaceColor.rgb,
                                    normal,
                                    surfacePos,

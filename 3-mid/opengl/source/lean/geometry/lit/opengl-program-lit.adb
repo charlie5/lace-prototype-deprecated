@@ -13,7 +13,7 @@ is
           openGL.Conversions;
 
       the_scale_Uniform                  : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
-      the_num_lights_Uniform             : constant Variable.uniform.int  := Self.uniform_Variable ("numLights");
+      the_light_count_Uniform            : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
       the_specular_color_Uniform         : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
       the_camera_site_Uniform            : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
       the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
@@ -23,7 +23,7 @@ is
       Self.set_mvp_Uniform;
 
 
-      the_num_lights_Uniform            .Value_is (1);
+      the_light_count_Uniform           .Value_is (1);
       the_specular_color_Uniform        .Value_is (to_Vector_3 (Self.specular_Color));
       the_scale_Uniform                 .Value_is (Self.Scale);
       the_camera_site_Uniform           .Value_is (Self.camera_Site);
@@ -41,7 +41,7 @@ is
                use ada.Strings,
                    ada.Strings.fixed;
             begin
-               return "uLights[" & Trim (Integer'Image (i - 1), Left) & "]";
+               return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
             site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
