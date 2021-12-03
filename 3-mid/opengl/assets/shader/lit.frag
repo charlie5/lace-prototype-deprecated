@@ -15,7 +15,7 @@ uniform mat4           model_Transform;
 uniform mat3           inverse_model_Rotation;
 uniform vec3           camera_Site;
 uniform vec3           specular_Color;    // The materials specular color.
-uniform sampler2D      materialTex;
+uniform sampler2D      Texture;
 uniform int            numLights;
 uniform struct Light   uLights [10];
 
@@ -98,7 +98,7 @@ main()
     vec3   surfacePos      = vec3 (  model_Transform
                                    * vec4 (frag_Site, 1));
                                    
-    vec4   surfaceColor    =    (   texture  (materialTex, frag_Coord)
+    vec4   surfaceColor    =    (   texture  (Texture, frag_Coord)
                                   + frag_Color)
                               / 2.0;
 
