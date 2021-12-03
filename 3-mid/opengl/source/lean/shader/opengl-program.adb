@@ -314,11 +314,11 @@ is
 
 
 
-   procedure camera_Position_is (Self : in out Item'Class;   Now : in Vector_3)
+   procedure camera_Site_is (Self : in out Item'Class;   Now : in Vector_3)
    is
    begin
-      Self.camera_Position := Now;
-   end camera_Position_is;
+      Self.camera_Site := Now;
+   end camera_Site_is;
 
 
 

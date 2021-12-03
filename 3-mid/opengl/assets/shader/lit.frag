@@ -13,7 +13,7 @@ struct Light
 
 uniform mat4           model_Transform;
 uniform mat3           inverse_model_Rotation;
-uniform vec3           cameraPosition;
+uniform vec3           camera_Site;
 uniform vec3           materialSpecularColor;
 uniform sampler2D      materialTex;
 uniform int            numLights;
@@ -102,7 +102,7 @@ main()
                                   + frag_Color)
                               / 2.0;
 
-    vec3   surfaceToCamera = normalize (cameraPosition - surfacePos);
+    vec3   surfaceToCamera = normalize (camera_Site - surfacePos);
     vec3   normal          = normalize (  frag_Normal
                                         * inverse_model_Rotation);
 

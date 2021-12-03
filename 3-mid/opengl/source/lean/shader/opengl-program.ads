@@ -86,8 +86,8 @@ is
    --  Uniforms
    --
 
-   procedure mvp_Transform_is               (Self : in out Item'Class;   Now : in Matrix_4x4);
-   procedure camera_Position_is          (Self : in out Item'Class;   Now : in Vector_3);
+   procedure mvp_Transform_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
+   procedure camera_Site_is              (Self : in out Item'Class;   Now : in Vector_3);
    procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
    --  procedure camera_Matrix_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
 
@@ -130,7 +130,7 @@ private
          mvp_Transform            : Matrix_4x4;
          model_Transform          : Matrix_4x4 := Identity_4x4;
          --  camera_Matrix            : Matrix_4x4;
-         camera_Position          : Vector_3;
+         camera_Site              : Vector_3;
          inverse_modelview_Matrix : Matrix_3x3;
 
          directional_Light        : Light.directional.items (1 ..  2);
