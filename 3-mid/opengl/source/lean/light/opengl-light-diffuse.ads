@@ -11,14 +11,14 @@ is
    --- Attributes
    --
    function  Position            (Self : in     Item) return Vector_3;
-   function  Intensities         (Self : in     Item) return Vector_3;
+   function  Color               (Self : in     Item) return Vector_3;
    function  Attenuation         (Self : in     Item) return Real;
    function  ambient_Coefficient (Self : in     Item) return Real;
    function  cone_Angle          (Self : in     Item) return Degrees;
    function  cone_Direction      (Self : in     Item) return Vector_3;
 
    procedure Position_is            (Self : in out Item;   Now : in Vector_3);
-   procedure Intensities_is         (Self : in out Item;   Now : in Vector_3);
+   procedure Color_is               (Self : in out Item;   Now : in Vector_3);
    procedure Attenuation_is         (Self : in out Item;   Now : in Real);
    procedure ambient_Coefficient_is (Self : in out Item;   Now : in Real);
    procedure cone_Angle_is          (Self : in out Item;   Now : in Degrees);
@@ -52,7 +52,7 @@ private
    type Item is new Light.item with
       record
          Position            : Vector_3 := (0.0, 0.0, 5.0);
-         Intensities         : Vector_3 := (1.0, 1.0, 1.0);
+         Color               : Vector_3 := (1.0, 1.0, 1.0);
          Attenuation         : Real     :=  0.1;
          ambient_Coefficient : Real     :=  0.1;
          cone_Angle          : Degrees  :=  2.0;

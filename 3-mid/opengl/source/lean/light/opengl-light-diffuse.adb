@@ -31,11 +31,11 @@ is
    end Position;
 
 
-   function Intensities (Self : in Item) return Vector_3
+   function Color (Self : in Item) return Vector_3
    is
    begin
-      return Self.Intensities;
-   end Intensities;
+      return Self.Color;
+   end Color;
 
 
    function Attenuation (Self : in Item) return Real
@@ -74,11 +74,11 @@ is
    end Position_is;
 
 
-   procedure Intensities_is (Self : in out Item;   Now : in Vector_3)
+   procedure Color_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.Intensities := Now;
-   end Intensities_is;
+      Self.Color := Now;
+   end Color_is;
 
 
    procedure Attenuation_is (Self : in out Item;   Now : in Real)

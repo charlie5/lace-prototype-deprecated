@@ -52,7 +52,7 @@ is
             cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".cone_Direction");
          begin
             site_Uniform               .Value_is (Vector_4 (Light.Position & 1.0));
-            color_Uniform              .Value_is (          Light.Intensities);
+            color_Uniform              .Value_is (          Light.Color);
             attenuation_Uniform        .Value_is (          Light.Attenuation);
             ambient_coefficient_Uniform.Value_is (          Light.ambient_Coefficient);
             cone_angle_Uniform         .Value_is (Real     (Light.cone_Angle));
