@@ -325,7 +325,7 @@ is
    procedure model_Matrix_is (Self : in out Item'Class;   Now : in Matrix_4x4)
    is
    begin
-      Self.model_Matrix := Now;
+      Self.model_Transform := Now;
    end model_Matrix_is;
 
 

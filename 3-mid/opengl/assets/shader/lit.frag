@@ -11,7 +11,7 @@ struct Light
 };
 
 
-uniform mat4           model_Matrix;
+uniform mat4           model_Transform;
 uniform mat3           inverse_model_Rotation;
 uniform vec3           cameraPosition;
 uniform vec3           materialSpecularColor;
@@ -95,7 +95,7 @@ ApplyLight (Light   light,
 void
 main()
 {
-    vec3   surfacePos      = vec3 (  model_Matrix
+    vec3   surfacePos      = vec3 (  model_Transform
                                    * vec4 (frag_Site, 1));
                                    
     vec4   surfaceColor    =    (   texture  (materialTex, frag_Coord)

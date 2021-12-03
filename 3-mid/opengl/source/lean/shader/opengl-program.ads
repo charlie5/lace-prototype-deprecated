@@ -128,7 +128,7 @@ private
          attribute_Count          : Natural := 0;
 
          mvp_Transform            : Matrix_4x4;
-         model_Matrix             : Matrix_4x4 := Identity_4x4;
+         model_Transform          : Matrix_4x4 := Identity_4x4;
          --  camera_Matrix            : Matrix_4x4;
          camera_Position          : Vector_3;
          inverse_modelview_Matrix : Matrix_3x3;
