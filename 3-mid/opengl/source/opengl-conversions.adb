@@ -22,4 +22,25 @@ is
    end to_Vector_4;
 
 
+
+   function to_Vector_3 (From : in rgb_Color) return Vector_3
+   is
+   begin
+      return (Real (to_Primary (From.Red)),
+              Real (to_Primary (From.Green)),
+              Real (to_Primary (From.Blue)));
+   end to_Vector_3;
+
+
+
+   function to_Vector_3 (From : in Color) return Vector_3
+   is
+   begin
+      return (Real (From.Red),
+              Real (From.Green),
+              Real (From.Blue));
+   end to_Vector_3;
+
+
+
 end openGL.Conversions;
