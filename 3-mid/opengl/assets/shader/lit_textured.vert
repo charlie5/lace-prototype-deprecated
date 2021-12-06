@@ -12,7 +12,7 @@ struct directional_light
 };
 
 
-uniform   mat4                  mvp_Matrix;
+uniform   mat4                  mvp_Transform;
 uniform   mat3                  inv_modelview_Matrix;
 
 uniform   directional_light     uLights [8];
@@ -57,7 +57,7 @@ directional_light_color (in vec3                normal,     // 'normal' has been
 
 void main()
 {
-   gl_Position = mvp_Matrix * vec4 (aSite * Scale, 1.0);
+   gl_Position = mvp_Transform * vec4 (aSite * Scale, 1.0);
    
 
    vec3   light_Normal = normalize (aNormal) * inv_modelview_Matrix;
