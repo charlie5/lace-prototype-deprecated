@@ -39,7 +39,7 @@ is
    type Programs is array (program_Id) of aliased Program;
 
 
-   -----------
+   ----------
    --- Globals
    --
 
@@ -48,7 +48,7 @@ is
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Normal";
    Name_3 : constant String := "Color";
-   Name_4 : constant String := "Coord";
+   Name_4 : constant String := "Coords";
    Name_5 : constant String := "Shine";
 
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);

@@ -35,16 +35,23 @@ is
    --- Globals
    --
 
-   the_Program          : aliased          Program;
+   the_Program : aliased Program;
 
-   Attribute_1_Name     : aliased          C.char_array        := "aSite";
+
+   Name_1 : constant String := "Site";
+   Name_2 : constant String := "Normal";
+   Name_3 : constant String := "Color";
+   Name_4 : constant String := "Shine";
+
+   Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
+   Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
+   Attribute_3_Name : aliased C.char_array := C.to_C (Name_3);
+   Attribute_4_Name : aliased C.char_array := C.to_C (Name_4);
+
    Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
-
-   Attribute_2_Name     : aliased          C.char_array        := "aNormal";
    Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
-
-   Attribute_3_Name     : aliased          C.char_array        := "aColor";
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
+   Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
 
 
    ---------
@@ -66,7 +73,8 @@ is
 
          Attribute_1,
          Attribute_2,
-         Attribute_3 : Attribute.view;
+         Attribute_3,
+         Attribute_4 : Attribute.view;
       begin
          the_Program.Program := new openGL.Program.lit_colored.item;
 
@@ -76,16 +84,16 @@ is
          the_Program.Program.define (the_Program.  vertex_Shader'Access,
                                      the_Program.fragment_Shader'Access);
 
-         Attribute_1 := new_Attribute (Name        => "aSite",
-                                       gl_Location => the_Program.Program.attribute_Location ("aSite"),
+         Attribute_1 := new_Attribute (Name        => Name_1,
+                                       gl_Location => the_Program.Program.attribute_Location (Name_1),
                                        Size        => 3,
                                        data_Kind   => attribute.GL_FLOAT,
                                        Stride      => lit_colored.Vertex'Size / 8,
                                        Offset      => 0,
                                        Normalized  => False);
 
-         Attribute_2 := new_Attribute (Name        => "aNormal",
-                                       gl_Location => the_Program.Program.attribute_Location ("aNormal"),
+         Attribute_2 := new_Attribute (Name        => Name_2,
+                                       gl_Location => the_Program.Program.attribute_Location (Name_2),
                                        Size        => 3,
                                        data_Kind   => attribute.GL_FLOAT,
                                        Stride      => lit_colored.Vertex'Size / 8,
@@ -93,8 +101,8 @@ is
                                                       - Sample.Site   (1)'Address,
                                        Normalized  => False);
 
-         Attribute_3 := new_Attribute (Name        => "aColor",
-                                       gl_Location => the_Program.Program.attribute_Location ("aColor"),
+         Attribute_3 := new_Attribute (Name        => Name_3,
+                                       gl_Location => the_Program.Program.attribute_Location (Name_3),
                                        Size        => 4,
                                        data_Kind   => attribute.GL_UNSIGNED_BYTE,
                                        Stride      => lit_colored.Vertex'Size / 8,
@@ -102,23 +110,38 @@ is
                                                       - Sample.Site (1)         'Address,
                                        Normalized  => True);
 
+         Attribute_4 := new_Attribute (Name        => Name_4,
+                                       gl_Location => the_Program.Program.attribute_Location (Name_4),
+                                       Size        => 1,
+                                       data_Kind   => attribute.GL_FLOAT,
+                                       Stride      => lit_colored.Vertex'Size / 8,
+                                       Offset      =>   Sample.Shine    'Address
+                                                      - Sample.Site (1) 'Address,
+                                       Normalized  => True);
+
          the_Program.Program.add (Attribute_1);
          the_Program.Program.add (Attribute_2);
          the_Program.Program.add (Attribute_3);
+         the_Program.Program.add (Attribute_4);
 
          glBindAttribLocation (program =>  the_Program.Program.gl_Program,
-                               index   =>  the_Program.Program.Attribute (named => "aSite").gl_Location,
+                               index   =>  the_Program.Program.Attribute (named => Name_1).gl_Location,
                                name    => +Attribute_1_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (program =>  the_Program.Program.gl_Program,
-                               index   =>  the_Program.Program.Attribute (named => "aNormal").gl_Location,
+                               index   =>  the_Program.Program.Attribute (named => Name_2).gl_Location,
                                name    => +Attribute_2_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (program =>  the_Program.Program.gl_Program,
-                               index   =>  the_Program.Program.Attribute (named => "aColor").gl_Location,
+                               index   =>  the_Program.Program.Attribute (named => Name_3).gl_Location,
                                name    => +Attribute_3_Name_ptr);
+         Errors.log;
+
+         glBindAttribLocation (program =>  the_Program.Program.gl_Program,
+                               index   =>  the_Program.Program.Attribute (named => Name_4).gl_Location,
+                               name    => +Attribute_4_Name_ptr);
          Errors.log;
       end define;
 

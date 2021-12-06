@@ -37,7 +37,8 @@ is
          declare
             Light : openGL.Light.diffuse.item renames Self.diffuse_Lights (i);
 
-            function light_Name return String is
+            function light_Name return String
+            is
                use ada.Strings,
                    ada.Strings.fixed;
             begin
@@ -63,7 +64,7 @@ is
 
 
 
-   procedure specular_Color_is (Self : in out Item'Class;   Now : in Color)
+   procedure specular_Color_is (Self : in out Item;   Now : in Color)
    is
    begin
       Self.specular_Color := Now;

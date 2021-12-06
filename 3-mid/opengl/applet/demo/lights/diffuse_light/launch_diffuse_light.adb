@@ -2,6 +2,7 @@ with
      openGL.Light.diffuse,
      openGL.Visual,
      openGL.Model.Box.lit,
+     openGL.Model.Box.lit_colored_textured,
      openGL.Palette,
      openGL.Demo;
 
@@ -29,14 +30,22 @@ begin
 
       --  The Models.
       --
-      the_Box : constant Model.Box.lit.view
-        := openGL.Model.Box.lit.new_Box (Size  => (4.0, 4.0, 4.0),
-                                         Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-                                                   Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-                                                   Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-                                                   Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-                                                   Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
-                                                   Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
+      --  the_Box : constant Model.Box.lit.view
+      --    := openGL.Model.Box.lit.new_Box (Size  => (4.0, 4.0, 4.0),
+      --                                     Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+      --                                               Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+      --                                               Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+      --                                               Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+      --                                               Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
+      --                                               Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
+      the_Box : constant Model.Box.lit_colored_textured.view
+        := openGL.Model.Box.lit_colored_textured.new_Box (Size  => (4.0, 4.0, 4.0),
+                                                          Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                                                                    Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
+                                                                    Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                                                                    Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
+                                                                    Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
+                                                                    Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
       --  The Visuals.
       --
       use openGL.Visual.Forge;

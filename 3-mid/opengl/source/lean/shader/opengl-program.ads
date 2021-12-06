@@ -101,7 +101,7 @@ is
                                                                       Now      : in Light.diffuse.item);
 
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
-   procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
+   --  procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
 
    procedure set_Uniforms                (Self : in     Item) is null;
    --  procedure set_Uniforms                (Self : in     Item);
@@ -137,7 +137,7 @@ private
          diffuse_Lights           : Light.diffuse    .items (1 ..  1);
 
          Scale                    : Vector_3     := (1.0, 1.0, 1.0);
-         Shine                    : openGL.Shine := 1.0;
+         --  Shine                    : openGL.Shine := 1.0;
       end record;
 
 

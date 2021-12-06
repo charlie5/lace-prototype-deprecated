@@ -678,7 +678,7 @@ is
             --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
 
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
-            current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
+            --  current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;
@@ -753,7 +753,7 @@ is
             --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
 
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
-            current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
+            --  current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;

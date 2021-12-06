@@ -18,7 +18,9 @@ with
 
 private
 with
+     ada.Containers.indefinite_hashed_Maps,
      ada.unchecked_Conversion;
+
 
 package openGL.Renderer.lean
 --
@@ -223,6 +225,19 @@ private
       the_Impostors : Impostor_Set;
       the_Count     : Natural := 0;
    end safe_Impostors;
+
+
+   ----------
+   --- Lights
+   --
+
+   function Hash (Id : in light_Id) return ada.Containers.Hash_type;
+   use type openGL.Light.item;
+   package  id_Maps_of_light is new ada.Containers.indefinite_hashed_Maps (Key_type        => light_Id,
+                                                                           Element_type    => openGL.Light.item'Class,
+                                                                           Hash            => Hash,
+                                                                           equivalent_Keys => "=");
+   subtype id_Map_of_light is id_Maps_of_light.Map;
 
 
    -- Directional Lights

@@ -23,7 +23,7 @@ uniform struct light   Lights [10];
 in  vec3   frag_Site;
 in  vec3   frag_Normal;
 in  vec4   frag_Color;
-in  vec2   frag_Coord;
+in  vec2   frag_Coords;
 in  float  frag_Shine;
 
 out vec4   final_Color;
@@ -98,7 +98,7 @@ main()
     vec3   surface_Site    = vec3 (  model_Transform
                                    * vec4 (frag_Site, 1));
                                    
-    vec4   surface_Color   =   (  texture  (Texture, frag_Coord)
+    vec4   surface_Color   =   (  texture  (Texture, frag_Coords)
                                 + frag_Color)
                              / 2.0;
 

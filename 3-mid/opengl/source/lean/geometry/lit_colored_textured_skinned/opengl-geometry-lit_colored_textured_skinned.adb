@@ -25,6 +25,32 @@ is
    the_Program     : aliased openGL.Program.lit_colored_textured_skinned.item;
    is_Defined      :         Boolean := False;
 
+   Name_1 : constant String := "Site";
+   Name_2 : constant String := "Normal";
+   Name_3 : constant String := "Color";
+   Name_4 : constant String := "Coords";
+   Name_5 : constant String := "Shine";
+   Name_6 : constant String := "bone_Ids";
+   Name_7 : constant String := "bone_Weights";
+
+   use Interfaces;
+
+   Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
+   Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
+   Attribute_3_Name : aliased C.char_array := C.to_C (Name_3);
+   Attribute_4_Name : aliased C.char_array := C.to_C (Name_4);
+   Attribute_5_Name : aliased C.char_array := C.to_C (Name_5);
+   Attribute_6_Name : aliased C.char_array := C.to_C (Name_6);
+   Attribute_7_Name : aliased C.char_array := C.to_C (Name_7);
+
+   Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
+   Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
+   Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
+   Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
+   Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Access);
+   Attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'Access);
+   Attribute_7_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_7_Name'Access);
+
    white_Texture   : openGL.Texture.Object;
 
 
@@ -76,26 +102,13 @@ is
 
       Sample : Vertex;
 
-      Attribute_1_Name : aliased C.char_array := "aSite";
-      Attribute_2_Name : aliased C.char_array := "aNormal";
-      Attribute_3_Name : aliased C.char_array := "aColor";
-      Attribute_4_Name : aliased C.char_array := "aCoords";
-      Attribute_5_Name : aliased C.char_array := "bone_Ids";
-      Attribute_6_Name : aliased C.char_array := "bone_Weights";
-
-      Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'unchecked_Access);
-      Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'unchecked_Access);
-      Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'unchecked_Access);
-      Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'unchecked_Access);
-      Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'unchecked_Access);
-      Attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'unchecked_Access);
-
       Attribute_1 : openGL.Attribute.view;
       Attribute_2 : openGL.Attribute.view;
       Attribute_3 : openGL.Attribute.view;
       Attribute_4 : openGL.Attribute.view;
       Attribute_5 : openGL.Attribute.view;
       Attribute_6 : openGL.Attribute.view;
+      Attribute_7 : openGL.Attribute.view;
 
       white_Image : constant openGL.Image := (1 .. 2 => (1 .. 2 => +White));
 
@@ -120,16 +133,16 @@ is
                           fragment_Shader'Access);
       the_Program.enable;
 
-      Attribute_1 := new_Attribute (Name        => "aSite",
-                                    gl_Location => the_Program.attribute_Location ("aSite"),
+      Attribute_1 := new_Attribute (Name        => Name_1,
+                                    gl_Location => the_Program.attribute_Location (Name_1),
                                     Size        => 3,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
                                     Offset      => 0,
                                     Normalized  => False);
 
-      Attribute_2 := new_Attribute (Name        => "aNormal",
-                                    gl_Location => the_Program.attribute_Location ("aNormal"),
+      Attribute_2 := new_Attribute (Name        => Name_2,
+                                    gl_Location => the_Program.attribute_Location (Name_2),
                                     Size        => 3,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
@@ -137,8 +150,8 @@ is
                                                    - Sample.Site   (1)'Address,
                                     Normalized  => False);
 
-      Attribute_3 := new_Attribute (Name        => "aColor",
-                                    gl_Location => the_Program.attribute_Location ("aColor"),
+      Attribute_3 := new_Attribute (Name        => Name_3,
+                                    gl_Location => the_Program.attribute_Location (Name_3),
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_UNSIGNED_BYTE,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
@@ -146,8 +159,8 @@ is
                                                    - Sample.Site (1)         'Address,
                                     Normalized  => True);
 
-      Attribute_4 := new_Attribute (Name        => "aCoords",
-                                    gl_Location => the_Program.attribute_Location ("aCoords"),
+      Attribute_4 := new_Attribute (Name        => Name_4,
+                                    gl_Location => the_Program.attribute_Location (Name_4),
                                     Size        => 2,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
@@ -155,8 +168,8 @@ is
                                                    - Sample.Site (1)'Address,
                                     Normalized  => False);
 
-      Attribute_5 := new_Attribute (Name        => "bone_Ids",
-                                    gl_Location => the_Program.attribute_Location ("bone_Ids"),
+      Attribute_5 := new_Attribute (Name        => Name_5,
+                                    gl_Location => the_Program.attribute_Location (Name_5),
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
@@ -164,8 +177,17 @@ is
                                                    - Sample.Site (1)'Address,
                                     Normalized  => False);
 
-      Attribute_6 := new_Attribute (Name        => "bone_Weights",
-                                    gl_Location => the_Program.attribute_Location ("bone_Weights"),
+      Attribute_6 := new_Attribute (Name        => Name_6,
+                                    gl_Location => the_Program.attribute_Location (Name_6),
+                                    Size        => 4,
+                                    data_Kind   => Attribute.GL_FLOAT,
+                                    Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
+                                    Offset      =>   Sample.bone_Ids (1)'Address
+                                                   - Sample.Site (1)'Address,
+                                    Normalized  => False);
+
+      Attribute_7 := new_Attribute (Name        => Name_7,
+                                    gl_Location => the_Program.attribute_Location (Name_7),
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
@@ -178,35 +200,41 @@ is
       the_Program.add (Attribute_4);
       the_Program.add (Attribute_5);
       the_Program.add (Attribute_6);
+      the_Program.add (Attribute_7);
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aSite").gl_Location,
+                            index   => the_Program.Attribute (named => Name_1).gl_Location,
                             name    => +Attribute_1_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aNormal").gl_Location,
+                            index   => the_Program.Attribute (named => Name_2).gl_Location,
                             name    => +Attribute_2_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aColor").gl_Location,
+                            index   => the_Program.Attribute (named => Name_3).gl_Location,
                             name    => +Attribute_3_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "aCoords").gl_Location,
+                            index   => the_Program.Attribute (named => Name_4).gl_Location,
                             name    => +Attribute_4_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "bone_Ids").gl_Location,
+                            index   => the_Program.Attribute (named => Name_5).gl_Location,
                             name    => +Attribute_5_Name_ptr);
       Errors.log;
 
       glBindAttribLocation (program => the_Program.gl_Program,
-                            index   => the_Program.Attribute (named => "bone_Weights").gl_Location,
+                            index   => the_Program.Attribute (named => Name_6).gl_Location,
                             name    => +Attribute_6_Name_ptr);
+      Errors.log;
+
+      glBindAttribLocation (program => the_Program.gl_Program,
+                            index   => the_Program.Attribute (named => Name_7).gl_Location,
+                            name    => +Attribute_7_Name_ptr);
       Errors.log;
    end define_Program;
 

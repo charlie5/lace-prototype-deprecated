@@ -2,6 +2,8 @@ with
      openGL.Model,
      openGL.Visual,
      openGL.Light.directional,
+     openGL.Light.diffuse,
+     openGL.Palette,
      openGL.Demo;
 
 procedure launch_render_Models
@@ -19,12 +21,35 @@ begin
    Demo.Camera.Position_is ((0.0, 2.0, 10.0),
                             y_Rotation_from (to_Radians (0.0)));
 
+   --  declare
+   --     the_Light : openGL.Light.directional.item := Demo.Renderer.Light (1);
+   --  begin
+   --     the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
+   --     Demo.Renderer.Light_is (1, the_Light);
+   --  end;
+
+
+   -- Set the lights initial position to far behind and far to the left.
+   --
    declare
-      the_Light : openGL.Light.directional.item := Demo.Renderer.Light (1);
+      use openGL.Palette;
+
+      initial_Site   : constant openGL.Vector_3 := (0.0, 0.0, 15.0);
+      cone_Direction : constant openGL.Vector_3 := (0.0, 0.0, -1.0);
+
+      Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
    begin
-      the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
-      Demo.Renderer.Light_is (1, the_Light);
+      Light.Color_is (Ambient  => (Grey,  Opaque),
+                      Diffuse  => (White, Opaque));
+      --  Specular => (White, Opaque));
+
+      Light.Position_is       (initial_Site);
+      Light.cone_Direction_is (cone_Direction);
+
+      Demo.Renderer.Light_is (Id => 1, Now => Light);
    end;
+
+
 
    declare
       --  The models.

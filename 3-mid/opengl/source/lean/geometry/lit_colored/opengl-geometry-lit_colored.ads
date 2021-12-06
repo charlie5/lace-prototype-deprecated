@@ -17,6 +17,7 @@ is
          Site   : Vector_3;
          Normal : Vector_3;
          Color  : rgba_Color;
+         Shine  : Real;
       end record;
 
    type Vertex_array is array (Index_t range <>) of aliased Vertex;

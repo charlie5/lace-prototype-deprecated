@@ -15,7 +15,7 @@ is
    procedure set_Uniforms (Self : in Item);
 
 
-   procedure specular_Color_is (Self : in out Item'Class;   Now : in Color);
+   procedure specular_Color_is (Self : in out Item;   Now : in Color);
 
 
 private

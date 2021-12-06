@@ -85,6 +85,7 @@ is
          Site   : Vector_3;
          Normal : Vector_3;
          Coords : Coordinate_2D;
+         Shine  : Real;
          Bones  : bone_Weights (1 .. 4);
       end record;
 
@@ -101,9 +102,10 @@ is
    begin
       for i in From'Range
       loop
-         Result (i) := (site   => From (i).Site,
-                        normal => From (i).Normal,
-                        coords => From (i).Coords);
+         Result (i) := (Site   => From (i).Site,
+                        Normal => From (i).Normal,
+                        Coords => From (i).Coords,
+                        Shine  => From (i).Shine);
       end loop;
 
       return Result;
@@ -121,6 +123,7 @@ is
          Result (i) := (Site         => From (i).Site,
                         Normal       => From (i).Normal,
                         Coords       => From (i).Coords,
+                        Shine        => From (i).Shine,
                         Color        => (+White, opaque_Value),
                         bone_Ids     => (1 => Real (From (i).Bones (1).Bone),
                                          2 => Real (From (i).Bones (2).Bone),

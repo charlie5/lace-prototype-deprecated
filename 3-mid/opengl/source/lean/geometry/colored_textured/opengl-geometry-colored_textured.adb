@@ -31,13 +31,18 @@ is
    the_Program          :         openGL.Program.colored_textured.view;
    white_Texture        :         openGL.Texture.Object;
 
-   Attribute_1_Name     : aliased          C.char_array        := "aSite";
+   Name_1 : constant String := "Site";
+   Name_2 : constant String := "Color";
+   Name_3 : constant String := "Coords";
+
+   use Interfaces;
+
+   Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
+   Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
+   Attribute_3_Name : aliased C.char_array := C.to_C (Name_3);
+
    Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
-
-   Attribute_2_Name     : aliased          C.char_array        := "aColor";
    Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
-
-   Attribute_3_Name     : aliased          C.char_array        := "aCoords";
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
 
 
@@ -82,16 +87,16 @@ is
                                 fragment_Shader'Access);
             the_Program.enable;
 
-            Attribute_1 := new_Attribute (Name => "aSite",
-                                          gl_Location => the_Program.attribute_Location ("aSite"),
+            Attribute_1 := new_Attribute (Name => Name_1,
+                                          gl_Location => the_Program.attribute_Location (Name_1),
                                           Size        => 3,
                                           data_Kind   => Attribute.GL_FLOAT,
                                           Stride      => colored_textured.Vertex'Size / 8,
                                           Offset      => 0,
                                           Normalized  => False);
 
-            Attribute_2 := new_Attribute (Name        => "aColor",
-                                          gl_Location => the_Program.attribute_Location ("aColor"),
+            Attribute_2 := new_Attribute (Name        => Name_2,
+                                          gl_Location => the_Program.attribute_Location (Name_2),
                                           Size        => 4,
                                           data_Kind   => Attribute.GL_UNSIGNED_BYTE,
                                           Stride      => colored_textured.Vertex'Size / 8,
@@ -99,8 +104,8 @@ is
                                                          - Sample.Site (1)         'Address,
                                           Normalized  => True);
 
-            Attribute_3 := new_Attribute (Name        => "aCoords",
-                                          gl_Location => the_Program.attribute_Location ("aCoords"),
+            Attribute_3 := new_Attribute (Name        => Name_3,
+                                          gl_Location => the_Program.attribute_Location (Name_3),
                                           Size        => 2,
                                           data_Kind   => attribute.GL_FLOAT,
                                           Stride      => Colored_textured.Vertex'Size / 8,
@@ -112,17 +117,17 @@ is
             the_Program.add (Attribute_3);
 
             glBindAttribLocation (program =>  the_Program.gl_Program,
-                                  index   =>  the_Program.Attribute (named => "aSite").gl_Location,
+                                  index   =>  the_Program.Attribute (named => Name_1).gl_Location,
                                   name    => +Attribute_1_Name_ptr);
             Errors.log;
 
             glBindAttribLocation (program =>  the_Program.gl_Program,
-                                  index   =>  the_Program.Attribute (named => "aColor").gl_Location,
+                                  index   =>  the_Program.Attribute (named => Name_2).gl_Location,
                                   name    => +Attribute_2_Name_ptr);
             Errors.log;
 
             glBindAttribLocation (program =>  the_Program.gl_Program,
-                                  index   =>  the_Program.Attribute (named => "aCoords").gl_Location,
+                                  index   =>  the_Program.Attribute (named => Name_3).gl_Location,
                                   name    => +Attribute_3_Name_ptr);
             Errors.log;
          end;

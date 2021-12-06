@@ -1,77 +1,32 @@
-#version 120
+#version 150
 
+uniform mat4   mvp_Transform;
+uniform vec3   Scale;
 
-struct directional_light
-{
-   vec3   direction;        // Normalized light direction in eye space.
-   vec3   halfplane;        // Normalized half-plane vector.
+in vec3        Site;
+in vec3        Normal;
+in vec4        Color;
+in vec2        Coords;
+in float       Shine;
 
-   vec4   ambient_color;     
-   vec4   diffuse_color;
-   vec4   specular_color;
-};
-
-
-uniform   mat4                  mvp_Transform;
-uniform   mat3                  inv_modelview_Matrix;
-
-uniform   vec3                  Scale;
-uniform   float                 uShine;
-
-uniform   directional_light     uLights [8];
-
-
-attribute vec3   aSite;
-attribute vec3   aNormal;
-attribute vec4   aColor;
-attribute vec2   aCoords;
-
-
-varying   vec4   vColor;
-varying   vec2   vCoords;
-
-
-const float   c_zero      = 0.0;
-const float   c_one       = 1.0;
-
-
-
-vec4                                                        // Returns the computed color.
-directional_light_color (in vec3                normal,     // 'normal' has been transformed into eye space and normalized.
-                         in directional_light   light)
-{
-   vec4    computed_color = vec4 (c_zero, c_zero, c_zero, c_zero);
-   float   NdotL;                                            // Dot product of normal and light direction.
-   float   NdotH;                                            // Dot product of normal and half-plane vector.
-
-   NdotL = max (c_zero,  dot (normal, light.direction));
-   NdotH = max (c_zero,  dot (normal, light.halfplane));
-
-   computed_color += (        light.ambient_color * aColor);
-   computed_color += (NdotL * light.diffuse_color  * aColor);
-   
-   if (NdotH > c_zero)
-      computed_color += (pow (NdotH, uShine) * aColor * light.specular_color);
-
-   return computed_color;
-}
-
+out vec3       frag_Site;
+out vec3       frag_Normal;
+out vec4       frag_Color;
+out vec2       frag_Coords;
+out float      frag_Shine;
 
 
 void main()
 {
-   gl_Position = mvp_Transform * vec4 (aSite * Scale, 1.0);
-
-
-   vec3   light_Normal = normalize (aNormal) * inv_modelview_Matrix;
-
-
-   vColor = vec4 (0.0, 0.0, 0.0, 0.0);
-
-   for (int i = 0; i < 8; i++)
-   {
-      vColor += directional_light_color (light_Normal, uLights [i]);
-   }
-
-   vCoords = aCoords;
+    // Pass some variables to the fragment shader.
+    //
+    frag_Site   = Site;
+    frag_Normal = Normal;
+    frag_Color  = Color;
+    frag_Coords = Coords;
+    frag_Shine  = Shine;
+    
+    // Apply all matrix transformations to 'Site'.
+    //
+    gl_Position = mvp_Transform * vec4 (Site * Scale, 1);
 }

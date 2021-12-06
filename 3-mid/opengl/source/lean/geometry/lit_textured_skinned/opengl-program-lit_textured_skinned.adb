@@ -33,16 +33,16 @@ is
 --
 --        sample_Vertex        :          Geometry.lit_textured_skinned.Vertex;
 --
---        Attribute_1_Name     : aliased          C.char_array        := "aSite";
+--        Attribute_1_Name     : aliased          C.char_array        := "Site";
 --        Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Unchecked_Access);
 --
---        Attribute_2_Name     : aliased          C.char_array        := "aNormal";
+--        Attribute_2_Name     : aliased          C.char_array        := "Normal";
 --        Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Unchecked_Access);
 --
---        Attribute_3_Name     : aliased          C.char_array        := "aColor";
+--        Attribute_3_Name     : aliased          C.char_array        := "Color";
 --        Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Unchecked_Access);
 --
---        Attribute_4_Name     : aliased          C.char_array        := "aCoords";
+--        Attribute_4_Name     : aliased          C.char_array        := "Coords";
 --        Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Unchecked_Access);
 --
 --        Attribute_5_Name     : aliased          C.char_array        := "bone_Ids";
@@ -72,8 +72,8 @@ is
 --        Self.enable;
 --
 --        Attribute_1 := openGL.Attribute.Forge.new_Attribute
---          (name        => "aSite",
---           gl_location => Self.attribute_Location ("aSite"),
+--          (name        => "Site",
+--           gl_location => Self.attribute_Location ("Site"),
 --           size        => 3,
 --           data_kind   => openGL.Attribute.GL_FLOAT,
 --           stride      => Geometry.lit_textured_skinned.Vertex'Size / 8,
@@ -81,8 +81,8 @@ is
 --           normalized  => False);
 --
 --        Attribute_2 := openGL.Attribute.Forge.new_Attribute
---          (name        => "aNormal",
---           gl_location => Self.attribute_Location ("aNormal"),
+--          (name        => "Normal",
+--           gl_location => Self.attribute_Location ("Normal"),
 --           size        => 3,
 --           data_kind   => openGL.Attribute.GL_FLOAT,
 --           stride      => Geometry.lit_textured_skinned.Vertex'Size / 8,
@@ -91,8 +91,8 @@ is
 --           normalized  => False);
 --
 --        Attribute_3 := openGL.Attribute.Forge.new_Attribute
---          (name        => "aColor",
---           gl_location => Self.attribute_Location ("aColor"),
+--          (name        => "Color",
+--           gl_location => Self.attribute_Location ("Color"),
 --           size        => 4,
 --           data_kind   => openGL.Attribute.GL_UNSIGNED_BYTE,
 --           stride      => Geometry.lit_textured_skinned.Vertex'Size / 8,
@@ -101,8 +101,8 @@ is
 --           normalized  => True);
 --
 --        Attribute_4 := openGL.Attribute.Forge.new_Attribute
---          (name        => "aCoords",
---           gl_location => Self.attribute_Location ("aCoords"),
+--          (name        => "Coords",
+--           gl_location => Self.attribute_Location ("Coords"),
 --           size        => 2,
 --           data_kind   => openGL.Attribute.GL_FLOAT,
 --           stride      => Geometry.lit_textured_skinned.Vertex'Size / 8,
@@ -186,15 +186,15 @@ is
    overriding
    procedure set_Uniforms (Self : in Item)
    is
-      the_inverse_modelview_matrix_Uniform : constant Variable.uniform.mat3  := Self.uniform_Variable ("inv_modelview_Matrix");
-      the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("uShine");
+      --  the_inverse_modelview_matrix_Uniform : constant Variable.uniform.mat3  := Self.uniform_Variable ("inv_modelview_Matrix");
+      --  the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("Shine");
 
    begin
       --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
 
-      the_shine_Uniform                   .Value_is (Self.Shine);
-      the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
+      --  the_shine_Uniform                   .Value_is (Self.Shine);
+      --  the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
 
       -- Lights
       --
@@ -208,24 +208,25 @@ is
                use ada.Strings,
                    ada.Strings.fixed;
             begin
-               return "uLights[" & Trim (Integer'Image (i - 1), Left) & "]";
+               return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
             use openGL.Conversions;
 
-            the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
-            the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
+            --  the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
+            --  the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
 
-            the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
-            the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
-            the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
+            --  the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
+            --  the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
+            --  the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
          begin
-            the_light_direction_Uniform.Value_is (Light.Direction);
-            the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
+            --  the_light_direction_Uniform.Value_is (Light.Direction);
+            --  the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
 
-            the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
-            the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
-            the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
+            --  the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
+            --  the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
+            --  the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
+            null;
          end;
       end loop;
 

@@ -22,6 +22,7 @@ is
          Site   : Vector_3;
          Normal : Vector_3;
          Coords : Coordinate_2D;
+         Shine  : Real;
 
          bone_Ids     : Vector_4;
          bone_Weights : Vector_4;

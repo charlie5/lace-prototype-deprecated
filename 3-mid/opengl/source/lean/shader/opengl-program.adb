@@ -372,11 +372,11 @@ is
 
 
 
-   procedure Shine_is (Self : in out Item'Class;   Now : in Shine)
-   is
-   begin
-      Self.Shine := Now;
-   end Shine_is;
+   --  procedure Shine_is (Self : in out Item'Class;   Now : in Shine)
+   --  is
+   --  begin
+   --     Self.Shine := Now;
+   --  end Shine_is;
 
 
 
