@@ -272,7 +272,7 @@ is
       while not Done
       loop
          declare
-            all_Updates        : camera_updates_Couples (1 .. 100);     -- TODO: This seems very small.
+            all_Updates        : camera_updates_Couples (1 .. 100);     -- Caters for 100 cameras.
             Length             : Natural;
 
             new_font_Name      : asset_Name := null_Asset;
@@ -1002,6 +1002,13 @@ is
    -----------------
    -- safe_Lights
    --
+
+   function Hash (Id : in light_Id) return ada.Containers.Hash_type
+   is
+   begin
+      return ada.Containers.Hash_type (Id);
+   end Hash;
+
 
    -- Directional.
    --
