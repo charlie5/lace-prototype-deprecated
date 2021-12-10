@@ -6,17 +6,19 @@ package body any_Math.any_Random
 is
    use ada.Numerics;
 
-   package Integer_random is new Discrete_random (Integer);
+   package Boolean_random is new ada.numerics.discrete_Random (Boolean);
 
-   Integer_Generator : Integer_random.Generator;
-   Real_Generator    :   Float_random.Generator;
+   real_Generator    : Float_random  .Generator;
+   boolean_Generator : Boolean_random.Generator;
+
 
 
    function random_Boolean return Boolean
    is
    begin
-      return Boolean'Val (random_Integer (0, 1));
+      return Boolean_random.Random (boolean_Generator);
    end random_Boolean;
+
 
 
    function random_Real (Lower : in Real := Real'First;
@@ -29,15 +31,20 @@ is
    end random_Real;
 
 
+
    function random_Integer (Lower : in Integer := Integer'First;
                             Upper : in Integer := Integer'Last) return Integer
    is
+      Modulus   : constant Positive := Upper - Lower + 1;
+      base_Roll : constant Float    := Float_random.Random (Real_Generator);
    begin
-      return Integer_random.Random (Integer_Generator, Lower, Upper);
+      return   Lower
+             + Integer (Float (Modulus) * base_Roll) mod Modulus;
    end random_Integer;
 
 
+
 begin
-   Integer_random.reset (Integer_Generator);
-   Float_random  .reset (   Real_Generator);
+   Boolean_random.reset (boolean_Generator);
+   Float_random  .reset (   real_Generator);
 end any_math.any_Random;
