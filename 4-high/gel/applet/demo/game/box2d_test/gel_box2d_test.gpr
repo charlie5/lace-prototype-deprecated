@@ -1,3 +1,7 @@
+with
+     "box2d_git";
+
+
 project gel_box2d_Test
 is
    for Source_Dirs use (".");
@@ -8,7 +12,17 @@ is
 
    package Naming is
       for Spec_Suffix ("C++") use ".h";
+      for Body_Suffix ("C++") use ".cpp";
    end Naming;
+
+   package Compiler is
+      for Default_Switches ("c++") use ("-g", 
+                                        "-Wno-return-type-c-linkage",
+                                        "-I../../../c_math/source/c",
+                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c",
+                                        "-I" & External ("LACE") & "/3-mid/physics/implement/box2d/contrib/box2d-2.4.1/include",
+                                        "-I../contrib/box2d-2.4.1/include");
+   end Compiler;
 
    package Linker is
       for Switches ("c++") use ("-lbox2d");

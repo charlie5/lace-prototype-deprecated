@@ -1,6 +1,6 @@
 with
      "../../c_math/library/c_math_thin_c",
-     "../contrib/box2d-2.4.1/box2d_git",
+     "box2d_git",
      "lace_shared";
 
 --library
@@ -27,6 +27,7 @@ is
                                         "-Wno-return-type-c-linkage",
                                         "-I../../../c_math/source/c",
                                         "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c",
+                                        "-I" & External ("LACE") & "/3-mid/physics/implement/box2d/contrib/box2d-2.4.1/include",
                                         "-I../contrib/box2d-2.4.1/include");
                                         
 --      for Default_Switches ("c++") use ("-g", "-I../../../c_math/source/c", "-I/usr/include/box2d");
