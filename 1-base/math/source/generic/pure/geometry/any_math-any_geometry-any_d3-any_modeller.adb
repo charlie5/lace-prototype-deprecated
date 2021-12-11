@@ -61,9 +61,9 @@ is
 
    procedure add_Triangle (Self : in out Item;   Vertex_1, Vertex_2, Vertex_3 : in Site)
    is
-      vertex_1_Index         : constant Natural        := Self.demand_Index (my_Vertex (Vertex_1));
-      vertex_2_Index         : constant Natural        := Self.demand_Index (my_Vertex (Vertex_2));
-      vertex_3_Index         : constant Natural        := Self.demand_Index (my_Vertex (Vertex_3));
+      vertex_1_Index         : constant Natural        := demand_Index (Self, my_Vertex (Vertex_1));
+      vertex_2_Index         : constant Natural        := demand_Index (Self, my_Vertex (Vertex_2));
+      vertex_3_Index         : constant Natural        := demand_Index (Self, my_Vertex (Vertex_3));
 
       new_Triangle           : constant index_Triangle := (vertex_1_Index, vertex_2_Index, vertex_3_Index);
       new_Triangle_rotated_1 : constant index_Triangle := (vertex_3_Index, vertex_1_Index, vertex_2_Index);
