@@ -1,5 +1,4 @@
 with
-     "lace",
      "lace_shared";
 
 --library

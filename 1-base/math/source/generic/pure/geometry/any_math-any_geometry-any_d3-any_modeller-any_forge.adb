@@ -1,6 +1,7 @@
 with
-     lace.Text.Cursor,
-     lace.Text.Forge;
+     ada.Text_IO,
+     ada.Strings.unbounded,
+     ada.Strings.Maps;
 
 
 package body any_Math.any_Geometry.any_d3.any_Modeller.any_Forge
@@ -334,41 +335,78 @@ is
 
 
 
-   function polar_Model_from (Model_Filename : in String) return polar_model
+   function polar_Model_from (model_Filename : in String) return polar_Model     -- TODO: Handle different file formats.
    is
       use Functions,
-          lace.Text,
-          lace.Text.Cursor;
+          ada.Text_IO,
+          ada.Strings.unbounded;
 
-      the_Text : aliased lace.Text.item        := lace.Text.Forge.to_Text (Filename => lace.Text.Forge.Filename (Model_Filename));
-      Cursor   : aliased lace.Text.Cursor.item := lace.Text.Cursor.First  (the_Text'unchecked_Access);
-
-      Lat      : Latitude;
-      Long     : Longitude;
-      Value    : Integer;
-      Distance : Real;
-      Scale    : constant Real := 10.0;     -- TODO: Add a 'Scale' parameter.
-
-      the_Model : polar_Model;
+      the_File : File_type;
+      the_Text : unbounded_String;
 
    begin
-      while has_Element (Cursor)
+      open (the_File, in_File, model_Filename);
+
+      while not end_of_File (the_File)
       loop
-         Value := get_Integer (Cursor);
-         exit when Value = 360;
-
-         Long     := Longitude (Value);
-         Lat      := Latitude  (get_Integer (Cursor));
-         Distance := Real      (get_Real    (Cursor));
-
-         skip_White (Cursor);
-
-         the_Model (Long) (Lat).Site (1) := Scale * Distance * Cos (to_Radians (Lat)) * Sin (to_Radians (Long));
-         the_Model (Long) (Lat).Site (2) := Scale * Distance * Sin (to_Radians (Lat));
-         the_Model (Long) (Lat).Site (3) := Scale * Distance * Cos (to_Radians (Lat)) * Cos (to_Radians (Long));
+         append (the_Text, get_Line (the_File) & " ");
       end loop;
 
-      return the_Model;
+      declare
+         text_Length : constant Natural  := Length (the_Text);
+         First       :          Positive := 1;
+
+         function get_Real return Real
+         is
+            use ada.Strings,
+                ada.Strings.Maps;
+
+            real_Set : constant Character_Set :=    to_Set (Span => (Low  => '0',
+                                                                     High => '9'))
+                                                 or to_Set ('-' & '.');
+            Last   : Positive;
+            Result : Real;
+         begin
+            find_Token (the_Text, Set   => real_Set,
+                                  From  => First,
+                                  Test  => Inside,
+                                  First => First,
+                                  Last  => Last);
+
+            Result := Real'Value (Slice (the_Text,
+                                         Low  => First,
+                                         High => Last));
+            First  := Last + 1;
+
+            return Result;
+         end get_Real;
+
+
+         Lat       : Latitude;
+         Long      : Longitude;
+         Value     : Integer;
+         Distance  : Real;
+         Scale     : constant Real := 10.0;     -- TODO: Add a 'Scale' parameter.
+
+         the_Model : polar_Model;
+
+      begin
+         while First < text_Length
+         loop
+            Value := Integer (get_Real);
+            exit when Value = 360;
+
+            Long     := Longitude (Value);
+            Lat      := Latitude  (get_Real);
+            Distance := get_Real;
+
+            the_Model (Long) (Lat).Site (1) := Scale * Distance * Cos (to_Radians (Lat)) * Sin (to_Radians (Long));
+            the_Model (Long) (Lat).Site (2) := Scale * Distance * Sin (to_Radians (Lat));
+            the_Model (Long) (Lat).Site (3) := Scale * Distance * Cos (to_Radians (Lat)) * Cos (to_Radians (Long));
+         end loop;
+
+         return the_Model;
+      end;
    end polar_Model_from;
 
 
