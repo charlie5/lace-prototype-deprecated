@@ -2,6 +2,7 @@ with
      "bullet_thin", 
      "box2d_thin", 
      "c_math_thin",
+     "lace",
      "lace_shared";
 
 --library

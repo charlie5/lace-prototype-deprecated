@@ -1,5 +1,6 @@
 with
      "neural",
+     "lace",
      "lace_shared";
 
 project learn_Linear

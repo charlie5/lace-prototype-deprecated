@@ -1,6 +1,7 @@
 with
      "math",
      "swig",   -- todo: remove swig
+     "lace",
      "lace_shared";
 
 library
