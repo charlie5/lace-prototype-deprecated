@@ -1,0 +1,21 @@
+with
+     "math",
+     "lace_shared";
+
+
+project test_Modeller
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_modeller_test.adb");
+
+    package Ide      renames Lace_shared.Ide;
+    package Builder  renames Lace_shared.Builder;
+    package Compiler renames Lace_shared.Compiler;
+    package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end test_Modeller;
