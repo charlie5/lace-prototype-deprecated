@@ -30,8 +30,7 @@ begin
       --  The models.
       --
 
-      gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Scale            => (1.0, 1.0, 1.0),
-                                                                                   Model            => to_Asset ("assets/gaspra.tab"),
+      gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
                                                                                    Texture          => null_Asset,
                                                                                    Texture_is_lucid => False);
       the_Models   : constant openGL.Model.views    := (1 => gaspra_Model.all'unchecked_Access);
