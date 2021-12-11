@@ -6,6 +6,7 @@ with
 
 private
 with
+     bullet_c.Pointers,
      lace.Any;
 
 package bullet_Physics.Object
@@ -62,7 +63,7 @@ private
 
    type Item is limited new physics.Object.item with
       record
-         C         : access bullet_C.Object;
+         C         :        bullet_c.Pointers.Object_pointer;
          Shape     :        physics.Shape.view;
          Model     :        physics.Model.view;
          Dynamics  :        physics.Object.safe_Dynamics;

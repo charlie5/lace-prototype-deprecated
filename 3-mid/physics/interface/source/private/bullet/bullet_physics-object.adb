@@ -202,6 +202,7 @@ is
    overriding
    function Spin (Self : in Item) return math.Matrix_3x3
    is
+      use type bullet_c.Pointers.Object_pointer;
    begin
       if Self.C /= null
       then
@@ -219,6 +220,7 @@ is
    overriding
    procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
+      use type bullet_c.Pointers.Object_pointer;
    begin
       Self.Dynamics.set_Spin (Now);
 
