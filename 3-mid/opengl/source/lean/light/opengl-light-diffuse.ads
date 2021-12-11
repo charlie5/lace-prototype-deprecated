@@ -52,17 +52,17 @@ private
    type Item is new Light.item with
       record
          Position            : Vector_3 := (0.0, 0.0, 5.0);
-         Color               : Vector_3 := (1.0, 1.0, 1.0);
-         Attenuation         : Real     :=  0.1;
-         ambient_Coefficient : Real     :=  0.1;
-         cone_Angle          : Degrees  :=  2.0;
-         cone_Direction      : Vector_3 := (0.0, 0.0, -1.0);
+--           Color               : Vector_3 := (1.0, 1.0, 1.0);
+--           Attenuation         : Real     :=  0.1;
+--           ambient_Coefficient : Real     :=  0.1;
+--           cone_Angle          : Degrees  :=  2.0;
+--           cone_Direction      : Vector_3 := (0.0, 0.0, -1.0);
 
          Direction        : Vector_3;
          halfplane_Vector : Vector_3;
 
-         ambient_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
-         diffuse_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);
+--           ambient_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
+--           diffuse_Color    : Vector_4 := (0.0, 0.0, 0.0, 1.0);
          --  specular_Color   : Vector_4 := (0.0, 0.0, 0.0, 1.0);
       end record;
 

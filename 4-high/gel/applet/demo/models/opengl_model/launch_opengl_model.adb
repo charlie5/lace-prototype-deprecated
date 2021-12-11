@@ -7,7 +7,7 @@ with
      physics.Model,
 
      openGL.Model.any,
-     openGL.Light.directional,
+     openGL.Light,
 
      ada.Calendar,
      ada.Text_IO,
@@ -93,7 +93,7 @@ begin
    -- Set the lights position.
    --
    declare
-      Light : openGL.Light.directional.item := the_Applet.Renderer.all.Light (Id => 1);
+      Light : openGL.Light.item := the_Applet.Renderer.all.Light (Id => 1);
    begin
       Light.Site_is ((0.0, 1000.0, 1000.0));
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);

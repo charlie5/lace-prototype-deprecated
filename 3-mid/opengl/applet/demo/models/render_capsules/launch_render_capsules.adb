@@ -2,8 +2,9 @@ with
      openGL.Visual,
      openGL.Model.Capsule.lit_colored_textured,
      openGL.Palette,
-     openGL.Light.directional,
+     openGL.Light,
      openGL.Demo;
+
 
 procedure launch_render_Capsules
 --
@@ -24,8 +25,8 @@ begin
    declare
       use openGL.Palette;
 
-      Light       : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
-      the_Texture : constant asset_Name           := to_Asset ("assets/opengl/texture/Face1.bmp");
+      Light       : openGL.Light.item   := Demo.Renderer.Light (Id => 1);
+      the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 
       --  The Models.
       --

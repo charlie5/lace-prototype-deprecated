@@ -17,9 +17,6 @@ is
    end to_light_Color;
 
 
-
-
-
    --------------
    --- Attributes
    --
@@ -127,7 +124,7 @@ is
    is
       use linear_Algebra;
    begin
-      Self.Direction        := Now * Normalised (Self.Site);
+--        Self.Direction        := Now * Normalised (Self.Site);
       Self.halfplane_Vector := Normalised (  Normalised (Self.Direction (1 .. 3))
                                            + (0.0, 0.0, 1.0));
    end inverse_view_Transform_is;

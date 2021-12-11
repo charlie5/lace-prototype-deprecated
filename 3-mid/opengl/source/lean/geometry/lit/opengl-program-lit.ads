@@ -22,7 +22,8 @@ private
 
    type Item is new openGL.Program.item with
       record
-         specular_Color : Color := Palette.Grey;     -- The materials specular color.
+         null;
+--           specular_Color : Color := Palette.Grey;     -- The materials specular color.
       end record;
 
 end openGL.Program.lit;

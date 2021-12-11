@@ -1,5 +1,5 @@
 with
-     openGL.Light.directional,
+     openGL.Light,
      openGL.Visual,
      openGL.Model.Sphere.lit_colored_textured,
      openGL.Model.Sphere.lit_colored,
@@ -54,7 +54,7 @@ begin
       -- Set the lights initial position to far behind and far to the left.
       --
       declare
-         Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+         Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
       begin
          Light.Site_is (initial_Site);
          Demo.Renderer.Light_is (Id => 1, Now => Light);
@@ -73,23 +73,18 @@ begin
          -- Move the light.
          --
          declare
-            Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+            Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
          begin
             if    Light.Site (1) >  10_000.0
             then
                site_Delta (1) := -1.0;
-
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,       Opaque),
-                               Specular => (openGL.Palette.White,      Opaque));
+               Light.Color_is (Palette.dark_Green);
 
             elsif Light.Site (1) < -10_000.0
             then
                site_Delta (1) :=  1.0;
 
-               Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
-                               Diffuse  => (openGL.Palette.Grey,     Opaque),
-                               Specular => (openGL.Palette.White,    Opaque));
+               Light.Color_is (openGL.Palette.dark_Red);
             end if;
 
             Light.Site_is (Light.Site + site_Delta);

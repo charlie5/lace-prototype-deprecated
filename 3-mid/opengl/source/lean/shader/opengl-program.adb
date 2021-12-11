@@ -1,10 +1,12 @@
 with
      openGL.Tasks,
+     openGL.Conversions,
 
      GL.Pointers,
      GL.lean,
 
      ada.Characters.latin_1,
+     ada.Strings.fixed,
 
      interfaces.C.Strings;
 
@@ -346,21 +348,30 @@ is
 
 
 
-   procedure directional_Light_is (Self : in out Item'Class;   light_Id : in Positive;
-                                                               Now      : in Light.directional.item)
+   procedure Light_is (Self : in out Item'Class;   light_Id : in Positive;
+                                                   Now      : in Light.item)
    is
    begin
-      Self.directional_Light (light_Id) := Now;
-   end directional_Light_is;
+      Self.Lights (light_Id) := Now;
+   end Light_is;
 
 
 
-   procedure diffuse_Light_is (Self : in out Item'Class;   light_Id : in Positive;
-                                                           Now      : in Light.diffuse.item)
-   is
-   begin
-      Self.diffuse_Lights (light_Id) := Now;
-   end diffuse_Light_is;
+--     procedure directional_Light_is (Self : in out Item'Class;   light_Id : in Positive;
+--                                                                 Now      : in Light.directional.item)
+--     is
+--     begin
+--        Self.directional_Light (light_Id) := Now;
+--     end directional_Light_is;
+--
+--
+--
+--     procedure diffuse_Light_is (Self : in out Item'Class;   light_Id : in Positive;
+--                                                             Now      : in Light.diffuse.item)
+--     is
+--     begin
+--        Self.diffuse_Lights (light_Id) := Now;
+--     end diffuse_Light_is;
 
 
 
@@ -397,6 +408,77 @@ is
    --     the_model_Uniform .Value_is (Self.model_Matrix);
    --     the_camera_Uniform.Value_is (Self.camera_Matrix);
    --  end set_Uniforms;
+
+
+   procedure set_Uniforms (Self : in Item)
+   is
+      use linear_Algebra_3d,
+          openGL.Conversions;
+
+      the_scale_Uniform                  : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
+      the_light_count_Uniform            : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
+      the_specular_color_Uniform         : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
+      the_camera_site_Uniform            : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
+      the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
+      the_inverse_model_rotation_Uniform : constant Variable.uniform.mat3 := Self.uniform_Variable ("inverse_model_Rotation");
+   begin
+      --  openGL.Program.item (Self).set_Uniforms;
+      Self.set_mvp_Uniform;
+
+
+      the_light_count_Uniform           .Value_is (1);
+      the_specular_color_Uniform        .Value_is (to_Vector_3 (Self.specular_Color));
+      the_scale_Uniform                 .Value_is (Self.Scale);
+      the_camera_site_Uniform           .Value_is (Self.camera_Site);
+      the_model_transform_Uniform       .Value_is (Self.model_Transform);
+      the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
+
+      -- Lights.
+      --
+      for i in Self.Lights'Range
+      loop
+         declare
+            use Light;
+
+            Light : openGL.Light.item renames Self.Lights (i);
+
+            function light_Name return String
+            is
+               use ada.Strings,
+                   ada.Strings.fixed;
+            begin
+               return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
+            end light_Name;
+
+            site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
+            color_Uniform               : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
+            attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Attenuation");
+            ambient_coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambient_Coefficient");
+            cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".cone_Angle");
+            cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".cone_Direction");
+         begin
+            case Light.Kind
+            is
+            when Diffused =>   site_Uniform.Value_is (Vector_4 (Light.Site & 1.0));
+            when Direct   =>   site_Uniform.Value_is (Vector_4 (Light.Site & 0.0));
+            end case;
+
+            color_Uniform              .Value_is (to_Vector_3 (Light.Color));
+            attenuation_Uniform        .Value_is (             Light.Attenuation);
+            ambient_coefficient_Uniform.Value_is (             Light.ambient_Coefficient);
+            cone_angle_Uniform         .Value_is (Real        (Light.cone_Angle));
+            cone_direction_Uniform     .Value_is (             Light.cone_Direction);
+         end;
+      end loop;
+   end set_Uniforms;
+
+
+
+   procedure specular_Color_is (Self : in out Item;   Now : in Color)
+   is
+   begin
+      Self.specular_Color := Now;
+   end specular_Color_is;
 
 
 

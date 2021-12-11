@@ -2,7 +2,7 @@ with
      openGL.Visual,
      openGL.Terrain,
      openGL.Demo,
-     openGL.Light.directional;
+     openGL.Light;
 
 
 procedure launch_large_Terrain_Demo
@@ -26,7 +26,7 @@ begin
    -- Set the lights initial position to far behind and far to the left.
    --
    declare
-      Light : openGL.Light.directional.item := Demo.Renderer.Light (Id => 1);
+      Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
    begin
       Light.Site_is ((0.0, 1000.0, 0.0));
       Demo.Renderer.Light_is (Id => 1, Now => Light);

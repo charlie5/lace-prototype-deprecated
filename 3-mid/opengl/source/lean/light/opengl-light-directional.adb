@@ -26,7 +26,7 @@ is
    is
       use linear_Algebra;
    begin
-      Self.Direction        := Now * Normalised (Self.Site);
+--        Self.Direction        := Now * Normalised (Self.Site);
       Self.halfplane_Vector := Normalised (  Normalised (Self.Direction (1 .. 3))
                                            + (0.0, 0.0, 1.0));
    end inverse_view_Transform_is;
@@ -41,7 +41,7 @@ is
    begin
       Self. ambient_Color := to_Vector_4 (Ambient);
       Self. diffuse_Color := to_Vector_4 (Diffuse);
-      Self.specular_Color := to_Vector_4 (Specular);
+--        Self.specular_Color := to_Vector_4 (Specular);
    end Color_is;
 
 
@@ -64,12 +64,12 @@ is
 
 
 
-   procedure specular_Color_is (Self : in out Item;   Now : lucid_Color)
-   is
-      use openGL.conversions;
-   begin
-      Self.specular_Color := to_Vector_4 (Now);
-   end specular_Color_is;
+--     procedure specular_Color_is (Self : in out Item;   Now : lucid_Color)
+--     is
+--        use openGL.conversions;
+--     begin
+--        Self.specular_Color := to_Vector_4 (Now);
+--     end specular_Color_is;
 
 
 
@@ -89,11 +89,11 @@ is
 
 
 
-   function specular_Color (Self : in Item) return lucid_Color
-   is
-   begin
-      return to_light_Color (Self.specular_Color);
-   end specular_Color;
+--     function specular_Color (Self : in Item) return lucid_Color
+--     is
+--     begin
+--        return to_light_Color (Self.specular_Color);
+--     end specular_Color;
 
 
 

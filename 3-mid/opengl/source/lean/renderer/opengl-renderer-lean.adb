@@ -258,12 +258,13 @@ is
          Lights : light_Set := Self.Lights.fetch;
       begin
          Lights (1).is_On;
-         Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
-                                           Opacity => 1.0),
-                              Diffuse  => (Primary => (1.0, 1.0, 1.0),
-                                           Opacity => 1.0),
-                              Specular => (Primary => (1.0, 1.0, 1.0),
-                                           Opacity => 1.0));
+--           Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
+--                                             Opacity => 1.0),
+--                                Diffuse  => (Primary => (1.0, 1.0, 1.0),
+--                                             Opacity => 1.0));
+
+         Lights (1).Color_is (Palette.White);
+
          Self.Lights.set (Id => 1,
                           To => Lights (1));
       end;
@@ -411,16 +412,17 @@ is
       inverse_view_Transform : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
 
       light_Site : constant Vector_3 := (10_000.0, -10_000.0, 10_000.0);
-      the_Light  : openGL.Light.directional.item;
+      the_Light  : openGL.Light.item;
 
    begin
       Tasks.check;
 
-      the_Light.inverse_view_Transform_is (inverse_view_Transform);
+--        the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light. Site_is (light_Site);
-      the_Light.Color_is (Ambient  => (Palette.White, Opaque),
-                          Diffuse  => (Palette.White, Opaque),
-                          Specular => (Palette.White, Opaque));
+      the_Light.Color_is (Palette.White);
+--        the_Light.Color_is (Ambient  => (Palette.White, Opaque),
+--                            Diffuse  => (Palette.White, Opaque));
+--                            Specular => (Palette.White, Opaque));
 
       for i in the_Updates'Range
       loop
@@ -522,21 +524,27 @@ is
       inverse_view_Transform         : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
       view_and_perspective_Transform : constant Matrix_4x4 := view_Transform * perspective_Transform;
 
+--        Lights : id_Map_of_light := Self.Lights.fetch;
       Lights         : light_Set         := Self.        Lights.fetch;
-      diffuse_Lights : diffuse_Light_Set := Self.diffuse_Lights.fetch;
+--        diffuse_Lights : diffuse_Light_Set := Self.diffuse_Lights.fetch;
 
    begin
       Tasks.check;
 
-      for Light of Lights
-      loop
-         Light.inverse_view_Transform_is (inverse_view_Transform);
-      end loop;
+--        for Each of Lights
+--        loop
+--           Each.inverse_view_Transform_is (inverse_view_Transform);
+--        end loop;
 
-      for Light of diffuse_Lights
-      loop
-         Light.inverse_view_Transform_is (inverse_view_Transform);
-      end loop;
+--        for Light of Lights
+--        loop
+--           Light.inverse_view_Transform_is (inverse_view_Transform);
+--        end loop;
+--
+--        for Light of diffuse_Lights
+--        loop
+--           Light.inverse_view_Transform_is (inverse_view_Transform);
+--        end loop;
 
       -- For debugging ...
       --
@@ -671,11 +679,16 @@ is
             current_Program.model_Matrix_is    (the_Couple.Visual.Transform);
             current_Program.camera_Site_is (get_Translation (camera_world_Transform));
 
-            --  current_Program.directional_Light_is        (1, Lights (1));
+
+            current_Program.Light_is (1, Lights (1));
+
+--              current_Program.directional_Light_is        (1, Lights (1));
             --  current_Program.directional_Light_is        (2, Lights (2));
 
-            current_Program.diffuse_Light_is        (1, diffuse_Lights (1));
+--              current_Program.diffuse_Light_is        (1, diffuse_Lights (1));
             --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
+
+
 
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
             --  current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
@@ -746,10 +759,12 @@ is
 
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
 
-            --  current_Program.directional_Light_is        (1, Lights (1));
+            current_Program.Light_is (1, Lights (1));
+
+--              current_Program.directional_Light_is        (1, Lights (1));
             --current_Program.directional_Light_is        (2, Lights (2));
 
-            current_Program.    diffuse_Light_is        (1, diffuse_Lights (1));
+--              current_Program.    diffuse_Light_is        (1, diffuse_Lights (1));
             --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
 
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
@@ -776,14 +791,14 @@ is
    -- Directional
    --
    procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in openGL.Light.directional.item)
+                                             Now : in openGL.Light.item)
    is
    begin
       Self.Lights.set (Id, Now);
    end Light_is;
 
 
-   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item
+   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.item
    is
    begin
       return Self.Lights.fetch (Id);
@@ -792,19 +807,19 @@ is
 
    -- Diffuse
    --
-   procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in openGL.Light.diffuse.item)
-   is
-   begin
-      Self.diffuse_Lights.set (Id, Now);
-   end Light_is;
-
-
-   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse.item
-   is
-   begin
-      return Self.diffuse_Lights.fetch (Id);
-   end Light;
+--     procedure Light_is (Self : in out Item;   Id  : in light_Id;
+--                                               Now : in openGL.Light.diffuse.item)
+--     is
+--     begin
+--        Self.diffuse_Lights.set (Id, Now);
+--     end Light_is;
+--
+--
+--     function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse.item
+--     is
+--     begin
+--        return Self.diffuse_Lights.fetch (Id);
+--     end Light;
 
 
    -----------------------------
@@ -1016,7 +1031,7 @@ is
    body safe_Lights
    is
       procedure set (Id : in light_Id;
-                     To : in openGL.Light.directional.item)
+                     To : in openGL.Light.item)
       is
       begin
          the_Lights (Id) := To;
@@ -1032,22 +1047,22 @@ is
 
    -- Diffuse.
    --
-   protected
-   body safe_diffuse_Lights
-   is
-      procedure set (Id : in light_Id;
-                     To : in openGL.Light.diffuse.item)
-      is
-      begin
-         the_Lights (Id) := To;
-      end set;
-
-      function fetch return diffuse_Light_Set
-      is
-      begin
-         return the_Lights;
-      end fetch;
-   end safe_diffuse_Lights;
+--     protected
+--     body safe_diffuse_Lights
+--     is
+--        procedure set (Id : in light_Id;
+--                       To : in openGL.Light.diffuse.item)
+--        is
+--        begin
+--           the_Lights (Id) := To;
+--        end set;
+--
+--        function fetch return diffuse_Light_Set
+--        is
+--        begin
+--           return the_Lights;
+--        end fetch;
+--     end safe_diffuse_Lights;
 
 
 end openGL.Renderer.lean;

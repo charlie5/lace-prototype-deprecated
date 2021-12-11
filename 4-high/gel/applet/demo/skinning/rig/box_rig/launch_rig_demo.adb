@@ -8,7 +8,7 @@ with
      gel.Forge,
 
      openGL.Model.any,
-     openGL.Light.directional,
+     openGL.Light,
 
      ada.Calendar,
      ada.Strings.unbounded;
@@ -68,11 +68,10 @@ begin
    -- Set the lights position and ambient color.
    --
    declare
-      Light : openGL.Light.directional.item := the_Applet.Renderer.all.Light (Id => 1);
+      Light : openGL.Light.item := the_Applet.Renderer.all.Light (Id => 1);
    begin
-      Light.ambient_Color_is ((Primary => (0.5, 0.9, 0.5),
-                               Opacity => 0.5));
-      Light.Site_is          ((1000.0, 1000.0, 1000.0));
+      Light.Color_is ((0.5, 0.9, 0.5));
+      Light. Site_is ((1000.0, 1000.0, 1000.0));
 
       the_Applet.Renderer.Light_is (Id => 1, Now => Light);
    end;

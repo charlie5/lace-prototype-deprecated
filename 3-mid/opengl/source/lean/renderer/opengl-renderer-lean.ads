@@ -7,8 +7,9 @@ with
      openGL.Impostor,
      openGL.Texture,
      openGL.Font,
-     openGL.Light.directional,
-     openGL.Light.diffuse,
+     openGL.Light,
+--       openGL.Light.directional,
+--       openGL.Light.diffuse,
 
      ada.Containers.hashed_Maps;
 
@@ -48,11 +49,15 @@ is
    type      light_Id is range 1 .. 8;
 
    procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in Light.directional.item);
-   procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in Light.diffuse.item);
-   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item;
-   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse    .item;
+                                             Now : in Light.item);
+   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.item;
+
+--     procedure Light_is (Self : in out Item;   Id  : in light_Id;
+--                                               Now : in Light.directional.item);
+--     procedure Light_is (Self : in out Item;   Id  : in light_Id;
+--                                               Now : in Light.diffuse.item);
+--     function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item;
+--     function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse    .item;
 
 
    type context_Setter is access procedure;
@@ -239,36 +244,50 @@ private
                                                                            equivalent_Keys => "=");
    subtype id_Map_of_light is id_Maps_of_light.Map;
 
+--     protected
+--     type safe_Lights
+--     is
+--        procedure add (Id    : in light_Id;
+--                       Light : in openGL.Light.item'Class);
+--        procedure set (Id    : in light_Id;
+--                       To    : in openGL.Light.item'Class);
+--        procedure rid (Id    : in light_Id);
+--
+--        function  fetch return id_Map_of_light;
+--     private
+--        the_Lights : id_Map_of_light;
+--     end safe_Lights;
+
 
    -- Directional Lights
    --
 
-   type Light_Set is array (light_Id) of openGL.Light.directional.item;
+   type Light_Set is array (light_Id) of openGL.Light.item;
 
    protected
    type safe_Lights
    is
       procedure set (Id : in light_Id;
-                     To : in openGL.Light.directional.item);
+                     To : in openGL.Light.item);
       function  fetch return light_Set;
    private
       the_Lights : light_Set;
    end safe_Lights;
 
 
-   -- Diffuse Lights
-   --
-   type diffuse_Light_Set is array (light_Id) of openGL.Light.diffuse.item;
-
-   protected
-   type safe_diffuse_Lights
-   is
-      procedure set (Id : in light_Id;
-                     To : in openGL.Light.diffuse.item);
-      function  fetch return diffuse_Light_Set;
-   private
-      the_Lights : diffuse_Light_Set;
-   end safe_diffuse_Lights;
+--     -- Diffuse Lights
+--     --
+--     type diffuse_Light_Set is array (light_Id) of openGL.Light.diffuse.item;
+--
+--     protected
+--     type safe_diffuse_Lights
+--     is
+--        procedure set (Id : in light_Id;
+--                       To : in openGL.Light.diffuse.item);
+--        function  fetch return diffuse_Light_Set;
+--     private
+--        the_Lights : diffuse_Light_Set;
+--     end safe_diffuse_Lights;
 
 
    -- Engine
@@ -293,7 +312,7 @@ private
    type Item is limited new Renderer.item with
       record
          Lights             :         safe_Lights;
-         diffuse_Lights     :         safe_diffuse_Lights;
+--           diffuse_Lights     :         safe_diffuse_Lights;
 
          Textures           : aliased Texture.name_Map_of_texture;
          Fonts              :         Font.font_id_Map_of_font;

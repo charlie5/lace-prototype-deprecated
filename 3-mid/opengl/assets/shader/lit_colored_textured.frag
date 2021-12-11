@@ -95,16 +95,13 @@ apply_Light (light   Light,
 void
 main()
 {
-    vec3   surface_Site    = vec3 (  model_Transform
-                                   * vec4 (frag_Site, 1));
+    vec3   surface_Site      = vec3 (  model_Transform
+                                     * vec4 (frag_Site, 1));
                                    
-    vec4   surface_Color   =   (  texture  (Texture, frag_Coords)
-                                + frag_Color)
-                             / 2.0;
+    vec4   surface_Color     = texture (Texture, frag_Coords);
 
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
-    vec3   Normal            = normalize (  frag_Normal
-                                          * inverse_model_Rotation);
+    vec3   Normal            = normalize (frag_Normal * inverse_model_Rotation);
 
     // Combine color from all the lights.
     //

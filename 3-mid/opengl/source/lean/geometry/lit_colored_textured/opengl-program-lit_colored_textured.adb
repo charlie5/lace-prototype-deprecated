@@ -21,7 +21,7 @@ is
    begin
       --  openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
-
+      openGL.Program.item (Self).set_Uniforms;
 
       the_light_count_Uniform           .Value_is (1);
       the_specular_color_Uniform        .Value_is (to_Vector_3 (Self.specular_Color));
@@ -30,36 +30,36 @@ is
       the_model_transform_Uniform       .Value_is (Self.model_Transform);
       the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
 
-      -- Lights.
-      --
-      for i in Self.diffuse_Lights'Range
-      loop
-         declare
-            Light : openGL.Light.diffuse.item renames Self.diffuse_Lights (i);
-
-            function light_Name return String
-            is
-               use ada.Strings,
-                   ada.Strings.fixed;
-            begin
-               return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
-            end light_Name;
-
-            site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
-            color_Uniform               : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
-            attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Attenuation");
-            ambient_coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambient_Coefficient");
-            cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".cone_Angle");
-            cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".cone_Direction");
-         begin
-            site_Uniform               .Value_is (Vector_4 (Light.Position & 1.0));
-            color_Uniform              .Value_is (          Light.Color);
-            attenuation_Uniform        .Value_is (          Light.Attenuation);
-            ambient_coefficient_Uniform.Value_is (          Light.ambient_Coefficient);
-            cone_angle_Uniform         .Value_is (Real     (Light.cone_Angle));
-            cone_direction_Uniform     .Value_is (          Light.cone_Direction);
-         end;
-      end loop;
+--        -- Lights.
+--        --
+--        for i in Self.diffuse_Lights'Range
+--        loop
+--           declare
+--              Light : openGL.Light.diffuse.item renames Self.diffuse_Lights (i);
+--
+--              function light_Name return String
+--              is
+--                 use ada.Strings,
+--                     ada.Strings.fixed;
+--              begin
+--                 return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
+--              end light_Name;
+--
+--              site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
+--              color_Uniform               : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
+--              attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Attenuation");
+--              ambient_coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambient_Coefficient");
+--              cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".cone_Angle");
+--              cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".cone_Direction");
+--           begin
+--              site_Uniform               .Value_is (Vector_4 (Light.Position & 0.0));
+--              color_Uniform              .Value_is (          Light.Color);
+--              attenuation_Uniform        .Value_is (          Light.Attenuation);
+--              ambient_coefficient_Uniform.Value_is (          Light.ambient_Coefficient);
+--              cone_angle_Uniform         .Value_is (Real     (Light.cone_Angle));
+--              cone_direction_Uniform     .Value_is (          Light.cone_Direction);
+--           end;
+--        end loop;
    end set_Uniforms;
 
 

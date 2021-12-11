@@ -26,39 +26,41 @@ is
 
       --  inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
 
+      openGL.Program.item (Self).set_Uniforms;
+
       -- Lights
       --
-      for i in Self.directional_Light'Range
-      loop
-         declare
-            Light : openGL.Light.directional.item renames Self.directional_Light (i);
-
-            function light_Name return String
-            is
-               use ada.Strings,
-                   ada.Strings.fixed;
-            begin
-               return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
-            end light_Name;
-
-            use openGL.Conversions;
-
-            --  light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
-            --  light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
-
-            --  light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
-            --  light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
-            --  light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
-         begin
-            --  light_direction_Uniform     .Value_is (Light.Direction);
-            --  light_halfplane_Uniform     .Value_is (Light.halfplane_Vector);
-
-            --  light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
-            --  light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
-            --  light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
-            null;
-         end;
-      end loop;
+--        for i in Self.directional_Light'Range
+--        loop
+--           declare
+--              Light : openGL.Light.directional.item renames Self.directional_Light (i);
+--
+--              function light_Name return String
+--              is
+--                 use ada.Strings,
+--                     ada.Strings.fixed;
+--              begin
+--                 return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
+--              end light_Name;
+--
+--              use openGL.Conversions;
+--
+--              --  light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
+--              --  light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
+--
+--              --  light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
+--              --  light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
+--              --  light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
+--           begin
+--              --  light_direction_Uniform     .Value_is (Light.Direction);
+--              --  light_halfplane_Uniform     .Value_is (Light.halfplane_Vector);
+--
+--              --  light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
+--              --  light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
+--              --  light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
+--              null;
+--           end;
+--        end loop;
 
    end set_Uniforms;
 

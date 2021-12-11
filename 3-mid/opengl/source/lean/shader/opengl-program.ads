@@ -2,8 +2,10 @@ with
      openGL.Shader,
      openGL.Variable.uniform,
      openGL.Attribute,
-     openGL.Light.diffuse,
-     openGL.Light.directional;
+     openGL.Palette,
+     openGL.Light;
+--       openGL.Light.diffuse,
+--       openGL.Light.directional;
 
 private
 with
@@ -95,16 +97,18 @@ is
    procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
 
 
-   procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
-                                                                      Now      : in Light.directional.item);
-   procedure diffuse_Light_is            (Self : in out Item'Class;   light_Id : in Positive;
-                                                                      Now      : in Light.diffuse.item);
+--     procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
+--                                                                        Now      : in Light.directional.item);
+--     procedure diffuse_Light_is            (Self : in out Item'Class;   light_Id : in Positive;
+--                                                                        Now      : in Light.diffuse.item);
+
+   procedure Light_is                    (Self : in out Item'Class;   light_Id : in Positive;
+                                                                      Now      : in Light.item);
 
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
    --  procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
 
-   procedure set_Uniforms                (Self : in     Item) is null;
-   --  procedure set_Uniforms                (Self : in     Item);
+   procedure set_Uniforms                (Self : in     Item);
 
 
    ----------
@@ -133,8 +137,10 @@ private
          camera_Site              : Vector_3;
          inverse_modelview_Matrix : Matrix_3x3;
 
-         directional_Light        : Light.directional.items (1 ..  2);
-         diffuse_Lights           : Light.diffuse    .items (1 ..  1);
+--           directional_Light        : Light.directional.items (1 ..  2);
+--           diffuse_Lights           : Light.diffuse    .items (1 ..  1);
+         Lights                   : Light.items (1 .. 1);
+         specular_Color : Color := Palette.Grey;     -- The materials specular color.
 
          Scale                    : Vector_3     := (1.0, 1.0, 1.0);
          --  Shine                    : openGL.Shine := 1.0;
