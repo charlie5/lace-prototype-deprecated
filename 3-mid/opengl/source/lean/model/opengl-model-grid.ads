@@ -35,7 +35,7 @@ private
       record
          Color    :        openGL.rgb_Color;
          Vertices : access openGL.Geometry.colored.Vertex_array;
-         Geometry : access openGL.Geometry.colored.item'Class;
+         Geometry :        openGL.Geometry.colored.view;
          Width,
          Height   :        Positive;
       end record;

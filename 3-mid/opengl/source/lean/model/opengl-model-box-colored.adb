@@ -4,9 +4,6 @@ with
 
 package body openGL.Model.box.colored
 is
-   type Geometry_view is access all Geometry.colored.item'Class;
-
-
    ---------
    --- Forge
    --
@@ -38,12 +35,12 @@ is
       the_Indices  : aliased constant Indices   := (1, 2, 3, 4);
 
 
-      function new_Face (Vertices : access Geometry.colored.Vertex_array) return Geometry_view
+      function new_Face (Vertices : access Geometry.colored.Vertex_array) return Geometry.colored.view
       is
          use Geometry.colored,
              Primitive;
 
-         the_Geometry  : constant Geometry_view          := Geometry.colored.new_Geometry;
+         the_Geometry  : constant Geometry.colored .view := Geometry.colored.new_Geometry;
          the_Primitive : constant Primitive.indexed.view := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                              the_Indices);
       begin
@@ -55,12 +52,12 @@ is
       end new_Face;
 
 
-      front_Face : Geometry_view;
-      rear_Face  : Geometry_view;
-      upper_Face : Geometry_view;
-      lower_Face : Geometry_view;
-      left_Face  : Geometry_view;
-      right_Face : Geometry_view;
+      front_Face : Geometry.colored.view;
+      rear_Face  : Geometry.colored.view;
+      upper_Face : Geometry.colored.view;
+      lower_Face : Geometry.colored.view;
+      left_Face  : Geometry.colored.view;
+      right_Face : Geometry.colored.view;
 
    begin
       --  Front

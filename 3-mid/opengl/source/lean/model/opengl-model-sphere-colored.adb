@@ -30,9 +30,6 @@ is
    --- Attributes
    --
 
-   type Geometry_view is access all Geometry.colored.item'Class;
-
-
    -- NB: - An extra vertex is required at the end of each latitude ring.
    --     - This last vertex has the same site as the rings initial vertex.
    --     - The  last    vertex has 's' texture coord of 1.0, whereas
@@ -62,7 +59,7 @@ is
       the_Vertices   : aliased  Geometry.colored.Vertex_array := (1 ..  vertex_Count => <>);
 
       Color          : constant openGL.rgba_Color := to_rgba_Color (Self.Color);
-      the_Geometry   : constant Geometry_view     := Geometry.colored.new_Geometry;
+      the_Geometry   : constant Geometry.colored.view     := Geometry.colored.new_Geometry;
 
    begin
       set_Sites:

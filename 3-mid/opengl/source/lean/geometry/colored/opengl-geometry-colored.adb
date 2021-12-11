@@ -41,14 +41,12 @@ is
    --  Forge
    --
 
-   type colored_Geometry_view is access all Geometry.colored.item'Class;
-
-   function new_Geometry return access Geometry.colored.item'Class
+   function new_Geometry return Geometry.colored.view
    is
       use      System.storage_Elements;
       use type openGL.Program.colored.view;
 
-      Self : constant colored_Geometry_view := new Geometry.colored.item;
+      Self : constant Geometry.colored.view := new Geometry.colored.item;
    begin
       Tasks.check;
 

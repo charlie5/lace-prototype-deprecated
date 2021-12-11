@@ -4,8 +4,11 @@ package openGL.Geometry.colored
 --
 is
    type Item is new Geometry.item with private;
+   type View is access Item'Class;
 
-   function new_Geometry return access Geometry.colored.item'class;
+
+
+   function new_Geometry return Geometry.colored.view;
 
 
    ------------

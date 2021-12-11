@@ -80,7 +80,7 @@ private
          Vertices     : Vertex_array_view := new Geometry.colored.Vertex_array (1 .. 2);
          vertex_Count : Natural           := 0;
 
-         Geometry     : access openGL.Geometry.colored.item'Class;
+         Geometry     : openGL.Geometry.colored.view;
       end record;
 
 end openGL.Model.segment_line;

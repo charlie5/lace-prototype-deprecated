@@ -59,7 +59,7 @@ is
       Self.Geometry.Vertices_are (Self.Vertices (1 .. Index_t (Self.vertex_Count)));
       Self.Geometry.add (Primitive.view (new_Primitive (Line_Strip,
                                                         the_Indices)));
-      return (1 => Self.Geometry);
+      return (1 => Self.Geometry.all'Access);
    end to_GL_Geometries;
 
 

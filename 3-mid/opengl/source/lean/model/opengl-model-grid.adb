@@ -164,7 +164,7 @@ is
                                                             Self.Vertices'Length);
       Self.Geometry.add (Primitive.view (the_Primitive));
 
-      return (1 => Self.Geometry);
+      return (1 => Self.Geometry.all'Access);
    end to_GL_Geometries;
 
 
