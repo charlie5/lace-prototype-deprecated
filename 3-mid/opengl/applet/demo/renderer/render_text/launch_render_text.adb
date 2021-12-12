@@ -2,7 +2,7 @@ with
      openGL.Visual,
      openGL.Palette,
      openGL.Font,
-     openGL.Model.Text.lit_colored_textured,
+     openGL.Model.Text.lit_colored,
      openGL.Demo;
 
 procedure launch_render_Text
@@ -31,12 +31,11 @@ begin
    declare
       --  The model.
       --
-      the_Text_Model : constant Model.Text.lit_colored_textured.view
-        := Model.Text.lit_colored_textured.new_Text (--Scale    => (1.0, 1.0, 1.0),
-                                                     Text     => "Howdy",
-                                                     Font     => the_font_Id,
-                                                     Color    => (Red, Opaque),
-                                                     Centered => False);
+      the_Text_Model : constant Model.Text.lit_colored.view
+        := Model.Text.lit_colored.new_Text (Text     => "Howdy",
+                                            Font     => the_font_Id,
+                                            Color    => (Red, Opaque),
+                                            Centered => False);
 
       --  The sprites.
       --

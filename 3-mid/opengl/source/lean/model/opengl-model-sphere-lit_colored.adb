@@ -29,8 +29,6 @@ is
    --- Attributes
    --
 
-   type Geometry_view is access all Geometry.lit_colored.item'Class;
-
    --  NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
@@ -61,8 +59,8 @@ is
       the_Sites      : aliased  Sites                             := (1 ..  vertex_Count => <>);
       the_Indices    : aliased  Indices                           := (1 .. indices_Count => <>);
 
-      Color          : constant rgba_Color    := to_rgba_Color (Self.Color);
-      the_Geometry   : constant Geometry_view := Geometry.lit_colored.new_Geometry;
+      Color          : constant rgba_Color                := to_rgba_Color (Self.Color);
+      the_Geometry   : constant Geometry.lit_colored.view := Geometry.lit_colored.new_Geometry;
 
    begin
       set_Sites:

@@ -3,7 +3,7 @@ with
      openGL.Texture;
 
 
-package openGL.Model.hexagon.lit_colored_textured
+package openGL.Model.hexagon.lit_textured
 --
 --  Models a lit, colored and textured hexagon.
 --
@@ -13,9 +13,7 @@ is
 
    type Face is
       record
-         center_Color : lucid_Color;                                           --  The color at the center of the hex.
-         Colors       : lucid_Colors (1 .. 6);                                 --  The color at each of the hexes 6 vertices.
-         Texture      : openGL.Texture.Object := openGL.Texture.null_Object;   --  The texture to be applied to the hex..
+         Texture : openGL.Texture.Object := openGL.Texture.null_Object;   -- The texture to be applied to the hex.
       end record;
 
 
@@ -24,7 +22,7 @@ is
    --
 
    function new_Hexagon (Radius : in Real;
-                         Face   : in lit_colored_textured.Face) return View;
+                         Face   : in lit_textured.Face) return View;
 
 
    --------------
@@ -40,7 +38,7 @@ private
 
    type Item is new Model.hexagon.item with
       record
-         Face : lit_colored_textured.Face;
+         Face : lit_textured.Face;
       end record;
 
-end openGL.Model.hexagon.lit_colored_textured;
+end openGL.Model.hexagon.lit_textured;

@@ -15,6 +15,7 @@ with
      Interfaces.C.Strings,
      System.storage_Elements;
 
+
 package body openGL.Geometry.lit_textured
 is
    use GL.lean,
@@ -51,15 +52,13 @@ is
    --  Forge
    --
 
-   type Geometry_view is access all Geometry.lit_textured.item'Class;
-
-   function new_Geometry return access Geometry.lit_textured.item'Class
+   function new_Geometry return View
    is
       use      System,
                System.storage_Elements;
       use type openGL.Program.lit_textured.view;
 
-      Self : constant Geometry_view := new Geometry.lit_textured.item;
+      Self : constant View := new Geometry.lit_textured.item;
 
    begin
       Tasks.check;
@@ -161,7 +160,16 @@ is
    --  Vertex
    --
 
-   function is_Transparent (Self : in Vertex_array) return Boolean
+   function is_Transparent (Self : in Vertex_array) return Boolean     -- TODO: Do these properly.
+   is
+      pragma Unreferenced (Self);
+   begin
+      return False;
+   end is_Transparent;
+
+
+
+   function is_Transparent (Self : in Vertex_large_array) return Boolean
    is
       pragma Unreferenced (Self);
    begin
@@ -173,16 +181,45 @@ is
    --  Attributes
    --
 
-   package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
-                                                                     Index         => long_Index_t,
-                                                                     Element       => Vertex,
-                                                                     Element_Array => Vertex_array);
+   package openGL_Buffer_of_geometry_Vertices       is new Buffer.general (base_Object   => Buffer.array_Object,
+                                                                           Index         => Index_t,
+                                                                           Element       => Vertex,
+                                                                           Element_Array => Vertex_array);
+
+   package openGL_large_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
+                                                                           Index         => long_Index_t,
+                                                                           Element       => Vertex,
+                                                                           Element_Array => Vertex_large_array);
+
+
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                         usage => Buffer.static_Draw));
+      Self.is_Transparent := is_Transparent (Now);
+
+      -- Set the bounds.
+      --
+      declare
+         function get_Site (Index : in Index_t) return Vector_3
+         is (Now (Index).Site);
+
+         function bounding_Box is new get_Bounds (Index_t, get_Site);
+      begin
+         Self.Bounds_are (bounding_Box (Count => Now'Length));
+      end;
+   end Vertices_are;
+
+
+
+   procedure Vertices_are (Self : in out Item;   Now : in Vertex_large_array)
+   is
+      use openGL_large_Buffer_of_geometry_Vertices.Forge;
+   begin
+      Self.Vertices       := new openGL_large_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
+                                                                                   usage => Buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
 
       -- Set the bounds.
@@ -196,6 +233,7 @@ is
          Self.Bounds_are (bounding_Box (Count => Now'Length));
       end;
    end Vertices_are;
+
 
 
    overriding

@@ -2,10 +2,9 @@ with
      openGL.Primitive.indexed,
      openGL.IO;
 
-package body openGL.Model.billboard.colored_textured
-is
-   type Geometry_view is access all Geometry.colored_textured.item'Class;
 
+package body openGL.Model.billboard.colored
+is
    ---------
    --- Forge
    --
@@ -38,7 +37,7 @@ is
       pragma unreferenced (Textures, Fonts);
 
       use Geometry,
-          Geometry.colored_textured,
+          Geometry.colored,
           Texture;
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
@@ -46,13 +45,13 @@ is
                                                                        Self.Width,
                                                                        Self.Height);
 
-      function new_Face (Vertices : access Geometry.colored_textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : access Geometry.colored.Vertex_array) return Geometry.colored.view
       is
          use openGL.Primitive;
 
-         the_Geometry  : constant Geometry_view  := Geometry.colored_textured.new_Geometry;
-         the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
-                                                                                     the_Indices).all'Access;
+         the_Geometry  : constant Geometry.colored.view := Geometry.colored.new_Geometry;
+         the_Primitive : constant Primitive.view        := Primitive.indexed.new_Primitive (triangle_Fan,
+                                                                                            the_Indices).all'Access;
       begin
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add (the_Primitive);
@@ -61,18 +60,18 @@ is
          return the_Geometry;
       end new_Face;
 
-      Color    : constant rgba_Color := +Self.Color;
-      the_Face : Geometry_view;
+      Color    : constant rgba_Color  := +Self.Color;
+      the_Face : Geometry.colored.view;
 
    begin
       declare
-         the_Vertices : constant access Geometry.colored_textured.Vertex_array := Self.Vertices;
+         the_Vertices : constant access Geometry.colored.Vertex_array := Self.Vertices;
       begin
-         the_Vertices.all := Geometry.colored_textured.Vertex_array'
-                               (1 => (site => the_Sites (1),    color => Color,  coords => (Self.texture_Coords (1))),
-                                2 => (site => the_Sites (2),    color => Color,  coords => (Self.texture_Coords (2))),
-                                3 => (site => the_Sites (3),    color => Color,  coords => (Self.texture_Coords (3))),
-                                4 => (site => the_Sites (4),    color => Color,  coords => (Self.texture_Coords (4))));
+         the_Vertices.all := Geometry.colored.Vertex_array'
+                               (1 => (site => the_Sites (1),  color => Color),
+                                2 => (site => the_Sites (2),  color => Color),
+                                3 => (site => the_Sites (3),  color => Color),
+                                4 => (site => the_Sites (4),  color => Color));
 
          the_Face := new_Face (Vertices => the_Vertices);
 
@@ -135,4 +134,4 @@ is
    end is_Modified;
 
 
-end openGL.Model.billboard.colored_textured;
+end openGL.Model.billboard.colored;

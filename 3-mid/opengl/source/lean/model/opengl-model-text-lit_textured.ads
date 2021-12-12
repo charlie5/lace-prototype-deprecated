@@ -3,7 +3,7 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.Text.lit_colored_textured
+package openGL.Model.Text.lit_textured
 --
 --  Models lit, colored, textured text.
 --
@@ -18,7 +18,6 @@ is
 
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
-                      Color    : in lucid_Color;
                       Centered : in Boolean := True) return View;
 
 
@@ -47,9 +46,7 @@ private
 
          Font_Id  : openGL.Font.font_Id;
          Font     : openGL.Font.texture.view;
-
-         Color    : rgba_Color;
          Centered : Boolean;
       end record;
 
-end openGL.Model.Text.lit_colored_textured;
+end openGL.Model.Text.lit_textured;

@@ -4,8 +4,10 @@ package openGL.Geometry.lit_textured
 --
 is
    type Item is new openGL.Geometry.item with private;
+   type View is access all Item'Class;
 
-   function new_Geometry return access Geometry.lit_textured.item'Class;
+
+   function new_Geometry return View;
 
 
    ----------
@@ -20,7 +22,8 @@ is
          Shine  : Real;
       end record;
 
-   type Vertex_array is array (long_Index_t range <>) of aliased Vertex;
+   type Vertex_array       is array (     Index_t range <>) of aliased Vertex;
+   type Vertex_large_array is array (long_Index_t range <>) of aliased Vertex;
 
 
    --------------
@@ -28,6 +31,7 @@ is
    --
 
    procedure Vertices_are (Self : in out Item;   Now       : in Vertex_array);
+   procedure Vertices_are (Self : in out Item;   Now       : in Vertex_large_array);
 
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;

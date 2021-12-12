@@ -1,11 +1,11 @@
 with
-     openGL.Geometry.lit_colored_textured,
+     openGL.Geometry.lit_textured,
      openGL.Primitive.indexed,
-     openGL.Palette,
      openGL.Texture.Coordinates,
      openGL.IO,
 
      ada.unchecked_Deallocation;
+
 
 package body openGL.Model.terrain
 is
@@ -51,9 +51,6 @@ is
    -- Attributes
    --
 
-   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
-
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -61,8 +58,7 @@ is
       pragma unreferenced (Textures, Fonts);
 
       use Geometry,
-          Palette,
-          Geometry.lit_colored_textured;
+          Geometry.lit_textured;
 
       Heights       :          height_Map_view renames Self.Heights;
 
@@ -77,10 +73,10 @@ is
       the_Sites     : aliased  Sites         := (1 .. vertex_Count => <>);
       the_Bounds    :          openGL.Bounds := null_Bounds;
 
-      the_Vertices  : aliased  Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
-      the_Indices   : aliased  Indices                                    := (1 .. indices_Count => <>);
+      the_Vertices  : aliased  Geometry.lit_textured.Vertex_array := (1 .. vertex_Count  => <>);
+      the_Indices   : aliased  Indices                            := (1 .. indices_Count => <>);
 
-      the_Geometry  : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_alpha => False);
+      the_Geometry  : constant Geometry.lit_textured.view := Geometry.lit_textured.new_Geometry;
 
    begin
       set_Sites:
@@ -113,8 +109,6 @@ is
                                             abs (the_Sites (vert_Id)));
 
                the_Vertices (vert_Id).Site  := the_Sites (vert_Id);
-               the_Vertices (vert_Id).Color := (Primary => +White,
-                                                Alpha   => opaque_Value);
             end loop;
          end loop;
 

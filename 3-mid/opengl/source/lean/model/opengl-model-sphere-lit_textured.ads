@@ -3,7 +3,7 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.sphere.lit_colored_textured
+package openGL.Model.sphere.lit_textured
 --
 --  Models a lit, colored, textured sphere.
 --
@@ -31,4 +31,4 @@ private
          Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
       end record;
 
-end openGL.Model.sphere.lit_colored_textured;
+end openGL.Model.sphere.lit_textured;

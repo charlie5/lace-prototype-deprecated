@@ -1,11 +1,11 @@
 with
-     openGL.Geometry.colored_textured,
+     openGL.Geometry.colored,
      openGL.Texture,
      openGL.Font,
      openGL.Palette;
 
 
-package openGL.Model.billboard.colored_textured
+package openGL.Model.billboard.colored
 --
 --  Models a colored, textured billboard.
 --
@@ -54,8 +54,8 @@ private
 
          is_Modified    : Boolean               := False;
 
-         Vertices : access Geometry.colored_textured.Vertex_array := new geometry.colored_textured.Vertex_array (1 .. 4);
-         Geometry : access Geometry.colored_textured.item'Class;
+         Vertices : access Geometry.colored.Vertex_array := new geometry.colored.Vertex_array (1 .. 4);
+         Geometry : access Geometry.colored.item'Class;
       end record;
 
-end openGL.Model.billboard.colored_textured;
+end openGL.Model.billboard.colored;

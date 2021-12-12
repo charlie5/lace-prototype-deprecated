@@ -1,9 +1,10 @@
 with
      openGL.Primitive.short_indexed,
      openGL.Primitive.      indexed,
-     openGL.Primitive. long_indexed,
+     openGL.Primitive.long_indexed,
 
      openGL.Geometry.lit_textured,
+     openGL.Geometry.lit_colored_skinned,
      openGL.Geometry.lit_colored_textured_skinned,
 
      openGL.Texture,
@@ -96,9 +97,9 @@ is
                                                            any_Vertex_array_view);
 
 
-   function to_lit_textured_Vertices (From : in any_Vertex_array) return Geometry.lit_textured.Vertex_array
+   function to_lit_textured_Vertices (From : in any_Vertex_array) return Geometry.lit_textured.Vertex_large_array
    is
-      Result : Geometry.lit_textured.Vertex_array (From'Range);
+      Result : Geometry.lit_textured.Vertex_large_array (From'Range);
    begin
       for i in From'Range
       loop
@@ -348,10 +349,11 @@ is
             declare
                use Geometry.lit_textured;
 
-               my_Vertices : aliased  lit_textured.Vertex_array
+               my_Vertices : aliased  lit_textured.Vertex_large_array
                  := to_lit_textured_Vertices (the_Vertices (1 .. vertex_Count));
 
-               my_Geometry : constant lit_textured_Geometry_view
+--                 my_Geometry : constant lit_textured_Geometry_view
+               my_Geometry : constant Geometry.lit_textured.view
                  := lit_textured.new_Geometry;
             begin
                if not normals_Known

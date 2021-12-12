@@ -1,11 +1,13 @@
 package openGL.Geometry.lit_colored
 --
---  Supports per-vertex site color and lighting.
+--  Supports per-vertex color and lighting.
 --
 is
    type Item is new openGL.Geometry.item with private;
+   type View is access all Item'Class;
 
-   function new_Geometry return access Geometry.lit_colored.item'class;
+
+   function new_Geometry return View;
 
 
    ----------

@@ -4,7 +4,7 @@ with
      openGL.Texture;
 
 
-package openGL.Model.Box.lit_colored_textured
+package openGL.Model.Box.lit_textured
 --
 --  Models a lit, colored and textured box.
 --
@@ -18,7 +18,6 @@ is
 
    type Face is
       record
-         Colors       : lucid_Colors (1 .. 4);      -- The color of each faces 4 vertices.
          texture_Name : asset_Name := null_Asset;   -- The texture applied to the face.
       end record;
 
@@ -30,7 +29,7 @@ is
    --
 
    function new_Box (Size  : in Vector_3;
-                     Faces : in lit_colored_textured.Faces) return View;
+                     Faces : in lit_textured.Faces) return View;
 
 
    --------------
@@ -46,7 +45,7 @@ private
 
    type Item is new Model.box.item with
       record
-         Faces : lit_colored_textured.Faces;
+         Faces : lit_textured.Faces;
       end record;
 
-end openGL.Model.Box.lit_colored_textured;
+end openGL.Model.Box.lit_textured;

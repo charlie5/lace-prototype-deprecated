@@ -1,10 +1,11 @@
 with
-     openGL.Geometry.lit_colored_textured,
+     openGL.Geometry.lit_textured,
      openGL.Texture,
      openGL.IO,
      openGL.Primitive.indexed;
 
-package body openGL.Model.capsule.lit_colored_textured
+
+package body openGL.Model.capsule.lit_textured
 is
    ---------
    --- Forge
@@ -12,16 +13,13 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
-                         Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;
    begin
       Self.Radius := Radius;
       Self.Height := Height;
-
-      Self.Color := +Color;
-      Self.Image := Image;
+      Self.Image  := Image;
 
       return Self;
    end new_Capsule;
@@ -31,7 +29,7 @@ is
    --- Attributes
    --
 
-   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
+--     type Geometry_view is access all Geometry.lit_textured.item'Class;
 
 
    overriding
@@ -41,7 +39,7 @@ is
       pragma unreferenced (Textures, Fonts);
 
       use Geometry,
-          Geometry.lit_colored_textured,
+          Geometry.lit_textured,
           real_Functions;
 
       Length        : constant Real    := Self.Height;
@@ -70,11 +68,11 @@ is
 
       the_Edges  : Edges;
 
-      the_shaft_Geometry  : constant Geometry_view
-        := Geometry_view (Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False));
+      the_shaft_Geometry  : constant Geometry.lit_textured.view
+        := Geometry.lit_textured.new_Geometry;
 
-      cap_1_Geometry : Geometry_view;
-      cap_2_Geometry : Geometry_view;
+      cap_1_Geometry : Geometry.lit_textured.view;
+      cap_2_Geometry : Geometry.lit_textured.view;
 
    begin
       --  Define capsule shaft,
@@ -83,8 +81,8 @@ is
          vertex_Count  : constant      Index_t :=      Index_t (sides_Count * 2 + 2);   -- 2 triangles per side plus 2 since we cannot share the first and last edge.
          indices_Count : constant long_Index_t := long_Index_t (sides_Count * 2 * 3);   -- 2 triangles per side with 3 vertices per triangle.
 
-         the_Vertices  : aliased Geometry.lit_colored_textured.Vertex_array := (1 .. vertex_Count  => <>);
-         the_Indices   : aliased Indices                                    := (1 .. indices_Count => <>);
+         the_Vertices  : aliased Geometry.lit_textured.Vertex_array := (1 .. vertex_Count  => <>);
+         the_Indices   : aliased Indices                            := (1 .. indices_Count => <>);
 
       begin
          ny := 1.0;
@@ -120,14 +118,12 @@ is
                the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                        the_Vertices (i).Site (2),
                                                        0.0));
-               the_Vertices (i).Color  := Self.Color;
                the_Vertices (i).Coords := (s => S,
                                            t => 1.0);
                i := i + 1;
 
                the_Vertices (i).Site   := the_Edges (Each).Aft;
                the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
-               the_Vertices (i).Color  := Self.Color;
                the_Vertices (i).Coords := (s => S,
                                            t => 0.0);
                i := i + 1;
@@ -139,14 +135,12 @@ is
             the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                     the_Vertices (i).Site (2),
                                                     0.0));
-            the_Vertices (i).Color  := Self.Color;
             the_Vertices (i).Coords := (s => S,
                                         t => 1.0);
             i := i + 1;
 
             the_Vertices (i).Site   := the_Edges (1).Aft;
             the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
-            the_Vertices (i).Color  := Self.Color;
             the_Vertices (i).Coords := (s => S,
                                         t => 0.0);
          end;
@@ -196,20 +190,20 @@ is
 
 
       declare
-         function new_Cap (is_Fore : Boolean) return Geometry_view
+         function new_Cap (is_Fore : Boolean) return Geometry.lit_textured.view
          is
             use linear_Algebra;
 
-            cap_Geometry  : constant Geometry_view
-              := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
+            cap_Geometry  : constant Geometry.lit_textured.view
+              := Geometry.lit_textured.new_Geometry;
 
             hoop_Count    : constant      Index_t := quality_Level;
             vertex_Count  : constant      Index_t :=      Index_t (Edges'Length * hoop_Count + 1);             -- A vertex for each edge of each hoop, + 1 for the pole.
             indices_Count : constant long_Index_t := long_Index_t (  (hoop_count - 1) * sides_Count * 2 * 3    -- For each hoop, 2 triangles per side with 3 vertices per triangle
                                                                    + sides_Count * 3);                         -- plus the extra indices for the pole triangles.
 
-            the_Vertices  : aliased Geometry.lit_colored_textured.Vertex_array := (1 ..  vertex_Count => <>);
-            the_Indices   : aliased Indices                                    := (1 .. indices_Count => <>);
+            the_Vertices  : aliased Geometry.lit_textured.Vertex_array := (1 ..  vertex_Count => <>);
+            the_Indices   : aliased Indices                            := (1 .. indices_Count => <>);
 
             the_arch_Edges : arch_Edges;
             i              : Index_t   := 1;
@@ -263,7 +257,6 @@ is
                                                           the_Vertices (i).Site (2),
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
                                                                       else the_Vertices (i).Site (3) + L)));
-                  the_Vertices (i).Color  := Self.Color;
                   the_Vertices (i).Coords :=  (s => a / Degrees_360,
                                                t => b / Degrees_90);
                   i := i + 1;
@@ -293,7 +286,6 @@ is
             --
             the_Vertices (i).Site   := pole_Site;
             the_Vertices (i).Normal := Normalised (pole_Site);
-            the_Vertices (i).Color  := Self.Color;
             the_Vertices (i).Coords := (s => 0.5,
                                         t => 1.0);
             -- Set indices.
@@ -402,4 +394,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.capsule.lit_colored_textured;
+end openGL.Model.capsule.lit_textured;

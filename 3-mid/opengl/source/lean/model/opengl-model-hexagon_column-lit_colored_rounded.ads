@@ -3,9 +3,9 @@ with
      openGL.Texture;
 
 
-package openGL.Model.hexagon_Column.lit_colored_textured_rounded
+package openGL.Model.hexagon_Column.lit_colored_rounded
 --
---  Models a lit, colored and textured column with six rounded sides.
+--  Models a lit and colored column with six rounded sides.
 --
 --  The shaft of the column appears rounded, whereas the top and bottom appear as hexagons.
 --
@@ -22,14 +22,12 @@ is
       record
          center_Color : lucid_Color;                  -- The color of the center of the hex.
          Colors       : lucid_Colors (1 .. 6);        -- The color of each of the faces 4 vertices.
-         Texture      : asset_Name := null_Asset;     -- The texture to be applied to the face.
       end record;
 
 
    type shaft_Face is
       record
          Color   : lucid_Color;                       -- The color of the shaft.
-         Texture : asset_Name := openGL.null_Asset;   -- The texture to be applied to the shaft.
       end record;
 
 
@@ -61,4 +59,4 @@ private
          Shaft      : shaft_Face;
       end record;
 
-end openGL.Model.hexagon_Column.lit_colored_textured_rounded;
+end openGL.Model.hexagon_Column.lit_colored_rounded;

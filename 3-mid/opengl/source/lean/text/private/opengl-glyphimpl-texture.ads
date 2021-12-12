@@ -4,7 +4,7 @@ with
 
 private
 with
-     openGL.Geometry.lit_colored_textured,
+     openGL.Geometry.lit_textured,
      openGL.Primitive.indexed,
      GL;
 
@@ -92,7 +92,7 @@ private
          UV          :        Coordinates_2D (1 .. 2);          -- The texture co-ords of this glyph within the texture.
          glTextureID :        openGL.texture.texture_Name;      -- The texture index that this glyph is contained in.
 
-         Geometry    : access Geometry.lit_colored_textured.item;
+         Geometry    : access Geometry.lit_textured.item;
          Primitive   :        openGL.Primitive.indexed.view;
       end record;
 

@@ -20,9 +20,6 @@ is
 
 
 
-   type Geometry_view is access all Geometry.lit_colored.item'Class;
-
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -38,8 +35,8 @@ is
       the_Vertices  : aliased  Geometry.lit_colored.Vertex_array := (1 .. vertex_Count  => <>);
       the_Indices   : aliased  Indices                           := (1 .. indices_Count => <>);
 
-      Color         : constant rgba_Color    := +Self.Color;
-      the_Geometry  : constant Geometry_view := Geometry.lit_colored.new_Geometry;
+      Color         : constant rgba_Color                := +Self.Color;
+      the_Geometry  : constant Geometry.lit_colored.view := Geometry.lit_colored.new_Geometry;
 
    begin
       set_Vertices:

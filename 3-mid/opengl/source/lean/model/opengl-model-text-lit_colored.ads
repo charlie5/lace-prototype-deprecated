@@ -3,7 +3,7 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.Text.lit_colored_textured
+package openGL.Model.Text.lit_colored
 --
 --  Models lit, colored, textured text.
 --
@@ -52,4 +52,4 @@ private
          Centered : Boolean;
       end record;
 
-end openGL.Model.Text.lit_colored_textured;
+end openGL.Model.Text.lit_colored;

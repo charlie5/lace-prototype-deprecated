@@ -1,11 +1,11 @@
 with
-     openGL.Palette,
-     openGL.Geometry.lit_colored_textured,
+     openGL.Geometry.lit_textured,
      openGL.Texture,
      openGL.IO,
      openGL.Primitive.indexed;
 
-package body openGL.Model.sphere.lit_colored_textured
+
+package body openGL.Model.sphere.lit_textured
 is
    ---------
    --- Forge
@@ -32,9 +32,6 @@ is
    --- Attributes
    --
 
-   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
-
-
    --  NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
@@ -47,8 +44,7 @@ is
       pragma unreferenced (Textures, Fonts);
 
       use openGL.Geometry,
-          openGL.Palette,
-          openGL.Geometry.lit_colored_textured;
+          openGL.Geometry.lit_textured;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -63,11 +59,11 @@ is
 
       indices_Count  : constant long_Index_t := long_Index_t (Num_lat_strips * (long_Count + 1) * 2);
 
-      the_Vertices   : aliased  Geometry.lit_colored_textured.Vertex_array := (1 ..  vertex_Count => <>);
-      the_Indices    : aliased  Indices                                    := (1 .. indices_Count => <>);
-      the_Sites      : aliased  Sites                                      := (1 ..  vertex_Count => <>);
+      the_Vertices   : aliased  Geometry.lit_textured.Vertex_array := (1 ..  vertex_Count => <>);
+      the_Indices    : aliased  Indices                            := (1 .. indices_Count => <>);
+      the_Sites      : aliased  Sites                              := (1 ..  vertex_Count => <>);
 
-      the_Geometry   : constant Geometry_view := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
+      the_Geometry   : constant Geometry.lit_textured.view := Geometry.lit_textured.new_Geometry;
 
    begin
       set_Sites:
@@ -90,16 +86,12 @@ is
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
-         the_Vertices (the_Vertices'First).Color  := (Primary => +White,
-                                                      Alpha   => opaque_Value);
 
          the_Sites (the_Vertices'Last) := south_Pole;
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
          the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
-         the_Vertices (the_Vertices'Last).Color   := (Primary => +White,
-                                                      Alpha   => opaque_Value);
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -114,9 +106,6 @@ is
 
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
-            the_Vertices (vert_Id).Color  := (Primary => +White,
-                                              Alpha   => opaque_Value);
-
             the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                               T => 1.0 - b / Degrees_180);
 
@@ -134,8 +123,6 @@ is
 
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
-               the_Vertices (vert_Id).Color  := (Primary => +White,
-                                                 Alpha   => opaque_Value);
                the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                                  T => 1.0 - b / Degrees_180);
             end loop;
@@ -209,4 +196,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.sphere.lit_colored_textured;
+end openGL.Model.sphere.lit_textured;

@@ -12,6 +12,7 @@ with
      Interfaces.C.Strings,
      System.storage_Elements;
 
+
 package body openGL.Geometry.lit_colored
 is
    use GL.lean,
@@ -58,9 +59,7 @@ is
    --  Forge
    --
 
-   type Geometry_view is access all Geometry.lit_colored.item'Class;
-
-   function new_Geometry return access Geometry.lit_colored.item'Class
+   function new_Geometry return View
    is
       use      System.storage_Elements;
       use type openGL.Program.lit_colored.view;
@@ -145,7 +144,7 @@ is
          Errors.log;
       end define;
 
-      Self : constant Geometry_view := new Geometry.lit_colored.item;
+      Self : constant View := new Geometry.lit_colored.item;
 
    begin
       Tasks.check;

@@ -3,7 +3,7 @@ with
      openGL.Texture;
 
 
-package openGL.Model.hexagon_Column.lit_colored_textured_faceted
+package openGL.Model.hexagon_Column.lit_colored_faceted
 --
 --  Models a lit, colored and textured column with 6 faceted shaft sides.
 --
@@ -20,13 +20,11 @@ is
       record
          center_Color : lucid_Color;                         -- The color of the center of the hex.
          Colors       : lucid_Colors (1 .. 6);               -- The color of each of the faces 4 vertices.
-         Texture      : asset_Name := openGL.null_Asset;     -- The texture to be applied to the face.
       end record;
 
    type shaft_Face is
       record
-         Color   : lucid_Color;                              -- The color of the shaft.
-         Texture : asset_Name := null_Asset;                 -- The texture to be applied to the shaft.
+         Color : lucid_Color;                              -- The color of the shaft.
       end record;
 
 
@@ -58,4 +56,4 @@ private
          Shaft      : shaft_Face;
       end record;
 
-end openGL.Model.hexagon_Column.lit_colored_textured_faceted;
+end openGL.Model.hexagon_Column.lit_colored_faceted;

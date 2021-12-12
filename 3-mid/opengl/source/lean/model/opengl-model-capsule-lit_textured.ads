@@ -2,9 +2,9 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.capsule.lit_colored_textured
+package openGL.Model.capsule.lit_textured
 --
---  Models a lit, colored and textured capsule.
+--  Models a lit and textured capsule.
 --
 is
    type Item is new Model.capsule.item with private;
@@ -17,7 +17,6 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
-                         Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View;
 
    --------------
@@ -37,8 +36,7 @@ private
          Radius : Real;
          Height : Real;
 
-         Color  : rgba_Color;
          Image  : asset_Name := null_Asset;
       end record;
 
-end openGL.Model.capsule.lit_colored_textured;
+end openGL.Model.capsule.lit_textured;
