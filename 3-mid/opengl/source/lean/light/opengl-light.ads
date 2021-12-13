@@ -15,7 +15,7 @@ is
    --- Attributes
    --
    type Id_t   is new Natural;
-   type Kind_t is (Diffused, Direct);
+   type Kind_t is (Diffuse, Direct);
 
    null_Id : constant Id_t;
 

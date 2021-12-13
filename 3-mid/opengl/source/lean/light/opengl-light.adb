@@ -57,7 +57,7 @@ is
    begin
       case Self.Kind
       is
-         when Diffused =>   Self.Site := Vector_4  (Now & 1.0);
+         when Diffuse =>   Self.Site := Vector_4  (Now & 1.0);
          when Direct   =>   Self.Site := Vector_4 (-Now & 0.0);
       end case;
    end Site_is;

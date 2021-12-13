@@ -469,7 +469,7 @@ is
          begin
             case Light.Kind
             is
-            when Diffused =>   site_Uniform.Value_is (Vector_4 (Light.Site & 1.0));
+            when Diffuse =>   site_Uniform.Value_is (Vector_4 (Light.Site & 1.0));
             when Direct   =>   site_Uniform.Value_is (Vector_4 (Light.Site & 0.0));
             end case;
 
