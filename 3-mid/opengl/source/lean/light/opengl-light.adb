@@ -1,9 +1,19 @@
-with
-     openGL.conversions;
-
-
 package body openGL.Light
 is
+
+   function Id (Self : in Item) return light.Id_t
+   is
+   begin
+      return Self.Id;
+   end Id;
+
+
+   procedure Id_is (Self : in out Item;   Now : in light.Id_t)
+   is
+   begin
+      Self.Id := Now;
+   end Id_is;
+
 
    function Kind (Self : in Item) return light.Kind_t
    is
@@ -11,6 +21,12 @@ is
       return Self.Kind;
    end Kind;
 
+
+   procedure Kind_is (Self : in out Item;   Now : in light.Kind_t)
+   is
+   begin
+      Self.Kind := Now;
+   end Kind_is;
 
 
    function is_On (Self : in Item) return Boolean

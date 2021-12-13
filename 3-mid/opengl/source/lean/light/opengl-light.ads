@@ -10,15 +10,20 @@ is
    type Item  is tagged private;
    type Items is array (Positive range <>) of Item;
 
-   --  type Id is range 1 .. 10;
-
 
    --------------
    --- Attributes
    --
+   type Id_t   is new Positive;
    type Kind_t is (Diffused, Direct);
 
+   null_Id : constant Id_t;
+
+   function  Id      (Self : in     Item)     return light.Id_t;
+   procedure Id_is   (Self : in out Item;   Now : in light.Id_t);
+
    function  Kind    (Self : in     Item)     return light.Kind_t;
+   procedure Kind_is (Self : in out Item;   Now : in light.Kind_t);
 
    function  is_On   (Self : in     Item)     return Boolean;
    procedure is_On   (Self : in out Item;   Now : in Boolean := True);
@@ -53,19 +58,23 @@ is
                                                                           --  Equivalent_Keys => ,
                                                                           --  "="             => )
 
+
 private
+
+   null_Id : constant Id_t := Id_t'Last;
 
    type Item is tagged
       record
+         Id   : light.Id_t      := null_Id;
          Kind : light.Kind_t    := Direct;
          On   : Boolean         := True;
          Site : openGL.Vector_4 := (0.0, 0.0, 1.0, 0.0);     -- The GL default.
 
          Color               : openGL.Color := Palette.White;
-         Attenuation         : Real     :=  0.1;
-         ambient_Coefficient : Real     :=  0.1;
-         cone_Angle          : Degrees  :=  2.0;
-         cone_Direction      : Vector_3 := (0.0, 0.0, -1.0);
+         Attenuation         : Real         :=  0.1;
+         ambient_Coefficient : Real         :=  0.1;
+         cone_Angle          : Degrees      :=  2.0;
+         cone_Direction      : Vector_3     := (0.0, 0.0, -1.0);
 
          ambient_Color : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
          diffuse_Color : Vector_4 := (0.0, 0.0, 0.0, 1.0);
