@@ -102,8 +102,9 @@ is
 --     procedure diffuse_Light_is            (Self : in out Item'Class;   light_Id : in Positive;
 --                                                                        Now      : in Light.diffuse.item);
 
-   procedure Light_is                    (Self : in out Item'Class;   light_Id : in Positive;
-                                                                      Now      : in Light.item);
+--     procedure Light_is                    (Self : in out Item'Class;   light_Id : in Positive;
+--                                                                        Now      : in Light.item);
+   procedure Lights_are                    (Self : in out Item;   Now       : in Light.items);
 
    procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
    --  procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
@@ -139,7 +140,9 @@ private
 
 --           directional_Light        : Light.directional.items (1 ..  2);
 --           diffuse_Lights           : Light.diffuse    .items (1 ..  1);
-         Lights                   : Light.items (1 .. 1);
+
+         Lights                   : Light.items (1 .. 50);
+         light_Count              : Natural := 0;
          specular_Color : Color := Palette.Grey;     -- The materials specular color.
 
          Scale                    : Vector_3     := (1.0, 1.0, 1.0);

@@ -7,11 +7,11 @@ with
      openGL.Impostor,
      openGL.Texture,
      openGL.Font,
-     openGL.Light,
+     openGL.Light;
 --       openGL.Light.directional,
 --       openGL.Light.diffuse,
 
-     ada.Containers.hashed_Maps;
+--       ada.Containers.hashed_Maps;
 
 limited
 with
@@ -19,7 +19,8 @@ with
 
 private
 with
-     ada.Containers.indefinite_hashed_Maps,
+--       ada.Containers.indefinite_hashed_Maps,
+     ada.Containers.hashed_Maps,
      ada.unchecked_Conversion;
 
 
@@ -46,11 +47,11 @@ is
    --- Attributes
    --
 
-   type      light_Id is range 1 .. 8;
-
-   procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in Light.item);
-   function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.item;
+   function  new_Light (Self : in out Item)           return Light.item;
+   procedure set       (Self : in out Item;   the_Light : in Light.item);
+   procedure rid       (Self : in out Item;   the_Light : in Light.item);
+   function  Light     (Self : in out Item;   Id        : in light.Id_t) return openGL.Light.item;
+   function  fetch     (Self : in out Item)                              return openGL.Light.items;
 
 --     procedure Light_is (Self : in out Item;   Id  : in light_Id;
 --                                               Now : in Light.directional.item);
@@ -236,43 +237,44 @@ private
    --- Lights
    --
 
-   function Hash (Id : in light_Id) return ada.Containers.Hash_type;
-   use type openGL.Light.item;
-   package  id_Maps_of_light is new ada.Containers.indefinite_hashed_Maps (Key_type        => light_Id,
-                                                                           Element_type    => openGL.Light.item'Class,
-                                                                           Hash            => Hash,
-                                                                           equivalent_Keys => "=");
-   subtype id_Map_of_light is id_Maps_of_light.Map;
+   function Hash (Id : in openGL.light.Id_t) return ada.Containers.Hash_type;
+   use type openGL.Light.Id_t,
+            openGL.Light.item;
 
---     protected
---     type safe_Lights
---     is
---        procedure add (Id    : in light_Id;
---                       Light : in openGL.Light.item'Class);
---        procedure set (Id    : in light_Id;
---                       To    : in openGL.Light.item'Class);
---        procedure rid (Id    : in light_Id);
---
---        function  fetch return id_Map_of_light;
---     private
---        the_Lights : id_Map_of_light;
---     end safe_Lights;
+   package  id_Maps_of_light is new ada.Containers.hashed_Maps (Key_type        => openGL.light.Id_t,
+                                                                Element_type    => openGL.Light.item,
+                                                                Hash            => Hash,
+                                                                equivalent_Keys => "=");
+   subtype  id_Map_of_light is id_Maps_of_light.Map;
+
+   protected
+   type safe_Lights
+   is
+      procedure add (Light : in openGL.Light.item);
+      procedure set (Light : in openGL.Light.item);
+      procedure rid (Light : in openGL.Light.item);
+
+      function  get (Id    : in openGL.light.Id_t) return openGL.Light.item;
+      function  fetch                              return openGL.Light.items;
+   private
+      the_Lights : id_Map_of_light;
+   end safe_Lights;
 
 
    -- Directional Lights
    --
 
-   type Light_Set is array (light_Id) of openGL.Light.item;
-
-   protected
-   type safe_Lights
-   is
-      procedure set (Id : in light_Id;
-                     To : in openGL.Light.item);
-      function  fetch return light_Set;
-   private
-      the_Lights : light_Set;
-   end safe_Lights;
+--     type Light_Set is array (light_Id) of openGL.Light.item;
+--
+--     protected
+--     type safe_Lights
+--     is
+--        procedure set (Id : in light_Id;
+--                       To : in openGL.Light.item);
+--        function  fetch return light_Set;
+--     private
+--        the_Lights : light_Set;
+--     end safe_Lights;
 
 
 --     -- Diffuse Lights
@@ -312,6 +314,7 @@ private
    type Item is limited new Renderer.item with
       record
          Lights             :         safe_Lights;
+         prior_Light_Id     :         openGL.Light.Id_t := 0;
 --           diffuse_Lights     :         safe_diffuse_Lights;
 
          Textures           : aliased Texture.name_Map_of_texture;

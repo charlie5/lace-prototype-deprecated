@@ -254,20 +254,20 @@ is
 
       -- Setup the default light.
       --
-      declare
-         Lights : light_Set := Self.Lights.fetch;
-      begin
-         Lights (1).is_On;
---           Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
---                                             Opacity => 1.0),
---                                Diffuse  => (Primary => (1.0, 1.0, 1.0),
---                                             Opacity => 1.0));
-
-         Lights (1).Color_is (Palette.White);
-
-         Self.Lights.set (Id => 1,
-                          To => Lights (1));
-      end;
+--        declare
+--           Lights : light_Set := Self.Lights.fetch;
+--        begin
+--           Lights (1).is_On;
+--  --           Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
+--  --                                             Opacity => 1.0),
+--  --                                Diffuse  => (Primary => (1.0, 1.0, 1.0),
+--  --                                             Opacity => 1.0));
+--
+--           Lights (1).Color_is (Palette.White);
+--
+--           Self.Lights.set (Id => 1,
+--                            To => Lights (1));
+--        end;
 
 
       while not Done
@@ -524,12 +524,31 @@ is
       inverse_view_Transform         : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
       view_and_perspective_Transform : constant Matrix_4x4 := view_Transform * perspective_Transform;
 
---        Lights : id_Map_of_light := Self.Lights.fetch;
-      Lights         : light_Set         := Self.        Lights.fetch;
---        diffuse_Lights : diffuse_Light_Set := Self.diffuse_Lights.fetch;
+
+      function get_on_Lights return openGL.Light.items
+      is
+         all_Lights : constant openGL.Light.items := Self.Lights.fetch;
+         lit_Lights :          openGL.Light.items (all_Lights'Range);
+         Count      :          Natural            := 0;
+      begin
+         for i in all_Lights'Range
+         loop
+            if all_Lights (i).is_On
+            then
+               Count              := Count + 1;
+               lit_Lights (Count) := all_Lights (i);
+            end if;
+         end loop;
+
+         return lit_Lights (1 .. Count);
+      end get_on_Lights;
+
+      Lights : constant openGL.Light.items := get_on_Lights;
 
    begin
       Tasks.check;
+
+
 
 --        for Each of Lights
 --        loop
@@ -679,8 +698,8 @@ is
             current_Program.model_Matrix_is    (the_Couple.Visual.Transform);
             current_Program.camera_Site_is (get_Translation (camera_world_Transform));
 
+            current_Program.Lights_are (Lights);
 
-            current_Program.Light_is (1, Lights (1));
 
 --              current_Program.directional_Light_is        (1, Lights (1));
             --  current_Program.directional_Light_is        (2, Lights (2));
@@ -759,7 +778,7 @@ is
 
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
 
-            current_Program.Light_is (1, Lights (1));
+            current_Program.Lights_are (Lights);
 
 --              current_Program.directional_Light_is        (1, Lights (1));
             --current_Program.directional_Light_is        (2, Lights (2));
@@ -790,19 +809,19 @@ is
 
    -- Directional
    --
-   procedure Light_is (Self : in out Item;   Id  : in light_Id;
-                                             Now : in openGL.Light.item)
-   is
-   begin
-      Self.Lights.set (Id, Now);
-   end Light_is;
+--     procedure Light_is (Self : in out Item;   Id  : in light_Id;
+--                                               Now : in openGL.Light.item)
+--     is
+--     begin
+--        Self.Lights.set (Id, Now);
+--     end Light_is;
 
 
-   function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.item
-   is
-   begin
-      return Self.Lights.fetch (Id);
-   end Light;
+--     function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.item
+--     is
+--     begin
+--        return Self.Lights.fetch (Id);
+--     end Light;
 
 
    -- Diffuse
@@ -1018,7 +1037,7 @@ is
    -- safe_Lights
    --
 
-   function Hash (Id : in light_Id) return ada.Containers.Hash_type
+   function Hash (Id : in openGL.Light.Id_t) return ada.Containers.Hash_type
    is
    begin
       return ada.Containers.Hash_type (Id);
@@ -1030,19 +1049,92 @@ is
    protected
    body safe_Lights
    is
-      procedure set (Id : in light_Id;
-                     To : in openGL.Light.item)
+      procedure add (Light : in openGL.Light.item)
       is
       begin
-         the_Lights (Id) := To;
+         the_Lights.insert (Light.Id,
+                            Light);
+      end add;
+
+
+      procedure set (Light : in openGL.Light.item)
+      is
+      begin
+         the_Lights.replace (Light.Id,
+                             Light);
       end set;
 
-      function fetch return light_Set
+
+      procedure rid (Light : in openGL.Light.item)
       is
       begin
-         return the_Lights;
+         the_Lights.delete (Light.Id);
+      end rid;
+
+
+      function get (Id : in openGL.Light.Id_t) return openGL.Light.item
+      is
+      begin
+         return the_Lights.Element (Id);
+      end get;
+
+
+      function fetch return openGL.Light.items
+      is
+         all_Lights : openGL.Light.items (1 .. Natural (the_Lights.Length));
+         i          : Natural := 0;
+      begin
+         for Each of the_Lights
+         loop
+            i              := i + 1;
+            all_Lights (i) := Each;
+         end loop;
+
+         return all_Lights;
       end fetch;
+
    end safe_Lights;
+
+
+
+   function new_Light (Self : in out Item) return openGL.Light.item
+   is
+      the_Light : openGL.Light.item;
+   begin
+      Self.prior_Light_Id := Self.prior_Light_Id + 1;
+      the_Light.Id_is (Self.prior_Light_Id);
+      Self.Lights.add (the_Light);
+
+      return the_Light;
+   end new_Light;
+
+
+   procedure set (Self : in out Item;   the_Light : in openGL.Light.item)
+   is
+   begin
+      Self.Lights.set (the_Light);
+   end set;
+
+
+   procedure rid (Self : in out Item;   the_Light : in openGL.Light.item)
+   is
+   begin
+      Self.Lights.rid (the_Light);
+   end rid;
+
+
+   function Light (Self : in out Item;   Id : in openGL.light.Id_t) return openGL.Light.item
+   is
+   begin
+      return Self.Lights.get (Id);
+   end Light;
+
+
+   function fetch (Self : in out Item) return openGL.Light.items
+   is
+   begin
+      return Self.Lights.fetch;
+   end fetch;
 
 
    -- Diffuse.

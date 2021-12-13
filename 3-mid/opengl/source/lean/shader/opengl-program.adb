@@ -348,12 +348,20 @@ is
 
 
 
-   procedure Light_is (Self : in out Item'Class;   light_Id : in Positive;
-                                                   Now      : in Light.item)
+   procedure Lights_are (Self : in out Item;   Now : in Light.items)
    is
    begin
-      Self.Lights (light_Id) := Now;
-   end Light_is;
+      Self.light_Count              := Now'Length;
+      Self.Lights (1 .. Now'Length) := Now;
+   end Lights_are;
+
+
+--     procedure Light_is (Self : in out Item'Class;   light_Id : in Positive;
+--                                                     Now      : in Light.item)
+--     is
+--     begin
+--        Self.Lights (light_Id) := Now;
+--     end Light_is;
 
 
 
@@ -426,16 +434,18 @@ is
       Self.set_mvp_Uniform;
 
 
-      the_light_count_Uniform           .Value_is (1);
-      the_specular_color_Uniform        .Value_is (to_Vector_3 (Self.specular_Color));
       the_scale_Uniform                 .Value_is (Self.Scale);
       the_camera_site_Uniform           .Value_is (Self.camera_Site);
       the_model_transform_Uniform       .Value_is (Self.model_Transform);
       the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
 
+
       -- Lights.
       --
-      for i in Self.Lights'Range
+      the_light_count_Uniform   .Value_is (Self.light_Count);
+      the_specular_color_Uniform.Value_is (to_Vector_3 (Self.specular_Color));
+
+      for i in 1 .. Self.light_Count
       loop
          declare
             use Light;

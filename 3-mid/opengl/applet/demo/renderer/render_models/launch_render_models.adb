@@ -23,15 +23,18 @@ begin
                             y_Rotation_from (to_Radians (0.0)));
 
    declare
-      the_Light : openGL.Light.item := Demo.Renderer.Light (1);
+      use openGL.Light;
+      the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
-      the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
+      the_Light.Kind_is (Diffused);
+      the_Light.Site_is ((0.0, 0.0, 5.0));
+--        the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
 --        the_Light.Site_is ((000.0, 5_000.0, 000.0));
 
           the_Light.Color_is (White);
 --        the_Light.ambient_Coefficient_is (0.91);
 
-      Demo.Renderer.Light_is (1, the_Light);
+      Demo.Renderer.set (the_Light);
    end;
 
 

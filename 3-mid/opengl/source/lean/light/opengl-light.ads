@@ -14,7 +14,7 @@ is
    --------------
    --- Attributes
    --
-   type Id_t   is new Positive;
+   type Id_t   is new Natural;
    type Kind_t is (Diffused, Direct);
 
    null_Id : constant Id_t;
@@ -61,7 +61,7 @@ is
 
 private
 
-   null_Id : constant Id_t := Id_t'Last;
+   null_Id : constant Id_t := Id_t'First;
 
    type Item is tagged
       record
