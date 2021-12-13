@@ -68,12 +68,12 @@ begin
    -- Set the lights position and ambient color.
    --
    declare
-      Light : openGL.Light.item := the_Applet.Renderer.all.Light (Id => 1);
+      Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
       Light.Color_is ((0.5, 0.9, 0.5));
       Light. Site_is ((1000.0, 1000.0, 1000.0));
 
-      the_Applet.Renderer.Light_is (Id => 1, Now => Light);
+      the_Applet.Renderer.set (Light);
    end;
 
 

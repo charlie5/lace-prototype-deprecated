@@ -21,10 +21,10 @@ begin
                             y_Rotation_from (to_Radians (0.0)));
 
    declare
-      the_Light : openGL.Light.item := Demo.Renderer.Light (1);
+      the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
       the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
-      Demo.Renderer.Light_is (1, the_Light);
+      Demo.Renderer.set (the_Light);
    end;
 
    declare

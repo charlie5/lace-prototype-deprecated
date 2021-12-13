@@ -42,6 +42,8 @@ begin
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Ball_1_Model.all'Access),
                                                      2 => new_Visual (the_Ball_2_Model.all'Access));
 
+      the_Light : openGL.Light.item := Demo.Renderer.new_Light;
+
       -- Light movement.
       --
       initial_Site : constant openGL.Vector_3 := (-10_000.0, 0.0, 10_000.0);
@@ -53,12 +55,8 @@ begin
 
       -- Set the lights initial position to far behind and far to the left.
       --
-      declare
-         Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
-      begin
-         Light.Site_is (initial_Site);
-         Demo.Renderer.Light_is (Id => 1, Now => Light);
-      end;
+      the_Light.Site_is (initial_Site);
+      Demo.Renderer.set (the_Light);
 
 
       --  Main loop.
@@ -72,25 +70,21 @@ begin
 
          -- Move the light.
          --
-         declare
-            Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
-         begin
-            if    Light.Site (1) >  10_000.0
-            then
-               site_Delta (1) := -1.0;
-               Light.Color_is (Palette.dark_Green);
+         if    the_Light.Site (1) >  10_000.0
+         then
+            site_Delta (1) := -1.0;
+            the_Light.Color_is (Palette.dark_Green);
 
-            elsif Light.Site (1) < -10_000.0
-            then
-               site_Delta (1) :=  1.0;
+         elsif the_Light.Site (1) < -10_000.0
+         then
+            site_Delta (1) := 1.0;
 
-               Light.Color_is (openGL.Palette.dark_Red);
-            end if;
+            the_Light.Color_is (openGL.Palette.dark_Red);
+         end if;
 
-            Light.Site_is (Light.Site + site_Delta);
+         the_Light.Site_is (the_Light.Site + site_Delta);
 
-            Demo.Renderer.Light_is (Id => 1, Now => Light);
-         end;
+         Demo.Renderer.set (the_Light);
 
          --  Render the sprites.
          --

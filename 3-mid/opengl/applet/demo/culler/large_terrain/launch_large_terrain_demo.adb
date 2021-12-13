@@ -26,10 +26,12 @@ begin
    -- Set the lights initial position to far behind and far to the left.
    --
    declare
-      Light : openGL.Light.item := Demo.Renderer.Light (Id => 1);
+      use openGL.Light,
+          openGL;
+      the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
-      Light.Site_is ((0.0, 1000.0, 0.0));
-      Demo.Renderer.Light_is (Id => 1, Now => Light);
+      the_Light.Site_is ((0.0, 1000.0, 0.0));
+      Demo.Renderer.set (the_Light);
    end;
 
 

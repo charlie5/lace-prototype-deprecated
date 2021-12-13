@@ -25,7 +25,7 @@ begin
    declare
       use openGL.Palette;
 
-      Light       : openGL.Light.item   := Demo.Renderer.Light (Id => 1);
+      the_Light   : openGL.Light.item   := Demo.Renderer.new_Light;
       the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 
       --  The Models.
@@ -41,8 +41,8 @@ begin
 
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Capsule_Model.all'Access));
    begin
-      Light.Site_is ((0.0, 5.0, 10.0));
-      Demo.Renderer.Light_is (Id => 1, Now => Light);
+      the_Light.Site_is ((0.0, 5.0, 10.0));
+      Demo.Renderer.set (the_Light);
 
       --  Main loop.
       --
