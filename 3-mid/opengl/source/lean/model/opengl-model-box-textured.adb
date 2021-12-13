@@ -2,6 +2,7 @@ with
      openGL.Geometry.textured,
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.box.textured
 is
    type Geometry_view is access all Geometry.textured.item'Class;

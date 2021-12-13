@@ -2,6 +2,7 @@ with
      openGL.Primitive.indexed,
      openGL.IO;
 
+
 package body openGL.Model.billboard.colored_textured
 is
    type Geometry_view is access all Geometry.colored_textured.item'Class;

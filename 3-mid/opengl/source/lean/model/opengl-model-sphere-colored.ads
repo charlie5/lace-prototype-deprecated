@@ -1,6 +1,7 @@
 with
      openGL.Geometry;
 
+
 package openGL.Model.sphere.colored
 --
 --  Models a colored sphere.

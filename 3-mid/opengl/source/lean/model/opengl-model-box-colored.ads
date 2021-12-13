@@ -39,7 +39,6 @@ is
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
-
 private
 
    type Item is new Model.box.item with

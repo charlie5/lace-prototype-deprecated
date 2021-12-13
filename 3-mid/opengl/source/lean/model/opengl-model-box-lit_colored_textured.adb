@@ -2,6 +2,7 @@ with
      openGL.Geometry.lit_colored_textured,
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.box.lit_colored_textured
 is
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;

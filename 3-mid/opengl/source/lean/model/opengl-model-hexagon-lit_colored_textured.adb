@@ -2,6 +2,7 @@ with
      openGL.Geometry.lit_colored_textured,
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.hexagon.lit_colored_textured
 is
 

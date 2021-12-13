@@ -2,6 +2,7 @@ with
      openGL.Geometry .lit_colored,
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.sphere.lit_colored
 is
    ---------

@@ -5,6 +5,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Model.billboard.textured
 is
    type Geometry_view is access all Geometry.textured.item'Class;

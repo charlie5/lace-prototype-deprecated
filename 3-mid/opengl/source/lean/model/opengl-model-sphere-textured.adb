@@ -4,6 +4,7 @@ with
      openGL.IO,
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.sphere.textured
 is
    ---------
