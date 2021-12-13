@@ -24,6 +24,7 @@ with
      ada.Task_Identification,
      ada.unchecked_Deallocation;
 
+
 package body openGL.Renderer.lean
 is
    use GL,
@@ -252,24 +253,6 @@ is
       openGL.Geometry.lit_colored_textured_skinned.define_Program;
 
 
-      -- Setup the default light.
-      --
---        declare
---           Lights : light_Set := Self.Lights.fetch;
---        begin
---           Lights (1).is_On;
---  --           Lights (1).Color_is (Ambient  => (Primary => (0.0, 0.0, 0.0),     -- The GL defaults for Light0.
---  --                                             Opacity => 1.0),
---  --                                Diffuse  => (Primary => (1.0, 1.0, 1.0),
---  --                                             Opacity => 1.0));
---
---           Lights (1).Color_is (Palette.White);
---
---           Self.Lights.set (Id => 1,
---                            To => Lights (1));
---        end;
-
-
       while not Done
       loop
          declare
@@ -417,12 +400,8 @@ is
    begin
       Tasks.check;
 
---        the_Light.inverse_view_Transform_is (inverse_view_Transform);
       the_Light. Site_is (light_Site);
       the_Light.Color_is (Palette.White);
---        the_Light.Color_is (Ambient  => (Palette.White, Opaque),
---                            Diffuse  => (Palette.White, Opaque));
---                            Specular => (Palette.White, Opaque));
 
       for i in the_Updates'Range
       loop
@@ -548,33 +527,6 @@ is
    begin
       Tasks.check;
 
-
-
---        for Each of Lights
---        loop
---           Each.inverse_view_Transform_is (inverse_view_Transform);
---        end loop;
-
---        for Light of Lights
---        loop
---           Light.inverse_view_Transform_is (inverse_view_Transform);
---        end loop;
---
---        for Light of diffuse_Lights
---        loop
---           Light.inverse_view_Transform_is (inverse_view_Transform);
---        end loop;
-
-      -- For debugging ...
-      --
-      --        Lights (1).Color_is (ambient  => (Palette.Grey, Lucid),
-      --                             diffuse  => (Palette.Dark_blue, Lucid),
-      --                             specular => (Palette.White, Lucid));
-      --
-      --        Lights (2).Color_is (ambient  => (Palette.Grey, Lucid),
-      --                             diffuse  => (Palette.Dark_blue, Lucid),
-      --                             specular => (Palette.White, Lucid));
-
       if clear_Frame then
          Self.clear_Frame;
       end if;
@@ -609,11 +561,8 @@ is
                opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
                lucid_Geometries  : Model.access_Geometry_views renames the_Visual.Model. lucid_Geometries;
             begin
-               --  the_Visual.camera_Transform_is (inverse (camera_world_Transform));
                the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
                the_Visual.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Visual.Transform * view_Transform)));
-
-               the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
 
                if opaque_Geometries /= null
                then
@@ -693,24 +642,12 @@ is
                current_Program := the_Couple.Geometry.Program;
             end if;
 
-            current_Program.enable;     -- TODO: Only need to do this when program changes ?
-            current_Program.mvp_Transform_is   (the_Couple.Visual.mvp_Transform);
-            current_Program.model_Matrix_is    (the_Couple.Visual.Transform);
-            current_Program.camera_Site_is (get_Translation (camera_world_Transform));
-
-            current_Program.Lights_are (Lights);
-
-
---              current_Program.directional_Light_is        (1, Lights (1));
-            --  current_Program.directional_Light_is        (2, Lights (2));
-
---              current_Program.diffuse_Light_is        (1, diffuse_Lights (1));
-            --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
-
-
-
-            current_Program.Scale_is                    (the_Couple.Visual.Scale);
-            --  current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
+            current_Program.enable;                                               -- TODO: Only need to do this when program changes ?
+            current_Program.mvp_Transform_is (the_Couple.Visual.mvp_Transform);
+            current_Program.model_Matrix_is  (the_Couple.Visual.Transform);
+            current_Program.camera_Site_is   (get_Translation (camera_world_Transform));
+            current_Program.Lights_are       (Lights);
+            current_Program.Scale_is         (the_Couple.Visual.Scale);
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;
@@ -741,8 +678,6 @@ is
          begin
             return   Self.all_lucid_Couples (Left) .Visual.Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
                    < Self.all_lucid_Couples (Right).Visual.Transform (4, 3);  --                                forward, so use '<'.
-            --  return   Self.all_lucid_Couples (Left) .Visual.model_Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
-            --         < Self.all_lucid_Couples (Right).Visual.model_Transform (4, 3);  --                                forward, so use '<'.
          end Heap_less_than;
 
          the_Couple      : visual_geometry_Couple;
@@ -770,24 +705,12 @@ is
 
             current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
-
-            current_Program.mvp_Transform_is   (the_Couple.Visual.mvp_Transform);
-            current_Program.camera_Site_is (get_Translation (camera_world_Transform));
-            current_Program. model_Matrix_is   (the_Couple.Visual.Transform);
---              current_Program.camera_Matrix_is            (the_Couple.Visual.camera_Transform);
-
+            current_Program.mvp_Transform_is            (the_Couple.Visual.mvp_Transform);
+            current_Program.camera_Site_is              (get_Translation (camera_world_Transform));
+            current_Program. model_Matrix_is            (the_Couple.Visual.Transform);
             current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-
-            current_Program.Lights_are (Lights);
-
---              current_Program.directional_Light_is        (1, Lights (1));
-            --current_Program.directional_Light_is        (2, Lights (2));
-
---              current_Program.    diffuse_Light_is        (1, diffuse_Lights (1));
-            --  current_Program.diffuse_Light_is        (2, diffuse_Lights (2));
-
+            current_Program.Lights_are                  (Lights);
             current_Program.Scale_is                    (the_Couple.Visual.Scale);
-            --  current_Program.Shine_is                    (the_Couple.Visual.Model.Shine);
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;
@@ -802,43 +725,6 @@ is
       Errors.log;
    end draw;
 
-
-   ---------
-   -- Lights
-   --
-
-   -- Directional
-   --
---     procedure Light_is (Self : in out Item;   Id  : in light_Id;
---                                               Now : in openGL.Light.item)
---     is
---     begin
---        Self.Lights.set (Id, Now);
---     end Light_is;
-
-
---     function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.item
---     is
---     begin
---        return Self.Lights.fetch (Id);
---     end Light;
-
-
-   -- Diffuse
-   --
---     procedure Light_is (Self : in out Item;   Id  : in light_Id;
---                                               Now : in openGL.Light.diffuse.item)
---     is
---     begin
---        Self.diffuse_Lights.set (Id, Now);
---     end Light_is;
---
---
---     function Light (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse.item
---     is
---     begin
---        return Self.diffuse_Lights.fetch (Id);
---     end Light;
 
 
    -----------------------------
@@ -1033,8 +919,8 @@ is
    end free;
 
 
-   -----------------
-   -- safe_Lights
+   ---------
+   -- Lights
    --
 
    function Hash (Id : in openGL.Light.Id_t) return ada.Containers.Hash_type
@@ -1044,8 +930,6 @@ is
    end Hash;
 
 
-   -- Directional.
-   --
    protected
    body safe_Lights
    is
@@ -1135,26 +1019,6 @@ is
    begin
       return Self.Lights.fetch;
    end fetch;
-
-
-   -- Diffuse.
-   --
---     protected
---     body safe_diffuse_Lights
---     is
---        procedure set (Id : in light_Id;
---                       To : in openGL.Light.diffuse.item)
---        is
---        begin
---           the_Lights (Id) := To;
---        end set;
---
---        function fetch return diffuse_Light_Set
---        is
---        begin
---           return the_Lights;
---        end fetch;
---     end safe_diffuse_Lights;
 
 
 end openGL.Renderer.lean;

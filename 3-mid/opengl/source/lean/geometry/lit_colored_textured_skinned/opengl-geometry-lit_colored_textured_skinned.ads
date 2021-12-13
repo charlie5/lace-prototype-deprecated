@@ -1,6 +1,7 @@
 with
      openGL.Program.lit_colored_textured_skinned;
 
+
 package openGL.Geometry.lit_colored_textured_skinned
 --
 --  Supports per-vertex site color, texture, lighting and skinning.

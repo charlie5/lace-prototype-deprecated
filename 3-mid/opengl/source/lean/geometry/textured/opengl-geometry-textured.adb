@@ -28,6 +28,7 @@ is
    -----------
    --  Globals
    --
+
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 

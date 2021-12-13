@@ -51,24 +51,15 @@ is
    end Site;
 
 
-
    procedure Site_is (Self : in out Item;   Now : in openGL.Site)
    is
    begin
       case Self.Kind
       is
          when Diffuse =>   Self.Site := Vector_4  (Now & 1.0);
-         when Direct   =>   Self.Site := Vector_4 (-Now & 0.0);
+         when Direct  =>   Self.Site := Vector_4 (-Now & 0.0);
       end case;
    end Site_is;
-
-
-
---     function Position (Self : in Item) return Vector_3
---     is
---     begin
---        return Self.Position;
---     end Position;
 
 
    function Color (Self : in Item) return openGL.Color
@@ -107,13 +98,6 @@ is
 
 
 
---     procedure Position_is (Self : in out Item;   Now : in Vector_3)
---     is
---     begin
---        Self.Position := Now;
---     end Position_is;
-
-
    procedure Color_is (Self : in out Item;   Now : in openGL.Color)
    is
    begin
@@ -148,18 +132,6 @@ is
    begin
       Self.cone_Direction := Now;
    end cone_Direction_is;
-
-
-
-
---     procedure Color_is (Self : in out Item;   Ambient,
---                                               Diffuse : in lucid_Color)
---     is
---        use openGL.conversions;
---     begin
---        Self. ambient_Color := to_Vector_4 (Ambient);
---        Self. diffuse_Color := to_Vector_4 (Diffuse);
---     end Color_is;
 
 
 end openGL.Light;

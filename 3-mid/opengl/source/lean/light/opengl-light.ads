@@ -31,8 +31,6 @@ is
    function  Site    (Self : in     Item)     return openGL.Site;
    procedure Site_is (Self : in out Item;   Now : in openGL.Site);
 
---     procedure Color_is (Self : in out Item;   Ambient,
---                                               Diffuse : in lucid_Color);
    function  Color               (Self : in     Item) return Color;
    function  Attenuation         (Self : in     Item) return Real;
    function  ambient_Coefficient (Self : in     Item) return Real;
@@ -45,18 +43,6 @@ is
    procedure cone_Angle_is          (Self : in out Item;   Now : in Degrees);
    procedure cone_Direction_is      (Self : in out Item;   Now : in Vector_3);
 
-
-
-   --------------
-   --- Containers
-   --
-
-   --  function Hash (Id : in Light.Id) return ada.Containers.Hash_type;
-   --  package  id_Maps_of_light is new ada.Containers.indefinite_hashed_Maps (Key_Type        => Id,
-   --                                                                          Element_Type    => Item'Class);
-                                                                          --  Hash            => ,
-                                                                          --  Equivalent_Keys => ,
-                                                                          --  "="             => )
 
 
 private

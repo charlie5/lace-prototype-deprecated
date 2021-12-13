@@ -8,10 +8,6 @@ with
      openGL.Texture,
      openGL.Font,
      openGL.Light;
---       openGL.Light.directional,
---       openGL.Light.diffuse,
-
---       ada.Containers.hashed_Maps;
 
 limited
 with
@@ -19,7 +15,6 @@ with
 
 private
 with
---       ada.Containers.indefinite_hashed_Maps,
      ada.Containers.hashed_Maps,
      ada.unchecked_Conversion;
 
@@ -52,14 +47,6 @@ is
    procedure rid       (Self : in out Item;   the_Light : in Light.item);
    function  Light     (Self : in out Item;   Id        : in light.Id_t) return openGL.Light.item;
    function  fetch     (Self : in out Item)                              return openGL.Light.items;
-
---     procedure Light_is (Self : in out Item;   Id  : in light_Id;
---                                               Now : in Light.directional.item);
---     procedure Light_is (Self : in out Item;   Id  : in light_Id;
---                                               Now : in Light.diffuse.item);
---     function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.directional.item;
---     function  Light    (Self : in out Item;   Id  : in light_Id) return openGL.Light.diffuse    .item;
-
 
    type context_Setter is access procedure;
    type Swapper        is access procedure;
@@ -261,37 +248,6 @@ private
    end safe_Lights;
 
 
-   -- Directional Lights
-   --
-
---     type Light_Set is array (light_Id) of openGL.Light.item;
---
---     protected
---     type safe_Lights
---     is
---        procedure set (Id : in light_Id;
---                       To : in openGL.Light.item);
---        function  fetch return light_Set;
---     private
---        the_Lights : light_Set;
---     end safe_Lights;
-
-
---     -- Diffuse Lights
---     --
---     type diffuse_Light_Set is array (light_Id) of openGL.Light.diffuse.item;
---
---     protected
---     type safe_diffuse_Lights
---     is
---        procedure set (Id : in light_Id;
---                       To : in openGL.Light.diffuse.item);
---        function  fetch return diffuse_Light_Set;
---     private
---        the_Lights : diffuse_Light_Set;
---     end safe_diffuse_Lights;
-
-
    -- Engine
    --
 
@@ -315,7 +271,6 @@ private
       record
          Lights             :         safe_Lights;
          prior_Light_Id     :         openGL.Light.Id_t := 0;
---           diffuse_Lights     :         safe_diffuse_Lights;
 
          Textures           : aliased Texture.name_Map_of_texture;
          Fonts              :         Font.font_id_Map_of_font;
