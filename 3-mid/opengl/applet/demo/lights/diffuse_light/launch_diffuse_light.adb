@@ -1,7 +1,7 @@
 with
-     openGL.Light.diffuse,
+     openGL.Light, --.diffuse,
      openGL.Visual,
-     openGL.Model.Box.lit,
+--       openGL.Model.Box.lit,
      openGL.Model.Box.lit_colored_textured,
      openGL.Palette,
      openGL.Demo;
@@ -77,16 +77,12 @@ begin
       -- Set the lights initial position to far behind and far to the left.
       --
       declare
-         Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
+         Light : openGL.Light.item := Demo.Renderer.new_Light;
       begin
-         Light.Color_is (Ambient  => (Grey,  Opaque),
-                         Diffuse  => (White, Opaque));
-                         --  Specular => (White, Opaque));
-
-         Light.Position_is       (initial_Site);
+         Light.Color_is (White);
+         Light.Site_is  (initial_Site);
          Light.cone_Direction_is (cone_Direction);
-
-         Demo.Renderer.Light_is (Id => 1, Now => Light);
+         Demo.Renderer.set (Light);
       end;
 
 
