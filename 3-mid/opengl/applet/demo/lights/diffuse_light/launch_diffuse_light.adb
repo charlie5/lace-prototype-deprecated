@@ -1,8 +1,7 @@
 with
-     openGL.Light, --.diffuse,
+     openGL.Light,
      openGL.Visual,
---       openGL.Model.Box.lit,
-     openGL.Model.Box.lit_colored_textured,
+     openGL.Model.Box.lit_textured,
      openGL.Palette,
      openGL.Demo;
 
@@ -26,65 +25,48 @@ begin
                             y_Rotation_from (to_Radians (0.0)));
    declare
       use openGL.Model.box,
+          openGL.Visual.Forge,
+          openGL.Light,
           openGL.Palette;
 
-      --  The Models.
+      --  The Model.
       --
-      --  the_Box : constant Model.Box.lit.view
-      --    := openGL.Model.Box.lit.new_Box (Size  => (4.0, 4.0, 4.0),
-      --                                     Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-      --                                               Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-      --                                               Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-      --                                               Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-      --                                               Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
-      --                                               Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
-      the_Box : constant Model.Box.lit_colored_textured.view
-        := openGL.Model.Box.lit_colored_textured.new_Box (Size  => (4.0, 4.0, 4.0),
-                                                          Faces => (Front => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-                                                                    Rear  => (Colors => (others => (Blue,     Opaque)),  texture_Name => the_Texture),
-                                                                    Upper => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-                                                                    Lower => (Colors => (others => (Green,    Opaque)),  texture_Name => the_Texture),
-                                                                    Left  => (Colors => (others => (Dark_Red, Opaque)),  texture_Name => the_Texture),
-                                                                    Right => (Colors => (others => (Red,      Opaque)),  texture_Name => the_Texture)));
-      --  The Visuals.
+      the_Box : constant Model.Box.lit_textured.view
+        := openGL.Model.Box.lit_textured.new_Box (Size  => (4.0, 4.0, 4.0),
+                                                  Faces => (Front => (texture_Name => the_Texture),
+                                                            Rear  => (texture_Name => the_Texture),
+                                                            Upper => (texture_Name => the_Texture),
+                                                            Lower => (texture_Name => the_Texture),
+                                                            Left  => (texture_Name => the_Texture),
+                                                            Right => (texture_Name => the_Texture)));
+      --  The Visual.
       --
-      use openGL.Visual.Forge;
-
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Box.all'Access));
 
-      -- Light movement.
+
+      -- The Light.
       --
-      --  site_Delta   :          openGL.Vector_3 := (1.0, 0.0, 0.0);
-
-      initial_Site   : constant openGL.Vector_3 := (0.0, 0.0, 15.0);
-      cone_Direction : constant openGL.Vector_3 := (0.0, 0.0, -1.0);
-
-      --  initial_Site   : constant openGL.Vector_3 := (0.1, 0.1, -15.0);
-      --  cone_Direction : constant openGL.Vector_3 := (0.0, 0.0,   1.0);
-
-      --  initial_Site   : constant openGL.Vector_3 := (0.0, 0.0,  15.0);
-      --  cone_Direction : constant openGL.Vector_3 := (0.0, 0.0,  -1.0);
+      the_Light      :          openGL.Light.item := Demo.Renderer.new_Light;
+      initial_Site   : constant openGL.Vector_3   := (0.0, 0.0, 15.0);
+      site_Delta     :          openGL.Vector_3   := (1.0, 0.0,  0.0);
+      cone_Direction : constant openGL.Vector_3   := (0.0, 0.0, -1.0);
 
    begin
-      the_Visuals (1).Site_is ((0.0, 0.0, 0.0));
-      --  the_Visuals (1).Site_is ((1.0, 0.0, 0.0));
-      --  the_Visuals (1).Site_is ((0.0, 1.0, 0.0));
-      --  the_Visuals (1).Site_is ((1.0, 1.0, 0.0));
-      --  the_Visuals (1).Site_is ((0.0, 0.0, 10.0));
-
-      --  the_Visuals (1).Spin_is (z_Rotation_from (to_Radians (90.0)));
-
-      -- Set the lights initial position to far behind and far to the left.
+      -- Setup the visual.
       --
-      declare
-         Light : openGL.Light.item := Demo.Renderer.new_Light;
-      begin
-         Light.Color_is (White);
-         Light.Site_is  (initial_Site);
-         Light.cone_Direction_is (cone_Direction);
-         Demo.Renderer.set (Light);
-      end;
+      the_Visuals (1).Site_is (Origin_3D);
+      the_Visuals (1).Spin_is (y_Rotation_from (to_Radians (20.0)));
 
+      -- Setup the light.
+      --
+      the_Light. Kind_is (Diffuse);
+      the_Light.Color_is (White);
+      the_Light. Site_is (initial_Site);
+
+      the_Light.cone_Angle_is     (5.0);
+      the_Light.cone_Direction_is (cone_Direction);
+
+      Demo.Renderer.set (the_Light);
 
       --  Main loop.
       --
@@ -97,30 +79,12 @@ begin
 
          -- Move the light.
          --
-         --  declare
-         --     Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
-         --  begin
-         --     if    Light.Site (1) >  10_000.0
-         --     then
-         --        site_Delta (1) := -1.0;
-         --
-         --        Light.Color_is (Ambient  => (openGL.Palette.dark_Green, Opaque),
-         --                        Diffuse  => (openGL.Palette.Grey,       Opaque),
-         --                        Specular => (openGL.Palette.White,      Opaque));
-         --
-         --     elsif Light.Site (1) < -10_000.0
-         --     then
-         --        site_Delta (1) :=  1.0;
-         --
-         --        Light.Color_is (Ambient  => (openGL.Palette.dark_Red, Opaque),
-         --                        Diffuse  => (openGL.Palette.Grey,     Opaque),
-         --                        Specular => (openGL.Palette.White,    Opaque));
-         --     end if;
-         --
-         --     Light.Site_is (Light.Site + site_Delta);
-         --
-         --     Demo.Renderer.Light_is (Id => 1, Now => Light);
-         --  end;
+         if    the_Light.Site (1) >  2.0 then   site_Delta (1) := -0.01;
+         elsif the_Light.Site (1) < -2.0 then   site_Delta (1) :=  0.01;
+         end if;
+
+         the_Light.Site_is     (the_Light.Site + site_Delta);
+         Demo.Renderer.set (the_Light);
 
          --  Render the sprites.
          --
@@ -133,6 +97,8 @@ begin
 
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
+
+         delay 1.0 / 60.0;
       end loop;
    end;
 
