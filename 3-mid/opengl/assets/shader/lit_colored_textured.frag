@@ -98,7 +98,9 @@ main()
     vec3   surface_Site      = vec3 (  model_Transform
                                      * vec4 (frag_Site, 1));
                                    
-    vec4   surface_Color     = texture (Texture, frag_Coords);
+    vec4   surface_Color     = mix (texture (Texture, frag_Coords),
+                                    frag_Color,
+                                    0.5);
 
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
     vec3   Normal            = normalize (frag_Normal * inverse_model_Rotation);
