@@ -8,6 +8,8 @@ varying vec2        vCoords;
 
 void main()
 {
-   gl_FragColor = texture2D (sTexture, vCoords)  *  vColor;   // Modulate light color with texture.
+   gl_FragColor =   mix (texture2D (sTexture, vCoords),
+                         vColor,
+                         0.5);
 }
 
