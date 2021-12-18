@@ -57,8 +57,8 @@ is
 
 
    procedure define (Name   : in String;
-                     Width  : in Positive := 1000;
-                     Height : in Positive := 1000)
+                     Width  : in Positive := 1366;
+                     Height : in Positive :=  768)
    is
       use Palette,
           linear_Algebra_3d;
