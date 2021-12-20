@@ -10,9 +10,6 @@ with
 
 package body openGL.Model.Text.lit_colored_textured
 is
-   type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
-
-
    ---------
    --- Forge
    --
@@ -228,7 +225,7 @@ is
          use      Primitive;
          use type openGL.Font.texture.view;
 
-         the_Geometry   : Geometry_view;
+         the_Geometry   : Geometry.lit_colored_textured.view;
          the_Primitive  : Primitive.indexed.view;
 
          unused         : Vector_3;
