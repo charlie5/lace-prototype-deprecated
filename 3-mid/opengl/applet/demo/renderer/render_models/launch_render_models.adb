@@ -118,6 +118,8 @@ begin
 
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
+
+         delay 1.0 / 60.0;
       end loop;
    end;
 
