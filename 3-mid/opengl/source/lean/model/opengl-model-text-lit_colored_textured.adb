@@ -276,6 +276,7 @@ is
          the_Geometry.add          (Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
          the_Geometry.Texture_is   (Texture.Forge.to_Texture (Self.Font.gl_Texture));
+         the_Geometry.is_Transparent;
 
          return (1 => Geometry.view (the_Geometry));
       end;
