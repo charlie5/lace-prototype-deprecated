@@ -26,7 +26,7 @@ with
      openGL.Model.sphere        .textured,
      openGL.Model.sphere        .lit_colored,
      openGL.Model.sphere        .lit_textured,
-     openGL.Model.Text          .lit_colored_textured,
+     openGL.Model.Text          .lit_colored,
      openGL.Model.terrain,
 
      SDL.Video.Windows.Makers,
@@ -214,11 +214,11 @@ is
         := Model.polygon.lit_colored.new_Polygon (Vertices => (Origin_2D, (1.0, 0.0), (1.0, 1.0), (-1.0, 0.5)),
                                                   Color    => (Red, Opaque));
 
-      the_text_Model : constant Model.Text.lit_colored_textured.view
-        := Model.Text.lit_colored_textured.new_Text (Text     => "Once upon a midnight dreary ...",
-                                                     Font     => the_font_Id,
-                                                     Color    => (Green, Opaque),
-                                                     Centered => True);
+      the_text_Model : constant Model.Text.lit_colored.view
+        := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
+                                            Font     => the_font_Id,
+                                            Color    => (Green, Opaque),
+                                            Centered => True);
 
       the_segment_line_Model : constant Model.segment_line.view
         := Model.segment_line.new_segment_line_Model (Color => Green);

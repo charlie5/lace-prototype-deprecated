@@ -8,7 +8,7 @@ with
      ada.Directories;
 
 
-package body openGL.Model.Text.lit_colored_textured
+package body openGL.Model.Text.lit_colored
 is
    ---------
    --- Forge
@@ -283,4 +283,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.Text.lit_colored_textured;
+end openGL.Model.Text.lit_colored;

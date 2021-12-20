@@ -3,9 +3,9 @@ with
      openGL.Geometry;
 
 
-package openGL.Model.Text.lit_colored_textured
+package openGL.Model.Text.lit_colored
 --
---  Models lit, colored, textured text.
+--  Models lit and colored text.
 --
 is
    type Item is new Model.text.item with private;
@@ -52,4 +52,4 @@ private
          Centered : Boolean;
       end record;
 
-end openGL.Model.Text.lit_colored_textured;
+end openGL.Model.Text.lit_colored;

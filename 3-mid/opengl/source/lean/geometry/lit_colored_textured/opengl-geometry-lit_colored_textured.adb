@@ -190,7 +190,7 @@ is
          if the_Programs (alpha_Texture).Program = null
          then
             define (the_Programs (alpha_Texture)'Access,
-                    use_fragment_Shader => "assets/opengl/shader/lit_colored_textured-text.frag");
+                    use_fragment_Shader => "assets/opengl/shader/lit_colored_text.frag");
          end if;
       else
          if the_Programs (rgba_Texture).Program = null

@@ -1,5 +1,5 @@
 with
-     openGL.Model.text     .lit_colored_textured,
+     openGL.Model.text     .lit_colored,
 
      openGL.Model.sphere   .lit_colored_textured,
      openGL.Model.sphere   .lit_colored,
@@ -562,11 +562,11 @@ is
       use Math;
       use type Physics.space_Kind;
 
-      the_graphics_Model : constant openGL.Model.text.lit_colored_textured.View
-        := openGL.Model.text.lit_colored_textured.new_Text (Text     => Text,
-                                                            Font     => Font,
-                                                            Color    => (Color, openGL.Opaque),
-                                                            Centered => Centered);
+      the_graphics_Model : constant openGL.Model.text.lit_colored.view
+        := openGL.Model.text.lit_colored.new_Text (Text     => Text,
+                                                   Font     => Font,
+                                                   Color    => (Color, openGL.Opaque),
+                                                   Centered => Centered);
       the_physics_Model  : physics.Model.view;
    begin
       if in_World.space_Kind = Physics.Box2d
