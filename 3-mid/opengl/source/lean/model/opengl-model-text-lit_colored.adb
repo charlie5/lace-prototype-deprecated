@@ -1,5 +1,5 @@
 with
-     openGL.Geometry.lit_colored,
+     openGL.Geometry.lit_colored_textured,
      openGL.GlyphImpl.Texture,
      openGL,
      openGL.Primitive.indexed,
@@ -90,7 +90,7 @@ is
 
       declare
          use Geometry,
-             Geometry.lit_colored,
+             Geometry.lit_colored_textured,
              Texture;
 
          num_Characters : constant Positive     := Self.Text.all'Length;
@@ -98,7 +98,7 @@ is
          num_Vertices   : constant      Index_t :=      Index_t (num_Characters) * 4;       -- For each character, 2 triangles sharing 4 vertices.
 
          the_Indices    : aliased Indices (1 .. num_Indices);
-         the_Vertices   : aliased Geometry.lit_colored.Vertex_array := (1 .. num_Vertices => <>);
+         the_Vertices   : aliased Geometry.lit_colored_textured.Vertex_array := (1 .. num_Vertices => <>);
 
          --- Procedure to 'add' a character.
          --
@@ -165,11 +165,12 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : Geometry.lit_colored.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
                the_Vertex.Color  := Self.Color;
+               the_Vertex.Coords := the_Quad.NW.Coords;
 
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
@@ -178,11 +179,12 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : Geometry.lit_colored.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
                the_Vertex.Color  := Self.Color;
+               the_Vertex.Coords := the_Quad.SW.Coords;
 
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
@@ -191,11 +193,12 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : Geometry.lit_colored.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
                the_Vertex.Color  := Self.Color;
+               the_Vertex.Coords := the_Quad.SE.Coords;
 
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
@@ -204,11 +207,12 @@ is
             --
             vertex_Count := vertex_Count + 1;
             declare
-               the_Vertex : Geometry.lit_colored.Vertex renames the_Vertices (vertex_Count);
+               the_Vertex : Geometry.lit_colored_textured.Vertex renames the_Vertices (vertex_Count);
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
                the_Vertex.Color  := Self.Color;
+               the_Vertex.Coords := the_Quad.NE.Coords;
 
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
@@ -221,7 +225,7 @@ is
          use      Primitive;
          use type openGL.Font.texture.view;
 
-         the_Geometry   : Geometry.lit_colored.view;
+         the_Geometry   : Geometry.lit_colored_textured.view;
          the_Primitive  : Primitive.indexed.view;
 
          unused         : Vector_3;
@@ -266,12 +270,13 @@ is
 
          -- Setup the geometry.
          --
-         the_Primitive := Primitive.indexed   .new_Primitive (Triangles, the_Indices);
-         the_Geometry  := Geometry.lit_colored.new_Geometry;
+         the_Primitive := Primitive.indexed            .new_Primitive (Triangles, the_Indices);
+         the_Geometry  := Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True);
 
          the_Geometry.add          (Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
          the_Geometry.Texture_is   (Texture.Forge.to_Texture (Self.Font.gl_Texture));
+         the_Geometry.is_Transparent;
 
          return (1 => Geometry.view (the_Geometry));
       end;

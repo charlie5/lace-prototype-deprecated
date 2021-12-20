@@ -4,6 +4,7 @@ package openGL.Geometry.lit_colored_textured
 --
 is
    type Item is new openGL.Geometry.item with private;
+   type View is access all Item'Class;
 
    function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class;
 

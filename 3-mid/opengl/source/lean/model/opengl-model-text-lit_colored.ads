@@ -5,7 +5,7 @@ with
 
 package openGL.Model.Text.lit_colored
 --
---  Models lit, colored, textured text.
+--  Models lit and colored text.
 --
 is
    type Item is new Model.text.item with private;

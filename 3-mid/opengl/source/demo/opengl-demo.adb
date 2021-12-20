@@ -27,7 +27,6 @@ with
      openGL.Model.sphere        .lit_colored,
      openGL.Model.sphere        .lit_textured,
      openGL.Model.Text          .lit_colored,
-     openGL.Model.Text          .lit_textured,
      openGL.Model.terrain,
 
      SDL.Video.Windows.Makers,
@@ -119,7 +118,7 @@ is
 
       the_Texture : constant asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
       the_font_Id : constant Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),
-                                              Size => 24);
+                                              Size => 12);
 
       the_arrow_Model : constant Model.arrow.colored.view
         := Model.arrow.colored.new_Arrow (End_2 => (0.0, 1.0, 0.0));
@@ -216,10 +215,10 @@ is
                                                   Color    => (Red, Opaque));
 
       the_text_Model : constant Model.Text.lit_colored.view
-        := Model.Text.lit_colored.new_Text (Text     => "Howdy",
+        := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
                                             Font     => the_font_Id,
                                             Color    => (Green, Opaque),
-                                            Centered => False);
+                                            Centered => True);
 
       the_segment_line_Model : constant Model.segment_line.view
         := Model.segment_line.new_segment_line_Model (Color => Green);

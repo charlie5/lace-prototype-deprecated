@@ -60,11 +60,12 @@ begin
       -- Setup the light.
       --
       the_Light. Kind_is (Diffuse);
-      the_Light.Color_is (White);
       the_Light. Site_is (initial_Site);
+      the_Light.Color_is (White);
 
-      the_Light.cone_Angle_is     (5.0);
-      the_Light.cone_Direction_is (cone_Direction);
+      the_Light.     cone_Angle_is     (5.0);
+      the_Light.     cone_Direction_is (cone_Direction);
+      the_Light.ambient_Coefficient_is (0.015);
 
       Demo.Renderer.set (the_Light);
 
@@ -83,7 +84,7 @@ begin
          elsif the_Light.Site (1) < -2.0 then   site_Delta (1) :=  0.01;
          end if;
 
-         the_Light.Site_is     (the_Light.Site + site_Delta);
+         the_Light.Site_is (the_Light.Site + site_Delta);
          Demo.Renderer.set (the_Light);
 
          --  Render the sprites.

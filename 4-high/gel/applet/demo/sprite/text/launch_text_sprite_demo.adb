@@ -5,7 +5,7 @@ with
      gel.Sprite,
 
      openGL.Palette,
-     openGL.Model.text.lit_colored_textured,
+     openGL.Model.text.lit_colored,
 
      Physics;
 
@@ -34,8 +34,8 @@ is
                                                                        "Doody",
                                                                        the_Applet.Font,
                                                                        Green);
-   text_1_Model : constant openGL.Model.text.lit_colored_textured.view
-                                         := openGL.Model.text.lit_colored_textured.view (the_Text_1.graphics_Model);
+   text_1_Model : constant openGL.Model.text.lit_colored.view
+                                         := openGL.Model.text.lit_colored.view (the_Text_1.graphics_Model);
 begin
    the_Applet.gui_Camera.Site_is ((0.0, 0.0, 50.0));      -- Position the camera.
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
