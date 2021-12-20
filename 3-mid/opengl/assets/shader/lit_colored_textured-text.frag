@@ -48,7 +48,7 @@ apply_Light (light   Light,
     } 
     else
     {
-        // Point light.
+        // Difuse light.
         //
         vec3    Surface_to_Light_vector = Light.Site.xyz - surface_Site;
         float   Distance_to_Light       = length (Surface_to_Light_vector);
@@ -95,12 +95,17 @@ apply_Light (light   Light,
 void
 main()
 {
-    vec3   surface_Site    = vec3 (  model_Transform
-                                   * vec4 (frag_Site, 1));
+    vec4   texture_Color = texture (Texture, frag_Coords);
+
+    vec4   surface_Color = vec4 (mix (texture_Color.rgb,
+                                      frag_Color   .rgb,
+                                      0.5),
+                                   texture_Color.a
+                                 * frag_Color   .a);
+
+    vec3   surface_Site  = vec3 (  model_Transform
+                                 * vec4 (frag_Site, 1));
                                    
-    vec4   surface_Color   = mix (texture (Texture, frag_Coords),
-                                  frag_Color,
-                                  0.5);
 
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
     vec3   Normal            = normalize (  frag_Normal
