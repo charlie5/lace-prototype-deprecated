@@ -121,7 +121,7 @@ begin
       --  my_Human.Sprite (for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 10000.0, 0.0));
       --  gel.Human_v1.Sprite (my_Human, for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 100.0, 0.0));
 
-      the_Applet.gui_World.evolve (by => 1.0/60.0);      -- Evolve the world.
+      the_Applet.gui_World.evolve; -- (by => 1.0/60.0);      -- Evolve the world.
       my_Human  .evolve (the_Applet.gui_World.Age);
       the_Applet.freshen;                              -- Handle any new events and update the screen.
 

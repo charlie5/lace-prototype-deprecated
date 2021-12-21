@@ -120,7 +120,7 @@ begin
             the_Balls : array (1 .. 150) of gel.Sprite.view := (others => gel.Forge.new_ball_Sprite (in_World => the_Applet.gui_World,
                                                                                                     Mass     => 1.0,
                                                                                                     Radius   => 0.5,
-                                                                                                    Color    => openGL.Palette.random_Color));
+                                                                                                    Color    => (openGL.Palette.random_Color, Opaque)));
             function random_Site return math.Vector_3
             is
                use math.Random;
@@ -158,7 +158,7 @@ begin
          Counter := Counter + 1;
 
 
-         the_Applet.gui_World.evolve (by => 1.0/60.0);      -- Evolve the world.
+         the_Applet.gui_World.evolve; -- (by => 1.0/60.0);      -- Evolve the world.
 
          the_Human .evolve (the_Applet.gui_World.Age);
          --  the_Human .evolve (0.0); --the_Applet.gui_World.Age);

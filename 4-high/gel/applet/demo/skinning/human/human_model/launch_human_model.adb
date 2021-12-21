@@ -114,7 +114,7 @@ begin
 --           Counter := Counter + 1;
 --        end if;
 
-      the_Applet.gui_World.evolve (by => 1.0/60.0);    -- evolve the world
+      the_Applet.gui_World.evolve; -- (by => 1.0/60.0);    -- evolve the world
 
       --  my_Human  .evolve;
       my_Human.animate (world_Age => the_Applet.World.Age);
