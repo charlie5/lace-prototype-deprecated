@@ -2,7 +2,7 @@ with
      ada.Strings.fixed;
 
 
-package body openGL.Program.lit_colored_skinned
+package body openGL.Program.lit.colored_skinned
 is
    -- Old code kept for reference til new code is tested and stable ...
    --
@@ -158,8 +158,8 @@ is
       use ada.Strings,
           ada.Strings.fixed;
    begin
-      openGL.Program.item (Self).define (use_vertex_Shader,
-                                         use_fragment_Shader);   -- Define base class.
+      openGL.Program.lit.item (Self).define (use_vertex_Shader,
+                                             use_fragment_Shader);   -- Define base class.
 
       for i in Self.bone_transform_Uniforms'Range
       loop
@@ -177,7 +177,7 @@ is
       --  the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("Shine");
 
    begin
-      openGL.Program.item (Self).set_Uniforms;
+      openGL.Program.lit.item (Self).set_Uniforms;
 
       --  the_shine_Uniform                   .Value_is (Self.Shine);
       --  the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
@@ -235,4 +235,4 @@ is
    end bone_Transform_is;
 
 
-end openGL.Program.lit_colored_skinned;
+end openGL.Program.lit.colored_skinned;
