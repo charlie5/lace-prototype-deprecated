@@ -5,7 +5,7 @@ with
 
      openGL.Model.any,
      opengl.Palette,
-     opengl.Program .lit_colored_textured_skinned,
+     opengl.Program .lit.colored_textured_skinned,
      opengl.Geometry.lit_colored_textured_skinned,
 
      collada.Document,
@@ -117,7 +117,7 @@ is
    is
       use joint_id_Maps_of_slot;
 
-      subtype Program_view is openGL.Program.lit_colored_textured_skinned.view;
+      subtype Program_view is openGL.Program.lit.colored_textured_skinned.view;
 
       Cursor : joint_id_Maps_of_slot.Cursor := Self.joint_Map_of_slot.First;
       Slot   : Integer;
