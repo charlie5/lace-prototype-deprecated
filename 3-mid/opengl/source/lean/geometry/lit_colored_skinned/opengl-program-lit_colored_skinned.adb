@@ -177,8 +177,6 @@ is
       --  the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("Shine");
 
    begin
-      --  openGL.Program.item (Self).set_Uniforms;
-      Self.set_mvp_Uniform;
       openGL.Program.item (Self).set_Uniforms;
 
       --  the_shine_Uniform                   .Value_is (Self.Shine);

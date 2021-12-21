@@ -122,9 +122,6 @@ private
       end record;
 
 
-   procedure set_mvp_Uniform (Self : in Item);
-
-
    -------------
    -- Parameters
    --

@@ -39,7 +39,6 @@ is
    is
    begin
       openGL.Program.item (Self).set_Uniforms;
-      Self.set_mvp_Uniform;
 
       -- Texture
       --

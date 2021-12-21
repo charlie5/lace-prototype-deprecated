@@ -329,20 +329,12 @@ is
 
 
 
-   procedure set_mvp_Uniform (Self : in Item)
-   is
-      the_mvp_Uniform : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Transform");
-   begin
-      the_mvp_Uniform.Value_is (Self.mvp_Transform);
-   end set_mvp_Uniform;
-
-
-
    procedure set_Uniforms (Self : in Item)
    is
+      the_mvp_Uniform   : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Transform");
       the_scale_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
    begin
-      Self.set_mvp_Uniform;
+      the_mvp_Uniform  .Value_is (Self.mvp_Transform);
       the_scale_Uniform.Value_is (Self.Scale);
    end set_Uniforms;
 

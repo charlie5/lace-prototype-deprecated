@@ -38,7 +38,6 @@ is
    procedure set_Uniforms (Self : in Item)
    is
    begin
-      Self.set_mvp_Uniform;
       openGL.Program.item (Self).set_Uniforms;
 
       -- Texture

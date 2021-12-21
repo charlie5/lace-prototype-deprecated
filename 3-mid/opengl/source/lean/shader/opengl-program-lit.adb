@@ -48,7 +48,7 @@ is
       the_specular_color_Uniform  : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
    begin
       openGL.Program.item (Self).set_Uniforms;
-      Self.set_mvp_Uniform;
+
       the_camera_site_Uniform.Value_is (Self.camera_Site);
       the_model_transform_Uniform       .Value_is (Self.model_Transform);
       the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
