@@ -64,11 +64,8 @@ is
    procedure Spin_is          (Self : in out Item;   Now : in Matrix_3x3);
    function  Spin_of          (Self : in     Item)     return Matrix_3x3;
 
-   procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3);
-   function  inverse_modelview_Matrix    (Self : in     Item)     return Matrix_3x3;
-
-   procedure program_Parameters_are      (Self : in out Item;   Now : in program.Parameters_view);
-   function  program_Parameters          (Self : in     Item)     return program.Parameters_view;
+   procedure program_Parameters_are (Self : in out Item;   Now : in program.Parameters_view);
+   function  program_Parameters     (Self : in     Item)     return program.Parameters_view;
 
 
 
@@ -76,16 +73,15 @@ private
 
    type Item is tagged
       record
-         Model                    : openGL.Model.view;
-         Scale                    : Vector_3  := (1.0, 1.0, 1.0);
+         Model              : openGL.Model.view;
+         Scale              : Vector_3 := (1.0, 1.0, 1.0);
 
-         model_Transform          : Matrix_4x4;
-         camera_Transform         : Matrix_4x4;
-         Transform                : Matrix_4x4;
-         mvp_Transform            : Matrix_4x4;
+         model_Transform    : Matrix_4x4;
+         camera_Transform   : Matrix_4x4;
+         Transform          : Matrix_4x4;
+         mvp_Transform      : Matrix_4x4;
 
-         inverse_modelview_Matrix : Matrix_3x3;
-         program_Parameters       : program.Parameters_view;
+         program_Parameters : program.Parameters_view;
 
          is_Terrain : Boolean  := False;
          face_Count : Positive := 1;

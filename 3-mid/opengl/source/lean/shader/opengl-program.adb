@@ -313,14 +313,6 @@ is
 
 
 
-   procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3)
-   is
-   begin
-      Self.inverse_modelview_Matrix := Now;
-   end inverse_modelview_Matrix_is;
-
-
-
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
    begin

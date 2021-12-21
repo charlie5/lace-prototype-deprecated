@@ -14,7 +14,6 @@ package openGL.Program
 --  Models an openGL program.
 --
 is
-
    type Item is tagged limited private;
    type View is access all Item'Class;
 
@@ -89,7 +88,6 @@ is
    procedure mvp_Transform_is            (Self : in out Item;   Now : in Matrix_4x4);
    procedure camera_Site_is              (Self : in out Item;   Now : in Vector_3)    is null;
    procedure model_Matrix_is             (Self : in out Item;   Now : in Matrix_4x4)  is null;
-   procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3);
    procedure Lights_are                  (Self : in out Item;   Now : in Light.items) is null;
    procedure Scale_is                    (Self : in out Item;   Now : in Vector_3);
    procedure set_Uniforms                (Self : in     Item);
@@ -108,17 +106,15 @@ private
 
    type Item is tagged limited
       record
-         gl_Program               : gl.GLuint := 0;
-         vertex_Shader            : Shader.view;
-         fragment_Shader          : Shader.view;
+         gl_Program      : gl.GLuint := 0;
+         vertex_Shader   : Shader.view;
+         fragment_Shader : Shader.view;
 
-         Attributes               : openGL.Attribute.views (1 .. 8);
-         attribute_Count          : Natural := 0;
+         Attributes      : openGL.Attribute.views (1 .. 8);
+         attribute_Count : Natural := 0;
 
-         mvp_Transform            : Matrix_4x4;
-         inverse_modelview_Matrix : Matrix_3x3;
-
-         Scale                    : Vector_3 := (1.0, 1.0, 1.0);
+         mvp_Transform   : Matrix_4x4;
+         Scale           : Vector_3 := (1.0, 1.0, 1.0);
       end record;
 
 

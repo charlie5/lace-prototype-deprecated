@@ -11,17 +11,16 @@ is
                            is_Terrain : in Boolean  := False) return openGL.Visual.view
       is
       begin
-         return new Visual.item' (Model                    => Model,
-                                  model_Transform          => Identity_4x4,
-                                  camera_Transform         => Identity_4x4,
-                                  Transform                => Identity_4x4,
-                                  mvp_Transform            => Identity_4x4,
-                                  inverse_modelview_Matrix => Identity_3x3,
-                                  Scale                    => Scale,
-                                  program_Parameters       => null,
-                                  is_Terrain               => is_Terrain,
-                                  face_Count               => 1,
-                                  apparent_Size            => <>);
+         return new Visual.item' (Model              => Model,
+                                  model_Transform    => Identity_4x4,
+                                  camera_Transform   => Identity_4x4,
+                                  Transform          => Identity_4x4,
+                                  mvp_Transform      => Identity_4x4,
+                                  Scale              => Scale,
+                                  program_Parameters => null,
+                                  is_Terrain         => is_Terrain,
+                                  face_Count         => 1,
+                                  apparent_Size      => <>);
       end new_Visual;
    end Forge;
 
@@ -123,22 +122,6 @@ is
    begin
       Self.Transform := Now;
    end Transform_is;
-
-
-
-   procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3)
-   is
-   begin
-      Self.inverse_modelview_Matrix := Now;
-   end inverse_modelview_Matrix_is;
-
-
-   function inverse_modelview_Matrix (Self : in Item) return Matrix_3x3
-   is
-   begin
-      return Self.inverse_modelview_Matrix;
-   end inverse_modelview_Matrix;
-
 
 
    function mvp_Transform (Self : in Item) return Matrix_4x4

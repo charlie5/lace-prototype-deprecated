@@ -561,8 +561,7 @@ is
                opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
                lucid_Geometries  : Model.access_Geometry_views renames the_Visual.Model. lucid_Geometries;
             begin
-               the_Visual.mvp_Transform_is            (the_Visual.Transform * view_and_perspective_Transform);
-               the_Visual.inverse_modelview_Matrix_is (inverse_Rotation (get_Rotation (the_Visual.Transform * view_Transform)));
+               the_Visual.mvp_Transform_is (the_Visual.Transform * view_and_perspective_Transform);
 
                if opaque_Geometries /= null
                then
@@ -705,12 +704,11 @@ is
 
             current_Program := the_Couple.Geometry.Program;     -- TODO: Only do this when program changes (as is done above with opaques) ?
             current_Program.enable;
-            current_Program.mvp_Transform_is            (the_Couple.Visual.mvp_Transform);
-            current_Program.camera_Site_is              (get_Translation (camera_world_Transform));
-            current_Program. model_Matrix_is            (the_Couple.Visual.Transform);
-            current_Program.inverse_modelview_Matrix_is (the_Couple.Visual.inverse_modelview_Matrix);
-            current_Program.Lights_are                  (Lights);
-            current_Program.Scale_is                    (the_Couple.Visual.Scale);
+            current_Program.mvp_Transform_is (the_Couple.Visual.mvp_Transform);
+            current_Program.camera_Site_is   (get_Translation (camera_world_Transform));
+            current_Program.model_Matrix_is  (the_Couple.Visual.Transform);
+            current_Program.Lights_are       (Lights);
+            current_Program.Scale_is         (the_Couple.Visual.Scale);
 
             if the_Couple.Visual.program_Parameters /= null then
                the_Couple.Visual.program_Parameters.enable;
