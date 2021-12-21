@@ -1,7 +1,7 @@
 with
      openGL.Shader,
      openGL.Buffer.general,
-     openGL.Program.colored_textured,
+     openGL.Program,
      openGL.Attribute,
      openGL.Texture,
      openGL.Palette,
@@ -28,7 +28,7 @@ is
 
    vertex_Shader        : aliased Shader.item;
    fragment_Shader      : aliased Shader.item;
-   the_Program          :         openGL.Program.colored_textured.view;
+   the_Program          :         openGL.Program.view;
    white_Texture        :         openGL.Texture.Object;
 
    Name_1 : constant String := "Site";
@@ -56,7 +56,7 @@ is
    is
       use      System,
                System.storage_Elements;
-      use type openGL.Program.colored_textured.view;
+      use type openGL.Program.view;
 
       Self : constant Geometry_view := new Geometry.colored_textured.item;
 
@@ -82,7 +82,7 @@ is
             vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/colored_textured.vert");
             fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/colored_textured.frag");
 
-            the_Program := new openGL.Program.colored_textured.item;
+            the_Program := new openGL.Program.item;
             the_Program.define (vertex_Shader  'Access,
                                 fragment_Shader'Access);
             the_Program.enable;
