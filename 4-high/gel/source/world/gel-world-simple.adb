@@ -123,7 +123,7 @@ is
    function all_Sprites (Self : access Item) return access World.sprite_Map'Class
    is
    begin
-      return Self.all_Sprites'Access;
+      return Self.all_Sprites'unchecked_Access;
    end all_Sprites;
 
 
