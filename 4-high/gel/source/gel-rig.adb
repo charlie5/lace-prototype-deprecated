@@ -1538,9 +1538,7 @@ is
          -- Location
          --
          declare
-            use type Vector_3;
             desired_Site : constant Vector_3 := the_Channel.Transforms (Cursor).Translation;
-
          begin
             if Cursor < the_Channel.Times'Last
             then

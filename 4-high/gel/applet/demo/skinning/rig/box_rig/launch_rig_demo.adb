@@ -10,10 +10,7 @@ with
      openGL.Model.any,
      openGL.Light,
 
-     ada.Calendar,
-     ada.Strings.unbounded;
-
---  with ada.Text_IO;    use ada.Text_IO;     -- For debugging.
+     ada.Calendar;
 
 pragma unreferenced (gel.Window.setup);
 
@@ -25,7 +22,6 @@ procedure launch_rig_Demo
 --
 is
    use gel.Rig,
-       gel.Math,
        openGL,
        ada.Calendar;
 

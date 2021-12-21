@@ -35,8 +35,6 @@ is
    Name_2 : constant String := "Color";
    Name_3 : constant String := "Coords";
 
-   use Interfaces;
-
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
    Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
    Attribute_3_Name : aliased C.char_array := C.to_C (Name_3);

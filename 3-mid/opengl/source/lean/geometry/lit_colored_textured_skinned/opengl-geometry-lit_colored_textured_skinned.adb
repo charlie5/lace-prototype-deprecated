@@ -97,7 +97,6 @@ is
           Attribute.Forge,
           GL.lean,
           GL.Pointers,
-          Interfaces,
           System.storage_Elements;
 
       Sample : Vertex;

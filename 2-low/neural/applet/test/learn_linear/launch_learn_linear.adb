@@ -3,7 +3,6 @@ with Neural.Net;
 
 with lace.Environ.Paths;
 
-with ada.Calendar;
 with ada.Text_IO;             use ada.Text_IO;
 with ada.Exceptions;          use ada.Exceptions;
 

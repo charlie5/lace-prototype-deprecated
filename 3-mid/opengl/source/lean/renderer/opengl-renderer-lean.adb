@@ -392,8 +392,6 @@ is
    is
       use linear_Algebra_3D;
 
-      inverse_view_Transform : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
-
       light_Site : constant Vector_3 := (10_000.0, -10_000.0, 10_000.0);
       the_Light  : openGL.Light.item;
 
@@ -500,7 +498,6 @@ is
       opaque_Count : math.Index := 0;
       lucid_Count  : math.Index := 0;
 
-      inverse_view_Transform         : constant Matrix_3x3 := inverse_Rotation (get_Rotation (view_Transform));
       view_and_perspective_Transform : constant Matrix_4x4 := view_Transform * perspective_Transform;
 
 

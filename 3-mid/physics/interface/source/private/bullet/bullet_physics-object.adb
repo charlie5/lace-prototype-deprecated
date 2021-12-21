@@ -1,6 +1,5 @@
 with
      bullet_c.Binding,
-     bullet_c.Pointers,
 
      bullet_physics.Shape,
 

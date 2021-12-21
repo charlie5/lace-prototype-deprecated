@@ -38,8 +38,6 @@ is
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Coords";
 
-   use Interfaces;
-
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
    Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
 

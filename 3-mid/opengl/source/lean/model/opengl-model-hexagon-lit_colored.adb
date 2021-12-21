@@ -31,8 +31,7 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry.lit_colored,
-          Texture;
+      use Geometry.lit_colored;
 
       the_Sites    :         constant hexagon.Sites := vertex_Sites (Self.Radius);
       the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);

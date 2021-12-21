@@ -93,8 +93,6 @@ is
    --- Bone Details
    --
 
-   use type math.Degrees;
-
    type bone_Details is
       record
          Length       : math.Real := 1.0;

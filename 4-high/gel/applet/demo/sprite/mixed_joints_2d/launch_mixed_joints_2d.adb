@@ -35,8 +35,6 @@ is
        openGL,
        opengl.Palette;
 
-   use type openGL.Real;
-
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Mixed 2D Joints",
                                                                                 1920, 1200,
                                                                                 space_Kind => Physics.Box2D);

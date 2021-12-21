@@ -105,8 +105,7 @@ is
    is
       use      freeType_C.Binding,
                freeType_C.Pointers;
-      use type FT_Long,
-               FT_SizeRec_Pointer;
+      use type FT_Long;
    begin
       if Self.ftSize = null
       then
