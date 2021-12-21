@@ -1714,9 +1714,9 @@ is
 --                 put_Line ("Initial.Rotation: " & Image (Initial.Rotation)
 --                           & "     current_Transform.Rotation: " & Image (the_Channel.current_Transform.Rotation));
 
-               set_Rotation (new_Transform, to_Matrix (Slerp (Initial.Rotation,
-                                                              the_Channel.current_Transform.Rotation,
-                                                              to_Percentage (the_Channel.slerp_Time))));
+               set_Rotation (new_Transform, to_Matrix (Interpolated (Initial.Rotation,
+                                                                     the_Channel.current_Transform.Rotation,
+                                                                     to_Percentage (the_Channel.slerp_Time))));
 --                 set_Rotation (new_Transform, to_Matrix (Slerp (the_Channel.Transforms (Cursor  ).Rotation,
 --                                                                the_Channel.Transforms (Cursor+1).Rotation,
 --                                                                the_Channel.slerp_Time)));
