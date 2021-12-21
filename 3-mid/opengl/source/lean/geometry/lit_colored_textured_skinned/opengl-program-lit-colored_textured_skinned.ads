@@ -1,9 +1,9 @@
-package openGL.Program.lit_colored_textured_skinned
+package openGL.Program.lit.colored_textured_skinned
 --
 --  Provides a program for lit, colored, textured and skinned vertices.
 --
 is
-   type Item is new openGL.Program.item with private;
+   type Item is new openGL.Program.lit.item with private;
    type View is access all Item'Class;
 
 
@@ -22,9 +22,9 @@ private
 
    type bone_transform_Uniforms is array (1 .. 120) of Variable.uniform.mat4;
 
-   type Item is new openGL.Program.item with
+   type Item is new openGL.Program.lit.item with
       record
-         bone_transform_Uniforms : lit_colored_textured_skinned.bone_transform_Uniforms;
+         bone_transform_Uniforms : lit.colored_textured_skinned.bone_transform_Uniforms;
       end record;
 
-end openGL.Program.lit_colored_textured_skinned;
+end openGL.Program.lit.colored_textured_skinned;

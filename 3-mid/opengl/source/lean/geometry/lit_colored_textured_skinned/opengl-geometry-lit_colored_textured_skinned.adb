@@ -22,7 +22,7 @@ is
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
-   the_Program     : aliased openGL.Program.lit_colored_textured_skinned.item;
+   the_Program     : aliased openGL.Program.lit.colored_textured_skinned.item;
    is_Defined      :         Boolean := False;
 
    Name_1 : constant String := "Site";
@@ -243,7 +243,7 @@ is
    --  Attributes
    --
 
-   function Program return openGL.Program.lit_colored_textured_skinned.view
+   function Program return openGL.Program.lit.colored_textured_skinned.view
    is
    begin
       return the_Program'Access;

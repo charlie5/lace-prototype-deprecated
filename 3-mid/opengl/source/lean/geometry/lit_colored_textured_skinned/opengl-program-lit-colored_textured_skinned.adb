@@ -4,7 +4,7 @@ with
      ada.Strings.fixed;
 
 
-package body openGL.Program.lit_colored_textured_skinned
+package body openGL.Program.lit.colored_textured_skinned
 is
    -----------
    --- Globals
@@ -22,8 +22,8 @@ is
       use ada.Strings,
           ada.Strings.fixed;
    begin
-      openGL.Program.item (Self).define (use_vertex_Shader,
-                                         use_fragment_Shader);   -- Define base class.
+      openGL.Program.lit.item (Self).define (use_vertex_Shader,
+                                             use_fragment_Shader);   -- Define base class.
 
       for i in Self.bone_transform_Uniforms'Range
       loop
@@ -38,7 +38,7 @@ is
    procedure set_Uniforms (Self : in Item)
    is
    begin
-      openGL.Program.item (Self).set_Uniforms;
+      openGL.Program.lit.item (Self).set_Uniforms;
 
       -- Texture
       --
@@ -59,4 +59,4 @@ is
    end bone_Transform_is;
 
 
-end openGL.Program.lit_colored_textured_skinned;
+end openGL.Program.lit.colored_textured_skinned;
