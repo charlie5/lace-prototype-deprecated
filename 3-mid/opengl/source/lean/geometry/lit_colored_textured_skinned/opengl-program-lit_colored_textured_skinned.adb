@@ -43,7 +43,7 @@ is
       -- Texture
       --
       declare
-         sampler_Uniform : constant Variable.uniform.int := Self.uniform_Variable ("sTexture");
+         sampler_Uniform : constant Variable.uniform.int := Self.uniform_Variable ("Texture");
       begin
          sampler_Uniform.Value_is (0);
       end;
