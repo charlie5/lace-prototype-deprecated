@@ -1,5 +1,5 @@
 with
-     openGL.Program.lit_colored,
+     openGL.Program.lit,
      openGL.Buffer.general,
      openGL.Shader,
      openGL.Attribute,
@@ -28,7 +28,7 @@ is
       record
          vertex_Shader   : aliased Shader.item;
          fragment_Shader : aliased Shader.item;
-         Program         :         openGL.Program.lit_colored.view;
+         Program         :         openGL.Program.lit.view;
       end record;
 
 
@@ -62,7 +62,7 @@ is
    function new_Geometry return View
    is
       use      System.storage_Elements;
-      use type openGL.Program.lit_colored.view;
+      use type openGL.Program.lit.view;
 
       procedure define (the_Program : access Program)
       is
@@ -75,7 +75,7 @@ is
          Attribute_3,
          Attribute_4 : Attribute.view;
       begin
-         the_Program.Program := new openGL.Program.lit_colored.item;
+         the_Program.Program := new openGL.Program.lit.item;
 
          the_Program.  vertex_Shader.define (Shader.Vertex,    "assets/opengl/shader/lit_colored.vert");
          the_Program.fragment_Shader.define (Shader.Fragment,  "assets/opengl/shader/lit_colored.frag");

@@ -1,6 +1,6 @@
 with
      openGL.Shader,
-     openGL.Program.colored,
+     openGL.Program,
      openGL.Buffer.general,
      openGL.Tasks,
      openGL.Attribute,
@@ -23,7 +23,7 @@ is
 
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
-   the_Program     :         openGL.Program.colored.view;
+   the_Program     :         openGL.Program.view;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Color";
@@ -44,7 +44,7 @@ is
    function new_Geometry return Geometry.colored.view
    is
       use      System.storage_Elements;
-      use type openGL.Program.colored.view;
+      use type openGL.Program.view;
 
       Self : constant Geometry.colored.view := new Geometry.colored.item;
    begin
@@ -62,7 +62,7 @@ is
             vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/colored.vert");
             fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/colored.frag");
 
-            the_Program := new openGL.Program.colored.item;
+            the_Program := new openGL.Program.item;
             the_Program.define (vertex_Shader  'Access,
                                 fragment_Shader'Access);
 

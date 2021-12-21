@@ -1,7 +1,7 @@
 with
      openGL.Buffer.general,
      openGL.Shader,
-     openGL.Program.lit_textured,
+     openGL.Program.lit,
      openGL.Attribute,
      openGL.Texture,
      openGL.Palette,
@@ -29,7 +29,7 @@ is
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
-   the_Program     : openGL.Program.lit_textured.view;
+   the_Program     : openGL.Program.lit.view;
    white_Texture   : openGL.Texture.Object;
 
    Name_1 : constant String := "Site";
@@ -56,7 +56,7 @@ is
    is
       use      System,
                System.storage_Elements;
-      use type openGL.Program.lit_textured.view;
+      use type openGL.Program.lit.view;
 
       Self : constant View := new Geometry.lit_textured.item;
 
@@ -84,7 +84,7 @@ is
             vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured.vert");
             fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured.frag");
 
-            the_Program := new openGL.Program.lit_textured.item;
+            the_Program := new openGL.Program.lit.item;
             the_Program.define (  vertex_Shader'Access,
                                 fragment_Shader'Access);
             the_Program.enable;

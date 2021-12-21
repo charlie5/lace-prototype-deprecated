@@ -1,5 +1,5 @@
 with
-     openGL.Program.lit_colored_textured,
+     openGL.Program.lit,
      openGL.Palette,
      openGL.Shader,
      openGL.Buffer.general,
@@ -32,7 +32,7 @@ is
       record
          vertex_Shader   : aliased Shader.item;
          fragment_Shader : aliased Shader.item;
-         Program         :         openGL.Program.lit_colored_textured.view;
+         Program         :         openGL.Program.lit.view;
       end record;
 
    type Programs is array (program_Id) of aliased Program;
@@ -73,7 +73,7 @@ is
 
    function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class
    is
-      use type openGL.Program.lit_colored_textured.view;
+      use type openGL.Program.lit.view;
 
 
       procedure define (the_Program         : access Program;
@@ -95,7 +95,7 @@ is
 
       begin
          white_Texture       := openGL.Texture.Forge.to_Texture (white_Image);
-         the_Program.Program := new openGL.Program.lit_colored_textured.item;
+         the_Program.Program := new openGL.Program.lit.item;
 
          the_Program.  vertex_Shader.define (Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");
          the_Program.fragment_Shader.define (Shader.Fragment, use_fragment_Shader);

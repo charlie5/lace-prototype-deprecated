@@ -1,7 +1,7 @@
 with
      openGL.Buffer.general,
      openGL.Shader,
-     openGL.Program.textured,
+     openGL.Program,
      openGL.Palette,
      openGL.Attribute,
      openGL.Texture,
@@ -32,7 +32,7 @@ is
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
-   the_Program     : openGL.Program.textured.view;
+   the_Program     : openGL.Program.view;
    white_Texture   : openGL.Texture.Object;
 
    Name_1 : constant String := "Site";
@@ -55,7 +55,7 @@ is
 
    function new_Geometry return access Geometry.textured.item'Class
    is
-      use type openGL.Program.textured.view;
+      use type openGL.Program.view;
 
       Self : constant Geometry_view := new Geometry.textured.item;
 
@@ -82,7 +82,7 @@ is
             vertex_Shader  .define (openGL.Shader.vertex,   "assets/opengl/shader/textured.vert");
             fragment_Shader.define (openGL.Shader.fragment, "assets/opengl/shader/textured.frag");
 
-            the_Program := new openGL.Program.textured.item;
+            the_Program := new openGL.Program.item;
 
             the_Program.define (  vertex_Shader'Access,
                                 fragment_Shader'Access);
