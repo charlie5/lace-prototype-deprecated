@@ -1,5 +1,5 @@
 with
-     openGL.Program.lit_textured_skinned;
+     openGL.Program.lit.textured_skinned;
 
 
 package openGL.Geometry.lit_textured_skinned
@@ -43,7 +43,7 @@ is
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive);
 
-   function  Program return openGL.Program.lit_textured_skinned.view;
+   function  Program return openGL.Program.lit.textured_skinned.view;
 
 
 
