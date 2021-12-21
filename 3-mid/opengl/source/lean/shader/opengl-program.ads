@@ -2,14 +2,12 @@ with
      openGL.Shader,
      openGL.Variable.uniform,
      openGL.Attribute,
-     openGL.Palette,
      openGL.Light;
---       openGL.Light.diffuse,
---       openGL.Light.directional;
 
 private
 with
      GL;
+
 
 package openGL.Program
 --
@@ -88,27 +86,12 @@ is
    --  Uniforms
    --
 
-   procedure mvp_Transform_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
-   procedure camera_Site_is              (Self : in out Item'Class;   Now : in Vector_3);
-   procedure model_Matrix_is             (Self : in out Item'Class;   Now : in Matrix_4x4);
-   --  procedure camera_Matrix_is            (Self : in out Item'Class;   Now : in Matrix_4x4);
-
-
-   procedure inverse_modelview_Matrix_is (Self : in out Item'Class;   Now : in Matrix_3x3);
-
-
---     procedure directional_Light_is        (Self : in out Item'Class;   light_Id : in Positive;
---                                                                        Now      : in Light.directional.item);
---     procedure diffuse_Light_is            (Self : in out Item'Class;   light_Id : in Positive;
---                                                                        Now      : in Light.diffuse.item);
-
---     procedure Light_is                    (Self : in out Item'Class;   light_Id : in Positive;
---                                                                        Now      : in Light.item);
-   procedure Lights_are                    (Self : in out Item;   Now       : in Light.items);
-
-   procedure Scale_is                    (Self : in out Item'Class;   Now      : in Vector_3);
-   --  procedure Shine_is                    (Self : in out Item'Class;   Now      : in Shine);
-
+   procedure mvp_Transform_is            (Self : in out Item;   Now : in Matrix_4x4);
+   procedure camera_Site_is              (Self : in out Item;   Now : in Vector_3)    is null;
+   procedure model_Matrix_is             (Self : in out Item;   Now : in Matrix_4x4)  is null;
+   procedure inverse_modelview_Matrix_is (Self : in out Item;   Now : in Matrix_3x3);
+   procedure Lights_are                  (Self : in out Item;   Now : in Light.items) is null;
+   procedure Scale_is                    (Self : in out Item;   Now : in Vector_3);
    procedure set_Uniforms                (Self : in     Item);
 
 
@@ -133,20 +116,9 @@ private
          attribute_Count          : Natural := 0;
 
          mvp_Transform            : Matrix_4x4;
-         model_Transform          : Matrix_4x4 := Identity_4x4;
-         --  camera_Matrix            : Matrix_4x4;
-         camera_Site              : Vector_3;
          inverse_modelview_Matrix : Matrix_3x3;
 
---           directional_Light        : Light.directional.items (1 ..  2);
---           diffuse_Lights           : Light.diffuse    .items (1 ..  1);
-
-         Lights                   : Light.items (1 .. 50);
-         light_Count              : Natural := 0;
-         specular_Color : Color := Palette.Grey;     -- The materials specular color.
-
-         Scale                    : Vector_3     := (1.0, 1.0, 1.0);
-         --  Shine                    : openGL.Shine := 1.0;
+         Scale                    : Vector_3 := (1.0, 1.0, 1.0);
       end record;
 
 

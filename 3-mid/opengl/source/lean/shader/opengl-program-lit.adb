@@ -17,15 +17,41 @@ is
 
 
    overriding
+   procedure camera_Site_is (Self : in out Item;   Now : in Vector_3)
+   is
+   begin
+      Self.camera_Site := Now;
+   end camera_Site_is;
+
+
+
+   overriding
+   procedure model_Matrix_is (Self : in out Item;   Now : in Matrix_4x4)
+   is
+   begin
+      Self.model_Transform := Now;
+   end model_Matrix_is;
+
+
+
+   overriding
    procedure set_Uniforms (Self : in Item)
    is
-      use openGL.Conversions;
+      use openGL.Conversions,
+          linear_Algebra_3d;
 
-      the_light_count_Uniform    : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
-      the_specular_color_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
+      the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
+      the_inverse_model_rotation_Uniform : constant Variable.uniform.mat3 := Self.uniform_Variable ("inverse_model_Rotation");
+
+      the_camera_site_Uniform     : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
+      the_light_count_Uniform     : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
+      the_specular_color_Uniform  : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
    begin
       openGL.Program.item (Self).set_Uniforms;
       Self.set_mvp_Uniform;
+      the_camera_site_Uniform.Value_is (Self.camera_Site);
+      the_model_transform_Uniform       .Value_is (Self.model_Transform);
+      the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
 
       -- Lights.
       --
