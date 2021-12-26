@@ -129,3 +129,12 @@ old-events
 *.project
 opengl-series
 attic
+
+
+## Alire
+#
+alire.lock
+alire.lock.prev
+alire.toml.prev
+alire/cache
+config
