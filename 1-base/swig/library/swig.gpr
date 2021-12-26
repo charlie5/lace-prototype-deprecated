@@ -1,17 +1,17 @@
-project Swig is
-
-   for Source_Dirs use (".", "../source");
-   for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Library_Dir use "lib";
+project Swig
+is
+   for Source_Dirs     use (".", "../source");
+   for Object_Dir      use "build";
+   for Exec_Dir        use ".";
+   for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 
    package Builder is
-      for Default_Switches ("ada") use ("-g", "-lpthread");
+      for Default_Switches ("ada") use ("-g");
    end Builder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-lpthread", "-fstack-check", "-g", "-gnata");
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata");
    end Compiler;
 
    package Binder is
