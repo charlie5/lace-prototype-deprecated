@@ -19,8 +19,8 @@ with
      "../../../2-low/collada/applet/parse_box/parse_box",
      "collada",
 
-     "../../../2-low/neural/applet/test/learn_linear/learn_linear",
-     "neural",
+--     "../../../2-low/neural/applet/test/learn_linear/learn_linear",
+--     "neural",
      
 --     "../../../3-mid/impact/applet/demo/2d/hello/impact_hello_2d_demo",
 --     "../../../3-mid/impact/applet/demo/2d/orbs/orbs_hello_demo",
