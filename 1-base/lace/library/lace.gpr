@@ -1,7 +1,7 @@
 with 
-   "florist",
-   "lace_shared",
-   "ashell";
+--   "florist",
+   "lace_shared";
+--   "ashell";
 
 --library
 project Lace
@@ -20,7 +20,7 @@ is
    for Source_Dirs use (".",
                         "../source",
                         "../source/containers",
-                        "../source/environ",
+--                        "../source/environ",
                         "../source/events",
                         "../source/events",
                         "../source/events/concrete",
