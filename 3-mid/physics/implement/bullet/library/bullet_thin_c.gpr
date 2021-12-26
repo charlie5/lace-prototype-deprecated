@@ -24,7 +24,7 @@ is
       for Default_Switches ("c++") use ("-g",
                                         "-Wno-return-type-c-linkage",
                                         "-I../../../c_math/source/c",
-                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c",
+--                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c",
                                         "-I/usr/include/bullet",
                                         "-I/usr/local/include/bullet");
    end Compiler;

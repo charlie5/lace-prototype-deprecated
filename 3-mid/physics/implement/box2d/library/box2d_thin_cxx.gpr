@@ -25,8 +25,9 @@ is
       for Default_Switches ("c++") use ("-g", 
                                         "-fPIC",
                                         "-Wno-return-type-c-linkage",
-                                        "-I../../../c_math/source/c",
-                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
+                                        "-I../../../c_math/source/c");
+--                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
+--                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
    end Compiler;
 
 end Box2d_Thin_Cxx;

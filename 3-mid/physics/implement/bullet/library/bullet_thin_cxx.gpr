@@ -22,8 +22,8 @@ is
    package Compiler is
       for Default_Switches ("c++") use ("-g",
                                         "-Wno-return-type-c-linkage",
-                                        "-I../../../c_math/source/c",
-                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
+                                        "-I../../../c_math/source/c");
+--                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
    end Compiler;
 
    package Ide      renames Lace_shared.Ide;

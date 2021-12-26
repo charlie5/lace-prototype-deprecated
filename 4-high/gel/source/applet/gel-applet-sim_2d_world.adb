@@ -1,5 +1,6 @@
 with
-     gel.Camera.forge;
+     gel.Camera.forge,
+     gel.World.simple;
 
 
 package body gel.Applet.sim_2D_world
@@ -15,14 +16,14 @@ is
       the_world_Info : constant world_Info_view  := new world_Info;
       the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
    begin
-      the_world_Info.World := gel.World.forge.new_World (Name,
-                                                         sim_world_Id,
-                                                         physics.Box2d,
-                                                         Self.Renderer);
+      the_world_Info.World := gel.World.simple.forge.new_World (Name,
+                                                                sim_world_Id,
+                                                                physics.Box2d,
+                                                                Self.Renderer).all'Access;
 
-      the_Camera.set_viewport_Size (Self.Window.Width, Self.Window.Height);
-      the_Camera.Renderer_is       (Self.Renderer);
-      the_Camera.Site_is           ((0.0, 5.0, 50.0));
+      the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
+      the_Camera.Renderer_is (Self.Renderer);
+      the_Camera.Site_is     ((0.0, 5.0, 50.0));
 
       the_world_Info.Cameras.append (the_Camera);
 
