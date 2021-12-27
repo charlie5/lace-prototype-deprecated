@@ -34,7 +34,7 @@ bin
 3-mid/impact/contrib
 3-mid/physics/implement/impact/*
 3-mid/physics/implement/vox/*
-3-mid/physics/implement/box2d/contrib
+#3-mid/physics/implement/box2d/contrib
 
 4-high/gel/source/platform/sdl/attic
 
