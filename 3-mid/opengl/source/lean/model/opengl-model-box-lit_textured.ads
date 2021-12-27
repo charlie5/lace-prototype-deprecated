@@ -1,14 +1,12 @@
 with
      openGL.Geometry,
-     openGL.Font,
-     openGL.Texture;
+     openGL.Font;
 
 
 package openGL.Model.Box.lit_textured
 --
---  Models a lit, colored and textured box.
+--  Models a lit and textured box.
 --
---  Each face may be separately colored via each of its 4 vertices.
 --  Each face may have a separate texture.
 --
 is

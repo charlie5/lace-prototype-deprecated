@@ -31,14 +31,13 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_textured,
-          Texture;
+      use Geometry.lit_textured;
 
       the_Sites    :         constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased constant Indices   := (1, 2, 3, 4);
 
 
-      function new_Face (Vertices : access geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
+      function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
          use openGL.Primitive;
 
@@ -47,7 +46,7 @@ is
                                                                    (triangle_Fan,
                                                                     the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (the_Primitive);
 
          return the_Geometry;
@@ -65,13 +64,13 @@ is
       --  Front
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         front_Face := new_Face (Vertices => the_Vertices'Access);
+         front_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Front).texture_Name /= null_Asset
          then
@@ -84,13 +83,13 @@ is
       --  Rear
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         rear_Face := new_Face (Vertices => the_Vertices'Access);
+         rear_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Rear).texture_Name /= null_Asset
          then
@@ -103,13 +102,13 @@ is
       --  Upper
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         upper_Face := new_Face (Vertices => the_Vertices'Access);
+         upper_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Upper).texture_Name /= null_Asset
          then
@@ -122,13 +121,13 @@ is
       --  Lower
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         lower_Face := new_Face (Vertices => the_Vertices'Access);
+         lower_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Lower).texture_Name /= null_Asset
          then
@@ -141,13 +140,13 @@ is
       --  Left
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         left_Face := new_Face (Vertices => the_Vertices'Access);
+         left_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Left).texture_Name /= null_Asset
          then
@@ -160,13 +159,13 @@ is
       --  Right
       --
       declare
-         the_Vertices : aliased Geometry.lit_textured.Vertex_array
+         the_Vertices : constant Geometry.lit_textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
                2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
                3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
                4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
       begin
-         right_Face := new_Face (Vertices => the_Vertices'Access);
+         right_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Right).texture_Name /= null_Asset
          then

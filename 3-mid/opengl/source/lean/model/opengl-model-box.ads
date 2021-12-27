@@ -26,7 +26,7 @@ private
                     Right_Lower_Rear,   Left_Lower_Rear,
                      Left_Upper_Rear,  Right_Upper_Rear);
 
-   type Sites is array (site_Id) of Vector_3;
+   type Sites is array (site_Id) of Site;
 
 
    front_Normal : constant Vector_3 := ( 0.0,  0.0,  1.0);
