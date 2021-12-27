@@ -147,7 +147,7 @@ is
 
       for i in the_Vertices'Range
       loop
-         the_Vertices (i).Site := the_Vertices (i).Site * Self.Radius;
+         the_Vertices (i).Site := the_Vertices (i).Site * Self.Radius * 2.0;
       end loop;
 
 
