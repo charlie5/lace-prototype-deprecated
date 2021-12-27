@@ -85,12 +85,14 @@ is
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
          the_Vertices (the_Vertices'First).Color  := Color;
+         the_Vertices (the_Vertices'First).Shine  := 0.5;
 
          the_Sites (the_Vertices'Last)            := south_Pole;
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
          the_Vertices (the_Vertices'Last).Color   := Color;
+         the_Vertices (the_Vertices'Last).Shine   := 0.5;
 
 
          for lat_Id in 2 .. lat_Count - 1
@@ -107,6 +109,7 @@ is
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
             the_Vertices (vert_Id).Color  := Color;
+            the_Vertices (vert_Id).Shine  := 0.5;
 
             for long_Id in 1 .. long_Count
             loop
@@ -123,6 +126,7 @@ is
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
                the_Vertices (vert_Id).Color  := Color;
+               the_Vertices (vert_Id).Shine  := 0.5;
             end loop;
 
          end loop;

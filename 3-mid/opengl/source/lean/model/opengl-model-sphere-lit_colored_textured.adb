@@ -90,6 +90,7 @@ is
 
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
+         the_Vertices (the_Vertices'First).Shine  := 0.5;
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
          the_Vertices (the_Vertices'First).Color  := (Primary => +White,
                                                       Alpha   => opaque_Value);
@@ -98,6 +99,7 @@ is
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
+         the_Vertices (the_Vertices'Last).Shine   := 0.5;
          the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
          the_Vertices (the_Vertices'Last).Color   := (Primary => +White,
                                                       Alpha   => opaque_Value);
@@ -115,9 +117,9 @@ is
 
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
+            the_Vertices (vert_Id).Shine  := 0.5;
             the_Vertices (vert_Id).Color  := (Primary => +White,
                                               Alpha   => opaque_Value);
-
             the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                               T => 1.0 - b / Degrees_180);
 
@@ -135,6 +137,7 @@ is
 
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
+               the_Vertices (vert_Id).Shine  := 0.5;
                the_Vertices (vert_Id).Color  := (Primary => +White,
                                                  Alpha   => opaque_Value);
                the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
@@ -183,7 +186,7 @@ is
       end set_Indices;
 
 
-      if Self.Image /= null_Asset
+      if Self.Image /= null_Asset     -- TODO: Use 'Textures' (ie name_Map_of_texture) here and in other models.
       then
          set_Texture:
          declare

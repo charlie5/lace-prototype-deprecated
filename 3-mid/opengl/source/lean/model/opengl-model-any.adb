@@ -234,6 +234,7 @@ is
 
                            if the_io_Vertex.normal_Id /= null_Id
                            then   the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
+                                  the_gl_Vertex.Shine  := 0.5;
                                   normals_Known        := True;
                            else   the_gl_Vertex.Normal := (0.0, 0.0, 0.0);
                            end if;
@@ -352,7 +353,6 @@ is
                my_Vertices : aliased  lit_textured.Vertex_large_array
                  := to_lit_textured_Vertices (the_Vertices (1 .. vertex_Count));
 
---                 my_Geometry : constant lit_textured_Geometry_view
                my_Geometry : constant Geometry.lit_textured.view
                  := lit_textured.new_Geometry;
             begin
@@ -384,6 +384,7 @@ is
                      for i in my_Vertices'Range
                      loop
                         my_Vertices (i).Normal := the_Normals (Index_t (i));
+                        my_Vertices (i).Shine  := 0.5;
                      end loop;
 
                      deallocate (the_Normals);

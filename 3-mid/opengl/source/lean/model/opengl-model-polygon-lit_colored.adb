@@ -47,6 +47,7 @@ is
             the_Vertices (i).Site   := Vector_3 (Self.Vertices (Integer (i)) & 0.0);
             the_Vertices (i).Normal := (0.0, 0.0, 1.0);
             the_Vertices (i).Color  := Color;
+            the_Vertices (i).Shine  := 0.5;
          end loop;
       end set_Vertices;
 

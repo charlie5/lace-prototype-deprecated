@@ -116,11 +116,13 @@ is
                                                        the_Vertices (i).Site (2),
                                                        0.0));
                the_Vertices (i).Color  := Self.Color;
+               the_Vertices (i).Shine  := 0.5;
                i := i + 1;
 
                the_Vertices (i).Site   := the_Edges (Each).Aft;
                the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
                the_Vertices (i).Color  := Self.Color;
+               the_Vertices (i).Shine  := 0.5;
                i := i + 1;
 
                S := S + S_delta;
@@ -131,11 +133,13 @@ is
                                                     the_Vertices (i).Site (2),
                                                     0.0));
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
             i := i + 1;
 
             the_Vertices (i).Site   := the_Edges (1).Aft;
             the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
          end;
 
          -- Set indices.
@@ -239,6 +243,7 @@ is
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
                                                                       else the_Vertices (i).Site (3) + L)));
                   the_Vertices (i).Color  := Self.Color;
+                  the_Vertices (i).Shine  := 0.5;
                   i := i + 1;
                   a := (if is_Fore then a + longitude_Spacing
                                    else a - longitude_Spacing);
@@ -267,6 +272,8 @@ is
             the_Vertices (i).Site   := pole_Site;
             the_Vertices (i).Normal := Normalised (pole_Site);
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
+
             -- Set indices.
             --
             declare

@@ -59,7 +59,6 @@ is
       the_Vertices   : aliased  Geometry.lit_textured.Vertex_array := (1 ..  vertex_Count => <>);
       the_Sites      : aliased  Sites                              := (1 ..  vertex_Count => <>);
       the_Indices    : aliased  Indices                            := (1 .. indices_Count => <>);
-      the_Sites      : aliased  Sites                              := (1 ..  vertex_Count => <>);
 
       the_Geometry   : constant Geometry.lit_textured.view := Geometry.lit_textured.new_Geometry;
 
@@ -84,12 +83,14 @@ is
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
+         the_Vertices (the_Vertices'First).Shine  := 0.5;
 
          the_Sites (the_Vertices'Last) := south_Pole;
 
          the_Vertices (the_Vertices'Last).Site    := south_Pole;
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
          the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
+         the_Vertices (the_Vertices'Last).Shine   := 0.5;
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -106,6 +107,7 @@ is
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
             the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                               T => 1.0 - b / Degrees_180);
+            the_Vertices (vert_Id).Shine  := 0.5;
 
             for long_Id in 1 .. long_Count
             loop
@@ -123,6 +125,7 @@ is
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
                the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                                  T => 1.0 - b / Degrees_180);
+               the_Vertices (vert_Id).Shine  := 0.5;
             end loop;
 
          end loop;

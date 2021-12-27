@@ -122,6 +122,7 @@ is
                                                        the_Vertices (i).Site (2),
                                                        0.0));
                the_Vertices (i).Color  := Self.Color;
+               the_Vertices (i).Shine  := 0.5;
                the_Vertices (i).Coords := (s => S,
                                            t => 1.0);
                i := i + 1;
@@ -129,6 +130,7 @@ is
                the_Vertices (i).Site   := the_Edges (Each).Aft;
                the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
                the_Vertices (i).Color  := Self.Color;
+               the_Vertices (i).Shine  := 0.5;
                the_Vertices (i).Coords := (s => S,
                                            t => 0.0);
                i := i + 1;
@@ -141,6 +143,7 @@ is
                                                     the_Vertices (i).Site (2),
                                                     0.0));
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Coords := (s => S,
                                         t => 1.0);
             i := i + 1;
@@ -148,6 +151,7 @@ is
             the_Vertices (i).Site   := the_Edges (1).Aft;
             the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Coords := (s => S,
                                         t => 0.0);
          end;
@@ -265,6 +269,7 @@ is
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
                                                                       else the_Vertices (i).Site (3) + L)));
                   the_Vertices (i).Color  := Self.Color;
+                  the_Vertices (i).Shine  := 0.5;
                   the_Vertices (i).Coords :=  (s => a / Degrees_360,
                                                t => b / Degrees_90);
                   i := i + 1;
@@ -295,6 +300,7 @@ is
             the_Vertices (i).Site   := pole_Site;
             the_Vertices (i).Normal := Normalised (pole_Site);
             the_Vertices (i).Color  := Self.Color;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Coords := (s => 0.5,
                                         t => 1.0);
             -- Set indices.

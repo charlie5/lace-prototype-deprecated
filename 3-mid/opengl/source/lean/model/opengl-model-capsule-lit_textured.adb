@@ -115,6 +115,7 @@ is
                ny  := tmp;
 
                the_Vertices (i).Site   := the_Edges (Each).Fore;
+               the_Vertices (i).Shine  := 0.5;
                the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                        the_Vertices (i).Site (2),
                                                        0.0));
@@ -123,6 +124,7 @@ is
                i := i + 1;
 
                the_Vertices (i).Site   := the_Edges (Each).Aft;
+               the_Vertices (i).Shine  := 0.5;
                the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
                the_Vertices (i).Coords := (s => S,
                                            t => 0.0);
@@ -132,6 +134,7 @@ is
             end loop;
 
             the_Vertices (i).Site   := the_Edges (1).Fore;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                     the_Vertices (i).Site (2),
                                                     0.0));
@@ -140,6 +143,7 @@ is
             i := i + 1;
 
             the_Vertices (i).Site   := the_Edges (1).Aft;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
             the_Vertices (i).Coords := (s => S,
                                         t => 0.0);
@@ -253,6 +257,7 @@ is
                   ny  := tmp;
 
                   the_Vertices (i).Site   := the_arch_Edges (each_Hoop) (Each);
+                  the_Vertices (i).Shine  := 0.5;
                   the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                           the_Vertices (i).Site (2),
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
@@ -285,6 +290,7 @@ is
             -- Add pole vertex.
             --
             the_Vertices (i).Site   := pole_Site;
+            the_Vertices (i).Shine  := 0.5;
             the_Vertices (i).Normal := Normalised (pole_Site);
             the_Vertices (i).Coords := (s => 0.5,
                                         t => 1.0);

@@ -169,6 +169,7 @@ is
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
+               the_Vertex.Shine  := 0.5;
                the_Vertex.Color  := Self.Color;
                the_Vertex.Coords := the_Quad.NW.Coords;
 
@@ -183,6 +184,7 @@ is
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SW.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
+               the_Vertex.Shine  := 0.5;
                the_Vertex.Color  := Self.Color;
                the_Vertex.Coords := the_Quad.SW.Coords;
 
@@ -197,6 +199,7 @@ is
             begin
                the_Vertex.Site   := pen_Site + the_Quad.SE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
+               the_Vertex.Shine  := 0.5;
                the_Vertex.Color  := Self.Color;
                the_Vertex.Coords := the_Quad.SE.Coords;
 
@@ -211,6 +214,7 @@ is
             begin
                the_Vertex.Site   := pen_Site + the_Quad.NE.Site;
                the_Vertex.Normal := (0.0, 0.0, 1.0);
+               the_Vertex.Shine  := 0.5;
                the_Vertex.Color  := Self.Color;
                the_Vertex.Coords := the_Quad.NE.Coords;
 
