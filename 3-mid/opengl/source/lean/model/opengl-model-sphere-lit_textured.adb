@@ -1,7 +1,5 @@
 with
      openGL.Geometry.lit_textured,
-     openGL.Texture,
-     openGL.IO,
      openGL.Primitive.indexed;
 
 
@@ -41,10 +39,9 @@ is
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma unreferenced (Textures, Fonts);
+      pragma unreferenced (Fonts);
 
-      use openGL.Geometry,
-          openGL.Geometry.lit_textured;
+      use Geometry.lit_textured;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -60,6 +57,7 @@ is
       indices_Count  : constant long_Index_t := long_Index_t (Num_lat_strips * (long_Count + 1) * 2);
 
       the_Vertices   : aliased  Geometry.lit_textured.Vertex_array := (1 ..  vertex_Count => <>);
+      the_Sites      : aliased  Sites                              := (1 ..  vertex_Count => <>);
       the_Indices    : aliased  Indices                            := (1 .. indices_Count => <>);
       the_Sites      : aliased  Sites                              := (1 ..  vertex_Count => <>);
 
@@ -171,18 +169,11 @@ is
 
       if Self.Image /= null_Asset
       then
-         set_Texture:
-         declare
-            use Texture;
-            the_Image   : constant Image          := IO.to_Image      (Self.Image);
-            the_Texture : constant Texture.object := Forge.to_Texture ( the_Image);
-         begin
-            the_Geometry.Texture_is (the_Texture);
-         end set_Texture;
+         the_Geometry.Texture_is (Textures.fetch (Self.Image));
+         the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
       end if;
 
-      the_Geometry.is_Transparent (False);
-      the_Geometry.Vertices_are   (the_Vertices);
+      the_Geometry.Vertices_are (the_Vertices);
 
       declare
          the_Primitive : constant Primitive.indexed.view

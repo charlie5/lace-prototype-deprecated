@@ -5,7 +5,9 @@ with
 
 package openGL.Model.sphere.lit_textured
 --
---  Models a lit, colored, textured sphere.
+--  Models a lit and textured sphere.
+--
+--  The texture is often a mercator projection to be mapped onto the sphere.
 --
 is
    type Item is new Model.sphere.item with private;
@@ -28,7 +30,7 @@ private
 
    type Item is new Model.sphere.item with     -- TODO: Add 'Color' component.
       record
-         Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
+         Image : asset_Name := null_Asset;
       end record;
 
 end openGL.Model.sphere.lit_textured;
