@@ -61,9 +61,6 @@ private
          ambient_Coefficient : Real         :=  0.1;
          cone_Angle          : Degrees      :=  2.0;
          cone_Direction      : Vector_3     := (0.0, 0.0, -1.0);
-
-         ambient_Color : Vector_4 := (0.0, 0.0, 0.0, 1.0);     -- The GL defaults for all lights bar 'Light0'.
-         diffuse_Color : Vector_4 := (0.0, 0.0, 0.0, 1.0);
       end record;
 
 end openGL.Light;
