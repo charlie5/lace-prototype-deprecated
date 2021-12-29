@@ -101,6 +101,7 @@ launch_rig_demo
 launch_crunch
 launch_render_models
 launch_simple_animation
+launch_full_demo
 launch_hello_physics_interface_demo
 launch_test_engine
 launch_strings_demo
