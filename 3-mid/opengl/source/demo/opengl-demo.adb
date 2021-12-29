@@ -3,27 +3,20 @@ with
      openGL.Font,
      openGL.IO,
      openGL.Model.arrow    .colored,
-     openGL.Model.billboard.colored,
      openGL.Model.billboard.textured,
      openGL.Model.box      .colored,
      openGL.Model.box      .textured,
-     openGL.Model.box      .lit_colored,
      openGL.Model.box      .lit_textured,
-     openGL.Model.capsule  .lit_colored,
      openGL.Model.capsule  .lit_textured,
      openGL.Model.grid,
      openGL.Model.hexagon       .lit_colored,
-     openGL.Model.hexagon       .lit_textured,
      openGL.Model.hexagon_Column.lit_colored_faceted,
      openGL.Model.hexagon_Column.lit_colored_rounded,
-     openGL.Model.hexagon_Column.lit_textured_faceted,
-     openGL.Model.hexagon_Column.lit_textured_rounded,
      openGL.Model.line          .colored,
      openGL.Model.any,
      openGL.Model.polygon       .lit_colored,
      openGL.Model.segment_line,
      openGL.Model.sphere        .colored,
-     openGL.Model.sphere        .textured,
      openGL.Model.sphere        .lit_colored,
      openGL.Model.sphere        .lit_textured,
      openGL.Model.Text          .lit_colored,
@@ -35,22 +28,20 @@ with
 
 package body openGL.Demo
 is
-   package std_SDL renames standard.SDL;
-
+--     package std_SDL renames standard.SDL;
 
 
    procedure my_context_Setter
    is
    begin
-      std_SDL.Video.gl.set_Current (GL_Context, To => Window);
+      sdl.Video.gl.set_Current (GL_Context, To => Window);
    end my_context_Setter;
 
 
    procedure my_Swapper
    is
-      use std_SDL.Video.GL;
+      use sdl.Video.GL;
    begin
-      --  Lumen.Window.swap (Window);
       swap (Window);
    end my_Swapper;
 
@@ -60,14 +51,14 @@ is
                      Height : in Positive :=  768)
    is
       use Palette,
-          linear_Algebra_3d;
-      use std_SDL;
-      use type Video.Windows.Window_Flags;
+          linear_Algebra_3d,
+          SDL;
+      use type sdl.Video.Windows.Window_Flags;
 
-      null_Context : standard.SDL.Video.GL.Contexts;
+      null_Context : SDL.Video.GL.Contexts;
 
    begin
-      if not std_SDL.initialise
+      if not sdl.initialise
       then
          raise Error with "Unable to initialise SDL.";
       end if;
@@ -87,7 +78,7 @@ is
       Renderer.Background_is (Grey);
       Renderer.Swapper_is    (my_Swapper'unrestricted_Access);
 
-      std_SDL.Video.gl.set_Current (null_Context, To => Window);
+      sdl.Video.gl.set_Current (null_Context, To => Window);
       Renderer.Context_Setter_is (my_context_Setter'unrestricted_Access);
       Renderer.start_Engine;
 

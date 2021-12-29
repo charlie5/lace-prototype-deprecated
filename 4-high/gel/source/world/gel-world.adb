@@ -1,11 +1,9 @@
 with
      gel.Events,
 
-     physics.remote.Model,
      physics.Object,
      physics.Forge,
 
-     openGL.remote_Model,
      openGL.Renderer.lean,
 
      lace.Response,
@@ -668,11 +666,11 @@ is
 
 
 
-   type graphics_Model_iface_view is access all openGL.remote_Model.item'Class;
-   type graphics_Model_view       is access all openGL.       Model.item'Class;
-
-   type physics_Model_iface_view is access all Standard.physics.remote.Model.item'Class;
-   type physics_Model_view       is access all Standard.physics.Model       .item'Class;
+--     type graphics_Model_iface_view is access all openGL.remote_Model.item'Class;
+--     type graphics_Model_view       is access all openGL.       Model.item'Class;
+--
+--     type physics_Model_iface_view is access all Standard.physics.remote.Model.item'Class;
+--     type physics_Model_view       is access all Standard.physics.Model       .item'Class;
 
 
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
@@ -1704,5 +1702,3 @@ end gel.World;
    --        put_Line ("Engine has terminated !");
    --        new_Line (2);
    --  end Engine;
-
-

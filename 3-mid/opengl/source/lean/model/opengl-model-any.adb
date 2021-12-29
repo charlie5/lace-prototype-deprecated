@@ -4,7 +4,6 @@ with
      openGL.Primitive.long_indexed,
 
      openGL.Geometry.lit_textured,
-     openGL.Geometry.lit_colored_skinned,
      openGL.Geometry.lit_colored_textured_skinned,
 
      openGL.Texture,
@@ -23,7 +22,6 @@ with
 package body openGL.Model.any
 is
 
-   type lit_textured_Geometry_view         is access all openGL.Geometry.lit_textured                .item'Class;
    type lit_textured_skinned_Geometry_view is access all openGL.Geometry.lit_colored_textured_skinned.item'Class;
 
 

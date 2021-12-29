@@ -1,18 +1,9 @@
 with
-     openGL.Texture,
      ada.Strings.fixed;
 
 
 package body openGL.Program.lit.colored_textured_skinned
 is
-   -----------
-   --- Globals
-   --
-
-   vertex_Shader   : aliased Shader.item;
-   fragment_Shader : aliased Shader.item;
-   white_Texture   :         openGL.Texture.Object;
-
 
    overriding
    procedure define  (Self : in out Item;   use_vertex_Shader   : in Shader.view;

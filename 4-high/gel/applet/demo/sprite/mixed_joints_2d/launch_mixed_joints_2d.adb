@@ -1,26 +1,18 @@
 with
-     gel.Window.sdl,
+     gel.Window.setup,
      gel.Applet.gui_world,
 
      gel.Forge,
      gel.Sprite,
 
      gel.Joint,
-     gel.hinge_Joint,
-     gel.ball_Joint,
-     gel.cone_twist_Joint,
-     gel.slider_Joint,
-     gel.any_Joint,
 
      opengl.Palette,
      Physics,
+     ada.Text_IO,
+     ada.Exceptions;
 
-     float_math.Algebra.linear.d3;
-
-pragma Unreferenced (gel.Window.sdl);
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Exceptions;
-with Physics.Forge;
+pragma unreferenced (gel.Window.setup);
 
 
 procedure launch_mixed_Joints_2d
@@ -29,16 +21,16 @@ procedure launch_mixed_Joints_2d
 --
 --
 is
-   package Math renames float_Math;
+   package Math renames gel.Math;
 
-   use gel.Applet,
-       openGL,
-       opengl.Palette;
+   use openGL,
+       opengl.Palette,
+       ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Mixed 2D Joints",
                                                                                 1920, 1200,
                                                                                 space_Kind => Physics.Box2D);
-   Counter    :          Natural                   := 0;
+   Counter    : Natural := 0;
 
 begin
    the_Applet.gui_World .Gravity_is    ((0.0, -10.0, 0.0));
@@ -50,18 +42,13 @@ begin
    --
    declare
       use gel.Forge,
-          float_Math,
-          float_math.Algebra.linear.d3;
+          Math;
    begin
       --  Hinge
       --
       declare
-         use gel.any_Joint,
-             math.Vectors;
-
          the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, mass => 0.0);
          the_hinge_Box_2 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, mass => 1.0);
---           the_hinge_Joint :          gel.hinge_Joint .view; -- := new gel.hinge_Joint.item;
          new_Joint       :          gel.      Joint .view;
 
          Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;

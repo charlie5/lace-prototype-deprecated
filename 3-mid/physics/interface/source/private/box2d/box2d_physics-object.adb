@@ -143,7 +143,7 @@ is
    function is_Active (Self : in Item) return Boolean
    is
    begin
-      return True;
+      return True;     -- TODO: Finish this and 'activate' below.
    end is_Active;
 
 

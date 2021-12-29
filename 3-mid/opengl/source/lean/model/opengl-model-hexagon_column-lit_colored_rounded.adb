@@ -37,7 +37,7 @@ is
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma unreferenced (Fonts);
+      pragma unreferenced (Textures, Fonts);
 
       use Geometry.lit_colored,
           Model.hexagon;

@@ -176,10 +176,8 @@ is
          end get_Normals;
 
 
-         Normals : constant shaft_Normals  := get_Normals;
-         s_Delta : constant                := 1.0 / 6.0;
-
-         shaft_Color : constant rgba_Color := +Self.Shaft.Color;
+         Normals     : constant shaft_Normals :=  get_Normals;
+         shaft_Color : constant rgba_Color    := +Self.Shaft.Color;
 
          the_Vertices_1 : aliased Geometry.lit_colored.Vertex_array
            := (1  => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Shine => default_Shine),
