@@ -70,7 +70,7 @@ extern "C"
   }
 
 
-  
+
   Joint*
   b3d_new_cone_twist_Joint (Object*       Object_A,
                             Object*       Object_B,
@@ -131,7 +131,7 @@ extern "C"
   }
 
 
-  
+
   //////////////
   /// Attributes
   //
@@ -152,7 +152,7 @@ extern "C"
     // TODO: the_Joint->setUserPointer (Now);
   }
 
-  
+
 
   Object*
   b3d_Joint_Object_A (Joint*   Self)
@@ -162,7 +162,7 @@ extern "C"
     return to_bt3_Object (&c_Self->getRigidBodyA());
   }
 
-  
+
 
   Object*
   b3d_Joint_Object_B (Joint*   Self)
@@ -177,14 +177,15 @@ extern "C"
   bool b3d_Joint_Extent (Joint*   Self,
                          int      DoF)
   {
-    btTypedConstraint*     c_Self = to_bullet_Joint (Self);
-    
-    1/0; // return c_Self->Extent;
-    return 0;
+    // btTypedConstraint*     c_Self = to_bullet_Joint (Self);
+    // return c_Self->Extent;
+
+    printf ("TODO: b3d_Joint_Extent");
+    return false;
   }
- 
-  
-  
+
+
+
   // Below are for hinges, it seems.
   //
 
@@ -221,7 +222,7 @@ extern "C"
   void b3d_Joint_Frame_A_is (Joint*        Self,
                              Matrix_4x4*   Now)
   {
-    1/0;
+    printf ("TODO: b3d_Joint_Frame_A_is");
   }
 
 
@@ -229,7 +230,7 @@ extern "C"
   void b3d_Joint_Frame_B_is (Joint*        Self,
                              Matrix_4x4*   Now)
   {
-    1/0;
+    printf ("TODO: b3d_Joint_Frame_B_is");
   }
 
 
@@ -237,7 +238,9 @@ extern "C"
   bool b3d_Joint_is_Limited(Joint*   Self,
                             int      DoF)
   {
-    return 1/0;
+    printf ("TODO: b3d_Joint_is_Limited");
+
+    return false;
   }
 
 
@@ -246,7 +249,7 @@ extern "C"
                               int      DoF,
                               Real     Velocity)
   {
-    1/0;
+    printf ("TODO: b3d_Joint_Velocity_is");
   }
 
 
@@ -281,9 +284,9 @@ extern "C"
   {
     btGeneric6DofConstraint*     c_Self    = (btGeneric6DofConstraint*) to_bullet_Joint (Self);
     btRotationalLimitMotor*      the_Motor = c_Self->getRotationalLimitMotor (DoF - 4);
-  
+
     the_Motor->m_loLimit = Now;
-  
+
     c_Self->setOverrideNumSolverIterations (2000);   // Improves joint limit stiffness.
   }
 
@@ -295,7 +298,7 @@ extern "C"
   {
     btGeneric6DofConstraint*     c_Self    = (btGeneric6DofConstraint*) to_bullet_Joint (Self);
     btRotationalLimitMotor *     the_Motor = c_Self->getRotationalLimitMotor (DoF - 4);
-  
+
     the_Motor->m_hiLimit = Now;
   }
 
@@ -305,7 +308,7 @@ extern "C"
                                    int      DoF)
   {
     btGeneric6DofConstraint*     c_Self = (btGeneric6DofConstraint*) to_bullet_Joint (Self);
-  
+
     return c_Self->getRotationalLimitMotor (DoF - 4)->m_loLimit;
   }
 
@@ -315,7 +318,7 @@ extern "C"
                                   int      DoF)
   {
     btGeneric6DofConstraint*     c_Self = (btGeneric6DofConstraint*) to_bullet_Joint (Self);
-  
+
     return c_Self->getRotationalLimitMotor (DoF - 4)->m_hiLimit;
   }
 

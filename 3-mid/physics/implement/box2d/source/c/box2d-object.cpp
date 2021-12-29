@@ -361,7 +361,7 @@ b2d_Object_Gyre (Object*   Self)
 {
   Vector_3     the_Gyre;     // TODO
 
-  1/0;                       // Force an error.
+  printf ("TODO: b2d_Object_Gyre");
   return the_Gyre;
 }
 
@@ -371,8 +371,7 @@ void
 b2d_Object_Gyre_is (Object*     Self,
                     Vector_3*   Now)
 {
-  // TODO
-  1/0;                       // Force an error.
+  printf ("TODO: b2d_Object_Gyre_is");
 }
 
 
@@ -381,8 +380,7 @@ void
 b2d_Object_apply_Torque (Object*     Self,
                          Vector_3*   Torque)
 {
-  // TODO
-  1/0;                       // Force an error.
+  printf ("TODO: b2d_Object_apply_Torque");
 }
 
 
@@ -391,8 +389,7 @@ void
 b2d_Object_apply_Torque_impulse (Object*     Self,
                                  Vector_3*   Torque)
 {
-  // TODO
-  1/0;                       // Force an error.
+  printf ("TODO: b2d_Object_apply_Torque_impulse");
 }
 
 

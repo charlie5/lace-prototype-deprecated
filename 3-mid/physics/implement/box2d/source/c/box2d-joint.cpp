@@ -270,28 +270,30 @@ b2d_Joint_Frame_B        (Joint*   Self)
 void
 b2d_Joint_Frame_A_is     (Joint*   Self,   Matrix_4x4*   Now)
 {
-  1/0;
+    printf ("TODO: b3d_Joint_Frame_A_is");
 }
 
 
 void
 b2d_Joint_Frame_B_is     (Joint*   Self,   Matrix_4x4*   Now)
 {
-  1/0;
+    printf ("TODO: b2d_Joint_Frame_B_is");
 }
 
 
 bool
 b2d_Joint_is_Limited     (Joint*   Self,   int           DoF)
 {
-  return 1/0;
+    printf ("TODO: b2d_Joint_is_Limited");
+    return false;
 }
 
 
 bool
 b2d_Joint_Extent         (Joint*   Self,   int           DoF)
 {
-  return 1/0;
+    printf ("TODO: b2d_Joint_Extent");
+    return false;
 }
 
 
@@ -299,7 +301,7 @@ void
 b2d_Joint_Velocity_is    (Joint*   Self,   int           DoF,
                                            float         Real)
 {
-  1/0;
+    printf ("TODO: b2d_Joint_Velocity_is");
 }
 
 
@@ -328,7 +330,3 @@ b2d_Joint_hinge_Limits_are (Joint*   Self,   Real   Low,
 
 
 } // extern "C"
-
-
-
-

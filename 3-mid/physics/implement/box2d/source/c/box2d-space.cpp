@@ -39,21 +39,21 @@ to_Space (b2World*   From)
 class my_raycast_Callback : public b2RayCastCallback
 {
 public:
-  
+
   b2Fixture*   Nearest;
-  
-  float 
+
+  float
   ReportFixture
-    (b2Fixture*      fixture, 
-		 const b2Vec2&   point, 
-		 const b2Vec2&   normal, 
+    (b2Fixture*      fixture,
+		 const b2Vec2&   point,
+		 const b2Vec2&   normal,
 		 float           fraction)
   {
     Nearest = fixture;
-    
+
     return fraction;
   }
-  
+
 };
 
 
@@ -116,13 +116,13 @@ PreSolve (b2Contact*          contact,
 {
   if (m_pointCount == k_maxContactPoints)
     return;
-  
+
   const b2Manifold*     manifold = contact->GetManifold();
 
   if (manifold->pointCount == 0)
     return;
 
-  
+
   b2Fixture*            fixtureA = contact->GetFixtureA();
   b2Fixture*            fixtureB = contact->GetFixtureB();
 
@@ -141,7 +141,7 @@ PreSolve (b2Contact*          contact,
   cp->fixtureA = fixtureA;
   cp->fixtureB = fixtureB;
   cp->position.SetZero();
-  
+
   for (int32 i = 0;   i < manifold->pointCount;   ++i)
     {
       cp->position      += worldManifold.points [i];
@@ -151,10 +151,10 @@ PreSolve (b2Contact*          contact,
       cp->tangentImpulse = manifold->points [i].tangentImpulse;
       cp->separation     = worldManifold.separations [i];
     }
-  
+
   if (manifold->pointCount > 1)
     cp->position *= (1.0 / float (manifold->pointCount));   // Calculate middle site.
-  
+
   ++m_pointCount;
 }
 
@@ -261,7 +261,7 @@ b2d_Space_rid_Object (Space*   Self,    Object*   the_Object)
   ((b2World*)Self)->DestroyBody (the_Object->body);
   the_Object->body = 0;
 }
- 
+
 
 void
 b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
@@ -285,7 +285,7 @@ b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
     }
   else
     {
-      1/0;   // Force error.
+      printf ("TODO: b2d_Space_add_Joint");
     }
 }
 
@@ -312,15 +312,15 @@ b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
 void*
 b2d_b2Joint_user_Data (b2Joint*   the_Joint)
 {
-  return (void*) the_Joint->GetUserData().pointer;  
+  return (void*) the_Joint->GetUserData().pointer;
 }
 
 
 
 /// Joint Cursor
 //
-  
-joint_Cursor     
+
+joint_Cursor
 b2d_Space_first_Joint    (Space*          Self)
 {
   b2World*           the_World     = (b2World*)    Self;
@@ -342,7 +342,7 @@ b2d_Space_joint_Element (joint_Cursor*   Cursor)
   return Cursor->Joint;
 }
 
-  
+
 
 ///  Raycasts
 //
@@ -353,20 +353,20 @@ b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
 {
   b2World*              the_World     = (b2World*)    Self;
   my_raycast_Callback   the_Callback;
-  
+
   the_Callback.Nearest = 0;
-  
-  the_World->RayCast (&the_Callback,  
+
+  the_World->RayCast (&the_Callback,
 		      b2Vec2 (From->x, From->y),
 		      b2Vec2 (To  ->x, To  ->y));
-  
+
   b2d_ray_Collision   the_Collision;
 
   if (the_Callback.Nearest == 0)
     the_Collision.near_Object = 0;
   else
     the_Collision.near_Object  = (Object*) (the_Callback.Nearest->GetBody()->GetUserData().pointer);
-  
+
   the_Collision.hit_Fraction = 0.0;
   the_Collision.Normal_world = Vector_3 (0.0, 0.0, 0.0);
   the_Collision.Site_world   = Vector_3 (0.0, 0.0, 0.0);
