@@ -41,7 +41,7 @@ apply_Light (light   Light,
     {
         // Directional light.
         //
-        Surface_to_Light = normalize (Light.Site.xyz);
+        Surface_to_Light = normalize (-Light.Site.xyz);
         Attenuation      = 1.0;     // No attenuation for directional lights.
     } 
     else
