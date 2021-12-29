@@ -83,7 +83,7 @@ is
             case Light.Kind
             is
             when Diffuse =>   site_Uniform.Value_is (Vector_4 (Light.Site & 1.0));
-            when Direct  =>   site_Uniform.Value_is (Vector_4 (Light.Site & 0.0));
+            when Direct  =>   site_Uniform.Value_is (Vector_4 (Light.Site & 0.0));    -- '0.0' tells shader that this light is 'direct'.
             end case;
 
             color_Uniform              .Value_is (to_Vector_3 (Light.Color));
