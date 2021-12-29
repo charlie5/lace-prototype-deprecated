@@ -116,13 +116,13 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_colored.Vertex_array
-           := (1 => (Site => height_Offset,    Normal => Normal,  Color => +Self.upper_Face.center_Color,  Shine => 0.5),
-               2 => (Site => upper_Sites (1),  Normal => Normal,  Color => +Self.upper_Face.Colors (1),    Shine => 0.5),
-               3 => (Site => upper_Sites (2),  Normal => Normal,  Color => +Self.upper_Face.Colors (2),    Shine => 0.5),
-               4 => (Site => upper_Sites (3),  Normal => Normal,  Color => +Self.upper_Face.Colors (3),    Shine => 0.5),
-               5 => (Site => upper_Sites (4),  Normal => Normal,  Color => +Self.upper_Face.Colors (4),    Shine => 0.5),
-               6 => (Site => upper_Sites (5),  Normal => Normal,  Color => +Self.upper_Face.Colors (5),    Shine => 0.5),
-               7 => (Site => upper_Sites (6),  Normal => Normal,  Color => +Self.upper_Face.Colors (6),    Shine => 0.5));
+           := (1 => (Site => height_Offset,    Normal => Normal,  Color => +Self.upper_Face.center_Color,  Shine => default_Shine),
+               2 => (Site => upper_Sites (1),  Normal => Normal,  Color => +Self.upper_Face.Colors (1),    Shine => default_Shine),
+               3 => (Site => upper_Sites (2),  Normal => Normal,  Color => +Self.upper_Face.Colors (2),    Shine => default_Shine),
+               4 => (Site => upper_Sites (3),  Normal => Normal,  Color => +Self.upper_Face.Colors (3),    Shine => default_Shine),
+               5 => (Site => upper_Sites (4),  Normal => Normal,  Color => +Self.upper_Face.Colors (4),    Shine => default_Shine),
+               6 => (Site => upper_Sites (5),  Normal => Normal,  Color => +Self.upper_Face.Colors (5),    Shine => default_Shine),
+               7 => (Site => upper_Sites (6),  Normal => Normal,  Color => +Self.upper_Face.Colors (6),    Shine => default_Shine));
       begin
          upper_Face := new_hexagon_Face (Vertices => the_Vertices);
       end;
@@ -131,13 +131,13 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_colored.Vertex_array
-           := (1 => (Site => -height_Offset,     Normal => -Normal,   Color => +Self.lower_Face.center_Color,   Shine => 0.5),
-               2 => (Site =>  lower_Sites (1),   Normal => -Normal,   Color => +Self.lower_Face.Colors (1),     Shine => 0.5),
-               3 => (Site =>  lower_Sites (2),   Normal => -Normal,   Color => +Self.lower_Face.Colors (2),     Shine => 0.5),
-               4 => (Site =>  lower_Sites (3),   Normal => -Normal,   Color => +Self.lower_Face.Colors (3),     Shine => 0.5),
-               5 => (Site =>  lower_Sites (4),   Normal => -Normal,   Color => +Self.lower_Face.Colors (4),     Shine => 0.5),
-               6 => (Site =>  lower_Sites (5),   Normal => -Normal,   Color => +Self.lower_Face.Colors (5),     Shine => 0.5),
-               7 => (Site =>  lower_Sites (6),   Normal => -Normal,   Color => +Self.lower_Face.Colors (6),     Shine => 0.5));
+           := (1 => (Site => -height_Offset,     Normal => -Normal,   Color => +Self.lower_Face.center_Color,   Shine => default_Shine),
+               2 => (Site =>  lower_Sites (1),   Normal => -Normal,   Color => +Self.lower_Face.Colors (1),     Shine => default_Shine),
+               3 => (Site =>  lower_Sites (2),   Normal => -Normal,   Color => +Self.lower_Face.Colors (2),     Shine => default_Shine),
+               4 => (Site =>  lower_Sites (3),   Normal => -Normal,   Color => +Self.lower_Face.Colors (3),     Shine => default_Shine),
+               5 => (Site =>  lower_Sites (4),   Normal => -Normal,   Color => +Self.lower_Face.Colors (4),     Shine => default_Shine),
+               6 => (Site =>  lower_Sites (5),   Normal => -Normal,   Color => +Self.lower_Face.Colors (5),     Shine => default_Shine),
+               7 => (Site =>  lower_Sites (6),   Normal => -Normal,   Color => +Self.lower_Face.Colors (6),     Shine => default_Shine));
       begin
          lower_Face := new_hexagon_Face (Vertices => the_Vertices,
                                          Flip     => True);
@@ -180,18 +180,18 @@ is
          shaft_Color  : constant rgba_Color    := +Self.Shaft.Color;
 
          the_Vertices : constant Geometry.lit_colored.Vertex_array
-           := ( 1 => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Shine => 0.5),
-                2 => (Site => lower_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Shine => 0.5),
-                3 => (Site => upper_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Shine => 0.5),
-                4 => (Site => lower_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Shine => 0.5),
-                5 => (Site => upper_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Shine => 0.5),
-                6 => (Site => lower_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Shine => 0.5),
-                7 => (Site => upper_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Shine => 0.5),
-                8 => (Site => lower_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Shine => 0.5),
-                9 => (Site => upper_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Shine => 0.5),
-               10 => (Site => lower_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Shine => 0.5),
-               11 => (Site => upper_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Shine => 0.5),
-               12 => (Site => lower_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Shine => 0.5));
+           := ( 1 => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Shine => default_Shine),
+                2 => (Site => lower_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Shine => default_Shine),
+                3 => (Site => upper_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Shine => default_Shine),
+                4 => (Site => lower_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Shine => default_Shine),
+                5 => (Site => upper_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Shine => default_Shine),
+                6 => (Site => lower_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Shine => default_Shine),
+                7 => (Site => upper_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Shine => default_Shine),
+                8 => (Site => lower_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Shine => default_Shine),
+                9 => (Site => upper_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Shine => default_Shine),
+               10 => (Site => lower_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Shine => default_Shine),
+               11 => (Site => upper_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Shine => default_Shine),
+               12 => (Site => lower_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Shine => default_Shine));
       begin
          shaft_Face := new_shaft_Face (Vertices => the_Vertices);
       end;

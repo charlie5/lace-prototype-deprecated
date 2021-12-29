@@ -226,10 +226,13 @@ is
    type lucid_Colors is array (Index_t range <>) of lucid_Color;
 
 
-   subtype Shine is Real range 1.0 .. Real'Last;
-
    no_Color       : constant Color;
    no_lucid_Color : constant lucid_Color;
+
+
+   subtype Shine is Real range 1.0 .. Real'Last;
+
+   default_Shine : constant := 0.05;
 
 
    ----------

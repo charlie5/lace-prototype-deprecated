@@ -34,9 +34,6 @@ is
    --- Attributes
    --
 
-   type Geometry_view is access all Geometry.textured.item'Class;
-
-
    --  NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
@@ -67,7 +64,7 @@ is
       the_Vertices   : aliased  Geometry.textured.Vertex_array := (1 .. vertex_Count  => <>);
       the_Indices    : aliased  Indices                        := (1 .. indices_Count => <>);
 
-      the_Geometry   : constant Geometry_view := Geometry.textured.new_Geometry;
+      the_Geometry   : constant Geometry.textured.view := Geometry.textured.new_Geometry;
 
    begin
       set_Sites:

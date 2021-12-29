@@ -66,13 +66,13 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => (0.0, 0.0, 0.0), Normal => Normal, Color => +Self.Face.center_Color, Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site =>   the_Sites (1), Normal => Normal, Color => +Self.Face.Colors (1),   Coords => (0.0, 0.0),   Shine => 0.5),
-               3 => (Site =>   the_Sites (2), Normal => Normal, Color => +Self.Face.Colors (2),   Coords => (1.0, 0.0),   Shine => 0.5),
-               4 => (Site =>   the_Sites (3), Normal => Normal, Color => +Self.Face.Colors (3),   Coords => (1.0, 1.0),   Shine => 0.5),
-               5 => (Site =>   the_Sites (4), Normal => Normal, Color => +Self.Face.Colors (4),   Coords => (0.0, 1.0),   Shine => 0.5),
-               6 => (Site =>   the_Sites (5), Normal => Normal, color => +Self.Face.Colors (5),   Coords => (0.0, 1.0),   Shine => 0.5),
-               7 => (Site =>   the_Sites (6), Normal => Normal, Color => +Self.Face.Colors (6),   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => (0.0, 0.0, 0.0), Normal => Normal, Color => +Self.Face.center_Color, Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site =>   the_Sites (1), Normal => Normal, Color => +Self.Face.Colors (1),   Coords => (0.0, 0.0),   Shine => default_Shine),
+               3 => (Site =>   the_Sites (2), Normal => Normal, Color => +Self.Face.Colors (2),   Coords => (1.0, 0.0),   Shine => default_Shine),
+               4 => (Site =>   the_Sites (3), Normal => Normal, Color => +Self.Face.Colors (3),   Coords => (1.0, 1.0),   Shine => default_Shine),
+               5 => (Site =>   the_Sites (4), Normal => Normal, Color => +Self.Face.Colors (4),   Coords => (0.0, 1.0),   Shine => default_Shine),
+               6 => (Site =>   the_Sites (5), Normal => Normal, color => +Self.Face.Colors (5),   Coords => (0.0, 1.0),   Shine => default_Shine),
+               7 => (Site =>   the_Sites (6), Normal => Normal, Color => +Self.Face.Colors (6),   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
 

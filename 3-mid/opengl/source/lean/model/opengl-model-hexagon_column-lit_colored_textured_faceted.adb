@@ -118,13 +118,13 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => height_Offset,     Normal => Normal,   Color => +Self.upper_Face.center_Color,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => upper_Sites (1),   Normal => Normal,   Color => +Self.upper_Face.Colors (1),     Coords => (0.0, 0.0),   Shine => 0.5),
-               3 => (Site => upper_Sites (2),   Normal => Normal,   Color => +Self.upper_Face.Colors (2),     Coords => (1.0, 0.0),   Shine => 0.5),
-               4 => (Site => upper_Sites (3),   Normal => Normal,   Color => +Self.upper_Face.Colors (3),     Coords => (1.0, 1.0),   Shine => 0.5),
-               5 => (Site => upper_Sites (4),   Normal => Normal,   Color => +Self.upper_Face.Colors (4),     Coords => (0.0, 1.0),   Shine => 0.5),
-               6 => (Site => upper_Sites (5),   Normal => Normal,   Color => +Self.upper_Face.Colors (5),     Coords => (0.0, 1.0),   Shine => 0.5),
-               7 => (Site => upper_Sites (6),   Normal => Normal,   Color => +Self.upper_Face.Colors (6),     Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => height_Offset,     Normal => Normal,   Color => +Self.upper_Face.center_Color,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => upper_Sites (1),   Normal => Normal,   Color => +Self.upper_Face.Colors (1),     Coords => (0.0, 0.0),   Shine => default_Shine),
+               3 => (Site => upper_Sites (2),   Normal => Normal,   Color => +Self.upper_Face.Colors (2),     Coords => (1.0, 0.0),   Shine => default_Shine),
+               4 => (Site => upper_Sites (3),   Normal => Normal,   Color => +Self.upper_Face.Colors (3),     Coords => (1.0, 1.0),   Shine => default_Shine),
+               5 => (Site => upper_Sites (4),   Normal => Normal,   Color => +Self.upper_Face.Colors (4),     Coords => (0.0, 1.0),   Shine => default_Shine),
+               6 => (Site => upper_Sites (5),   Normal => Normal,   Color => +Self.upper_Face.Colors (5),     Coords => (0.0, 1.0),   Shine => default_Shine),
+               7 => (Site => upper_Sites (6),   Normal => Normal,   Color => +Self.upper_Face.Colors (6),     Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          upper_Face := new_hexagon_Face (Vertices => the_Vertices'Access);
 
@@ -138,13 +138,13 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1 => (Site => -height_Offset,    Normal => -Normal,   Color => +Self.upper_Face.center_Color,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site =>  lower_Sites (1),  Normal => -Normal,   Color => +Self.upper_Face.Colors (1),     Coords => (0.0, 0.0),   Shine => 0.5),
-               3 => (Site =>  lower_Sites (2),  Normal => -Normal,   Color => +Self.upper_Face.Colors (2),     Coords => (1.0, 0.0),   Shine => 0.5),
-               4 => (Site =>  lower_Sites (3),  Normal => -Normal,   Color => +Self.upper_Face.Colors (3),     Coords => (1.0, 1.0),   Shine => 0.5),
-               5 => (Site =>  lower_Sites (4),  Normal => -Normal,   Color => +Self.upper_Face.Colors (4),     Coords => (0.0, 1.0),   Shine => 0.5),
-               6 => (Site =>  lower_Sites (5),  Normal => -Normal,   Color => +Self.upper_Face.Colors (5),     Coords => (0.0, 1.0),   Shine => 0.5),
-               7 => (Site =>  lower_Sites (6),  Normal => -Normal,   Color => +Self.upper_Face.Colors (6),     Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => -height_Offset,    Normal => -Normal,   Color => +Self.upper_Face.center_Color,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site =>  lower_Sites (1),  Normal => -Normal,   Color => +Self.upper_Face.Colors (1),     Coords => (0.0, 0.0),   Shine => default_Shine),
+               3 => (Site =>  lower_Sites (2),  Normal => -Normal,   Color => +Self.upper_Face.Colors (2),     Coords => (1.0, 0.0),   Shine => default_Shine),
+               4 => (Site =>  lower_Sites (3),  Normal => -Normal,   Color => +Self.upper_Face.Colors (3),     Coords => (1.0, 1.0),   Shine => default_Shine),
+               5 => (Site =>  lower_Sites (4),  Normal => -Normal,   Color => +Self.upper_Face.Colors (4),     Coords => (0.0, 1.0),   Shine => default_Shine),
+               6 => (Site =>  lower_Sites (5),  Normal => -Normal,   Color => +Self.upper_Face.Colors (5),     Coords => (0.0, 1.0),   Shine => default_Shine),
+               7 => (Site =>  lower_Sites (6),  Normal => -Normal,   Color => +Self.upper_Face.Colors (6),     Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          lower_Face := new_hexagon_Face (vertices => the_Vertices'Access,
                                          flip     => True);
@@ -197,40 +197,40 @@ is
          shaft_Color : constant rgba_Color := +Self.Shaft.Color;
 
          the_Vertices_1 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0,           1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0,           0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (2),   Normal => Normals (1),   Color => shaft_Color,   Coords => (s_Delta,       1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (2),   Normal => Normals (1),   Color => shaft_Color,   Coords => (s_Delta,       0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0,           1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (1),   Normal => Normals (1),   Color => shaft_Color,   Coords => (0.0,           0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (2),   Normal => Normals (1),   Color => shaft_Color,   Coords => (s_Delta,       1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (2),   Normal => Normals (1),   Color => shaft_Color,   Coords => (s_Delta,       0.0),   Shine => default_Shine));
 
          the_Vertices_2 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta,       1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta,       0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (3),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (3),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta,       1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (2),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta,       0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (3),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (3),   Normal => Normals (2),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 0.0),   Shine => default_Shine));
 
          the_Vertices_3 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (4),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (4),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (3),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 2.0, 0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (4),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (4),   Normal => Normals (3),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 0.0),   Shine => default_Shine));
 
          the_Vertices_4 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (5),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (5),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (4),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 3.0, 0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (5),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (5),   Normal => Normals (4),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 0.0),   Shine => default_Shine));
 
          the_Vertices_5 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (6),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (6),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (5),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 4.0, 0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (6),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (6),   Normal => Normals (5),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 0.0),   Shine => default_Shine));
 
          the_Vertices_6 : aliased Geometry.lit_colored_textured.Vertex_array
-           := (1  => (Site => upper_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 1.0),   Shine => 0.5),
-               2  => (Site => lower_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 0.0),   Shine => 0.5),
-               3  => (Site => upper_Sites (1),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0,           1.0),   Shine => 0.5),
-               4  => (Site => lower_Sites (1),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0,           0.0),   Shine => 0.5));
+           := (1  => (Site => upper_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 1.0),   Shine => default_Shine),
+               2  => (Site => lower_Sites (6),   Normal => Normals (6),   Color => shaft_Color,   Coords => (s_Delta * 5.0, 0.0),   Shine => default_Shine),
+               3  => (Site => upper_Sites (1),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0,           1.0),   Shine => default_Shine),
+               4  => (Site => lower_Sites (1),   Normal => Normals (6),   Color => shaft_Color,   Coords => (1.0,           0.0),   Shine => default_Shine));
 
          the_Vertices  : constant array (1 .. 6) of access Geometry.lit_colored_textured.Vertex_array
            := (the_Vertices_1'Access,

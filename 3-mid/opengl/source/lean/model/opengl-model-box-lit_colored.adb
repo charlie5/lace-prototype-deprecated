@@ -65,10 +65,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (4),   Shine => default_Shine));
       begin
          front_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -78,10 +78,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Color => +Self.Faces (Rear).Colors (4),   Shine => default_Shine));
       begin
          rear_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -91,10 +91,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Color => +Self.Faces (Upper).Colors (4),   Shine => default_Shine));
       begin
          upper_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -104,10 +104,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Color => +Self.Faces (Lower).Colors (4),   Shine => default_Shine));
       begin
          lower_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -117,10 +117,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Color => +Self.Faces (Left).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Color => +Self.Faces (Left).Colors (4),   Shine => default_Shine));
       begin
          left_Face := new_Face (Vertices => the_Vertices'Access);
       end;
@@ -130,10 +130,10 @@ is
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (1),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (2),   Shine => 0.5),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (3),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (4),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (1),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (2),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Color => +Self.Faces (Right).Colors (3),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Color => +Self.Faces (Right).Colors (4),   Shine => default_Shine));
       begin
          right_Face := new_Face (Vertices => the_Vertices'Access);
       end;

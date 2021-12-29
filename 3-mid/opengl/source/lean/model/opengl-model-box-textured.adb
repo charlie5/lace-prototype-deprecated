@@ -5,9 +5,6 @@ with
 
 package body openGL.Model.box.textured
 is
-   type Geometry_view is access all Geometry.textured.item'Class;
-
-
    ---------
    --- Forge
    --
@@ -43,27 +40,27 @@ is
       the_Indices  : aliased  Indices   := (1, 2, 3, 4);
 
 
-      function new_Face (Vertices : access Geometry.textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : in Geometry.textured.Vertex_array) return Geometry.textured.view
       is
          use Primitive;
 
-         the_Geometry  : constant Geometry_view  := Geometry.textured.new_Geometry;
-         the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
-                                                                                     the_Indices).all'Access;
+         the_Geometry  : constant Geometry.textured.view := Geometry.textured.new_Geometry;
+         the_Primitive : constant Primitive.view         := Primitive.indexed.new_Primitive (triangle_Fan,
+                                                                                             the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (the_Primitive);
 
          return the_Geometry;
       end new_Face;
 
 
-      front_Face : Geometry_view;
-      rear_Face  : Geometry_view;
-      upper_Face : Geometry_view;
-      lower_Face : Geometry_view;
-      left_Face  : Geometry_view;
-      right_Face : Geometry_view;
+      front_Face : Geometry.textured.view;
+      rear_Face  : Geometry.textured.view;
+      upper_Face : Geometry.textured.view;
+      lower_Face : Geometry.textured.view;
+      left_Face  : Geometry.textured.view;
+      right_Face : Geometry.textured.view;
 
    begin
       if Self.is_Skybox
@@ -74,13 +71,13 @@ is
       --  Front
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites ( left_lower_front),   Coords => (0.0, 0.0)),
                2 => (Site => the_Sites (right_lower_front),   Coords => (1.0, 0.0)),
                3 => (Site => the_Sites (right_upper_front),   Coords => (1.0, 1.0)),
                4 => (Site => the_Sites ( left_upper_front),   Coords => (0.0, 1.0)));
       begin
-         front_Face := new_Face (Vertices => the_Vertices'Access);
+         front_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Front).texture_Name /= null_Asset
          then
@@ -93,13 +90,13 @@ is
       --  Rear
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Rear),   Coords => (0.0, 0.0)),
                2 => (Site => the_Sites ( Left_Lower_Rear),   Coords => (1.0, 0.0)),
                3 => (Site => the_Sites ( Left_Upper_Rear),   Coords => (1.0, 1.0)),
                4 => (Site => the_Sites (Right_Upper_Rear),   Coords => (0.0, 1.0)));
       begin
-         rear_Face := new_Face (Vertices => the_Vertices'Access);
+         rear_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Rear).texture_Name /= null_Asset
          then
@@ -112,13 +109,13 @@ is
       --  Upper
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites ( Left_Upper_Front),    Coords => (0.0, 0.0)),
                2 => (Site => the_Sites (Right_Upper_Front),   Coords => (1.0, 0.0)),
                3 => (Site => the_Sites (Right_Upper_Rear),    Coords => (1.0, 1.0)),
                4 => (Site => the_Sites ( Left_Upper_Rear),     Coords => (0.0, 1.0)));
       begin
-         upper_Face := new_Face (Vertices => the_Vertices'Access);
+         upper_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Upper).texture_Name /= null_Asset
          then
@@ -131,13 +128,13 @@ is
       --  Lower
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Front),   Coords => (0.0, 0.0)),
                2 => (Site => the_Sites ( Left_Lower_Front),   Coords => (1.0, 0.0)),
                3 => (Site => the_Sites ( Left_Lower_Rear),    Coords => (1.0, 1.0)),
                4 => (Site => the_Sites (Right_Lower_Rear),    Coords => (0.0, 1.0)));
       begin
-         lower_Face := new_Face (Vertices => the_Vertices'Access);
+         lower_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Lower).texture_Name /= null_Asset
          then
@@ -150,13 +147,13 @@ is
       --  Left
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites (Left_Lower_Rear),    Coords => (0.0, 0.0)),
                2 => (Site => the_Sites (Left_Lower_Front),   Coords => (1.0, 0.0)),
                3 => (Site => the_Sites (Left_Upper_Front),   Coords => (1.0, 1.0)),
                4 => (Site => the_Sites (Left_Upper_Rear),    Coords => (0.0, 1.0)));
       begin
-         left_Face := new_Face (Vertices => the_Vertices'Access);
+         left_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Left).texture_Name /= null_Asset
          then
@@ -169,13 +166,13 @@ is
       --  Right
       --
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
+         the_Vertices : constant Geometry.textured.Vertex_array
            := (1 => (Site => the_Sites (Right_Lower_Front),   Coords => (0.0, 0.0)),
                2 => (Site => the_Sites (Right_Lower_Rear),    Coords => (1.0, 0.0)),
                3 => (Site => the_Sites (Right_Upper_Rear),    Coords => (1.0, 1.0)),
                4 => (Site => the_Sites (Right_Upper_Front),   Coords => (0.0, 1.0)));
       begin
-         right_Face := new_Face (Vertices => the_Vertices'Access);
+         right_Face := new_Face (Vertices => the_Vertices);
 
          if Self.Faces (Right).texture_Name /= null_Asset
          then

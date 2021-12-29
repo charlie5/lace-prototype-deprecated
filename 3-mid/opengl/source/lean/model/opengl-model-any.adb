@@ -234,7 +234,7 @@ is
 
                            if the_io_Vertex.normal_Id /= null_Id
                            then   the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
-                                  the_gl_Vertex.Shine  := 0.5;
+                                  the_gl_Vertex.Shine  := default_Shine;
                                   normals_Known        := True;
                            else   the_gl_Vertex.Normal := (0.0, 0.0, 0.0);
                            end if;
@@ -384,7 +384,7 @@ is
                      for i in my_Vertices'Range
                      loop
                         my_Vertices (i).Normal := the_Normals (Index_t (i));
-                        my_Vertices (i).Shine  := 0.5;
+                        my_Vertices (i).Shine  := default_Shine;
                      end loop;
 
                      deallocate (the_Normals);

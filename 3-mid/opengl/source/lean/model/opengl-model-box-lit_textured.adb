@@ -65,10 +65,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          front_Face := new_Face (Vertices => the_Vertices);
 
@@ -84,10 +84,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Rear),   Normal => rear_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites ( Left_Lower_Rear),   Normal => rear_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites ( Left_Upper_Rear),   Normal => rear_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Upper_Rear),   Normal => rear_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          rear_Face := new_Face (Vertices => the_Vertices);
 
@@ -103,10 +103,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites ( Left_Upper_Front),   Normal => upper_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Upper_Front),   Normal => upper_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => upper_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites ( Left_Upper_Rear),    Normal => upper_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
 
@@ -122,10 +122,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => lower_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites ( Left_Lower_Front),   Normal => lower_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites ( Left_Lower_Rear),    Normal => lower_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Lower_Rear),    Normal => lower_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          lower_Face := new_Face (Vertices => the_Vertices);
 
@@ -141,10 +141,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Left_Lower_Rear),    Normal => left_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites (Left_Lower_Front),   Normal => left_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (Left_Upper_Front),   Normal => left_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites (Left_Upper_Rear),    Normal => left_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          left_Face := new_Face (Vertices => the_Vertices);
 
@@ -160,10 +160,10 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Coords => (0.0, 0.0),   Shine => 0.5),
-               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Coords => (1.0, 0.0),   Shine => 0.5),
-               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Coords => (1.0, 1.0),   Shine => 0.5),
-               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Coords => (0.0, 1.0),   Shine => 0.5));
+           := (1 => (Site => the_Sites (Right_Lower_Front),   Normal => right_Normal,   Coords => (0.0, 0.0),   Shine => default_Shine),
+               2 => (Site => the_Sites (Right_Lower_Rear),    Normal => right_Normal,   Coords => (1.0, 0.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_Rear),    Normal => right_Normal,   Coords => (1.0, 1.0),   Shine => default_Shine),
+               4 => (Site => the_Sites (Right_Upper_Front),   Normal => right_Normal,   Coords => (0.0, 1.0),   Shine => default_Shine));
       begin
          right_Face := new_Face (Vertices => the_Vertices);
 

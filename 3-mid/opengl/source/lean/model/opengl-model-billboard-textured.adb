@@ -8,9 +8,6 @@ with
 
 package body openGL.Model.billboard.textured
 is
-   type Geometry_view is access all Geometry.textured.item'Class;
-
-
    ---------
    --- Forge
    --
@@ -52,32 +49,32 @@ is
                                                                        Self.Width,
                                                                        Self.Height);
 
-      function new_Face (Vertices : access Geometry.textured.Vertex_array) return Geometry_view
+      function new_Face (Vertices : in Geometry.textured.Vertex_array) return Geometry.textured.view
       is
          use Primitive;
 
-         the_Geometry  : constant Geometry_view  := Geometry.textured.new_Geometry;
-         the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive (triangle_Fan,
-                                                                                     the_Indices).all'Access;
+         the_Geometry  : constant Geometry.textured.view := Geometry.textured.new_Geometry;
+         the_Primitive : constant Primitive.view         := Primitive.indexed.new_Primitive (triangle_Fan,
+                                                                                             the_Indices).all'Access;
       begin
-         the_Geometry.Vertices_are (Vertices.all);
+         the_Geometry.Vertices_are (Vertices);
          the_Geometry.add (the_Primitive);
          the_Geometry.is_Transparent;
 
          return the_Geometry;
       end new_Face;
 
-      the_Face : Geometry_view;
+      the_Face : Geometry.textured.view;
 
    begin
       declare
-         the_Vertices : aliased Geometry.textured.Vertex_array
-                                  := (1 => (site => the_Sites (1),  coords => Self.texture_Coords (1)),
-                                      2 => (site => the_Sites (2),  coords => Self.texture_Coords (2)),
-                                      3 => (site => the_Sites (3),  coords => Self.texture_Coords (3)),
-                                      4 => (site => the_Sites (4),  coords => Self.texture_Coords (4)));
+         the_Vertices : constant Geometry.textured.Vertex_array
+           := (1 => (site => the_Sites (1),  coords => Self.texture_Coords (1)),
+               2 => (site => the_Sites (2),  coords => Self.texture_Coords (2)),
+               3 => (site => the_Sites (3),  coords => Self.texture_Coords (3)),
+               4 => (site => the_Sites (4),  coords => Self.texture_Coords (4)));
       begin
-         the_Face := new_Face (Vertices => the_Vertices'Access);
+         the_Face := new_Face (Vertices => the_Vertices);
 
          if Self.texture_Name /= null_Asset
          then
