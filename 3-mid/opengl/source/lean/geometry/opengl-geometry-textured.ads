@@ -4,8 +4,9 @@ package openGL.Geometry.textured
 --
 is
    type Item is new openGL.Geometry.item with private;
+   type View is access all Item'Class;
 
-   function new_Geometry return access Geometry.textured.item'Class;
+   function new_Geometry return View;
 
 
    ----------

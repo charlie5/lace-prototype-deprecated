@@ -49,13 +49,11 @@ is
    --  Forge
    --
 
-   type Geometry_view is access all Geometry.textured.item'Class;
-
-   function new_Geometry return access Geometry.textured.item'Class
+   function new_Geometry return View
    is
       use type openGL.Program.view;
 
-      Self : constant Geometry_view := new Geometry.textured.item;
+      Self : constant View := new Geometry.textured.item;
 
    begin
       Tasks.check;
