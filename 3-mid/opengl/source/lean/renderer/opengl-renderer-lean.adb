@@ -67,20 +67,6 @@ is
 
       vacuum  (Self.texture_Pool);
       destroy (Self.texture_Pool);
-
-      while not Self.Fonts.is_Empty
-      loop
-         declare
-            use Font,
-                Font.font_id_Maps_of_font;
-            the_Cursor : Cursor    := Self.Fonts.First;
-            the_Font   : Font.view := Element (the_Cursor);
-         begin
-            free (the_Font);
-            Self.Fonts.delete (the_Cursor);
-         end;
-      end loop;
-
    end destroy;
 
 
@@ -324,6 +310,21 @@ is
 
       Self.free_old_Models;
       Self.free_old_Impostors;
+
+      -- Free any fonts.
+      --
+      while not Self.Fonts.is_Empty
+      loop
+         declare
+            use Font,
+                Font.font_id_Maps_of_font;
+            the_Cursor : Cursor    := Self.Fonts.First;
+            the_Font   : Font.view := Element (the_Cursor);
+         begin
+            free (the_Font);
+            Self.Fonts.delete (the_Cursor);
+         end;
+      end loop;
 
    exception
       when E : others =>
