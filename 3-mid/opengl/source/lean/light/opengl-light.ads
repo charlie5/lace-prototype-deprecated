@@ -51,10 +51,10 @@ private
 
    type Item is tagged
       record
-         Id   : light.Id_t      := null_Id;
-         Kind : light.Kind_t    := Direct;
-         On   : Boolean         := True;
-         Site : openGL.Vector_4 := (0.0, 0.0, 1.0, 0.0);     -- The GL default.
+         Id   : light.Id_t   := null_Id;
+         Kind : light.Kind_t := Direct;
+         On   : Boolean      := True;
+         Site : openGL.Site  := (0.0, 0.0, 1.0);     -- The GL default.
 
          Color               : openGL.Color := Palette.White;
          Attenuation         : Real         :=  0.1;

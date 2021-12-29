@@ -47,18 +47,14 @@ is
    function Site (Self : in Item) return openGL.Site
    is
    begin
-      return openGL.Site (Self.Site (1 .. 3));
+      return Self.Site;
    end Site;
 
 
    procedure Site_is (Self : in out Item;   Now : in openGL.Site)
    is
    begin
-      case Self.Kind
-      is
-         when Diffuse =>   Self.Site := Vector_4  (Now & 1.0);
-         when Direct  =>   Self.Site := Vector_4 (-Now & 0.0);
-      end case;
+      Self.Site := Now;
    end Site_is;
 
 
