@@ -22,6 +22,14 @@ is
 
 
    overriding
+   procedure destroy (Self : in out Item)
+   is
+   begin
+      Subject.destroy (Subject.item (Self));   -- Destroy base class.
+   end destroy;
+
+
+   overriding
    function Name (Self : in Item) return Event.subject_Name
    is
    begin

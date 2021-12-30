@@ -24,6 +24,9 @@ is
       function new_Subject (Name : in Event.subject_Name) return View;
    end Forge;
 
+   procedure destroy (Self : in out Item);
+
+
    overriding
    function Name (Self : in Item) return Event.subject_Name;
 
