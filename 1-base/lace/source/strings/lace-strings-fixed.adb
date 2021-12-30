@@ -8,11 +8,13 @@
 --  bounds of function return results were also fixed, and use of & removed for
 --  efficiency reasons.
 
-with Ada.Strings.Maps; use Ada.Strings.Maps;
-with lace.Strings.search;
+with
+     lace.Strings.search;
+
 
 package body lace.Strings.fixed
 is
+   use ada.Strings.Maps;
 
    ------------------------
    -- Search Subprograms --
@@ -213,7 +215,6 @@ is
       Pad    : Character := Space) return String
    is
       subtype Result_Type is String (1 .. Count);
-
    begin
       if Count < Source'Length then
          return

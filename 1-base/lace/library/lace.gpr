@@ -3,6 +3,7 @@ with
    "lace_shared";
 --   "ashell";
 
+
 --library
 project Lace
 is
@@ -17,8 +18,7 @@ is
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "Lace";
 
-   for Source_Dirs use (".",
-                        "../source",
+   for Source_Dirs use ("../source",
                         "../source/containers",
 --                        "../source/environ",
                         "../source/events",

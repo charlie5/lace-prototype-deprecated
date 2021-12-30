@@ -1,6 +1,7 @@
 with
      lace.Text.all_Tokens;
 
+
 package body lace.Text.utility
 is
 
@@ -14,7 +15,8 @@ is
       if Self.Data (1 .. Self.Length) = Pattern
       then
          declare
-            Result : Text.item (Capacity => Natural'Max (By'Length, Self.Capacity));
+            Result : Text.item (Capacity => Natural'Max (By'Length,
+                                                         Self.Capacity));
          begin
             Result.Length                := By'Length;
             Result.Data (1 .. By'Length) := By;
@@ -34,7 +36,7 @@ is
       declare
          use lace.Text.all_Tokens;
 
-         the_Tokens : constant Text.items_1k := Tokens (Self, delimiter => Pattern);
+         the_Tokens : constant Text.items_1k := Tokens (Self, Delimiter => Pattern);
          Size       :          Natural       := 0;
       begin
          for Each of the_Tokens
@@ -52,7 +54,8 @@ is
          declare
             First  : Positive := 1;
             Last   : Natural;
-            Result : Text.item (Capacity => Natural'Max (Size, Self.Capacity));
+            Result : Text.item (Capacity => Natural'Max (Size,
+                                                         Self.Capacity));
          begin
             for Each of the_Tokens
             loop
@@ -73,6 +76,7 @@ is
          end;
       end;
    end replace;
+
 
 
    procedure replace (Self : in out Item;   Pattern : in String;
@@ -110,8 +114,8 @@ is
       Self.Data (1 .. Self.Length) := Result.Data (1 .. Self.Length);
 
    exception
-      when Constraint_Error =>
-         raise Text.Error with "'replace' fails ~ insufficient capacity";
+      when constraint_Error =>
+         raise Text.Error with "'replace' failed ~ insufficient capacity";
    end replace;
 
 

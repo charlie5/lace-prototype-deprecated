@@ -3,29 +3,32 @@ with
      ada.unchecked_Deallocation,
      system.RPC;
 
+
 package body lace.Event.utility
 is
+   --------------
    -- Event Kinds
    --
 
-   function to_Kind (From : in ada.Tags.Tag) return lace.event.Kind
+   function to_Kind (From : in ada.Tags.Tag) return lace.Event.Kind
    is
-      --  use lace.Event.conversions;
    begin
-      return event.Kind (ada.Tags.external_Tag (From));  -- to_event_Kind (From);
+      return event.Kind (ada.Tags.external_Tag (From));
    end to_Kind;
 
 
-   function Name_of (Kind : in event.Kind) return String
+   function Name_of (Kind : in Event.Kind) return String
    is
    begin
       return String (Kind);
    end Name_of;
 
+
+   ---------
    -- Events
    --
 
-   function Kind_of (the_Event : in Event.item'Class) return event.Kind
+   function Kind_of (the_Event : in Event.item'Class) return Event.Kind
    is
    begin
       return to_Kind (the_Event'Tag);
@@ -39,13 +42,14 @@ is
    end Name_of;
 
 
+   --------------
    -- Connections
    --
 
    procedure connect (the_Observer  : in Observer.view;
                       to_Subject    : in Subject .view;
                       with_Response : in Response.view;
-                      to_Event_Kind : in event.Kind)
+                      to_Event_Kind : in Event.Kind)
    is
    begin
       the_Observer.add (with_Response,
@@ -60,7 +64,7 @@ is
    procedure disconnect (the_Observer  : in Observer.view;
                          from_Subject  : in Subject .view;
                          for_Response  : in Response.view;
-                         to_Event_Kind : in event.Kind;
+                         to_Event_Kind : in Event.Kind;
                          Subject_Name  : in String)
    is
    begin
@@ -84,41 +88,43 @@ is
    end disconnect;
 
 
+   ----------
    -- Logging
    --
 
-   the_Logger : event.Logger.text.view;
+   the_Logger : Event.Logger.text.view;
 
 
    procedure use_text_Logger (log_Filename : in String)
    is
    begin
-      the_Logger := new event.Logger.text.item' (event.Logger.text.to_Logger (log_Filename));
+      the_Logger := new Event.Logger.text.item' (Event.Logger.text.to_Logger (log_Filename));
 
-      lace.Subject .Logger_is (the_Logger);
-      lace.Observer.Logger_is (the_Logger);
+      lace.Subject .Logger_is (the_Logger.all'Access);
+      lace.Observer.Logger_is (the_Logger.all'Access);
    end use_text_Logger;
 
 
-   function Logger return access lace.event.Logger.item'Class
+   function Logger return lace.event.Logger.view
    is
    begin
-      return the_Logger;
+      return the_Logger.all'Access;
    end Logger;
 
 
+   --------------
    -- Termination
    --
 
    procedure close
    is
-      use type event.Logger.text.view;
+      use type Event.Logger.text.view;
    begin
       if the_Logger /= null
       then
          declare
-            procedure deallocate is new ada.unchecked_Deallocation (event.Logger.text.item'Class,
-                                                                    event.Logger.text.view);
+            procedure deallocate is new ada.unchecked_Deallocation (Event.Logger.text.item'Class,
+                                                                    Event.Logger.text.view);
          begin
             the_Logger.destruct;
             deallocate (the_Logger);

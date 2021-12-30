@@ -7,6 +7,7 @@ with
      ada.Containers.indefinite_hashed_Maps,
      ada.Strings.Hash;
 
+
 generic
    type T is abstract new lace.make_Observer.item with private;
 
@@ -25,18 +26,21 @@ is
    procedure destroy (Self : in out Item);
 
 
+   -------------
    -- Operations
    --
 
    overriding
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := Event.null_Event;
                                             from_Subject : in Event.subject_Name);
    overriding
    procedure respond (Self : access Item);
 
 
+
 private
 
+   ----------------
    -- Event Vectors
    --
    use type Event.item;
@@ -46,6 +50,7 @@ private
    type    event_Vector_view is access all event_Vector;
 
 
+   --------------
    -- Safe Events
    --
    protected
@@ -60,17 +65,18 @@ private
    type safe_Events_view is access all safe_Events;
 
 
+   ------------------------------
    -- Subject Maps of safe Events
    --
    use type event_Vector;
-   package subject_Maps_of_safe_events
-   is new ada.Containers.indefinite_hashed_Maps (key_type        => event.subject_Name,
-                                                 element_type    => safe_Events_view,
-                                                 hash            => ada.Strings.Hash,
-                                                 equivalent_keys => "=");
-   subtype subject_Map_of_safe_events is subject_Maps_of_safe_events.Map;
+   package subject_Maps_of_safe_events is new ada.Containers.indefinite_hashed_Maps (Key_type        => Event.subject_Name,
+                                                                                     Element_type    => safe_Events_view,
+                                                                                     Hash            => ada.Strings.Hash,
+                                                                                     equivalent_Keys => "=");
+   subtype subject_Map_of_safe_events  is subject_Maps_of_safe_events.Map;
 
 
+   -----------------------
    -- Subject Events Pairs
    --
    type String_view is access all String;
@@ -84,7 +90,8 @@ private
    type subject_events_Pairs is array (Positive range <>) of subject_events_Pair;
 
 
-   -- safe_subject_Map_of_safe_events
+   ----------------------------------
+   -- safe Subject Map of safe Events
    --
    protected
    type safe_subject_Map_of_safe_events
@@ -101,6 +108,7 @@ private
    end safe_subject_Map_of_safe_events;
 
 
+   ----------------
    -- Observer Item
    --
    type Item is abstract limited new T with

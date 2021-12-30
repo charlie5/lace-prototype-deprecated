@@ -8,6 +8,7 @@ with
      ada.Text_IO,
      ada.Containers.indefinite_hashed_Sets;
 
+
 package lace.event.Logger.text
 --
 --  Provides a logger which logs to a text file.
@@ -16,6 +17,8 @@ is
    type Item is limited new Logger.item with private;
    type View is access all Item'Class;
 
+
+   --------
    -- Forge
    --
 
@@ -25,6 +28,7 @@ is
    procedure destruct  (Self : in out Item);
 
 
+   -------------
    -- Operations
    --
 
@@ -74,6 +78,7 @@ is
    --
    overriding
    procedure ignore (Self : in out Item;   Kind : in Event.Kind);
+
 
 
 private

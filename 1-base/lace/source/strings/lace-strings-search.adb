@@ -5,7 +5,7 @@ with
 package body lace.Strings.Search
 is
 
-   use Ada.Strings.Maps,
+   use ada.Strings.Maps,
        System;
 
 

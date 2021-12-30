@@ -6,22 +6,24 @@ with
 
 package body lace.Text.forge
 is
+   --------
    -- Files
    --
 
    function to_String (Filename : in forge.Filename) return String
    is
-      use ada.Strings.Unbounded,
+      use ada.Strings.unbounded,
           ada.Text_IO;
 
-      the_File : ada.Text_IO.File_Type;
+      the_File : ada.Text_IO.File_type;
       Pad      : unbounded_String;
    begin
       open (the_File, in_File, String (Filename));
 
       while not end_of_File (the_File)
       loop
-         append (Pad,  get_Line (the_File) & ada.Characters.Latin_1.LF);
+         append (Pad,   get_Line (the_File)
+                      & ada.Characters.Latin_1.LF);
       end loop;
 
       close (the_File);
@@ -38,6 +40,7 @@ is
    end to_Text;
 
 
+   --------------
    -- Stock Items
    --
 

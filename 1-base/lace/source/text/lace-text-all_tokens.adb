@@ -1,8 +1,10 @@
 with
      lace.Text.Cursor;
 
+
 package body lace.Text.all_Tokens
 is
+   ----------------------
    -- Character Delimiter
    --
 
@@ -55,13 +57,13 @@ is
 
    function any_Tokens_chr (Self : in Item;   Delimiter  : in Character := ' ';
                                               Trim       : in Boolean   := False;
-                                              max_Tokens : in Positive  := 4 * 1024) return Array_Type;
+                                              max_Tokens : in Positive  := 4 * 1024) return Array_type;
 
 
 
    function any_Tokens_chr (Self : in Item;   Delimiter  : in Character := ' ';
                                               Trim       : in Boolean   := False;
-                                              max_Tokens : in Positive  := 4 * 1024) return Array_Type
+                                              max_Tokens : in Positive  := 4 * 1024) return Array_type
    is
       the_Tokens : Array_type (1 .. max_Tokens);
       Count      : Natural  := 0;
@@ -81,7 +83,7 @@ is
         and then Self.Data (Self.Length) = Delimiter
       then                                                      -- Handle case where final character is the delimiter.
          Count              := Count + 1;
-         the_Tokens (Count) := any_to_Text ("", capacity => Text_Capacity);  -- Add an empty token.
+         the_Tokens (Count) := any_to_Text ("", capacity => Text_Capacity);     -- Add an empty token.
       end if;
 
       return the_Tokens (1 .. Count);
@@ -261,6 +263,7 @@ is
                                       Trim       : in Boolean   := False;
                                       max_Tokens : in Positive  := default_Max) return Text.items_512k renames Tokens_512k;
 
+   -------------------
    -- String Delimiter
    --
 
@@ -274,13 +277,13 @@ is
 
    function any_Tokens_str (Self : in Item;   Delimiter  : in String;
                                               Trim       : in Boolean  := False;
-                                              max_Tokens : in Positive := default_Max) return Array_Type;
+                                              max_Tokens : in Positive := default_Max) return Array_type;
 
 
 
    function any_Tokens_str (Self : in Item;   Delimiter  : in String;
                                               Trim       : in Boolean  := False;
-                                              max_Tokens : in Positive := default_Max) return Array_Type
+                                              max_Tokens : in Positive := default_Max) return Array_type
    is
       use Text.Cursor;
       mySelf     : aliased Item             := Self;

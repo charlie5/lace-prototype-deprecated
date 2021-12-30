@@ -1,12 +1,12 @@
 with
      lace.Text.all_Tokens,
-     ada.Characters.Latin_1;
+     ada.Characters.latin_1;
+
 
 package body lace.Text.all_Lines
 is
-
    use lace.Text.all_Tokens,
-       ada.Characters.Latin_1;
+       ada.Characters.latin_1;
 
 
    function Lines (Self : in Item) return Text.items_2

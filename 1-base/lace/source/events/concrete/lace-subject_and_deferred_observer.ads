@@ -9,9 +9,10 @@ private
 with
      ada.Strings.unbounded;
 
+
 package lace.Subject_and_deferred_Observer
 --
---  Provides a concrete type for a combined event Subject and a deferred Observer.
+--  Provides a concrete type for a combined event subject and a deferred observer.
 --
 is
    type Item is limited new lace.Any.limited_item
@@ -32,6 +33,7 @@ is
 
    overriding
    function Name (Self : in Item) return String;
+
 
 
 private

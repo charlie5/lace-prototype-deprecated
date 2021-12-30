@@ -2,11 +2,11 @@ with
      ada.Strings.Maps;
 
 
-package lace.Strings.Superbounded
+package lace.Strings.superbounded
 --
 -- Based on the 'ada.Strings.superbounded' package provided by FSF GCC.
 --
--- Modified to be a Pure package.
+-- Modified to be a Pure package for use with DSA.
 --
 is
    pragma Pure;
@@ -466,4 +466,4 @@ private
       pragma Inline (Super_Slice);
       pragma Inline (Super_To_String);
 
-end lace.Strings.Superbounded;
+end lace.Strings.superbounded;

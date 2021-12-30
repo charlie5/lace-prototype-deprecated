@@ -20,7 +20,8 @@ is
         when True
       is
       begin
-         if Count = 0 then
+         if Count = 0
+         then
             the_Item := new Item;
          else
             the_Item := Available (Count);

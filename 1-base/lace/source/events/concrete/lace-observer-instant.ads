@@ -6,6 +6,7 @@ private
 with
      ada.Strings.unbounded;
 
+
 package lace.Observer.instant
 --
 --  Provides a concrete instant event observer.
@@ -19,12 +20,13 @@ is
 
    package Forge
    is
-      function new_Observer (Name : in event.observer_Name) return View;
+      function new_Observer (Name : in Event.observer_Name) return View;
    end Forge;
 
 
    overriding
-   function Name (Self : in Item) return event.observer_Name;
+   function Name (Self : in Item) return Event.observer_Name;
+
 
 
 private
@@ -38,5 +40,3 @@ private
       end record;
 
 end lace.Observer.instant;
-
-

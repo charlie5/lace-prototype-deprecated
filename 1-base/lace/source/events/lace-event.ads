@@ -1,6 +1,7 @@
 with
      ada.Containers;
 
+
 package lace.Event
 --
 --  The base class for all derived event types.
@@ -8,13 +9,13 @@ package lace.Event
 is
    pragma Pure;
 
-   subtype  subject_Name is String;
-   subtype observer_Name is String;
-
-
    type Item is tagged null record;
 
    null_Event : constant Event.item;
+
+
+   subtype  subject_Name is String;
+   subtype observer_Name is String;
 
 
    procedure destruct (Self : in out Item) is null;
@@ -30,6 +31,8 @@ is
    --  event class (see 'Conversions' section in 'lace.Event.utility').
 
    function Hash (the_Kind : in Kind) return ada.Containers.Hash_type;
+
+
 
 private
    null_Event : constant Event.item := (others => <>);

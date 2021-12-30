@@ -3,11 +3,13 @@ with
      system.RPC,
      ada.unchecked_Conversion;
 
+
 package body lace.Event.Logger.text
 is
    use lace.Event.utility,
        ada.Text_IO;
 
+   --------
    -- Forge
    --
 
@@ -29,6 +31,7 @@ is
    end destruct;
 
 
+   -------------
    -- Operations
    --
 
@@ -46,7 +49,7 @@ is
 
    overriding
    procedure log_Disconnection (Self : in out Item;   From     : in Observer.view;
-                                                      To       : in Subject.view;
+                                                      To       : in Subject .view;
                                                       for_Kind : in Event.Kind)
    is
 
@@ -59,7 +62,7 @@ is
       exception
          when system.RPC.communication_Error
             | storage_Error =>
-            return "dead Observer (" & long_Integer'Image (to_Integer (From)) & ")";
+            return "dead Observer (" & to_Integer (From)'Image & ")";
       end from_Name;
 
    begin
@@ -76,7 +79,6 @@ is
                                              To        : in Observer.view;
                                              the_Event : in Event.item'Class)
    is
-
       function to_Name return String
       is
          function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
@@ -86,7 +88,7 @@ is
       exception
             when system.RPC.communication_Error
                | storage_Error =>
-            return "dead Observer (" & long_Integer'Image (to_Integer (To)) & ")";
+            return "dead Observer (" & to_Integer (To)'Image & ")";
       end to_Name;
 
    begin

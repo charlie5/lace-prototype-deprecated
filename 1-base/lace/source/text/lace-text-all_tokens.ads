@@ -3,6 +3,7 @@ is
    default_Max : constant := 4 * 1024;
 
 
+   ----------------------
    -- Character Delimiter
    --
    function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
@@ -63,6 +64,7 @@ is
                                       Trim       : in Boolean   := False;
                                       max_Tokens : in Positive  := default_Max) return Text.items_512k;
 
+   -------------------
    -- String Delimiter
    --
    function Tokens (Self : in Item;   Delimiter  : in String;

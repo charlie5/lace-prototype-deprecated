@@ -1,10 +1,12 @@
 with
      lace.Strings.fixed,
      ada.Characters.handling,
-     ada.Strings.hash;
+     ada.Strings.Hash;
+
 
 package body lace.Text
 is
+   ---------------
    -- Construction
    --
 
@@ -12,15 +14,19 @@ is
                      Trim : in Boolean := False) return Item
    is
    begin
-      return to_Text (From, capacity => From'Length, trim => Trim);
+      return to_Text (From,
+                      Capacity => From'Length,
+                      Trim     => Trim);
    end to_Text;
+
 
 
    function to_Text (From     : in String;
                      Capacity : in Natural;
                      Trim     : in Boolean := False) return Item
    is
-      the_String : constant String := (if Trim then lace.Strings.fixed.Trim (From, ada.Strings.Both) else From);
+      the_String : constant String := (if Trim then lace.Strings.fixed.Trim (From, ada.Strings.Both)
+                                               else From);
       Self       : Item (Capacity);
    begin
       Self.Length                  := the_String'Length;
@@ -30,6 +36,7 @@ is
    end to_Text;
 
 
+
    function "+" (From : in String) return Item
    is
    begin
@@ -37,6 +44,7 @@ is
    end "+";
 
 
+   -------------
    -- Attributes
    --
 
@@ -49,11 +57,13 @@ is
    end String_is;
 
 
+
    function to_String (Self : in Item) return String
    is
    begin
       return Self.Data (1 .. Self.Length);
    end to_String;
+
 
 
    function is_Empty (Self : in Item) return Boolean
@@ -63,11 +73,13 @@ is
    end is_Empty;
 
 
+
    function Length (Self : in Item) return Natural
    is
    begin
       return Self.Length;
    end Length;
+
 
 
    function Image (Self : in Item) return String
@@ -80,6 +92,7 @@ is
    end Image;
 
 
+
    function Hashed (Self : in Item) return ada.Containers.Hash_type
    is
    begin
@@ -87,16 +100,19 @@ is
    end Hashed;
 
 
+
    overriding
    function "=" (Left, Right : in Item) return Boolean
    is
    begin
-      if Left.Length /= Right.Length then
+      if Left.Length /= Right.Length
+      then
          return False;
       end if;
 
       return to_String (Left) = to_String (Right);
    end "=";
+
 
 
    function to_Lowercase (Self : in Item) return Item
@@ -111,6 +127,7 @@ is
 
       return Result;
    end to_Lowercase;
+
 
 
    function mono_Spaced (Self : in Item) return Item
@@ -137,10 +154,11 @@ is
    end mono_Spaced;
 
 
+   ----------
    -- Streams
    --
 
-   function Item_input  (Stream : access Ada.Streams.Root_Stream_Type'Class) return Item
+   function Item_input (Stream : access ada.Streams.root_Stream_type'Class) return Item
    is
       Capacity : Positive;
       Length   : Natural;
@@ -153,14 +171,15 @@ is
       begin
          String'read (Stream, Data (1 .. Length));
 
-         return (capacity => Capacity,
-                 data     => Data,
-                 length   => Length);
+         return (Capacity => Capacity,
+                 Data     => Data,
+                 Length   => Length);
       end;
    end Item_input;
 
 
-   procedure Item_output (Stream   : access Ada.Streams.Root_Stream_Type'Class;
+
+   procedure Item_output (Stream   : access ada.Streams.root_Stream_type'Class;
                           the_Item : in     Item)
    is
    begin
@@ -170,7 +189,8 @@ is
    end Item_output;
 
 
-   procedure Write (Stream : access ada.streams.Root_Stream_Type'Class;
+
+   procedure Write (Stream : access ada.Streams.root_Stream_type'Class;
                     Self   : in     Item)
    is
    begin
@@ -179,12 +199,14 @@ is
    end Write;
 
 
-   procedure Read (Stream : access ada.streams.Root_Stream_Type'Class;
+
+   procedure Read (Stream : access ada.Streams.root_Stream_type'Class;
                    Self   :    out Item)
    is
    begin
       Natural'read (Stream, Self.Length);
       String 'read (Stream, Self.Data (1 .. Self.Length));
    end Read;
+
 
 end lace.Text;

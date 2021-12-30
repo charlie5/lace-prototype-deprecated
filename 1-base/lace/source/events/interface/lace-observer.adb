@@ -1,16 +1,20 @@
+with
+     lace.Event.Logger;
+
+
 package body lace.Observer
 is
-   the_Logger : access Event.Logger.item'Class;
+   the_Logger : Event.Logger.view;
 
 
-   procedure Logger_is (Now : access Event.Logger.item'Class)
+   procedure Logger_is (Now : in Event.Logger.view)
    is
    begin
       the_Logger := Now;
    end Logger_is;
 
 
-   function Logger return access Event.Logger.item'Class
+   function Logger return Event.Logger.view
    is
    begin
       return the_Logger;

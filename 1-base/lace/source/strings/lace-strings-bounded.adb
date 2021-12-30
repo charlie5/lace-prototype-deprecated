@@ -29,10 +29,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body lace.Strings.Bounded is
+package body lace.Strings.Bounded
+is
 
-   package body Generic_Bounded_Length is
-
+   package body Generic_Bounded_Length
+   is
       --  The subprograms in this body are those for which there is no
       --  Bounded_String input, and hence no implicit information on the
       --  maximum size. This means that the maximum size has to be passed
@@ -62,7 +63,8 @@ package body lace.Strings.Bounded is
       -- From_String --
       -----------------
 
-      function From_String (Source : String) return Bounded_String is
+      function From_String (Source : String) return Bounded_String
+      is
       begin
          return To_Super_String (Source, Max_Length, Error);
       end From_String;

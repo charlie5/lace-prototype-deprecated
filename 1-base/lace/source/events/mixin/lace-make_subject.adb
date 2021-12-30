@@ -4,8 +4,11 @@ with
      system.RPC,
      ada.unchecked_Deallocation;
 
+
 package body lace.make_Subject
 is
+   use type Event.Logger.view;
+
 
    procedure destroy (Self : in out Item)
    is
@@ -14,11 +17,12 @@ is
    end destroy;
 
 
+   -------------
    -- Attributes
    --
 
    overriding
-   function Observers (Self : in Item;   of_Kind : in event.Kind) return subject.Observer_views
+   function Observers (Self : in Item;   of_Kind : in Event.Kind) return subject.Observer_views
    is
    begin
       return Self.safe_Observers.fetch_Observers (of_Kind);
@@ -33,19 +37,20 @@ is
    end observer_Count;
 
 
+   -------------
    -- Operations
    --
 
    overriding
    procedure register (Self : access Item;   the_Observer : in Observer.view;
-                                             of_Kind      : in event.Kind)
+                                             of_Kind      : in Event.Kind)
    is
    begin
       Self.safe_Observers.add (the_Observer, of_Kind);
 
-      if subject.Logger /= null
+      if Subject.Logger /= null
       then
-         subject.Logger.log_Connection (the_Observer,
+         Subject.Logger.log_Connection (the_Observer,
                                         Subject.view (Self),
                                         of_Kind);
       end if;
@@ -54,14 +59,14 @@ is
 
    overriding
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
-                                               of_Kind      : in event.Kind)
+                                               of_Kind      : in Event.Kind)
    is
    begin
       Self.safe_Observers.rid (the_Observer, of_Kind);
 
-      if subject.Logger /= null
+      if Subject.Logger /= null
       then
-         subject.Logger.log_disconnection (the_Observer,
+         Subject.Logger.log_disconnection (the_Observer,
                                            Self'unchecked_Access,
                                            of_Kind);
       end if;
@@ -69,30 +74,30 @@ is
 
 
    overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
    is
       use lace.Event.utility;
-      my_Observers : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
+      my_Observers : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
    begin
-      for Each in my_Observers'Range
+      for i in my_Observers'Range
       loop
          begin
-            my_Observers (Each).receive (the_Event,
-                                         from_subject => Subject.item'Class (Self.all).Name);
-            if subject.Logger /= null
+            my_Observers (i).receive (the_Event,
+                                      from_Subject => Subject.item'Class (Self.all).Name);
+            if Subject.Logger /= null
             then
-               subject.Logger.log_Emit (Subject.view (Self),
-                                        my_Observers (Each),
+               Subject.Logger.log_Emit (Subject.view (Self),
+                                        my_Observers (i),
                                         the_Event);
             end if;
 
          exception
             when system.RPC.communication_Error
                | storage_Error =>
-               if subject.Logger /= null
+               if Subject.Logger /= null
                then
-                  subject.Logger.log_Emit (Subject.view (Self),
-                                           my_Observers (Each),
+                  Subject.Logger.log_Emit (Subject.view (Self),
+                                           my_Observers (i),
                                            the_Event);
                end if;
          end;
@@ -101,23 +106,23 @@ is
 
 
    overriding
-   function emit (Self : access Item;   the_Event : in Event.item'Class := event.null_Event)
+   function emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
                   return subject.Observer_views
    is
       use lace.Event.utility;
-      my_Observers  : constant subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
-      bad_Observers :          subject.Observer_views (my_Observers'Range);
+      my_Observers  : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
+      bad_Observers :          Subject.Observer_views (my_Observers'Range);
       bad_Count     :          Natural := 0;
    begin
-      for Each in my_Observers'Range
+      for i in my_Observers'Range
       loop
          begin
-            my_Observers (Each).receive (the_Event,
-                                         from_subject => Subject.item'Class (Self.all).Name);
-            if subject.Logger /= null
+            my_Observers (i).receive (the_Event,
+                                      from_Subject => Subject.item'Class (Self.all).Name);
+            if Subject.Logger /= null
             then
-               subject.Logger.log_Emit (Subject.view (Self),
-                                        my_Observers (Each),
+               Subject.Logger.log_Emit (Subject.view (Self),
+                                        my_Observers (i),
                                         the_Event);
             end if;
 
@@ -125,7 +130,7 @@ is
             when system.RPC.communication_Error
                | storage_Error =>
                bad_Count                 := bad_Count + 1;
-               bad_Observers (bad_Count) := my_Observers (Each);
+               bad_Observers (bad_Count) := my_Observers (i);
          end;
       end loop;
 
@@ -133,6 +138,7 @@ is
    end emit;
 
 
+   -----------------
    -- Safe Observers
    --
 
@@ -143,8 +149,8 @@ is
       is
          use event_kind_Maps_of_event_observers;
 
-         procedure free is new ada.unchecked_Deallocation (event_Observer_Vector,
-                                                           event_Observer_Vector_view);
+         procedure deallocate is new ada.unchecked_Deallocation (event_Observer_Vector,
+                                                                 event_Observer_Vector_view);
 
          Cursor                    : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
          the_event_Observer_Vector : event_Observer_Vector_view;
@@ -152,7 +158,7 @@ is
          while has_Element (Cursor)
          loop
             the_event_Observer_Vector := Element (Cursor);
-            free (the_event_Observer_Vector);
+            deallocate (the_event_Observer_Vector);
 
             next (Cursor);
          end loop;
@@ -160,7 +166,7 @@ is
 
 
       procedure add (the_Observer : in Observer.view;
-                     of_Kind      : in event.Kind)
+                     of_Kind      : in Event.Kind)
       is
          use event_Observer_Vectors,
              event_kind_Maps_of_event_observers;
@@ -182,7 +188,7 @@ is
 
 
       procedure rid (the_Observer : in Observer.view;
-                     of_Kind      : in event.Kind)
+                     of_Kind      : in Event.Kind)
       is
          the_event_Observers : event_Observer_Vector renames the_Observers.Element (of_Kind).all;
       begin
@@ -190,18 +196,18 @@ is
       end rid;
 
 
-      function fetch_Observers (of_Kind : in event.Kind) return subject.Observer_views
+      function fetch_Observers (of_Kind : in Event.Kind) return subject.Observer_views
       is
       begin
          if the_Observers.Contains (of_Kind)
          then
             declare
                the_event_Observers : constant event_Observer_Vector_view := the_Observers.Element (of_Kind);
-               my_Observers        :          subject.Observer_views (1 .. Natural (the_event_Observers.Length));
+               my_Observers        :          Subject.Observer_views (1 .. Natural (the_event_Observers.Length));
             begin
-               for Each in my_Observers'Range
+               for i in my_Observers'Range
                loop
-                  my_Observers (Each) := the_event_Observers.Element (Each);
+                  my_Observers (i) := the_event_Observers.Element (i);
                end loop;
 
                return my_Observers;

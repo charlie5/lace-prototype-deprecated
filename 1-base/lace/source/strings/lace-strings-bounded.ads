@@ -2,11 +2,12 @@ with
      ada.Strings.Maps,
      lace.Strings.Superbounded;
 
+
 package lace.Strings.Bounded
 --
 -- Based on the 'ada.Strings.bounded' package provided by FSF GCC.
 --
--- Modified to be a Pure package.
+-- Modified to be a Pure package for use with DSA.
 --
 is
    pragma Pure;
@@ -19,8 +20,8 @@ is
       Max : Positive;
       --  Maximum length of a Bounded_String
 
-   package Generic_Bounded_Length is
-
+   package Generic_Bounded_Length
+   is
       Max_Length : constant Positive := Max;
 
       type Bounded_String is private;

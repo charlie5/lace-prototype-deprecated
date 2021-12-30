@@ -6,6 +6,7 @@ limited
 with
      lace.Event.Logger;
 
+
 package lace.Observer
 --
 --  Provides an interface for an event Observer.
@@ -17,17 +18,18 @@ is
    type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
 
-   type fast_View  is access all Item'class;
+   type fast_View  is access all Item'Class with Asynchronous;
    type fast_Views is array (Positive range <>) of fast_View;
-   pragma Asynchronous (fast_View);
 
 
+   -------------
    -- Attributes
    --
 
    function Name (Self : in Item) return event.observer_Name is abstract;
 
 
+   ------------
    -- Responses
    --
 
@@ -43,6 +45,7 @@ is
                  (Self : in out Item;   To : in Observer.view) is abstract;
 
 
+   -------------
    -- Operations
    --
 
@@ -56,10 +59,11 @@ is
    -- Performs the Response for (and then removes) each pending Event.
 
 
+   ----------
    -- Logging
    --
 
-   procedure Logger_is (Now : access Event.Logger.item'Class);
-   function  Logger    return access Event.Logger.item'Class;
+   procedure Logger_is (Now : in Event.Logger.view);
+   function  Logger    return    Event.Logger.view;
 
 end lace.Observer;

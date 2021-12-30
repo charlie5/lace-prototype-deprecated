@@ -6,6 +6,7 @@ private
 with
      ada.Strings.unbounded;
 
+
 package lace.Observer.deferred
 --
 --  Provides a concrete deferred event observer.
@@ -19,13 +20,14 @@ is
 
    package Forge
    is
-      function  to_Observer (Name : in event.observer_Name) return Item;
-      function new_Observer (Name : in event.observer_Name) return View;
+      function  to_Observer (Name : in Event.observer_Name) return Item;
+      function new_Observer (Name : in Event.observer_Name) return View;
    end Forge;
 
 
    overriding
-   function Name (Self : in Item) return event.observer_Name;
+   function Name (Self : in Item) return Event.observer_Name;
+
 
 
 private

@@ -6,13 +6,13 @@ private package lace.Strings.search
 --
 -- Based on the 'ada.Strings.search' package provided by FSF GCC.
 --
--- Modified to be a Pure package.
+-- Modified to be a Pure package for use with DSA.
 --
 is
    pragma Preelaborate;
    pragma Pure;
 
-   use Ada.Strings;
+   use ada.Strings;
 
 
    function Index

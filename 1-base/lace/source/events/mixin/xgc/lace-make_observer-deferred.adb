@@ -3,9 +3,11 @@ with
      lace.Event.utility,
      ada.unchecked_Deallocation;
 
+
 package body lace.make_Observer.deferred
 is
-   procedure free is new ada.unchecked_Deallocation (String, String_view);
+   use type Event.Logger.view;
+
 
    overriding
    procedure destroy (Self : in out Item)
@@ -16,8 +18,12 @@ is
    end destroy;
 
 
+   -------------
+   -- Operations
+   --
+
    overriding
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := Event.null_Event;
                                             from_Subject : in Event.subject_Name)
    is
    begin
@@ -53,9 +59,9 @@ is
                then
                   Element (Response).respond (the_Event);
 
-                  if observer.Logger /= null
+                  if Observer.Logger /= null
                   then
-                     observer.Logger.log_Response (Element (Response),
+                     Observer.Logger.log_Response (Element (Response),
                                                    Observer.view (Self),
                                                    the_Event,
                                                    from_subject_Name);
@@ -65,22 +71,22 @@ is
                then
                   --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
 
-                  if observer.Logger /= null
+                  if Observer.Logger /= null
                   then
-                     observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+                     Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
                   else
                      raise program_Error with "Event relaying is currently disabled.";
                   end if;
 
                else
-                  if observer.Logger /= null
+                  if Observer.Logger /= null
                   then
-                     observer.Logger.log ("[Warning] ~ Observer "
+                     Observer.Logger.log ("[Warning] ~ Observer "
                                           & my_Name
                                           & " has no response to " & Name_of (the_Event)
                                           & " from " & from_subject_Name & ".");
-                     observer.Logger.log ("            Count of responses =>"
-                                          & Count_type'Image (the_Responses.Length));
+                     Observer.Logger.log ("            Count of responses =>"
+                                          & the_Responses.Length'Image);
                   else
                      raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
                                             & " from " & from_subject_Name & ".";
@@ -101,6 +107,8 @@ is
       for i in 1 .. Count
       loop
          declare
+            procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
+
             subject_Name : String_view       := the_subject_Events (i).Subject;
             the_Events   : Event_vector renames the_subject_Events (i).Events;
          begin
@@ -110,21 +118,28 @@ is
                         the_Events,
                         subject_Name.all);
             else
-               if observer.Logger /= null
-               then
-                  observer.Logger.log (my_Name & " has no responses for events from " & subject_Name.all & ".");
-               else
-                  raise program_Error with my_Name & " has no responses for events from '" & subject_Name.all & "'.";
-               end if;
+               declare
+                  Message : constant String := my_Name & " has no responses for events from " & subject_Name.all & ".";
+               begin
+                  if Observer.Logger /= null
+                  then
+                     Observer.Logger.log (Message);
+                  else
+                     raise program_Error with Message;
+                  end if;
+               end;
             end if;
 
-            free (subject_Name);
+            deallocate (subject_Name);
          end;
       end loop;
 
    end respond;
 
 
+   --------------
+   -- Safe Events
+   --
    protected
    body safe_Events
    is
@@ -144,6 +159,9 @@ is
    end safe_Events;
 
 
+   ----------------------------------
+   -- safe Subject Map of safe Events
+   --
    protected
    body safe_subject_Map_of_safe_events
    is
@@ -168,7 +186,6 @@ is
 
          Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
          Index  : Natural := 0;
-
       begin
          while has_Element (Cursor)
          loop

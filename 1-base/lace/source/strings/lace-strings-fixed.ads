@@ -4,7 +4,8 @@
 
 pragma Assertion_Policy (Pre => Ignore);
 
-with Ada.Strings.Maps;
+with
+     ada.Strings.Maps;
 
 --  The language-defined package Strings.Fixed provides string-handling
 --  subprograms for fixed-length strings; that is, for values of type
@@ -25,18 +26,19 @@ with Ada.Strings.Maps;
 --  these effects. Similar control is provided by the string transformation
 --  procedures.
 
+
 package lace.Strings.fixed with SPARK_Mode
 --
--- Based on the 'ada.Strings.search' package provided by FSF GCC.
+-- Based on the 'ada.Strings.fixed' package provided by FSF GCC.
 --
--- Modified to be a Pure package.
+-- Modified to be a Pure package for use with DSA.
 --
 is
    pragma Pure;
    pragma Preelaborate;
 
-   use ada.Strings,
-       ada.Strings.Maps;
+   use ada.Strings; --,
+--       ada.Strings.Maps;
 
 
    --------------------------------------------------------------

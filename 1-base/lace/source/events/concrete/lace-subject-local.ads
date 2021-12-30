@@ -6,6 +6,7 @@ private
 with
      ada.Strings.unbounded;
 
+
 package lace.Subject.local
 --
 --  Provides a concrete local event Subject.
@@ -19,14 +20,13 @@ is
 
    package Forge
    is
-      function  to_Subject (Name : in event.subject_Name) return Item;
-      function new_Subject (Name : in event.subject_Name) return View;
+      function  to_Subject (Name : in Event.subject_Name) return Item;
+      function new_Subject (Name : in Event.subject_Name) return View;
    end Forge;
 
-   procedure destroy (Self : in out Item);
-
    overriding
-   function Name (Self : in Item) return event.subject_Name;
+   function Name (Self : in Item) return Event.subject_Name;
+
 
 
 private

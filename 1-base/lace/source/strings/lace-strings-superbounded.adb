@@ -2,10 +2,9 @@ with
      lace.Strings.search;
 
 
-package body lace.Strings.Superbounded
+package body lace.Strings.superbounded
 is
-
-   use Ada.Strings.Maps;
+   use ada.Strings.Maps;
 
 
    ------------
@@ -1898,4 +1897,4 @@ is
       return Result;
    end To_Super_String;
 
-end lace.Strings.Superbounded;
+end lace.Strings.superbounded;

@@ -2,6 +2,7 @@ with
      ada.Containers,
      ada.Streams;
 
+
 package lace.Text
 --
 -- Models a string of text characters.
@@ -16,42 +17,44 @@ is
    Error : exception;
 
 
+   --------------
    -- Stock Items
    --
 
-   subtype Item_2   is Item (capacity =>   2);
-   subtype Item_4   is Item (capacity =>   4);
-   subtype Item_8   is Item (capacity =>   8);
-   subtype Item_16  is Item (capacity =>  16);
-   subtype Item_32  is Item (capacity =>  32);
-   subtype Item_64  is Item (capacity =>  64);
-   subtype Item_128 is Item (capacity => 128);
-   subtype Item_256 is Item (capacity => 256);
-   subtype Item_512 is Item (capacity => 512);
+   subtype Item_2   is Item (Capacity =>   2);
+   subtype Item_4   is Item (Capacity =>   4);
+   subtype Item_8   is Item (Capacity =>   8);
+   subtype Item_16  is Item (Capacity =>  16);
+   subtype Item_32  is Item (Capacity =>  32);
+   subtype Item_64  is Item (Capacity =>  64);
+   subtype Item_128 is Item (Capacity => 128);
+   subtype Item_256 is Item (Capacity => 256);
+   subtype Item_512 is Item (Capacity => 512);
 
-   subtype Item_1k   is Item (capacity =>       1024);
-   subtype Item_2k   is Item (capacity =>   2 * 1024);
-   subtype Item_4k   is Item (capacity =>   4 * 1024);
-   subtype Item_8k   is Item (capacity =>   8 * 1024);
-   subtype Item_16k  is Item (capacity =>  16 * 1024);
-   subtype Item_32k  is Item (capacity =>  32 * 1024);
-   subtype Item_64k  is Item (capacity =>  64 * 1024);
-   subtype Item_128k is Item (capacity => 128 * 1024);
-   subtype Item_256k is Item (capacity => 256 * 1024);
-   subtype Item_512k is Item (capacity => 512 * 1024);
+   subtype Item_1k   is Item (Capacity =>       1024);
+   subtype Item_2k   is Item (Capacity =>   2 * 1024);
+   subtype Item_4k   is Item (Capacity =>   4 * 1024);
+   subtype Item_8k   is Item (Capacity =>   8 * 1024);
+   subtype Item_16k  is Item (Capacity =>  16 * 1024);
+   subtype Item_32k  is Item (Capacity =>  32 * 1024);
+   subtype Item_64k  is Item (Capacity =>  64 * 1024);
+   subtype Item_128k is Item (Capacity => 128 * 1024);
+   subtype Item_256k is Item (Capacity => 256 * 1024);
+   subtype Item_512k is Item (Capacity => 512 * 1024);
 
-   subtype Item_1m   is Item (capacity =>       1024 * 1024);
-   subtype Item_2m   is Item (capacity =>   2 * 1024 * 1024);
-   subtype Item_4m   is Item (capacity =>   4 * 1024 * 1024);
-   subtype Item_8m   is Item (capacity =>   8 * 1024 * 1024);
-   subtype Item_16m  is Item (capacity =>  16 * 1024 * 1024);
-   subtype Item_32m  is Item (capacity =>  32 * 1024 * 1024);
-   subtype Item_64m  is Item (capacity =>  64 * 1024 * 1024);
-   subtype Item_128m is Item (capacity => 128 * 1024 * 1024);
-   subtype Item_256m is Item (capacity => 256 * 1024 * 1024);
-   subtype Item_512m is Item (capacity => 512 * 1024 * 1024);
+   subtype Item_1m   is Item (Capacity =>       1024 * 1024);
+   subtype Item_2m   is Item (Capacity =>   2 * 1024 * 1024);
+   subtype Item_4m   is Item (Capacity =>   4 * 1024 * 1024);
+   subtype Item_8m   is Item (Capacity =>   8 * 1024 * 1024);
+   subtype Item_16m  is Item (Capacity =>  16 * 1024 * 1024);
+   subtype Item_32m  is Item (Capacity =>  32 * 1024 * 1024);
+   subtype Item_64m  is Item (Capacity =>  64 * 1024 * 1024);
+   subtype Item_128m is Item (Capacity => 128 * 1024 * 1024);
+   subtype Item_256m is Item (Capacity => 256 * 1024 * 1024);
+   subtype Item_512m is Item (Capacity => 512 * 1024 * 1024);
 
 
+   ---------------
    -- Stock Arrays
    --
 
@@ -88,6 +91,7 @@ is
    type Items_512m is array (Positive range <>) of aliased Item_512m;
 
 
+   ---------------
    -- Construction
    --
 
@@ -98,16 +102,16 @@ is
                      Capacity : in Natural;
                      Trim     : in Boolean := False) return Item;
 
-   function "+"     (From     : in String) return Item;
+   function "+"     (From     : in String)           return Item;
 
 
+   -------------
    -- Attributes
    --
 
    procedure String_is (Self : in out Item;   Now : in String);
    function  to_String (Self : in     Item)     return String;
-   function  "+"       (Self : in     Item)     return String
-     renames to_String;
+   function  "+"       (Self : in     Item)     return String renames to_String;
 
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
@@ -120,6 +124,7 @@ is
    function  mono_Spaced  (Self : in Item) return Item;
 
 
+
 private
 
    type Item (Capacity : Natural) is
@@ -128,14 +133,16 @@ private
          Data   : String (1 .. Capacity);
       end record;
 
+
+   ----------
    -- Streams
    --
 
-   function  Item_input  (Stream : access Ada.Streams.Root_Stream_Type'Class)              return Item;
-   procedure Item_output (Stream : access Ada.Streams.Root_Stream_Type'Class;   the_Item : in     Item);
+   function  Item_input  (Stream : access ada.Streams.root_Stream_type'Class)              return Item;
+   procedure Item_output (Stream : access ada.Streams.root_Stream_type'Class;   the_Item : in     Item);
 
-   procedure read  (Stream : access ada.streams.Root_Stream_Type'Class;   Self :    out Item);
-   procedure write (Stream : access ada.streams.Root_Stream_Type'Class;   Self : in     Item);
+   procedure read  (Stream : access ada.Streams.root_Stream_type'Class;   Self :    out Item);
+   procedure write (Stream : access ada.Streams.root_Stream_type'Class;   Self : in     Item);
 
    for Item'input  use Item_input;
    for Item'output use Item_output;

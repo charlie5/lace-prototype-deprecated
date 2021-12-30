@@ -4,19 +4,23 @@ with
      lace.Subject,
      lace.Response;
 
+
 package lace.Event.Logger
 --
 --  Provides an event logging interface.
 --
 is
    type Item is limited interface;
+   type View is access all Item'Class;
 
 
+   --------
    -- Forge
    --
    procedure destruct (Self : in out Item) is null;
 
 
+   -------------
    -- Operations
    --
 

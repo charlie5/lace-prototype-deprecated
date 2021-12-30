@@ -1,5 +1,5 @@
 with
-     ada.numerics.discrete_Random;
+     ada.Numerics.discrete_Random;
 
 
 procedure lace.Containers.shuffle_Vector (the_Vector : in out vectors.Vector)
@@ -12,7 +12,7 @@ begin
          subtype Index is vectors.Index_type range vectors.Index_type'First
                                                 .. vectors.Index_type'First + i - 1;
 
-         package random_Index is new ada.numerics.discrete_Random (Index);
+         package random_Index is new ada.Numerics.discrete_Random (Index);
          use     random_Index;
 
          the_Generator : random_Index.Generator;
