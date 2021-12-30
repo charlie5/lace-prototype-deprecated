@@ -6,15 +6,15 @@ is
 
    type Os_Type is
       ("Windows_NT", "Linux", "MacOSX");
-   Os : Os_Type := external ("Lace_OS", "Linux");
+   lace_OS : Os_Type := external ("Lace_OS", "Linux");
 
-   type Restrictions is
+   type Restrictions_Type is
       ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("Lace_Restrictions", "xgc");
+   lace_Restrictions : Restrictions_Type := external ("Lace_Restrictions", "xgc");
 
    type Build_Mode_Type is
       ("debug", "fast", "small");
-   Build_Mode : Build_Mode_Type := external ("Lace_Build_Mode", "debug");
+   lace_Build_Mode : Build_Mode_Type := external ("Lace_Build_Mode", "debug");
 
 
    -- Declare various options.
@@ -57,7 +57,7 @@ is
    -- Modify options to cater for the build mode.
    --
    
-   case Build_Mode 
+   case lace_Build_Mode 
    is
       when "debug" =>
          Binder_Options   := Binder_Options   & "-Es";
@@ -65,7 +65,7 @@ is
                                               & "-gnato"
                                               & "-fstack-check"
                                               & "-g";
-         case OS
+         case lace_OS
          is
             when "Linux"  =>
                Compiler_Options := Compiler_Options & "-gnatVa";
@@ -80,7 +80,7 @@ is
          end case;
 
       when "fast" =>
-         case OS
+         case lace_OS
          is
             when "Linux"  =>
                Compiler_Options := Compiler_Options & Fast_Options 
@@ -97,7 +97,7 @@ is
          end case;
 
       when "small" =>
-         case OS
+         case lace_OS
          is
             when "Linux"  =>
                Compiler_Options := Compiler_Options & Small_Options 
@@ -114,7 +114,7 @@ is
    -- Modify options to cater for the operating system.
    --
    
-   case OS
+   case lace_OS
    is
       when "MacOSX" =>
          Compiler_Options := Compiler_Options & "-gnatf" 
@@ -133,7 +133,7 @@ is
    --
 
    package Ide is
-      case OS
+      case lace_OS
       is
          when "Linux"      => for Default_Switches ("adacontrol") use ("-Ftgnat_short");
          when "Windows_NT" => for Default_Switches ("adacontrol") use ("-F", "gnat_short");
@@ -145,7 +145,7 @@ is
    package Builder is
       for Default_Switches ("ada") use ("-C", "-j0");
 
-      case Build_Mode 
+      case lace_Build_Mode 
       is
          when "debug" => for Global_Configuration_Pragmas use "debug.pra";
                          for Default_Switches ("ada") use ("-C", "-j0");
