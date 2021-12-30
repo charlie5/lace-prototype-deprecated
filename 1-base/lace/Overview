@@ -8,7 +8,8 @@ General:
    
 Contains:
 
-   - lace.Events   : provides a 'subject/oberver' 'event/response' facility.
-   - lace.Any      : provides an interface to allow heterogenous containers.
-   - lace.fast_Pool: provides a generic which allows fast allocation/deallocation.
+   - lace.Events    : Provides a 'subject/oberver' 'event/response' facility.
+   - lace.Any       : Provides an interface to allow heterogenous containers.
+   - lace.fast_Pool : Provides a generic which allows fast allocation/deallocation.
+   - lace.Text      : Provides a DSA friendly set of text operations.
    
