@@ -1,0 +1,16 @@
+name        = "lace_physics"
+description = "Provides 2D/3D rigid body dynamics simulation."
+version     = "0.0.0"
+
+authors            = ["Rod Kay"]
+maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
+maintainers-logins = ["charlie5"]
+
+licenses = "ISC"
+
+project-files = ["library/physics.gpr"]
+
+[[depends-on]]
+lace        = "*"
+lace_bullet = "*"
+lace_box2d  = "*"
