@@ -14,3 +14,6 @@ project-files = ["library/math.gpr"]
 
 [[depends-on]]     # Added by alr
 lace_shared = "*"  # Added by alr
+
+[[pins]]
+lace_shared = { path = "../../0-floor/lace_shared" }
