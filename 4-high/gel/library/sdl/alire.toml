@@ -1,0 +1,15 @@
+name        = "lace_gel_sdl"
+description = "A game engine library (GEL) using SDL as a backend."
+version     = "0.0.0"
+
+authors            = ["Rod Kay"]
+maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
+maintainers-logins = ["charlie5"]
+
+licenses = "ISC"
+
+project-files = ["sdl_gel.gpr"]
+
+[[depends-on]]
+lace_gel = "*"
+sdlada   = "*"
