@@ -1,0 +1,473 @@
+A brief overview of bone joints follows:
+
+      <node layer="L1" sid="MasterFloor" type="JOINT" id="MasterFloor" name="MasterFloor">
+        <translate sid="translate"> -0.0000 0.0432 -7.4806 </translate>
+        <node  sid="Root" type="JOINT" id="Root" name="Root">
+          <translate sid="translate"> 0.0000 -0.1259 8.5236 </translate>
+          <node  sid="Hips" type="JOINT" id="Hips" name="Hips">
+            <translate sid="translate"> 0.0000 -0.0230 0.8049 </translate>
+            <node  sid="UpLeg_L" type="JOINT" id="UpLeg_L" name="UpLeg_L">
+              <translate sid="translate"> 0.9739 -0.0255 -1.1278 </translate>
+              <node  sid="LoLeg_L" type="JOINT" id="LoLeg_L" name="LoLeg_L">
+                <translate sid="translate"> -0.1523 -0.0696 -4.1615 </translate>
+                <node  sid="Foot_L" type="JOINT" id="Foot_L" name="Foot_L">
+                  <translate sid="translate"> -0.1247 0.2440 -4.0392 </translate>
+                  <node  sid="Toe_L" type="JOINT" id="Toe_L" name="Toe_L">
+                    <translate sid="translate"> 0.0230 -1.1556 -0.6581 </translate>
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node  sid="UpLeg_R" type="JOINT" id="UpLeg_R" name="UpLeg_R">
+              <translate sid="translate"> -0.9739 -0.0255 -1.1278 </translate>
+              <node  sid="LoLeg_R" type="JOINT" id="LoLeg_R" name="LoLeg_R">
+                <translate sid="translate"> 0.1523 -0.0696 -4.1615 </translate>
+                <node  sid="Foot_R" type="JOINT" id="Foot_R" name="Foot_R">
+                  <translate sid="translate"> 0.1247 0.2440 -4.0392 </translate>
+                  <node  sid="Toe_R" type="JOINT" id="Toe_R" name="Toe_R">
+                    <translate sid="translate"> -0.0230 -1.1556 -0.6581 </translate>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+          <node  sid="Spine1" type="JOINT" id="Spine1" name="Spine1">
+            <translate sid="translate"> 0.0000 -0.0230 0.8049 </translate>
+            <node  sid="Spine2" type="JOINT" id="Spine2" name="Spine2">
+              <translate sid="translate"> 0.0000 0.3031 1.0547 </translate>
+              <node  sid="Spine3" type="JOINT" id="Spine3" name="Spine3">
+                <translate sid="translate"> 0.0000 0.6051 1.1926 </translate>
+                <node  sid="Neck" type="JOINT" id="Neck" name="Neck">
+                  <translate sid="translate"> 0.0000 -0.2067 1.8849 </translate>
+                  <node  sid="Head" type="JOINT" id="Head" name="Head">
+                    <translate sid="translate"> 0.0000 -0.1187 1.1006 </translate>
+                    <node  sid="Jaw" type="JOINT" id="Jaw" name="Jaw">
+                      <translate sid="translate"> 0.0000 -0.4814 0.0431 </translate>
+                      <node  sid="TongueBase" type="JOINT" id="TongueBase" name="TongueBase">
+                        <translate sid="translate"> 0.0000 -0.0423 -0.3259 </translate>
+                        <node  sid="TongueMid" type="JOINT" id="TongueMid" name="TongueMid">
+                          <translate sid="translate"> 0.0000 -0.2762 0.0587 </translate>
+                          <node  sid="TongueTip" type="JOINT" id="TongueTip" name="TongueTip">
+                            <translate sid="translate"> 0.0000 -0.2279 -0.0161 </translate>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                    <node  sid="Eye_R" type="JOINT" id="Eye_R" name="Eye_R">
+                      <translate sid="translate"> -0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                    <node  sid="Eye_L" type="JOINT" id="Eye_L" name="Eye_L">
+                      <translate sid="translate"> 0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                    <node  sid="UpLid_R" type="JOINT" id="UpLid_R" name="UpLid_R">
+                      <translate sid="translate"> -0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                    <node  sid="LoLid_R" type="JOINT" id="LoLid_R" name="LoLid_R">
+                      <translate sid="translate"> -0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                    <node  sid="UpLid_L" type="JOINT" id="UpLid_L" name="UpLid_L">
+                      <translate sid="translate"> 0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                    <node  sid="LoLid_L" type="JOINT" id="LoLid_L" name="LoLid_L">
+                      <translate sid="translate"> 0.2990 -1.0292 0.4165 </translate>
+                    </node>
+                  </node>
+                </node>
+                <node  sid="Clavicle_L" type="JOINT" id="Clavicle_L" name="Clavicle_L">
+                  <translate sid="translate"> 0.2947 -1.0762 1.1652 </translate>
+                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                  <scale sid="scale">1.0 1.0 1.0</scale>
+                  <node  sid="UpArm_L" type="JOINT" id="UpArm_L" name="UpArm_L">
+                    <translate sid="translate"> 1.3995 0.7593 0.0424 </translate>
+                    <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                    <rotate sid="rotateY">0 1 0 0.0</rotate>
+                    <rotate sid="rotateX">1 0 0 0.0</rotate>
+                    <scale sid="scale">1.0 1.0 1.0</scale>
+                    <node  sid="LoArm_L" type="JOINT" id="LoArm_L" name="LoArm_L">
+                      <translate sid="translate"> 2.3958 -0.0513 -0.1305 </translate>
+                      <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                      <rotate sid="rotateY">0 1 0 0.0</rotate>
+                      <rotate sid="rotateX">1 0 0 0.0</rotate>
+                      <scale sid="scale">1.0 1.0 1.0</scale>
+                      <node  sid="Hand_L" type="JOINT" id="Hand_L" name="Hand_L">
+                        <translate sid="translate"> 2.3059 -0.1267 0.1417 </translate>
+                        <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                        <rotate sid="rotateY">0 1 0 0.0</rotate>
+                        <rotate sid="rotateX">1 0 0 0.0</rotate>
+                        <scale sid="scale">1.0 1.0 1.0</scale>
+                        <node  sid="Wrist-1_L" type="JOINT" id="Wrist-1_L" name="Wrist-1_L">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Palm-2_L" type="JOINT" id="Palm-2_L" name="Palm-2_L">
+                            <translate sid="translate"> 0.2824 -0.1006 -0.1787 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-2-1_L" type="JOINT" id="Finger-2-1_L" name="Finger-2-1_L">
+                              <translate sid="translate"> 0.4847 -0.2007 0.2459 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-2-2_L" type="JOINT" id="Finger-2-2_L" name="Finger-2-2_L">
+                                <translate sid="translate"> 0.3571 -0.0416 -0.0491 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-2-3_L" type="JOINT" id="Finger-2-3_L" name="Finger-2-3_L">
+                                  <translate sid="translate"> 0.2663 -0.0291 -0.0153 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                          <node  sid="Palm-3_L" type="JOINT" id="Palm-3_L" name="Palm-3_L">
+                            <translate sid="translate"> 0.2824 -0.1006 -0.1787 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-3-1_L" type="JOINT" id="Finger-3-1_L" name="Finger-3-1_L">
+                              <translate sid="translate"> 0.5167 0.0092 0.2613 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-3-2_L" type="JOINT" id="Finger-3-2_L" name="Finger-3-2_L">
+                                <translate sid="translate"> 0.3783 -0.0072 0.0061 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-3-3_L" type="JOINT" id="Finger-3-3_L" name="Finger-3-3_L">
+                                  <translate sid="translate"> 0.3510 -0.0128 -0.0527 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                        <node  sid="Wrist-2_L" type="JOINT" id="Wrist-2_L" name="Wrist-2_L">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Palm-4_L" type="JOINT" id="Palm-4_L" name="Palm-4_L">
+                            <translate sid="translate"> 0.2877 0.1215 -0.1543 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-4-1_L" type="JOINT" id="Finger-4-1_L" name="Finger-4-1_L">
+                              <translate sid="translate"> 0.5191 0.0274 0.1788 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-4-2_L" type="JOINT" id="Finger-4-2_L" name="Finger-4-2_L">
+                                <translate sid="translate"> 0.3004 0.0122 -0.0036 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-4-3_L" type="JOINT" id="Finger-4-3_L" name="Finger-4-3_L">
+                                  <translate sid="translate"> 0.3113 -0.0155 -0.0167 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                          <node  sid="Palm-5_L" type="JOINT" id="Palm-5_L" name="Palm-5_L">
+                            <translate sid="translate"> 0.2877 0.1215 -0.1543 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-5-1_L" type="JOINT" id="Finger-5-1_L" name="Finger-5-1_L">
+                              <translate sid="translate"> 0.4320 0.2031 0.1388 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-5-2_L" type="JOINT" id="Finger-5-2_L" name="Finger-5-2_L">
+                                <translate sid="translate"> 0.3115 0.0540 -0.0610 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-5-3_L" type="JOINT" id="Finger-5-3_L" name="Finger-5-3_L">
+                                  <translate sid="translate"> 0.1858 0.0091 -0.0185 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                        <node  sid="Palm-1_L" type="JOINT" id="Palm-1_L" name="Palm-1_L">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Finger-1-1_L" type="JOINT" id="Finger-1-1_L" name="Finger-1-1_L">
+                            <translate sid="translate"> 0.1964 -0.2741 -0.1517 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-1-2_L" type="JOINT" id="Finger-1-2_L" name="Finger-1-2_L">
+                              <translate sid="translate"> 0.4060 -0.2236 -0.1020 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-1-3_L" type="JOINT" id="Finger-1-3_L" name="Finger-1-3_L">
+                                <translate sid="translate"> 0.2557 -0.0491 -0.0086 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+                <node  sid="Clavicle_R" type="JOINT" id="Clavicle_R" name="Clavicle_R">
+                  <translate sid="translate"> -0.2947 -1.0762 1.1652 </translate>
+                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                  <scale sid="scale">1.0 1.0 1.0</scale>
+                  <node  sid="UpArm_R" type="JOINT" id="UpArm_R" name="UpArm_R">
+                    <translate sid="translate"> -1.3995 0.7593 0.0424 </translate>
+                    <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                    <rotate sid="rotateY">0 1 0 0.0</rotate>
+                    <rotate sid="rotateX">1 0 0 0.0</rotate>
+                    <scale sid="scale">1.0 1.0 1.0</scale>
+                    <node  sid="LoArm_R" type="JOINT" id="LoArm_R" name="LoArm_R">
+                      <translate sid="translate"> -2.3958 -0.0513 -0.1305 </translate>
+                      <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                      <rotate sid="rotateY">0 1 0 0.0</rotate>
+                      <rotate sid="rotateX">1 0 0 0.0</rotate>
+                      <scale sid="scale">1.0 1.0 1.0</scale>
+                      <node  sid="Hand_R" type="JOINT" id="Hand_R" name="Hand_R">
+                        <translate sid="translate"> -2.3059 -0.1267 0.1417 </translate>
+                        <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                        <rotate sid="rotateY">0 1 0 0.0</rotate>
+                        <rotate sid="rotateX">1 0 0 0.0</rotate>
+                        <scale sid="scale">1.0 1.0 1.0</scale>
+                        <node  sid="Wrist-1_R" type="JOINT" id="Wrist-1_R" name="Wrist-1_R">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Palm-2_R" type="JOINT" id="Palm-2_R" name="Palm-2_R">
+                            <translate sid="translate"> -0.2824 -0.1006 -0.1787 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-2-1_R" type="JOINT" id="Finger-2-1_R" name="Finger-2-1_R">
+                              <translate sid="translate"> -0.4847 -0.2007 0.2459 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-2-2_R" type="JOINT" id="Finger-2-2_R" name="Finger-2-2_R">
+                                <translate sid="translate"> -0.3571 -0.0416 -0.0491 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-2-3_R" type="JOINT" id="Finger-2-3_R" name="Finger-2-3_R">
+                                  <translate sid="translate"> -0.2663 -0.0291 -0.0153 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                          <node  sid="Palm-3_R" type="JOINT" id="Palm-3_R" name="Palm-3_R">
+                            <translate sid="translate"> -0.2824 -0.1006 -0.1787 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-3-1_R" type="JOINT" id="Finger-3-1_R" name="Finger-3-1_R">
+                              <translate sid="translate"> -0.5167 0.0092 0.2613 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-3-2_R" type="JOINT" id="Finger-3-2_R" name="Finger-3-2_R">
+                                <translate sid="translate"> -0.3783 -0.0072 0.0061 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-3-3_R" type="JOINT" id="Finger-3-3_R" name="Finger-3-3_R">
+                                  <translate sid="translate"> -0.3510 -0.0128 -0.0527 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                        <node  sid="Wrist-2_R" type="JOINT" id="Wrist-2_R" name="Wrist-2_R">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Palm-4_R" type="JOINT" id="Palm-4_R" name="Palm-4_R">
+                            <translate sid="translate"> -0.2877 0.1215 -0.1543 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-4-1_R" type="JOINT" id="Finger-4-1_R" name="Finger-4-1_R">
+                              <translate sid="translate"> -0.5191 0.0274 0.1788 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-4-2_R" type="JOINT" id="Finger-4-2_R" name="Finger-4-2_R">
+                                <translate sid="translate"> -0.3004 0.0122 -0.0036 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-4-3_R" type="JOINT" id="Finger-4-3_R" name="Finger-4-3_R">
+                                  <translate sid="translate"> -0.3113 -0.0155 -0.0167 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                          <node  sid="Palm-5_R" type="JOINT" id="Palm-5_R" name="Palm-5_R">
+                            <translate sid="translate"> -0.2877 0.1215 -0.1543 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-5-1_R" type="JOINT" id="Finger-5-1_R" name="Finger-5-1_R">
+                              <translate sid="translate"> -0.4320 0.2031 0.1388 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-5-2_R" type="JOINT" id="Finger-5-2_R" name="Finger-5-2_R">
+                                <translate sid="translate"> -0.3115 0.0540 -0.0610 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                                <node  sid="Finger-5-3_R" type="JOINT" id="Finger-5-3_R" name="Finger-5-3_R">
+                                  <translate sid="translate"> -0.1858 0.0091 -0.0185 </translate>
+                                  <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                  <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                  <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                  <scale sid="scale">1.0 1.0 1.0</scale>
+                                </node>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                        <node  sid="Palm-1_R" type="JOINT" id="Palm-1_R" name="Palm-1_R">
+                          <translate sid="translate"> 0.0000 -0.0000 0.0000 </translate>
+                          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                          <rotate sid="rotateY">0 1 0 0.0</rotate>
+                          <rotate sid="rotateX">1 0 0 0.0</rotate>
+                          <scale sid="scale">1.0 1.0 1.0</scale>
+                          <node  sid="Finger-1-1_R" type="JOINT" id="Finger-1-1_R" name="Finger-1-1_R">
+                            <translate sid="translate"> -0.1964 -0.2741 -0.1517 </translate>
+                            <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                            <rotate sid="rotateY">0 1 0 0.0</rotate>
+                            <rotate sid="rotateX">1 0 0 0.0</rotate>
+                            <scale sid="scale">1.0 1.0 1.0</scale>
+                            <node  sid="Finger-1-2_R" type="JOINT" id="Finger-1-2_R" name="Finger-1-2_R">
+                              <translate sid="translate"> -0.4060 -0.2236 -0.1020 </translate>
+                              <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                              <rotate sid="rotateY">0 1 0 0.0</rotate>
+                              <rotate sid="rotateX">1 0 0 0.0</rotate>
+                              <scale sid="scale">1.0 1.0 1.0</scale>
+                              <node  sid="Finger-1-3_R" type="JOINT" id="Finger-1-3_R" name="Finger-1-3_R">
+                                <translate sid="translate"> -0.2557 -0.0491 -0.0086 </translate>
+                                <rotate sid="rotateZ">0 0 1 0.0</rotate>
+                                <rotate sid="rotateY">0 1 0 0.0</rotate>
+                                <rotate sid="rotateX">1 0 0 0.0</rotate>
+                                <scale sid="scale">1.0 1.0 1.0</scale>
+                              </node>
+                            </node>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+        <node  sid="Wrist_L" type="JOINT" id="Wrist_L" name="Wrist_L">
+          <translate sid="translate"> 6.3959 0.2643 12.7945 </translate>
+          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+          <rotate sid="rotateY">0 1 0 0.0</rotate>
+          <rotate sid="rotateX">1 0 0 0.0</rotate>
+          <scale sid="scale">1.0 1.0 1.0</scale>
+        </node>
+        <node  sid="Wrist_R" type="JOINT" id="Wrist_R" name="Wrist_R">
+          <translate sid="translate"> -6.3959 0.2643 12.7945 </translate>
+          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+          <rotate sid="rotateY">0 1 0 0.0</rotate>
+          <rotate sid="rotateX">1 0 0 0.0</rotate>
+          <scale sid="scale">1.0 1.0 1.0</scale>
+        </node>
+        <node  sid="Ankle_L" type="JOINT" id="Ankle_L" name="Ankle_L">
+          <translate sid="translate"> 0.6970 -0.0000 0.0000 </translate>
+          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+          <rotate sid="rotateY">0 1 0 0.0</rotate>
+          <rotate sid="rotateX">1 0 0 0.0</rotate>
+          <scale sid="scale">1.0 1.0 1.0</scale>
+        </node>
+        <node  sid="Ankle_R" type="JOINT" id="Ankle_R" name="Ankle_R">
+          <translate sid="translate"> -0.6970 0.0000 0.0000 </translate>
+          <rotate sid="rotateZ">0 0 1 0.0</rotate>
+          <rotate sid="rotateY">0 1 0 0.0</rotate>
+          <rotate sid="rotateX">1 0 0 0.0</rotate>
+          <scale sid="scale">1.0 1.0 1.0</scale>
+        </node>
+      </node>
+
