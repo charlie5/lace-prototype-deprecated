@@ -1,6 +1,5 @@
 with
-     "../../c_math/library/c_math_thin_c",
---     "box2d",
+     "c_math_thin_c",
      "../contrib/box2d_contrib",
      "lace_shared";
 

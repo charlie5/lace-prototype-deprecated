@@ -1,6 +1,6 @@
 with 
      "box2d_thin_cxx",
-     "../../c_math/library/c_math_thin",
+     "c_math_thin",
      "swig",
      "math",
      "lace_shared";
