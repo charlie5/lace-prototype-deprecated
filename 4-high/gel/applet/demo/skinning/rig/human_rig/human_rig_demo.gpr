@@ -1,5 +1,5 @@
 with
-     "sdl_gel",
+     "gel",
      "lace_shared";
 
 project human_rig_Demo

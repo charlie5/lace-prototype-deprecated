@@ -1,4 +1,4 @@
-with "sdl_gel";
+with "gel";
 
 
 project Human_Model_V1

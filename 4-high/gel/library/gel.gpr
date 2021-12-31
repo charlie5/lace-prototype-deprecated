@@ -2,7 +2,8 @@ with
      "lace", 
      "opengl",
      "collada",
-     "physics", 
+     "physics",
+     "sdlada",
      "lace_shared";
 
 --library
@@ -24,11 +25,16 @@ is
                             "../source/joint", 
                             "../source/applet",
                             "../source/applet/distributed",
+                            "../source/platform/sdl",
                             "../source/terrain",
                             "../source/world");
 
    package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
+
+   package Linker is
+      for Linker_Options use ("-g", "-lSDL2");
+   end Linker;
 
 end GEL;

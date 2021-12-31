@@ -96,7 +96,7 @@ with
      "../../../4-high/gel/applet/demo/sprite/text/text_sprite_demo",
      "../../../4-high/gel/applet/test/single/add_rid_sprite/add_rid_sprite_test",
      "../../../4-high/gel/applet/tute/pong/1-basic_applet_window/pong_tute",
-     "sdl_gel",
+--     "sdl_gel",
      "gel",
      
      "lace",

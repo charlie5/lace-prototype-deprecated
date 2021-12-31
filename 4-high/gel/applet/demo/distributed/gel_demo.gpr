@@ -1,5 +1,5 @@
 with 
-     "sdl_gel",
+     "gel",
      "lace_shared";
 
 project gel_Demo
