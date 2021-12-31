@@ -6,6 +6,8 @@ authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
+licenses = "ISC"
+
 project-files = ["library/box2d_thin.gpr"]
 
 [[depends-on]]     # Added by alr
