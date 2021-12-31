@@ -1,5 +1,5 @@
 with
-     "../../c_math/library/c_math_thin_c",
+     "c_math_thin_c",
      "lace_shared";
 
 --library
