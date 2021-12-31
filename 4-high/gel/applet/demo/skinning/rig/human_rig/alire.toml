@@ -1,0 +1,16 @@
+name        = "lace_gel_animation_demo"
+description = "A demo of GEL's human animation."
+version     = "0.0.0"
+
+authors            = ["Rod Kay"]
+maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
+maintainers-logins = ["charlie5"]
+
+licenses = "ISC"
+
+executables = ["launch_human_rig_demo"]
+
+project-files = ["human_rig_demo.gpr"]
+
+[[depends-on]]     # Added by alr
+lace_gel = "*"     # Added by alr
