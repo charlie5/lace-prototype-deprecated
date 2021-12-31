@@ -42,8 +42,8 @@ bin
 
 ## Assets
 #
-**/assets/opengl
-**/assets/gel
+#**/assets/opengl
+#**/assets/gel
 **/assets/attic
 
 
