@@ -1,0 +1,14 @@
+name        = "lace_opengl"
+description = "Provides an openGL engine."
+version     = "0.0.0"
+
+authors            = ["Rod Kay"]
+maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
+maintainers-logins = ["charlie5"]
+
+licenses = "ISC"
+
+project-files = ["library/opengl.gpr"]
+
+[[depends-on]]      # Added by alr
+lace_collada = "*"  # Added by alr
