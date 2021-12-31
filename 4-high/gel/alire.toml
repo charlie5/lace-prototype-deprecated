@@ -1,0 +1,15 @@
+name        = "lace_gel"
+description = "A 2D/3D game engine library (GEL)."
+version     = "0.0.0"
+
+authors            = ["Rod Kay"]
+maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
+maintainers-logins = ["charlie5"]
+
+licenses = "ISC"
+
+project-files = ["library/gel.gpr"]
+
+[[depends-on]]      # Added by alr
+lace_opengl  = "*"  # Added by alr
+lace_physics = "*"  # Added by alr
