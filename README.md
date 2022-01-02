@@ -45,7 +45,6 @@ Installation
 ============
 The development packages for the following projects need to be installed on your OS.
 
-- Box2d
 - Bullet3d
 - Florist
 - Freetype
@@ -55,13 +54,8 @@ The development packages for the following projects need to be installed on your
 Example for Debian/Ubuntu:
 
 ```
-apt-get install libbullet-dev libbox2d-dev libflorist2016-dev libfreetype6-dev libexpat1-dev libsdl2-dev
+apt-get install libbullet-dev libflorist2016-dev libfreetype6-dev libexpat1-dev libsdl2-dev
 ```
-
-The cBound ada bindings project is also required:
-
-`$ git clone https://github.com/charlie5/cBound.git`
-
 
 Adding the following lines to ~/.bashrc (or equivalent) will set the GPR_PROJECT_PATH for all gnat project files:
 
@@ -71,9 +65,6 @@ export opengl_platform=glx
 export restrictions=xgc
 export OS=Linux
 export FLORIST_BUILD=default
-
-export CBOUND=/path/to/cBound
-source $CBOUND/cbound-gpr_paths.sh
 
 export LACE=/path/to/lace
 source $LACE/lace-gpr_paths.sh
