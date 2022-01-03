@@ -12,3 +12,4 @@ project-files = ["library/bullet_thin.gpr"]
 
 [[depends-on]]     # Added by alr
 lace_c_math = "*"  # Added by alr
+libbullet   = "*"
