@@ -87,6 +87,29 @@ Lace/mmi contains a set of assets (fonts, etc). These need to be available in ea
 - `$ sudo cp create_gel_assets.sh /usr/local/bin`
 
 
+Alire
+=====
+   The following crates are available:
+
+Libraries:
+- lace
+- lace_box2d
+- lace_bullet
+- lace_collada
+- lace_gel
+- lace_math
+- lace_opengl
+- lace_physics
+- lace_shared
+- lace_swig
+- lace_xml
+
+Demos:
+
+- lace_gel_animation_demo
+- lace_gel_full_demo
+
+
 Testing
 =======
 
