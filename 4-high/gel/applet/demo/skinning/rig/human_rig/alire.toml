@@ -12,5 +12,5 @@ executables = ["launch_human_rig_demo"]
 
 project-files = ["human_rig_demo.gpr"]
 
-[[depends-on]]     # Added by alr
-lace_gel = "*"     # Added by alr
+[[depends-on]]
+lace_gel = "~0.1"
