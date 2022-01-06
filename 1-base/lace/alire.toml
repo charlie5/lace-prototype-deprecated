@@ -12,5 +12,5 @@ long-description = "\nContains:\n\n   - lace.Events    : Provides a 'subject/obe
 
 project-files = ["library/lace.gpr"]
 
-[[depends-on]]     # Added by alr
-lace_shared = "*"  # Added by alr
+[[depends-on]]
+lace_shared = "~0.1"
