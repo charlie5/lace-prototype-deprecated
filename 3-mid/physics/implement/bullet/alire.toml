@@ -10,6 +10,6 @@ licenses = "ISC"
 
 project-files = ["library/bullet_thin.gpr"]
 
-[[depends-on]]     # Added by alr
-lace_c_math = "*"  # Added by alr
-libbullet   = "*"
+[[depends-on]]
+lace_c_math = "~0.1"
+libbullet   = "~0.1"
