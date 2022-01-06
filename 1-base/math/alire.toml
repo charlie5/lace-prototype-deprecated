@@ -12,6 +12,5 @@ long-description = "\nContains:\n\n   - Pure\n      - Arithmetic (covers quantit
 
 project-files = ["library/math.gpr"]
 
-[[depends-on]]     # Added by alr
-lace_shared = "*"  # Added by alr
-
+[[depends-on]]
+lace_shared = "~0.1"
