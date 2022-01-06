@@ -12,4 +12,4 @@ project-files = ["library/bullet_thin.gpr"]
 
 [[depends-on]]
 lace_c_math = "~0.1"
-libbullet   = "~0.1"
+libbullet   = "*"
