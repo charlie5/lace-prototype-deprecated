@@ -10,6 +10,6 @@ licenses = "ISC"
 
 project-files = ["library/collada.gpr"]
 
-[[depends-on]]   # Added by alr
-lace_math = "*"  # Added by alr
-lace_xml  = "*"  # Added by alr
+[[depends-on]]
+lace_math = "~0.1"
+lace_xml  = "~0.1"
