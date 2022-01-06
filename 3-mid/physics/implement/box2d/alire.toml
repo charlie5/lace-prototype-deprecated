@@ -1,6 +1,6 @@
 name        = "lace_box2d"
 description = "Provides a thin Ada binding to the 'box2d' C++ project."
-version     = "0.0.0"
+version     = "0.1.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
