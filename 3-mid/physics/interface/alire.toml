@@ -11,6 +11,6 @@ licenses = "ISC"
 project-files = ["library/physics.gpr"]
 
 [[depends-on]]
-lace        = "*"
-lace_bullet = "*"
-lace_box2d  = "*"
+lace        = "~0.1"
+lace_bullet = "~0.1"
+lace_box2d  = "~0.1"
