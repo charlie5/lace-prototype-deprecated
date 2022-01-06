@@ -1,6 +1,6 @@
 name        = "lace"
 description = "Contains a set of low level re-usable Ada components."
-version     = "0.0.0"
+version     = "0.1.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
