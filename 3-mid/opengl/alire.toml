@@ -10,5 +10,5 @@ licenses = "ISC"
 
 project-files = ["library/opengl.gpr"]
 
-[[depends-on]]      # Added by alr
-lace_collada = "*"  # Added by alr
+[[depends-on]]
+lace_collada = "~0.1"
