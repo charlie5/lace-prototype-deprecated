@@ -10,5 +10,5 @@ licenses = "ISC"
 
 project-files = ["library/box2d_thin.gpr"]
 
-[[depends-on]]     # Added by alr
-lace_c_math = "*"  # Added by alr
+[[depends-on]]
+lace_c_math = "~0.1"
