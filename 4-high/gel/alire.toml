@@ -10,7 +10,7 @@ licenses = "ISC"
 
 project-files = ["library/gel.gpr"]
 
-[[depends-on]]      # Added by alr
-lace_opengl  = "*"  # Added by alr
-lace_physics = "*"  # Added by alr
+[[depends-on]]
+lace_opengl  = "~0.1"
+lace_physics = "~0.1"
 sdlada       = "*"
