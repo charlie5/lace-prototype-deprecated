@@ -10,6 +10,6 @@ licenses = "ISC"
 
 project-files = ["library/c_math_thin.gpr"]
 
-[[depends-on]]   # Added by alr
-lace_math = "*"  # Added by alr
-lace_swig = "*"  # Added by alr
+[[depends-on]]
+lace_math = "~0.1"
+lace_swig = "~0.1"
