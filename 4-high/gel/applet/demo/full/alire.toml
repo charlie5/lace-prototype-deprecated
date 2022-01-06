@@ -1,6 +1,6 @@
 name        = "lace_gel_full_demo"
 description = "A demo of most of GEL's features."
-version     = "0.0.0"
+version     = "0.1.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
