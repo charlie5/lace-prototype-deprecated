@@ -1,5 +1,7 @@
 project FreeType_C
 is
+   FreeTypeLib := external ("FreeType_Linker_Param", "-lfreetype");
+
    for Languages       use ("C");
    for Source_Dirs     use ("../source/**");
    for Object_Dir      use "build";
@@ -13,12 +15,12 @@ is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c") use ("-g", "-I/usr/include/freetype2", "-I/usr/local/include/freetype2", "-lpthread");
+      for Default_Switches ("c") use ("-g", "-I/usr/include/freetype2", 
+                                            "-I/usr/local/include/freetype2");
    end Compiler;
 
    package Linker is
---      for Linker_Options use ("-g", "-L./lib", "-lfreetype", "-lfreetype_c");
-      for Linker_Options use ("-g", "-L./lib", "-lfreetype");
+      for Linker_Options use ("-g", FreeTypeLib);
    end Linker;
 
 end FreeType_C;

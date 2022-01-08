@@ -12,3 +12,10 @@ project-files = ["library/opengl.gpr"]
 
 [[depends-on]]
 lace_collada = "~0.1"
+
+[depends-on."case(os)"."linux|windows"]
+libfreetype = "^2"
+
+[gpr-set-externals."case(os)"]
+"linux|macos" = {FreeType_Linker_Param = "-lfreetype"}
+"windows"     = {FreeType_Linker_Param = "-lfreetype-6"}
