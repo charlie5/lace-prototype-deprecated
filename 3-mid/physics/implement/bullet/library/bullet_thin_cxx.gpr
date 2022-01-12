@@ -12,8 +12,6 @@ is
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "bullet_thin_cxx";
 
---   PWD : String := External ("PWD");
-
    package Naming is
       for Spec_Suffix ("c++") use ".h";
       for Body_Suffix ("c++") use ".cxx";
@@ -21,9 +19,7 @@ is
 
    package Compiler is
       for Default_Switches ("c++") use ("-g",
-                                        "-Wno-return-type-c-linkage",
-                                        "-I../../../c_math/source/c");
---                                        "-I" & External ("LACE") & "/3-mid/physics/implement/c_math/source/c");
+                                        "-Wno-return-type-c-linkage");
    end Compiler;
 
    package Ide      renames Lace_shared.Ide;
