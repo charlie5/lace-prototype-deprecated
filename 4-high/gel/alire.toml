@@ -13,4 +13,4 @@ project-files = ["library/gel.gpr"]
 [[depends-on]]
 lace_opengl  = "~0.1"
 lace_physics = "~0.1"
-sdlada       = "*"
+sdlada       = "2.3.1"
