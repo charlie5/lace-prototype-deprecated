@@ -1,3 +1,12 @@
+Status
+======
+
+This prototype project has been deprecated in favour of 'lace-alire'.
+
+https://github.com/charlie5/lace-alire
+
+
+
 Lace
 ====
 
